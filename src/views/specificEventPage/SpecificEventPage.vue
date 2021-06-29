@@ -121,7 +121,7 @@ export default {
     return {
       backdropOpen: false,
       contractOpen: false,
-      invoiceOpen: true,
+      invoiceOpen: false,
       formsOpen: false,
       actionsItems: [
         {

@@ -8,6 +8,8 @@ import dayjs from "dayjs";
 import {jsPDF} from 'jspdf';
 import html2canvas from 'html2canvas'
 import vueApexCharts from 'vue3-apexcharts';
+import maplibregl from "maplibre-gl";
+import Amplify from "@aws-amplify/core";
 
 
 const weekday = require("dayjs/plugin/weekday");
@@ -24,6 +26,8 @@ createApp(App)
   .use(dayjs)
   .use(vueApexCharts)
   .use(jsPDF)
+  .use(maplibregl)
+  .use(Amplify)
   .use(html2canvas)
   .mount("#app");
 

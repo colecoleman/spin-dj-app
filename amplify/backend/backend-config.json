@@ -1,0 +1,10 @@
+{
+  "auth": {
+    "spin49492a15": {
+      "service": "Cognito",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [],
+      "customAuth": false
+    }
+  }
+}

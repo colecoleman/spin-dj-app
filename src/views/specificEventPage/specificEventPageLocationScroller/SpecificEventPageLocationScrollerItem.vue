@@ -14,6 +14,7 @@
 </template>
 
 <script>
+
 export default {
   methods: {
     formatTime(time) {
@@ -29,6 +30,7 @@ export default {
     },
   },
   props: ["location"],
+  
 };
 </script>
 
