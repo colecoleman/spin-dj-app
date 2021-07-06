@@ -89,6 +89,7 @@ export default {
   methods: {
     submitContact() {
       console.log(this.vendor);
+      this.$store.dispatch("addVendor", this.vendor);
       this.vendor = {
         pronoun: undefined,
         firstName: undefined,

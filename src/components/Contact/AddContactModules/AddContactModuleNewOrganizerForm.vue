@@ -70,6 +70,8 @@ export default {
   methods: {
     submitContact() {
       console.log(this.organizer);
+      this.$store.dispatch("addOrganizer", this.organizer);
+
       this.organizer = {
         pronoun: undefined,
         firstName: undefined,

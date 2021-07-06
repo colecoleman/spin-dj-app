@@ -69,6 +69,9 @@ export default {
   methods: {
     submitContact() {
       console.log(this.employee);
+
+      this.$store.dispatch("addEmployee", this.employee);
+
       this.employee = {
         pronoun: undefined,
         firstName: undefined,

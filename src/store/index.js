@@ -231,6 +231,7 @@ const store = createStore({
                     },],
                 vendors: [{
                     id: 1,
+                    businessName: "Fun Flowers",
                         firstName: "Amanda",
                         lastName: "Jennings",
                         phoneNumber: "636-699-5652",
@@ -240,6 +241,8 @@ const store = createStore({
 
                     },
                     {
+                    businessName: "Cool Guy DJ Company",
+
                         id: 2,
                         firstName: "Jenny",
                         lastName: "Jenkins",
@@ -751,6 +754,7 @@ const store = createStore({
         // getClients({ commit }) {
             
         // },
+       
         // getEvents({ commit }) {
         //     db.collection('events')
         // },
@@ -860,7 +864,39 @@ const store = createStore({
         //     });
             
         // },
+        addClient( state, client) {
+            console.log(client);
+            state.commit('addClient', client);
+        },
+        addProspect( state, prospect) {
+            console.log(prospect);
+            state.commit('addProspect', prospect);
+        },
+        addVendor( state, vendor) {
+            console.log(vendor);
+            state.commit('addVendor', vendor);
+        },
+        addLocation( state, location) {
+            console.log(location);
+            let item = {
+            }
+            item.name = location.name
+            item.address = location.address;
+            console.log(location);
 
+            state.commit('addLocation', location);
+            let contact = location.contact;
+            contact.businessName = location.name;
+            state.commit('addVendor', contact)
+        },
+        addOrganizer( state, organizer) {
+            console.log(organizer);
+            state.commit('addOrganizer', organizer);
+        },
+        addEmployee( state, employee) {
+            console.log(employee);
+            state.commit('addEmployee', employee);
+        },
         getCombined({ commit }) {
             commit('clientEventCombine');
         },
@@ -887,6 +923,24 @@ const store = createStore({
     mutations: {
         setClients(state, payload) {
             state.clients = payload;
+        },
+        addClient(state, payload) {
+            state.contacts.clients.push(payload)
+        },
+        addProspect(state, payload) {
+            state.contacts.prospects.push(payload)
+        },
+        addVendor(state, payload) {
+            state.contacts.vendors.push(payload)
+        },
+        addLocation(state, payload) {
+            state.contacts.locations.push(payload)
+        },
+        addCEmployee(state, payload) {
+            state.contacts.employees.push(payload)
+        },
+        addOrganizer(state, payload) {
+            state.contacts.organizers.push(payload)
         },
         setEvents(state, payload) {
             state.events = payload;

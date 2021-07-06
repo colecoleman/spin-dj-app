@@ -76,10 +76,10 @@
                 :key="contact.id"
                 :category="contact_category"
               >
-                <contact-list-view-person
+                <contact-list-view
                   :contact="contact"
                   :category="contact_category"
-                ></contact-list-view-person>
+                ></contact-list-view>
               </div>
             </div>
           </template>
@@ -115,7 +115,7 @@
 </template>
 
 <script>
-import ContactListViewPerson from "../components/ContactListViewPerson.vue";
+import ContactListView from "../components/ContactListView.vue";
 import AddContactModule from "../components/AddContactModule.vue";
 import BaseCard from "../components/UI/BaseCard.vue";
 import BaseNavigationCard from "../components/UI/BaseNavigationCard.vue";
@@ -132,7 +132,7 @@ export default {
   components: {
     BaseCard,
     BaseNavigationCard,
-    ContactListViewPerson,
+    ContactListView,
     AddContactModule,
     ContactNavigation,
   },

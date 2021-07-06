@@ -74,6 +74,7 @@ export default {
   methods: {
     submitContact() {
       console.log(this.client);
+      this.$store.dispatch("addClient", this.client);
       this.client = {
         pronoun: undefined,
         firstName: undefined,

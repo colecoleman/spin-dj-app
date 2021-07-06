@@ -38,24 +38,24 @@
       v-model.trim.lazy="associatedEventSearch"
     />
   </div>
-    <button-long-with-icon text="Submit and Invite" @click="submitContact">
-      <template v-slot:icon>
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="13.6"
-          height="13.6"
-          viewBox="0 0 13.6 13.6"
-        >
-          <path
-            id="Icon_awesome-check-circle"
-            data-name="Icon awesome-check-circle"
-            d="M13.928,7.128a6.8,6.8,0,1,1-6.8-6.8A6.8,6.8,0,0,1,13.928,7.128Zm-7.587,3.6,5.045-5.045a.439.439,0,0,0,0-.62l-.62-.62a.439.439,0,0,0-.62,0L6.031,8.557,4.11,6.636a.439.439,0,0,0-.62,0l-.62.62a.439.439,0,0,0,0,.62l2.852,2.852A.439.439,0,0,0,6.342,10.729Z"
-            transform="translate(-0.328 -0.328)"
-            fill="#fff"
-          />
-        </svg>
-      </template>
-    </button-long-with-icon>
+  <button-long-with-icon text="Submit and Invite" @click="submitContact">
+    <template v-slot:icon>
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="13.6"
+        height="13.6"
+        viewBox="0 0 13.6 13.6"
+      >
+        <path
+          id="Icon_awesome-check-circle"
+          data-name="Icon awesome-check-circle"
+          d="M13.928,7.128a6.8,6.8,0,1,1-6.8-6.8A6.8,6.8,0,0,1,13.928,7.128Zm-7.587,3.6,5.045-5.045a.439.439,0,0,0,0-.62l-.62-.62a.439.439,0,0,0-.62,0L6.031,8.557,4.11,6.636a.439.439,0,0,0-.62,0l-.62.62a.439.439,0,0,0,0,.62l2.852,2.852A.439.439,0,0,0,6.342,10.729Z"
+          transform="translate(-0.328 -0.328)"
+          fill="#fff"
+        />
+      </svg>
+    </template>
+  </button-long-with-icon>
 </template>
 
 <script>
@@ -76,6 +76,8 @@ export default {
   methods: {
     submitContact() {
       console.log(this.prospect);
+      this.$store.dispatch("addProspect", this.prospect);
+
       this.prospect = {
         pronoun: undefined,
         firstName: undefined,

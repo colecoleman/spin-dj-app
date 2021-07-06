@@ -8,10 +8,15 @@
             : defaultProfilePicture
         "
       />
-      <h5 id="client-name">
-        {{ contact.firstName }} <br />
-        <span> {{ contact.lastName }}</span>
-      </h5>
+      <div class="name">
+        <h5 v-if="contact.businessName" class="business-name">
+          <span>{{ contact.businessName }}</span>
+        </h5>
+        <h5 id="client-name" @click="viewContact()">
+          {{ contact.firstName }} <br />
+          <span> {{ contact.lastName }}</span>
+        </h5>
+      </div>
     </div>
     <div class="email-and-phone">
       <h5>{{ contact.phoneNumber }}</h5>
@@ -41,7 +46,6 @@ export default {
           title: "View",
           danger: false,
           action: this.viewContact,
-          args: [this.contact_category, this.contact],
         },
         {
           title: "Email",
@@ -62,11 +66,11 @@ export default {
     };
   },
   methods: {
-    viewContact(cat, id) {
-      this.$router.push("/contacts/" + cat + "/" + id);
+    viewContact() {
+      this.$router.push("/contacts/" + this.category + "/" + this.contact.id);
     },
   },
-  props: ["contact", "contact_category"],
+  props: ["contact", "category"],
   components: { ButtonWithDropDownSelections },
 };
 </script>
@@ -81,37 +85,44 @@ section {
   height: 100px;
   max-height: 100px;
 }
+
+.name {
+  display: flex;
+  flex-direction: column;
+  width: calc(100% - 60px);
+}
+
 img {
   height: 50px;
-  margin: 10px;
+  width: 50px;
+  margin-right: 10px;
 }
 
 .name-and-photo,
 .email-and-phone {
-  width: 30%;
-  min-width: 30%;
-  max-width: 30%;
+  width: 33%;
+  min-width: 33%;
+  max-width: 33%;
 }
 .button-wrapper {
   width: 25%;
   position: relative;
   align-self: center;
-  margin: 20px 0px;
-  /* height: 100%; */
   min-height: 60px;
+  margin-top: 20px;
 }
 
 .name-and-photo {
   display: flex;
   flex-direction: row;
   align-items: center;
+
   text-align: left;
 }
 
 .name-and-photo h5 {
   font-weight: normal;
   text-transform: uppercase;
-  max-width: 80%;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -124,5 +135,4 @@ img {
   margin: 3px;
   font-weight: normal;
 }
-
 </style>

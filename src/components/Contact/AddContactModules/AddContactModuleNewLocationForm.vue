@@ -108,6 +108,7 @@ export default {
   methods: {
     submitContact() {
       console.log(this.location.contact);
+      this.$store.dispatch("addLocation", this.location);
       this.location.contact = {
         pronoun: undefined,
         firstName: undefined,
