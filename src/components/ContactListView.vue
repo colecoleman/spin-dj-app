@@ -1,5 +1,29 @@
 <template>
   <section>
+    
+    <popup-modal v-if="deleteContactOpen">
+      <template v-slot:window>
+        <div class="container">
+          <h3 class="popup-text">
+            Are you sure you want to delete
+            {{ contact.firstName + " " + contact.lastName }}?
+          </h3>
+          <div class="button-container">
+            <button-standard-with-icon
+              class="black-outline"
+              text="Yes, I'm Sure"
+              @click="confirmDeleteContact()"
+            ></button-standard-with-icon>
+            <button-standard-with-icon
+              class="black-outline"
+              text="No, go back."
+              @click="cancelDeleteContact()"
+            ></button-standard-with-icon>
+          </div>
+        </div>
+      </template>
+    </popup-modal>
+    <popup-modal v-if="composeEmailOpen"></popup-modal>
     <div class="name-and-photo">
       <img
         :src="
@@ -35,12 +59,16 @@
 <script>
 import defaultProfilePicture from "../assets/default-profile-picture.svg";
 import ButtonWithDropDownSelections from "./UI/ButtonWithDropDownSelections.vue";
+import ButtonStandardWithIcon from "./UI/ButtonStandardWithIcon.vue";
+import PopupModal from "./UI/PopupModal.vue";
 
 export default {
   data() {
     return {
       defaultProfilePicture,
       actionsClicked: false,
+      composeEmailOpen: false,
+      deleteContactOpen: false,
       actions: [
         {
           title: "View",
@@ -52,11 +80,7 @@ export default {
           danger: false,
           action: this.composeEmail,
         },
-        {
-          title: "Edit",
-          danger: false,
-          action: this.editContact,
-        },
+        
         {
           title: "Delete",
           danger: true,
@@ -69,9 +93,27 @@ export default {
     viewContact() {
       this.$router.push("/contacts/" + this.category + "/" + this.contact.id);
     },
+    
+    emailContact() {},
+    deleteContact() {
+      this.deleteContactOpen = true;
+    },
+    confirmDeleteContact() {
+      let category = this.category;
+      let id = this.contact.id;
+      this.$store.dispatch("deleteContact", { category, id });
+      this.deleteContactOpen = false;
+    },
+    cancelDeleteContact() {
+      this.deleteContactOpen = false;
+    },
   },
   props: ["contact", "category"],
-  components: { ButtonWithDropDownSelections },
+  components: {
+    ButtonWithDropDownSelections,
+    PopupModal,
+    ButtonStandardWithIcon,
+  },
 };
 </script>
 
@@ -134,5 +176,29 @@ img {
 .email-and-phone h5 {
   margin: 3px;
   font-weight: normal;
+}
+
+.popup-text {
+  color: black;
+}
+
+#container {
+  position: inherit;
+  height: 100%;
+  width: 100%;
+  color: black;
+}
+
+.button-container {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  color: black;
+}
+
+.black-outline {
+  border-color: black;
+  border-radius: 5px;
 }
 </style>

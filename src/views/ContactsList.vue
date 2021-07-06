@@ -126,9 +126,7 @@ export default {
       return this.$store.state.contacts;
     },
   },
-  methods: {
-    
-  },
+  methods: {},
   components: {
     BaseCard,
     BaseNavigationCard,
@@ -145,6 +143,7 @@ export default {
   flex-direction: row;
   min-width: 100%;
   padding-top: 5px;
+  /* overflow: hidden; */
 }
 
 #navigation {
@@ -169,6 +168,13 @@ export default {
 
 .personal-contact-item {
   z-index: 1;
+  width: 99%;
+}
+
+.personal-contact-list {
+  overflow-y: scroll;
+
+  height: 100%;
 }
 #right-container {
   width: 45%;

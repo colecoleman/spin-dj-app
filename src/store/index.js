@@ -1,8 +1,5 @@
 import { createStore } from "vuex";
-// import firebase from "./firebaseConfig";
-// const db = firebase.firestore();
 
-// prettier-ignore
 const store = createStore({
     state() {
         return {
@@ -918,6 +915,10 @@ const store = createStore({
         },
         editClient(state, {id, key, value}) {
             state.commit('editClient', {id, key, value})
+          },
+          deleteContact(state, {category, id}) {
+              console.log(category)
+              state.commit('deleteContact', {category, id})
           }
     },
     mutations: {
@@ -1002,8 +1003,14 @@ const store = createStore({
         editEvent(state, {id, key, value}) {
             let subject = state.events.find((e) => e.id === id);
             subject[key] = value;
-            console.log(subject)
+            console.log(subject);
             
+        },
+        deleteContact(state, {category, id}) {
+            let cat = state.contacts[category];
+            let subject = cat.findIndex(e => e.id === id);
+            cat.splice(subject, 1);
+
         }
     },
     getters: {
