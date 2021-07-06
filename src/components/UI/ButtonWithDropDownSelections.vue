@@ -8,7 +8,11 @@
   >
     <div class="primary-container" @click="actionsActive = !actionsActive">
       <h5>{{ text }}</h5>
-      <slot name="icon" style="margin: 5px"></slot>
+      <svg width="13.604" height="13.604" viewBox="0 0 13.604 13.604">
+        <path
+          d="M13.6,6.8A6.8,6.8,0,1,1,6.8,0,6.8,6.8,0,0,1,13.6,6.8ZM5.6,3.62V6.8H3.651a.329.329,0,0,0-.233.562L6.569,10.5a.326.326,0,0,0,.464,0l3.151-3.135A.329.329,0,0,0,9.951,6.8H8.009V3.62a.33.33,0,0,0-.329-.329H5.924A.33.33,0,0,0,5.6,3.62Z"
+        />
+      </svg>
     </div>
     <div v-if="actionsActive">
       <div
@@ -46,7 +50,7 @@ export default {
 
 <style scoped>
 .button-wrapper {
-  z-index: 1;
+  /* z-index: 1; */
 }
 
 .button-standard-with-icon {
@@ -60,8 +64,8 @@ export default {
   border: 1px solid white;
   border-radius: 7px;
   fill: white;
-  z-index: 100;
-  position: relative;
+  /* z-index: 2; */
+  /* position: relative; */
 }
 
 .inactive {
@@ -74,7 +78,7 @@ export default {
   background-color: white;
   color: black;
   fill: black;
-
+  z-index: 3;
   position: absolute;
 }
 
@@ -101,6 +105,7 @@ export default {
   align-items: center;
   align-content: center;
   justify-content: center;
+  position: relative;
 }
 
 .inactive:hover {
@@ -117,7 +122,7 @@ h5 {
   margin: 10px 0;
 }
 
-#icon {
+svg {
   margin: 5px;
 }
 </style>

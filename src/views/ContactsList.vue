@@ -74,10 +74,11 @@
                 class="personal-contact-item"
                 v-for="contact in value"
                 :key="contact.id"
-                @click="navigateToContactPage(contact_category, contact.id)"
+                :category="contact_category"
               >
                 <contact-list-view-person
                   :contact="contact"
+                  :category="contact_category"
                 ></contact-list-view-person>
               </div>
             </div>
@@ -126,9 +127,7 @@ export default {
     },
   },
   methods: {
-    navigateToContactPage(cat, id) {
-      this.$router.push("/contacts/" + cat + "/" + id);
-    },
+    
   },
   components: {
     BaseCard,
@@ -166,6 +165,10 @@ export default {
 .contacts-container {
   height: 85%;
   width: 100%;
+}
+
+.personal-contact-item {
+  z-index: 1;
 }
 #right-container {
   width: 45%;
