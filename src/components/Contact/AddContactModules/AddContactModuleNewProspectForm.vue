@@ -37,6 +37,7 @@
       placeholder="Search For Event"
       v-model.trim.lazy="associatedEventSearch"
     />
+  </div>
     <button-long-with-icon text="Submit and Invite" @click="submitContact">
       <template v-slot:icon>
         <svg
@@ -55,7 +56,6 @@
         </svg>
       </template>
     </button-long-with-icon>
-  </div>
 </template>
 
 <script>
@@ -92,21 +92,22 @@ export default {
 
 <style scoped>
 .form-body {
-  position: absolute;
-  max-height: 65%;
-  overflow: scroll;
+  width: 100%;
+  height: 80%;
+  overflow-y: scroll;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
 }
+
 input,
 select {
-  background-color: black;
   border: 1px solid white;
   border-radius: 5px;
   padding: 5px 8px;
+  margin: 5px;
   font-family: Montserrat, sans-serif;
-  color: white;
-  width: 70%;
-  min-width: 70%;
-  max-width: 70%;
+  width: calc(100% - 24px);
 }
 
 h5 {

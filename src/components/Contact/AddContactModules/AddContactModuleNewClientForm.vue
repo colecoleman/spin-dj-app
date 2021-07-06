@@ -37,25 +37,23 @@
       placeholder="Search For Event"
       v-model.trim.lazy="associatedEventSearch"
     />
-    <button-long-with-icon text="Submit and Invite" @click="submitContact">
-      <template v-slot:icon>
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="13.6"
-          height="13.6"
-          viewBox="0 0 13.6 13.6"
-        >
-          <path
-            id="Icon_awesome-check-circle"
-            data-name="Icon awesome-check-circle"
-            d="M13.928,7.128a6.8,6.8,0,1,1-6.8-6.8A6.8,6.8,0,0,1,13.928,7.128Zm-7.587,3.6,5.045-5.045a.439.439,0,0,0,0-.62l-.62-.62a.439.439,0,0,0-.62,0L6.031,8.557,4.11,6.636a.439.439,0,0,0-.62,0l-.62.62a.439.439,0,0,0,0,.62l2.852,2.852A.439.439,0,0,0,6.342,10.729Z"
-            transform="translate(-0.328 -0.328)"
-            fill="#fff"
-          />
-        </svg>
-      </template>
-    </button-long-with-icon>
   </div>
+  <button-long-with-icon text="Submit and Invite" @click="submitContact">
+    <template v-slot:icon>
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="13.6"
+        height="13.6"
+        viewBox="0 0 13.6 13.6"
+      >
+        <path
+          d="M13.928,7.128a6.8,6.8,0,1,1-6.8-6.8A6.8,6.8,0,0,1,13.928,7.128Zm-7.587,3.6,5.045-5.045a.439.439,0,0,0,0-.62l-.62-.62a.439.439,0,0,0-.62,0L6.031,8.557,4.11,6.636a.439.439,0,0,0-.62,0l-.62.62a.439.439,0,0,0,0,.62l2.852,2.852A.439.439,0,0,0,6.342,10.729Z"
+          transform="translate(-0.328 -0.328)"
+          fill="#fff"
+        />
+      </svg>
+    </template>
+  </button-long-with-icon>
 </template>
 
 <script>
@@ -92,26 +90,22 @@ export default {
 
 <style scoped>
 .form-body {
-  /* position: absolute; */
-  /* max-height: 65%; */
   width: 100%;
+  height: 80%;
   overflow-y: scroll;
-  justify-content: center;
-  justify-items: center;
   display: flex;
   flex-direction: column;
+  justify-content: flex-start;
 }
 
 input,
 select {
-  background-color: black;
   border: 1px solid white;
   border-radius: 5px;
   padding: 5px 8px;
   margin: 5px;
   font-family: Montserrat, sans-serif;
   width: calc(100% - 24px);
-  color: white;
 }
 
 h5 {

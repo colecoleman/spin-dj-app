@@ -2,10 +2,26 @@
   <div class="add-contact-module-wrapper">
     <div class="add-contact-button">
       <button-with-drop-down-selections
-        :text="currentlySelectedType"
+        :text="currentlySelectedType ? currentlySelectedType : 'Click to add'"
         :actions="selectableContactTypes"
         :clicked="actionsClicked"
       >
+        <template v-slot:icon
+          ><svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="13.604"
+            height="13.604"
+            viewBox="0 0 13.604 13.604"
+            id="arrow"
+            style="margin: 5px"
+          >
+            <path
+              id="Icon_awesome-arrow-alt-circle-down"
+              data-name="Icon awesome-arrow-alt-circle-down"
+              d="M14.2,7.4A6.8,6.8,0,1,1,7.4.594,6.8,6.8,0,0,1,14.2,7.4ZM6.189,4.214V7.4H4.244a.329.329,0,0,0-.233.562l3.151,3.135a.326.326,0,0,0,.464,0l3.151-3.135a.329.329,0,0,0-.233-.562H8.6V4.214a.33.33,0,0,0-.329-.329H6.518A.33.33,0,0,0,6.189,4.214Z"
+              transform="translate(-0.594 -0.594)"
+            /></svg
+        ></template>
       </button-with-drop-down-selections>
     </div>
     <div id="form-container">
@@ -75,7 +91,7 @@ export default {
           danger: false,
         },
       ],
-      currentlySelectedType: "Client",
+      currentlySelectedType: undefined,
     };
   },
   computed: {
@@ -120,5 +136,6 @@ export default {
 
 #form-container {
   z-index: 2;
+  height: 100%;
 }
 </style>
