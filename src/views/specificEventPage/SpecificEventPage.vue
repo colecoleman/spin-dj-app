@@ -50,6 +50,7 @@
                   text="Actions"
                   :actions="actionsItems"
                   :clicked="actionsClicked"
+                  class="dropdown-button"
                 >
                   <template v-slot:icon>
                     <svg
@@ -251,11 +252,36 @@ section {
 .button-parent {
   display: flex;
   flex-direction: row;
+  align-items: center;
+  justify-content: center;
   height: 100%;
 }
 .button-div {
   width: 25%;
   height: 100%;
+  align-items: center;
+  align-content: center;
+  justify-content: center;
+}
+
+.dropdown-button {
+  display: flex;
+  flex-direction: column;
+
+  width: 90%;
+  margin-top: 8.5px;
+  margin-left: 5px;
+  text-transform: uppercase;
+  padding: 5px 5px 5px 5px;
+
+  border-radius: 7px;
+  fill: white;
+  position: relative;
+}
+
+.dropdown-button > {
+  height: calc(100% - 17px);
+  /* align-self: center; */
 }
 
 #upper-div-right-lower-container {

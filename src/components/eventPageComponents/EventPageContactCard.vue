@@ -215,6 +215,10 @@ export default {
     },
   },
   props: ["client", "event"],
+  mounted() {
+    console.log(this.client);
+    console.log(this.event);
+  },
   components: { BaseCard },
 };
 </script>

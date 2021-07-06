@@ -913,15 +913,9 @@ const store = createStore({
         setUsers(state, payload) {
             state.users = payload;
         },
-        clientEventCombine(state) {   
-                const combined = state.events.map(event => {
-                    const clientItem = state.clients.find(client => client.id === event.associatedClientIds)
-                    const eventItem = event;
-                    eventItem.client = clientItem;
-                    return event;
-                 })
-            state.clientEventCombined = combined;
-        },
+        // clientEventCombine(state) {   
+            // const associatedUser = state.event
+        // },
         approveAutomation(state, id) {
            let matchingIndex = state.automations.pending.findIndex(element => element.id === id)
            let matchingAutomation = state.automations.pending[matchingIndex];
@@ -967,6 +961,6 @@ const store = createStore({
 // store.dispatch('getClients');
 // store.dispatch('getEvents');
 // store.dispatch('getAddOns');
-// store.dispatch('getCombined');
+store.dispatch('getCombined');
 
 export default store;

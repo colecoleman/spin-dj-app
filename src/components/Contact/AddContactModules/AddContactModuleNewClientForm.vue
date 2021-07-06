@@ -92,9 +92,14 @@ export default {
 
 <style scoped>
 .form-body {
-  position: absolute;
-  max-height: 65%;
-  overflow: scroll;
+  /* position: absolute; */
+  /* max-height: 65%; */
+  width: 100%;
+  overflow-y: scroll;
+  justify-content: center;
+  justify-items: center;
+  display: flex;
+  flex-direction: column;
 }
 
 input,
@@ -103,11 +108,10 @@ select {
   border: 1px solid white;
   border-radius: 5px;
   padding: 5px 8px;
+  margin: 5px;
   font-family: Montserrat, sans-serif;
+  width: calc(100% - 24px);
   color: white;
-  width: 70%;
-  min-width: 70%;
-  max-width: 70%;
 }
 
 h5 {
