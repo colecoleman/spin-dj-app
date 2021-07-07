@@ -7,25 +7,25 @@
       <option value="Ms.">Ms.</option>
       <option value="Other">Other (please prefix first name)</option>
     </select>
-    <h5>First Name:</h5>
+    <h5 :class="errors.firstName ? 'danger' : ''">First Name:</h5>
     <input
       type="text"
       placeholder="First Name"
       v-model.trim.lazy="employee.firstName"
     />
-    <h5>Last Name:</h5>
+    <h5 :class="errors.lastName ? 'danger' : ''">Last Name:</h5>
     <input
       type="text"
       placeholder="Last Name"
       v-model.trim.lazy="employee.lastName"
     />
-    <h5>Phone Number:</h5>
+    <h5 :class="errors.phoneNumber ? 'danger' : ''">Phone Number:</h5>
     <input
       type="tel"
       placeholder="(123)456-7890"
       v-model.trim.lazy="employee.phoneNumber"
     />
-    <h5>Email Address:</h5>
+    <h5 :class="errors.emailAddress ? 'danger' : ''">Email Address:</h5>
     <input
       type="email"
       placeholder="Email Address"
@@ -64,21 +64,65 @@ export default {
         phoneNumber: undefined,
         emailAddress: undefined,
       },
+      errors: {
+        firstName: false,
+        lastName: false,
+        phoneNumber: false,
+        emailAddress: false,
+      },
     };
   },
   methods: {
     submitContact() {
-      console.log(this.employee);
-
-      this.$store.dispatch("addEmployee", this.employee);
-
-      this.employee = {
-        pronoun: undefined,
-        firstName: undefined,
-        lastName: undefined,
-        phoneNumber: undefined,
-        emailAddress: undefined,
+      this.checkEmptyFields();
+      if (!this.errors.phoneNumber) {
+        this.validatePhoneNumber(this.employee.phoneNumber);
+      }
+      if (!this.errors.emailAddress) {
+        this.validateEmailAddress(this.employee.emailAddress);
+      }
+      if (Object.values(this.errors).every((item) => item === false)) {
+        this.$store.dispatch("addEmployee", this.employee);
+        console.log(this.employee);
+        this.employee = {
+          pronoun: undefined,
+          firstName: undefined,
+          lastName: undefined,
+          phoneNumber: undefined,
+          emailAddress: undefined,
+        };
+        this.associatedEvent = undefined;
+      } else {
+        return;
+      }
+    },
+    checkEmptyFields() {
+      let employee = this.employee;
+      this.errors = {
+        firstName: false,
+        lastName: false,
+        phoneNumber: false,
+        emailAddress: false,
       };
+      if (!employee.firstName) {
+        this.errors.firstName = true;
+      }
+      if (!employee.lastName) {
+        this.errors.lastName = true;
+      }
+      if (!employee.emailAddress) {
+        this.errors.emailAddress = true;
+      }
+      if (!employee.phoneNumber) {
+        this.errors.phoneNumber = true;
+      }
+    },
+    validatePhoneNumber(num) {
+      return num.replace(/[^\d/+]/g, "");
+    },
+    validateEmailAddress(add) {
+      var re = /\S+@\S+\.\S+/;
+      this.errors.emailAddress = !re.test(add);
     },
   },
   components: { ButtonLongWithIcon },
@@ -103,6 +147,10 @@ select {
   margin: 5px;
   font-family: Montserrat, sans-serif;
   width: calc(100% - 24px);
+}
+
+.danger {
+  color: red;
 }
 
 h5 {

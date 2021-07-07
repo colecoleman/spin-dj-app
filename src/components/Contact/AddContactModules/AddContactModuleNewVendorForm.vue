@@ -13,31 +13,31 @@
       <option value="Ms.">Ms.</option>
       <option value="Other">Other (please prefix first name)</option>
     </select>
-    <h5>First Name:</h5>
+    <h5 :class="errors.firstName ? 'danger' : ''">First Name:</h5>
     <input
       type="text"
       placeholder="First Name"
       v-model.trim.lazy="vendor.firstName"
     />
-    <h5>Last Name:</h5>
+    <h5 :class="errors.lastName ? 'danger' : ''">Last Name:</h5>
     <input
       type="text"
       placeholder="Last Name"
       v-model.trim.lazy="vendor.lastName"
     />
-    <h5>Phone Number:</h5>
+    <h5 :class="errors.phoneNumber ? 'danger' : ''">Phone Number:</h5>
     <input
       type="tel"
       placeholder="(123)456-7890"
       v-model.trim.lazy="vendor.phoneNumber"
     />
-    <h5>Email Address:</h5>
+    <h5 :class="errors.emailAddress ? 'danger' : ''">Email Address:</h5>
     <input
       type="email"
       placeholder="Email Address"
       v-model.trim.lazy="vendor.emailAddress"
     />
-    <h5>Vendor Category:</h5>
+    <h5 :class="errors.vendorCategory ? 'danger' : ''">Vendor Category:</h5>
     <select v-model="vendor.vendorCategory">
       <option value="Photographer">Photographer</option>
       <option value="Videographer">Videographer</option>
@@ -48,7 +48,8 @@
       <option value="Baker">Baker</option>
       <option value="Decor/Florist">Decor/Florist</option>
       <option value="Photo Booth">Photo Booth</option>
-      <option value="Bar Services ">Bar Services</option>
+      <option value="Bar Services">Bar Services</option>
+      <option value="DJ">DJ</option>
     </select>
   </div>
   <button-long-with-icon text="Submit and Invite" @click="submitContact">
@@ -77,27 +78,80 @@ export default {
   data() {
     return {
       vendor: {
+        companyName: undefined,
         pronoun: undefined,
         firstName: undefined,
         lastName: undefined,
         phoneNumber: undefined,
         emailAddress: undefined,
+        vendorCategory: undefined,
+      },
+      errors: {
+        firstName: false,
+        lastName: false,
+        phoneNumber: false,
+        emailAddress: false,
+        vendorCategory: false,
       },
       associatedEvent: undefined,
     };
   },
   methods: {
     submitContact() {
-      console.log(this.vendor);
-      this.$store.dispatch("addVendor", this.vendor);
-      this.vendor = {
-        pronoun: undefined,
-        firstName: undefined,
-        lastName: undefined,
-        phoneNumber: undefined,
-        emailAddress: undefined,
+      this.checkEmptyFields();
+      if (!this.errors.phoneNumber) {
+        this.validatePhoneNumber(this.vendor.phoneNumber);
+      }
+      if (!this.errors.emailAddress) {
+        this.validateEmailAddress(this.vendor.emailAddress);
+      }
+      if (Object.values(this.errors).every((item) => item === false)) {
+        this.$store.dispatch("addVendor", this.vendor);
+        console.log(this.vendor);
+        this.vendor = {
+          pronoun: undefined,
+          firstName: undefined,
+          lastName: undefined,
+          phoneNumber: undefined,
+          emailAddress: undefined,
+        };
+        this.associatedEvent = undefined;
+      } else {
+        return;
+      }
+    },
+    checkEmptyFields() {
+      let vendor = this.vendor;
+      this.errors = {
+        firstName: false,
+        lastName: false,
+        phoneNumber: false,
+        emailAddress: false,
+        vendorCategory: false,
       };
-      this.associatedEvent = undefined;
+
+      if (!vendor.firstName) {
+        this.errors.firstName = true;
+      }
+      if (!vendor.lastName) {
+        this.errors.lastName = true;
+      }
+      if (!vendor.emailAddress) {
+        this.errors.emailAddress = true;
+      }
+      if (!vendor.phoneNumber) {
+        this.errors.phoneNumber = true;
+      }
+      if (!vendor.vendorCategory) {
+        this.errors.vendorCategory = true;
+      }
+    },
+    validatePhoneNumber(num) {
+      return num.replace(/[^\d/+]/g, "");
+    },
+    validateEmailAddress(add) {
+      var re = /\S+@\S+\.\S+/;
+      this.errors.emailAddress = !re.test(add);
     },
   },
   components: { ButtonLongWithIcon },
@@ -122,6 +176,10 @@ select {
   margin: 5px;
   font-family: Montserrat, sans-serif;
   width: calc(100% - 24px);
+}
+
+.danger {
+  color: red;
 }
 
 h5 {

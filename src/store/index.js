@@ -943,7 +943,7 @@ const store = createStore({
         addLocation(state, payload) {
             state.contacts.locations.push(payload)
         },
-        addCEmployee(state, payload) {
+        addEmployee(state, payload) {
             state.contacts.employees.push(payload)
         },
         addOrganizer(state, payload) {

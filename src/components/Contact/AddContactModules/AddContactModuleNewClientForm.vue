@@ -7,25 +7,25 @@
       <option value="Ms.">Ms.</option>
       <option value="Other">Other (please prefix first name)</option>
     </select>
-    <h5>First Name:</h5>
+    <h5 :class="errors.firstName ? 'danger' : ''">First Name:</h5>
     <input
       type="text"
       placeholder="First Name"
       v-model.trim.lazy="client.firstName"
     />
-    <h5>Last Name:</h5>
+    <h5 :class="errors.lastName ? 'danger' : ''">Last Name:</h5>
     <input
       type="text"
       placeholder="Last Name"
       v-model.trim.lazy="client.lastName"
     />
-    <h5>Phone Number:</h5>
+    <h5 :class="errors.phoneNumber ? 'danger' : ''">Phone Number:</h5>
     <input
       type="tel"
       placeholder="(123)456-7890"
       v-model.trim.lazy="client.phoneNumber"
     />
-    <h5>Email Address:</h5>
+    <h5 :class="errors.emailAddress ? 'danger' : ''">Email Address:</h5>
     <input
       type="email"
       placeholder="Email Address"
@@ -79,25 +79,39 @@ export default {
   },
   methods: {
     submitContact() {
-      this.validatePhoneNumber(this.client.phoneNumber);
-      this.validateEmailAddress(this.client.emailAddress);
-      console.log(this.client);
-      this.$store.dispatch("addClient", this.client);
-      this.client = {
-        pronoun: undefined,
-        firstName: undefined,
-        lastName: undefined,
-        phoneNumber: undefined,
-        emailAddress: undefined,
-      };
-      this.associatedEvent = undefined;
+      this.checkEmptyFields();
+      if (!this.errors.phoneNumber) {
+        this.validatePhoneNumber(this.client.phoneNumber);
+      }
+      if (!this.errors.emailAddress) {
+        this.validateEmailAddress(this.client.emailAddress);
+      }
+      if (Object.values(this.errors).every((item) => item === false)) {
+        this.$store.dispatch("addClient", this.client);
+        console.log(this.client);
+        this.client = {
+          pronoun: undefined,
+          firstName: undefined,
+          lastName: undefined,
+          phoneNumber: undefined,
+          emailAddress: undefined,
+        };
+        this.associatedEvent = undefined;
+      } else {
+        return;
+      }
     },
     checkEmptyFields() {
       let client = this.client;
+      this.errors = {
+        firstName: false,
+        lastName: false,
+        phoneNumber: false,
+        emailAddress: false,
+      };
       if (!client.firstName) {
         this.errors.firstName = true;
       }
-
       if (!client.lastName) {
         this.errors.lastName = true;
       }
@@ -113,7 +127,7 @@ export default {
     },
     validateEmailAddress(add) {
       var re = /\S+@\S+\.\S+/;
-      this.errors.emailAddress = re.test(add);
+      this.errors.emailAddress = !re.test(add);
     },
   },
   components: { ButtonLongWithIcon },
@@ -138,6 +152,10 @@ select {
   margin: 5px;
   font-family: Montserrat, sans-serif;
   width: calc(100% - 24px);
+}
+
+.danger {
+  color: red;
 }
 
 h5 {

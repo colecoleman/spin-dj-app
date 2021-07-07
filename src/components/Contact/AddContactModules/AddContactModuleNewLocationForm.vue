@@ -1,7 +1,7 @@
 <template>
   <div class="form-body">
     <h4>Venue:</h4>
-    <h5>Venue Name:</h5>
+    <h5 :class="errors.name ? 'danger' : ''">Venue Name:</h5>
     <input
       type="text"
       placeholder="The Venue"
@@ -32,25 +32,25 @@
       <option value="Ms.">Ms.</option>
       <option value="Other">Other (please prefix first name)</option>
     </select>
-    <h5>First Name:</h5>
+    <h5 :class="errors.contact.firstName ? 'danger' : ''">First Name:</h5>
     <input
       type="text"
       placeholder="First Name"
       v-model.trim.lazy="location.contact.firstName"
     />
-    <h5>Last Name:</h5>
+    <h5 :class="errors.contact.lastName ? 'danger' : ''">Last Name:</h5>
     <input
       type="text"
       placeholder="Last Name"
       v-model.trim.lazy="location.contact.lastName"
     />
-    <h5>Phone Number:</h5>
+    <h5 :class="errors.contact.phoneNumber ? 'danger' : ''">Phone Number:</h5>
     <input
       type="tel"
       placeholder="(123)456-7890"
       v-model.trim.lazy="location.contact.phoneNumber"
     />
-    <h5>Email Address:</h5>
+    <h5 :class="errors.contact.emailAddress ? 'danger' : ''">Email Address:</h5>
     <input
       type="email"
       placeholder="Email Address"
@@ -102,20 +102,88 @@ export default {
           emailAddress: undefined,
         },
       },
+      errors: {
+        name: false,
+        contact: {
+          firstName: false,
+          lastName: false,
+          phoneNumber: false,
+          emailAddress: false,
+        },
+      },
       associatedEvent: undefined,
     };
   },
   methods: {
     submitContact() {
-      console.log(this.location.contact);
-      this.$store.dispatch("addLocation", this.location);
-      this.location.contact = {
-        pronoun: undefined,
-        firstName: undefined,
-        lastName: undefined,
-        phoneNumber: undefined,
-        emailAddress: undefined,
+      this.checkEmptyFields();
+      if (!this.errors.contact.phoneNumber) {
+        console.log("lkkk");
+        this.validatePhoneNumber(this.location.contact.phoneNumber);
+      }
+      if (!this.errors.contact.emailAddress) {
+        console.log("ljjj");
+
+        this.validateEmailAddress(this.location.contact.emailAddress);
+      }
+      if (
+        Object.values(this.errors.contact).every((item) => item === false) &&
+        this.location.name === false
+      ) {
+        this.$store.dispatch("addLocation", this.location);
+        console.log(this.location);
+        this.location = {
+          name: undefined,
+          address: {
+            address1: undefined,
+            address2: undefined,
+          },
+          contact: {
+            pronoun: undefined,
+            firstName: undefined,
+            lastName: undefined,
+            phoneNumber: undefined,
+            emailAddress: undefined,
+          },
+        };
+        this.associatedEvent = undefined;
+      } else {
+        return;
+      }
+    },
+    checkEmptyFields() {
+      let location = this.location;
+      this.errors = {
+        name: false,
+        contact: {
+          firstName: false,
+          lastName: false,
+          emailAddress: false,
+          phoneNumber: false,
+        },
       };
+      if (!location.name) {
+        this.errors.name = true;
+      }
+      if (!location.contact.firstName) {
+        this.errors.contact.firstName = true;
+      }
+      if (!location.contact.lastName) {
+        this.errors.contact.lastName = true;
+      }
+      if (!location.contact.emailAddress) {
+        this.errors.contact.emailAddress = true;
+      }
+      if (!location.contact.phoneNumber) {
+        this.errors.contact.phoneNumber = true;
+      }
+    },
+    validatePhoneNumber(num) {
+      return num.replace(/[^\d/+]/g, "");
+    },
+    validateEmailAddress(add) {
+      var re = /\S+@\S+\.\S+/;
+      this.errors.emailAddress = !re.test(add);
     },
   },
   components: { ButtonLongWithIcon },
@@ -140,6 +208,10 @@ select {
   margin: 5px;
   font-family: Montserrat, sans-serif;
   width: calc(100% - 24px);
+}
+
+.danger {
+  color: red;
 }
 
 h5 {
