@@ -22,50 +22,12 @@
         </div>
       </template>
     </popup-modal>
-    <popup-modal v-if="composeEmailOpen">
-      <template v-slot:window>
-        <h3 class="popup-heading">
-          Send email to {{ contact.firstName }} {{ contact.lastName }}
-        </h3>
-        <h5 class="popup-text">From:</h5>
-        <select
-          name="from-email"
-          id="from-email"
-          v-model="emailFields.fromEmail"
-        >
-          <option
-            :value="address.address"
-            v-for="address in emailAddresses"
-            :key="address.address"
-          >
-            {{ address.address }}
-          </option>
-        </select>
-        <h5 class="popup-text">To:</h5>
-        <input type="text" id="to-email" v-model="emailFields.toEmail" />
-        <h5 class="popup-text">Message:</h5>
-        <textarea
-          name="email-message"
-          id="email-message"
-          cols="30"
-          rows="10"
-          placeholder="Start typing your message..."
-          v-model="emailFields.emailMessage"
-        ></textarea>
-        <div class="button-container">
-          <button-standard-with-icon
-            class="black-outline"
-            text="Cancel Email"
-            @click="cancelSendEmail()"
-          ></button-standard-with-icon>
-          <button-standard-with-icon
-            class="black-outline"
-            text="Send Email"
-            @click="confirmSendEmail()"
-          ></button-standard-with-icon>
-        </div>
-      </template>
-    </popup-modal>
+    <popup-email-composition
+      v-if="composeEmailOpen"
+      :contact="contact"
+      :category="category"
+      @cancel-send-email="composeEmailOpen = false"
+    ></popup-email-composition>
     <div class="name-and-photo">
       <img
         :src="
@@ -85,8 +47,8 @@
       </div>
     </div>
     <div class="email-and-phone">
-      <h5>{{ contact.phoneNumber }}</h5>
-      <h5>{{ contact.emailAddress }}</h5>
+      <p>{{ contact.phoneNumber }}</p>
+      <p>{{ contact.emailAddress }}</p>
     </div>
     <div class="button-wrapper">
       <button-with-drop-down-selections
@@ -102,7 +64,8 @@
 import defaultProfilePicture from "../assets/default-profile-picture.svg";
 import ButtonWithDropDownSelections from "./UI/ButtonWithDropDownSelections.vue";
 import ButtonStandardWithIcon from "./UI/ButtonStandardWithIcon.vue";
-import PopupModal from "./UI/PopupModal.vue";
+import PopupEmailComposition from "../components/popupUtilities/PopupEmailComposition.vue";
+import PopupModal from "./popupUtilities/PopupModal.vue";
 
 export default {
   data() {
@@ -111,11 +74,6 @@ export default {
       actionsClicked: false,
       composeEmailOpen: false,
       deleteContactOpen: false,
-      emailFields: {
-        fromEmail: this.emailAddresses,
-        toEmail: this.contact.emailAddress,
-        emailMessage: undefined,
-      },
       actions: [
         {
           title: "View",
@@ -136,12 +94,7 @@ export default {
       ],
     };
   },
-  computed: {
-    emailAddresses() {
-      return this.$store.state.businessSettings.businessInfo
-        .businessEmailAddresses;
-    },
-  },
+  computed: {},
   methods: {
     viewContact() {
       this.$router.push("/contacts/" + this.category + "/" + this.contact.id);
@@ -152,9 +105,6 @@ export default {
     },
     cancelSendEmail() {
       this.composeEmailOpen = false;
-    },
-    confirmSendEmail() {
-      console.log(this.emailFields);
     },
 
     deleteContact() {
@@ -173,6 +123,7 @@ export default {
   props: ["contact", "category"],
   components: {
     ButtonWithDropDownSelections,
+    PopupEmailComposition,
     PopupModal,
     ButtonStandardWithIcon,
   },
@@ -235,10 +186,13 @@ img {
 .name-and-photo h5 span {
   font-weight: bold;
 }
-.email-and-phone h5 {
+.email-and-phone p {
   margin: 3px;
   font-weight: normal;
-  text-align: right;
+  text-align: left;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 .popup-heading,

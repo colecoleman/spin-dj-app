@@ -68,11 +68,19 @@ export default {
         phoneNumber: undefined,
         emailAddress: undefined,
       },
+      errors: {
+        firstName: false,
+        lastName: false,
+        phoneNumber: false,
+        emailAddress: false,
+      },
       associatedEvent: undefined,
     };
   },
   methods: {
     submitContact() {
+      this.validatePhoneNumber(this.client.phoneNumber);
+      this.validateEmailAddress(this.client.emailAddress);
       console.log(this.client);
       this.$store.dispatch("addClient", this.client);
       this.client = {
@@ -83,6 +91,29 @@ export default {
         emailAddress: undefined,
       };
       this.associatedEvent = undefined;
+    },
+    checkEmptyFields() {
+      let client = this.client;
+      if (!client.firstName) {
+        this.errors.firstName = true;
+      }
+
+      if (!client.lastName) {
+        this.errors.lastName = true;
+      }
+      if (!client.emailAddress) {
+        this.errors.emailAddress = true;
+      }
+      if (!client.phoneNumber) {
+        this.errors.phoneNumber = true;
+      }
+    },
+    validatePhoneNumber(num) {
+      return num.replace(/[^\d/+]/g, "");
+    },
+    validateEmailAddress(add) {
+      var re = /\S+@\S+\.\S+/;
+      this.errors.emailAddress = re.test(add);
     },
   },
   components: { ButtonLongWithIcon },

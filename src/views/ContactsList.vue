@@ -116,7 +116,7 @@
 
 <script>
 import ContactListView from "../components/ContactListView.vue";
-import AddContactModule from "../components/AddContactModule.vue";
+import AddContactModule from "../components/Contact/AddContactModules/AddContactModule.vue";
 import BaseCard from "../components/UI/BaseCard.vue";
 import BaseNavigationCard from "../components/UI/BaseNavigationCard.vue";
 import ContactNavigation from "../navigationItems/ContactNavigation.vue";

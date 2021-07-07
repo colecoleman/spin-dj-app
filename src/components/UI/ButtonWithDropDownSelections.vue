@@ -5,7 +5,7 @@
         ? 'active button-standard-with-icon'
         : 'inactive button-standard-with-icon'
     "
-    @click="actionsActive = !actionsActive"
+    @click="actionsClicked()"
   >
     <div class="primary-container">
       <h5>{{ text }}</h5>
@@ -20,10 +20,7 @@
         class="actions-item"
         v-for="action in actions"
         :key="action.title"
-        @click="
-          action.action(action.title);
-          actionsActive = !actionsActive;
-        "
+        @click="action.action(action.title)"
       >
         <h5 :class="action.danger ? 'danger' : ''">
           {{ action.title }}
@@ -45,15 +42,11 @@ export default {
       this.actionsActive = !this.actionsActive;
     },
   },
-  props: ["text", "actions", "clicked"],
+  props: ["text", "actions"],
 };
 </script>
 
 <style scoped>
-.button-wrapper {
-  /* z-index: 1; */
-}
-
 .button-standard-with-icon {
   display: flex;
   flex-direction: column;
@@ -84,7 +77,7 @@ export default {
 }
 
 .active > .primary-container > svg {
-  transform: rotate(180);
+  transform: rotate(180deg);
 }
 
 .actions-item {

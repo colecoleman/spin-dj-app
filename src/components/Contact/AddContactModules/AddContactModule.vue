@@ -4,7 +4,7 @@
       <button-with-drop-down-selections
         :text="currentlySelectedType ? currentlySelectedType : 'Click to add'"
         :actions="selectableContactTypes"
-        :clicked="actionsClicked"
+
       >
         <template v-slot:icon
           ><svg
@@ -48,13 +48,13 @@
 </template>
 
 <script>
-import AddContactModuleNewClientForm from "./Contact/AddContactModules/AddContactModuleNewClientForm";
-import AddContactModuleNewProspectForm from "./Contact/AddContactModules/AddContactModuleNewProspectForm";
-import AddContactModuleNewVendorForm from "./Contact/AddContactModules/AddContactModuleNewVendorForm";
-import AddContactModuleNewEmployeeForm from "./Contact/AddContactModules/AddContactModuleNewEmployeeForm";
-import AddContactModuleNewLocationForm from "./Contact/AddContactModules/AddContactModuleNewLocationForm";
-import AddContactModuleNewOrganizerForm from "./Contact/AddContactModules/AddContactModuleNewOrganizerForm";
-import ButtonWithDropDownSelections from "./UI/ButtonWithDropDownSelections.vue";
+import AddContactModuleNewClientForm from "./AddContactModuleNewClientForm";
+import AddContactModuleNewProspectForm from "./AddContactModuleNewProspectForm";
+import AddContactModuleNewVendorForm from "./AddContactModuleNewVendorForm";
+import AddContactModuleNewEmployeeForm from "./AddContactModuleNewEmployeeForm";
+import AddContactModuleNewLocationForm from "./AddContactModuleNewLocationForm";
+import AddContactModuleNewOrganizerForm from "./AddContactModuleNewOrganizerForm";
+import ButtonWithDropDownSelections from "../../UI/ButtonWithDropDownSelections.vue";
 
 export default {
   data() {
@@ -105,7 +105,7 @@ export default {
   methods: {
     selectContactType(type) {
       this.currentlySelectedType = type;
-      this.actionsClicked = !this.actionsClicked;
+      // this.actionsClicked = !this.actionsClicked;
     },
   },
   components: {
