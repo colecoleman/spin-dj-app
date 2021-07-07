@@ -5,8 +5,9 @@
         ? 'active button-standard-with-icon'
         : 'inactive button-standard-with-icon'
     "
+    @click="actionsActive = !actionsActive"
   >
-    <div class="primary-container" @click="actionsActive = !actionsActive">
+    <div class="primary-container">
       <h5>{{ text }}</h5>
       <svg width="13.604" height="13.604" viewBox="0 0 13.604 13.604">
         <path
@@ -106,6 +107,10 @@ export default {
   align-content: center;
   justify-content: center;
   position: relative;
+}
+
+.button-standard-with-icon:hover {
+  cursor: pointer;
 }
 
 .inactive:hover {

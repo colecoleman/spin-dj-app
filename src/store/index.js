@@ -740,7 +740,13 @@ const store = createStore({
                         address2: 'Anywhere, AZ, 12345'
                     },
                     businessPhoneNumber: 13148568522,
-                    businessEmailAddress: 'name@domain.com'
+                    businessEmailAddresses: [
+                        {
+                            address: 'name@domain.com',
+                        },
+                        {
+                            address: 'company@domain.com',
+                        }]
                 }
             },
             users: [],

@@ -1,10 +1,9 @@
 <template>
   <section>
-    
     <popup-modal v-if="deleteContactOpen">
       <template v-slot:window>
         <div class="container">
-          <h3 class="popup-text">
+          <h3 class="popup-heading">
             Are you sure you want to delete
             {{ contact.firstName + " " + contact.lastName }}?
           </h3>
@@ -23,7 +22,50 @@
         </div>
       </template>
     </popup-modal>
-    <popup-modal v-if="composeEmailOpen"></popup-modal>
+    <popup-modal v-if="composeEmailOpen">
+      <template v-slot:window>
+        <h3 class="popup-heading">
+          Send email to {{ contact.firstName }} {{ contact.lastName }}
+        </h3>
+        <h5 class="popup-text">From:</h5>
+        <select
+          name="from-email"
+          id="from-email"
+          v-model="emailFields.fromEmail"
+        >
+          <option
+            :value="address.address"
+            v-for="address in emailAddresses"
+            :key="address.address"
+          >
+            {{ address.address }}
+          </option>
+        </select>
+        <h5 class="popup-text">To:</h5>
+        <input type="text" id="to-email" v-model="emailFields.toEmail" />
+        <h5 class="popup-text">Message:</h5>
+        <textarea
+          name="email-message"
+          id="email-message"
+          cols="30"
+          rows="10"
+          placeholder="Start typing your message..."
+          v-model="emailFields.emailMessage"
+        ></textarea>
+        <div class="button-container">
+          <button-standard-with-icon
+            class="black-outline"
+            text="Cancel Email"
+            @click="cancelSendEmail()"
+          ></button-standard-with-icon>
+          <button-standard-with-icon
+            class="black-outline"
+            text="Send Email"
+            @click="confirmSendEmail()"
+          ></button-standard-with-icon>
+        </div>
+      </template>
+    </popup-modal>
     <div class="name-and-photo">
       <img
         :src="
@@ -69,6 +111,11 @@ export default {
       actionsClicked: false,
       composeEmailOpen: false,
       deleteContactOpen: false,
+      emailFields: {
+        fromEmail: this.emailAddresses,
+        toEmail: this.contact.emailAddress,
+        emailMessage: undefined,
+      },
       actions: [
         {
           title: "View",
@@ -78,9 +125,9 @@ export default {
         {
           title: "Email",
           danger: false,
-          action: this.composeEmail,
+          action: this.emailContact,
         },
-        
+
         {
           title: "Delete",
           danger: true,
@@ -89,12 +136,27 @@ export default {
       ],
     };
   },
+  computed: {
+    emailAddresses() {
+      return this.$store.state.businessSettings.businessInfo
+        .businessEmailAddresses;
+    },
+  },
   methods: {
     viewContact() {
       this.$router.push("/contacts/" + this.category + "/" + this.contact.id);
     },
-    
-    emailContact() {},
+
+    emailContact() {
+      this.composeEmailOpen = true;
+    },
+    cancelSendEmail() {
+      this.composeEmailOpen = false;
+    },
+    confirmSendEmail() {
+      console.log(this.emailFields);
+    },
+
     deleteContact() {
       this.deleteContactOpen = true;
     },
@@ -176,10 +238,24 @@ img {
 .email-and-phone h5 {
   margin: 3px;
   font-weight: normal;
+  text-align: right;
+}
+
+.popup-heading,
+.popup-text {
+  color: black;
 }
 
 .popup-text {
-  color: black;
+  width: 80%;
+  margin: 10px;
+  text-align: left;
+}
+
+#from-email,
+#to-email,
+#email-message {
+  width: 80%;
 }
 
 #container {

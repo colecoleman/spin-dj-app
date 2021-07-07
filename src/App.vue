@@ -84,6 +84,15 @@ h4 {
   height: 85vh;
 }
 
+input,
+select,
+textarea {
+  font-family: Montserrat, sans-serif;
+  border: 1px solid;
+  border-radius: 5px;
+  padding: 3px;
+}
+
 /* #left-div {
   flex-direction: column;
   min-width: 20%;
