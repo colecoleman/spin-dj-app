@@ -71,5 +71,7 @@ h3 {
 
 .right-top {
   margin-left: auto;
+  display: flex;
 }
+
 </style>
