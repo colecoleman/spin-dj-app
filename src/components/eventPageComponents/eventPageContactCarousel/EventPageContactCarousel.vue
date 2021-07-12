@@ -42,6 +42,7 @@
             :key="contact.id"
             :contact="contact"
             :id="`${index + '-card'}`"
+            @click="navigateToContactPage(contact)"
           ></event-page-contact-carousel-item>
         </div>
         <svg
@@ -109,6 +110,9 @@ export default {
           behavior: "smooth",
         });
       }
+    },
+    navigateToContactPage(contact) {
+      this.$router.push("/contacts/" + contact.role + "s/" + contact.id);
     },
   },
   components: { BaseCard, EventPageContactCarouselItem },

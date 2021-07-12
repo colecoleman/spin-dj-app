@@ -951,7 +951,7 @@ const store = createStore({
         },
         setEvents(state, payload) {
             state.events = payload;
-            this.commit('clientEventCombine');
+            // this.commit('clientEventCombine');
         },
         setAddOns(state, payload) {
             state.addOns = payload;
@@ -974,9 +974,6 @@ const store = createStore({
         setUsers(state, payload) {
             state.users = payload;
         },
-        // clientEventCombine(state) {   
-            // const associatedUser = state.event
-        // },
         approveAutomation(state, id) {
            let matchingIndex = state.automations.pending.findIndex(element => element.id === id)
            let matchingAutomation = state.automations.pending[matchingIndex];
