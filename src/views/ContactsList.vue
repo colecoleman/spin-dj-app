@@ -193,7 +193,8 @@ export default {
   },
   computed: {
     contacts() {
-      return this.$store.state.contacts;
+      let list = JSON.parse(JSON.stringify(this.$store.state.contacts));
+      return list;
     },
   },
   components: {

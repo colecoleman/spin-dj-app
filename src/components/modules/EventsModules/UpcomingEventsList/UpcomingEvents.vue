@@ -3,17 +3,7 @@
     <upcoming-events-list-item
       v-for="event in events"
       :key="event.id"
-      :payments="event.eventInvoice.payments"
-      :total="event.eventInvoice.total"
-      :venueName="event.eventLocations[0].venueName"
-      :address1="event.eventLocations[0].address1"
-      :address2="event.eventLocations[0].address2"
-      :eventDate="event.eventDate"
-      :eventStartTime="event.eventStartTime"
-      :eventEndTime="event.eventEndTime"
-      :balanceOutstanding="event.eventInvoice.balanceOutstanding"
-      :firstName="event.firstName"
-      :lastName="event.lastName"
+      :event="event"
       @click="navigateToEventPage(event.id), sortByDateDescending()"
     ></upcoming-events-list-item>
   </div>
@@ -46,7 +36,7 @@ export default {
       // console.log(blah);
     },
     navigateToEventPage(id) {
-      // this.$router.push("/event/" + id);
+      this.$router.push("/events/" + id);
       console.log(id);
     },
   },
