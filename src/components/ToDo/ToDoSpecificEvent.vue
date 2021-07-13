@@ -133,7 +133,7 @@ export default {
     submitToDo() {
       let item = {
         id: this.$store.state.toDos.length + 1,
-        associatedClientId: this.id,
+        associatedEventId: this.id,
         title: this.newToDo,
         completed: false,
       };
@@ -145,7 +145,7 @@ export default {
   computed: {
     toDos() {
       return this.$store.state.toDos.filter(
-        (item) => item.associatedClientId === this.id
+        (item) => item.associatedEventId === this.id
       );
     },
     uncompletedToDos() {

@@ -1,10 +1,10 @@
 <template>
   <div id="specific-event-page-location-scroll-item-wrapper">
     <h4>{{ location.venueName }}</h4>
-    <p>
+    <!-- <p>
       {{ formatTime(location.venueStartTime) }} -
       {{ formatTime(location.venueEndTime) }}
-    </p>
+    </p> -->
     <div class="map-box"></div>
     <div class="address">
       <h4>{{ location.address1 }}</h4>

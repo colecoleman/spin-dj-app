@@ -449,6 +449,8 @@ const store = createStore({
             events: [
                 {
                     id: 1,
+                    eventType: 'wedding',
+                    eventTitle: 'Wedding Package',
                     get total() {
                         let eventHours = this.eventLength
                         let packageTotal = 0;
@@ -473,7 +475,7 @@ const store = createStore({
                               }
                         });
                         total = total + packageTotal;
-                        console.log(total)
+
 
                         this.eventInvoice.services.forEach(element => {
                             if (element.priceOption === "hourly") {
@@ -502,7 +504,7 @@ const store = createStore({
                         total = total + addOnTotal;
                         let adjustments = this.eventInvoice.adjustments.reduce((a, b) => a + (b["amount"] || 0), 0)
                         total = total + adjustments;
-                        console.log(total)
+
                         return total;
                     },
                     get paymentTotal() {
@@ -606,6 +608,8 @@ const store = createStore({
                 },
                 {
                     id: 2,
+                    eventType: 'wedding',
+                    eventTitle: 'Wedding Package',
                     get total() {
                         let eventHours = this.eventLength
                         let packageTotal = 0;
@@ -630,7 +634,7 @@ const store = createStore({
                               }
                         });
                         total = total + packageTotal;
-                        console.log(total)
+
 
                         this.eventInvoice.services.forEach(element => {
                             if (element.priceOption === "hourly") {
@@ -659,7 +663,7 @@ const store = createStore({
                         total = total + addOnTotal;
                         let adjustments = this.eventInvoice.adjustments.reduce((a, b) => a + (b["amount"] || 0), 0)
                         total = total + adjustments;
-                        console.log(total)
+
                         return total;
                     },
                     get paymentTotal() {
@@ -748,6 +752,8 @@ const store = createStore({
                 },
                 {
                     id: 3,
+                    eventType: 'wedding',
+                    eventTitle: 'Wedding Package',
                     get total() {
                         let eventHours = this.eventLength
                         let packageTotal = 0;
@@ -772,7 +778,7 @@ const store = createStore({
                               }
                         });
                         total = total + packageTotal;
-                        console.log(total)
+
 
                         this.eventInvoice.services.forEach(element => {
                             if (element.priceOption === "hourly") {
@@ -801,7 +807,7 @@ const store = createStore({
                         total = total + addOnTotal;
                         let adjustments = this.eventInvoice.adjustments.reduce((a, b) => a + (b["amount"] || 0), 0)
                         total = total + adjustments;
-                        console.log(total)
+
                         return total;
                     },
                     get paymentTotal() {
@@ -890,6 +896,8 @@ const store = createStore({
                 },
                 {
                     id: 4,
+                    eventType: 'wedding',
+                    eventTitle: 'Wedding Package',
                     get total() {
                         let eventHours = this.eventLength
                         let packageTotal = 0;
@@ -914,7 +922,7 @@ const store = createStore({
                               }
                         });
                         total = total + packageTotal;
-                        console.log(total)
+
 
                         this.eventInvoice.services.forEach(element => {
                             if (element.priceOption === "hourly") {
@@ -943,7 +951,7 @@ const store = createStore({
                         total = total + addOnTotal;
                         let adjustments = this.eventInvoice.adjustments.reduce((a, b) => a + (b["amount"] || 0), 0)
                         total = total + adjustments;
-                        console.log(total)
+
                         return total;
                     },
                     get paymentTotal() {
@@ -1032,7 +1040,8 @@ const store = createStore({
                 },
                 {
                     id: 5,
-                    
+                    eventType: 'wedding',
+                    eventTitle: 'Wedding Package',
                     get total() {
                         let eventHours = this.eventLength
                         let packageTotal = 0;
@@ -1057,7 +1066,7 @@ const store = createStore({
                               }
                         });
                         total = total + packageTotal;
-                        console.log(total)
+
 
                         this.eventInvoice.services.forEach(element => {
                             if (element.priceOption === "hourly") {
@@ -1086,7 +1095,7 @@ const store = createStore({
                         total = total + addOnTotal;
                         let adjustments = this.eventInvoice.adjustments.reduce((a, b) => a + (b["amount"] || 0), 0)
                         total = total + adjustments;
-                        console.log(total)
+
                         return total;
                     },
                     get paymentTotal() {
@@ -1173,6 +1182,8 @@ const store = createStore({
                 },
                 {
                     id: 6,
+                    eventType: 'wedding',
+                    eventTitle: 'Wedding Package',
                     get total() {
                         let eventHours = this.eventLength
                         let packageTotal = 0;
@@ -1197,7 +1208,7 @@ const store = createStore({
                               }
                         });
                         total = total + packageTotal;
-                        console.log(total)
+
 
                         this.eventInvoice.services.forEach(element => {
                             if (element.priceOption === "hourly") {
@@ -1226,7 +1237,7 @@ const store = createStore({
                         total = total + addOnTotal;
                         let adjustments = this.eventInvoice.adjustments.reduce((a, b) => a + (b["amount"] || 0), 0)
                         total = total + adjustments;
-                        console.log(total)
+
                         return total;
                     },
                     get paymentTotal() {
@@ -1504,10 +1515,13 @@ const store = createStore({
         editClient(state, {id, key, value}) {
             state.commit('editClient', {id, key, value})
           },
-          deleteContact(state, {category, id}) {
-              console.log(category)
-              state.commit('deleteContact', {category, id})
-          }
+        deleteContact(state, {category, id}) {
+            console.log(category)
+            state.commit('deleteContact', {category, id})
+        },
+        editEvent(state, {id, key, value}) {
+            state.commit('editEvent', {id, key, value})
+        }
     },
     mutations: {
         setClients(state, payload) {
@@ -1588,7 +1602,7 @@ const store = createStore({
         editEvent(state, {id, key, value}) {
             let subject = state.events.find((e) => e.id === id);
             subject[key] = value;
-            console.log(subject);
+
             
         },
         deleteContact(state, {category, id}) {
