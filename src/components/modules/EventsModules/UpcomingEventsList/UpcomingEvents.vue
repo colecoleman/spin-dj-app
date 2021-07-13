@@ -29,8 +29,6 @@ export default {
     },
     sortByDateDescending() {
       this.events.sort((a, b) => {
-        let dateA = new Date(a.eventDate);
-        let dateB = new Date(b.eventDate);
         return dateA - dateB;
       });
       // console.log(blah);

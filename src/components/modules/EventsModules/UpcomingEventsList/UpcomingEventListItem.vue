@@ -39,7 +39,6 @@ export default {
     };
   },
   methods: {
-    
     calculateBalanceOutstanding() {
       // let total;
       // this.event.eventInvoice.packages.forEach((element) => {});

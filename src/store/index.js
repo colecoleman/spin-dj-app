@@ -449,7 +449,7 @@ const store = createStore({
             events: [
                 {
                     id: 1,
-                    get balanceOutstanding() {
+                    get total() {
                         let eventHours = this.eventLength
                         let packageTotal = 0;
                         let serviceTotal = 0;
@@ -500,11 +500,16 @@ const store = createStore({
                               }
                         });
                         total = total + addOnTotal;
-                        let payments = this.eventInvoice.paymentsCollected.reduce((a, b) => a + (b["amount"] || 0), 0)
                         let adjustments = this.eventInvoice.adjustments.reduce((a, b) => a + (b["amount"] || 0), 0)
-                        total = total - payments + adjustments;
+                        total = total + adjustments;
                         console.log(total)
                         return total;
+                    },
+                    get paymentTotal() {
+                        return this.eventInvoice.paymentsCollected.reduce((a, b) => a + (b["amount"] || 0), 0)
+                    },
+                    get balanceOutstanding() {
+                        return this.total - this.paymentTotal
                     },
                     eventInvoice: {
                         data: {
@@ -573,8 +578,8 @@ const store = createStore({
                             address2: "Nowhere, MO, 54321",
                         }
                     ],
-                    eventStartTime: new Date(2021, 3, 25, 18, 15),
-                    eventEndTime: new Date(2021, 3, 25, 23, 30),
+                    eventStartTime: new Date(2021, 2, 25, 18, 15),
+                    eventEndTime: new Date(2021, 2, 25, 23, 30),
                     get eventLength() {
                         return (this.eventEndTime - this.eventStartTime) / 36e5
                     },
@@ -601,7 +606,7 @@ const store = createStore({
                 },
                 {
                     id: 2,
-                    get balanceOutstanding() {
+                    get total() {
                         let eventHours = this.eventLength
                         let packageTotal = 0;
                         let serviceTotal = 0;
@@ -652,11 +657,16 @@ const store = createStore({
                               }
                         });
                         total = total + addOnTotal;
-                        let payments = this.eventInvoice.paymentsCollected.reduce((a, b) => a + (b["amount"] || 0), 0)
                         let adjustments = this.eventInvoice.adjustments.reduce((a, b) => a + (b["amount"] || 0), 0)
-                        total = total - payments + adjustments;
+                        total = total + adjustments;
                         console.log(total)
                         return total;
+                    },
+                    get paymentTotal() {
+                        return this.eventInvoice.paymentsCollected.reduce((a, b) => a + (b["amount"] || 0), 0)
+                    },
+                    get balanceOutstanding() {
+                        return this.total - this.paymentTotal
                     },
                     eventInvoice: {
                         data: {
@@ -717,8 +727,8 @@ const store = createStore({
                         }
                     ],
                     // total: 100000,
-                    eventStartTime: new Date(2021, 3, 25, 18, 15),
-                    eventEndTime: new Date(2021, 3, 25, 23, 30),
+                    eventStartTime: new Date(2021, 1, 25, 18, 15),
+                    eventEndTime: new Date(2021, 1, 25, 23, 30),
                     get eventLength() {
                         return (this.eventEndTime - this.eventStartTime) / 36e5
                     },
@@ -738,7 +748,7 @@ const store = createStore({
                 },
                 {
                     id: 3,
-                    get balanceOutstanding() {
+                    get total() {
                         let eventHours = this.eventLength
                         let packageTotal = 0;
                         let serviceTotal = 0;
@@ -789,11 +799,16 @@ const store = createStore({
                               }
                         });
                         total = total + addOnTotal;
-                        let payments = this.eventInvoice.paymentsCollected.reduce((a, b) => a + (b["amount"] || 0), 0)
                         let adjustments = this.eventInvoice.adjustments.reduce((a, b) => a + (b["amount"] || 0), 0)
-                        total = total - payments + adjustments;
+                        total = total + adjustments;
                         console.log(total)
                         return total;
+                    },
+                    get paymentTotal() {
+                        return this.eventInvoice.paymentsCollected.reduce((a, b) => a + (b["amount"] || 0), 0)
+                    },
+                    get balanceOutstanding() {
+                        return this.total - this.paymentTotal
                     },
                     eventInvoice: {
                         data: {
@@ -854,8 +869,8 @@ const store = createStore({
                         }
                     ],
                     
-                    eventStartTime: new Date(2021, 3, 25, 18, 15),
-                    eventEndTime: new Date(2021, 3, 25, 23, 30),
+                    eventStartTime: new Date(2021, 5, 30, 15, 15),
+                    eventEndTime: new Date(2021, 5, 30, 20, 30),
                     get eventLength() {
                         return (this.eventEndTime - this.eventStartTime) / 36e5
                     },
@@ -875,44 +890,7 @@ const store = createStore({
                 },
                 {
                     id: 4,
-                    
-                    eventInvoice: {
-                        packageName: "DJ Package", 
-                        payments: 10000,
-                        total: 100000,
-                        balanceOutstanding: 90000,
-                    },
-                    eventLocations: [
-                        {
-                            venueName: "The Venue 5",
-                            address1: "12345 Anywhere Dr",
-                            address2: "Anywhere, MO, 12345",
-                        }
-                    ],
-                    
-                    eventStartTime: new Date(2021, 3, 25, 18, 15),
-                    eventEndTime: new Date(2021, 3, 25, 23, 30),
-                    get eventLength() {
-
-                        return (this.eventEndTime - this.eventStartTime) / 36e5
-                    },
-                    associatedContacts: [
-                        {
-                            id: 4, 
-                            role: 'client',
-                        },
-                        {
-                            id: 3, 
-                            role: 'client',
-                        },
-                    ],
-                    employeesNeeded: 2,
-
-                },
-                {
-                    id: 5,
-                    
-                    get balanceOutstanding() {
+                    get total() {
                         let eventHours = this.eventLength
                         let packageTotal = 0;
                         let serviceTotal = 0;
@@ -963,11 +941,159 @@ const store = createStore({
                               }
                         });
                         total = total + addOnTotal;
-                        let payments = this.eventInvoice.paymentsCollected.reduce((a, b) => a + (b["amount"] || 0), 0)
                         let adjustments = this.eventInvoice.adjustments.reduce((a, b) => a + (b["amount"] || 0), 0)
-                        total = total - payments + adjustments;
+                        total = total + adjustments;
                         console.log(total)
                         return total;
+                    },
+                    get paymentTotal() {
+                        return this.eventInvoice.paymentsCollected.reduce((a, b) => a + (b["amount"] || 0), 0)
+                    },
+                    get balanceOutstanding() {
+                        return this.total - this.paymentTotal
+                    },
+                    eventInvoice: {
+                        data: {
+                            invoiceNumber: 123456489,
+                            invoiceDate: '2021-04-21',
+                            eventDate: '2021-12-31',
+                            finalPaymentDue: '2021-12-01',
+                            
+
+                        },
+                        packages: [
+                            
+                            {
+                                name: "Holy Matrimony",
+                                priceOption: 'hourly',
+                                baseTime: 4,
+                                baseRate: 130000,
+                                addHourly: 10000,
+                            }
+                        ],
+                        services: [],
+                        addOns: [
+                            {
+                                name: 'Uplighting',
+                                priceOption: 'unit',
+                                unitPrice: 3000,
+                                eventUnits: 20,
+                            }
+                        ],
+                     
+                        
+                        adjustments: [
+                            {
+                            name: 'Friends and Family',
+                            type: 'discount',
+                            amount: -20000,
+                            id: 123456789
+                            }
+                        ],
+                        paymentsCollected: [
+                            {
+                                referenceNumber: '123456789',
+                                source: 'Stripe',
+                                amount: 20000
+                            },
+                            {
+                                referenceNumber: '987654321',
+                                source: 'Stripe',
+                                amount: 20000
+                            },
+                        ],
+                    },
+                    eventLocations: [
+                        {
+                            venueName: "The Venue 5",
+                            address1: "12345 Anywhere Dr",
+                            address2: "Anywhere, MO, 12345",
+                        }
+                    ],
+                    
+                    eventStartTime: new Date(2021, 2, 20, 18, 15),
+                    eventEndTime: new Date(2021, 2, 20, 23, 30),
+                    get eventLength() {
+
+                        return (this.eventEndTime - this.eventStartTime) / 36e5
+                    },
+                    associatedContacts: [
+                        {
+                            id: 4, 
+                            role: 'client',
+                        },
+                        {
+                            id: 3, 
+                            role: 'client',
+                        },
+                    ],
+                    employeesNeeded: 2,
+
+                },
+                {
+                    id: 5,
+                    
+                    get total() {
+                        let eventHours = this.eventLength
+                        let packageTotal = 0;
+                        let serviceTotal = 0;
+                        let addOnTotal = 0;
+                        let total = 0;
+                        
+                        this.eventInvoice.packages.forEach(element => {
+                            if (element.priceOption === "hourly") {
+               
+                                if (element.baseTime < eventHours) {
+                                  let additionalHourly = eventHours - element.baseTime;
+
+                                  packageTotal = packageTotal + (element.baseRate + element.addHourly * additionalHourly);
+                                }
+                                if (element.baseTime >= element.eventHours) {
+                                  packageTotal = packageTotal + element.baseRate;
+                                }
+                              }
+                              if (element.priceOption === 'flat') {
+                                  packageTotal = packageTotal + element.flatRate
+                              }
+                        });
+                        total = total + packageTotal;
+                        console.log(total)
+
+                        this.eventInvoice.services.forEach(element => {
+                            if (element.priceOption === "hourly") {
+                                if (element.baseTime < this.eventLength) {
+                                  let additionalHourly = element.eventHours - element.baseTime;
+                                  serviceTotal = element.baseRate + element.addHourly * additionalHourly;
+                                }
+                                if (element.baseTime >= element.eventHours) {
+                                  serviceTotal = element.baseRate;
+                                }
+                              }
+                              if (element.priceOption === 'flat') {
+                                  serviceTotal = packageTotal + element.flatRate
+                              }
+                        });
+                        total = total + serviceTotal;
+                        
+                        this.eventInvoice.addOns.forEach(element => {
+                            if (element.priceOption === "hourly") {
+                                addOnTotal = addOnTotal + element.hourlyPrice * eventHours
+                              }
+                              if (element.priceOption === 'flat') {
+                                  addOnTotal = addOnTotal + element.flatRate
+                              }
+                        });
+                        total = total + addOnTotal;
+                        let adjustments = this.eventInvoice.adjustments.reduce((a, b) => a + (b["amount"] || 0), 0)
+                        total = total + adjustments;
+                        console.log(total)
+                        return total;
+                    },
+                    get paymentTotal() {
+                        return this.eventInvoice.paymentsCollected.reduce((a, b) => a + (b["amount"] || 0), 0)
+                    },
+                    get balanceOutstanding() {
+                        return this.total - this.paymentTotal
                     },
                     eventInvoice: {
                         data: {
@@ -1047,7 +1173,7 @@ const store = createStore({
                 },
                 {
                     id: 6,
-                    get balanceOutstanding() {
+                    get total() {
                         let eventHours = this.eventLength
                         let packageTotal = 0;
                         let serviceTotal = 0;
@@ -1071,6 +1197,8 @@ const store = createStore({
                               }
                         });
                         total = total + packageTotal;
+                        console.log(total)
+
                         this.eventInvoice.services.forEach(element => {
                             if (element.priceOption === "hourly") {
                                 if (element.baseTime < this.eventLength) {
@@ -1096,11 +1224,16 @@ const store = createStore({
                               }
                         });
                         total = total + addOnTotal;
-                        let payments = this.eventInvoice.paymentsCollected.reduce((a, b) => a + (b["amount"] || 0), 0)
                         let adjustments = this.eventInvoice.adjustments.reduce((a, b) => a + (b["amount"] || 0), 0)
-                        total = total - payments + adjustments;
-
+                        total = total + adjustments;
+                        console.log(total)
                         return total;
+                    },
+                    get paymentTotal() {
+                        return this.eventInvoice.paymentsCollected.reduce((a, b) => a + (b["amount"] || 0), 0)
+                    },
+                    get balanceOutstanding() {
+                        return this.total - this.paymentTotal
                     },
                     eventInvoice: {
                         data: {

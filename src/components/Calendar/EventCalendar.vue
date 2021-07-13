@@ -14,15 +14,8 @@
       <div class="month-heading" @click="toggleMonthSelector">
         <div id="text">
           <h4>{{ `${displayedMonth + ", "}` }} {{ masterYear }}</h4>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="15"
-            height="13.503"
-            viewBox="0 0 22.55 13.503"
-          >
+          <svg width="15" height="13.503" viewBox="0 0 22.55 13.503">
             <path
-              id="Icon_ionic-ios-arrow-down"
-              data-name="Icon ionic-ios-arrow-down"
               d="M17.467,20.679l8.526-8.937a1.554,1.554,0,0,1,2.276,0,1.76,1.76,0,0,1,0,2.391L18.608,24.258a1.557,1.557,0,0,1-2.222.049L6.657,14.14a1.755,1.755,0,0,1,0-2.391,1.554,1.554,0,0,1,2.276,0Z"
               transform="translate(-6.188 -11.246)"
               fill="#fff"
@@ -36,15 +29,8 @@
           @click="monthChange(`backward`)"
           @mousedown.prevent=""
         >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="11.69"
-            height="15"
-            viewBox="0 0 11.69 23.616"
-          >
+          <svg width="11.69" height="15" viewBox="0 0 11.69 23.616">
             <path
-              id="Icon_ionic-ios-arrow-down"
-              data-name="Icon ionic-ios-arrow-down"
               d="M11.813,8.166,20.742.429a1.869,1.869,0,0,1,2.384,0,1.337,1.337,0,0,1,0,2.07L13.008,11.265a1.878,1.878,0,0,1-2.327.043L.492,2.5A1.367,1.367,0,0,1,0,1.47,1.367,1.367,0,0,1,.492.435a1.869,1.869,0,0,1,2.384,0Z"
               transform="translate(11.69) rotate(90)"
               fill="#fff"
@@ -66,7 +52,9 @@
                 today: day.isCurrentDay,
               }"
             >
-              <div>{{ day.dayOfMonth }}</div>
+              <div :class="day.hasEvents ? 'hasEvents' : ' '">
+                {{ day.dayOfMonth }}
+              </div>
             </div>
           </div>
         </div>
@@ -279,13 +267,19 @@ export default {
       return parseInt(this.INITIAL_YEAR + this.yearChangeCount);
     },
     selectedMonth: function () {
-      console.log(this.monthSelection);
       return this.monthSelection();
     },
     displayedMonth: function () {
       return this.monthArray[this.masterMonth - 1].month;
     },
-
+    events() {
+      return this.$store.state.events.filter((event) => {
+        return event.eventStartTime.getMonth() === this.masterMonth - 1;
+      });
+    },
+    daysWithEvents() {
+      return this.events.map((a) => a.eventStartTime.getDate());
+    },
     // used to establish the dates shown on calendar
     currentMonthDays: function () {
       var currentDays = this.createDaysForCurrentMonth(
@@ -298,6 +292,11 @@ export default {
           day.isCurrentDay = true;
         } else {
           day.isCurrentDay = false;
+        }
+        if (this.daysWithEvents.includes(day.dayOfMonth)) {
+          day.hasEvents = true;
+        } else {
+          day.hasEvents = false;
         }
       });
       return currentDays;
@@ -383,6 +382,10 @@ h4 {
   width: calc(266px / 7);
   font-size: 12px;
   font-weight: 700;
+}
+
+.hasEvents {
+  color: aqua;
 }
 
 .isNotCurrentMonth {
