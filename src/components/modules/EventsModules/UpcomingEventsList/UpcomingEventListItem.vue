@@ -74,6 +74,7 @@ export default {
         (x) => x.id === firstClient.id
       );
       item.role = firstClient.role;
+      console.log(this.event.eventStartTime.toLocaleDateString());
       return item;
     },
     formatDate() {
@@ -87,6 +88,7 @@ export default {
         year: "numeric",
         month: "long",
       });
+      console.log(date.date);
       date.startTime = this.event.eventStartTime.toLocaleString("lookup", {
         hour: "2-digit",
         minute: "2-digit",

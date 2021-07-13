@@ -1,22 +1,85 @@
 <template>
-  <div id="events-content">
-    <upcoming-events-list-item
-      v-for="event in events"
-      :key="event.id"
-      :event="event"
-      @click="navigateToEventPage(event.id), sortByDateDescending()"
-    ></upcoming-events-list-item>
-  </div>
+  <base-card>
+    <template v-slot:icon>
+      <svg width="20.344" height="20.344" viewBox="0 0 20.344 20.344">
+        <path
+          d="M10.172.328A10.172,10.172,0,1,0,20.344,10.5,10.17,10.17,0,0,0,10.172.328ZM3.609,10.5H2.3a7.882,7.882,0,0,1,7.875-7.875V3.938A6.571,6.571,0,0,0,3.609,10.5Zm6.563,3.938A3.938,3.938,0,1,1,14.109,10.5,3.939,3.939,0,0,1,10.172,14.438Zm0-5.25A1.313,1.313,0,1,0,11.484,10.5,1.311,1.311,0,0,0,10.172,9.188Z"
+          transform="translate(0 -0.328)"
+          fill="#fff"
+        />
+      </svg>
+    </template>
+    <template v-slot:title>Events</template>
+    <template v-slot:action1
+      >Sort:
+      <svg
+        width="15.375"
+        height="15.375"
+        viewBox="0 0 18.375 18.375"
+        style="margin-left: 10px"
+        @click="toggleSortMenuOpened()"
+      >
+        <path
+          d="M7.219,14.438H5.25V1.969a.656.656,0,0,0-.656-.656H3.281a.656.656,0,0,0-.656.656V14.438H.656a.657.657,0,0,0-.463,1.12L3.474,19.5a.656.656,0,0,0,.928,0l3.281-3.938A.657.657,0,0,0,7.219,14.438Zm9.844-2.625h-5.25a.656.656,0,0,0-.656.656v1.313a.656.656,0,0,0,.656.656h2.3L11.6,17.327a1.313,1.313,0,0,0-.441.981v.723a.656.656,0,0,0,.656.656h5.25a.656.656,0,0,0,.656-.656V17.719a.656.656,0,0,0-.656-.656h-2.3l2.513-2.89a1.312,1.312,0,0,0,.441-.981v-.723A.656.656,0,0,0,17.063,11.813Zm1.274-3.5L15.905,1.748a.656.656,0,0,0-.618-.436h-1.7a.656.656,0,0,0-.618.436L10.539,8.311a.656.656,0,0,0,.618.877h1.018a.656.656,0,0,0,.625-.454l.181-.53h2.912l.181.53a.656.656,0,0,0,.626.454h1.019a.656.656,0,0,0,.618-.877Zm-4.571-2.4.672-1.969.672,1.969Z"
+          transform="translate(0 -1.313)"
+          fill="#fff"
+        />
+      </svg>
+      <div id="floating-menu-container">
+        <floating-menu-with-list-items
+          v-if="sortMenuOpened"
+          :actions="sortItems"
+          @actionClicked="selectSort"
+        /></div
+    ></template>
+    <template v-slot:content>
+      <div id="events-content">
+        <upcoming-events-list-item
+          v-for="event in events"
+          :key="event.id"
+          :event="event"
+          @click="navigateToEventPage(event.id), sortByDateDescending()"
+        ></upcoming-events-list-item>
+      </div>
+    </template>
+  </base-card>
 </template>
 
 <script>
-"../../UI/BaseCard.vue";
+import BaseCard from "../../../UI/BaseCard.vue";
 import UpcomingEventsListItem from "../UpcomingEventsList/UpcomingEventListItem.vue";
-
+import FloatingMenuWithListItems from "../../../UI/FloatingMenuWithListItems.vue";
 export default {
   data() {
     return {
       isFetching: this.$store.state.isFetching,
+      sortMenuOpened: false,
+      sortItems: [
+        {
+          title: "Date Ascending",
+          icon: undefined,
+          sortLogic: function (a, b) {
+            console.log(a, b);
+            return a.eventStartTime < b.eventStartTime
+              ? -1
+              : a.eventStartTime > b.eventStartTime
+              ? 1
+              : 0;
+          },
+        },
+        {
+          title: "Date Descending",
+          icon: undefined,
+          sortLogic: function (a, b) {
+            console.log(a, b);
+            return a.eventStartTime > b.eventStartTime
+              ? -1
+              : a.eventStartTime < b.eventStartTime
+              ? 1
+              : 0;
+          },
+        },
+      ],
     };
   },
   methods: {
@@ -27,11 +90,12 @@ export default {
     combineData() {
       // this.$store.dispatch("getCombined");
     },
-    sortByDateDescending() {
-      this.events.sort((a, b) => {
-        return dateA - dateB;
-      });
-      // console.log(blah);
+    toggleSortMenuOpened() {
+      this.sortMenuOpened = !this.sortMenuOpened;
+    },
+    selectSort(action) {
+      this.events.sort(action);
+      this.toggleSortMenuOpened();
     },
     navigateToEventPage(id) {
       this.$router.push("/events/" + id);
@@ -39,6 +103,8 @@ export default {
   },
   computed: {
     events() {
+      // let list = JSON.parse(JSON.stringify());
+      // console.log(list);
       return this.$store.state.events;
     },
   },
@@ -47,7 +113,7 @@ export default {
     this.loading = true;
     this.fetchData;
   },
-  components: { UpcomingEventsListItem },
+  components: { UpcomingEventsListItem, BaseCard, FloatingMenuWithListItems },
 };
 </script>
 
@@ -56,5 +122,10 @@ export default {
   flex-direction: column;
   overflow: scroll;
   height: 100%;
+}
+#floating-menu-container {
+  position: relative;
+  width: fit-content;
+  height: fit-content;
 }
 </style>
