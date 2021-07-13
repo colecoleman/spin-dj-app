@@ -16,10 +16,10 @@
     </div>
     <div id="event-metadata-identifier">
       <div id="date-and-time-identifier">
-        <h5>{{ formatDate }}</h5>
+        <h5>{{ formatDate.date }}</h5>
         <h5>
-          {{ formatTime(event.eventStartTime) }} -
-          {{ formatTime(event.eventEndTime) }}
+          {{ formatDate.startTime }} -
+          {{ formatDate.endTime }}
         </h5>
       </div>
       <div id="event-invoice-metadata">
@@ -39,17 +39,7 @@ export default {
     };
   },
   methods: {
-    formatTime(time) {
-      let t = time.split(":");
-      let h = t[0];
-      let m = t[1];
-      let ampm;
-      if (h > 12) {
-        h = h % 12;
-        ampm = "PM";
-      }
-      return `${h}:${m} ${ampm}`;
-    },
+    
     calculateBalanceOutstanding() {
       // let total;
       // this.event.eventInvoice.packages.forEach((element) => {});
@@ -78,7 +68,9 @@ export default {
   },
   computed: {
     matchedClient() {
-      let firstClient = this.event.associatedContacts[0];
+      let firstClient = this.event.associatedContacts.find(
+        (x) => x.role === "client"
+      );
       let item = this.$store.state.contacts[`${firstClient.role + "s"}`].find(
         (x) => x.id === firstClient.id
       );
@@ -86,28 +78,25 @@ export default {
       return item;
     },
     formatDate() {
-      const monthNames = [
-        "January",
-        "February",
-        "March",
-        "April",
-        "May",
-        "June",
-        "July",
-        "August",
-        "September",
-        "October",
-        "November",
-        "December",
-      ];
-      console.log(this.event.eventDate);
-      let date = this.event.eventDate;
-      let splitDate = date.split("-");
-      console.log(splitDate);
-      let m = splitDate[1] - 1;
-      console.log(m);
-      let month = monthNames[m];
-      return month + " " + splitDate[2] + ", " + splitDate[0];
+      let date = {
+        date: undefined,
+        startTime: undefined,
+        endTime: undefined,
+      };
+      date.date = this.event.eventStartTime.toLocaleDateString("lookup", {
+        day: "numeric",
+        year: "numeric",
+        month: "long",
+      });
+      date.startTime = this.event.eventStartTime.toLocaleString("lookup", {
+        hour: "2-digit",
+        minute: "2-digit",
+      });
+      date.endTime = this.event.eventEndTime.toLocaleString("lookup", {
+        hour: "2-digit",
+        minute: "2-digit",
+      });
+      return date;
     },
   },
   props: ["event"],
@@ -126,6 +115,7 @@ export default {
   display: flex;
   flex-direction: row;
   padding-bottom: 20px;
+  cursor: pointer;
 }
 
 #client-event-identifier {

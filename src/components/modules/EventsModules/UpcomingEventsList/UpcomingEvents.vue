@@ -37,7 +37,6 @@ export default {
     },
     navigateToEventPage(id) {
       this.$router.push("/events/" + id);
-      console.log(id);
     },
   },
   computed: {
@@ -50,18 +49,12 @@ export default {
     this.loading = true;
     this.fetchData;
   },
-
-  mounted() {
-    // this.combineData;
-    console.log(this.events);
-  },
   components: { UpcomingEventsListItem },
 };
 </script>
 
 <style scoped>
 #events-content {
-  /* display: flex; */
   flex-direction: column;
   overflow: scroll;
   height: 100%;

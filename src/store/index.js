@@ -449,11 +449,19 @@ const store = createStore({
                 {
                     id: 1,
                     eventInvoice: {
+                        // get balanceOutstanding() {
+                        //     console.log(this)
+                        //     let total;
+                        //     let packageTotal;
+                        //     let eventHours = 
+                        //     return 1000
+                        // },
                         data: {
                             invoiceNumber: 123456489,
                             invoiceDate: '2021-04-21',
                             eventDate: '2021-12-31',
-                            finalPaymentDue: '2021-12-01'
+                            finalPaymentDue: '2021-12-01',
+                            
 
                         },
                         packages: [
@@ -536,9 +544,11 @@ const store = createStore({
                             address2: "Nowhere, MO, 54321",
                         }
                     ],
-                    eventDate: "2020-02-05",
-                    eventStartTime: "18:00",
-                    eventEndTime: "22:00",
+                    eventStartTime: new Date(2021, 3, 25, 18, 15),
+                    eventEndTime: new Date(2021, 3, 25, 23, 30),
+                    get eventLength() {
+                        return (this.eventEndTime - this.eventStartTime) / 36e5
+                    },
                     associatedContacts: [
                         {
                             id: 1, 
@@ -576,10 +586,12 @@ const store = createStore({
                             address2: "Anywhere, MO, 12345",
                         }
                     ],
-                    total: 100000,
-                    eventDate: "2020-02-05",
-                    eventStartTime: "18:00",
-                    eventEndTime: "22:00",
+                    // total: 100000,
+                    eventStartTime: new Date(2021, 3, 25, 18, 15),
+                    eventEndTime: new Date(2021, 3, 25, 23, 30),
+                    get eventLength() {
+                        return (this.eventEndTime - this.eventStartTime) / 36e5
+                    },
                     associatedContacts: [
                         {
                             id: 1, 
@@ -609,11 +621,13 @@ const store = createStore({
                             address2: "Anywhere, MO, 12345",
                         }
                     ],
-                    payments: 10000,
-                    total: 100000,
-                    eventDate: "2020-02-05",
-                    eventStartTime: "18:00",
-                    eventEndTime: "22:00",
+                    // payments: 10000,
+                    // total: 100000,
+                    eventStartTime: new Date(2021, 3, 25, 18, 15),
+                    eventEndTime: new Date(2021, 3, 25, 23, 30),
+                    get eventLength() {
+                        return (this.eventEndTime - this.eventStartTime) / 36e5
+                    },
                     associatedContacts: [
                         {
                             id: 4, 
@@ -644,11 +658,14 @@ const store = createStore({
                             address2: "Anywhere, MO, 12345",
                         }
                     ],
-                    payments: 10000,
-                    total: 100000,
-                    eventDate: "2020-02-05",
-                    eventStartTime: "18:00",
-                    eventEndTime: "22:00",
+                    // payments: 10000,
+                    // total: 100000,
+                    eventStartTime: new Date(2021, 3, 25, 18, 15),
+                    eventEndTime: new Date(2021, 3, 25, 23, 30),
+                    get eventLength() {
+
+                        return (this.eventEndTime - this.eventStartTime) / 36e5
+                    },
                     associatedContacts: [
                         {
                             id: 4, 
@@ -680,9 +697,12 @@ const store = createStore({
                     ],
                     payments: 10000,
                     total: 100000,
-                    eventDate: "2020-02-05",
-                    eventStartTime: "18:00",
-                    eventEndTime: "22:00",
+                    eventStartTime: new Date(2021, 3, 25, 18, 15),
+                    eventEndTime: new Date(2021, 3, 25, 23, 30),
+                    get eventLength() {
+
+                        return (this.eventEndTime - this.eventStartTime) / 36e5
+                    },
                     associatedContacts: [
                         {
                             id: 5, 
@@ -713,9 +733,11 @@ const store = createStore({
                             address2: "Anywhere, MO, 12345",
                         }
                     ],
-                    eventDate: "2020-02-05",
-                    eventStartTime: "18:00",
-                    eventEndTime: "22:00",
+                    eventStartTime: new Date(2021, 3, 25, 18, 15),
+                    eventEndTime: new Date(2021, 3, 25, 23, 30),
+                    get eventLength() {
+                        return (this.eventEndTime - this.eventStartTime) / 36e5
+                    },
                     associatedContacts: [
                         {
                             id: 1, 

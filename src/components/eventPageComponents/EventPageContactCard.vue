@@ -23,10 +23,10 @@
         <h4>{{ event.eventInvoice.packageName }}</h4>
       </div>
       <div id="date">
-        <p>{{ formatDate(event.eventDate) }}</p>
+        <p>{{ formatDate.date }}</p>
         <p>
-          {{ formatTime(event.eventStartTime) }} -
-          {{ formatTime(event.eventEndTime) }}
+          {{ formatDate.startTime }} -
+          {{ formatDate.endTime }}
         </p>
       </div>
       <div id="contact-card-lower-div">
@@ -169,40 +169,29 @@ export default {
         return `'s`;
       }
     },
+    formatDate() {
+      let date = {
+        date: undefined,
+        startTime: undefined,
+        endTime: undefined,
+      };
+      date.date = this.event.eventStartTime.toLocaleDateString("lookup", {
+        day: "numeric",
+        year: "numeric",
+        month: "long",
+      });
+      date.startTime = this.event.eventStartTime.toLocaleString("lookup", {
+        hour: "2-digit",
+        minute: "2-digit",
+      });
+      date.endTime = this.event.eventEndTime.toLocaleString("lookup", {
+        hour: "2-digit",
+        minute: "2-digit",
+      });
+      return date;
+    },
   },
   methods: {
-    formatDate(date) {
-      const monthNames = [
-        "January",
-        "February",
-        "March",
-        "April",
-        "May",
-        "June",
-        "July",
-        "August",
-        "September",
-        "October",
-        "November",
-        "December",
-      ];
-      let splitDate = date.split("-");
-
-      let m = splitDate[1] - 1;
-      let month = monthNames[m];
-      return month + " " + splitDate[2] + ", " + splitDate[0];
-    },
-    formatTime(time) {
-      let t = time.split(":");
-      let h = t[0];
-      let m = t[1];
-      let ampm;
-      if (h > 12) {
-        h = h % 12;
-        ampm = "PM";
-      }
-      return `${h}:${m} ${ampm}`;
-    },
     editEventField(key, value) {
       if (key === "source") {
         this.editSourceOpen = false;
@@ -215,10 +204,6 @@ export default {
     },
   },
   props: ["client", "event"],
-  mounted() {
-    console.log(this.client);
-    console.log(this.event);
-  },
   components: { BaseCard },
 };
 </script>

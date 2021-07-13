@@ -21,11 +21,14 @@
       </div>
       <div id="time-date-payment-details">
         <p class="date-and-time">
-          {{ formatDate(contactEvents[eventScroller].eventDate) }}
+          {{ formatDate(contactEvents[eventScroller].eventStartTime) }}
         </p>
         <p class="date-and-time">
-          {{ formatTime(contactEvents[eventScroller].eventStartTime) }} -
-          {{ formatTime(contactEvents[eventScroller].eventEndTime) }}
+          {{
+            formatDate(undefined, contactEvents[eventScroller].eventStartTime)
+          }}
+          -
+          {{ formatDate(undefined, contactEvents[eventScroller].eventEndTime) }}
         </p>
         <p class="balance-outstanding">
           ${{ contactEvents[eventScroller].eventInvoice.balanceOutstanding }}
@@ -76,41 +79,41 @@ export default {
         this.eventScroller = this.contactEvents.length - 1;
       }
     },
-    formatDate(date) {
-      const monthNames = [
-        "January",
-        "February",
-        "March",
-        "April",
-        "May",
-        "June",
-        "July",
-        "August",
-        "September",
-        "October",
-        "November",
-        "December",
-      ];
-      let splitDate = date.split("-");
-
-      let m = splitDate[1] - 1;
-      let month = monthNames[m];
-      return month + " " + splitDate[2] + ", " + splitDate[0];
-    },
-    formatTime(time) {
-      let t = time.split(":");
-      let h = t[0];
-      let m = t[1];
-      let ampm;
-      if (h > 12) {
-        h = h % 12;
-        ampm = "PM";
+    formatDate(date, time) {
+      if (date) {
+        return date.toLocaleDateString("lookup", {
+          day: "numeric",
+          year: "numeric",
+          month: "long",
+        });
       }
-      return `${h}:${m} ${ampm}`;
+      if (time) {
+        return time.toLocaleString("lookup", {
+          hour: "2-digit",
+          minute: "2-digit",
+        });
+      }
+      // return item;
     },
+    // formatTime(time) {
+    //   let t = time.split(":");
+    //   let h = t[0];
+    //   let m = t[1];
+    //   let ampm;
+    //   if (h > 12) {
+    //     h = h % 12;
+    //     ampm = "PM";
+    //   }
+    //   return `${h}:${m} ${ampm}`;
+    // },
   },
   computed: {
     contactEvents() {
+      console.log(
+        this.$store.state.events.filter((event) =>
+          event.associatedContacts.some((c) => c.id === 1)
+        )
+      );
       return this.$store.state.events.filter((event) =>
         event.associatedContacts.some((c) => c.id === 1)
       );
