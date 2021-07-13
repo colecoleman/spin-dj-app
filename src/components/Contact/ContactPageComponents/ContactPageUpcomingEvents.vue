@@ -31,7 +31,7 @@
           {{ formatDate(undefined, contactEvents[eventScroller].eventEndTime) }}
         </p>
         <p class="balance-outstanding">
-          ${{ contactEvents[eventScroller].eventInvoice.balanceOutstanding }}
+          ${{ contactEvents[eventScroller].balanceOutstanding * 0.01 }}
           outstanding
         </p>
       </div>

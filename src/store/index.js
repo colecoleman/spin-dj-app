@@ -1,3 +1,4 @@
+
 import { createStore } from "vuex";
 
 const store = createStore({
@@ -448,14 +449,64 @@ const store = createStore({
             events: [
                 {
                     id: 1,
+                    get balanceOutstanding() {
+                        let eventHours = this.eventLength
+                        let packageTotal = 0;
+                        let serviceTotal = 0;
+                        let addOnTotal = 0;
+                        let total = 0;
+                        
+                        this.eventInvoice.packages.forEach(element => {
+                            if (element.priceOption === "hourly") {
+               
+                                if (element.baseTime < eventHours) {
+                                  let additionalHourly = eventHours - element.baseTime;
+
+                                  packageTotal = packageTotal + (element.baseRate + element.addHourly * additionalHourly);
+                                }
+                                if (element.baseTime >= element.eventHours) {
+                                  packageTotal = packageTotal + element.baseRate;
+                                }
+                              }
+                              if (element.priceOption === 'flat') {
+                                  packageTotal = packageTotal + element.flatRate
+                              }
+                        });
+                        total = total + packageTotal;
+                        console.log(total)
+
+                        this.eventInvoice.services.forEach(element => {
+                            if (element.priceOption === "hourly") {
+                                if (element.baseTime < this.eventLength) {
+                                  let additionalHourly = element.eventHours - element.baseTime;
+                                  serviceTotal = element.baseRate + element.addHourly * additionalHourly;
+                                }
+                                if (element.baseTime >= element.eventHours) {
+                                  serviceTotal = element.baseRate;
+                                }
+                              }
+                              if (element.priceOption === 'flat') {
+                                  serviceTotal = packageTotal + element.flatRate
+                              }
+                        });
+                        total = total + serviceTotal;
+                        
+                        this.eventInvoice.addOns.forEach(element => {
+                            if (element.priceOption === "hourly") {
+                                addOnTotal = addOnTotal + element.hourlyPrice * eventHours
+                              }
+                              if (element.priceOption === 'flat') {
+                                  addOnTotal = addOnTotal + element.flatRate
+                              }
+                        });
+                        total = total + addOnTotal;
+                        let payments = this.eventInvoice.paymentsCollected.reduce((a, b) => a + (b["amount"] || 0), 0)
+                        let adjustments = this.eventInvoice.adjustments.reduce((a, b) => a + (b["amount"] || 0), 0)
+                        total = total - payments + adjustments;
+                        console.log(total)
+                        return total;
+                    },
                     eventInvoice: {
-                        // get balanceOutstanding() {
-                        //     console.log(this)
-                        //     let total;
-                        //     let packageTotal;
-                        //     let eventHours = 
-                        //     return 1000
-                        // },
                         data: {
                             invoiceNumber: 123456489,
                             invoiceDate: '2021-04-21',
@@ -472,20 +523,6 @@ const store = createStore({
                                 baseTime: 4,
                                 baseRate: 130000,
                                 addHourly: 10000,
-                                eventHours: 5,
-                                total: function() {
-                                    let total;
-                                    if (this.priceOption === "hourly") {
-                                        if (this.baseTime < this.eventHours) {
-                                          let additionalHourly = this.eventHours - this.baseTime;
-                                          total = this.baseRate + this.addHourly * additionalHourly;
-                                        }
-                                        if (this.baseTime >= this.eventHours) {
-                                          total = this.baseRate;
-                                        }
-                                      }
-                                      return total
-                                }
                             }
                         ],
                         services: [],
@@ -495,14 +532,6 @@ const store = createStore({
                                 priceOption: 'unit',
                                 unitPrice: 3000,
                                 eventUnits: 20,
-                                total: function() {
-                                    let price;
-                                    if (this.priceOption === "unit") {
-                                        price = this.unitPrice * this.eventUnits;
-                                        }
-                                    return price;
-                                },
-                                
                             }
                         ],
                      
@@ -572,12 +601,113 @@ const store = createStore({
                 },
                 {
                     id: 2,
-                    payments: 10000,
+                    get balanceOutstanding() {
+                        let eventHours = this.eventLength
+                        let packageTotal = 0;
+                        let serviceTotal = 0;
+                        let addOnTotal = 0;
+                        let total = 0;
+                        
+                        this.eventInvoice.packages.forEach(element => {
+                            if (element.priceOption === "hourly") {
+               
+                                if (element.baseTime < eventHours) {
+                                  let additionalHourly = eventHours - element.baseTime;
+
+                                  packageTotal = packageTotal + (element.baseRate + element.addHourly * additionalHourly);
+                                }
+                                if (element.baseTime >= element.eventHours) {
+                                  packageTotal = packageTotal + element.baseRate;
+                                }
+                              }
+                              if (element.priceOption === 'flat') {
+                                  packageTotal = packageTotal + element.flatRate
+                              }
+                        });
+                        total = total + packageTotal;
+                        console.log(total)
+
+                        this.eventInvoice.services.forEach(element => {
+                            if (element.priceOption === "hourly") {
+                                if (element.baseTime < this.eventLength) {
+                                  let additionalHourly = element.eventHours - element.baseTime;
+                                  serviceTotal = element.baseRate + element.addHourly * additionalHourly;
+                                }
+                                if (element.baseTime >= element.eventHours) {
+                                  serviceTotal = element.baseRate;
+                                }
+                              }
+                              if (element.priceOption === 'flat') {
+                                  serviceTotal = packageTotal + element.flatRate
+                              }
+                        });
+                        total = total + serviceTotal;
+                        
+                        this.eventInvoice.addOns.forEach(element => {
+                            if (element.priceOption === "hourly") {
+                                addOnTotal = addOnTotal + element.hourlyPrice * eventHours
+                              }
+                              if (element.priceOption === 'flat') {
+                                  addOnTotal = addOnTotal + element.flatRate
+                              }
+                        });
+                        total = total + addOnTotal;
+                        let payments = this.eventInvoice.paymentsCollected.reduce((a, b) => a + (b["amount"] || 0), 0)
+                        let adjustments = this.eventInvoice.adjustments.reduce((a, b) => a + (b["amount"] || 0), 0)
+                        total = total - payments + adjustments;
+                        console.log(total)
+                        return total;
+                    },
                     eventInvoice: {
-                        packageName: "DJ Package", 
-                        payments: 10000,
-                        total: 100000,
-                        balanceOutstanding: 90000,
+                        data: {
+                            invoiceNumber: 123456489,
+                            invoiceDate: '2021-04-21',
+                            eventDate: '2021-12-31',
+                            finalPaymentDue: '2021-12-01',
+                            
+
+                        },
+                        packages: [
+                            
+                            {
+                                name: "Holy Matrimony",
+                                priceOption: 'hourly',
+                                baseTime: 4,
+                                baseRate: 130000,
+                                addHourly: 10000,
+                            }
+                        ],
+                        services: [],
+                        addOns: [
+                            {
+                                name: 'Uplighting',
+                                priceOption: 'unit',
+                                unitPrice: 3000,
+                                eventUnits: 20,
+                            }
+                        ],
+                     
+                        
+                        adjustments: [
+                            {
+                            name: 'Friends and Family',
+                            type: 'discount',
+                            amount: -20000,
+                            id: 123456789
+                            }
+                        ],
+                        paymentsCollected: [
+                            {
+                                referenceNumber: '123456789',
+                                source: 'Stripe',
+                                amount: 20000
+                            },
+                            {
+                                referenceNumber: '987654321',
+                                source: 'Stripe',
+                                amount: 20000
+                            },
+                        ],
                     },
                     eventLocations: [
                         {
@@ -608,11 +738,113 @@ const store = createStore({
                 },
                 {
                     id: 3,
+                    get balanceOutstanding() {
+                        let eventHours = this.eventLength
+                        let packageTotal = 0;
+                        let serviceTotal = 0;
+                        let addOnTotal = 0;
+                        let total = 0;
+                        
+                        this.eventInvoice.packages.forEach(element => {
+                            if (element.priceOption === "hourly") {
+               
+                                if (element.baseTime < eventHours) {
+                                  let additionalHourly = eventHours - element.baseTime;
+
+                                  packageTotal = packageTotal + (element.baseRate + element.addHourly * additionalHourly);
+                                }
+                                if (element.baseTime >= element.eventHours) {
+                                  packageTotal = packageTotal + element.baseRate;
+                                }
+                              }
+                              if (element.priceOption === 'flat') {
+                                  packageTotal = packageTotal + element.flatRate
+                              }
+                        });
+                        total = total + packageTotal;
+                        console.log(total)
+
+                        this.eventInvoice.services.forEach(element => {
+                            if (element.priceOption === "hourly") {
+                                if (element.baseTime < this.eventLength) {
+                                  let additionalHourly = element.eventHours - element.baseTime;
+                                  serviceTotal = element.baseRate + element.addHourly * additionalHourly;
+                                }
+                                if (element.baseTime >= element.eventHours) {
+                                  serviceTotal = element.baseRate;
+                                }
+                              }
+                              if (element.priceOption === 'flat') {
+                                  serviceTotal = packageTotal + element.flatRate
+                              }
+                        });
+                        total = total + serviceTotal;
+                        
+                        this.eventInvoice.addOns.forEach(element => {
+                            if (element.priceOption === "hourly") {
+                                addOnTotal = addOnTotal + element.hourlyPrice * eventHours
+                              }
+                              if (element.priceOption === 'flat') {
+                                  addOnTotal = addOnTotal + element.flatRate
+                              }
+                        });
+                        total = total + addOnTotal;
+                        let payments = this.eventInvoice.paymentsCollected.reduce((a, b) => a + (b["amount"] || 0), 0)
+                        let adjustments = this.eventInvoice.adjustments.reduce((a, b) => a + (b["amount"] || 0), 0)
+                        total = total - payments + adjustments;
+                        console.log(total)
+                        return total;
+                    },
                     eventInvoice: {
-                        packageName: "DJ Package", 
-                        payments: 10000,
-                        total: 100000,
-                        balanceOutstanding: 90000,
+                        data: {
+                            invoiceNumber: 123456489,
+                            invoiceDate: '2021-04-21',
+                            eventDate: '2021-12-31',
+                            finalPaymentDue: '2021-12-01',
+                            
+
+                        },
+                        packages: [
+                            
+                            {
+                                name: "Holy Matrimony",
+                                priceOption: 'hourly',
+                                baseTime: 4,
+                                baseRate: 130000,
+                                addHourly: 10000,
+                            }
+                        ],
+                        services: [],
+                        addOns: [
+                            {
+                                name: 'Uplighting',
+                                priceOption: 'unit',
+                                unitPrice: 3000,
+                                eventUnits: 20,
+                            }
+                        ],
+                     
+                        
+                        adjustments: [
+                            {
+                            name: 'Friends and Family',
+                            type: 'discount',
+                            amount: -20000,
+                            id: 123456789
+                            }
+                        ],
+                        paymentsCollected: [
+                            {
+                                referenceNumber: '123456789',
+                                source: 'Stripe',
+                                amount: 20000
+                            },
+                            {
+                                referenceNumber: '987654321',
+                                source: 'Stripe',
+                                amount: 20000
+                            },
+                        ],
                     },
                     eventLocations: [
                         {
@@ -621,8 +853,7 @@ const store = createStore({
                             address2: "Anywhere, MO, 12345",
                         }
                     ],
-                    // payments: 10000,
-                    // total: 100000,
+                    
                     eventStartTime: new Date(2021, 3, 25, 18, 15),
                     eventEndTime: new Date(2021, 3, 25, 23, 30),
                     get eventLength() {
@@ -658,8 +889,7 @@ const store = createStore({
                             address2: "Anywhere, MO, 12345",
                         }
                     ],
-                    // payments: 10000,
-                    // total: 100000,
+                    
                     eventStartTime: new Date(2021, 3, 25, 18, 15),
                     eventEndTime: new Date(2021, 3, 25, 23, 30),
                     get eventLength() {
@@ -682,11 +912,113 @@ const store = createStore({
                 {
                     id: 5,
                     
+                    get balanceOutstanding() {
+                        let eventHours = this.eventLength
+                        let packageTotal = 0;
+                        let serviceTotal = 0;
+                        let addOnTotal = 0;
+                        let total = 0;
+                        
+                        this.eventInvoice.packages.forEach(element => {
+                            if (element.priceOption === "hourly") {
+               
+                                if (element.baseTime < eventHours) {
+                                  let additionalHourly = eventHours - element.baseTime;
+
+                                  packageTotal = packageTotal + (element.baseRate + element.addHourly * additionalHourly);
+                                }
+                                if (element.baseTime >= element.eventHours) {
+                                  packageTotal = packageTotal + element.baseRate;
+                                }
+                              }
+                              if (element.priceOption === 'flat') {
+                                  packageTotal = packageTotal + element.flatRate
+                              }
+                        });
+                        total = total + packageTotal;
+                        console.log(total)
+
+                        this.eventInvoice.services.forEach(element => {
+                            if (element.priceOption === "hourly") {
+                                if (element.baseTime < this.eventLength) {
+                                  let additionalHourly = element.eventHours - element.baseTime;
+                                  serviceTotal = element.baseRate + element.addHourly * additionalHourly;
+                                }
+                                if (element.baseTime >= element.eventHours) {
+                                  serviceTotal = element.baseRate;
+                                }
+                              }
+                              if (element.priceOption === 'flat') {
+                                  serviceTotal = packageTotal + element.flatRate
+                              }
+                        });
+                        total = total + serviceTotal;
+                        
+                        this.eventInvoice.addOns.forEach(element => {
+                            if (element.priceOption === "hourly") {
+                                addOnTotal = addOnTotal + element.hourlyPrice * eventHours
+                              }
+                              if (element.priceOption === 'flat') {
+                                  addOnTotal = addOnTotal + element.flatRate
+                              }
+                        });
+                        total = total + addOnTotal;
+                        let payments = this.eventInvoice.paymentsCollected.reduce((a, b) => a + (b["amount"] || 0), 0)
+                        let adjustments = this.eventInvoice.adjustments.reduce((a, b) => a + (b["amount"] || 0), 0)
+                        total = total - payments + adjustments;
+                        console.log(total)
+                        return total;
+                    },
                     eventInvoice: {
-                        packageName: "DJ Package", 
-                        payments: 10000,
-                        total: 100000,
-                        balanceOutstanding: 90000,
+                        data: {
+                            invoiceNumber: 123456489,
+                            invoiceDate: '2021-04-21',
+                            eventDate: '2021-12-31',
+                            finalPaymentDue: '2021-12-01',
+                            
+
+                        },
+                        packages: [
+                            
+                            {
+                                name: "Holy Matrimony",
+                                priceOption: 'hourly',
+                                baseTime: 4,
+                                baseRate: 130000,
+                                addHourly: 10000,
+                            }
+                        ],
+                        services: [],
+                        addOns: [
+                            {
+                                name: 'Uplighting',
+                                priceOption: 'unit',
+                                unitPrice: 3000,
+                                eventUnits: 20,
+                            }
+                        ],
+                     
+                        
+                        adjustments: [
+                            {
+                            name: 'Friends and Family',
+                            type: 'discount',
+                            amount: -20000,
+                            id: 123456789
+                            }
+                        ],
+                        paymentsCollected: [
+                            {
+                                referenceNumber: '123456789',
+                                source: 'Stripe',
+                                amount: 20000
+                            },
+                            {
+                                referenceNumber: '987654321',
+                                source: 'Stripe',
+                                amount: 20000
+                            },
+                        ],
                     },
                     eventLocations: [
                         {
@@ -695,12 +1027,9 @@ const store = createStore({
                             address2: "Anywhere, MO, 12345",
                         }
                     ],
-                    payments: 10000,
-                    total: 100000,
                     eventStartTime: new Date(2021, 3, 25, 18, 15),
                     eventEndTime: new Date(2021, 3, 25, 23, 30),
                     get eventLength() {
-
                         return (this.eventEndTime - this.eventStartTime) / 36e5
                     },
                     associatedContacts: [
@@ -718,13 +1047,111 @@ const store = createStore({
                 },
                 {
                     id: 6,
-                    payments: 10000,
-                    total: 100000,
+                    get balanceOutstanding() {
+                        let eventHours = this.eventLength
+                        let packageTotal = 0;
+                        let serviceTotal = 0;
+                        let addOnTotal = 0;
+                        let total = 0;
+                        
+                        this.eventInvoice.packages.forEach(element => {
+                            if (element.priceOption === "hourly") {
+               
+                                if (element.baseTime < eventHours) {
+                                  let additionalHourly = eventHours - element.baseTime;
+
+                                  packageTotal = packageTotal + (element.baseRate + element.addHourly * additionalHourly);
+                                }
+                                if (element.baseTime >= element.eventHours) {
+                                  packageTotal = packageTotal + element.baseRate;
+                                }
+                              }
+                              if (element.priceOption === 'flat') {
+                                  packageTotal = packageTotal + element.flatRate
+                              }
+                        });
+                        total = total + packageTotal;
+                        this.eventInvoice.services.forEach(element => {
+                            if (element.priceOption === "hourly") {
+                                if (element.baseTime < this.eventLength) {
+                                  let additionalHourly = element.eventHours - element.baseTime;
+                                  serviceTotal = element.baseRate + element.addHourly * additionalHourly;
+                                }
+                                if (element.baseTime >= element.eventHours) {
+                                  serviceTotal = element.baseRate;
+                                }
+                              }
+                              if (element.priceOption === 'flat') {
+                                  serviceTotal = packageTotal + element.flatRate
+                              }
+                        });
+                        total = total + serviceTotal;
+                        
+                        this.eventInvoice.addOns.forEach(element => {
+                            if (element.priceOption === "hourly") {
+                                addOnTotal = addOnTotal + element.hourlyPrice * eventHours
+                              }
+                              if (element.priceOption === 'flat') {
+                                  addOnTotal = addOnTotal + element.flatRate
+                              }
+                        });
+                        total = total + addOnTotal;
+                        let payments = this.eventInvoice.paymentsCollected.reduce((a, b) => a + (b["amount"] || 0), 0)
+                        let adjustments = this.eventInvoice.adjustments.reduce((a, b) => a + (b["amount"] || 0), 0)
+                        total = total - payments + adjustments;
+
+                        return total;
+                    },
                     eventInvoice: {
-                        packageName: "DJ Package", 
-                        payments: 10000,
-                        total: 100000,
-                        balanceOutstanding: 90000,
+                        data: {
+                            invoiceNumber: 123456489,
+                            invoiceDate: '2021-04-21',
+                            eventDate: '2021-12-31',
+                            finalPaymentDue: '2021-12-01',
+                            
+
+                        },
+                        packages: [
+                            
+                            {
+                                name: "Holy Matrimony",
+                                priceOption: 'hourly',
+                                baseTime: 4,
+                                baseRate: 130000,
+                                addHourly: 10000,
+                            }
+                        ],
+                        services: [],
+                        addOns: [
+                            {
+                                name: 'Uplighting',
+                                priceOption: 'unit',
+                                unitPrice: 3000,
+                                eventUnits: 20,
+                            }
+                        ],
+                     
+                        
+                        adjustments: [
+                            {
+                            name: 'Friends and Family',
+                            type: 'discount',
+                            amount: -20000,
+                            id: 123456789
+                            }
+                        ],
+                        paymentsCollected: [
+                            {
+                                referenceNumber: '123456789',
+                                source: 'Stripe',
+                                amount: 20000
+                            },
+                            {
+                                referenceNumber: '987654321',
+                                source: 'Stripe',
+                                amount: 20000
+                            },
+                        ],
                     },
                     eventLocations: [
                         {
