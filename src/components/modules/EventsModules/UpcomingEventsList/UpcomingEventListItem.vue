@@ -23,7 +23,9 @@
         </h5>
       </div>
       <div id="event-invoice-metadata">
-        <p>${{ "TODO" }} Outstanding</p>
+        <p>
+          ${{ (event.balanceOutstanding * 0.01).toLocaleString() }} Outstanding
+        </p>
       </div>
     </div>
   </div>
