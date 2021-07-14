@@ -132,12 +132,9 @@
         </div>
         <div id="invoice-document-view-wrapper">
           <invoice-popup-document-view
+            :invoice="invoice"
             :event="event"
             :client="client"
-            :invoice="invoice"
-            :subtotal="subtotal()"
-            :total="total()"
-            :balanceOutstanding="balanceOutstanding()"
           ></invoice-popup-document-view>
         </div>
         <div id="invoice-popup-right-column">
@@ -148,8 +145,8 @@
               v-for="item in invoice.packages"
               :key="item.id"
             >
-              <p>{{ item.name }} ({{ item.eventHours }} hours):</p>
-              <h5>{{ formatPrice(item.total()) }}</h5>
+              <p>{{ item.name }} ({{ event.eventLength }} hours):</p>
+              <h5>{{ calculatePackagePrice(item) }}</h5>
             </div>
           </div>
           <div class="invoice-item">
@@ -160,12 +157,12 @@
               :key="item.id"
             >
               <p>{{ item.name }} ({{ item.eventUnits }}):</p>
-              <h5>{{ formatPrice(item.total()) }}</h5>
+              <h5>{{ calculateAddOnPrice(item) }}</h5>
             </div>
           </div>
           <div class="summary-item">
             <h4>Subtotal:</h4>
-            <h5>{{ formatPrice(subtotal()) }}</h5>
+            <h5>{{ formatPrice(event.subtotal) }}</h5>
           </div>
           <div class="invoice-item">
             <h5>Adjustments:</h5>
@@ -180,7 +177,7 @@
           </div>
           <div class="summary-item">
             <h4>Invoice Total:</h4>
-            <h5>{{ formatPrice(total()) }}</h5>
+            <h5>{{ formatPrice(event.total) }}</h5>
           </div>
           <div class="invoice-item">
             <h5>Payments Collected:</h5>
@@ -195,7 +192,7 @@
           </div>
           <div class="summary-item">
             <h4>Outstanding Balance</h4>
-            <h5>{{ formatPrice(balanceOutstanding()) }}</h5>
+            <h5>{{ formatPrice(event.balanceOutstanding) }}</h5>
           </div>
         </div>
       </div>
@@ -216,35 +213,6 @@ export default {
     return {};
   },
   computed: {
-    packagesTotal() {
-      let agg = 0;
-      for (let index = 0; index < this.invoice.packages.length; index++) {
-        const item = this.invoice.packages[index];
-        agg = agg + item.total();
-        console.log(agg);
-      }
-      return agg;
-    },
-    servicesTotal() {
-      let agg = 0;
-      if (this.invoice.services > 0) {
-        for (let index = 0; index < this.invoice.services.length; index++) {
-          const item = this.invoice.services[index];
-          agg = agg + item.total();
-          console.log(agg);
-        }
-        return agg;
-      } else return 0;
-    },
-    addOnTotal() {
-      let agg = 0;
-      for (let index = 0; index < this.invoice.addOns.length; index++) {
-        const item = this.invoice.addOns[index];
-        agg = agg + item.total();
-        console.log(agg);
-      }
-      return agg;
-    },
     adjustmentsTotal() {
       let agg = 0;
       this.invoice.adjustments.forEach((adj) => {
@@ -261,6 +229,38 @@ export default {
     },
   },
   methods: {
+    calculatePackagePrice(pckg) {
+      let packageTotal = 0;
+      if (pckg.priceOption === "hourly") {
+        if (pckg.baseTime < this.event.eventLength) {
+          let additionalHourly = this.event.eventLength - pckg.baseTime;
+
+          packageTotal =
+            packageTotal + (pckg.baseRate + pckg.addHourly * additionalHourly);
+        }
+        if (pckg.baseTime >= this.event.eventLength) {
+          packageTotal = packageTotal + pckg.baseRate;
+        }
+      }
+      if (pckg.priceOption === "flat") {
+        packageTotal = packageTotal + pckg.flatRate;
+      }
+      console.log(packageTotal);
+      return this.formatPrice(packageTotal);
+    },
+    calculateAddOnPrice(addOn) {
+      let addOnTotal = 0;
+      if (addOn.priceOption === "hourly") {
+        addOnTotal = addOnTotal + addOn.hourlyPrice * this.event.eventLength;
+      }
+      if (addOn.priceOption === "unit") {
+        addOnTotal = addOnTotal + addOn.unitPrice * addOn.eventUnits;
+      }
+      if (addOn.priceOption === "flat") {
+        addOnTotal = addOnTotal + addOn.flatRate;
+      }
+      return this.formatPrice(addOnTotal);
+    },
     closePopup() {
       this.$emit("closePopup");
     },

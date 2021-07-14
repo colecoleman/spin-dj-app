@@ -90,7 +90,7 @@ import BaseCardNoHeading from "../../components/UI/BaseCardNoHeading.vue";
 import ToDoSpecificEvent from "./ToDoSpecificEvent.vue";
 import RecentMessagesEvent from "../../components/Messaging/RecentMessagesEvent.vue";
 import EventPageContactCard from "./EventPageContactCard.vue";
-import EventPageContactCarousel from "../../components/eventPageComponents/eventPageContactCarousel/EventPageContactCarousel.vue";
+import EventPageContactCarousel from "./eventPageContactCarousel/EventPageContactCarousel.vue";
 import ButtonStandardWithIcon from "../../components/UI/ButtonStandardWithIcon.vue";
 import ButtonWithDropDownSelections from "../../components/UI/ButtonWithDropDownSelections.vue";
 import SpecificEventPageLocationScroller from "./specificEventPageLocationScroller/SpecificEventPageLocationScroller.vue";
@@ -139,6 +139,7 @@ export default {
       this.backdropOpen = true;
     },
     openInvoice() {
+      console.log("ll");
       this.invoiceOpen = true;
       this.backdropOpen = true;
     },

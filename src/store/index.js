@@ -451,7 +451,7 @@ const store = createStore({
                     id: 1,
                     eventType: 'wedding',
                     eventTitle: 'Wedding Package',
-                    get total() {
+                    get subtotal() {
                         let eventHours = this.eventLength
                         let packageTotal = 0;
                         let serviceTotal = 0;
@@ -497,15 +497,23 @@ const store = createStore({
                             if (element.priceOption === "hourly") {
                                 addOnTotal = addOnTotal + element.hourlyPrice * eventHours
                               }
+                              if (element.priceOption === "unit") {
+                                addOnTotal = addOnTotal + element.unitPrice * element.eventUnits;
+                              }
                               if (element.priceOption === 'flat') {
                                   addOnTotal = addOnTotal + element.flatRate
                               }
                         });
                         total = total + addOnTotal;
-                        let adjustments = this.eventInvoice.adjustments.reduce((a, b) => a + (b["amount"] || 0), 0)
-                        total = total + adjustments;
 
                         return total;
+                    },
+                    get total() {
+
+                        let adjustments = this.eventInvoice.adjustments.reduce((a, b) => a + (b["amount"] || 0), 0)
+                        let subtotal = this.subtotal;
+
+                        return subtotal + adjustments;
                     },
                     get paymentTotal() {
                         return this.eventInvoice.paymentsCollected.reduce((a, b) => a + (b["amount"] || 0), 0)
@@ -603,7 +611,7 @@ const store = createStore({
                             role: 'employee',
                         },
                     ],
-
+                    
                     employeesNeeded: 2,
                 },
                 {

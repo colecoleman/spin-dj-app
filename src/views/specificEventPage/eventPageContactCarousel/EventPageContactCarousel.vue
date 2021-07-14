@@ -50,7 +50,7 @@
 </template>
 
 <script>
-import BaseCard from "../../UI/BaseCard.vue";
+import BaseCard from "../../../components/UI/BaseCard.vue";
 import EventPageContactCarouselItem from "./EventPageContactCarouselItem.vue";
 import groupPeopleSvg from "../../../assets/SVGs/group-people.svg";
 

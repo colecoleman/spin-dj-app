@@ -61,15 +61,15 @@
       <tr v-for="item in invoice.packages" :key="item.id">
         <td>{{ item.name }}</td>
         <td>1</td>
-        <td>{{ formatPrice(item.total()) }}</td>
-        <td>{{ formatPrice(item.total()) }}</td>
+        <td>{{ calculatePackagePrice(item) }}</td>
+        <td>{{ calculatePackagePrice(item) }}</td>
       </tr>
 
       <tr v-for="item in invoice.addOns" :key="item.id">
         <td>{{ item.name }}</td>
         <td v-if="item.priceOption === 'unit'">{{ item.eventUnits }}</td>
         <td>{{ formatPrice(item.unitPrice) }}</td>
-        <td>{{ formatPrice(item.total()) }}</td>
+        <td>{{ calculateAddOnPrice(item) }}</td>
       </tr>
       <tr class="divider">
         <td></td>
@@ -81,7 +81,7 @@
         <th>Subtotal:</th>
         <th></th>
         <th></th>
-        <th>{{ formatPrice(subtotal) }}</th>
+        <th>{{ formatPrice(event.subtotal) }}</th>
       </tr>
       <tr>
         <th>Adjustments:</th>
@@ -99,7 +99,7 @@
         <th>Invoice Total:</th>
         <th></th>
         <th></th>
-        <th>{{ formatPrice(total) }}</th>
+        <th>{{ formatPrice(event.total) }}</th>
       </tr>
       <tr>
         <th>Payments:</th>
@@ -117,7 +117,7 @@
         <th>Balance Outstanding:</th>
         <th></th>
         <th></th>
-        <th>{{ formatPrice(balanceOutstanding) }}</th>
+        <th>{{ formatPrice(event.balanceOutstanding) }}</th>
       </tr>
       <tr class="divider">
         <td></td>
@@ -145,8 +145,39 @@ export default {
     },
   },
   methods: {
+    calculatePackagePrice(pckg) {
+      let packageTotal = 0;
+      if (pckg.priceOption === "hourly") {
+        if (pckg.baseTime < this.event.eventLength) {
+          let additionalHourly = this.event.eventLength - pckg.baseTime;
+
+          packageTotal =
+            packageTotal + (pckg.baseRate + pckg.addHourly * additionalHourly);
+        }
+        if (pckg.baseTime >= this.event.eventLength) {
+          packageTotal = packageTotal + pckg.baseRate;
+        }
+      }
+      if (pckg.priceOption === "flat") {
+        packageTotal = packageTotal + pckg.flatRate;
+      }
+      console.log(packageTotal);
+      return this.formatPrice(packageTotal);
+    },
+    calculateAddOnPrice(addOn) {
+      let addOnTotal = 0;
+      if (addOn.priceOption === "hourly") {
+        addOnTotal = addOnTotal + addOn.hourlyPrice * this.event.eventLength;
+      }
+      if (addOn.priceOption === "unit") {
+        addOnTotal = addOnTotal + addOn.unitPrice * addOn.eventUnits;
+      }
+      if (addOn.priceOption === "flat") {
+        addOnTotal = addOnTotal + addOn.flatRate;
+      }
+      return this.formatPrice(addOnTotal);
+    },
     formattedPhoneNumber(num) {
-      // let num = this.businessInfo.businessPhoneNumber;
       var cleaned = ("" + num).replace(/\D/g, "");
       var match = cleaned.match(/^(1|)?(\d{3})(\d{3})(\d{4})$/);
       if (match) {
@@ -165,14 +196,7 @@ export default {
       return dayjs(date).format("M/D/YYYY");
     },
   },
-  props: [
-    "event",
-    "client",
-    "invoice",
-    "subtotal",
-    "total",
-    "balanceOutstanding",
-  ],
+  props: ["event", "client", "invoice"],
 };
 </script>
 

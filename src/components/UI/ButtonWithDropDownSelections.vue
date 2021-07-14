@@ -22,6 +22,7 @@
         :key="action.title"
         @click="action.action(action.title)"
       >
+        <img :src="action.icon" alt="" />
         <h5 :class="action.danger ? 'danger' : ''">
           {{ action.title }}
         </h5>
@@ -104,6 +105,18 @@ export default {
 
 .button-standard-with-icon:hover {
   cursor: pointer;
+}
+
+.actions-item {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.actions-item > img {
+  height: 12px;
+  width: 12px;
+  margin-right: 10px;
 }
 
 .inactive:hover {
