@@ -1,7 +1,7 @@
 <template>
   <div id="item-wrapper">
     <div id="left-div">
-      <h4>{{ automationItemApproved.title }}</h4>
+      <h5>{{ automationItemApproved.title }}</h5>
       <p>{{ formatDate }}</p>
     </div>
     <div id="right-div">
@@ -43,26 +43,16 @@ export default {
   props: ["automation-item-approved"],
   computed: {
     formatDate() {
-      const monthNames = [
-        "January",
-        "February",
-        "March",
-        "April",
-        "May",
-        "June",
-        "July",
-        "August",
-        "September",
-        "October",
-        "November",
-        "December",
-      ];
-      let date = this.automationItemApproved.performDate;
-      let splitDate = date.split("-");
-
-      let m = splitDate[1] - 1;
-      let month = monthNames[m];
-      return month + " " + splitDate[2] + ", " + splitDate[0];
+      return this.automationItemApproved.performDate.toLocaleDateString(
+        "lookup",
+        {
+          day: "numeric",
+          year: "numeric",
+          month: "long",
+          hour: "numeric",
+          minute: "numeric",
+        }
+      );
     },
   },
   components: {
@@ -72,55 +62,29 @@ export default {
 </script>
 
 <style scoped>
-p {
-  font-size: 10pt;
-  margin: 5px;
-}
-
 #item-wrapper {
-  width: 90%;
-  margin: 0 5%;
+  width: 100%;
   margin-bottom: 8px;
   display: flex;
   flex-direction: row;
-  align-content: center;
   align-items: center;
-  justify-content: space-evenly;
+  justify-content: space-between;
+}
+
+#right-div {
+  width: 50%;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
 }
 
 #left-div {
   text-align: left;
   width: 50%;
 }
-#right-div {
-  width: fit-content;
-  /* margin-right: 24px; */
-  display: flex;
-  flex-direction: row;
-  height: 60px;
-  /* justify-items: flex-end; */
-  align-content: center;
-  align-items: center;
-  justify-content: flex-end;
-}
 
 .approved {
   margin: 10px;
 }
-
-.button-standard-with-icon {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  align-content: center;
-  justify-content: center;
-  text-transform: uppercase;
-  margin: 8px;
-  /* padding: 5px 15px 5px 5px; */
-  /* border: 1px solid white; */
-  border-radius: 7px;
-  fill: white;
-}
-
-
 </style>
