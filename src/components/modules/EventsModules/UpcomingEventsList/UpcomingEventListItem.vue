@@ -76,7 +76,6 @@ export default {
         (x) => x.id === firstClient.id
       );
       item.role = firstClient.role;
-      console.log(this.event.eventStartTime.toLocaleDateString());
       return item;
     },
     formatDate() {

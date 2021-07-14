@@ -39,71 +39,8 @@
       </div>
       <div id="right-content-div">
         <div id="box-3" class="box">
-          <base-card>
-            <template v-slot:icon>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="17"
-                height="18.667"
-                viewBox="0 0 17 18.667"
-              >
-                <g
-                  id="Group_517"
-                  data-name="Group 517"
-                  transform="translate(-519 -266)"
-                >
-                  <path
-                    id="Path_5"
-                    data-name="Path 5"
-                    d="M6.167,6H17.833A1.643,1.643,0,0,1,19.5,7.619v11.33a1.643,1.643,0,0,1-1.667,1.619H6.167A1.643,1.643,0,0,1,4.5,18.948V7.619A1.643,1.643,0,0,1,6.167,6Z"
-                    transform="translate(515.5 263.1)"
-                    fill="none"
-                    stroke="#fff"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                  />
-                  <path
-                    id="Path_6"
-                    data-name="Path 6"
-                    d="M24,3V7.2"
-                    transform="translate(506.833 264)"
-                    fill="none"
-                    stroke="#fff"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                  />
-                  <path
-                    id="Path_7"
-                    data-name="Path 7"
-                    d="M12,3V7.2"
-                    transform="translate(512.167 264)"
-                    fill="none"
-                    stroke="#fff"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                  />
-                  <path
-                    id="Path_8"
-                    data-name="Path 8"
-                    d="M4.5,15h15"
-                    transform="translate(515.5 261.167)"
-                    fill="none"
-                    stroke="#fff"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                  />
-                </g>
-              </svg>
-            </template>
-            <template v-slot:title>Calendar</template>
-            <template v-slot:content>
+          
               <event-calendar></event-calendar>
-            </template>
-          </base-card>
         </div>
         <div id="box-4" class="box">
           <base-card>

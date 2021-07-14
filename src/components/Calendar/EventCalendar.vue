@@ -1,91 +1,172 @@
 <template>
-  <div id="base-container">
-    <time-selector
-      v-if="!timeSelectorOpen"
-      :months="monthArray"
-      :chosen-month="displayedMonth"
-      :chosen-year="masterYear"
-      :initial-year="INITIAL_YEAR"
-      @toggle-month-selector="toggleMonthSelector"
-      @select-month="newMonthSelected"
-      @select-year="newYearSelected"
-    ></time-selector>
-    <div id="calendar-container" v-if="timeSelectorOpen">
-      <div class="month-heading" @click="toggleMonthSelector">
-        <div id="text">
-          <h4>{{ `${displayedMonth + ", "}` }} {{ masterYear }}</h4>
-          <svg width="15" height="13.503" viewBox="0 0 22.55 13.503">
-            <path
-              d="M17.467,20.679l8.526-8.937a1.554,1.554,0,0,1,2.276,0,1.76,1.76,0,0,1,0,2.391L18.608,24.258a1.557,1.557,0,0,1-2.222.049L6.657,14.14a1.755,1.755,0,0,1,0-2.391,1.554,1.554,0,0,1,2.276,0Z"
-              transform="translate(-6.188 -11.246)"
-              fill="#fff"
-            />
-          </svg>
-        </div>
-      </div>
-      <div id="body">
-        <div
-          class="side-arrows"
-          @click="monthChange(`backward`)"
-          @mousedown.prevent=""
+  <base-card>
+    <template v-slot:icon>
+      <svg width="14" height="14.667" viewBox="0 0 17 18.667">
+        <g
+          id="Group_517"
+          data-name="Group 517"
+          transform="translate(-519 -266)"
         >
-          <svg width="11.69" height="15" viewBox="0 0 11.69 23.616">
-            <path
-              d="M11.813,8.166,20.742.429a1.869,1.869,0,0,1,2.384,0,1.337,1.337,0,0,1,0,2.07L13.008,11.265a1.878,1.878,0,0,1-2.327.043L.492,2.5A1.367,1.367,0,0,1,0,1.47,1.367,1.367,0,0,1,.492.435a1.869,1.869,0,0,1,2.384,0Z"
-              transform="translate(11.69) rotate(90)"
-              fill="#fff"
-            />
-          </svg>
-        </div>
-        <div id="main-calendar-content">
-          <div id="weekdays">
-            <div v-for="day in WEEKDAYS" :key="day.key">
-              {{ day.identifier }}
+          <path
+            d="M6.167,6H17.833A1.643,1.643,0,0,1,19.5,7.619v11.33a1.643,1.643,0,0,1-1.667,1.619H6.167A1.643,1.643,0,0,1,4.5,18.948V7.619A1.643,1.643,0,0,1,6.167,6Z"
+            transform="translate(515.5 263.1)"
+            fill="none"
+            stroke="#fff"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+          />
+          <path
+            d="M24,3V7.2"
+            transform="translate(506.833 264)"
+            fill="none"
+            stroke="#fff"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+          />
+          <path
+            d="M12,3V7.2"
+            transform="translate(512.167 264)"
+            fill="none"
+            stroke="#fff"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+          />
+          <path
+            d="M4.5,15h15"
+            transform="translate(515.5 261.167)"
+            fill="none"
+            stroke="#fff"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+          />
+        </g>
+      </svg>
+    </template>
+    <template v-slot:action1>
+      <svg
+        width="14"
+        height="14"
+        viewBox="0 0 14 14"
+        v-if="singleDayViewOpen || timeSelectorOpen"
+        @click="
+          singleDayViewOpen
+            ? (singleDayViewOpen = false)
+            : '' || timeSelectorOpen
+            ? (timeSelectorOpen = false)
+            : ''
+        "
+      >
+        <path
+          data-name="Icon metro-cancel"
+          d="M9.571,1.928a7,7,0,1,0,7,7,7,7,0,0,0-7-7Zm0,12.688a5.688,5.688,0,1,1,5.688-5.688,5.688,5.688,0,0,1-5.688,5.688Zm2.188-9.188L9.571,7.616,7.383,5.428,6.071,6.741,8.258,8.928,6.071,11.116l1.313,1.312,2.187-2.187,2.188,2.188,1.313-1.312L10.883,8.928l2.188-2.188Z"
+          transform="translate(-2.571 -1.928)"
+          fill="#fff"
+        />
+      </svg>
+    </template>
+    <template v-slot:title>Calendar</template>
+    <template v-slot:content>
+      <div id="base-container">
+        <time-selector
+          v-if="timeSelectorOpen && !singleDayViewOpen"
+          :months="monthArray"
+          :chosen-month="displayedMonth"
+          :chosen-year="masterYear"
+          :initial-year="INITIAL_YEAR"
+          @toggle-month-selector="toggleMonthSelector"
+          @select-month="newMonthSelected"
+          @select-year="newYearSelected"
+        ></time-selector>
+        <single-day-view
+          v-if="singleDayViewOpen && !timeSelectorOpen"
+          :date="singleDayChosen"
+          :events="events"
+        ></single-day-view>
+        <div
+          id="calendar-container"
+          v-if="!timeSelectorOpen && !singleDayViewOpen"
+        >
+          <div class="month-heading" @click="toggleMonthSelector">
+            <div id="text">
+              <h4>{{ `${displayedMonth + ", "}` }} {{ masterYear }}</h4>
+              <svg width="15" height="13.503" viewBox="0 0 22.55 13.503">
+                <path
+                  d="M17.467,20.679l8.526-8.937a1.554,1.554,0,0,1,2.276,0,1.76,1.76,0,0,1,0,2.391L18.608,24.258a1.557,1.557,0,0,1-2.222.049L6.657,14.14a1.755,1.755,0,0,1,0-2.391,1.554,1.554,0,0,1,2.276,0Z"
+                  transform="translate(-6.188 -11.246)"
+                  fill="#fff"
+                />
+              </svg>
             </div>
           </div>
-          <div id="days">
+          <div id="body">
             <div
-              v-for="day in days"
-              :key="day.date"
-              :class="{
-                isNotCurrentMonth: !day.isCurrentMonth,
-                today: day.isCurrentDay,
-              }"
+              class="side-arrows"
+              @click="monthChange(`backward`)"
+              @mousedown.prevent=""
             >
-              <div :class="day.hasEvents ? 'hasEvents' : ' '">
-                {{ day.dayOfMonth }}
+              <svg width="11.69" height="15" viewBox="0 0 11.69 23.616">
+                <path
+                  d="M11.813,8.166,20.742.429a1.869,1.869,0,0,1,2.384,0,1.337,1.337,0,0,1,0,2.07L13.008,11.265a1.878,1.878,0,0,1-2.327.043L.492,2.5A1.367,1.367,0,0,1,0,1.47,1.367,1.367,0,0,1,.492.435a1.869,1.869,0,0,1,2.384,0Z"
+                  transform="translate(11.69) rotate(90)"
+                  fill="#fff"
+                />
+              </svg>
+            </div>
+            <div id="main-calendar-content">
+              <div id="weekdays">
+                <div v-for="day in WEEKDAYS" :key="day.key">
+                  {{ day.identifier }}
+                </div>
+              </div>
+              <div id="days">
+                <div
+                  v-for="day in days"
+                  :key="day.date"
+                  :class="{
+                    day,
+                    isNotCurrentMonth: !day.isCurrentMonth,
+                    today: day.isCurrentDay,
+                  }"
+                >
+                  <div
+                    :class="day.hasEvents ? 'hasEvents' : ' '"
+                    @click="day.hasEvents ? selectDay(day) : ''"
+                  >
+                    {{ day.dayOfMonth }}
+                  </div>
+                </div>
               </div>
             </div>
+            <div
+              class="side-arrows"
+              @click="monthChange(`forward`)"
+              @mousedown.prevent=""
+            >
+              <svg width="11.69" height="15" viewBox="0 0 11.69 23.616">
+                <path
+                  id="Icon_ionic-ios-arrow-down"
+                  d="M11.813,8.166,20.742.429a1.869,1.869,0,0,1,2.384,0,1.337,1.337,0,0,1,0,2.07L13.008,11.265a1.878,1.878,0,0,1-2.327.043L.492,2.5A1.367,1.367,0,0,1,0,1.47,1.367,1.367,0,0,1,.492.435a1.869,1.869,0,0,1,2.384,0Z"
+                  transform="translate(0 23.616) rotate(-90)"
+                  fill="#fff"
+                />
+              </svg>
+            </div>
           </div>
         </div>
-        <div
-          class="side-arrows"
-          @click="monthChange(`forward`)"
-          @mousedown.prevent=""
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="11.69"
-            height="15"
-            viewBox="0 0 11.69 23.616"
-          >
-            <path
-              id="Icon_ionic-ios-arrow-down"
-              data-name="Icon ionic-ios-arrow-down"
-              d="M11.813,8.166,20.742.429a1.869,1.869,0,0,1,2.384,0,1.337,1.337,0,0,1,0,2.07L13.008,11.265a1.878,1.878,0,0,1-2.327.043L.492,2.5A1.367,1.367,0,0,1,0,1.47,1.367,1.367,0,0,1,.492.435a1.869,1.869,0,0,1,2.384,0Z"
-              transform="translate(0 23.616) rotate(-90)"
-              fill="#fff"
-            />
-          </svg>
-        </div>
       </div>
-    </div>
-  </div>
+    </template>
+  </base-card>
 </template>
 
 <script>
 import dayjs from "dayjs";
 import TimeSelector from "./TimeSelector.vue";
+import SingleDayView from "./SingleDayView/SingleDayView.vue";
+import BaseCard from "../UI/BaseCard.vue";
 
 export default {
   data() {
@@ -136,7 +217,9 @@ export default {
       ],
       monthChangeCount: 0,
       yearChangeCount: 0,
-      timeSelectorOpen: true,
+      timeSelectorOpen: false,
+      singleDayViewOpen: false,
+      singleDayChosen: undefined,
       masterMonth: undefined,
       masterYear: undefined,
     };
@@ -157,6 +240,13 @@ export default {
         (day, index) => {
           return {
             date: dayjs(`${year}-${month}-${index + 1}`).format("YYYY-MM-DD"),
+            get UTC() {
+              let ms = Date.parse(
+                dayjs(`${year}-${month}-${index + 2}`).format("YYYY-MM-DD")
+              );
+              let item = new Date(ms);
+              return item;
+            },
             dayOfMonth: index + 1,
             isCurrentMonth: true,
           };
@@ -245,6 +335,10 @@ export default {
       this.yearChangeCount = 0;
       this.masterYear = year;
     },
+    selectDay(day) {
+      this.singleDayChosen = day.UTC;
+      this.singleDayViewOpen = true;
+    },
   },
   computed: {
     //establishing data
@@ -315,7 +409,7 @@ export default {
       ];
     },
   },
-  components: { TimeSelector },
+  components: { TimeSelector, SingleDayView, BaseCard },
 };
 </script>
 
@@ -335,8 +429,6 @@ h4 {
 }
 
 #body {
-  /* height: 250px;
-  width: 100%; */
   display: flex;
   flex-direction: row;
   justify-content: space-around;
@@ -376,29 +468,47 @@ h4 {
   align-items: center;
   justify-content: center;
   opacity: 1;
+  cursor: default;
 }
 
 #days div {
   width: calc(266px / 7);
   font-size: 12px;
   font-weight: 700;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .hasEvents {
-  color: aqua;
+  color: black;
+  background: radial-gradient(ellipse at center, aqua 0%, aqua 50%, black 53%);
+  cursor: pointer;
 }
 
 .isNotCurrentMonth {
   opacity: 0.25;
 }
 
+#text > svg {
+  cursor: pointer;
+}
+
 .side-arrows {
   display: flex;
   align-items: center;
   justify-content: center;
+  cursor: pointer;
 }
 
 .today {
-  outline: 1px solid white;
+  background: radial-gradient(
+    ellipse at center,
+    white 0%,
+    white 50%,
+    black 53%
+  );
+  color: black;
 }
 </style>

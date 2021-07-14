@@ -152,6 +152,7 @@ li {
   padding: 0px;
   z-index: 10;
   font-size: 10pt;
+  cursor: pointer;
 }
 
 #lists {
