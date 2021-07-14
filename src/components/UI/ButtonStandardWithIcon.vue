@@ -1,13 +1,13 @@
 <template>
   <div class="button-standard-with-icon">
     <h5>{{ text }}</h5>
-    <slot name="icon" id="icon"></slot>
+    <img v-if="icon" :src="icon" alt="" />
   </div>
 </template>
 
 <script>
 export default {
-  props: ["text"],
+  props: ["text", "icon"],
 };
 </script>
 
@@ -34,6 +34,15 @@ export default {
   background: white;
   color: black;
   fill: black;
+}
+
+.button-standard-with-icon:active > img {
+  fill: black;
+}
+
+img {
+  height: 15px;
+  width: 15px;
 }
 
 h5 {
