@@ -1,15 +1,37 @@
 <template>
   <base-card :icon="messageBubble">
     <template v-slot:title>Messages</template>
+    <template v-slot:action1>
+      <svg
+        width="14"
+        height="14"
+        viewBox="0 0 14 14"
+        v-if="singleMessaging"
+        @click="closeSingleMessaging()"
+      >
+        <path
+          data-name="Icon metro-cancel"
+          d="M9.571,1.928a7,7,0,1,0,7,7,7,7,0,0,0-7-7Zm0,12.688a5.688,5.688,0,1,1,5.688-5.688,5.688,5.688,0,0,1-5.688,5.688Zm2.188-9.188L9.571,7.616,7.383,5.428,6.071,6.741,8.258,8.928,6.071,11.116l1.313,1.312,2.187-2.187,2.188,2.188,1.313-1.312L10.883,8.928l2.188-2.188Z"
+          transform="translate(-2.571 -1.928)"
+          fill="#fff"
+        />
+      </svg>
+    </template>
     <template v-slot:content>
-      <div id="container">
+      <messaging-single-component
+        v-if="singleMessaging"
+        :contact="singleMessagingContact"
+        :id="singleMessaging"
+      ></messaging-single-component>
+      <div id="container" v-if="!singleMessaging">
         <recent-messages-person-object
-          v-for="client in clients"
-          :key="client.id"
-          :firstName="client.firstName"
-          :lastName="client.lastName"
-          :profilePicture="client.profilePicture"
-          :recentMessage="client.recentMessage"
+          v-for="contact in contacts"
+          :key="contact.id"
+          :firstName="contact.firstName"
+          :lastName="contact.lastName"
+          :profilePicture="contact.profilePicture"
+          :recentMessage="contact.recentMessage"
+          @click="openSingleMessaging(contact, contact.id)"
         >
         </recent-messages-person-object>
       </div>
@@ -19,21 +41,35 @@
 
 <script>
 import RecentMessagesPersonObject from "./RecentMessagesPersonObject.vue";
+import MessagingSingleComponent from "./MessagingSingleComponent.vue";
 import BaseCard from "../UI/BaseCard.vue";
 import messageBubble from "../../assets/SVGs/message-bubble.svg";
 export default {
   data() {
     return {
       messageBubble,
+      singleMessaging: undefined,
+      singleMessagingContact: undefined,
     };
   },
   components: {
+    MessagingSingleComponent,
     RecentMessagesPersonObject,
     BaseCard,
   },
   computed: {
-    clients() {
+    contacts() {
       return this.$store.state.contacts.clients;
+    },
+  },
+  methods: {
+    openSingleMessaging(contact, id) {
+      this.singleMessagingContact = contact;
+      this.singleMessaging = id;
+    },
+    closeSingleMessaging() {
+      this.singleMessagingContact = undefined;
+      this.singleMessaging = undefined;
     },
   },
 };

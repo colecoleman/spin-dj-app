@@ -1,5 +1,10 @@
 <template>
   <div id="messaging-wrapper">
+    <div id="contact-identification">
+      <p @click="navigateToEventPage(contact.id)">
+        {{ contact.firstName + " " + contact.lastName }}
+      </p>
+    </div>
     <div class="messages-container">
       <div class="message received">
         <p>
@@ -63,13 +68,31 @@
 </template>
 
 <script>
-export default {};
+export default {
+  methods: {
+    navigateToEventPage(id) {
+      this.$router.push("/clients/" + id);
+    },
+  },
+  props: ["contact", "id"],
+};
 </script>
 
 <style scoped>
 #messaging-wrapper {
   height: 100%;
   width: 100%;
+  position: relative;
+}
+#contact-identification {
+  position: absolute;
+  background-color: black;
+  z-index: 5;
+  padding-right: 10px;
+  top: -10px;
+  border-radius: 0 0 10px 0;
+  font-weight: 600;
+  cursor: pointer;
 }
 
 .messages-container {
@@ -78,8 +101,6 @@ export default {};
   overflow: scroll;
   display: flex;
   flex-direction: column-reverse;
-  position: relative;
-  bottom: 0;
 }
 
 .message {
@@ -107,14 +128,10 @@ export default {};
 .input-field {
   height: 15%;
   justify-content: center;
-
   align-items: flex-end;
-
   width: 100%;
   display: flex;
   flex-direction: row;
-  position: relative;
-  bottom: 3px;
 }
 
 input {
