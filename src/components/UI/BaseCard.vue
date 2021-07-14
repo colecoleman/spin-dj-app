@@ -1,6 +1,7 @@
 <template>
   <div class="card">
     <div id="heading">
+      <img :src="icon" alt="" />
       <slot name="icon"></slot>
       <h3>
         <slot name="title"></slot>
@@ -19,7 +20,9 @@
 
 
 <script>
-export default {};
+export default {
+  props: ["icon"],
+};
 </script>
 
 <style scoped>
@@ -48,7 +51,12 @@ export default {};
   padding: 20px 30px;
   margin: 10px;
 }
-
+img {
+  width: 14px;
+  height: 14px;
+  fill: white;
+  color: white;
+}
 #content {
   padding: 0 10px 0 10px;
   height: 90%;
@@ -66,6 +74,7 @@ export default {};
 }
 
 h3 {
+  font-size: 10pt;
   margin: 0 0 0 10px;
 }
 
@@ -73,5 +82,4 @@ h3 {
   margin-left: auto;
   display: flex;
 }
-
 </style>

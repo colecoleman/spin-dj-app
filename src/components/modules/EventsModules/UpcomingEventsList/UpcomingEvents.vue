@@ -1,14 +1,6 @@
 <template>
-  <base-card>
-    <template v-slot:icon>
-      <svg width="20.344" height="20.344" viewBox="0 0 20.344 20.344">
-        <path
-          d="M10.172.328A10.172,10.172,0,1,0,20.344,10.5,10.17,10.17,0,0,0,10.172.328ZM3.609,10.5H2.3a7.882,7.882,0,0,1,7.875-7.875V3.938A6.571,6.571,0,0,0,3.609,10.5Zm6.563,3.938A3.938,3.938,0,1,1,14.109,10.5,3.939,3.939,0,0,1,10.172,14.438Zm0-5.25A1.313,1.313,0,1,0,11.484,10.5,1.311,1.311,0,0,0,10.172,9.188Z"
-          transform="translate(0 -0.328)"
-          fill="#fff"
-        />
-      </svg>
-    </template>
+  <base-card :icon="discsvg">
+    <template v-slot:icon> </template>
     <template v-slot:title>Events</template>
     <template v-slot:action1
       >Sort:
@@ -49,9 +41,11 @@
 import BaseCard from "../../../UI/BaseCard.vue";
 import UpcomingEventsListItem from "../UpcomingEventsList/UpcomingEventListItem.vue";
 import FloatingMenuWithListItems from "../../../UI/FloatingMenuWithListItems.vue";
+import discsvg from "../../../../assets/SVGs/disc.svg";
 export default {
   data() {
     return {
+      discsvg,
       isFetching: this.$store.state.isFetching,
       sortMenuOpened: false,
       sortItems: [

@@ -1,14 +1,5 @@
 <template>
-  <base-card>
-    <template v-slot:icon>
-      <svg width="20.344" height="20.344" viewBox="0 0 20.344 20.344">
-        <path
-          d="M10.5.328A10.172,10.172,0,1,0,20.672,10.5,10.173,10.173,0,0,0,10.5.328Zm0,4.512A1.723,1.723,0,1,1,8.777,6.563,1.723,1.723,0,0,1,10.5,4.84Zm2.3,10.418a.492.492,0,0,1-.492.492H8.7a.492.492,0,0,1-.492-.492v-.984a.492.492,0,0,1,.492-.492h.492V11.156H8.7a.492.492,0,0,1-.492-.492V9.68A.492.492,0,0,1,8.7,9.188H11.32a.492.492,0,0,1,.492.492v4.1H12.3a.492.492,0,0,1,.492.492Z"
-          transform="translate(-0.328 -0.328)"
-          fill="#fff"
-        />
-      </svg>
-    </template>
+  <base-card :icon="infoIconSvg">
     <template v-slot:title>Details</template>
     <template v-slot:content>
       <div id="title">
@@ -135,10 +126,13 @@
 </template>
 
 <script>
-import BaseCard from "../UI/BaseCard.vue";
+import BaseCard from "../../components/UI/BaseCard.vue";
+import infoIconSvg from "../../assets/SVGs/info-icon.svg";
+
 export default {
   data() {
     return {
+      infoIconSvg,
       editEmployeesNeededOpen: false,
       editEmployeesNeeded: undefined,
       editClientSourceOpen: false,

@@ -1,14 +1,26 @@
 <template>
   <div id="metrics-chart-container">
-    <div id="chart-content"><line-chart></line-chart></div>
+    <base-card :icon="metricsChartsvg">
+      <template v-slot:title>Metrics</template>
+      <template v-slot:content>
+        <div id="chart-content"><line-chart></line-chart></div>
+      </template>
+    </base-card>
   </div>
 </template>
 
 <script>
 import LineChart from "./LineChart.vue";
+import BaseCard from "../../../UI/BaseCard.vue";
+import metricsChartsvg from "../../../../assets/SVGs/metricchart.svg";
 
 export default {
-  components: { LineChart },
+  data() {
+    return {
+      metricsChartsvg,
+    };
+  },
+  components: { LineChart, BaseCard },
 };
 </script>
 

@@ -1,13 +1,5 @@
 <template>
-  <base-card>
-    <template v-slot:icon>
-      <svg width="14" height="14" viewBox="0 0 21 28">
-        <path
-          d="M18.375,3.5H14a3.5,3.5,0,0,0-7,0H2.625A2.626,2.626,0,0,0,0,6.125v19.25A2.626,2.626,0,0,0,2.625,28h15.75A2.626,2.626,0,0,0,21,25.375V6.125A2.626,2.626,0,0,0,18.375,3.5ZM5.25,23.188a1.313,1.313,0,1,1,1.313-1.312A1.309,1.309,0,0,1,5.25,23.188Zm0-5.25a1.313,1.313,0,1,1,1.313-1.312A1.309,1.309,0,0,1,5.25,17.938Zm0-5.25a1.313,1.313,0,1,1,1.313-1.312A1.309,1.309,0,0,1,5.25,12.688Zm5.25-10.5A1.313,1.313,0,1,1,9.188,3.5,1.309,1.309,0,0,1,10.5,2.188Zm7,20.125a.439.439,0,0,1-.437.438H9.188a.439.439,0,0,1-.437-.437v-.875A.439.439,0,0,1,9.188,21h7.875a.439.439,0,0,1,.438.438Zm0-5.25a.439.439,0,0,1-.437.438H9.188a.439.439,0,0,1-.437-.437v-.875a.439.439,0,0,1,.438-.437h7.875a.439.439,0,0,1,.438.438Zm0-5.25a.439.439,0,0,1-.437.438H9.188a.439.439,0,0,1-.437-.437v-.875a.439.439,0,0,1,.438-.437h7.875a.439.439,0,0,1,.438.438Z"
-          fill="#fff"
-        />
-      </svg>
-    </template>
+  <base-card :icon="svg.clipboardsvg">
     <template v-slot:title>To-Do</template>
     <template v-slot:content>
       <div id="wrapper">
@@ -119,12 +111,16 @@
 </template>
 
 <script>
-import ToDoItem from "./ToDoItem.vue";
-import BaseCard from "../UI/BaseCard.vue";
+import ToDoItem from "../../components/ToDo/ToDoItem.vue";
+import BaseCard from "../../components/UI/BaseCard.vue";
+import clipboardsvg from "../../assets/SVGs/clipboard.svg";
 
 export default {
   data() {
     return {
+      svg: {
+        clipboardsvg,
+      },
       newToDoOpened: false,
       newToDo: undefined,
     };

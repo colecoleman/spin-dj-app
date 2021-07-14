@@ -1,51 +1,5 @@
 <template>
-  <base-card>
-    <template v-slot:icon>
-      <svg width="14" height="14.667" viewBox="0 0 17 18.667">
-        <g
-          id="Group_517"
-          data-name="Group 517"
-          transform="translate(-519 -266)"
-        >
-          <path
-            d="M6.167,6H17.833A1.643,1.643,0,0,1,19.5,7.619v11.33a1.643,1.643,0,0,1-1.667,1.619H6.167A1.643,1.643,0,0,1,4.5,18.948V7.619A1.643,1.643,0,0,1,6.167,6Z"
-            transform="translate(515.5 263.1)"
-            fill="none"
-            stroke="#fff"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-          />
-          <path
-            d="M24,3V7.2"
-            transform="translate(506.833 264)"
-            fill="none"
-            stroke="#fff"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-          />
-          <path
-            d="M12,3V7.2"
-            transform="translate(512.167 264)"
-            fill="none"
-            stroke="#fff"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-          />
-          <path
-            d="M4.5,15h15"
-            transform="translate(515.5 261.167)"
-            fill="none"
-            stroke="#fff"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-          />
-        </g>
-      </svg>
-    </template>
+  <base-card :icon="calendar">
     <template v-slot:action1>
       <svg
         width="14"
@@ -167,10 +121,12 @@ import dayjs from "dayjs";
 import TimeSelector from "./TimeSelector.vue";
 import SingleDayView from "./SingleDayView/SingleDayView.vue";
 import BaseCard from "../UI/BaseCard.vue";
+import calendar from "../../assets/SVGs/calendar.svg";
 
 export default {
   data() {
     return {
+      calendar,
       WEEKDAYS: {
         sunday: {
           key: 1,
@@ -422,10 +378,8 @@ h4 {
 #base-container {
   width: 100%;
   height: 100%;
-  /* display: flex; */
   flex-direction: column;
   justify-content: space-around;
-  /* align-items: center; */
 }
 
 #body {

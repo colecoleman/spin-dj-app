@@ -1,21 +1,5 @@
 <template>
-  <base-card>
-    <template v-slot:icon>
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="21"
-        height="13.364"
-        viewBox="0 0 21 13.364"
-      >
-        <path
-          id="Icon_material-people"
-          data-name="Icon material-people"
-          d="M15.193,10.1A2.864,2.864,0,1,0,12.33,7.239,2.852,2.852,0,0,0,15.193,10.1Zm-7.636,0A2.864,2.864,0,1,0,4.693,7.239,2.852,2.852,0,0,0,7.557,10.1Zm0,1.909c-2.224,0-6.682,1.117-6.682,3.341v2.386H14.239V15.352C14.239,13.128,9.781,12.011,7.557,12.011Zm7.636,0c-.277,0-.592.019-.926.048a4.028,4.028,0,0,1,1.88,3.293v2.386h5.727V15.352C21.875,13.128,17.417,12.011,15.193,12.011Z"
-          transform="translate(-0.875 -4.375)"
-          fill="#fff"
-        />
-      </svg>
-    </template>
+  <base-card :icon="groupPeopleSvg">
     <template v-slot:title>Event Contacts</template>
     <template v-slot:content>
       <div id="contact-carousel-top-wrapper">
@@ -68,10 +52,13 @@
 <script>
 import BaseCard from "../../UI/BaseCard.vue";
 import EventPageContactCarouselItem from "./EventPageContactCarouselItem.vue";
+import groupPeopleSvg from "../../../assets/SVGs/group-people.svg";
 
 export default {
   data() {
-    return {};
+    return {
+      groupPeopleSvg,
+    };
   },
   props: ["contacts"],
   methods: {

@@ -33,7 +33,7 @@ export default {
 
 <style scoped>
 #messaging-profile-photo {
-  padding: 10px;
+  padding: 5px;
 }
 
 h5 {
@@ -44,14 +44,14 @@ h5 {
 }
 
 #messaging-content {
-  align-items: left;
+  align-items: center;
   text-align: left;
 }
 
 img {
   border-radius: 50%;
-  margin: 5px;
-  height: 50px;
+  height: 40px;
+  width: 40px;
 }
 
 p {
@@ -62,8 +62,9 @@ p {
 section {
   display: flex;
   height: fit-content;
-  align-content: center;
+  align-items: center;
   width: 100%;
+  margin-bottom: 10px;
   overflow: none;
 }
 </style>
