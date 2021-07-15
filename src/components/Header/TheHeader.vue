@@ -12,7 +12,7 @@
 import TabSwitcher from "./TabSwitcher.vue";
 import SearchBar from "./SearchBar.vue";
 import AddButton from "./AddButton.vue";
-import NotificationButton from "./NotificationButton.vue";
+import NotificationButton from "./NotificationButton/NotificationButton.vue";
 
 export default {
   data() {

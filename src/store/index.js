@@ -4,6 +4,43 @@ import { createStore } from "vuex";
 const store = createStore({
     state() {
         return {
+            notifications: [
+                {
+                    id: 1,
+                    title: "Congrats! New Booking!",
+                    body: "Bob Bobertson's Wedding Package",
+                    date: new Date(2021, 6, 15, 11, 15),
+                    read: false,
+                },
+                {
+                    id: 2,
+                    title: "Follow Up?",
+                    body: "Prospect: Amanda Jennings",
+                    date: new Date(2021, 6, 14, 11, 15),
+                    read: false,
+                },
+                {
+                    id: 3,
+                    title: "New Inquiry",
+                    body: "Jenny Jenkins: December, 18, 2021",
+                    date: new Date(2021, 6, 15, 11, 15),
+                    read: true,
+                },
+                {
+                    id: 4,
+                    title: "Congrats! New Booking!",
+                    body: "Bob Bobertson's Wedding Package",
+                    date: new Date(2021, 6, 15, 11, 15),
+                    read: false,
+                },
+                {
+                    id: 5,
+                    title: "Congrats! New Booking!",
+                    body: "Bob Bobertson's Wedding Package",
+                    date: new Date(2021, 6, 15, 11, 15),
+                    read: false,
+                },
+            ],
             toDos: [
                 {
                     id: 1,
