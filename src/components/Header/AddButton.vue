@@ -6,7 +6,6 @@
     :class="isClicked ? `` : `pointer`"
   >
     <svg
-      id="plus-svg-for-head"
       width="24"
       height="24"
       viewBox="0 0 30.553 30.553"
@@ -19,30 +18,23 @@
       />
     </svg>
     <div id="add-button-popup-div">
-      <transition name="grow">
+      <transition name="fade1">
         <div v-if="isClicked" id="add-button-popup-container">
-          <base-card-no-heading>
-            <div id="popup-inner-wrapper">
-              <div id="new-container">
-                <h3>NEW</h3>
-              </div>
-              <div id="items">
-                <ul>
-                  <router-link to="/addnewproposal"
-                    ><h4>Proposal</h4></router-link
-                  >
-                  <router-link to="/addnewcontact"
-                    ><h4>Contact</h4></router-link
-                  >
-                  <router-link to="/addnewevent"><h4>Event</h4></router-link>
-                  <router-link to="/addnewvendor"><h4>Vendor</h4></router-link>
-                  <router-link to="/addnewlocation"
-                    ><h4>Location</h4></router-link
-                  >
-                </ul>
-              </div>
+          <!-- <base-card-no-heading> -->
+          <div id="popup-inner-wrapper">
+            <div id="new-container">
+              <h3>NEW</h3>
             </div>
-          </base-card-no-heading>
+            <div id="items">
+              <ul>
+                <router-link to="/addnewproposal"
+                  ><h4>Quick Proposal</h4></router-link
+                >
+                <router-link to="/addnewevent"><h4>Event</h4></router-link>
+              </ul>
+            </div>
+          </div>
+          <!-- </base-card-no-heading> -->
         </div>
       </transition>
       <transition name="fade">
@@ -53,11 +45,11 @@
 </template>
 
 <script>
-import BaseCardNoHeading from "../UI/BaseCardNoHeading.vue";
+// import BaseCardNoHeading from "../UI/BaseCardNoHeading.vue";
 export default {
   data() {
     return {
-      isClicked: !true,
+      isClicked: true,
     };
   },
   methods: {
@@ -70,35 +62,30 @@ export default {
       return this.isClicked === true ? "clicked" : "unclicked";
     },
   },
-  components: { BaseCardNoHeading },
+  // components: { BaseCardNoHeading },
 };
 </script>
 
 <style scoped>
-#text-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
 svg {
   transform: rotate(45deg);
 }
 
-h3 {
+/* h3 {
   font-size: 20px;
   width: 100%;
   padding: 5px;
-}
+} */
 
-#popup-inner-wrapper {
-  border: 1px solid white;
-  width: 100%;
-  height: 100%;
-}
+/* #popup-inner-wrapper { */
+/* width: 100%; */
+/* height: 100%; */
+/* } */
 
 #new-container {
-  width: 50%;
+  text-align: left;
+  color: white;
+  border-bottom: 1px solid white;
 }
 
 a {
@@ -107,20 +94,23 @@ a {
 }
 
 #items {
-  width: 100%;
-  line-height: 1.5;
+  /* width: 100%; */
+  line-height: 2.5;
 }
 #items h4:hover {
-  position: relative;
-  text-shadow: 2px 2px 10px white;
-  left: -4.5px;
+  text-decoration: solid underline white 1px;
 }
 
 #add-button-popup-container {
-  position: relative;
-  /* border: 2px solid white; */
+  position: absolute;
+  left: calc(-50% - 20px);
+  top: 0;
+  padding: 30px;
+  background-color: black;
+  border: 1px solid white;
   border-radius: 25px;
   z-index: 3;
+
   cursor: default;
 }
 
@@ -152,8 +142,6 @@ ul {
 }
 #add-button-popup-div {
   position: relative;
-  left: -200px;
-  top: -8px;
   width: 270px;
 }
 
@@ -182,6 +170,7 @@ svg {
 .clicked {
   transform: rotate(315deg);
   transition-duration: 0.5s;
+  fill: black;
 }
 
 .unclicked {
@@ -204,6 +193,13 @@ svg {
 .fade-leave-active {
   animation: fade 0.5s reverse;
 }
+.fade1-enter-active {
+  animation: fade1 0.5s;
+}
+
+.fade1-leave-active {
+  animation: fade1 0.5s reverse;
+}
 
 @keyframes grow-popup {
   from {
@@ -216,7 +212,7 @@ svg {
     font-size: 0pt;
   }
   to {
-    width: 265px;
+    width: 200px;
     height: 160px;
     right: 0px;
     position: absolute;
@@ -231,6 +227,15 @@ svg {
   }
   to {
     opacity: 0.5;
+  }
+}
+
+@keyframes fade1 {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
   }
 }
 </style>

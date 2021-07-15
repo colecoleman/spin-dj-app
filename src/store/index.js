@@ -588,8 +588,8 @@ const store = createStore({
                             address2: "Nowhere, MO, 54321",
                         }
                     ],
-                    eventStartTime: new Date(2021, 2, 25, 18, 15),
-                    eventEndTime: new Date(2021, 2, 25, 23, 30),
+                    eventStartTime: new Date(2021, 5, 25, 18, 15),
+                    eventEndTime: new Date(2021, 5, 25, 23, 30),
                     get eventLength() {
                         return (this.eventEndTime - this.eventStartTime) / 36e5
                     },
@@ -739,8 +739,8 @@ const store = createStore({
                         }
                     ],
                     // total: 100000,
-                    eventStartTime: new Date(2021, 1, 25, 18, 15),
-                    eventEndTime: new Date(2021, 1, 25, 23, 30),
+                    eventStartTime: new Date(2021, 6, 25, 18, 15),
+                    eventEndTime: new Date(2021, 6, 25, 23, 30),
                     get eventLength() {
                         return (this.eventEndTime - this.eventStartTime) / 36e5
                     },
@@ -883,8 +883,8 @@ const store = createStore({
                         }
                     ],
                     
-                    eventStartTime: new Date(2021, 5, 30, 15, 15),
-                    eventEndTime: new Date(2021, 5, 30, 20, 30),
+                    eventStartTime: new Date(2021, 6, 30, 15, 15),
+                    eventEndTime: new Date(2021, 6, 30, 20, 30),
                     get eventLength() {
                         return (this.eventEndTime - this.eventStartTime) / 36e5
                     },
@@ -1027,8 +1027,8 @@ const store = createStore({
                         }
                     ],
                     
-                    eventStartTime: new Date(2021, 2, 20, 18, 15),
-                    eventEndTime: new Date(2021, 2, 20, 23, 30),
+                    eventStartTime: new Date(2021, 7, 20, 18, 15),
+                    eventEndTime: new Date(2021, 7, 20, 23, 30),
                     get eventLength() {
 
                         return (this.eventEndTime - this.eventStartTime) / 36e5
@@ -1170,8 +1170,8 @@ const store = createStore({
                             address2: "Anywhere, MO, 12345",
                         }
                     ],
-                    eventStartTime: new Date(2021, 3, 25, 18, 15),
-                    eventEndTime: new Date(2021, 3, 25, 23, 30),
+                    eventStartTime: new Date(2021, 7, 25, 18, 15),
+                    eventEndTime: new Date(2021, 7, 25, 23, 30),
                     get eventLength() {
                         return (this.eventEndTime - this.eventStartTime) / 36e5
                     },
@@ -1312,8 +1312,8 @@ const store = createStore({
                             address2: "Anywhere, MO, 12345",
                         }
                     ],
-                    eventStartTime: new Date(2021, 3, 25, 18, 15),
-                    eventEndTime: new Date(2021, 3, 25, 23, 30),
+                    eventStartTime: new Date(2021, 8, 25, 18, 15),
+                    eventEndTime: new Date(2021, 8, 25, 23, 30),
                     get eventLength() {
                         return (this.eventEndTime - this.eventStartTime) / 36e5
                     },

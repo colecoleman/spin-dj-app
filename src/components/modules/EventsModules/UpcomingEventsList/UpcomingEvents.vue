@@ -95,9 +95,10 @@ export default {
   },
   computed: {
     events() {
-      // let list = JSON.parse(JSON.stringify());
-      // console.log(list);
-      return this.$store.state.events;
+      let today = new Date();
+      return this.$store.state.events.filter(
+        (event) => event.eventStartTime > today
+      );
     },
   },
 

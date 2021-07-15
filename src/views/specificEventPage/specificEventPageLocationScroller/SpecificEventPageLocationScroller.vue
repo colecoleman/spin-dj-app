@@ -72,9 +72,6 @@ export default {
   width: 100%;
 }
 
-svg {
-
-}
 
 img {
   height: 16px;
