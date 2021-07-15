@@ -1,24 +1,16 @@
 import { createRouter, createWebHistory } from "vue-router";
-import EventManager from '../views/EventManager.vue';
-import SalesManager from '../views/SalesManager.vue';
-import AddContact from '../views/AddAssets/AddContact.vue';
-import AddEvent from '../views/AddAssets/AddEvent.vue';
-import AddProposal from '../views/AddAssets/AddProposal.vue';
-import AddVendor from '../views/AddAssets/AddVendor.vue';
-import AddLocation from '../views/AddAssets/AddLocation.vue';
+import EventManager from '../views/DashboardViews/EventManager.vue';
+
 import ManagerTab from '../navigationItems/ManagerNavigation.vue';
-import ContactTab from '../navigationItems/ContactNavigation.vue';
 import ConfigTab from '../navigationItems/ConfigNavigation.vue';
-import ContactsList from '../views/ContactsList.vue'
-import ContactsTab from '../views/routingPages/ContactsTab.vue';
-import SpecificContactPageClient from '../views/specificContactPage/SpecificContactPageClient.vue';
-import SpecificContactPageProspect from '../views/specificContactPage/SpecificContactPageProspect.vue';
-import SpecificContactPageEmployee from '../views/specificContactPage/SpecificContactPageEmployee.vue';
-import SpecificContactPageVendor from '../views/specificContactPage/SpecificContactPageVendor.vue';
-import SpecificContactPageLocation from '../views/specificContactPage/SpecificContactPageLocation.vue';
-import SpecificContactPageOrganizer from '../views/specificContactPage/SpecificContactPageOrganizer.vue';
-import EventsTab from '../views/routingPages/EventsTab.vue';
-import SpecificEventPage from '../views/specificEventPage/SpecificEventPage.vue';
+import ContactsList from '../views/ContactListPage/ContactsList.vue'
+import SpecificContactPageClient from '../views/SpecificContactPage/SpecificClientPage/SpecificContactPageClient.vue';
+import SpecificContactPageProspect from '../views/SpecificContactPage/SpecificContactPageProspect.vue';
+import SpecificContactPageEmployee from '../views/SpecificContactPage/SpecificContactPageEmployee.vue';
+import SpecificContactPageVendor from '../views/SpecificContactPage/SpecificContactPageVendor.vue';
+import SpecificContactPageLocation from '../views/SpecificContactPage/SpecificContactPageLocation.vue';
+import SpecificContactPageOrganizer from '../views/SpecificContactPage/SpecificContactPageOrganizer.vue';
+import SpecificEventPage from '../views/SpecificEventPage/SpecificEventPage.vue';
 import UserSettingsPackages from '../components/userSettings/userSettingsPackages/UserSettingsPackages.vue';
 import UserSettingsPackagesAddNew from '../components/userSettings/userSettingsPackages/UserSettingsPackagesAddNew.vue';
 import UserSettingsPackagesEditExisting from '../components/userSettings/userSettingsPackages/UserSettingsPackagesEditExisting.vue';
@@ -42,60 +34,51 @@ const routes = [
     path: '/',
     name: "dash",
     component: EventManager
-  }, {
-    path: '/sales',
-    name: "sales",
-    component: SalesManager
-  }, { 
-    path: '/contacts/',
-    component: ContactsTab,
-    children: [
+  }, 
+
+  {
+  path: '/contacts/',
+  name: 'contacts',
+  component: ContactsList,
+  },
+  {
+    path: '/contacts/clients/:id',
+    name: 'specificContactPageClient',
+    component: SpecificContactPageClient
+  },
+  {
+    path: '/contacts/prospects/:id',
+    name: 'specificContactPageProspect',
+    component: SpecificContactPageProspect
+  },
+  {
+    path: '/contacts/vendors/:id',
+    name: 'specificContactPageVendor',
+    component: SpecificContactPageVendor
+  },
+  {
+    path: '/contacts/employees/:id',
+    name: 'specificContactPageEmployee',
+    component: SpecificContactPageEmployee
+  },
+  {
+    path: '/contacts/locations/:id',
+    name: 'specificContactPageLocation',
+    component: SpecificContactPageLocation
+  },
+  {
+    path: '/contacts/organizers/:id',
+    name: 'specificContactPageOrganizer',
+    component: SpecificContactPageOrganizer
+  },      
+ 
+
       {
-        path: '',
-        component: ContactsList
-      },
-      {
-        path: 'clients/:id',
-        name: 'specificContactPageClient',
-        component: SpecificContactPageClient
-      },
-      {
-        path: 'prospects/:id',
-        name: 'specificContactPageProspect',
-        component: SpecificContactPageProspect
-      },
-      {
-        path: 'vendors/:id',
-        name: 'specificContactPageVendor',
-        component: SpecificContactPageVendor
-      },
-      {
-        path: 'employees/:id',
-        name: 'specificContactPageEmployee',
-        component: SpecificContactPageEmployee
-      },
-      {
-        path: 'locations/:id',
-        name: 'specificContactPageLocation',
-        component: SpecificContactPageLocation
-      },
-      {
-        path: 'organizers/:id',
-        name: 'specificContactPageOrganizer',
-        component: SpecificContactPageOrganizer
-      },
-    ]
-  }, {
-    path: '/events/',
-    component: EventsTab,
-    children: [
-      {
-        path: ':id',
+        path: '/events/:id',
         name: 'specificEventPage',
         component: SpecificEventPage
-      }
-    ]
-  },
+      },
+    
   
   { path: '/config',
     name: 'config',
@@ -103,21 +86,11 @@ const routes = [
   { path: '/manager',
     name: 'managernav',
     component: { navigation: ManagerTab }},
-  { path: '/addnewcontact', 
-    name: "addNewContact",
-    components: { navigation: ContactTab, main: AddContact}},
-  { path: '/addnewevent', 
-    name: "addNewEvent",
-    components: { navigation: ContactTab, main: AddEvent}},
-  { path: '/addnewproposal', 
-    name: "addNewProposal",
-    components: { navigation: ContactTab, main: AddProposal}},
-  { path: '/addnewvendor', 
-    name: "addNewVendor",
-    components: { navigation: ContactTab, main: AddVendor}},
-  { path: '/addnewlocation', 
-    name: "addNewLocation",
-    components: { navigation: ContactTab, main: AddLocation}},
+
+
+
+
+
     { path: '/packages',
       name: 'packages',
       components: {navigation: ConfigTab, main: UserSettingsPackages}},

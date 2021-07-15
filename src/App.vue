@@ -15,7 +15,7 @@
 /* eslint-disable */
 import TheHeader from "./components/Header/TheHeader.vue";
 
-import EventManager from "./views/EventManager.vue";
+import EventManager from "./views/DashboardViews/EventManager.vue";
 
 export default {
   components: {

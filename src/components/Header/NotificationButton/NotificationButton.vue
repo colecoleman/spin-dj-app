@@ -43,7 +43,7 @@ export default {
     return {
       notificationBell,
       xIcon,
-      isClicked: true,
+      isClicked: false,
     };
   },
   methods: {

@@ -22,7 +22,7 @@
         :key="action.title"
         @click="action.action(action.title)"
       >
-        <img :src="action.icon" alt="" />
+        <img v-if="action.icon" :src="action.icon" alt="" />
         <h5 :class="action.danger ? 'danger' : ''">
           {{ action.title }}
         </h5>
