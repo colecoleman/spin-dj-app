@@ -46,15 +46,13 @@ export default {
   flex-direction: column;
   justify-content: space-between;
 }
-#contact-carousel-item-title-and-picture {
-}
+
 img {
   height: 75px;
   width: 75px;
 }
 
-#contact-carousel-item-name {
-}
+
 
 h5 {
   font-weight: 300;
@@ -66,8 +64,6 @@ h5 span {
   font-weight: 600;
 }
 
-#contact-carousel-item-contact-information {
-}
 
 p {
   font-size: 8pt;

@@ -160,40 +160,6 @@ export default {
 </script>
 
 <style scoped>
-/* @page {
-  size: A4;
-  margin: 0mm;
-} */
-
-/* @media print {
-
-  
-  #contract-popup-left-menu,
-  #contract-popup-right-column,
-  .no-print {
-    display: none;
-  }
-
-  #contract-popup-document-view {
-    margin-left: 30px;
-    overflow: visible;
-    height: 100%;
-  }
-
-  #contract-document-view-wrapper {
-    overflow: visible;
-    height: fit-content;
-
-  }
-
-  #contract-information {
-    page-break-before: always;
-  }
-
-  #contract-document-view-wrapper > table {
-    page-break-before: always;
-  }
-} */
 #contract-popup-document-view {
   background-color: white;
   width: 147mm;
