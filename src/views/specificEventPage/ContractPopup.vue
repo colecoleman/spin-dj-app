@@ -35,7 +35,10 @@
       <div id="contract-popup-content-wrapper">
         <div id="contract-popup-left-menu">
           <h3>Document View</h3>
-          <button-standard-with-icon text="Print" @click="printContract()">
+          <button-standard-with-icon
+            text="Print"
+            @click="printContract('contract-popup-document-view')"
+          >
             <template v-slot:icon
               ><svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -82,7 +85,10 @@
               </svg>
             </template>
           </button-standard-with-icon>
-          <button-standard-with-icon text="Save" @click="saveContract()">
+          <button-standard-with-icon
+            text="Save"
+            @click="saveContract('contract-popup-document-view')"
+          >
             <template v-slot:icon
               ><svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -157,109 +163,15 @@
 import FullPagePopup from "../../components/UI/FullPagePopup.vue";
 import ContractPopupDocumentView from "./ContractPopupDocumentView.vue";
 import ButtonStandardWithIcon from "../../components/UI/ButtonStandardWithIcon.vue";
-import html2canvas from "html2canvas";
-import jsPDF from "jspdf";
+import helpers from "../../helpers.js";
 
 export default {
   methods: {
     closePopup() {
       this.$emit("closePopup");
     },
-    saveContract() {
-      html2canvas(
-        document.getElementById("contract-popup-document-view"),
-        {}
-      ).then(function (canvas) {
-        console.log("starting downloading");
-        var imgData = canvas.toDataURL("image/png");
-        console.log("done downloading");
-        var imgWidth = 210;
-        var pageHeight = 260;
-        var imgHeight = (canvas.height * imgWidth) / canvas.width;
-        var heightLeft = imgHeight;
-
-        var doc = new jsPDF("p", "mm", "a4", true);
-        var position = 0;
-
-        doc.addImage(
-          imgData,
-          "JPEG",
-          5,
-          position,
-          imgWidth,
-          imgHeight,
-          undefined,
-          "FAST"
-        );
-        heightLeft -= pageHeight;
-        console.log("main page done");
-        while (heightLeft >= 0) {
-          position = heightLeft - imgHeight;
-          doc.addPage();
-          doc.addImage(
-            imgData,
-            "JPEG",
-            5,
-            position,
-            imgWidth,
-            imgHeight,
-            undefined,
-            "FAST"
-          );
-          heightLeft -= pageHeight;
-        }
-        console.log("downloading");
-        doc.save("file.pdf");
-      });
-    },
-    printContract() {
-      html2canvas(
-        document.getElementById("contract-popup-document-view"),
-        {}
-      ).then(function (canvas) {
-        console.log("starting downloading");
-        var imgData = canvas.toDataURL("image/png");
-        console.log("done downloading");
-        var imgWidth = 210;
-        var pageHeight = 260;
-        var imgHeight = (canvas.height * imgWidth) / canvas.width;
-        var heightLeft = imgHeight;
-
-        var doc = new jsPDF("p", "mm", "a4", true);
-        var position = 0;
-
-        doc.addImage(
-          imgData,
-          "JPEG",
-          5,
-          position,
-          imgWidth,
-          imgHeight,
-          undefined,
-          "FAST"
-        );
-        heightLeft -= pageHeight;
-        console.log("main page done");
-        while (heightLeft >= 0) {
-          position = heightLeft - imgHeight;
-          doc.addPage();
-          doc.addImage(
-            imgData,
-            "JPEG",
-            5,
-            position,
-            imgWidth,
-            imgHeight,
-            undefined,
-            "FAST"
-          );
-          heightLeft -= pageHeight;
-        }
-        console.log("downloading");
-        doc.autoPrint();
-        doc.output("dataurlnewwindow");
-      });
-    },
+    saveContact: helpers.saveElement,
+    printContract: helpers.printElement,
   },
   components: {
     FullPagePopup,

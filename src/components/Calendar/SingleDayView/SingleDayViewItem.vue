@@ -19,19 +19,9 @@
         <b>{{ event.eventLocations[0].venueName }}</b>
       </p>
       <p>
-        {{
-          event.eventStartTime.toLocaleTimeString("lookup", {
-            hour: "numeric",
-            minute: "numeric",
-          })
-        }}
+        {{ formatTime(event.eventStartTime) }}
         -
-        {{
-          event.eventEndTime.toLocaleTimeString("lookup", {
-            hour: "numeric",
-            minute: "numeric",
-          })
-        }}
+        {{ formatTime(event.eventEndTime) }}
       </p>
     </div>
   </div>
@@ -39,11 +29,16 @@
 
 <script>
 import defaultProfilePicture from "../../../assets/default-profile-picture.svg";
+import helpers from "../../../helpers.js";
+
 export default {
   data() {
     return {
       defaultProfilePicture,
     };
+  },
+  methods: {
+    formatTime: helpers.formatTime,
   },
   computed: {
     matchedClient() {

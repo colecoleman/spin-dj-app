@@ -82,7 +82,10 @@
               </svg>
             </template>
           </button-standard-with-icon>
-          <button-standard-with-icon text="Download" @click="saveInvoice()">
+          <button-standard-with-icon
+            text="Download"
+            @click="saveInvoice('invoice-popup-document-view')"
+          >
             <template v-slot:icon
               ><svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -146,7 +149,7 @@
               :key="item.id"
             >
               <p>{{ item.name }} ({{ event.eventLength }} hours):</p>
-              <h5>{{ calculatePackagePrice(item) }}</h5>
+              <h5>{{ calculatePackagePrice(item, event) }}</h5>
             </div>
           </div>
           <div class="invoice-item">
@@ -205,13 +208,9 @@
 import ButtonStandardWithIcon from "../../components/UI/ButtonStandardWithIcon.vue";
 import FullPagePopup from "../../components/UI/FullPagePopup.vue";
 import InvoicePopupDocumentView from "./InvoicePopupDocumentView.vue";
-import jsPDF from "jspdf";
-import html2canvas from "html2canvas";
+import helpers from "../../helpers.js";
 
 export default {
-  data() {
-    return {};
-  },
   computed: {
     adjustmentsTotal() {
       let agg = 0;
@@ -229,139 +228,14 @@ export default {
     },
   },
   methods: {
-    calculatePackagePrice(pckg) {
-      let packageTotal = 0;
-      if (pckg.priceOption === "hourly") {
-        if (pckg.baseTime < this.event.eventLength) {
-          let additionalHourly = this.event.eventLength - pckg.baseTime;
+    calculatePackagePrice: helpers.calculatePackagePrice,
+    calculateAddOnPrice: helpers.calculateAddOnPrice,
+    formatPrice: helpers.formatPrice,
+    saveInvoice: helpers.saveElement,
+    printInvoice: helpers.printElement,
 
-          packageTotal =
-            packageTotal + (pckg.baseRate + pckg.addHourly * additionalHourly);
-        }
-        if (pckg.baseTime >= this.event.eventLength) {
-          packageTotal = packageTotal + pckg.baseRate;
-        }
-      }
-      if (pckg.priceOption === "flat") {
-        packageTotal = packageTotal + pckg.flatRate;
-      }
-      console.log(packageTotal);
-      return this.formatPrice(packageTotal);
-    },
-    calculateAddOnPrice(addOn) {
-      let addOnTotal = 0;
-      if (addOn.priceOption === "hourly") {
-        addOnTotal = addOnTotal + addOn.hourlyPrice * this.event.eventLength;
-      }
-      if (addOn.priceOption === "unit") {
-        addOnTotal = addOnTotal + addOn.unitPrice * addOn.eventUnits;
-      }
-      if (addOn.priceOption === "flat") {
-        addOnTotal = addOnTotal + addOn.flatRate;
-      }
-      return this.formatPrice(addOnTotal);
-    },
     closePopup() {
       this.$emit("closePopup");
-    },
-    saveInvoice() {
-      html2canvas(
-        document.getElementById("invoice-popup-document-view"),
-        {}
-      ).then(function (canvas) {
-        console.log("starting downloading");
-        var imgData = canvas.toDataURL("image/png");
-        console.log("done downloading");
-        var imgWidth = 210;
-        var pageHeight = 260;
-        var imgHeight = (canvas.height * imgWidth) / canvas.width;
-        var heightLeft = imgHeight;
-
-        var doc = new jsPDF("p", "mm", "a4", true);
-        var position = 0;
-
-        doc.addImage(
-          imgData,
-          "JPEG",
-          5,
-          position,
-          imgWidth,
-          imgHeight,
-          undefined,
-          "FAST"
-        );
-        heightLeft -= pageHeight;
-        console.log("main page done");
-        while (heightLeft >= 0) {
-          position = heightLeft - imgHeight;
-          doc.addPage();
-          doc.addImage(
-            imgData,
-            "JPEG",
-            5,
-            position,
-            imgWidth,
-            imgHeight,
-            undefined,
-            "FAST"
-          );
-          heightLeft -= pageHeight;
-        }
-        console.log("downloading");
-        doc.save("file.pdf");
-      });
-    },
-    printInvoice() {
-      html2canvas(
-        document.getElementById("invoice-popup-document-view"),
-        {}
-      ).then(function (canvas) {
-        console.log("starting downloading");
-        var imgData = canvas.toDataURL("image/png");
-        console.log("done downloading");
-        var imgWidth = 210;
-        var pageHeight = 260;
-        var imgHeight = (canvas.height * imgWidth) / canvas.width;
-        var heightLeft = imgHeight;
-
-        var doc = new jsPDF("p", "mm", "a4", true);
-        var position = 0;
-
-        doc.addImage(
-          imgData,
-          "JPEG",
-          5,
-          position,
-          imgWidth,
-          imgHeight,
-          undefined,
-          "FAST"
-        );
-        heightLeft -= pageHeight;
-        console.log("main page done");
-        while (heightLeft >= 0) {
-          position = heightLeft - imgHeight;
-          doc.addPage();
-          doc.addImage(
-            imgData,
-            "JPEG",
-            5,
-            position,
-            imgWidth,
-            imgHeight,
-            undefined,
-            "FAST"
-          );
-          heightLeft -= pageHeight;
-        }
-        console.log("downloading");
-        doc.autoPrint();
-        doc.output("dataurlnewwindow");
-      });
-    },
-    formatPrice(n) {
-      let price = n / 100;
-      return `${"$" + price.toLocaleString()}`;
     },
     subtotal() {
       return this.servicesTotal + this.packagesTotal + this.addOnTotal;

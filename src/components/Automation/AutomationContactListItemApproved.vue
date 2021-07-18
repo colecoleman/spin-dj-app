@@ -2,7 +2,7 @@
   <div id="item-wrapper">
     <div id="left-div">
       <h5>{{ automationItemApproved.title }}</h5>
-      <p>{{ formatDate }}</p>
+      <p>{{ formatDate(automationItemApproved.performDate) }}</p>
     </div>
     <div id="right-div">
       <svg
@@ -31,6 +31,7 @@
 
 <script>
 import SquareIconButton from "../UI/TrashButtonIcon.vue";
+import helpers from "../../helpers.js";
 
 export default {
   methods: {
@@ -39,22 +40,9 @@ export default {
       let id = this.automationItemApproved.id;
       this.$store.dispatch("deleteApprovedAutomation", id);
     },
+    formatDate: helpers.formatDate,
   },
   props: ["automation-item-approved"],
-  computed: {
-    formatDate() {
-      return this.automationItemApproved.performDate.toLocaleDateString(
-        "lookup",
-        {
-          day: "numeric",
-          year: "numeric",
-          month: "long",
-          hour: "numeric",
-          minute: "numeric",
-        }
-      );
-    },
-  },
   components: {
     SquareIconButton,
   },

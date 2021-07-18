@@ -83,8 +83,6 @@ export default {
     selectedYearStyling() {},
     changeYearData(year) {
       this.selectedYear = year;
-      console.log(year);
-      console.log(this.yearArray);
       this.selectYear(year);
     },
     changeMonthData(month) {
@@ -107,22 +105,14 @@ export default {
     },
 
     toggleMonthSelector() {
-      console.log("sent!");
       this.$emit("toggle-month-selector");
     },
     selectMonth(month) {
-      console.log("new Month selected");
-      console.log(month);
       this.$emit("select-month", month);
     },
     selectYear(year) {
-      console.log("newYearSelected");
-      console.log(year);
       this.$emit("select-year", year);
     },
-  },
-  created: function () {
-    console.log(this.yearArray);
   },
 };
 </script>

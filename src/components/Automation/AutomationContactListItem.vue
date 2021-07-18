@@ -2,7 +2,7 @@
   <div id="item-wrapper">
     <div id="left-div">
       <h5>{{ automationItem.title }}</h5>
-      <p>{{ formatDate }}</p>
+      <p>{{ formatDate(automationItem.performDate) }}</p>
     </div>
     <div id="right-div">
       <button-standard-with-icon
@@ -22,6 +22,7 @@
 import ButtonStandardWithIcon from "../UI/ButtonStandardWithIcon.vue";
 import SquareIconButton from "../UI/TrashButtonIcon.vue";
 import circleCheckmarkSvg from "../../assets/SVGs/circle-checkmark.svg";
+import helpers from "../../helpers.js";
 
 export default {
   data() {
@@ -32,6 +33,7 @@ export default {
     };
   },
   methods: {
+    formatDate: helpers.formatDate,
     approveAutomation() {
       console.log("clicked");
       let id = this.automationItem.id;
@@ -44,17 +46,6 @@ export default {
     },
   },
   props: ["automation-item"],
-  computed: {
-    formatDate() {
-      return this.automationItem.performDate.toLocaleDateString("lookup", {
-        day: "numeric",
-        year: "numeric",
-        month: "long",
-        hour: "numeric",
-        minute: "numeric",
-      });
-    },
-  },
   components: { ButtonStandardWithIcon, SquareIconButton },
 };
 </script>

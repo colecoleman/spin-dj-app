@@ -16,10 +16,10 @@
     </div>
     <div id="event-metadata-identifier">
       <div id="date-and-time-identifier">
-        <h5>{{ formatDate.date }}</h5>
+        <h5>{{ formatDate(event.eventStartTime) }}</h5>
         <h5>
-          {{ formatDate.startTime }} -
-          {{ formatDate.endTime }}
+          {{ formatDate(event.eventStartTime) }} -
+          {{ formatDate(event.eventEndTime) }}
         </h5>
       </div>
       <div id="event-invoice-metadata">
@@ -33,6 +33,7 @@
 
 <script>
 import defaultProfilePicture from "../../../../assets/default-profile-picture.svg";
+import helpers from "../../../../helpers.js";
 
 export default {
   data() {
@@ -41,31 +42,8 @@ export default {
     };
   },
   methods: {
-    calculateBalanceOutstanding() {
-      // let total;
-      // this.event.eventInvoice.packages.forEach((element) => {});
-      // let total;
-      // if (this.$props.total) {
-      //   total = this.$props.total.replace("$", "");
-      // } else {
-      //   total = 0;
-      // }
-      // return total - this.calculatePaymentAmount();
-    },
-    calculatePaymentAmount() {
-      // let total;
-      // Array.prototype.forEach.call(this.$props.payments, (payment) => {
-      //   if (payment.paymentAmount) {
-      //     console.log(payment.paymentAmount);
-      //     total = total + payment.paymentAmount;
-      //   }
-      // });
-      // // console.log(total);
-      // if (total === undefined || isNaN(total)) {
-      //   total = 0;
-      // }
-      // return parseInt(total);
-    },
+    formatDate: helpers.formatDate,
+    formatTime: helpers.formatTime,
   },
   computed: {
     matchedClient() {
@@ -77,28 +55,6 @@ export default {
       );
       item.role = firstClient.role;
       return item;
-    },
-    formatDate() {
-      let date = {
-        date: undefined,
-        startTime: undefined,
-        endTime: undefined,
-      };
-      date.date = this.event.eventStartTime.toLocaleDateString("lookup", {
-        day: "numeric",
-        year: "numeric",
-        month: "long",
-      });
-      console.log(date.date);
-      date.startTime = this.event.eventStartTime.toLocaleString("lookup", {
-        hour: "2-digit",
-        minute: "2-digit",
-      });
-      date.endTime = this.event.eventEndTime.toLocaleString("lookup", {
-        hour: "2-digit",
-        minute: "2-digit",
-      });
-      return date;
     },
   },
   props: ["event"],

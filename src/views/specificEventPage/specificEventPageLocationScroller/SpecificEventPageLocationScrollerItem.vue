@@ -14,23 +14,12 @@
 </template>
 
 <script>
-
+import helpers from "../../../helpers.js";
 export default {
   methods: {
-    formatTime(time) {
-      let t = time.split(":");
-      let h = t[0];
-      let m = t[1];
-      let ampm;
-      if (h > 12) {
-        h = h % 12;
-        ampm = "PM";
-      }
-      return `${h}:${m} ${ampm}`;
-    },
+    formatTime: helpers.formatTime,
   },
   props: ["location"],
-  
 };
 </script>
 

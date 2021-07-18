@@ -51,28 +51,7 @@ export default {
         return eventDate === chosenDate;
       });
     },
-    formatDate() {
-      let date = {
-        date: undefined,
-        startTime: undefined,
-        endTime: undefined,
-      };
-      date.date = this.event.eventStartTime.toLocaleDateString("lookup", {
-        day: "numeric",
-        year: "numeric",
-        month: "long",
-      });
-      console.log(date.date);
-      date.startTime = this.event.eventStartTime.toLocaleString("lookup", {
-        hour: "2-digit",
-        minute: "2-digit",
-      });
-      date.endTime = this.event.eventEndTime.toLocaleString("lookup", {
-        hour: "2-digit",
-        minute: "2-digit",
-      });
-      return date;
-    },
+
   },
   props: ["date", "events"],
   components: { SingleDayViewItem },

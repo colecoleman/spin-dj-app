@@ -9,7 +9,7 @@
           {{ businessInfo.businessAddress.address1two }}
         </p>
         <p>{{ businessInfo.businessAddress.address2 }}</p>
-        <p>{{ formattedPhoneNumber(businessInfo.businessPhoneNumber) }}</p>
+        <p>{{ formatPhoneNumber(businessInfo.businessPhoneNumber) }}</p>
         <p>{{ businessInfo.businessEmailAddress }}</p>
       </div>
     </div>
@@ -20,7 +20,7 @@
           <p>
             <span>{{ client.firstName }} {{ client.lastName }}</span>
           </p>
-          <p>{{ formattedPhoneNumber(client.phoneNumber) }}</p>
+          <p>{{ formatPhoneNumber(client.phoneNumber) }}</p>
           <p>{{ client.emailAddress }}</p>
         </div>
         <div class="invoice-item">
@@ -61,15 +61,15 @@
       <tr v-for="item in invoice.packages" :key="item.id">
         <td>{{ item.name }}</td>
         <td>1</td>
-        <td>{{ calculatePackagePrice(item) }}</td>
-        <td>{{ calculatePackagePrice(item) }}</td>
+        <td>{{ calculatePackagePrice(item, event) }}</td>
+        <td>{{ calculatePackagePrice(item, event) }}</td>
       </tr>
 
       <tr v-for="item in invoice.addOns" :key="item.id">
         <td>{{ item.name }}</td>
         <td v-if="item.priceOption === 'unit'">{{ item.eventUnits }}</td>
         <td>{{ formatPrice(item.unitPrice) }}</td>
-        <td>{{ calculateAddOnPrice(item) }}</td>
+        <td>{{ calculateAddOnPrice(item, event) }}</td>
       </tr>
       <tr class="divider">
         <td></td>
@@ -132,7 +132,8 @@
 
 <script>
 import logo from "../../assets/spin-logo.png";
-import dayjs from "dayjs";
+import helpers from "../../helpers.js";
+
 export default {
   data() {
     return {
@@ -145,56 +146,11 @@ export default {
     },
   },
   methods: {
-    calculatePackagePrice(pckg) {
-      let packageTotal = 0;
-      if (pckg.priceOption === "hourly") {
-        if (pckg.baseTime < this.event.eventLength) {
-          let additionalHourly = this.event.eventLength - pckg.baseTime;
-
-          packageTotal =
-            packageTotal + (pckg.baseRate + pckg.addHourly * additionalHourly);
-        }
-        if (pckg.baseTime >= this.event.eventLength) {
-          packageTotal = packageTotal + pckg.baseRate;
-        }
-      }
-      if (pckg.priceOption === "flat") {
-        packageTotal = packageTotal + pckg.flatRate;
-      }
-      console.log(packageTotal);
-      return this.formatPrice(packageTotal);
-    },
-    calculateAddOnPrice(addOn) {
-      let addOnTotal = 0;
-      if (addOn.priceOption === "hourly") {
-        addOnTotal = addOnTotal + addOn.hourlyPrice * this.event.eventLength;
-      }
-      if (addOn.priceOption === "unit") {
-        addOnTotal = addOnTotal + addOn.unitPrice * addOn.eventUnits;
-      }
-      if (addOn.priceOption === "flat") {
-        addOnTotal = addOnTotal + addOn.flatRate;
-      }
-      return this.formatPrice(addOnTotal);
-    },
-    formattedPhoneNumber(num) {
-      var cleaned = ("" + num).replace(/\D/g, "");
-      var match = cleaned.match(/^(1|)?(\d{3})(\d{3})(\d{4})$/);
-      if (match) {
-        var intlCode = match[1] ? "+1 " : "";
-        return [intlCode, "(", match[2], ") ", match[3], "-", match[4]].join(
-          ""
-        );
-      }
-      return null;
-    },
-    formatPrice(n) {
-      let price = n / 100;
-      return `${"$" + price.toLocaleString()}`;
-    },
-    formattedDate(date) {
-      return dayjs(date).format("M/D/YYYY");
-    },
+    calculatePackagePrice: helpers.calculatePackagePrice,
+    calculateAddOnPrice: helpers.calculateAddOnPrice,
+    formatPhoneNumber: helpers.formatPhoneNumber,
+    formattedDate: helpers.formattedDate,
+    formatPrice: helpers.formatPrice,
   },
   props: ["event", "client", "invoice"],
 };

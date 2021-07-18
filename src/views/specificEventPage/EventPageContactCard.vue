@@ -7,10 +7,10 @@
         <h4>{{ event.eventTitle }}</h4>
       </div>
       <div id="date">
-        <p>{{ formatDate.date }}</p>
+        <p>{{ formatDate(event.eventStartTime) }}</p>
         <p>
-          {{ formatDate.startTime }} -
-          {{ formatDate.endTime }}
+          {{ formatTime(event.eventStartTime) }} -
+          {{ formatTime(event.eventEndTime) }}
         </p>
       </div>
       <div id="contact-card-lower-div">
@@ -128,6 +128,7 @@
 <script>
 import BaseCard from "../../components/UI/BaseCard.vue";
 import infoIconSvg from "../../assets/SVGs/info-icon.svg";
+import helpers from "../../helpers.js";
 
 export default {
   data() {
@@ -151,29 +152,10 @@ export default {
         return `'s`;
       }
     },
-    formatDate() {
-      let date = {
-        date: undefined,
-        startTime: undefined,
-        endTime: undefined,
-      };
-      date.date = this.event.eventStartTime.toLocaleDateString("lookup", {
-        day: "numeric",
-        year: "numeric",
-        month: "long",
-      });
-      date.startTime = this.event.eventStartTime.toLocaleString("lookup", {
-        hour: "2-digit",
-        minute: "2-digit",
-      });
-      date.endTime = this.event.eventEndTime.toLocaleString("lookup", {
-        hour: "2-digit",
-        minute: "2-digit",
-      });
-      return date;
-    },
   },
   methods: {
+    formatDate: helpers.formatDate,
+    formatTime: helpers.formatTime,
     editEventField(key, value) {
       if (key === "source") {
         this.editSourceOpen = false;

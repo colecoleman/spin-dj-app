@@ -4,29 +4,30 @@
     <div>
       <h5>{{ notification.title }}</h5>
       <p>{{ notification.body }}</p>
-      <p class="date">{{ formattedDate }}</p>
+      <p class="date">
+        {{
+          `${
+            formatDate(notification.date) + " " + formatTime(notification.date)
+          }`
+        }}
+      </p>
     </div>
   </div>
 </template>
 
 <script>
 import fillableCircle from "../../../assets/SVGs/fillable-circle.svg";
+import helpers from "../../../helpers.js";
+
 export default {
   data() {
     return {
       fillableCircle,
     };
   },
-  computed: {
-    formattedDate() {
-      return this.notification.date.toLocaleDateString("lookup", {
-        day: "numeric",
-        month: "long",
-        year: "numeric",
-        hour: "numeric",
-        minute: "numeric",
-      });
-    },
+  methods: {
+    formatDate: helpers.formatDate,
+    formatTime: helpers.formatTime,
   },
   props: ["notification"],
 };
