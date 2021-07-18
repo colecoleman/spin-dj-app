@@ -74,7 +74,7 @@ export default {
       this.$router.push("/clients/" + id);
     },
   },
-  props: ["contact", "id"],
+  props: ["contact", "id", "icon"],
 };
 </script>
 

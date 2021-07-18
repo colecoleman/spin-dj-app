@@ -1,6 +1,6 @@
 <template>
   <div class="site-header">
-    <img src="@/assets/spin-logo.png" alt="" />
+    <img src="@/assets/company-logo.svg" alt="" />
     <tab-switcher></tab-switcher>
     <search-bar></search-bar>
     <notification-button></notification-button>
@@ -42,7 +42,8 @@ export default {
 }
 
 .site-header img {
-  height: 50px;
+  height: 100px;
+  width: 125px;
   margin: 15px;
 }
 

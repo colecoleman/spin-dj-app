@@ -2,12 +2,10 @@
   <div id="section-wrapper">
     <div id="left-column">
       <div id="box-one">
-        <base-card :icon="personsvg">
-          <template v-slot:title>Contact</template>
-          <template v-slot:content>
-            <contact-card-person :contact="contact"></contact-card-person>
-          </template>
-        </base-card>
+        <contact-card-person
+          :contact="contact"
+          :icon="personsvg"
+        ></contact-card-person>
       </div>
       <div id="box-two">
         <to-do-specific-client :id="contact.id"></to-do-specific-client>
@@ -15,22 +13,13 @@
     </div>
     <div id="right-column">
       <div id="box-three">
-        <base-card :icon="calendarsvg">
-          <template v-slot:title>Upcoming Events</template>
-          <template v-slot:content
-            ><contact-page-upcoming-events
-              :id="contact.id"
-            ></contact-page-upcoming-events
-          ></template>
-        </base-card>
+        <contact-page-upcoming-events
+          :id="contact.id"
+          :icon="calendarsvg"
+        ></contact-page-upcoming-events>
       </div>
       <div id="box-four">
-        <base-card :icon="automationsvg">
-          <template v-slot:title>Automation</template>
-          <template v-slot:content>
-            <automation-contact-component></automation-contact-component>
-          </template>
-        </base-card>
+        <automation-contact-component></automation-contact-component>
       </div>
       <div id="box-five">
         <base-card :icon="messageBubble">
@@ -105,7 +94,7 @@ svg {
 }
 
 #left-column {
-  width: 40%;
+  width: 35%;
   height: 100%;
   /* display: flex; */
   flex-direction: column;
@@ -119,7 +108,7 @@ svg {
 }
 
 #right-column {
-  width: 100%;
+  width: 65%;
   height: calc(100% - 5px);
 }
 

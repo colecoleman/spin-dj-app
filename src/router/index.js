@@ -26,16 +26,12 @@ import UserSettingsAddOnsAddNew from "../components/userSettings/userSettingsAdd
 import UserSettingsAddOnsEditExisting from "../components/userSettings/userSettingsAddOns/UserSettingsAddOnsEditExisting.vue";
 import UserSettingsDataImport from "../components/userSettings/userSettingsDataImport/UserSettingsDataImport.vue";
 
-// import EventSpecificPageAdminView from '../eventViews/eventViewsAdmin/EventSpecificPageAdminView.vue'
-
-
 const routes = [
   { 
     path: '/',
     name: "dash",
     component: EventManager
   }, 
-
   {
   path: '/contacts/',
   name: 'contacts',
@@ -71,72 +67,63 @@ const routes = [
     name: 'specificContactPageOrganizer',
     component: SpecificContactPageOrganizer
   },      
- 
-
-      {
-        path: '/events/:id',
-        name: 'specificEventPage',
-        component: SpecificEventPage
-      },
-    
-  
+  {
+    path: '/events/:id',
+    name: 'specificEventPage',
+    component: SpecificEventPage
+  },
   { path: '/config',
     name: 'config',
     components: {navigation: ConfigTab, main: UserSettingsPackages }},
   { path: '/manager',
     name: 'managernav',
     component: { navigation: ManagerTab }},
-
-
-
-
-
-    { path: '/packages',
-      name: 'packages',
-      components: {navigation: ConfigTab, main: UserSettingsPackages}},
-    { path: '/addnewpackage',
-      name: 'addnewpackage',
-      components: {navigation: ConfigTab, main: UserSettingsPackagesAddNew}},
-    { path: '/editpackage/:packageid',
-      name: 'editpackage',
-      components: {navigation: ConfigTab, main: UserSettingsPackagesEditExisting}},
-    { path: '/services',
-      name: 'services',
-      components: {navigation: ConfigTab, main: UserSettingsServices}},
-    { path: '/addnewservice',
-      name: 'addnewservice',
-      components: {navigation: ConfigTab, main: UserSettingsServicesAddNew}},
-    { path: '/editservice/:serviceid',
-      name: 'editservice',
-      components: {navigation: ConfigTab, main: UserSettingsServicesEditExisting}},
-    { path: '/equipment',
-      name: 'equipment',
-      components: {navigation: ConfigTab, main: UserSettingsEquipment}},
-    { path: '/addnewequipment',
-      name: 'addnewequipment',
-      components: {navigation: ConfigTab, main: UserSettingsEquipmentAddNew}},
-    { path: '/editequipment/:equipmentid',
-      name: 'editequipment',
-      components: {navigation: ConfigTab, main: UserSettingsEquipmentEditExisting}},
-    { path: '/addons',
-      name: 'addons',
-      components: {navigation: ConfigTab, main: UserSettingsAddOns}},
-    { path: '/addnewaddon',
-      name: 'addnewaddon',
-      components: {navigation: ConfigTab, main: UserSettingsAddOnsAddNew}},
-    { path: '/editaddon/:addonid',
-      name: 'editaddon',
-      components: {navigation: ConfigTab, main: UserSettingsAddOnsEditExisting}},
-    { path: '/dataimport',
-      name: 'dataimport',
-      components: {navigation: ConfigTab, main: UserSettingsDataImport}},
-    {
-      path: '/general/',
-      name: "general",
-      components: {
-        navigation: ConfigTab, main: GeneralSettings
-      }
-    },
+  { path: '/packages',
+    name: 'packages',
+    components: {navigation: ConfigTab, main: UserSettingsPackages}},
+  { path: '/addnewpackage',
+    name: 'addnewpackage',
+    components: {navigation: ConfigTab, main: UserSettingsPackagesAddNew}},
+  { path: '/editpackage/:packageid',
+    name: 'editpackage',
+    components: {navigation: ConfigTab, main: UserSettingsPackagesEditExisting}},
+  { path: '/services',
+    name: 'services',
+    components: {navigation: ConfigTab, main: UserSettingsServices}},
+  { path: '/addnewservice',
+    name: 'addnewservice',
+    components: {navigation: ConfigTab, main: UserSettingsServicesAddNew}},
+  { path: '/editservice/:serviceid',
+    name: 'editservice',
+    components: {navigation: ConfigTab, main: UserSettingsServicesEditExisting}},
+  { path: '/equipment',
+    name: 'equipment',
+    components: {navigation: ConfigTab, main: UserSettingsEquipment}},
+  { path: '/addnewequipment',
+    name: 'addnewequipment',
+    components: {navigation: ConfigTab, main: UserSettingsEquipmentAddNew}},
+  { path: '/editequipment/:equipmentid',
+    name: 'editequipment',
+    components: {navigation: ConfigTab, main: UserSettingsEquipmentEditExisting}},
+  { path: '/addons',
+    name: 'addons',
+    components: {navigation: ConfigTab, main: UserSettingsAddOns}},
+  { path: '/addnewaddon',
+    name: 'addnewaddon',
+    components: {navigation: ConfigTab, main: UserSettingsAddOnsAddNew}},
+  { path: '/editaddon/:addonid',
+    name: 'editaddon',
+    components: {navigation: ConfigTab, main: UserSettingsAddOnsEditExisting}},
+  { path: '/dataimport',
+    name: 'dataimport',
+    components: {navigation: ConfigTab, main: UserSettingsDataImport}},
+  {
+    path: '/general/',
+    name: "general",
+    components: {
+      navigation: ConfigTab, main: GeneralSettings
+    }
+  },
 
 ];
 const router = createRouter({
