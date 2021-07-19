@@ -26,7 +26,7 @@
 </template>
 
 <script>
-import defaultProfilePicture from "../../../assets/default-profile-picture.png";
+import defaultProfilePicture from "../../../assets/default-profile-picture.svg";
 export default {
   data() {
     return {
@@ -52,8 +52,6 @@ img {
   width: 75px;
 }
 
-
-
 h5 {
   font-weight: 300;
   margin: 2px;
@@ -63,7 +61,6 @@ h5 {
 h5 span {
   font-weight: 600;
 }
-
 
 p {
   font-size: 8pt;

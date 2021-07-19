@@ -1,5 +1,8 @@
 <template>
-  <div id="application-wrapper">
+  <div
+    id="application-wrapper"
+    :style="{ backgroundColor: backgroundColor, color: textColor }"
+  >
     <div id="header">
       <the-header></the-header>
     </div>
@@ -14,13 +17,23 @@
 <script>
 /* eslint-disable */
 import TheHeader from "./components/Header/TheHeader.vue";
-
 import EventManager from "./views/DashboardViews/EventManager.vue";
 
 export default {
+  computed: {
+    backgroundColor() {
+      return this.$store.state.businessSettings.brandingPreferences
+        .backgroundColor;
+    },
+    branding() {
+      return this.$store.state.businessSettings.brandingPreferences;
+    },
+    textColor() {
+      return this.$store.state.businessSettings.brandingPreferences.textColor;
+    },
+  },
   components: {
     TheHeader,
-
     EventManager,
   },
 };
@@ -38,7 +51,6 @@ body {
   padding: 0px;
   overflow: hidden;
   position: fixed;
-  color: white;
 }
 
 #app {
@@ -46,7 +58,6 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: white;
   max-height: 100vh;
   max-width: 100vw;
   display: flex;
@@ -62,6 +73,10 @@ h4 {
   font-size: 15px;
   text-transform: uppercase;
   margin: 0;
+}
+
+a {
+  text-decoration: none;
 }
 
 #application-wrapper {
@@ -92,13 +107,6 @@ textarea {
   border-radius: 5px;
   padding: 3px;
 }
-
-/* #left-div {
-  flex-direction: column;
-  min-width: 20%;
-
-  height: inherit;
-} */
 
 #navigation-div {
   height: calc(100% - 20px);

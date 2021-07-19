@@ -161,7 +161,7 @@
 
 <script>
 import FullPagePopup from "../../components/UI/FullPagePopup.vue";
-import ContractPopupDocumentView from "./ContractPopupDocumentView.vue";
+import ContractPopupDocumentView from "../SpecificEventPage/ContractPopupDocumentView.vue";
 import ButtonStandardWithIcon from "../../components/UI/ButtonStandardWithIcon.vue";
 import helpers from "../../helpers.js";
 

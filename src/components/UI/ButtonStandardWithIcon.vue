@@ -1,5 +1,5 @@
 <template>
-  <div class="button-standard-with-icon">
+  <div class="button-standard-with-icon" :style="cssVars">
     <h5>{{ text }}</h5>
     <img v-if="icon" :src="icon" alt="" />
   </div>
@@ -7,6 +7,26 @@
 
 <script>
 export default {
+  computed: {
+    foregroundColor() {
+      return this.$store.state.businessSettings.brandingPreferences
+        .foregroundColor;
+    },
+    backgroundColor() {
+      return this.$store.state.businessSettings.brandingPreferences
+        .backgroundColor;
+    },
+    textColor() {
+      return this.$store.state.businessSettings.brandingPreferences.textColor;
+    },
+    cssVars() {
+      return {
+        "--textcolor": this.textColor,
+        "--backgroundColor": this.backgroundColor,
+        "--foregroundColor": this.foregroundColor,
+      };
+    },
+  },
   props: ["text", "icon"],
 };
 </script>
@@ -16,14 +36,12 @@ export default {
   display: flex;
   flex-direction: row;
   align-items: center;
-  align-content: center;
   justify-content: center;
   text-transform: uppercase;
   margin: 10px;
   padding: 5px 15px 5px 5px;
-  border: 1px solid white;
+  border: 1px solid var(--textcolor);
   border-radius: 7px;
-  fill: white;
 }
 
 .button-standard-with-icon:hover {
@@ -31,13 +49,7 @@ export default {
 }
 
 .button-standard-with-icon:active {
-  background: white;
-  color: black;
-  fill: black;
-}
-
-.button-standard-with-icon:active > img {
-  fill: black;
+  filter: invert(100%);
 }
 
 img {

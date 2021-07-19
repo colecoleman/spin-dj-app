@@ -3,22 +3,7 @@
     <template v-slot:title>Event Contacts</template>
     <template v-slot:content>
       <div id="contact-carousel-top-wrapper">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="11.69"
-          height="20"
-          viewBox="0 0 11.69 23.616"
-          class="arrow"
-          @click="scrollToPreviousElement()"
-        >
-          <path
-            id="Icon_ionic-ios-arrow-down"
-            data-name="Icon ionic-ios-arrow-down"
-            d="M11.812,8.166,20.742.429a1.869,1.869,0,0,1,2.384,0,1.337,1.337,0,0,1,0,2.07L13.008,11.265a1.878,1.878,0,0,1-2.327.043L.492,2.5A1.367,1.367,0,0,1,0,1.47,1.367,1.367,0,0,1,.492.435a1.869,1.869,0,0,1,2.384,0Z"
-            transform="translate(11.69) rotate(90)"
-            fill="#fff"
-          />
-        </svg>
+        <img @click="scrollToPreviousElement()" :src="leftArrow" alt="" />
 
         <div id="contact-carousel-wrapper">
           <event-page-contact-carousel-item
@@ -29,21 +14,7 @@
             @click="navigateToContactPage(contact)"
           ></event-page-contact-carousel-item>
         </div>
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="11.69"
-          height="20"
-          viewBox="0 0 11.69 23.616"
-        >
-          <path
-            id="Icon_ionic-ios-arrow-down"
-            data-name="Icon ionic-ios-arrow-down"
-            d="M11.812,8.166,20.742.429a1.869,1.869,0,0,1,2.384,0,1.337,1.337,0,0,1,0,2.07L13.008,11.265a1.878,1.878,0,0,1-2.327.043L.492,2.5A1.367,1.367,0,0,1,0,1.47,1.367,1.367,0,0,1,.492.435a1.869,1.869,0,0,1,2.384,0Z"
-            transform="translate(0 23.616) rotate(-90)"
-            fill="#fff"
-            @click="scrollToNextElement()"
-          />
-        </svg>
+        <img @click="scrollToNextElement()" :src="rightArrow" alt="" />
       </div>
     </template>
   </base-card>
@@ -52,12 +23,16 @@
 <script>
 import BaseCard from "../../../components/UI/BaseCard.vue";
 import EventPageContactCarouselItem from "./EventPageContactCarouselItem.vue";
+import rightArrow from "../../../assets/SVGs/right-arrow.svg";
+import leftArrow from "../../../assets/SVGs/left-arrow.svg";
 import groupPeopleSvg from "../../../assets/SVGs/group-people.svg";
 
 export default {
   data() {
     return {
       groupPeopleSvg,
+      rightArrow,
+      leftArrow,
     };
   },
   props: ["contacts"],
@@ -121,5 +96,10 @@ export default {
   height: 90%;
   overflow: scroll;
   white-space: nowrap;
+}
+
+img {
+  height: 15px;
+  width: 15px;
 }
 </style>

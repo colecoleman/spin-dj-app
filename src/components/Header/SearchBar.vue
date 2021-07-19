@@ -1,16 +1,37 @@
 <template>
-  <div>
-    <input type="text" placeholder="Search..." />
+  <div id="search-bar-container" :style="cssVars">
+    <input type="text" placeholder="Search..." :style="cssVars" />
   </div>
 </template>
 
 <script>
-export default {};
+export default {
+  computed: {
+    foregroundColor() {
+      return this.$store.state.businessSettings.brandingPreferences
+        .foregroundColor;
+    },
+    cardOutline() {
+      return this.$store.state.businessSettings.brandingPreferences.cardOutline;
+    },
+    textColor() {
+      return this.$store.state.businessSettings.brandingPreferences.textColor;
+    },
+    cssVars() {
+      return {
+        "--cardOutline": this.cardOutline,
+        "--foregroundColor": this.foregroundColor,
+        "--textcolor": this.textColor,
+      };
+    },
+  },
+};
 </script>
 
 <style scoped>
-div {
-  background-color: black;
+#search-bar-container {
+  background-color: var(--foregroundColor);
+  border: 1px solid var(--cardOutline);
   border-radius: 25px;
   height: 100%;
   width: 100%;
@@ -22,6 +43,7 @@ div {
 }
 input {
   width: 90%;
+  color: var(--textcolor);
   background: none;
   border: none;
   font-family: montserrat, sans-serif;
@@ -31,7 +53,7 @@ input {
 }
 input:focus {
   outline: none;
-  color: white;
+  /* color: white; */
 }
 
 input::placeholder {

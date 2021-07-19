@@ -1,5 +1,5 @@
 <template>
-  <div id="messaging-wrapper">
+  <div id="messaging-wrapper" :style="cssVars">
     <div id="contact-identification">
       <p @click="navigateToEventPage(contact.id)">
         {{ contact.firstName + " " + contact.lastName }}
@@ -49,29 +49,41 @@
     </div>
     <div class="input-field">
       <input type="text" placeholder="Start typing..." />
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="28"
-        height="28"
-        viewBox="0 0 28 28"
-      >
-        <path
-          id="Icon_awesome-arrow-alt-circle-down"
-          data-name="Icon awesome-arrow-alt-circle-down"
-          d="M28,14A14,14,0,1,1,14,0,14,14,0,0,1,28,14ZM11.516,7.452V14h-4a.678.678,0,0,0-.48,1.157L13.52,21.61a.671.671,0,0,0,.954,0l6.486-6.452A.677.677,0,0,0,20.481,14h-4V7.452a.679.679,0,0,0-.677-.677H12.194A.679.679,0,0,0,11.516,7.452Z"
-          transform="translate(28 28) rotate(180)"
-          fill="#fff"
-        />
-      </svg>
+      <img :src="circleArrowUp" alt="" />
     </div>
   </div>
 </template>
 
 <script>
+import circleArrowUp from "../../assets/SVGs/circle-arrow-up.svg";
+
 export default {
+  data() {
+    return {
+      circleArrowUp,
+    };
+  },
   methods: {
     navigateToEventPage(id) {
       this.$router.push("/clients/" + id);
+    },
+  },
+  computed: {
+    notificationItems() {
+      return this.$store.state.notifications;
+    },
+    foregroundColor() {
+      return this.$store.state.businessSettings.brandingPreferences
+        .foregroundColor;
+    },
+    cardOutline() {
+      return this.$store.state.businessSettings.brandingPreferences.cardOutline;
+    },
+    cssVars() {
+      return {
+        "--cardOutline": this.cardOutline,
+        "--foregroundColor": this.foregroundColor,
+      };
     },
   },
   props: ["contact", "id", "icon"],
@@ -86,10 +98,13 @@ export default {
 }
 #contact-identification {
   position: absolute;
-  background-color: black;
+  background-color: var(--foregroundColor);
   z-index: 5;
   padding-right: 10px;
   top: -10px;
+  border: 1px solid var(--cardOutline);
+  border-top: 0;
+  border-left: 0;
   border-radius: 0 0 10px 0;
   font-weight: 600;
   cursor: pointer;
@@ -122,13 +137,14 @@ export default {
   align-self: flex-end;
   background-color: white;
   color: black;
+  border: 1px solid var(--cardOutline);
   border-radius: 15px 15px 2px 15px;
 }
 
 .input-field {
   height: 15%;
   justify-content: center;
-  align-items: flex-end;
+  align-items: center;
   width: 100%;
   display: flex;
   flex-direction: row;
@@ -146,7 +162,9 @@ input:focus {
   outline: none;
 }
 
-svg {
+img {
+  height: 20px;
+  width: 20px;
   margin-left: 10px;
 }
 </style>

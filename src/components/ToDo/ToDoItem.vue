@@ -1,5 +1,5 @@
 <template>
-  <div id="to-do-item" @click="clickToDo(toDo.id)">
+  <div id="to-do-item" @click="clickToDo(toDo.id)" :style="cssVars">
     <svg
       xmlns="http://www.w3.org/2000/svg"
       width="21"
@@ -11,8 +11,8 @@
         data-name="Icon feather-circle"
         d="M22,12.5A9.5,9.5,0,1,1,12.5,3,9.5,9.5,0,0,1,22,12.5Z"
         transform="translate(-2 -2)"
-        :fill="clicked || toDo.completed ? `#fff` : `none`"
-        stroke="#fff"
+        :fill="clicked || toDo.completed ? textColor : `none`"
+        :stroke="textColor"
         stroke-linecap="round"
         stroke-linejoin="round"
         stroke-width="2"
@@ -23,9 +23,12 @@
 </template>
 
 <script>
+import circleSvg from "../../assets/SVGs/fillable-circle.svg";
+
 export default {
   data() {
     return {
+      circleSvg,
       clicked: false,
     };
   },
@@ -39,6 +42,25 @@ export default {
           console.log("bitchass", id);
         }, 500);
       }
+    },
+  },
+  computed: {
+    foregroundColor() {
+      return this.$store.state.businessSettings.brandingPreferences
+        .foregroundColor;
+    },
+    cardOutline() {
+      return this.$store.state.businessSettings.brandingPreferences.cardOutline;
+    },
+    textColor() {
+      return this.$store.state.businessSettings.brandingPreferences.textColor;
+    },
+    cssVars() {
+      return {
+        "--cardOutline": this.cardOutline,
+        "--foregroundColor": this.foregroundColor,
+        "--textColor": this.textColor,
+      };
     },
   },
 };
@@ -76,7 +98,7 @@ h4 {
   left: 0;
   width: 100%;
   height: 2px;
-  background: white;
+  background: var(--textColor);
   animation-name: strike;
   animation-duration: 0.3s;
   animation-timing-function: linear;

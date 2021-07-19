@@ -5,6 +5,7 @@
       :key="name"
       @click="scroll(`${name + '-card'}`)"
       :class="activeLink === `${name + '-card'}` ? 'active-link' : ' '"
+      :style="{ color: brandingPreferences.textColor }"
     >
       {{ name }}
     </li>
@@ -21,6 +22,9 @@ export default {
   computed: {
     contacts() {
       return this.$store.state.contacts;
+    },
+    brandingPreferences() {
+      return this.$store.state.businessSettings.brandingPreferences;
     },
   },
   methods: {

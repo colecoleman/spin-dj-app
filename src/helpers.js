@@ -167,3 +167,11 @@ export default class Helpers {
         return `${"$" + price.toLocaleString()}`;
     }
 }
+
+export class Routers {
+
+  static navigateToClientPage(id) {
+    this.$router.push("contacts/clients/" + id);
+  }
+
+}

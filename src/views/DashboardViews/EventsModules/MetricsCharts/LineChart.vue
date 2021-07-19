@@ -14,26 +14,106 @@
 export default {
   data() {
     return {
-      chartOptions: {
+      // chartOptions: {
+      //   chart: {
+      //     id: "vuechart-example",
+      //     toolbar: {
+      //       show: false,
+      //     },
+      //   },
+      //   colors: [
+      //     console.log(this.highlightColor),
+      //     this.highlightColor,
+      //     `"${this.highlightColor}"`,
+      //   ],
+      //   stroke: {
+      //     curve: "smooth",
+      //   },
+      //   dataLabels: {
+      //     style: {
+      //       colors: ["#ffffff"],
+      //     },
+      //   },
+      //   yaxis: {
+      //     labels: {
+      //       style: {
+      //         colors: "#ffffff",
+      //         fontFamily: "montserrat, arial, sans-serif",
+      //         fontWeight: 600,
+      //       },
+      //     },
+      //   },
+      //   xaxis: {
+      //     categories: [
+      //       "Jan",
+      //       "Feb",
+      //       "Mar",
+      //       "Apr",
+      //       "May",
+      //       "Jun",
+      //       "Jul",
+      //       "Aug",
+      //       "Sep",
+      //       "Oct",
+      //       "Nov",
+      //       "Dec",
+      //     ],
+      //     labels: {
+      //       rotate: 0,
+      //       rotateAlways: false,
+      //       style: {
+      //         colors: "#ffffff",
+      //         fontFamily: "montserrat, arial, sans-serif",
+      //         fontWeight: 600,
+      //       },
+      //     },
+      //   },
+      //   markers: {
+      //     size: 0.5,
+      //   },
+      //   tooltip: {
+      //     fillSeriesColor: false,
+      //     theme: "dark",
+      //     x: {
+      //       show: false,
+      //     },
+      //     y: {},
+      //   },
+      // },
+      series: [
+        {
+          name: "Event Count",
+          data: [30, 40, 35, 50, 49, 60, 70, 12, 34, 67, 89, 12],
+        },
+      ],
+    };
+  },
+  computed: {
+    brandingPreferences() {
+      return this.$store.state.businessSettings.brandingPreferences;
+    },
+    chartOptions() {
+      return {
         chart: {
           id: "vuechart-example",
           toolbar: {
             show: false,
           },
         },
-        colors: ["#00f5ff", "#ffffff"],
+        colors: [this.brandingPreferences.highlightColor, "#000000"],
         stroke: {
           curve: "smooth",
         },
         dataLabels: {
           style: {
-            colors: ["#ffffff"],
+            colors: [this.brandingPreferences.textColor],
           },
         },
         yaxis: {
           labels: {
             style: {
-              colors: "#ffffff",
+              colors: [this.brandingPreferences.textColor],
+
               fontFamily: "montserrat, arial, sans-serif",
               fontWeight: 600,
             },
@@ -58,7 +138,8 @@ export default {
             rotate: 0,
             rotateAlways: false,
             style: {
-              colors: "#ffffff",
+              colors: [this.brandingPreferences.textColor],
+
               fontFamily: "montserrat, arial, sans-serif",
               fontWeight: 600,
             },
@@ -75,14 +156,8 @@ export default {
           },
           y: {},
         },
-      },
-      series: [
-        {
-          name: "Event Count",
-          data: [30, 40, 35, 50, 49, 60, 70, 12, 34, 67, 89, 12],
-        },
-      ],
-    };
+      };
+    },
   },
 };
 </script>

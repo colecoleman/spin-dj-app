@@ -1,5 +1,5 @@
 <template>
-  <section id="section">
+  <section id="section" :style="cssVars">
     <p
       v-for="(action, index) in actions"
       :key="index"
@@ -17,6 +17,25 @@ export default {
       this.$emit("actionClicked", action, this.identifier);
     },
   },
+  computed: {
+    foregroundColor() {
+      return this.$store.state.businessSettings.brandingPreferences
+        .foregroundColor;
+    },
+    cardOutline() {
+      return this.$store.state.businessSettings.brandingPreferences.cardOutline;
+    },
+    textColor() {
+      return this.$store.state.businessSettings.brandingPreferences.textColor;
+    },
+    cssVars() {
+      return {
+        "--cardOutline": this.cardOutline,
+        "--foregroundColor": this.foregroundColor,
+        "--textcolor": this.textColor,
+      };
+    },
+  },
   props: ["actions", "identifier"],
   components: {},
 };
@@ -28,11 +47,13 @@ export default {
   padding: 10px;
   top: 15px;
   right: 0;
-  background-color: black;
+  background-color: var(--foregroundColor);
   width: fit-content;
   height: fit-content;
   z-index: 100;
-  box-shadow: 0px 5px 10px rgba(255, 255, 255, 0.4);
+  box-shadow: 0px 5px 10px rgba(122, 122, 122, 0.4);
+  border: 1px solid var(--cardOutline);
+  border-top: 0;
   border-radius: 5px 5px 15px 15px;
 }
 

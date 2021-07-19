@@ -2,64 +2,16 @@
   <base-card :icon="clipboardsvg">
     <template v-slot:title>To-Do</template>
     <template v-slot:content>
-      <div id="wrapper">
+      <div id="wrapper" :style="cssVars">
         <div class="to-do-item" v-if="newToDoOpened">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="14"
-            height="14"
-            viewBox="0 0 21 21"
-          >
-            <g
-              id="Group_395"
-              data-name="Group 395"
-              transform="translate(1.5 1.5)"
-            >
-              <path
-                id="Path_71"
-                data-name="Path 71"
-                d="M18,7.5v18"
-                transform="translate(-9 -7.5)"
-                fill="none"
-                stroke="#fff"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="3"
-              />
-              <path
-                id="Path_72"
-                data-name="Path 72"
-                d="M7.5,18h18"
-                transform="translate(-7.5 -9)"
-                fill="none"
-                stroke="#fff"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="3"
-              />
-            </g>
-          </svg>
+          <img :src="plusbuttonsvg" alt="" />
           <input
             type="text"
             placeholder="Start typing.."
             v-model="newToDo"
             @keyup.enter="submitToDo()"
           />
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="13.6"
-            height="13.6"
-            viewBox="0 0 13.6 13.6"
-          >
-            <path
-              id="Icon_awesome-check-circle"
-              data-name="Icon awesome-check-circle"
-              d="M13.928,7.128a6.8,6.8,0,1,1-6.8-6.8A6.8,6.8,0,0,1,13.928,7.128Zm-7.587,3.6,5.045-5.045a.439.439,0,0,0,0-.62l-.62-.62a.439.439,0,0,0-.62,0L6.031,8.557,4.11,6.636a.439.439,0,0,0-.62,0l-.62.62a.439.439,0,0,0,0,.62l2.852,2.852A.439.439,0,0,0,6.342,10.729Z"
-              transform="translate(-0.328 -0.328)"
-              fill="#fff"
-              @click="submitToDo()"
-            />
-          </svg>
+          <img :src="circleCheckmarkSvg" @click="submitToDo()" alt="" />
         </div>
         <div class="to-do-item" v-for="toDo in uncompletedToDos" :key="toDo.id">
           <to-do-item :toDo="toDo"></to-do-item>
@@ -88,12 +40,14 @@ import ToDoItem from "../../../components/ToDo/ToDoItem.vue";
 import BaseCard from "../../../components/UI/BaseCard.vue";
 import clipboardsvg from "../../../assets/SVGs/clipboard.svg";
 import plusbuttonsvg from "../../../assets/SVGs/plus-sign.svg";
+import circleCheckmarkSvg from "../../../assets/SVGs/circle-checkmark.svg";
 
 export default {
   data() {
     return {
       clipboardsvg,
       plusbuttonsvg,
+      circleCheckmarkSvg,
       newToDoOpened: false,
       newToDo: undefined,
     };
@@ -122,6 +76,23 @@ export default {
     },
     completedToDos() {
       return this.toDos.filter((item) => item.completed);
+    },
+    foregroundColor() {
+      return this.$store.state.businessSettings.brandingPreferences
+        .foregroundColor;
+    },
+    cardOutline() {
+      return this.$store.state.businessSettings.brandingPreferences.cardOutline;
+    },
+    textColor() {
+      return this.$store.state.businessSettings.brandingPreferences.textColor;
+    },
+    cssVars() {
+      return {
+        "--cardOutline": this.cardOutline,
+        "--foregroundColor": this.foregroundColor,
+        "--textColor": this.textColor,
+      };
     },
   },
   components: { ToDoItem, BaseCard },
@@ -165,7 +136,7 @@ input {
   background: none;
   border: none;
   border-bottom: 1px solid gray;
-  color: white;
+  color: var(--textColor);
   font-family: Montserrat, sans-serif;
 }
 

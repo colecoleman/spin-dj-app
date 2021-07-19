@@ -4,19 +4,14 @@
     @click="toggleClick()"
     @mousedown.prevent=""
     :class="isClicked ? `` : `pointer`"
+    :style="cssVars"
   >
-    <svg
-      width="24"
-      height="24"
-      viewBox="0 0 30.553 30.553"
+    <img
+      :src="plusButton"
       :class="isClicked ? `clicked` : `unclicked`"
-    >
-      <path
-        d="M37.616,22.339H26.144V10.867a1.9,1.9,0,0,0-3.8,0V22.339H10.867a1.9,1.9,0,0,0,0,3.8H22.339V37.616a1.9,1.9,0,0,0,3.8,0V26.144H37.616a1.9,1.9,0,0,0,0-3.8Z"
-        transform="translate(-8.965 -8.965)"
-        fill="#fff"
-      />
-    </svg>
+      alt=""
+    />
+
     <div id="add-button-popup-div">
       <transition name="fade1">
         <div v-if="isClicked" id="add-button-popup-container">
@@ -45,10 +40,13 @@
 </template>
 
 <script>
+import plusButton from "../../assets/SVGs/plus-sign.svg";
+
 // import BaseCardNoHeading from "../UI/BaseCardNoHeading.vue";
 export default {
   data() {
     return {
+      plusButton,
       isClicked: false,
     };
   },
@@ -61,35 +59,49 @@ export default {
     clickHandler() {
       return this.isClicked === true ? "clicked" : "unclicked";
     },
+    foregroundColor() {
+      return this.$store.state.businessSettings.brandingPreferences
+        .foregroundColor;
+    },
+    cardOutline() {
+      return this.$store.state.businessSettings.brandingPreferences.cardOutline;
+    },
+    textColor() {
+      return this.$store.state.businessSettings.brandingPreferences.textColor;
+    },
+    cssVars() {
+      return {
+        "--cardOutline": this.cardOutline,
+        "--foregroundColor": this.foregroundColor,
+      };
+    },
   },
   // components: { BaseCardNoHeading },
 };
 </script>
 
 <style scoped>
-svg {
-  transform: rotate(45deg);
+img {
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+  height: 20px;
+  z-index: 12;
 }
-
-/* h3 {
-  font-size: 20px;
-  width: 100%;
-  padding: 5px;
-} */
-
-/* #popup-inner-wrapper { */
-/* width: 100%; */
-/* height: 100%; */
-/* } */
 
 #new-container {
   text-align: left;
-  color: white;
+  /* color: white; */
   border-bottom: 1px solid white;
 }
 
 a {
-  color: white;
+  color: var(--textcolor);
   text-decoration: none;
 }
 
@@ -106,7 +118,7 @@ a {
   left: calc(-50% - 20px);
   top: 0;
   padding: 30px;
-  background-color: black;
+  background-color: var(--foregroundColor);
   border: 1px solid white;
   border-radius: 25px;
   z-index: 3;
@@ -151,20 +163,13 @@ ul {
   position: relative;
   max-width: 60px;
   height: 60px;
-  background-color: black;
+  background-color: var(--foregroundColor);
+  border: 1px solid var(--cardOutline);
   border-radius: 50px;
   margin: 10px;
   flex: 1;
 }
 svg {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  margin: auto;
-  height: 20px;
-  z-index: 12;
 }
 
 .clicked {

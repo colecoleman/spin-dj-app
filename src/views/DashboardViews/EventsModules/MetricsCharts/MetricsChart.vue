@@ -20,6 +20,7 @@ export default {
       metricsChartsvg,
     };
   },
+  
   components: { LineChart, BaseCard },
 };
 </script>
@@ -27,39 +28,6 @@ export default {
 <style scoped>
 #metrics-chart-container {
   height: 100%;
-}
-#div-heading {
-  display: flex;
-  flex-direction: row;
-  width: 100%;
-  justify-content: space-between;
-}
-
-#leftmost-heading {
-  flex: 1;
-  display: flex;
-  justify-content: left;
-  align-items: center;
-}
-
-#leftmost-heading svg {
-  padding: 5px;
-}
-
-#rightmost-heading {
-  display: flex;
-  text-align: right;
-  justify-content: right;
-  align-items: center;
-}
-
-h4 span {
-  font-weight: 200;
-}
-
-#rightmost-heading svg {
-  transform: rotate(45deg);
-  margin: 5px;
 }
 
 #chart-content {

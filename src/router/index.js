@@ -38,7 +38,7 @@ const routes = [
   component: ContactsList,
   },
   {
-    path: '/contacts/clients/:id',
+    path: '/clients/:id',
     name: 'specificContactPageClient',
     component: SpecificContactPageClient
   },

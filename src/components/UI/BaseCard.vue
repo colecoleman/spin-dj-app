@@ -1,5 +1,5 @@
 <template>
-  <div class="card">
+  <div class="card" :style="cssVars">
     <div id="heading">
       <img :src="icon" alt="" />
       <slot name="icon"></slot>
@@ -7,7 +7,8 @@
         <slot name="title"></slot>
       </h3>
       <div class="right-top">
-        <slot name="action1" class="right-top"></slot>
+        <img :src="actionIcon" alt="" />
+        <slot name="action1" class="right-top">{{ brandingPreferences }}</slot>
       </div>
     </div>
     <div id="content">
@@ -21,7 +22,22 @@
 
 <script>
 export default {
-  props: ["icon"],
+  computed: {
+    foregroundColor() {
+      return this.$store.state.businessSettings.brandingPreferences
+        .foregroundColor;
+    },
+    cardOutline() {
+      return this.$store.state.businessSettings.brandingPreferences.cardOutline;
+    },
+    cssVars() {
+      return {
+        "--cardOutline": this.cardOutline,
+        "--foregroundColor": this.foregroundColor,
+      };
+    },
+  },
+  props: ["icon", "actionIcon"],
 };
 </script>
 
@@ -42,8 +58,9 @@ export default {
 }
 
 .card {
-  background-color: black;
+  border: 1px solid var(--cardOutline);
   border-radius: 25px;
+  background-color: var(--foregroundColor);
   align-items: stretch;
   width: calc(100% - 40px);
   max-width: calc(100% - 80px);

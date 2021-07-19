@@ -47,13 +47,7 @@
           <div class="month-heading" @click="toggleMonthSelector">
             <div id="text">
               <h4>{{ `${displayedMonth + ", "}` }} {{ masterYear }}</h4>
-              <svg width="15" height="13.503" viewBox="0 0 22.55 13.503">
-                <path
-                  d="M17.467,20.679l8.526-8.937a1.554,1.554,0,0,1,2.276,0,1.76,1.76,0,0,1,0,2.391L18.608,24.258a1.557,1.557,0,0,1-2.222.049L6.657,14.14a1.755,1.755,0,0,1,0-2.391,1.554,1.554,0,0,1,2.276,0Z"
-                  transform="translate(-6.188 -11.246)"
-                  fill="#fff"
-                />
-              </svg>
+              <img :src="downArrow" alt="" />
             </div>
           </div>
           <div id="body">
@@ -62,13 +56,7 @@
               @click="monthChange(`backward`)"
               @mousedown.prevent=""
             >
-              <svg width="11.69" height="15" viewBox="0 0 11.69 23.616">
-                <path
-                  d="M11.813,8.166,20.742.429a1.869,1.869,0,0,1,2.384,0,1.337,1.337,0,0,1,0,2.07L13.008,11.265a1.878,1.878,0,0,1-2.327.043L.492,2.5A1.367,1.367,0,0,1,0,1.47,1.367,1.367,0,0,1,.492.435a1.869,1.869,0,0,1,2.384,0Z"
-                  transform="translate(11.69) rotate(90)"
-                  fill="#fff"
-                />
-              </svg>
+              <img :src="leftArrow" alt="" />
             </div>
             <div id="main-calendar-content">
               <div id="weekdays">
@@ -85,6 +73,7 @@
                     isNotCurrentMonth: !day.isCurrentMonth,
                     today: day.isCurrentDay,
                   }"
+                  :style="cssVars"
                 >
                   <div
                     :class="day.hasEvents ? 'hasEvents' : ' '"
@@ -100,14 +89,7 @@
               @click="monthChange(`forward`)"
               @mousedown.prevent=""
             >
-              <svg width="11.69" height="15" viewBox="0 0 11.69 23.616">
-                <path
-                  id="Icon_ionic-ios-arrow-down"
-                  d="M11.813,8.166,20.742.429a1.869,1.869,0,0,1,2.384,0,1.337,1.337,0,0,1,0,2.07L13.008,11.265a1.878,1.878,0,0,1-2.327.043L.492,2.5A1.367,1.367,0,0,1,0,1.47,1.367,1.367,0,0,1,.492.435a1.869,1.869,0,0,1,2.384,0Z"
-                  transform="translate(0 23.616) rotate(-90)"
-                  fill="#fff"
-                />
-              </svg>
+              <img :src="rightArrow" alt="" />
             </div>
           </div>
         </div>
@@ -122,10 +104,18 @@ import TimeSelector from "./TimeSelector.vue";
 import SingleDayView from "./SingleDayView/SingleDayView.vue";
 import BaseCard from "../UI/BaseCard.vue";
 import calendar from "../../assets/SVGs/calendar.svg";
+import xIcon from "../../assets/SVGs/x-icon.svg";
+import downArrow from "../../assets/SVGs/down-arrow.svg";
+import leftArrow from "../../assets/SVGs/left-arrow.svg";
+import rightArrow from "../../assets/SVGs/right-arrow.svg";
 
 export default {
   data() {
     return {
+      xIcon,
+      downArrow,
+      rightArrow,
+      leftArrow,
       calendar,
       WEEKDAYS: {
         sunday: {
@@ -297,6 +287,20 @@ export default {
     },
   },
   computed: {
+    color() {
+      return this.$store.state.businessSettings.brandingPreferences
+        .highlightColor;
+    },
+    textColor() {
+      return this.$store.state.businessSettings.brandingPreferences.textColor;
+    },
+    cssVars() {
+      return {
+        /* variables you want to pass to css */
+        "--color": this.color,
+        "--textcolor": this.textColor,
+      };
+    },
     //establishing data
     INITIAL_YEAR: function () {
       let year = parseInt(dayjs().format("YYYY"));
@@ -375,6 +379,11 @@ h4 {
   font-size: 10pt;
 }
 
+img {
+  height: 14px;
+  width: 14px;
+}
+
 #base-container {
   width: 100%;
   height: 100%;
@@ -397,7 +406,6 @@ h4 {
   justify-content: center;
 }
 #weekdays div {
-  font-family: montserrat, sans-serif;
   text-transform: uppercase;
   font-size: 7pt;
   font-weight: bold;
@@ -421,7 +429,6 @@ h4 {
   grid-template-columns: repeat(7, 1fr);
   align-items: center;
   justify-content: center;
-  opacity: 1;
   cursor: default;
 }
 
@@ -436,8 +443,13 @@ h4 {
 }
 
 .hasEvents {
-  color: black;
-  background: radial-gradient(ellipse at center, aqua 0%, aqua 50%, black 53%);
+  color: var(--textcolor);
+  background: radial-gradient(
+    ellipse at center,
+    var(--color) 0%,
+    var(--color) 50%,
+    rgba(0, 0, 0, 0) 53%
+  );
   cursor: pointer;
 }
 
@@ -459,10 +471,13 @@ h4 {
 .today {
   background: radial-gradient(
     ellipse at center,
-    white 0%,
-    white 50%,
-    black 53%
+    var(--textcolor) 0%,
+    var(--textcolor) 50%,
+    rgba(0, 0, 0, 0) 53%
   );
-  color: black;
+}
+
+.today > * {
+  filter: invert(100%);
 }
 </style>

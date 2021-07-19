@@ -52,8 +52,7 @@ export default {
 
 <style scoped>
 #item-wrapper {
-  width: 100%;
-  margin-top: 8px;
+  width: 95%;
   display: flex;
   flex-direction: row;
   align-items: center;

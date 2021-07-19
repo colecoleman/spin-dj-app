@@ -2,7 +2,7 @@
   <base-card :icon="svg.clipboardsvg">
     <template v-slot:title>To-Do</template>
     <template v-slot:content>
-      <div id="wrapper">
+      <div id="wrapper" :style="cssVars">
         <div class="to-do-item" v-if="newToDoOpened">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -32,7 +32,7 @@
                 d="M7.5,18h18"
                 transform="translate(-7.5 -9)"
                 fill="none"
-                stroke="#fff"
+                stroke="#000"
                 stroke-linecap="round"
                 stroke-linejoin="round"
                 stroke-width="3"
@@ -45,21 +45,7 @@
             v-model="newToDo"
             @keyup.enter="submitToDo()"
           />
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="13.6"
-            height="13.6"
-            viewBox="0 0 13.6 13.6"
-          >
-            <path
-              id="Icon_awesome-check-circle"
-              data-name="Icon awesome-check-circle"
-              d="M13.928,7.128a6.8,6.8,0,1,1-6.8-6.8A6.8,6.8,0,0,1,13.928,7.128Zm-7.587,3.6,5.045-5.045a.439.439,0,0,0,0-.62l-.62-.62a.439.439,0,0,0-.62,0L6.031,8.557,4.11,6.636a.439.439,0,0,0-.62,0l-.62.62a.439.439,0,0,0,0,.62l2.852,2.852A.439.439,0,0,0,6.342,10.729Z"
-              transform="translate(-0.328 -0.328)"
-              fill="#fff"
-              @click="submitToDo()"
-            />
-          </svg>
+          <img :src="circleCheckmark" alt="" />
         </div>
         <div class="to-do-item" v-for="toDo in uncompletedToDos" :key="toDo.id">
           <to-do-item :toDo="toDo"></to-do-item>
@@ -114,12 +100,14 @@
 import ToDoItem from "../../components/ToDo/ToDoItem.vue";
 import BaseCard from "../../components/UI/BaseCard.vue";
 import clipboardsvg from "../../assets/SVGs/clipboard.svg";
+import circleCheckmarkSvg from "../../assets/SVGs/circle-checkmark.svg";
 
 export default {
   data() {
     return {
       svg: {
         clipboardsvg,
+        circleCheckmarkSvg,
       },
       newToDoOpened: false,
       newToDo: undefined,
@@ -149,6 +137,23 @@ export default {
     },
     completedToDos() {
       return this.toDos.filter((item) => item.completed);
+    },
+    foregroundColor() {
+      return this.$store.state.businessSettings.brandingPreferences
+        .foregroundColor;
+    },
+    cardOutline() {
+      return this.$store.state.businessSettings.brandingPreferences.cardOutline;
+    },
+    textColor() {
+      return this.$store.state.businessSettings.brandingPreferences.textColor;
+    },
+    cssVars() {
+      return {
+        "--cardOutline": this.cardOutline,
+        "--foregroundColor": this.foregroundColor,
+        "--textColor": this.textColor,
+      };
     },
   },
   components: { ToDoItem, BaseCard },
@@ -187,8 +192,7 @@ input {
   background: none;
   border: none;
   border-bottom: 1px solid gray;
-  color: white;
-  font-family: Montserrat, sans-serif;
+  color: var(--textColor);
 }
 
 input:active,

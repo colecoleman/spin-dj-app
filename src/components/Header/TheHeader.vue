@@ -46,8 +46,4 @@ export default {
   width: 125px;
   margin: 15px;
 }
-
-.rotated {
-  rotate: 45deg;
-}
 </style>

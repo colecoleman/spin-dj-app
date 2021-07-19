@@ -1,14 +1,9 @@
 <template>
-  <div
-    id="notification-button"
-    @mousedown.prevent=""
-    :class="isClicked ? `` : `pointer`"
-  >
+  <div id="notification-button" @mousedown.prevent="" :style="cssVars">
     <img :src="notificationBell" alt="" @click="toggleClick()" />
-    <!-- <div id="notification-button-popup-div"> -->
     <transition name="fade1">
-      <div v-if="isClicked" id="notification-button-popup-container">
-        <base-card class="notification-card" :icon="notificationBell">
+      <div id="notification-button-popup-container">
+        <base-card v-if="isClicked" :icon="notificationBell">
           <template v-slot:title>Notifications</template>
           <template v-slot:action1>
             <img :src="xIcon" alt="" class="x-icon" @click="toggleClick()" />
@@ -28,7 +23,6 @@
     <transition name="fade">
       <div id="backdrop" v-if="isClicked" @click="toggleClick()"></div>
     </transition>
-    <!-- </div> -->
   </div>
 </template>
 
@@ -37,7 +31,7 @@ import BaseCard from "../../UI/BaseCard.vue";
 import NotificationButtonItem from "./NotificationButtonItem.vue";
 import notificationBell from "../../../assets/SVGs/notification-bell.svg";
 import xIcon from "../../../assets/SVGs/x-icon.svg";
-// import BaseCardNoHeading from "../UI/BaseCardNoHeading.vue";
+
 export default {
   data() {
     return {
@@ -55,6 +49,19 @@ export default {
     notificationItems() {
       return this.$store.state.notifications;
     },
+    foregroundColor() {
+      return this.$store.state.businessSettings.brandingPreferences
+        .foregroundColor;
+    },
+    cardOutline() {
+      return this.$store.state.businessSettings.brandingPreferences.cardOutline;
+    },
+    cssVars() {
+      return {
+        "--cardOutline": this.cardOutline,
+        "--foregroundColor": this.foregroundColor,
+      };
+    },
   },
   components: { BaseCard, NotificationButtonItem },
 };
@@ -63,13 +70,9 @@ export default {
 <style scoped>
 #notification-button-popup-container {
   position: absolute;
-  right: 0;
-  top: 0;
+  right: -10px;
+  top: -10px;
   width: 350px;
-  /* padding: 10px 60px 10px 30px; */
-  background-color: black;
-  border: 1px solid white;
-  border-radius: 25px;
   z-index: 3;
   cursor: default;
 }
@@ -100,7 +103,8 @@ export default {
   max-width: 60px;
   min-width: 60px;
   height: 60px;
-  background-color: black;
+  background-color: var(--foregroundColor);
+  border: 1px solid var(--cardOutline);
   border-radius: 50px;
   margin: 10px;
   display: flex;
@@ -110,6 +114,7 @@ export default {
 img {
   height: 20px;
   width: 20px;
+  cursor: pointer;
 }
 
 .x-icon {

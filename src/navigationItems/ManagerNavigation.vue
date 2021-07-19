@@ -1,21 +1,29 @@
 <template>
-  <ul>
-    <li>
-      <router-link to="/events">Events</router-link>
-    </li>
-    <li>
-      <router-link to="/sales">Sales</router-link>
-    </li>
-  </ul>
+  <h3>
+    <router-link to="/events" :style="{ color: brandingPreferences.textColor }"
+      >Events</router-link
+    >
+  </h3>
+  <h3>
+    <router-link to="/sales" :style="{ color: brandingPreferences.textColor }"
+      >Sales</router-link
+    >
+  </h3>
 </template>
 
 <script>
-export default {};
+export default {
+  computed: {
+    brandingPreferences() {
+      return this.$store.state.businessSettings.brandingPreferences;
+    },
+  },
+};
 </script>
 
 <style scoped>
-ul {
-  color: white;
+h3 {
+  /* color: white; */
   text-align: right;
   height: 90%;
   width: 100%;
@@ -32,14 +40,5 @@ li {
   font-weight: 600;
 }
 
-a {
-  font-family: Montserrat, Helvetica, sans-serif;
-  text-decoration: none;
-  color: white;
-  font-weight: 700;
-}
 
-.active-link {
-  color: #00f5ff;
-}
 </style>

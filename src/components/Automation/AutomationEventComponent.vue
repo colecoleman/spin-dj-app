@@ -76,6 +76,6 @@ export default {
 
 #button-container {
   width: 60%;
-  margin: 0 20%;
+  margin: 0;
 }
 </style>

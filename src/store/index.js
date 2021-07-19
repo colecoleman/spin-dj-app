@@ -1385,7 +1385,14 @@ const store = createStore({
                         {
                             address: 'company@domain.com',
                         }]
-                }
+                },
+                brandingPreferences: {
+                    backgroundColor: '#F0F0F0',
+                    foregroundColor: '#FFFFFF',
+                    cardOutline: "#DDDDDD",
+                    highlightColor: "#00F5FF",
+                    textColor: "#000000"
+                },
             },
             users: [],
             clientEventCombined: [],

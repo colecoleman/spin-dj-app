@@ -1,5 +1,5 @@
 <template>
-  <div id="tabs">
+  <div id="tabs" :style="cssVars">
     <router-link to="/">
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -53,7 +53,7 @@
               d="M28.475,21.875a2.475,2.475,0,0,0,.495,2.73l.09.09a3,3,0,1,1-4.245,4.245l-.09-.09a2.5,2.5,0,0,0-4.23,1.77v.255a3,3,0,1,1-6,0V30.74a2.475,2.475,0,0,0-1.62-2.265,2.475,2.475,0,0,0-2.73.5l-.09.09A3,3,0,1,1,5.81,24.815l.09-.09a2.5,2.5,0,0,0-1.77-4.23H3.875a3,3,0,1,1,0-6H4.01a2.475,2.475,0,0,0,2.265-1.62,2.475,2.475,0,0,0-.495-2.73l-.09-.09A3,3,0,1,1,9.935,5.81l.09.09a2.475,2.475,0,0,0,2.73.495h.12a2.475,2.475,0,0,0,1.5-2.265V3.875a3,3,0,0,1,6,0V4.01A2.5,2.5,0,0,0,24.6,5.78l.09-.09A3,3,0,1,1,28.94,9.935l-.09.09a2.475,2.475,0,0,0-.495,2.73v.12a2.475,2.475,0,0,0,2.265,1.5h.255a3,3,0,1,1,0,6H30.74a2.475,2.475,0,0,0-2.265,1.5Z"
               transform="translate(-0.875 -0.875)"
               fill="none"
-              stroke="#fff"
+              stroke="currentColor"
               stroke-linecap="round"
               stroke-linejoin="round"
               stroke-width="2"
@@ -64,7 +64,6 @@
             data-name="Icon awesome-wrench"
             d="M27.967,6.01a.66.66,0,0,0-1.108-.3l-4.1,4.1-3.739-.623L18.4,5.44l4.1-4.1a.662.662,0,0,0-.312-1.11,7.894,7.894,0,0,0-9.4,10.2L1.032,22.185A3.525,3.525,0,0,0,6.017,27.17L17.762,15.426A7.906,7.906,0,0,0,27.967,6.01ZM3.525,26a1.322,1.322,0,1,1,1.322-1.322A1.322,1.322,0,0,1,3.525,26Z"
             transform="translate(270 29.797)"
-            fill="#fff"
           />
         </g>
       </svg>
@@ -78,12 +77,28 @@ export default {
     return {};
   },
   methods: {},
+  computed: {
+    foregroundColor() {
+      return this.$store.state.businessSettings.brandingPreferences
+        .foregroundColor;
+    },
+    cardOutline() {
+      return this.$store.state.businessSettings.brandingPreferences.cardOutline;
+    },
+    cssVars() {
+      return {
+        "--cardOutline": this.cardOutline,
+        "--foregroundColor": this.foregroundColor,
+      };
+    },
+  },
 };
 </script>
 
 <style scoped>
 #tabs {
-  background-color: black;
+  background-color: var(--foregroundColor);
+  border: 1px solid var(--cardOutline);
   border-radius: 25px;
   height: 100%;
   width: 400px;
@@ -96,12 +111,13 @@ export default {
 }
 svg {
   flex: 1;
-  fill: white;
+  fill: currentColor;
   width: 25px;
   height: 100%;
 }
 
 a {
   width: 30%;
+  color: currentColor;
 }
 </style>
