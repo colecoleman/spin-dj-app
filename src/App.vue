@@ -16,8 +16,8 @@
 
 <script>
 /* eslint-disable */
-import TheHeader from "./components/Header/TheHeader.vue";
-import EventManager from "./views/DashboardViews/EventManager.vue";
+import TheHeader from "./SharedComponents/SharedComponentsHeader/TheHeader.vue";
+import EventManager from "./views/AdminViews/AdminViewDashboard/EventManager.vue";
 
 export default {
   computed: {

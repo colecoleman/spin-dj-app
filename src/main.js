@@ -1,8 +1,7 @@
 import { createApp } from "vue";
 import App from "./App.vue";
 import router from "./router";
-import BaseCard from "./components/UI/BaseCard.vue";
-import TheHeader from "./components/Header/TheHeader.vue";
+import BaseCard from "./SharedComponents/SharedComponentsUI/BaseCard.vue";
 import store from './store/index.js';
 import dayjs from "dayjs";
 import {jsPDF} from 'jspdf';
@@ -33,4 +32,3 @@ createApp(App)
 
 
 App.component("base-card", BaseCard);
-App.component("the-header", TheHeader);
