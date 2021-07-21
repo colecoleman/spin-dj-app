@@ -152,7 +152,29 @@ const store = createStore({
                         createdDate: "2020-11-24",
                         source: "The Knot",
                         lastLogin: "2021-05-04",
-                        lifetimeValue: 100000
+                        lifetimeValue: 100000,
+                        notes: {
+                            private: [
+                                {
+                                    date: new Date(2021, 10, 3),
+                                    note: 'Lorem ipsum dur dur dur dur dur dur r'
+                                },
+                                {
+                                    date: new Date(2021, 10, 3),
+                                    note: 'Lorem ipsum dur dur dur dur dur dur r'
+                                },
+                            ],
+                            public: [
+                                {
+                                    date: new Date(2021, 10, 3),
+                                    note: 'Lorem ipsum dur dur dur dur dur dur r'
+                                },
+                                {
+                                    date: new Date(2021, 10, 3),
+                                    note: 'Lorem ipsum dur dur dur dur dur dur r'
+                                },
+                            ],
+                        }
                     },
                     {
                         id: 2,
@@ -165,7 +187,29 @@ const store = createStore({
                         createdDate: "2020-11-24",
                         source: "The Knot",
                         lastLogin: "2021-05-04",
-                        lifetimeValue: 90000
+                        lifetimeValue: 90000,
+                        notes: {
+                            private: [
+                                {
+                                    date: new Date(2021, 10, 3),
+                                    note: 'Lorem ipsum dur dur dur dur dur dur r'
+                                },
+                                {
+                                    date: new Date(2021, 10, 3),
+                                    note: 'Lorem ipsum dur dur dur dur dur dur r'
+                                },
+                            ],
+                            public: [
+                                {
+                                    date: new Date(2021, 10, 3),
+                                    note: 'Lorem ipsum dur dur dur dur dur dur r'
+                                },
+                                {
+                                    date: new Date(2021, 10, 3),
+                                    note: 'Lorem ipsum dur dur dur dur dur dur r'
+                                },
+                            ],
+                        }
     
                     },
                     {
@@ -179,7 +223,29 @@ const store = createStore({
                         createdDate: "2020-11-24",
                         source: "The Knot",
                         lastLogin: "2021-05-04",
-                        lifetimeValue: 110000
+                        lifetimeValue: 110000,
+                        notes: {
+                            private: [
+                                {
+                                    date: new Date(2021, 10, 3),
+                                    note: 'Lorem ipsum dur dur dur dur dur dur r'
+                                },
+                                {
+                                    date: new Date(2021, 10, 3),
+                                    note: 'Lorem ipsum dur dur dur dur dur dur r'
+                                },
+                            ],
+                            public: [
+                                {
+                                    date: new Date(2021, 10, 3),
+                                    note: 'Lorem ipsum dur dur dur dur dur dur r'
+                                },
+                                {
+                                    date: new Date(2021, 10, 3),
+                                    note: 'Lorem ipsum dur dur dur dur dur dur r'
+                                },
+                            ],
+                        }
                     },
                     {
                         id: 4,
@@ -206,7 +272,29 @@ const store = createStore({
                         createdDate: "2020-11-24",
                         source: "The Knot",
                         lastLogin: "2021-05-04",
-                        lifetimeValue: 240000
+                        lifetimeValue: 240000,
+                        notes: {
+                            private: [
+                                {
+                                    date: new Date(2021, 10, 3),
+                                    note: 'Lorem ipsum dur dur dur dur dur dur r'
+                                },
+                                {
+                                    date: new Date(2021, 10, 3),
+                                    note: 'Lorem ipsum dur dur dur dur dur dur r'
+                                },
+                            ],
+                            public: [
+                                {
+                                    date: new Date(2021, 10, 3),
+                                    note: 'Lorem ipsum dur dur dur dur dur dur r'
+                                },
+                                {
+                                    date: new Date(2021, 10, 3),
+                                    note: 'Lorem ipsum dur dur dur dur dur dur r'
+                                },
+                            ],
+                        }
                    
                     },
                 ],
@@ -218,6 +306,28 @@ const store = createStore({
                         emailAddress: "amandakoch@gmail.com",
                         recentMessage: "This is my most recent message! It should be truncated if it should get too long just like this one is getting a bit lengthy",
                         profilePicture: undefined,
+                        notes: {
+                            private: [
+                                {
+                                    date: new Date(2021, 10, 3),
+                                    note: 'Lorem ipsum dur dur dur dur dur dur r'
+                                },
+                                {
+                                    date: new Date(2021, 10, 3),
+                                    note: 'Lorem ipsum dur dur dur dur dur dur r'
+                                },
+                            ],
+                            public: [
+                                {
+                                    date: new Date(2021, 10, 3),
+                                    note: 'Lorem ipsum dur dur dur dur dur dur r'
+                                },
+                                {
+                                    date: new Date(2021, 10, 3),
+                                    note: 'Lorem ipsum dur dur dur dur dur dur r'
+                                },
+                            ],
+                        }
 
                     },
                     {
@@ -228,6 +338,28 @@ const store = createStore({
                         emailAddress: "amandakoch@gmail.com",
                         recentMessage: "This is my most recent message! It should be truncated if it should get too long",
                         profilePicture: undefined,
+                        notes: {
+                            private: [
+                                {
+                                    date: new Date(2021, 10, 3),
+                                    note: 'Lorem ipsum dur dur dur dur dur dur r'
+                                },
+                                {
+                                    date: new Date(2021, 10, 3),
+                                    note: 'Lorem ipsum dur dur dur dur dur dur r'
+                                },
+                            ],
+                            public: [
+                                {
+                                    date: new Date(2021, 10, 3),
+                                    note: 'Lorem ipsum dur dur dur dur dur dur r'
+                                },
+                                {
+                                    date: new Date(2021, 10, 3),
+                                    note: 'Lorem ipsum dur dur dur dur dur dur r'
+                                },
+                            ],
+                        }
 
     
                     },
@@ -239,6 +371,28 @@ const store = createStore({
                         emailAddress: "magsmahones@gmail.com",
                         recentMessage: "This is my most recent message! It should be truncated if it should get too long",
                         profilePicture: undefined,
+                        notes: {
+                            private: [
+                                {
+                                    date: new Date(2021, 10, 3),
+                                    note: 'Lorem ipsum dur dur dur dur dur dur r'
+                                },
+                                {
+                                    date: new Date(2021, 10, 3),
+                                    note: 'Lorem ipsum dur dur dur dur dur dur r'
+                                },
+                            ],
+                            public: [
+                                {
+                                    date: new Date(2021, 10, 3),
+                                    note: 'Lorem ipsum dur dur dur dur dur dur r'
+                                },
+                                {
+                                    date: new Date(2021, 10, 3),
+                                    note: 'Lorem ipsum dur dur dur dur dur dur r'
+                                },
+                            ],
+                        }
 
     
                     },
@@ -250,6 +404,28 @@ const store = createStore({
                         emailAddress: "longemail@gmail.com",
                         recentMessage: "This is my most recent message! It should be truncated if it should get too long",
                         profilePicture: undefined,
+                        notes: {
+                            private: [
+                                {
+                                    date: new Date(2021, 10, 3),
+                                    note: 'Lorem ipsum dur dur dur dur dur dur r'
+                                },
+                                {
+                                    date: new Date(2021, 10, 3),
+                                    note: 'Lorem ipsum dur dur dur dur dur dur r'
+                                },
+                            ],
+                            public: [
+                                {
+                                    date: new Date(2021, 10, 3),
+                                    note: 'Lorem ipsum dur dur dur dur dur dur r'
+                                },
+                                {
+                                    date: new Date(2021, 10, 3),
+                                    note: 'Lorem ipsum dur dur dur dur dur dur r'
+                                },
+                            ],
+                        }
 
     
                     },
@@ -261,6 +437,28 @@ const store = createStore({
                         emailAddress: "ghjklkoch@gmail.com",
                         recentMessage: "This is my most recent message! It should be truncated if it should get too long",
                         profilePicture: undefined,
+                        notes: {
+                            private: [
+                                {
+                                    date: new Date(2021, 10, 3),
+                                    note: 'Lorem ipsum dur dur dur dur dur dur r'
+                                },
+                                {
+                                    date: new Date(2021, 10, 3),
+                                    note: 'Lorem ipsum dur dur dur dur dur dur r'
+                                },
+                            ],
+                            public: [
+                                {
+                                    date: new Date(2021, 10, 3),
+                                    note: 'Lorem ipsum dur dur dur dur dur dur r'
+                                },
+                                {
+                                    date: new Date(2021, 10, 3),
+                                    note: 'Lorem ipsum dur dur dur dur dur dur r'
+                                },
+                            ],
+                        }
 
     
                     },],
@@ -273,6 +471,28 @@ const store = createStore({
                         emailAddress: "amandakoch@gmail.com",
                         recentMessage: "This is my most recent message! It should be truncated if it should get too long just like this one is getting a bit lengthy",
                         profilePicture: undefined,
+                        notes: {
+                            private: [
+                                {
+                                    date: new Date(2021, 10, 3),
+                                    note: 'Lorem ipsum dur dur dur dur dur dur r'
+                                },
+                                {
+                                    date: new Date(2021, 10, 3),
+                                    note: 'Lorem ipsum dur dur dur dur dur dur r'
+                                },
+                            ],
+                            public: [
+                                {
+                                    date: new Date(2021, 10, 3),
+                                    note: 'Lorem ipsum dur dur dur dur dur dur r'
+                                },
+                                {
+                                    date: new Date(2021, 10, 3),
+                                    note: 'Lorem ipsum dur dur dur dur dur dur r'
+                                },
+                            ],
+                        }
 
                     },
                     {
@@ -285,6 +505,28 @@ const store = createStore({
                         emailAddress: "amandakoch@gmail.com",
                         recentMessage: "This is my most recent message! It should be truncated if it should get too long",
                         profilePicture: undefined,
+                        notes: {
+                            private: [
+                                {
+                                    date: new Date(2021, 10, 3),
+                                    note: 'Lorem ipsum dur dur dur dur dur dur r'
+                                },
+                                {
+                                    date: new Date(2021, 10, 3),
+                                    note: 'Lorem ipsum dur dur dur dur dur dur r'
+                                },
+                            ],
+                            public: [
+                                {
+                                    date: new Date(2021, 10, 3),
+                                    note: 'Lorem ipsum dur dur dur dur dur dur r'
+                                },
+                                {
+                                    date: new Date(2021, 10, 3),
+                                    note: 'Lorem ipsum dur dur dur dur dur dur r'
+                                },
+                            ],
+                        }
 
     
                     },
@@ -296,6 +538,28 @@ const store = createStore({
                         emailAddress: "magsmahones@gmail.com",
                         recentMessage: "This is my most recent message! It should be truncated if it should get too long",
                         profilePicture: undefined,
+                        notes: {
+                            private: [
+                                {
+                                    date: new Date(2021, 10, 3),
+                                    note: 'Lorem ipsum dur dur dur dur dur dur r'
+                                },
+                                {
+                                    date: new Date(2021, 10, 3),
+                                    note: 'Lorem ipsum dur dur dur dur dur dur r'
+                                },
+                            ],
+                            public: [
+                                {
+                                    date: new Date(2021, 10, 3),
+                                    note: 'Lorem ipsum dur dur dur dur dur dur r'
+                                },
+                                {
+                                    date: new Date(2021, 10, 3),
+                                    note: 'Lorem ipsum dur dur dur dur dur dur r'
+                                },
+                            ],
+                        }
 
     
                     },
@@ -307,6 +571,28 @@ const store = createStore({
                         emailAddress: "longemail@gmail.com",
                         recentMessage: "This is my most recent message! It should be truncated if it should get too long",
                         profilePicture: undefined,
+                        notes: {
+                            private: [
+                                {
+                                    date: new Date(2021, 10, 3),
+                                    note: 'Lorem ipsum dur dur dur dur dur dur r'
+                                },
+                                {
+                                    date: new Date(2021, 10, 3),
+                                    note: 'Lorem ipsum dur dur dur dur dur dur r'
+                                },
+                            ],
+                            public: [
+                                {
+                                    date: new Date(2021, 10, 3),
+                                    note: 'Lorem ipsum dur dur dur dur dur dur r'
+                                },
+                                {
+                                    date: new Date(2021, 10, 3),
+                                    note: 'Lorem ipsum dur dur dur dur dur dur r'
+                                },
+                            ],
+                        }
 
     
                     },
@@ -318,6 +604,28 @@ const store = createStore({
                         emailAddress: "ghjklkoch@gmail.com",
                         recentMessage: "This is my most recent message! It should be truncated if it should get too long",
                         profilePicture: undefined,
+                        notes: {
+                            private: [
+                                {
+                                    date: new Date(2021, 10, 3),
+                                    note: 'Lorem ipsum dur dur dur dur dur dur r'
+                                },
+                                {
+                                    date: new Date(2021, 10, 3),
+                                    note: 'Lorem ipsum dur dur dur dur dur dur r'
+                                },
+                            ],
+                            public: [
+                                {
+                                    date: new Date(2021, 10, 3),
+                                    note: 'Lorem ipsum dur dur dur dur dur dur r'
+                                },
+                                {
+                                    date: new Date(2021, 10, 3),
+                                    note: 'Lorem ipsum dur dur dur dur dur dur r'
+                                },
+                            ],
+                        }
 
     
                     },],
@@ -334,9 +642,31 @@ const store = createStore({
                         firstName: "Jenny",
                         lastName: "Jenkins",
                         phoneNumber: "636-459-7652",
-                        emailAddress: "amandakoch@gmail.com",
+                        emailAddress: "jennyjenkins@gmail.com",
                         recentMessage: "This is my most recent message! It should be truncated if it should get too long",
                         profilePicture: undefined,
+                        notes: {
+                            private: [
+                                {
+                                    date: new Date(2021, 10, 3),
+                                    note: 'Lorem ipsum dur dur dur dur dur dur r'
+                                },
+                                {
+                                    date: new Date(2021, 10, 3),
+                                    note: 'Lorem ipsum dur dur dur dur dur dur r'
+                                },
+                            ],
+                            public: [
+                                {
+                                    date: new Date(2021, 10, 3),
+                                    note: 'Lorem ipsum dur dur dur dur dur dur r'
+                                },
+                                {
+                                    date: new Date(2021, 10, 3),
+                                    note: 'Lorem ipsum dur dur dur dur dur dur r'
+                                },
+                            ],
+                        }
 
     
                     },
@@ -348,6 +678,28 @@ const store = createStore({
                         emailAddress: "magsmahones@gmail.com",
                         recentMessage: "This is my most recent message! It should be truncated if it should get too long",
                         profilePicture: undefined,
+                        notes: {
+                            private: [
+                                {
+                                    date: new Date(2021, 10, 3),
+                                    note: 'Lorem ipsum dur dur dur dur dur dur r'
+                                },
+                                {
+                                    date: new Date(2021, 10, 3),
+                                    note: 'Lorem ipsum dur dur dur dur dur dur r'
+                                },
+                            ],
+                            public: [
+                                {
+                                    date: new Date(2021, 10, 3),
+                                    note: 'Lorem ipsum dur dur dur dur dur dur r'
+                                },
+                                {
+                                    date: new Date(2021, 10, 3),
+                                    note: 'Lorem ipsum dur dur dur dur dur dur r'
+                                },
+                            ],
+                        }
 
     
                     },
@@ -359,6 +711,28 @@ const store = createStore({
                         emailAddress: "longemail@gmail.com",
                         recentMessage: "This is my most recent message! It should be truncated if it should get too long",
                         profilePicture: undefined,
+                        notes: {
+                            private: [
+                                {
+                                    date: new Date(2021, 10, 3),
+                                    note: 'Lorem ipsum dur dur dur dur dur dur r'
+                                },
+                                {
+                                    date: new Date(2021, 10, 3),
+                                    note: 'Lorem ipsum dur dur dur dur dur dur r'
+                                },
+                            ],
+                            public: [
+                                {
+                                    date: new Date(2021, 10, 3),
+                                    note: 'Lorem ipsum dur dur dur dur dur dur r'
+                                },
+                                {
+                                    date: new Date(2021, 10, 3),
+                                    note: 'Lorem ipsum dur dur dur dur dur dur r'
+                                },
+                            ],
+                        }
 
     
                     },
@@ -370,6 +744,28 @@ const store = createStore({
                         emailAddress: "ghjklkoch@gmail.com",
                         recentMessage: "This is my most recent message! It should be truncated if it should get too long",
                         profilePicture: undefined,
+                        notes: {
+                            private: [
+                                {
+                                    date: new Date(2021, 10, 3),
+                                    note: 'Lorem ipsum dur dur dur dur dur dur r'
+                                },
+                                {
+                                    date: new Date(2021, 10, 3),
+                                    note: 'Lorem ipsum dur dur dur dur dur dur r'
+                                },
+                            ],
+                            public: [
+                                {
+                                    date: new Date(2021, 10, 3),
+                                    note: 'Lorem ipsum dur dur dur dur dur dur r'
+                                },
+                                {
+                                    date: new Date(2021, 10, 3),
+                                    note: 'Lorem ipsum dur dur dur dur dur dur r'
+                                },
+                            ],
+                        }
 
     
                     },],
@@ -381,6 +777,28 @@ const store = createStore({
                         emailAddress: "amandakoch@gmail.com",
                         recentMessage: "This is my most recent message! It should be truncated if it should get too long just like this one is getting a bit lengthy",
                         profilePicture: undefined,
+                        notes: {
+                            private: [
+                                {
+                                    date: new Date(2021, 10, 3),
+                                    note: 'Lorem ipsum dur dur dur dur dur dur r'
+                                },
+                                {
+                                    date: new Date(2021, 10, 3),
+                                    note: 'Lorem ipsum dur dur dur dur dur dur r'
+                                },
+                            ],
+                            public: [
+                                {
+                                    date: new Date(2021, 10, 3),
+                                    note: 'Lorem ipsum dur dur dur dur dur dur r'
+                                },
+                                {
+                                    date: new Date(2021, 10, 3),
+                                    note: 'Lorem ipsum dur dur dur dur dur dur r'
+                                },
+                            ],
+                        }
 
                     },
                     {
@@ -391,6 +809,28 @@ const store = createStore({
                         emailAddress: "amandakoch@gmail.com",
                         recentMessage: "This is my most recent message! It should be truncated if it should get too long",
                         profilePicture: undefined,
+                        notes: {
+                            private: [
+                                {
+                                    date: new Date(2021, 10, 3),
+                                    note: 'Lorem ipsum dur dur dur dur dur dur r'
+                                },
+                                {
+                                    date: new Date(2021, 10, 3),
+                                    note: 'Lorem ipsum dur dur dur dur dur dur r'
+                                },
+                            ],
+                            public: [
+                                {
+                                    date: new Date(2021, 10, 3),
+                                    note: 'Lorem ipsum dur dur dur dur dur dur r'
+                                },
+                                {
+                                    date: new Date(2021, 10, 3),
+                                    note: 'Lorem ipsum dur dur dur dur dur dur r'
+                                },
+                            ],
+                        }
 
     
                     },
@@ -402,6 +842,28 @@ const store = createStore({
                         emailAddress: "magsmahones@gmail.com",
                         recentMessage: "This is my most recent message! It should be truncated if it should get too long",
                         profilePicture: undefined,
+                        notes: {
+                            private: [
+                                {
+                                    date: new Date(2021, 10, 3),
+                                    note: 'Lorem ipsum dur dur dur dur dur dur r'
+                                },
+                                {
+                                    date: new Date(2021, 10, 3),
+                                    note: 'Lorem ipsum dur dur dur dur dur dur r'
+                                },
+                            ],
+                            public: [
+                                {
+                                    date: new Date(2021, 10, 3),
+                                    note: 'Lorem ipsum dur dur dur dur dur dur r'
+                                },
+                                {
+                                    date: new Date(2021, 10, 3),
+                                    note: 'Lorem ipsum dur dur dur dur dur dur r'
+                                },
+                            ],
+                        }
 
     
                     },
@@ -413,6 +875,28 @@ const store = createStore({
                         emailAddress: "longemail@gmail.com",
                         recentMessage: "This is my most recent message! It should be truncated if it should get too long",
                         profilePicture: undefined,
+                        notes: {
+                            private: [
+                                {
+                                    date: new Date(2021, 10, 3),
+                                    note: 'Lorem ipsum dur dur dur dur dur dur r'
+                                },
+                                {
+                                    date: new Date(2021, 10, 3),
+                                    note: 'Lorem ipsum dur dur dur dur dur dur r'
+                                },
+                            ],
+                            public: [
+                                {
+                                    date: new Date(2021, 10, 3),
+                                    note: 'Lorem ipsum dur dur dur dur dur dur r'
+                                },
+                                {
+                                    date: new Date(2021, 10, 3),
+                                    note: 'Lorem ipsum dur dur dur dur dur dur r'
+                                },
+                            ],
+                        }
 
     
                     },
@@ -424,6 +908,28 @@ const store = createStore({
                         emailAddress: "ghjklkoch@gmail.com",
                         recentMessage: "This is my most recent message! It should be truncated if it should get too long",
                         profilePicture: undefined,
+                        notes: {
+                            private: [
+                                {
+                                    date: new Date(2021, 10, 3),
+                                    note: 'Lorem ipsum dur dur dur dur dur dur r'
+                                },
+                                {
+                                    date: new Date(2021, 10, 3),
+                                    note: 'Lorem ipsum dur dur dur dur dur dur r'
+                                },
+                            ],
+                            public: [
+                                {
+                                    date: new Date(2021, 10, 3),
+                                    note: 'Lorem ipsum dur dur dur dur dur dur r'
+                                },
+                                {
+                                    date: new Date(2021, 10, 3),
+                                    note: 'Lorem ipsum dur dur dur dur dur dur r'
+                                },
+                            ],
+                        }
 
     
                     },],
@@ -435,6 +941,28 @@ const store = createStore({
                         emailAddress: "amandakoch@gmail.com",
                         recentMessage: "This is my most recent message! It should be truncated if it should get too long just like this one is getting a bit lengthy",
                         profilePicture: undefined,
+                        notes: {
+                            private: [
+                                {
+                                    date: new Date(2021, 10, 3),
+                                    note: 'Lorem ipsum dur dur dur dur dur dur r'
+                                },
+                                {
+                                    date: new Date(2021, 10, 3),
+                                    note: 'Lorem ipsum dur dur dur dur dur dur r'
+                                },
+                            ],
+                            public: [
+                                {
+                                    date: new Date(2021, 10, 3),
+                                    note: 'Lorem ipsum dur dur dur dur dur dur r'
+                                },
+                                {
+                                    date: new Date(2021, 10, 3),
+                                    note: 'Lorem ipsum dur dur dur dur dur dur r'
+                                },
+                            ],
+                        }
 
                     },
                     {
@@ -445,6 +973,28 @@ const store = createStore({
                         emailAddress: "amandakoch@gmail.com",
                         recentMessage: "This is my most recent message! It should be truncated if it should get too long",
                         profilePicture: undefined,
+                        notes: {
+                            private: [
+                                {
+                                    date: new Date(2021, 10, 3),
+                                    note: 'Lorem ipsum dur dur dur dur dur dur r'
+                                },
+                                {
+                                    date: new Date(2021, 10, 3),
+                                    note: 'Lorem ipsum dur dur dur dur dur dur r'
+                                },
+                            ],
+                            public: [
+                                {
+                                    date: new Date(2021, 10, 3),
+                                    note: 'Lorem ipsum dur dur dur dur dur dur r'
+                                },
+                                {
+                                    date: new Date(2021, 10, 3),
+                                    note: 'Lorem ipsum dur dur dur dur dur dur r'
+                                },
+                            ],
+                        }
 
     
                     },
@@ -456,6 +1006,28 @@ const store = createStore({
                         emailAddress: "magsmahones@gmail.com",
                         recentMessage: "This is my most recent message! It should be truncated if it should get too long",
                         profilePicture: undefined,
+                        notes: {
+                            private: [
+                                {
+                                    date: new Date(2021, 10, 3),
+                                    note: 'Lorem ipsum dur dur dur dur dur dur r'
+                                },
+                                {
+                                    date: new Date(2021, 10, 3),
+                                    note: 'Lorem ipsum dur dur dur dur dur dur r'
+                                },
+                            ],
+                            public: [
+                                {
+                                    date: new Date(2021, 10, 3),
+                                    note: 'Lorem ipsum dur dur dur dur dur dur r'
+                                },
+                                {
+                                    date: new Date(2021, 10, 3),
+                                    note: 'Lorem ipsum dur dur dur dur dur dur r'
+                                },
+                            ],
+                        }
 
     
                     },
@@ -467,6 +1039,28 @@ const store = createStore({
                         emailAddress: "longemail@gmail.com",
                         recentMessage: "This is my most recent message! It should be truncated if it should get too long",
                         profilePicture: undefined,
+                        notes: {
+                            private: [
+                                {
+                                    date: new Date(2021, 10, 3),
+                                    note: 'Lorem ipsum dur dur dur dur dur dur r'
+                                },
+                                {
+                                    date: new Date(2021, 10, 3),
+                                    note: 'Lorem ipsum dur dur dur dur dur dur r'
+                                },
+                            ],
+                            public: [
+                                {
+                                    date: new Date(2021, 10, 3),
+                                    note: 'Lorem ipsum dur dur dur dur dur dur r'
+                                },
+                                {
+                                    date: new Date(2021, 10, 3),
+                                    note: 'Lorem ipsum dur dur dur dur dur dur r'
+                                },
+                            ],
+                        }
 
     
                     },
@@ -478,6 +1072,28 @@ const store = createStore({
                         emailAddress: "ghjklkoch@gmail.com",
                         recentMessage: "This is my most recent message! It should be truncated if it should get too long",
                         profilePicture: undefined,
+                        notes: {
+                            private: [
+                                {
+                                    date: new Date(2021, 10, 3),
+                                    note: 'Lorem ipsum dur dur dur dur dur dur r'
+                                },
+                                {
+                                    date: new Date(2021, 10, 3),
+                                    note: 'Lorem ipsum dur dur dur dur dur dur r'
+                                },
+                            ],
+                            public: [
+                                {
+                                    date: new Date(2021, 10, 3),
+                                    note: 'Lorem ipsum dur dur dur dur dur dur r'
+                                },
+                                {
+                                    date: new Date(2021, 10, 3),
+                                    note: 'Lorem ipsum dur dur dur dur dur dur r'
+                                },
+                            ],
+                        }
 
     
                     },]
