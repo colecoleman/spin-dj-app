@@ -12,7 +12,7 @@
           data-name="Icon awesome-file-contract"
           d="M9.188,5.578V0H.984A.982.982,0,0,0,0,.984V20.016A.982.982,0,0,0,.984,21H14.766a.982.982,0,0,0,.984-.984V6.563H10.172A.987.987,0,0,1,9.188,5.578ZM2.625,2.953a.328.328,0,0,1,.328-.328H6.234a.328.328,0,0,1,.328.328v.656a.328.328,0,0,1-.328.328H2.953a.328.328,0,0,1-.328-.328Zm0,2.625a.328.328,0,0,1,.328-.328H6.234a.328.328,0,0,1,.328.328v.656a.328.328,0,0,1-.328.328H2.953a.328.328,0,0,1-.328-.328ZM10.533,15.75h1.936a.656.656,0,0,1,0,1.313H10.533a1.763,1.763,0,0,1-1.585-.979.454.454,0,0,0-.417-.267.447.447,0,0,0-.411.254l-.315.629a.656.656,0,0,1-.587.363l-.047,0a.654.654,0,0,1-.575-.447l-.69-2.07-.435,1.308a1.771,1.771,0,0,1-1.682,1.211H3.281a.656.656,0,0,1,0-1.312h.508a.46.46,0,0,0,.436-.314l.746-2.241a.985.985,0,0,1,1.868,0L7.409,14.9a1.841,1.841,0,0,1,2.707.581A.468.468,0,0,0,10.533,15.75Zm4.93-11.443L11.447.287A.984.984,0,0,0,10.75,0H10.5V5.25h5.25V5A.981.981,0,0,0,15.463,4.307Z"
           transform="translate(0.5 0.5)"
-          fill="#fff"
+          fill="currentColor"
         />
       </svg>
     </template>
@@ -27,7 +27,7 @@
         <path
           d="M19.33,15.581h0l-5.459-5.459L19.33,4.663h0a.564.564,0,0,0,0-.8L16.751,1.289a.564.564,0,0,0-.8,0h0L10.5,6.748,5.038,1.289h0a.564.564,0,0,0-.8,0L1.664,3.868a.564.564,0,0,0,0,.8h0l5.459,5.459L1.664,15.581h0a.564.564,0,0,0,0,.8l2.579,2.579a.564.564,0,0,0,.8,0h0L10.5,13.5l5.459,5.459h0a.564.564,0,0,0,.8,0l2.579-2.579a.564.564,0,0,0,0-.8Z"
           transform="translate(-1.5 -1.125)"
-          fill="#fff"
+          fill="currentColor"
         />
       </svg>
     </template>
@@ -56,7 +56,7 @@
                     data-name="Path 129"
                     d="M5.25,7.875V1.75h10.5V7.875"
                     fill="none"
-                    stroke="#fff"
+                    stroke="currentColor"
                     stroke-linecap="round"
                     stroke-linejoin="round"
                     stroke-width="1.75"
@@ -66,7 +66,7 @@
                     data-name="Path 130"
                     d="M5.25,15.75H3.5A1.75,1.75,0,0,1,1.75,14V9.625A1.75,1.75,0,0,1,3.5,7.875h14a1.75,1.75,0,0,1,1.75,1.75V14a1.75,1.75,0,0,1-1.75,1.75H15.75"
                     fill="none"
-                    stroke="#fff"
+                    stroke="currentColor"
                     stroke-linecap="round"
                     stroke-linejoin="round"
                     stroke-width="1.75"
@@ -76,7 +76,7 @@
                     data-name="Path 131"
                     d="M5.25,12.25h10.5v7H5.25Z"
                     fill="none"
-                    stroke="#fff"
+                    stroke="currentColor"
                     stroke-linecap="round"
                     stroke-linejoin="round"
                     stroke-width="1.75"
@@ -106,7 +106,7 @@
                     data-name="Path 129"
                     d="M5.25,7.875V1.75h10.5V7.875"
                     fill="none"
-                    stroke="#fff"
+                    stroke="currentColor"
                     stroke-linecap="round"
                     stroke-linejoin="round"
                     stroke-width="1.75"
@@ -116,7 +116,7 @@
                     data-name="Path 130"
                     d="M5.25,15.75H3.5A1.75,1.75,0,0,1,1.75,14V9.625A1.75,1.75,0,0,1,3.5,7.875h14a1.75,1.75,0,0,1,1.75,1.75V14a1.75,1.75,0,0,1-1.75,1.75H15.75"
                     fill="none"
-                    stroke="#fff"
+                    stroke="currentColor"
                     stroke-linecap="round"
                     stroke-linejoin="round"
                     stroke-width="1.75"
@@ -126,7 +126,7 @@
                     data-name="Path 131"
                     d="M5.25,12.25h10.5v7H5.25Z"
                     fill="none"
-                    stroke="#fff"
+                    stroke="currentColor"
                     stroke-linecap="round"
                     stroke-linejoin="round"
                     stroke-width="1.75"

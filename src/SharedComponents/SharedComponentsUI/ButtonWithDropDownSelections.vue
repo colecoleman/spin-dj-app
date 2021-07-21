@@ -63,6 +63,7 @@ export default {
       this.actionsActive = !this.actionsActive;
     },
   },
+
   props: ["text", "actions"],
 };
 </script>

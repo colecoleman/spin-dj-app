@@ -8,7 +8,7 @@
       </h3>
       <div class="right-top">
         <img :src="actionIcon" alt="" />
-        <slot name="action1" class="right-top">{{ brandingPreferences }}</slot>
+        <slot name="action1" class="right-top"></slot>
       </div>
     </div>
     <div id="content">

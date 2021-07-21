@@ -42,6 +42,7 @@ export default {
   padding: 5px 15px 5px 5px;
   border: 1px solid var(--textcolor);
   border-radius: 7px;
+  cursor: pointer;
 }
 
 .button-standard-with-icon:hover {
