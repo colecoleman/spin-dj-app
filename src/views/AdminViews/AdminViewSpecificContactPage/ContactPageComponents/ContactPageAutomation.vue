@@ -33,8 +33,14 @@
 import ButtonStandardWithIcon from "../../../../SharedComponents/SharedComponentsUI/ButtonStandardWithIcon.vue";
 import AutomationContactListItem from "../../AdminViewsSharedComponents/Automation/AutomationComponents/AutomationContactListItem.vue";
 import AutomationContactListItemApproved from "../../AdminViewsSharedComponents/Automation/AutomationComponents/AutomationContactListItemApproved.vue";
-import BaseCard from "../../../../SharedComponents/SharedComponentsUI/BaseCard.vue";
+import automationsvg from "../../../../assets/SVGs/automation.svg";
+
 export default {
+  data() {
+    return {
+      automationsvg,
+    };
+  },
   computed: {
     automationsPending() {
       return this.$store.state.automations.pending;
@@ -47,7 +53,6 @@ export default {
     AutomationContactListItem,
     AutomationContactListItemApproved,
     ButtonStandardWithIcon,
-    BaseCard,
   },
 };
 </script>
