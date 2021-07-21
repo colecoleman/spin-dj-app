@@ -1,4 +1,20 @@
 <template>
+  <backdrop
+    v-if="invoiceOpen || formsOpen || contractOpen"
+    @click="closePopup()"
+  ></backdrop>
+  <invoice-popup
+    :invoice="event.eventInvoice"
+    :event="event"
+    :client="client"
+    v-if="invoiceOpen"
+    @close-popup="closePopup()"
+  ></invoice-popup>
+  <forms-popup v-if="formsOpen" @close-popup="closePopup()"></forms-popup>
+  <contract-popup
+    v-if="contractOpen"
+    @close-popup="closePopup()"
+  ></contract-popup>
   <section>
     <div id="upper-div">
       <div id="upper-div-left-container">
@@ -9,7 +25,10 @@
       </div>
       <div id="upper-div-right-container">
         <div id="upper-div-right-upper-container">
-          <specific-event-page-button-bar :event="event" :client="client" />
+          <four-button-bar-with-drop-down
+            :buttons="buttons"
+            :dropdown="dropdown"
+          ></four-button-bar-with-drop-down>
         </div>
         <div id="upper-div-right-lower-container">
           <div id="upper-div-right-lower-container-box-1">
@@ -46,9 +65,97 @@ import EventPageContactCard from "./EventPageContactCard.vue";
 import EventPageContactCarousel from "./eventPageContactCarousel/EventPageContactCarousel.vue";
 import SpecificEventPageLocationScroller from "./specificEventPageLocationScroller/SpecificEventPageLocationScroller.vue";
 import AutomationEventComponent from "../AdminViewsSharedComponents/Automation/AutomationComponents/AutomationEventComponent.vue";
-import SpecificEventPageButtonBar from "./SpecificEventPageButtonBar.vue";
+import Backdrop from "../../../SharedComponents/SharedComponentsUI/Backdrop.vue";
+import FormsPopup from "./FormsPopup.vue";
+import InvoicePopup from "./InvoicePopup.vue";
+import ContractPopup from "./ContractPopup.vue";
+import FourButtonBarWithDropDown from "../../../SharedComponents/SharedComponentsUI/FourButtonBarWithDropDown.vue";
+
+// svg imports
+
+import editPen from "../../../assets/SVGs/edit-pen.svg";
+import passingTime from "../../../assets/SVGs/passing-time.svg";
+import trashCan from "../../../assets/SVGs/trash-can.svg";
 
 export default {
+  data() {
+    return {
+      buttons: [
+        {
+          title: "View Forms",
+          action: this.openForms,
+        },
+        {
+          title: "View Invoice",
+          action: this.openInvoice,
+        },
+        {
+          title: "View Contract",
+          action: this.openContract,
+        },
+      ],
+      dropdown: {
+        title: "Actions",
+        actionItems: [
+          {
+            title: "postpone",
+            action: this.postponeEvent,
+            danger: false,
+            icon: passingTime,
+          },
+          {
+            title: "edit",
+            action: this.editEvent,
+            danger: false,
+            icon: editPen,
+          },
+          {
+            title: "delete",
+            action: this.deleteEvent,
+            danger: true,
+            icon: trashCan,
+          },
+        ],
+      },
+      passingTime,
+      editPen,
+      trashCan,
+
+      backdropOpen: false,
+      contractOpen: false,
+      invoiceOpen: false,
+      formsOpen: false,
+    };
+  },
+  methods: {
+    openForms() {
+      this.formsOpen = true;
+      this.backdropOpen = true;
+    },
+    openInvoice() {
+      this.invoiceOpen = true;
+      this.backdropOpen = true;
+    },
+    openContract() {
+      this.contractOpen = true;
+      this.backdropOpen = true;
+    },
+    closePopup() {
+      this.contractOpen = false;
+      this.invoiceOpen = false;
+      this.formsOpen = false;
+      this.backdropOpen = false;
+    },
+    deleteEvent() {
+      alert("deleted!");
+    },
+    editEvent() {
+      alert("edited!");
+    },
+    postponeEvent() {
+      alert("postponed");
+    },
+  },
   computed: {
     client() {
       return this.$store.state.contacts.clients[0];
@@ -77,10 +184,13 @@ export default {
     RecentMessagesEvent,
     EventPageContactCard,
     EventPageContactCarousel,
-
     SpecificEventPageLocationScroller,
     AutomationEventComponent,
-    SpecificEventPageButtonBar,
+    Backdrop,
+    InvoicePopup,
+    FormsPopup,
+    ContractPopup,
+    FourButtonBarWithDropDown,
   },
 };
 </script>

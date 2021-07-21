@@ -1,29 +1,17 @@
 <template>
   <base-card-no-heading>
     <div class="button-parent">
-      <div class="button-div">
+      <div class="button-div" v-for="button in buttons" :key="button.title">
         <button-standard-with-icon
-          text="View Forms"
-          @click="openForms()"
+          :text="button.title"
+          @click="button.action"
         ></button-standard-with-icon>
       </div>
-      <div class="button-div">
-        <button-standard-with-icon
-          text="View Invoice"
-          @click="openInvoice()"
-        ></button-standard-with-icon>
-      </div>
-      <div class="button-div">
-        <button-standard-with-icon
-          text="View Contract"
-          @click="openContract()"
-        ></button-standard-with-icon>
-      </div>
+
       <div class="button-div">
         <button-with-drop-down-selections
-          text="Actions"
-          :actions="actionsItems"
-          :clicked="actionsClicked"
+          :text="dropdown.title"
+          :actions="dropdown.actionItems"
           class="dropdown-button"
         >
         </button-with-drop-down-selections>
@@ -33,35 +21,11 @@
 </template>
 
 <script>
-import BaseCardNoHeading from "../../../SharedComponents/SharedComponentsUI/BaseCardNoHeading.vue";
-import ButtonStandardWithIcon from "../../../SharedComponents/SharedComponentsUI/ButtonStandardWithIcon.vue";
-import ButtonWithDropDownSelections from "../../../SharedComponents/SharedComponentsUI/ButtonWithDropDownSelections.vue";
+import BaseCardNoHeading from "./BaseCardNoHeading.vue";
+import ButtonStandardWithIcon from "./ButtonStandardWithIcon.vue";
+import ButtonWithDropDownSelections from "./ButtonWithDropDownSelections.vue";
 
 export default {
-  data() {
-    return {
-      actionsItems: [
-        {
-          title: "postpone",
-          action: this.postponeEvent,
-          danger: false,
-          icon: passingTime,
-        },
-        {
-          title: "edit",
-          action: this.editEvent,
-          danger: false,
-          icon: editPen,
-        },
-        {
-          title: "delete",
-          action: this.deleteEvent,
-          danger: true,
-          icon: trashCan,
-        },
-      ],
-    };
-  },
   components: {
     BaseCardNoHeading,
     ButtonStandardWithIcon,
