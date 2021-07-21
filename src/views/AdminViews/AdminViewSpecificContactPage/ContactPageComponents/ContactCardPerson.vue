@@ -56,7 +56,6 @@
 
 <script>
 import defaultProfilePicture from "../../../../assets/default-profile-picture.svg";
-import BaseCard from "../../../../SharedComponents/SharedComponentsUI/BaseCard.vue";
 import editPen from "../../../../assets/SVGs/edit-pen.svg";
 
 export default {
@@ -66,9 +65,7 @@ export default {
       editPen,
     };
   },
-  methods: {},
   props: ["contact", "icon"],
-  components: { BaseCard },
 };
 </script>
 

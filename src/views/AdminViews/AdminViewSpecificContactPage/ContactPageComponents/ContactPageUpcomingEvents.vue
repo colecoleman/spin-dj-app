@@ -67,7 +67,6 @@
 <script>
 import rightArrow from "../../../../assets/SVGs/right-arrow.svg";
 import leftArrow from "../../../../assets/SVGs/left-arrow.svg";
-import BaseCard from "../../../../SharedComponents/SharedComponentsUI/BaseCard.vue";
 import helpers from "../../../../helpers.js";
 export default {
   data() {
@@ -119,7 +118,6 @@ export default {
     },
   },
   props: ["id", "icon"],
-  components: { BaseCard },
 };
 </script>
 

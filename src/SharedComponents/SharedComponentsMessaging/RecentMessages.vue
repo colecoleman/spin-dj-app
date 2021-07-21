@@ -42,7 +42,7 @@
 <script>
 import RecentMessagesPersonObject from "./RecentMessagesPersonObject.vue";
 import MessagingSingleComponent from "./MessagingSingleComponent.vue";
-import BaseCard from "../SharedComponentsUI/BaseCard.vue";
+
 import messageBubble from "../../assets/SVGs/message-bubble.svg";
 export default {
   data() {
@@ -55,7 +55,6 @@ export default {
   components: {
     MessagingSingleComponent,
     RecentMessagesPersonObject,
-    BaseCard,
   },
   computed: {
     contacts() {

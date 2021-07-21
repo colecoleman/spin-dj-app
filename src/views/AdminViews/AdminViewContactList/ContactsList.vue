@@ -76,7 +76,7 @@
 <script>
 import ContactListView from "./ContactListView.vue";
 import AddContactModule from "./AddContactModules/AddContactModule.vue";
-import BaseCard from "../../../SharedComponents/SharedComponentsUI/BaseCard.vue";
+
 import BaseNavigationCard from "../../../SharedComponents/SharedComponentsUI/BaseNavigationCard.vue";
 import ContactNavigation from "./AdminContactListNavigation.vue";
 import FloatingMenuWithListItems from "../../../SharedComponents/SharedComponentsUI/FloatingMenuWithListItems.vue";
@@ -135,7 +135,6 @@ export default {
     },
   },
   components: {
-    BaseCard,
     BaseNavigationCard,
     ContactListView,
     AddContactModule,
@@ -150,6 +149,7 @@ export default {
   display: flex;
   flex-direction: row;
   min-width: 100%;
+  height: 100%;
   padding-top: 5px;
   /* overflow: hidden; */
 }

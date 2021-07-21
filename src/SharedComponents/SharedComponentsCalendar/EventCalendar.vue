@@ -102,7 +102,7 @@
 import dayjs from "dayjs";
 import TimeSelector from "./TimeSelector.vue";
 import SingleDayView from "./SingleDayView/SingleDayView.vue";
-import BaseCard from "../SharedComponentsUI/BaseCard.vue";
+
 import calendar from "../../assets/SVGs/calendar.svg";
 import xIcon from "../../assets/SVGs/x-icon.svg";
 import downArrow from "../../assets/SVGs/down-arrow.svg";
@@ -369,7 +369,7 @@ export default {
       ];
     },
   },
-  components: { TimeSelector, SingleDayView, BaseCard },
+  components: { TimeSelector, SingleDayView },
 };
 </script>
 

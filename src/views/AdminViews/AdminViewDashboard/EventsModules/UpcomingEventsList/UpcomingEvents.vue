@@ -38,7 +38,6 @@
 </template>
 
 <script>
-import BaseCard from "../../../../../SharedComponents/SharedComponentsUI/BaseCard.vue";
 import UpcomingEventsListItem from "../UpcomingEventsList/UpcomingEventListItem.vue";
 import FloatingMenuWithListItems from "../../../../../SharedComponents/SharedComponentsUI/FloatingMenuWithListItems.vue";
 import discsvg from "../../../../../assets/SVGs/disc.svg";
@@ -106,7 +105,7 @@ export default {
     this.loading = true;
     this.fetchData;
   },
-  components: { UpcomingEventsListItem, BaseCard, FloatingMenuWithListItems },
+  components: { UpcomingEventsListItem, FloatingMenuWithListItems },
 };
 </script>
 

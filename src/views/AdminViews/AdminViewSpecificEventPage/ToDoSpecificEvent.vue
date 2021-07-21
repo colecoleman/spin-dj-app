@@ -98,7 +98,6 @@
 
 <script>
 import ToDoItem from "../../../SharedComponents/SharedComponentsToDoList/ToDoItem.vue";
-import BaseCard from "../../../SharedComponents/SharedComponentsUI/BaseCard.vue";
 import clipboardsvg from "../../../assets/SVGs/clipboard.svg";
 import circleCheckmarkSvg from "../../../assets/SVGs/circle-checkmark.svg";
 
@@ -156,7 +155,7 @@ export default {
       };
     },
   },
-  components: { ToDoItem, BaseCard },
+  components: { ToDoItem },
   props: ["id"],
 };
 </script>

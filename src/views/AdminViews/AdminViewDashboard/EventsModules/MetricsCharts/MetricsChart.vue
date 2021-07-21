@@ -11,7 +11,7 @@
 
 <script>
 import LineChart from "./LineChart.vue";
-import BaseCard from "../../../../../SharedComponents/SharedComponentsUI/BaseCard.vue";
+
 import metricsChartsvg from "../../../../../assets/SVGs/metricchart.svg";
 
 export default {
@@ -21,7 +21,7 @@ export default {
     };
   },
 
-  components: { LineChart, BaseCard },
+  components: { LineChart },
 };
 </script>
 

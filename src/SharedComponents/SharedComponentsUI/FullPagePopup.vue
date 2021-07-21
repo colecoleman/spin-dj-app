@@ -18,10 +18,6 @@
 </template>
 
 <script>
-import BaseCard from "./BaseCard.vue";
-export default {
-  components: { BaseCard },
-};
 </script>
 
 <style>

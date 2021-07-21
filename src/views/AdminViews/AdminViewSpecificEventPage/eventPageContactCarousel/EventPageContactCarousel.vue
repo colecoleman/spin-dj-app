@@ -21,7 +21,6 @@
 </template>
 
 <script>
-import BaseCard from "../../../../SharedComponents/SharedComponentsUI/BaseCard.vue";
 import EventPageContactCarouselItem from "./EventPageContactCarouselItem.vue";
 import rightArrow from "../../../../assets/SVGs/right-arrow.svg";
 import leftArrow from "../../../../assets/SVGs/left-arrow.svg";
@@ -77,7 +76,7 @@ export default {
       this.$router.push("/contacts/" + contact.role + "s/" + contact.id);
     },
   },
-  components: { BaseCard, EventPageContactCarouselItem },
+  components: { EventPageContactCarouselItem },
 };
 </script>
 

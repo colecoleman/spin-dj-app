@@ -26,7 +26,6 @@
 <script>
 import leftArrow from "../../../../assets/SVGs/left-arrow.svg";
 import rightArrow from "../../../../assets/SVGs/right-arrow.svg";
-import BaseCard from "../../../../SharedComponents/SharedComponentsUI/BaseCard.vue";
 import SpecificEventPageLocationScrollerItem from "./SpecificEventPageLocationScrollerItem.vue";
 import locationMarkerSvg from "../../../../assets/SVGs/location-marker.svg";
 
@@ -57,7 +56,6 @@ export default {
   },
   props: ["locations"],
   components: {
-    BaseCard,
     SpecificEventPageLocationScrollerItem,
   },
 };

@@ -126,7 +126,6 @@
 </template>
 
 <script>
-import BaseCard from "../../../SharedComponents/SharedComponentsUI/BaseCard.vue";
 import infoIconSvg from "../../../assets/SVGs/info-icon.svg";
 import helpers from "../../../helpers.js";
 
@@ -168,7 +167,6 @@ export default {
     },
   },
   props: ["client", "event"],
-  components: { BaseCard },
 };
 </script>
 

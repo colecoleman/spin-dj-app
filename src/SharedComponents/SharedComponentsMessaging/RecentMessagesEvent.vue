@@ -18,7 +18,6 @@
 
 <script>
 import RecentMessagesPersonObject from "./RecentMessagesPersonObject.vue";
-import BaseCard from "../SharedComponentsUI/BaseCard.vue";
 import messageBubble from "../../assets/SVGs/message-bubble.svg";
 
 export default {
@@ -31,7 +30,6 @@ export default {
   },
   components: {
     RecentMessagesPersonObject,
-    BaseCard,
   },
   computed: {
     clients() {
