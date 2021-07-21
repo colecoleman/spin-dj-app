@@ -68,7 +68,7 @@ export default {
         .businessEmailAddresses;
     },
   },
-  props: ["contact", "category"],
+  props: ["contact"],
   components: { PopupModal, ButtonStandardWithIcon },
 };
 </script>
