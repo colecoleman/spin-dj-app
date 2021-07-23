@@ -2,7 +2,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import EventManager from '../views/AdminViews/AdminViewDashboard/EventManager.vue';
 import ContactsList from '../views/AdminViews/AdminViewContactList/ContactsList.vue'
 import SpecificContactPageClient from '../views/AdminViews/AdminViewSpecificContactPage/SpecificClientPage/SpecificContactPageClient.vue';
-import SpecificContactPageProspect from '../views/AdminViews/AdminViewSpecificContactPage/SpecificContactPageProspect.vue';
+import SpecificContactPageProspect from '../views/AdminViews/AdminViewSpecificContactPage/SpecificProspectPage/SpecificContactPageProspect.vue';
 import SpecificContactPageEmployee from '../views/AdminViews/AdminViewSpecificContactPage/SpecificContactPageEmployee.vue';
 import SpecificContactPageVendor from '../views/AdminViews/AdminViewSpecificContactPage/SpecificContactPageVendor.vue';
 import SpecificContactPageLocation from '../views/AdminViews/AdminViewSpecificContactPage/SpecificContactPageLocation.vue';

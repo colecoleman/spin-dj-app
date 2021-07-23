@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="96.7" height="107.309" viewBox="0 0 96.7 107.309">
+  <g id="Group_635" data-name="Group 635" transform="translate(-209.955 -329.528)">
+    <path id="Icon_awesome-plus" data-name="Icon awesome-plus" d="M293,387.249l-8.178,4.314.109-9c.013-1.1-.79-1.57-1.794-1.041l-1.816.959a3.749,3.749,0,0,0-1.842,2.959l-.11,9-8.178,4.313a3.751,3.751,0,0,0-1.841,2.959v0l-.025,2c-.013,1.1.79,1.571,1.794,1.041l8.178-4.313-.11,9c-.012,1.1.791,1.569,1.794,1.04l1.816-.958a3.752,3.752,0,0,0,1.842-2.959l.11-9,8.179-4.314a3.752,3.752,0,0,0,1.842-2.959l.024-2c.015-1.105-.787-1.573-1.791-1.045Z" fill="currentColor"/>
+    <g id="Icon_feather-package" data-name="Icon feather-package">
+      <path id="Path_187" data-name="Path 187" d="M280.98,369.943l-45.35-26.152" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="6"/>
+      <path id="Path_188" data-name="Path 188" d="M303.655,403.2V362.888a10.077,10.077,0,0,0-5.039-8.717l-35.272-20.156a10.079,10.079,0,0,0-10.078,0l-35.272,20.156a10.077,10.077,0,0,0-5.039,8.717V403.2a10.077,10.077,0,0,0,5.039,8.717l35.273,20.156a10.079,10.079,0,0,0,10.078,0l35.272-20.156A10.075,10.075,0,0,0,303.655,403.2Z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="6"/>
+      <path id="Path_189" data-name="Path 189" d="M214.316,357.648l43.99,25.447,43.99-25.447" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="6"/>
+      <path id="Path_190" data-name="Path 190" d="M258.3,433.837V383.044" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="6"/>
+    </g>
+  </g>
+</svg>

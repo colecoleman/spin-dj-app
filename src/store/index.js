@@ -300,165 +300,209 @@ const store = createStore({
                 ],
                 prospects: [{
                     id: 1,
-                        firstName: "Amanda",
-                        lastName: "Jennings",
-                        phoneNumber: "636-699-5652",
-                        emailAddress: "amandakoch@gmail.com",
-                        recentMessage: "This is my most recent message! It should be truncated if it should get too long just like this one is getting a bit lengthy",
-                        profilePicture: undefined,
-                        notes: {
-                            private: [
-                                {
-                                    date: new Date(2021, 10, 3),
-                                    note: 'Lorem ipsum dur dur dur dur dur dur r'
-                                },
-                                {
-                                    date: new Date(2021, 10, 3),
-                                    note: 'Lorem ipsum dur dur dur dur dur dur r'
-                                },
-                            ],
-                            public: [
-                                {
-                                    date: new Date(2021, 10, 3),
-                                    note: 'Lorem ipsum dur dur dur dur dur dur r'
-                                },
-                                {
-                                    date: new Date(2021, 10, 3),
-                                    note: 'Lorem ipsum dur dur dur dur dur dur r'
-                                },
-                            ],
-                        }
-
+                    firstName: "Amanda",
+                    lastName: "Jennings",
+                    phoneNumber: "636-699-5652",
+                    emailAddress: "amandakoch@gmail.com",
+                    status: "neutral",
+                    lastContact: new Date(2021, 6, 12),
+                    eventDetails: {
+                        eventDate: undefined,
+                        eventStartTime: undefined,
+                        eventEndTime: undefined,
+                        eventLocations: [],
+                        eventPackage: undefined,
+                        projectedValue: 100000
                     },
-                    {
-                        id: 2,
-                        firstName: "Jenny",
-                        lastName: "Jenkins",
-                        phoneNumber: "636-459-7652",
-                        emailAddress: "amandakoch@gmail.com",
-                        recentMessage: "This is my most recent message! It should be truncated if it should get too long",
-                        profilePicture: undefined,
-                        notes: {
-                            private: [
-                                {
-                                    date: new Date(2021, 10, 3),
-                                    note: 'Lorem ipsum dur dur dur dur dur dur r'
-                                },
-                                {
-                                    date: new Date(2021, 10, 3),
-                                    note: 'Lorem ipsum dur dur dur dur dur dur r'
-                                },
-                            ],
-                            public: [
-                                {
-                                    date: new Date(2021, 10, 3),
-                                    note: 'Lorem ipsum dur dur dur dur dur dur r'
-                                },
-                                {
-                                    date: new Date(2021, 10, 3),
-                                    note: 'Lorem ipsum dur dur dur dur dur dur r'
-                                },
-                            ],
-                        }
+                    notes: {
+                        private: [
+                            {
+                                date: new Date(2021, 10, 3),
+                                note: 'Lorem ipsum dur dur dur dur dur dur r'
+                            },
+                            {
+                                date: new Date(2021, 10, 3),
+                                note: 'Lorem ipsum dur dur dur dur dur dur r'
+                            },
+                        ],
+                        public: [
+                            {
+                                date: new Date(2021, 10, 3),
+                                note: 'Lorem ipsum dur dur dur dur dur dur r'
+                            },
+                            {
+                                date: new Date(2021, 10, 3),
+                                note: 'Lorem ipsum dur dur dur dur dur dur r'
+                            },
+                        ],
+                    }
 
-    
+                },
+                {
+                    id: 2,
+                    firstName: "Jenny",
+                    lastName: "Jenkins",
+                    phoneNumber: "636-459-7652",
+                    emailAddress: "amandakoch@gmail.com",
+                    status: "neutral",
+                    lastContact: new Date(2021, 6, 12),
+                    eventDetails: {
+                        eventDate: undefined,
+                        eventStartTime: undefined,
+                        eventEndTime: undefined,
+                        eventLocations: [],
+                        eventPackage: undefined,
+                        projectedValue: 100000
                     },
-                    {
-                        id: 3,
-                        firstName: "Maggie",
-                        lastName: "Mahoney",
-                        phoneNumber: "636-234-5652",
-                        emailAddress: "magsmahones@gmail.com",
-                        recentMessage: "This is my most recent message! It should be truncated if it should get too long",
-                        profilePicture: undefined,
-                        notes: {
-                            private: [
-                                {
-                                    date: new Date(2021, 10, 3),
-                                    note: 'Lorem ipsum dur dur dur dur dur dur r'
-                                },
-                                {
-                                    date: new Date(2021, 10, 3),
-                                    note: 'Lorem ipsum dur dur dur dur dur dur r'
-                                },
-                            ],
-                            public: [
-                                {
-                                    date: new Date(2021, 10, 3),
-                                    note: 'Lorem ipsum dur dur dur dur dur dur r'
-                                },
-                                {
-                                    date: new Date(2021, 10, 3),
-                                    note: 'Lorem ipsum dur dur dur dur dur dur r'
-                                },
-                            ],
-                        }
 
-    
-                    },
-                    { 
-                        id: 4,
-                        firstName: "Jacob",
-                        lastName: "Jingelheimerschmidt",
-                        phoneNumber: "636-699-4563",
-                        emailAddress: "longemail@gmail.com",
-                        recentMessage: "This is my most recent message! It should be truncated if it should get too long",
-                        profilePicture: undefined,
-                        notes: {
-                            private: [
-                                {
-                                    date: new Date(2021, 10, 3),
-                                    note: 'Lorem ipsum dur dur dur dur dur dur r'
-                                },
-                                {
-                                    date: new Date(2021, 10, 3),
-                                    note: 'Lorem ipsum dur dur dur dur dur dur r'
-                                },
-                            ],
-                            public: [
-                                {
-                                    date: new Date(2021, 10, 3),
-                                    note: 'Lorem ipsum dur dur dur dur dur dur r'
-                                },
-                                {
-                                    date: new Date(2021, 10, 3),
-                                    note: 'Lorem ipsum dur dur dur dur dur dur r'
-                                },
-                            ],
-                        }
+                    notes: {
+                        private: [
+                            {
+                                date: new Date(2021, 10, 3),
+                                note: 'Lorem ipsum dur dur dur dur dur dur r'
+                            },
+                            {
+                                date: new Date(2021, 10, 3),
+                                note: 'Lorem ipsum dur dur dur dur dur dur r'
+                            },
+                        ],
+                        public: [
+                            {
+                                date: new Date(2021, 10, 3),
+                                note: 'Lorem ipsum dur dur dur dur dur dur r'
+                            },
+                            {
+                                date: new Date(2021, 10, 3),
+                                note: 'Lorem ipsum dur dur dur dur dur dur r'
+                            },
+                        ],
+                    }
 
-    
+
+                },
+                {
+                    id: 3,
+                    firstName: "Maggie",
+                    lastName: "Mahoney",
+                    phoneNumber: "636-234-5652",
+                    emailAddress: "magsmahones@gmail.com",
+                    status: "neutral",
+                    lastContact: new Date(2021, 6, 12),
+                    eventDetails: {
+                        eventDate: undefined,
+                        eventStartTime: undefined,
+                        eventEndTime: undefined,
+                        eventLocations: [],
+                        eventPackage: undefined,
+                        projectedValue: 100000
                     },
-                    {
-                        id: 5,
-                        firstName: "Bobert",
-                        lastName: "Bobertson",
-                        phoneNumber: "636-123-5652",
-                        emailAddress: "ghjklkoch@gmail.com",
-                        recentMessage: "This is my most recent message! It should be truncated if it should get too long",
-                        profilePicture: undefined,
-                        notes: {
-                            private: [
-                                {
-                                    date: new Date(2021, 10, 3),
-                                    note: 'Lorem ipsum dur dur dur dur dur dur r'
-                                },
-                                {
-                                    date: new Date(2021, 10, 3),
-                                    note: 'Lorem ipsum dur dur dur dur dur dur r'
-                                },
-                            ],
-                            public: [
-                                {
-                                    date: new Date(2021, 10, 3),
-                                    note: 'Lorem ipsum dur dur dur dur dur dur r'
-                                },
-                                {
-                                    date: new Date(2021, 10, 3),
-                                    note: 'Lorem ipsum dur dur dur dur dur dur r'
-                                },
-                            ],
-                        }
+
+                    notes: {
+                        private: [
+                            {
+                                date: new Date(2021, 10, 3),
+                                note: 'Lorem ipsum dur dur dur dur dur dur r'
+                            },
+                            {
+                                date: new Date(2021, 10, 3),
+                                note: 'Lorem ipsum dur dur dur dur dur dur r'
+                            },
+                        ],
+                        public: [
+                            {
+                                date: new Date(2021, 10, 3),
+                                note: 'Lorem ipsum dur dur dur dur dur dur r'
+                            },
+                            {
+                                date: new Date(2021, 10, 3),
+                                note: 'Lorem ipsum dur dur dur dur dur dur r'
+                            },
+                        ],
+                    }
+
+
+                },
+                { 
+                    id: 4,
+                    firstName: "Jacob",
+                    lastName: "Jingelheimerschmidt",
+                    phoneNumber: "636-699-4563",
+                    emailAddress: "longemail@gmail.com",
+                    status: "neutral",
+                    lastContact: new Date(2021, 6, 12),
+                    eventDetails: {
+                        eventDate: undefined,
+                        eventStartTime: undefined,
+                        eventEndTime: undefined,
+                        eventLocations: [],
+                        eventPackage: undefined,
+                        projectedValue: 100000
+                    },
+
+                    notes: {
+                        private: [
+                            {
+                                date: new Date(2021, 10, 3),
+                                note: 'Lorem ipsum dur dur dur dur dur dur r'
+                            },
+                            {
+                                date: new Date(2021, 10, 3),
+                                note: 'Lorem ipsum dur dur dur dur dur dur r'
+                            },
+                        ],
+                        public: [
+                            {
+                                date: new Date(2021, 10, 3),
+                                note: 'Lorem ipsum dur dur dur dur dur dur r'
+                            },
+                            {
+                                date: new Date(2021, 10, 3),
+                                note: 'Lorem ipsum dur dur dur dur dur dur r'
+                            },
+                        ],
+                    }
+
+
+                },
+                {
+                    id: 5,
+                    firstName: "Bobert",
+                    lastName: "Bobertson",
+                    phoneNumber: "636-123-5652",
+                    emailAddress: "ghjklkoch@gmail.com",
+                    status: "neutral",
+                    lastContact: new Date(2021, 6, 12),
+                    eventDetails: {
+                        eventDate: undefined,
+                        eventStartTime: undefined,
+                        eventEndTime: undefined,
+                        eventLocations: [],
+                        eventPackage: undefined,
+                        projectedValue: 100000
+                    },
+
+                    notes: {
+                        private: [
+                            {
+                                date: new Date(2021, 10, 3),
+                                note: 'Lorem ipsum dur dur dur dur dur dur r'
+                            },
+                            {
+                                date: new Date(2021, 10, 3),
+                                note: 'Lorem ipsum dur dur dur dur dur dur r'
+                            },
+                        ],
+                        public: [
+                            {
+                                date: new Date(2021, 10, 3),
+                                note: 'Lorem ipsum dur dur dur dur dur dur r'
+                            },
+                            {
+                                date: new Date(2021, 10, 3),
+                                note: 'Lorem ipsum dur dur dur dur dur dur r'
+                            },
+                        ],
+                    }
 
     
                     },],
@@ -2015,119 +2059,6 @@ const store = createStore({
         };
     },
     actions: {
-        // getClients({ commit }) {
-            
-        // },
-       
-        // getEvents({ commit }) {
-        //     db.collection('events')
-        // },
-        // getAddOns({ commit }) {
-        //     db.collection('addOns')
-        //     .get()
-        //     .then((querySnapshot) => {
-        //         let addOns = [];
-        //         querySnapshot.forEach((doc) => { 
-        //             let temp = doc.data();
-        //             temp.id = doc.id;
-        //             addOns.push(temp);
-        //         });
-        //         console.log(addOns)
-        //         commit('setAddOns', addOns);
-                
-        //     });
-            
-        // },
-        // getContacts({ commit }) {
-        //     db.collection('contacts')
-        //     .get()
-        //     .then((querySnapshot) => {
-        //         let contacts = [];
-        //         querySnapshot.forEach((doc) => {
-        //             let temp = doc.data();
-        //             temp.id = doc.id;
-        //             contacts.push(temp);
-        //         });
-        //         commit('setContacts', contacts);
-                
-        //     });
-            
-        // },
-        // getEquipment({ commit }) {
-        //     db.collection('equipment')
-        //     .get()
-        //     .then((querySnapshot) => {
-        //         let equipment = [];
-        //         querySnapshot.forEach((doc) => { 
-        //             let temp = doc.data();
-        //             temp.id = doc.id;
-        //             equipment.push(temp)
-        //         });
-        //         commit('setEquipment', equipment);
-                
-        //     });
-            
-        // },
-        // getPackages({ commit }) {
-        //     db.collection('packages')
-        //     .get()
-        //     .then((querySnapshot) => {
-        //         let packages = [];
-        //         querySnapshot.forEach((doc) => { 
-        //             let temp = doc.data();
-        //             temp.id = doc.id;
-        //             packages.push(temp)
-        //         });
-        //         commit('setPackages', packages);
-                
-        //     });
-            
-        // },
-        // getServices({ commit }) {
-        //     db.collection('services')
-        //     .get()
-        //     .then((querySnapshot) => {
-        //         let services = [];
-        //         querySnapshot.forEach((doc) => { 
-        //             let temp = doc.data();
-        //             temp.id = doc.id;
-        //             services.push(temp);
-        //         });
-        //         commit('setServices', services);
-                
-        //     });
-            
-        // },
-        // getUserSettings({ commit }) {
-        //     db.collection('userSettings')
-        //     .get()
-        //     .then((querySnapshot) => {
-        //         let userSettings = [];
-        //         querySnapshot.forEach((doc) => { 
-        //             let temp = doc.data();
-        //             temp.id = doc.id;
-        //             userSettings.push(temp)
-        //         });
-        //         commit('setUserSettings', userSettings);
-                
-        //     });
-            
-        // },
-        // getUsers({ commit }) {
-        //     db.collection('users')
-        //     .get()
-        //     .then((querySnapshot) => {
-        //         let users = [];
-        //         querySnapshot.forEach((doc) => { 
-        //             let temp = doc.data();
-        //             temp.id = doc.id;
-        //             users.push(temp)
-        //         });
-        //         commit('setUsers', users);
-                
-        //     });
-            
-        // },
         addClient( state, client) {
             console.log(client);
             state.commit('addClient', client);
@@ -2174,11 +2105,29 @@ const store = createStore({
         deleteApprovedAutomation( state, id ) {
             state.commit('deleteApprovedAutomation', id)
         },
+
+        // prospect-specific actions
+        
+        changeProspectStatus(state, payload) {
+            state.commit('changeProspectStatus', payload)
+        },
+
+        addProspectLocation(state, payload) {
+            state.commit('addProspectLocation', payload)
+        },
+        addProspectDateTime(state, payload) {
+            state.commit('addProspectDateTime', payload)
+        },
+
+
         completeToDo( state, id) {
             state.commit('completeToDo', id)
         },
         addToDo(state, payload) {
             state.commit('addToDo', payload)
+        },
+        addContactNote(state, payload) {
+            state.commit('addContactNote', payload)
         },
         editClient(state, {id, key, value}) {
             state.commit('editClient', {id, key, value})
@@ -2261,6 +2210,48 @@ const store = createStore({
         },
         addToDo(state, payload) {
             state.toDos.unshift(payload)
+        },
+
+//prospect-specific mutations
+
+        changeProspectStatus(state, payload) {
+            let subject = state.contacts.prospects.find((c) => c.id == payload.id);
+            subject.status = payload.status;
+        },
+
+        addProspectLocation(state, payload) {
+            let subject = state.contacts.prospects.find((c) => c.id == payload.id);
+            subject.eventDetails.eventLocations.push(payload.location)
+
+        },
+
+        addProspectDateTime(state, payload) {
+            let subject = state.contacts.prospects.find((c) => c.id == payload.id);
+            subject.eventDetails.eventDate = payload.eventDate;
+            
+            if (payload.eventStartTime) {
+                subject.eventDetails.eventStartTime = payload.eventStartTime;
+            } else {
+            subject.eventDetails.eventStartTime = undefined;
+
+            }
+            
+            if (payload.eventEndTime) {
+            subject.eventDetails.eventEndTime = payload.eventEndTime;
+            } else {
+                subject.eventDetails.eventEndTime = undefined;
+            }
+        },
+
+
+
+        addContactNote(state, payload) {
+             let subject = state.contacts[payload.category].find((c) => c.id = payload.id);
+             let privacy = payload.note.privacy.toLowerCase();
+             let note = {
+                date: payload.note.date,
+                note: payload.note.note};
+            subject.notes[privacy].push(note);
         },
         editClient(state, {id, key, value}) {
             let subject = state.contacts.clients.find((c) => c.id === id);

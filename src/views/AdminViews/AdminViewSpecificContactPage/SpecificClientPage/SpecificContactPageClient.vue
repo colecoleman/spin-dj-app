@@ -8,10 +8,10 @@
   <div id="section-wrapper">
     <div id="left-column">
       <div id="box-one">
-        <contact-card-person
+        <contact-card-client
           :contact="contact"
           :icon="personsvg"
-        ></contact-card-person>
+        ></contact-card-client>
       </div>
       <div id="box-two">
         <contact-page-to-do-list :id="contact.id"></contact-page-to-do-list>
@@ -53,10 +53,11 @@
 <script>
 import {
   ContactPageAutomation,
-  ContactCardPerson,
   ContactPageToDoList,
   ContactPageUpcomingEvents,
 } from "../ContactPageComponents/contactPageIndex.js";
+
+import ContactCardClient from "../ContactPageComponents/ClientPageComponents/ContactCardClient.vue";
 
 import PopupEmailComposition from "../../../../SharedComponents/SharedComponentsPopupUtilities/PopupEmailComposition.vue";
 import PopupNotesView from "../../../../SharedComponents/SharedComponentsPopupUtilities/PopupNotesView.vue";
@@ -128,7 +129,7 @@ export default {
     PopupEmailComposition,
     PopupNotesView,
     BaseCard,
-    ContactCardPerson,
+    ContactCardClient,
     ContactPageToDoList,
     ContactPageUpcomingEvents,
     ContactPageAutomation,

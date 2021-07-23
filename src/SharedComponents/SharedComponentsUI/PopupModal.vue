@@ -20,7 +20,6 @@
   <!-- Popup Text: class="popup-text" -->
   <div class="popup-modal">
     <div class="window">
-      <h5>Hi</h5>
       <slot name="window"></slot>
     </div>
   </div>
