@@ -22,6 +22,32 @@
             </p>
           </div>
         </div>
+        <div id="contact-card-lower-div">
+          <div class="contact-card-lower-div-half">
+            <div class="indented-item">
+              <h5>Created:</h5>
+              <h5 class="indented">{{ contact.createdDate }}</h5>
+            </div>
+            <div class="indented-item">
+              <h5>Last Login:</h5>
+              <h5 class="indented">{{ contact.lastLogin }}</h5>
+            </div>
+          </div>
+          <div class="contact-card-lower-div-half">
+            <div class="indented-item">
+              <h5>Source:</h5>
+              <h5 class="indented">
+                {{ contact.source }}
+              </h5>
+            </div>
+            <div class="indented-item">
+              <h5>Lifetime Value:</h5>
+              <h5 class="indented">
+                {{ `$${contact.lifetimeValue * 0.01} ` }}
+              </h5>
+            </div>
+          </div>
+        </div>
         <h5>Reset user password</h5>
       </div>
     </template>
@@ -29,8 +55,8 @@
 </template>
 
 <script>
-import defaultProfilePicture from "../../../../assets/default-profile-picture.svg";
-import editPen from "../../../../assets/SVGs/edit-pen.svg";
+import defaultProfilePicture from "../../../../../assets/default-profile-picture.svg";
+import editPen from "../../../../../assets/SVGs/edit-pen.svg";
 
 export default {
   data() {
