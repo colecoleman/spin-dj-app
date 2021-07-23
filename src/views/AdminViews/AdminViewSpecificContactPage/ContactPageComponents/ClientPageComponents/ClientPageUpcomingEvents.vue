@@ -31,6 +31,27 @@
               </p>
             </div>
           </div>
+          <div id="date-payment-details">
+            <p>
+              Invoice Total: ${{
+                (contactEvents[eventScroller].total * 0.01).toLocaleString()
+              }}
+            </p>
+            <p>
+              Amount Paid: ${{
+                (
+                  contactEvents[eventScroller].paymentTotal * 0.01
+                ).toLocaleString()
+              }}
+            </p>
+            <p>
+              Balance Outstanding: ${{
+                (
+                  contactEvents[eventScroller].balanceOutstanding * 0.01
+                ).toLocaleString()
+              }}
+            </p>
+          </div>
         </div>
         <img
           :src="rightArrow"
@@ -44,9 +65,9 @@
 </template>
 
 <script>
-import rightArrow from "../../../../assets/SVGs/right-arrow.svg";
-import leftArrow from "../../../../assets/SVGs/left-arrow.svg";
-import helpers from "../../../../helpers.js";
+import rightArrow from "../../../../../assets/SVGs/right-arrow.svg";
+import leftArrow from "../../../../../assets/SVGs/left-arrow.svg";
+import helpers from "../../../../../helpers.js";
 export default {
   data() {
     return {
@@ -117,8 +138,9 @@ export default {
   border: 1px solid var(--cardOutline);
   border-radius: 10px;
   width: 50%;
-  height: 100%;
+  height: 75px;
   margin: 10px;
+  min-height: 50%;
 }
 
 img {
@@ -140,7 +162,7 @@ p {
 }
 
 #venue-details {
-  width: 100%;
+  width: 50%;
   display: flex;
   flex-direction: row;
   align-items: center;

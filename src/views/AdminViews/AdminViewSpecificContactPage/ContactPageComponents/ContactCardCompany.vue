@@ -14,6 +14,16 @@
             alt=""
           />
           <div id="contact-information">
+            <div id="business-name-and-category">
+              <h4 id="business-name">{{ contact.businessName }}</h4>
+
+              <h4 v-if="contact.vendorCategory" id="vendor-category">
+                {{ contact.vendorCategory }}
+              </h4>
+              <h4 v-if="!contact.vendorCategory" id="vendor-category">
+                Uncategorized
+              </h4>
+            </div>
             <h4 id="first-name">{{ contact.firstName }}</h4>
             <h4 id="last-name">{{ contact.lastName }}</h4>
             <p class="contact-contact-information">{{ contact.phoneNumber }}</p>
@@ -22,32 +32,7 @@
             </p>
           </div>
         </div>
-        <div id="contact-card-lower-div">
-          <div class="contact-card-lower-div-half">
-            <div class="indented-item">
-              <h5>Created:</h5>
-              <h5 class="indented">{{ contact.createdDate }}</h5>
-            </div>
-            <div class="indented-item">
-              <h5>Last Login:</h5>
-              <h5 class="indented">{{ contact.lastLogin }}</h5>
-            </div>
-          </div>
-          <div class="contact-card-lower-div-half">
-            <div class="indented-item">
-              <h5>Source:</h5>
-              <h5 class="indented">
-                {{ contact.source }}
-              </h5>
-            </div>
-            <div class="indented-item">
-              <h5>Lifetime Value:</h5>
-              <h5 class="indented">
-                {{ `$${contact.lifetimeValue * 0.01} ` }}
-              </h5>
-            </div>
-          </div>
-        </div>
+        <div id="contact-card-lower-div"></div>
         <h5>Reset user password</h5>
       </div>
     </template>
@@ -80,7 +65,21 @@ img {
   padding: 10px;
 }
 
-#first-name {
+#business-name-and-category {
+  margin: 10px 0;
+}
+
+#business-name {
+  margin-bottom: 5px;
+  border-bottom: 1px solid black;
+}
+
+#vendor-category {
+  font-size: 8pt;
+}
+
+#first-name,
+#last-name {
   font-weight: normal;
 }
 
@@ -97,6 +96,7 @@ img {
   position: relative;
   display: flex;
   flex-direction: row;
+  align-items: center;
   padding: 10px;
 }
 
@@ -106,7 +106,7 @@ img {
 
 #contact-card-lower-div {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   margin: 10px 0;
 }
 

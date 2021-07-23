@@ -4,37 +4,57 @@
     :contact="contact"
     @cancel-send-email="closePopups()"
   ></popup-email-composition>
+  <vendor-page-referral-popup
+    v-if="referPopupOpen && !emailPopupOpen && !notesPopupOpen"
+    :vendor="contact"
+    @close-referral-window="closePopups()"
+  ></vendor-page-referral-popup>
   <popup-notes-view v-if="!emailPopupOpen && notesPopupOpen"></popup-notes-view>
   <div id="section-wrapper">
     <div id="left-column">
       <div id="box-one">
-        <contact-card-client
+        <contact-card-company
           :contact="contact"
           :icon="personsvg"
-        ></contact-card-client>
+        ></contact-card-company>
       </div>
       <div id="box-two">
+        <vendor-page-referral-button
+          :vendor="contact"
+          @referral-clicked="toggleReferral()"
+        ></vendor-page-referral-button>
+      </div>
+      <div id="box-three">
         <contact-page-to-do-list :id="contact.id"></contact-page-to-do-list>
       </div>
     </div>
     <div id="right-column">
-      <div id="box-three">
+      <div id="box-four">
         <four-button-bar-with-drop-down
           :buttons="buttons"
           :dropdown="dropdown"
         ></four-button-bar-with-drop-down>
       </div>
-      <div id="box-four">
-        <client-page-upcoming-events
-          :id="contact.id"
-          :icon="calendarsvg"
-        ></client-page-upcoming-events>
-      </div>
       <div id="box-five">
         <div id="box-five-half">
-          <contact-page-automation></contact-page-automation>
+          <contact-page-upcoming-events
+            :id="contact.id"
+            :icon="calendarsvg"
+          ></contact-page-upcoming-events>
         </div>
         <div id="box-five-half-two">
+          <contact-page-notes
+            :notes="contact.notes"
+            :contact="contact"
+            contactCategory="Vendor"
+          />
+        </div>
+      </div>
+      <div id="box-six">
+        <div id="box-six-half">
+          <contact-page-automation></contact-page-automation>
+        </div>
+        <div id="box-six-half-two">
           <base-card :icon="messageBubble">
             <template v-slot:title>Messages</template>
             <template v-slot:content>
@@ -54,16 +74,17 @@
 import {
   ContactPageAutomation,
   ContactPageToDoList,
+  ContactPageUpcomingEvents,
 } from "../ContactPageComponents/contactPageIndex.js";
-
-import ContactCardClient from "../ContactPageComponents/ClientPageComponents/ClientPageContactCard.vue";
-import ClientPageUpcomingEvents from "../ContactPageComponents/ClientPageComponents/ClientPageUpcomingEvents.vue";
 
 import PopupEmailComposition from "../../../../SharedComponents/SharedComponentsPopupUtilities/PopupEmailComposition.vue";
 import PopupNotesView from "../../../../SharedComponents/SharedComponentsPopupUtilities/PopupNotesView.vue";
-import BaseCard from "../../../../SharedComponents/SharedComponentsUI/BaseCard.vue";
 import MessagingSingleComponent from "../../../../SharedComponents/SharedComponentsMessaging/MessagingSingleComponent.vue";
 import FourButtonBarWithDropDown from "../../../../SharedComponents/SharedComponentsUI/FourButtonBarWithDropDown.vue";
+import ContactCardCompany from "../../../../views/AdminViews/AdminViewSpecificContactPage/ContactPageComponents/ContactCardCompany.vue";
+import VendorPageReferralButton from "../ContactPageComponents/VendorPageComponents/VendorPageReferralButton.vue";
+import VendorPageReferralPopup from "../ContactPageComponents/VendorPageComponents/VendorPageReferralPopup.vue";
+import ContactPageNotes from "../ContactPageComponents/ContactPageNotes/ContactPageNotes.vue";
 
 import personsvg from "../../../../assets/SVGs/person.svg";
 import messageBubble from "../../../../assets/SVGs/message-bubble.svg";
@@ -102,12 +123,13 @@ export default {
       },
       emailPopupOpen: false,
       notesPopupOpen: false,
+      referPopupOpen: false,
     };
   },
   computed: {
     contact() {
       let id = this.$route.params.id;
-      return this.$store.state.contacts.clients.find((x) => x.id == id);
+      return this.$store.state.contacts.vendors.find((x) => x.id == id);
     },
   },
   methods: {
@@ -120,22 +142,26 @@ export default {
     viewNotes() {
       console.log("notes open");
     },
+    toggleReferral() {
+      this.referPopupOpen = !this.referPopupOpen;
+    },
     closePopups() {
       this.emailPopupOpen = false;
       this.notesPopupOpen = false;
+      this.referPopupOpen = false;
     },
   },
   components: {
     PopupEmailComposition,
     PopupNotesView,
-    BaseCard,
-    ContactCardClient,
+    ContactCardCompany,
     ContactPageToDoList,
-    ClientPageUpcomingEvents,
-
+    ContactPageUpcomingEvents,
     ContactPageAutomation,
+    ContactPageNotes,
     MessagingSingleComponent,
-
+    VendorPageReferralButton,
+    VendorPageReferralPopup,
     FourButtonBarWithDropDown,
   },
 };
@@ -157,28 +183,30 @@ svg {
 #left-column {
   width: 30%;
   height: 100%;
-  /* display: flex; */
+  display: flex;
   flex-direction: column;
 }
 
 #box-one {
-  height: 60%;
+  height: fit-content;
 }
 #box-two {
-  height: 40%;
+  height: fit-content;
 }
 
 #right-column {
   width: 70%;
-  height: calc(100% - 5px);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 #box-three {
-  height: 18%;
+  flex: 1 1 auto;
 }
 
 #box-four {
-  height: 40%;
+  height: 17%;
 }
 
 #box-five {
@@ -188,10 +216,23 @@ svg {
 }
 
 #box-five-half {
+  width: 60%;
+}
+#box-five-half-two {
+  width: 40%;
+}
+
+#box-six {
+  height: 41%;
+  display: flex;
+  flex-direction: row;
+}
+
+#box-six-half {
   width: 55%;
 }
 
-#box-five-half-two {
+#box-six-half-two {
   width: 45%;
 }
 </style>
