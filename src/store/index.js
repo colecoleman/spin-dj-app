@@ -509,6 +509,7 @@ const store = createStore({
                 vendors: [{
                     id: 1,
                     businessName: "Fun Flowers",
+                    vendorCategory: "Floral + Decor",
                         firstName: "Amanda",
                         lastName: "Jennings",
                         phoneNumber: "636-699-5652",
@@ -541,6 +542,7 @@ const store = createStore({
                     },
                     {
                     businessName: "Cool Guy DJ Company",
+                    vendorCategory: "DJ + Entertainment",
 
                         id: 2,
                         firstName: "Jenny",
@@ -576,6 +578,7 @@ const store = createStore({
                     },
                     {
                         id: 3,
+                        vendorCategory: "Photography",
                         firstName: "Maggie",
                         lastName: "Mahoney",
                         phoneNumber: "636-234-5652",
@@ -609,6 +612,7 @@ const store = createStore({
                     },
                     {
                         id: 4,
+                        vendorCategory: "Videography",
                         firstName: "Jacob",
                         lastName: "Jingelheimerschmidt",
                         phoneNumber: "636-699-4563",
@@ -642,6 +646,7 @@ const store = createStore({
                     },
                     {
                         id: 5, 
+                        vendorCategory: "Hair and Makeup",
                         firstName: "Bobert",
                         lastName: "Bobertson",
                         phoneNumber: "636-123-5652",

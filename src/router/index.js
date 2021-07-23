@@ -4,7 +4,7 @@ import ContactsList from '../views/AdminViews/AdminViewContactList/ContactsList.
 import SpecificContactPageClient from '../views/AdminViews/AdminViewSpecificContactPage/SpecificClientPage/SpecificContactPageClient.vue';
 import SpecificContactPageProspect from '../views/AdminViews/AdminViewSpecificContactPage/SpecificProspectPage/SpecificContactPageProspect.vue';
 import SpecificContactPageEmployee from '../views/AdminViews/AdminViewSpecificContactPage/SpecificContactPageEmployee.vue';
-import SpecificContactPageVendor from '../views/AdminViews/AdminViewSpecificContactPage/SpecificContactPageVendor.vue';
+import SpecificContactPageVendor from '../views/AdminViews/AdminViewSpecificContactPage/SpecificVendorPage/SpecificContactPageVendor.vue';
 import SpecificContactPageLocation from '../views/AdminViews/AdminViewSpecificContactPage/SpecificContactPageLocation.vue';
 import SpecificContactPageOrganizer from '../views/AdminViews/AdminViewSpecificContactPage/SpecificContactPageOrganizer.vue';
 import SpecificEventPage from "../views/AdminViews/AdminViewSpecificEventPage/SpecificEventPage.vue";
