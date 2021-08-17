@@ -36,11 +36,11 @@
             : defaultProfilePicture
         "
       />
-      <div class="name">
+      <div class="name" @click="viewContact()">
         <h5 v-if="contact.businessName" class="business-name">
           <span>{{ contact.businessName }}</span>
         </h5>
-        <h5 id="client-name" @click="viewContact()">
+        <h5 id="client-name">
           {{ contact.firstName }} <br />
           <span> {{ contact.lastName }}</span>
         </h5>

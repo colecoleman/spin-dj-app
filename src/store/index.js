@@ -2084,7 +2084,7 @@ const store = createStore({
             item.address = location.address;
             console.log(location);
 
-            state.commit('addLocation', location);
+            state.commit('addLocation', item);
             let contact = location.contact;
             contact.businessName = location.name;
             state.commit('addVendor', contact)
