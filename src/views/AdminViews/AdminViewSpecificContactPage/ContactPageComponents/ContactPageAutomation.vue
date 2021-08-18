@@ -60,6 +60,7 @@ export default {
 <style scoped>
 #list-wrapper {
   height: 90%;
+  max-height: 90%;
   width: 100%;
   overflow-y: scroll;
   overflow-x: visible;

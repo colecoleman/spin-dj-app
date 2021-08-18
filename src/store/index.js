@@ -820,168 +820,193 @@ const store = createStore({
                     },],
                 locations: [{
                     id: 1,
-                        firstName: "Amanda",
-                        lastName: "Jennings",
-                        phoneNumber: "636-699-5652",
-                        emailAddress: "amandakoch@gmail.com",
-                        recentMessage: "This is my most recent message! It should be truncated if it should get too long just like this one is getting a bit lengthy",
-                        profilePicture: undefined,
-                        notes: {
-                            private: [
-                                {
-                                    date: new Date(2021, 10, 3),
-                                    note: 'Lorem ipsum dur dur dur dur dur dur r'
-                                },
-                                {
-                                    date: new Date(2021, 10, 3),
-                                    note: 'Lorem ipsum dur dur dur dur dur dur r'
-                                },
-                            ],
-                            public: [
-                                {
-                                    date: new Date(2021, 10, 3),
-                                    note: 'Lorem ipsum dur dur dur dur dur dur r'
-                                },
-                                {
-                                    date: new Date(2021, 10, 3),
-                                    note: 'Lorem ipsum dur dur dur dur dur dur r'
-                                },
-                            ],
-                        }
-
+                    name: "The Venue Name",
+                    address: {
+                        address1: "12345 Venue Dr",
+                        address2: "Anywhere, MO, 12345",
                     },
-                    {
-                        id: 2,
-                        firstName: "Jenny",
-                        lastName: "Jenkins",
-                        phoneNumber: "636-459-7652",
-                        emailAddress: "amandakoch@gmail.com",
-                        recentMessage: "This is my most recent message! It should be truncated if it should get too long",
-                        profilePicture: undefined,
-                        notes: {
-                            private: [
-                                {
-                                    date: new Date(2021, 10, 3),
-                                    note: 'Lorem ipsum dur dur dur dur dur dur r'
-                                },
-                                {
-                                    date: new Date(2021, 10, 3),
-                                    note: 'Lorem ipsum dur dur dur dur dur dur r'
-                                },
-                            ],
-                            public: [
-                                {
-                                    date: new Date(2021, 10, 3),
-                                    note: 'Lorem ipsum dur dur dur dur dur dur r'
-                                },
-                                {
-                                    date: new Date(2021, 10, 3),
-                                    note: 'Lorem ipsum dur dur dur dur dur dur r'
-                                },
-                            ],
-                        }
+                    associatedVendorId: 1,
+                    notes: {
+                        private: [
+                            {
+                                date: new Date(2021, 10, 3),
+                                note: 'Lorem ipsum m fur fur fur fur fur r'
+                            },
+                            {
+                                date: new Date(2021, 10, 3),
+                                note: 'Lorem ipsum fur fur fur fur fur fur r'
+                            },
+                        ],
+                        public: [
+                            {
+                                date: new Date(2021, 10, 3),
+                                note: 'Lorem ipsum fur fur fur fur fur fur r'
+                            },
+                            {
+                                date: new Date(2021, 10, 3),
+                                note: 'Lorem ipsum fur fur fur fur fur fur r'
+                            },
+                        ],
+                    }
 
-    
+                },
+                {
+                    id: 2,
+                    name: "The Venue Name",
+                    address: {
+                        address1: "12345 Venue Dr",
+                        address2: "Anywhere, MO, 12345",
                     },
-                    {
-                        id: 3,
-                        firstName: "Maggie",
-                        lastName: "Mahoney",
-                        phoneNumber: "636-234-5652",
-                        emailAddress: "magsmahones@gmail.com",
-                        recentMessage: "This is my most recent message! It should be truncated if it should get too long",
-                        profilePicture: undefined,
-                        notes: {
-                            private: [
-                                {
-                                    date: new Date(2021, 10, 3),
-                                    note: 'Lorem ipsum dur dur dur dur dur dur r'
-                                },
-                                {
-                                    date: new Date(2021, 10, 3),
-                                    note: 'Lorem ipsum dur dur dur dur dur dur r'
-                                },
-                            ],
-                            public: [
-                                {
-                                    date: new Date(2021, 10, 3),
-                                    note: 'Lorem ipsum dur dur dur dur dur dur r'
-                                },
-                                {
-                                    date: new Date(2021, 10, 3),
-                                    note: 'Lorem ipsum dur dur dur dur dur dur r'
-                                },
-                            ],
-                        }
+                    associatedVendorId: 2,
+                    notes: {
+                        private: [
+                            {
+                                date: new Date(2021, 10, 3),
+                                note: 'Lorem ipsum fur dur dur dur dur dur r'
+                            },
+                            {
+                                date: new Date(2021, 10, 3),
+                                note: 'Lorem ipsum dur dur dur dur dur dur r'
+                            },
+                        ],
+                        public: [
+                            {
+                                date: new Date(2021, 10, 3),
+                                note: 'Lorem ipsum dur dur dur dur dur dur r'
+                            },
+                            {
+                                date: new Date(2021, 10, 3),
+                                note: 'Lorem ipsum dur dur dur dur dur dur r'
+                            },
+                        ],
+                    }
 
-    
+                },{
+                    id: 3,
+                    name: "The Venue Name",
+                    address: {
+                        address1: "12345 Venue Dr",
+                        address2: "Anywhere, MO, 12345",
                     },
-                    {
-                        id: 4,
-                        firstName: "Jacob",
-                        lastName: "Jingelheimerschmidt",
-                        phoneNumber: "636-699-4563",
-                        emailAddress: "longemail@gmail.com",
-                        recentMessage: "This is my most recent message! It should be truncated if it should get too long",
-                        profilePicture: undefined,
-                        notes: {
-                            private: [
-                                {
-                                    date: new Date(2021, 10, 3),
-                                    note: 'Lorem ipsum dur dur dur dur dur dur r'
-                                },
-                                {
-                                    date: new Date(2021, 10, 3),
-                                    note: 'Lorem ipsum dur dur dur dur dur dur r'
-                                },
-                            ],
-                            public: [
-                                {
-                                    date: new Date(2021, 10, 3),
-                                    note: 'Lorem ipsum dur dur dur dur dur dur r'
-                                },
-                                {
-                                    date: new Date(2021, 10, 3),
-                                    note: 'Lorem ipsum dur dur dur dur dur dur r'
-                                },
-                            ],
-                        }
+                    associatedVendorId: 3,
+                    notes: {
+                        private: [
+                            {
+                                date: new Date(2021, 10, 3),
+                                note: 'Lorem ipsum dur dur dur dur dur dur r'
+                            },
+                            {
+                                date: new Date(2021, 10, 3),
+                                note: 'Lorem ipsum dur dur dur dur dur dur r'
+                            },
+                        ],
+                        public: [
+                            {
+                                date: new Date(2021, 10, 3),
+                                note: 'Lorem ipsum dur dur dur dur dur dur r'
+                            },
+                            {
+                                date: new Date(2021, 10, 3),
+                                note: 'Lorem ipsum dur dur dur dur dur dur r'
+                            },
+                        ],
+                    }
 
-    
+                },{
+                    id: 4,
+                    name: "The Venue Name",
+                    address: {
+                        address1: "12345 Venue Dr",
+                        address2: "Anywhere, MO, 12345",
                     },
-                    {
-                        id: 5,
-                        firstName: "Bobert",
-                        lastName: "Bobertson",
-                        phoneNumber: "636-123-5652",
-                        emailAddress: "ghjklkoch@gmail.com",
-                        recentMessage: "This is my most recent message! It should be truncated if it should get too long",
-                        profilePicture: undefined,
-                        notes: {
-                            private: [
-                                {
-                                    date: new Date(2021, 10, 3),
-                                    note: 'Lorem ipsum dur dur dur dur dur dur r'
-                                },
-                                {
-                                    date: new Date(2021, 10, 3),
-                                    note: 'Lorem ipsum dur dur dur dur dur dur r'
-                                },
-                            ],
-                            public: [
-                                {
-                                    date: new Date(2021, 10, 3),
-                                    note: 'Lorem ipsum dur dur dur dur dur dur r'
-                                },
-                                {
-                                    date: new Date(2021, 10, 3),
-                                    note: 'Lorem ipsum dur dur dur dur dur dur r'
-                                },
-                            ],
-                        }
+                    associatedVendorId: 4,
+                    notes: {
+                        private: [
+                            {
+                                date: new Date(2021, 10, 3),
+                                note: 'Lorem ipsum dur dur dur dur dur dur r'
+                            },
+                            {
+                                date: new Date(2021, 10, 3),
+                                note: 'Lorem ipsum dur dur dur dur dur dur r'
+                            },
+                        ],
+                        public: [
+                            {
+                                date: new Date(2021, 10, 3),
+                                note: 'Lorem ipsum dur dur dur dur dur dur r'
+                            },
+                            {
+                                date: new Date(2021, 10, 3),
+                                note: 'Lorem ipsum dur dur dur dur dur dur r'
+                            },
+                        ],
+                    }
 
-    
-                    },],
+                },{
+                    id: 5,
+                    name: "The Venue Name",
+                    address: {
+                        address1: "12345 Venue Dr",
+                        address2: "Anywhere, MO, 12345",
+                    },
+                    associatedVendorId: 5,
+                    notes: {
+                        private: [
+                            {
+                                date: new Date(2021, 10, 3),
+                                note: 'Lorem ipsum dur dur dur dur dur dur r'
+                            },
+                            {
+                                date: new Date(2021, 10, 3),
+                                note: 'Lorem ipsum dur dur dur dur dur dur r'
+                            },
+                        ],
+                        public: [
+                            {
+                                date: new Date(2021, 10, 3),
+                                note: 'Lorem ipsum dur dur dur dur dur dur r'
+                            },
+                            {
+                                date: new Date(2021, 10, 3),
+                                note: 'Lorem ipsum dur dur dur dur dur dur r'
+                            },
+                        ],
+                    }
+
+                },{
+                    id: 6,
+                    name: "The Venue Name",
+                    address: {
+                        address1: "12345 Venue Dr",
+                        address2: "Anywhere, MO, 12345",
+                    },
+                    associatedVendorId: 6,
+                    notes: {
+                        private: [
+                            {
+                                date: new Date(2021, 10, 3),
+                                note: 'Lorem ipsum dur dur dur dur dur dur r'
+                            },
+                            {
+                                date: new Date(2021, 10, 3),
+                                note: 'Lorem ipsum dur dur dur dur dur dur r'
+                            },
+                        ],
+                        public: [
+                            {
+                                date: new Date(2021, 10, 3),
+                                note: 'Lorem ipsum dur dur dur dur dur dur r'
+                            },
+                            {
+                                date: new Date(2021, 10, 3),
+                                note: 'Lorem ipsum dur dur dur dur dur dur r'
+                            },
+                        ],
+                    }
+
+                },
+                    ],
                 organizers: [{
                     id: 1,
                         firstName: "Amanda",
@@ -1276,18 +1301,15 @@ const store = createStore({
                     },
                     eventLocations: [
                         {
-                            venueName: "The Ceremony Venue",
+                            locationId: 1,
                             venueStartTime: "18:00",
                             venueEndTime: "19:00",
-                            address1: "12345 Anywhere Dr",
-                            address2: "Anywhere, MO, 12345",
                         },
                         {
-                            venueName: "The Reception Venue",
+                            locationId: 2,
                             venueStartTime: "19:00",
                             venueEndTime: "22:00",
                             address1: "54321 Nowhere Dr",
-                            address2: "Nowhere, MO, 54321",
                         }
                     ],
                     eventStartTime: new Date(2021, 5, 25, 18, 15),
@@ -1435,9 +1457,7 @@ const store = createStore({
                     },
                     eventLocations: [
                         {
-                            venueName: "The Venue 2",
-                            address1: "12345 Anywhere Dr",
-                            address2: "Anywhere, MO, 12345",
+                            locationId: 1,
                         }
                     ],
                     // total: 100000,
@@ -1579,9 +1599,7 @@ const store = createStore({
                     },
                     eventLocations: [
                         {
-                            venueName: "The Venue 3",
-                            address1: "12345 Anywhere Dr",
-                            address2: "Anywhere, MO, 12345",
+                            locationId: 1
                         }
                     ],
                     
@@ -1723,9 +1741,7 @@ const store = createStore({
                     },
                     eventLocations: [
                         {
-                            venueName: "The Venue 5",
-                            address1: "12345 Anywhere Dr",
-                            address2: "Anywhere, MO, 12345",
+                            locationId: 1
                         }
                     ],
                     
@@ -1867,9 +1883,7 @@ const store = createStore({
                     },
                     eventLocations: [
                         {
-                            venueName: "The Venue 6",
-                            address1: "12345 Anywhere Dr",
-                            address2: "Anywhere, MO, 12345",
+                            locationId: 1
                         }
                     ],
                     eventStartTime: new Date(2021, 7, 25, 18, 15),
@@ -2009,9 +2023,7 @@ const store = createStore({
                     },
                     eventLocations: [
                         {
-                            venueName: "The Venue 7",
-                            address1: "12345 Anywhere Dr",
-                            address2: "Anywhere, MO, 12345",
+                            locationId: 1
                         }
                     ],
                     eventStartTime: new Date(2021, 8, 25, 18, 15),

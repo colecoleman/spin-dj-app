@@ -103,6 +103,7 @@ export default {
 #wrapper {
   width: 100%;
   height: 90%;
+  max-height: 90%;
   overflow-y: scroll;
   position: relative;
   display: flex;

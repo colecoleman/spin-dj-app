@@ -5,7 +5,7 @@ import SpecificContactPageClient from '../views/AdminViews/AdminViewSpecificCont
 import SpecificContactPageProspect from '../views/AdminViews/AdminViewSpecificContactPage/SpecificProspectPage/SpecificContactPageProspect.vue';
 import SpecificContactPageEmployee from '../views/AdminViews/AdminViewSpecificContactPage/SpecificContactPageEmployee.vue';
 import SpecificContactPageVendor from '../views/AdminViews/AdminViewSpecificContactPage/SpecificVendorPage/SpecificContactPageVendor.vue';
-import SpecificContactPageLocation from '../views/AdminViews/AdminViewSpecificContactPage/SpecificContactPageLocation.vue';
+import SpecificContactPageLocation from '../views/AdminViews/AdminViewSpecificContactPage/SpecificLocationPage/SpecificContactPageLocation.vue';
 import SpecificContactPageOrganizer from '../views/AdminViews/AdminViewSpecificContactPage/SpecificContactPageOrganizer.vue';
 import SpecificEventPage from "../views/AdminViews/AdminViewSpecificEventPage/SpecificEventPage.vue";
 
