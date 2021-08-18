@@ -14,27 +14,34 @@
         ></contact-card-person>
       </div>
       <div id="box-two">
+        <contact-page-notes
+          :notes="contact.notes"
+          :contact="contact"
+          contactCategory="organizer"
+        ></contact-page-notes>
+      </div>
+      <div id="box-three">
         <contact-page-to-do-list :id="contact.id"></contact-page-to-do-list>
       </div>
     </div>
     <div id="right-column">
-      <div id="box-three">
+      <div id="box-four">
         <four-button-bar-with-drop-down
           :buttons="buttons"
           :dropdown="dropdown"
         ></four-button-bar-with-drop-down>
       </div>
-      <div id="box-four">
+      <div id="box-five">
         <contact-page-upcoming-events
-          :id="contact.id"
+          :contact="contact"
           :icon="calendarsvg"
         ></contact-page-upcoming-events>
       </div>
-      <div id="box-five">
-        <div id="box-five-half">
+      <div id="box-six">
+        <div id="box-six-half">
           <contact-page-automation></contact-page-automation>
         </div>
-        <div id="box-five-half-two">
+        <div id="box-six-half-two">
           <base-card :icon="messageBubble">
             <template v-slot:title>Messages</template>
             <template v-slot:content>
@@ -56,6 +63,7 @@ import {
   ContactCardPerson,
   ContactPageToDoList,
   ContactPageUpcomingEvents,
+  ContactPageNotes,
 } from "./ContactPageComponents/contactPageIndex.js";
 
 import PopupEmailComposition from "../../../SharedComponents/SharedComponentsPopupUtilities/PopupEmailComposition.vue";
@@ -86,6 +94,10 @@ export default {
         {
           title: "View Notes",
           action: this.viewNotes,
+        },
+        {
+          title: "Assign To Event",
+          action: this.assignToEvent,
         },
       ],
       dropdown: {
@@ -127,6 +139,7 @@ export default {
     PopupEmailComposition,
     PopupNotesView,
     ContactCardPerson,
+    ContactPageNotes,
     ContactPageToDoList,
     ContactPageUpcomingEvents,
     ContactPageAutomation,
@@ -153,41 +166,42 @@ svg {
 #left-column {
   width: 30%;
   height: 100%;
-  /* display: flex; */
+  display: flex;
   flex-direction: column;
 }
 
 #box-one {
-  height: 60%;
 }
 #box-two {
   height: 40%;
+}
+
+#box-three {
+  flex-grow: 1;
 }
 
 #right-column {
   width: 70%;
   height: calc(100% - 5px);
 }
-
-#box-three {
-  height: 18%;
-}
-
 #box-four {
-  height: 40%;
 }
 
 #box-five {
+  height: 40%;
+}
+
+#box-six {
   height: 42%;
   display: flex;
   flex-direction: row;
 }
 
-#box-five-half {
+#box-six-half {
   width: 55%;
 }
 
-#box-five-half-two {
+#box-six-half-two {
   width: 45%;
 }
 </style>

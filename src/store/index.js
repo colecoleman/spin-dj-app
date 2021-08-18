@@ -1011,6 +1011,7 @@ const store = createStore({
                     id: 1,
                         firstName: "Amanda",
                         lastName: "Jennings",
+                        businessName: "Amanda Plans",
                         phoneNumber: "636-699-5652",
                         emailAddress: "amandakoch@gmail.com",
                         recentMessage: "This is my most recent message! It should be truncated if it should get too long just like this one is getting a bit lengthy",

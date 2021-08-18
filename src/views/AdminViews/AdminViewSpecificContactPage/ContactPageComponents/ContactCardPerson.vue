@@ -14,6 +14,9 @@
             alt=""
           />
           <div id="contact-information">
+            <h5 id="business-name" v-if="contact.businessName">
+              {{ contact.businessName }}
+            </h5>
             <h4 id="first-name">{{ contact.firstName }}</h4>
             <h4 id="last-name">{{ contact.lastName }}</h4>
             <p class="contact-contact-information">{{ contact.phoneNumber }}</p>
@@ -103,7 +106,7 @@ img {
 
 h5 {
   text-transform: uppercase;
-  margin: 5px;
+  /* margin: 5px; */
   font-size: 8pt;
 }
 

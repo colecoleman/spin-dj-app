@@ -1,5 +1,11 @@
 <template>
   <div class="form-body">
+    <h5>Business Name:</h5>
+    <input
+      type="text"
+      placeholder="Business Name"
+      v-model.trim.lazy="organizer.businessName"
+    />
     <h5>Pronoun/ Prefix:</h5>
     <select name="Preferred Pronoun" v-model.trim.lazy="organizer.pronoun">
       <option value="Mr.">Mr.</option>
@@ -47,6 +53,7 @@ export default {
     return {
       circleCheckmark,
       organizer: {
+        businessName: undefined,
         pronoun: undefined,
         firstName: undefined,
         lastName: undefined,

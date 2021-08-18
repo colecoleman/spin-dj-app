@@ -38,7 +38,7 @@
       <div id="box-five">
         <div id="box-five-half">
           <contact-page-upcoming-events
-            :id="contact.id"
+            :contact="contact"
             :icon="calendarsvg"
           ></contact-page-upcoming-events>
         </div>
