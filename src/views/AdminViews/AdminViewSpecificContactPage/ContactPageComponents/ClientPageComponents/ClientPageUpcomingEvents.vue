@@ -1,192 +1,118 @@
 <template>
-  <base-card :icon="icon">
-    <template v-slot:title>Upcoming Events</template>
+  <base-card :icon="discsvg">
+    <template v-slot:icon> </template>
+    <template v-slot:title>Events</template>
+    <template v-slot:action1
+      >Sort:
+      <svg
+        width="15.375"
+        height="15.375"
+        viewBox="0 0 18.375 18.375"
+        style="margin-left: 10px"
+        @click="toggleSortMenuOpened()"
+      >
+        <path
+          d="M7.219,14.438H5.25V1.969a.656.656,0,0,0-.656-.656H3.281a.656.656,0,0,0-.656.656V14.438H.656a.657.657,0,0,0-.463,1.12L3.474,19.5a.656.656,0,0,0,.928,0l3.281-3.938A.657.657,0,0,0,7.219,14.438Zm9.844-2.625h-5.25a.656.656,0,0,0-.656.656v1.313a.656.656,0,0,0,.656.656h2.3L11.6,17.327a1.313,1.313,0,0,0-.441.981v.723a.656.656,0,0,0,.656.656h5.25a.656.656,0,0,0,.656-.656V17.719a.656.656,0,0,0-.656-.656h-2.3l2.513-2.89a1.312,1.312,0,0,0,.441-.981v-.723A.656.656,0,0,0,17.063,11.813Zm1.274-3.5L15.905,1.748a.656.656,0,0,0-.618-.436h-1.7a.656.656,0,0,0-.618.436L10.539,8.311a.656.656,0,0,0,.618.877h1.018a.656.656,0,0,0,.625-.454l.181-.53h2.912l.181.53a.656.656,0,0,0,.626.454h1.019a.656.656,0,0,0,.618-.877Zm-4.571-2.4.672-1.969.672,1.969Z"
+          transform="translate(0 -1.313)"
+          fill="currentColor"
+        />
+      </svg>
+      <div id="floating-menu-container">
+        <floating-menu-with-list-items
+          v-if="sortMenuOpened"
+          :actions="sortItems"
+          @actionClicked="selectSort"
+        /></div
+    ></template>
     <template v-slot:content>
-      <div id="wrapper">
-        <img
-          :src="leftArrow"
-          @click="changeEventBackward()"
-          v-if="contactEvents.length > 1"
-          alt=""
-        />
-        <div id="body" @click="navigateToEventPage()">
-          <div id="venue-details">
-            <div class="map-box"></div>
-            <div class="venue">
-              <h5 class="venue-name">
-                {{ contactEvents[eventScroller].eventLocations[0].venueName }}
-              </h5>
-              <p class="times">
-                {{ formatDate(contactEvents[eventScroller].eventStartTime) }}
-              </p>
-              <p class="times">
-                {{ formatTime(contactEvents[eventScroller].eventStartTime) }} -
-                {{ formatTime(contactEvents[eventScroller].eventEndTime) }}
-              </p>
-              <p>
-                {{ contactEvents[eventScroller].eventLocations[0].address1 }}
-              </p>
-              <p>
-                {{ contactEvents[eventScroller].eventLocations[0].address2 }}
-              </p>
-            </div>
-          </div>
-          <div id="date-payment-details">
-            <p>
-              Invoice Total: ${{
-                (contactEvents[eventScroller].total * 0.01).toLocaleString()
-              }}
-            </p>
-            <p>
-              Amount Paid: ${{
-                (
-                  contactEvents[eventScroller].paymentTotal * 0.01
-                ).toLocaleString()
-              }}
-            </p>
-            <p>
-              Balance Outstanding: ${{
-                (
-                  contactEvents[eventScroller].balanceOutstanding * 0.01
-                ).toLocaleString()
-              }}
-            </p>
-          </div>
-        </div>
-        <img
-          :src="rightArrow"
-          @click="changeEventForward()"
-          v-if="contactEvents.length > 1"
-          alt=""
-        />
+      <div id="events-content">
+        <location-upcoming-events-list-item
+          v-for="event in events"
+          :key="event.id"
+          :event="event"
+          @click="navigateToEventPage(event.id), sortByDateDescending()"
+        ></location-upcoming-events-list-item>
       </div>
     </template>
   </base-card>
 </template>
 
 <script>
-import rightArrow from "../../../../../assets/SVGs/right-arrow.svg";
-import leftArrow from "../../../../../assets/SVGs/left-arrow.svg";
-import helpers from "../../../../../helpers.js";
+import LocationUpcomingEventsListItem from "./ClientPageUpcomingEventListItem.vue";
+import FloatingMenuWithListItems from "../../../../../SharedComponents/SharedComponentsUI/FloatingMenuWithListItems.vue";
+import discsvg from "../../../../../assets/SVGs/disc.svg";
 export default {
   data() {
     return {
-      rightArrow,
-      leftArrow,
-      eventScroller: 0,
+      discsvg,
+      isFetching: this.$store.state.isFetching,
+      sortMenuOpened: false,
+      sortItems: [
+        {
+          title: "Date Ascending",
+          icon: undefined,
+          sortLogic: function (a, b) {
+            return a.eventStartTime < b.eventStartTime
+              ? -1
+              : a.eventStartTime > b.eventStartTime
+              ? 1
+              : 0;
+          },
+        },
+        {
+          title: "Date Descending",
+          icon: undefined,
+          sortLogic: function (a, b) {
+            return a.eventStartTime > b.eventStartTime
+              ? -1
+              : a.eventStartTime < b.eventStartTime
+              ? 1
+              : 0;
+          },
+        },
+      ],
     };
   },
   methods: {
-    formatDate: helpers.formatDate,
-    formatTime: helpers.formatTime,
-    changeEventForward() {
-      if (this.eventScroller < this.contactEvents.length - 1) {
-        this.eventScroller++;
-        console.log("plus!");
-      } else {
-        this.eventScroller = 0;
-      }
+    toggleSortMenuOpened() {
+      this.sortMenuOpened = !this.sortMenuOpened;
     },
-    changeEventBackward() {
-      if (this.eventScroller > 0) {
-        this.eventScroller--;
-        console.log("minus!");
-      } else {
-        this.eventScroller = this.contactEvents.length - 1;
-      }
+    selectSort(action) {
+      this.events.sort(action);
+      this.toggleSortMenuOpened();
     },
-    navigateToEventPage() {
-      this.$router.push("/events/" + this.contactEvents[this.eventScroller].id);
+    navigateToEventPage(id) {
+      this.$router.push("/events/" + id);
     },
   },
   computed: {
-    contactEvents() {
-      let events = this.$store.state.events.filter((event) =>
-        event.associatedContacts.some((c) => c.id === 1)
-      );
+    events() {
       let today = new Date();
-      console.log(events[0]);
-      return events.filter((event) => event.eventStartTime > today);
-    },
-    cardOutline() {
-      return this.$store.state.businessSettings.brandingPreferences.cardOutline;
-    },
-    cssVars() {
-      return {
-        "--cardOutline": this.cardOutline,
-      };
+      return this.$store.state.events.filter(
+        (event) =>
+          event.eventStartTime > today &&
+          event.associatedContacts.some(
+            (contact) => contact.id === this.contact.id
+          )
+      );
     },
   },
-  props: ["id", "icon"],
+  props: ["contact"],
+
+  created() {},
+  components: { LocationUpcomingEventsListItem, FloatingMenuWithListItems },
 };
 </script>
 
 <style scoped>
-#wrapper {
-  display: flex;
-  flex-direction: row;
-  width: 100%;
-  height: 100%;
-  padding: 0;
-  justify-items: center;
-  justify-content: center;
-  align-items: center;
-  align-content: center;
-}
-
-.map-box {
-  border: 1px solid var(--cardOutline);
-  border-radius: 10px;
-  width: 50%;
-  height: 75px;
-  margin: 10px;
-  min-height: 50%;
-}
-
-img {
-  width: 14px;
-  height: 14px;
-}
-
-#body {
-  width: 90%;
-  display: flex;
-  justify-content: space-around;
-}
-
-h5,
-p {
-  margin: 5px;
-  font-size: 10pt;
-  text-align: left;
-}
-
-#venue-details {
-  width: 50%;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-}
-
-.venue-name {
-  font-weight: 600;
-}
-
-.times {
-  margin-bottom: 15px;
-}
-
-#venue {
-  width: 40%;
-}
-
-#date-payment-details {
-  text-align: right;
-  width: 40%;
-  display: flex;
+#events-content {
   flex-direction: column;
-  align-items: flex-end;
-  justify-content: center;
+  overflow: scroll;
+  height: 100%;
+}
+#floating-menu-container {
+  position: relative;
+  width: fit-content;
+  height: fit-content;
 }
 </style>

@@ -16,25 +16,36 @@
       <div id="box-two">
         <contact-page-to-do-list :id="contact.id"></contact-page-to-do-list>
       </div>
+      <div id="box-three">
+        <contact-page-notes :notes="contact.notes"></contact-page-notes>
+      </div>
     </div>
     <div id="right-column">
-      <div id="box-three">
+      <div id="box-four">
         <four-button-bar-with-drop-down
           :buttons="buttons"
           :dropdown="dropdown"
         ></four-button-bar-with-drop-down>
       </div>
-      <div id="box-four">
-        <client-page-upcoming-events
-          :id="contact.id"
-          :icon="calendarsvg"
-        ></client-page-upcoming-events>
-      </div>
       <div id="box-five">
-        <div id="box-five-half">
-          <contact-page-automation></contact-page-automation>
+        <div id="box-five-half-one">
+          <client-page-upcoming-events
+            :contact="contact"
+            :icon="calendarsvg"
+          ></client-page-upcoming-events>
         </div>
         <div id="box-five-half-two">
+          <client-page-information-card
+            :contact="contact"
+            :icon="informationicon"
+          ></client-page-information-card>
+        </div>
+      </div>
+      <div id="box-six">
+        <div id="box-six-half">
+          <contact-page-automation></contact-page-automation>
+        </div>
+        <div id="box-six-half-two">
           <base-card :icon="messageBubble">
             <template v-slot:title>Messages</template>
             <template v-slot:content>
@@ -56,21 +67,22 @@ import {
   ContactPageToDoList,
 } from "../ContactPageComponents/contactPageIndex.js";
 
-import ContactCardClient from "../ContactPageComponents/ClientPageComponents/ClientPageContactCard.vue";
+import ContactCardClient from "../ContactPageComponents/ContactCardPerson.vue";
 import ClientPageUpcomingEvents from "../ContactPageComponents/ClientPageComponents/ClientPageUpcomingEvents.vue";
-
+import ClientPageInformationCard from "../ContactPageComponents/ClientPageComponents/ClientPageInformationCard.vue";
 import PopupEmailComposition from "../../../../SharedComponents/SharedComponentsPopupUtilities/PopupEmailComposition.vue";
 import PopupNotesView from "../../../../SharedComponents/SharedComponentsPopupUtilities/PopupNotesView.vue";
 import BaseCard from "../../../../SharedComponents/SharedComponentsUI/BaseCard.vue";
 import MessagingSingleComponent from "../../../../SharedComponents/SharedComponentsMessaging/MessagingSingleComponent.vue";
 import FourButtonBarWithDropDown from "../../../../SharedComponents/SharedComponentsUI/FourButtonBarWithDropDown.vue";
-
+import ContactPageNotes from "../ContactPageComponents/ContactPageNotes/ContactPageNotes.vue";
 import personsvg from "../../../../assets/SVGs/person.svg";
 import messageBubble from "../../../../assets/SVGs/message-bubble.svg";
 import calendarsvg from "../../../../assets/SVGs/calendar.svg";
 import clipboardsvg from "../../../../assets/SVGs/clipboard.svg";
 import automationsvg from "../../../../assets/SVGs/automation.svg";
 import emailsvg from "../../../../assets/SVGs/email.svg";
+import informationicon from "../../../../assets/SVGs/info-icon.svg";
 
 export default {
   data() {
@@ -80,6 +92,7 @@ export default {
       calendarsvg,
       clipboardsvg,
       automationsvg,
+      informationicon,
       buttons: [
         {
           title: "Send Email",
@@ -132,9 +145,10 @@ export default {
     ContactCardClient,
     ContactPageToDoList,
     ClientPageUpcomingEvents,
-
+    ClientPageInformationCard,
     ContactPageAutomation,
     MessagingSingleComponent,
+    ContactPageNotes,
 
     FourButtonBarWithDropDown,
   },
@@ -157,41 +171,61 @@ svg {
 #left-column {
   width: 30%;
   height: 100%;
-  /* display: flex; */
+  max-height: 100%;
+  display: flex;
   flex-direction: column;
 }
 
 #box-one {
-  height: 60%;
+  height: 30%;
 }
 #box-two {
+  height: 30%;
+  flex-grow: 1;
+}
+
+#box-three {
   height: 40%;
+  flex-grow: 1;
 }
 
 #right-column {
   width: 70%;
-  height: calc(100% - 5px);
-}
-
-#box-three {
-  height: 18%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 #box-four {
-  height: 40%;
+  height: 18%;
 }
 
 #box-five {
+  height: 40%;
+  display: flex;
+  flex-direction: row;
+  justify-content: stretch;
+}
+
+#box-five-half-one {
+  width: 60%;
+}
+
+#box-five-half-two {
+  width: 40%;
+}
+
+#box-six {
   height: 42%;
   display: flex;
   flex-direction: row;
 }
 
-#box-five-half {
+#box-six-half {
   width: 55%;
 }
 
-#box-five-half-two {
+#box-six-half-two {
   width: 45%;
 }
 </style>
