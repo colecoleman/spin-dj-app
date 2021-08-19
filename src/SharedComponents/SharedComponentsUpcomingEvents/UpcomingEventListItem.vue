@@ -8,10 +8,10 @@
       </h5>
     </div>
     <div class="event-location-identifier">
-      <h4 class="venue-name">{{ event.eventLocations[0].venueName }}</h4>
+      <h4 class="venue-name">{{ primaryLocation.name }}</h4>
       <div class="event-address">
-        <h5>{{ event.eventLocations[0].address1 }}</h5>
-        <h5>{{ event.eventLocations[0].address2 }}</h5>
+        <h5>{{ primaryLocation.address.address1 }}</h5>
+        <h5>{{ primaryLocation.address.address2 }}</h5>
       </div>
     </div>
     <div id="event-metadata-identifier">
@@ -32,8 +32,8 @@
 </template>
 
 <script>
-import defaultProfilePicture from "../../../../../assets/default-profile-picture.svg";
-import helpers from "../../../../../helpers.js";
+import defaultProfilePicture from "../../assets/default-profile-picture.svg";
+import helpers from "../../helpers.js";
 
 export default {
   data() {
@@ -56,6 +56,17 @@ export default {
       item.role = firstClient.role;
       return item;
     },
+    primaryLocation() {
+      let locationId = this.event.eventLocations[0].locationId;
+
+      console.log(
+        this.$store.state.contacts.locations.find((x) => x.id === locationId)
+      );
+
+      return this.$store.state.contacts.locations.find(
+        (x) => x.id === locationId
+      );
+    },
   },
   props: ["event"],
 };
@@ -63,7 +74,7 @@ export default {
 
 <style scoped>
 #client-event-identifier,
-.event-location-identifier,
+#event-location-identifier,
 #event-metadata-identifier {
   display: flex;
   max-width: 33%;
@@ -72,6 +83,8 @@ export default {
 #single-event-item {
   display: flex;
   flex-direction: row;
+  align-items: center;
+  justify-content: space-evenly;
   padding-bottom: 20px;
   cursor: pointer;
 }

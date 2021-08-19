@@ -38,7 +38,7 @@
 </template>
 
 <script>
-import UpcomingEventsListItem from "../UpcomingEventsList/UpcomingEventListItem.vue";
+import UpcomingEventsListItem from "../../../../../SharedComponents/SharedComponentsUpcomingEvents/UpcomingEventListItem.vue";
 import FloatingMenuWithListItems from "../../../../../SharedComponents/SharedComponentsUI/FloatingMenuWithListItems.vue";
 import discsvg from "../../../../../assets/SVGs/disc.svg";
 export default {
