@@ -28,40 +28,70 @@
       :category="category"
       @cancel-send-email="composeEmailOpen = false"
     ></popup-email-composition>
-    <div class="name-and-photo">
-      <img
-        :src="
-          contact.profilePicture
-            ? contact.profilePicture
-            : defaultProfilePicture
-        "
-      />
-      <div class="name" @click="viewContact()">
-        <h5 v-if="contact.businessName" class="business-name">
-          <span>{{ contact.businessName }}</span>
-        </h5>
-        <h5 id="client-name">
-          {{ contact.firstName }} <br />
-          <span> {{ contact.lastName }}</span>
-        </h5>
+    <div class="contact-wrapper" v-if="category !== 'locations'">
+      <div class="name-and-photo">
+        <img
+          :src="
+            contact.profilePicture
+              ? contact.profilePicture
+              : defaultProfilePicture
+          "
+        />
+        <div class="name" @click="viewContact()">
+          <h5 v-if="contact.businessName" class="business-name">
+            <span>{{ contact.businessName }}</span>
+          </h5>
+          <h5 id="client-name">
+            {{ contact.firstName }} <br />
+            <span> {{ contact.lastName }}</span>
+          </h5>
+        </div>
+      </div>
+      <div class="email-and-phone">
+        <p>{{ contact.phoneNumber }}</p>
+        <p>{{ contact.emailAddress }}</p>
+      </div>
+      <div class="button-wrapper">
+        <button-with-drop-down-selections
+          text="Actions"
+          :actions="actions"
+          :clicked="actionsClicked"
+        ></button-with-drop-down-selections>
       </div>
     </div>
-    <div class="email-and-phone">
-      <p>{{ contact.phoneNumber }}</p>
-      <p>{{ contact.emailAddress }}</p>
-    </div>
-    <div class="button-wrapper">
-      <button-with-drop-down-selections
-        text="Actions"
-        :actions="actions"
-        :clicked="actionsClicked"
-      ></button-with-drop-down-selections>
+    <div class="contact-wrapper" v-if="category === 'locations'">
+      <div class="name-and-photo">
+        <img
+          :src="
+            contact.profilePicture
+              ? contact.profilePicture
+              : defaultLocationPicture
+          "
+        />
+        <div class="name" @click="viewContact()">
+          <h5 id="client-name">
+            <span> {{ contact.name }}</span>
+          </h5>
+        </div>
+      </div>
+      <div class="location-address">
+        <p>{{ contact.address.address1 }}</p>
+        <p>{{ contact.address.address2 }}</p>
+      </div>
+      <div class="button-wrapper">
+        <button-with-drop-down-selections
+          text="Actions"
+          :actions="actions"
+          :clicked="actionsClicked"
+        ></button-with-drop-down-selections>
+      </div>
     </div>
   </section>
 </template>
 
 <script>
 import defaultProfilePicture from "../../../assets/default-profile-picture.svg";
+import defaultLocationPicture from "../../../assets/SVGs/location-circle-icon.svg";
 import ButtonWithDropDownSelections from "../../../SharedComponents/SharedComponentsUI/ButtonWithDropDownSelections.vue";
 import ButtonStandardWithIcon from "../../../SharedComponents/SharedComponentsUI/ButtonStandardWithIcon.vue";
 import PopupEmailComposition from "../../../SharedComponents/SharedComponentsPopupUtilities/PopupEmailComposition.vue";
@@ -74,6 +104,7 @@ export default {
   data() {
     return {
       defaultProfilePicture,
+      defaultLocationPicture,
       actionsClicked: false,
       composeEmailOpen: false,
       deleteContactOpen: false,
@@ -138,6 +169,9 @@ export default {
 
 <style scoped>
 section {
+}
+
+.contact-wrapper {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
