@@ -33,7 +33,6 @@
           </div>
         </div>
         <div id="contact-card-lower-div"></div>
-        <h5>Reset user password</h5>
       </div>
     </template>
   </base-card>

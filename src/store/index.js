@@ -685,6 +685,29 @@ const store = createStore({
                         phoneNumber: "636-699-5652",
                         emailAddress: "amandakoch@gmail.com",
                         recentMessage: "This is my most recent message! It should be truncated if it should get too long just like this one is getting a bit lengthy",
+                        profilePicture: undefined,
+                        notes: {
+                            private: [
+                                {
+                                    date: new Date(2021, 10, 3),
+                                    note: 'Lorem ipsum dur dur dur dur dur dur r'
+                                },
+                                {
+                                    date: new Date(2021, 10, 3),
+                                    note: 'Lorem ipsum dur dur dur dur dur dur r'
+                                },
+                            ],
+                            public: [
+                                {
+                                    date: new Date(2021, 10, 3),
+                                    note: 'Lorem ipsum dur dur dur dur dur dur r'
+                                },
+                                {
+                                    date: new Date(2021, 10, 3),
+                                    note: 'Lorem ipsum dur dur dur dur dur dur r'
+                                },
+                            ],
+                        }
                     },
                     {
                         id: 2,
@@ -1313,8 +1336,8 @@ const store = createStore({
                             address1: "54321 Nowhere Dr",
                         }
                     ],
-                    eventStartTime: new Date(2021, 5, 25, 18, 15),
-                    eventEndTime: new Date(2021, 5, 25, 23, 30),
+                    eventStartTime: new Date(2021, 10, 25, 18, 15),
+                    eventEndTime: new Date(2021, 10, 25, 23, 30),
                     get eventLength() {
                         return (this.eventEndTime - this.eventStartTime) / 36e5
                     },
@@ -1462,8 +1485,8 @@ const store = createStore({
                         }
                     ],
                     // total: 100000,
-                    eventStartTime: new Date(2021, 6, 25, 18, 15),
-                    eventEndTime: new Date(2021, 6, 25, 23, 30),
+                    eventStartTime: new Date(2021, 9, 25, 18, 15),
+                    eventEndTime: new Date(2021, 9, 25, 23, 30),
                     get eventLength() {
                         return (this.eventEndTime - this.eventStartTime) / 36e5
                     },
@@ -1604,8 +1627,8 @@ const store = createStore({
                         }
                     ],
                     
-                    eventStartTime: new Date(2021, 6, 30, 15, 15),
-                    eventEndTime: new Date(2021, 6, 30, 20, 30),
+                    eventStartTime: new Date(2021, 10, 30, 15, 15),
+                    eventEndTime: new Date(2021, 10, 30, 20, 30),
                     get eventLength() {
                         return (this.eventEndTime - this.eventStartTime) / 36e5
                     },
@@ -1746,8 +1769,8 @@ const store = createStore({
                         }
                     ],
                     
-                    eventStartTime: new Date(2021, 7, 20, 18, 15),
-                    eventEndTime: new Date(2021, 7, 20, 23, 30),
+                    eventStartTime: new Date(2021, 8, 20, 18, 15),
+                    eventEndTime: new Date(2021, 8, 20, 23, 30),
                     get eventLength() {
 
                         return (this.eventEndTime - this.eventStartTime) / 36e5
@@ -1887,8 +1910,8 @@ const store = createStore({
                             locationId: 1
                         }
                     ],
-                    eventStartTime: new Date(2021, 7, 25, 18, 15),
-                    eventEndTime: new Date(2021, 7, 25, 23, 30),
+                    eventStartTime: new Date(2021, 9, 25, 18, 15),
+                    eventEndTime: new Date(2021, 9, 25, 23, 30),
                     get eventLength() {
                         return (this.eventEndTime - this.eventStartTime) / 36e5
                     },
@@ -2027,8 +2050,8 @@ const store = createStore({
                             locationId: 1
                         }
                     ],
-                    eventStartTime: new Date(2021, 8, 25, 18, 15),
-                    eventEndTime: new Date(2021, 8, 25, 23, 30),
+                    eventStartTime: new Date(2021, 9, 25, 18, 15),
+                    eventEndTime: new Date(2021, 9, 25, 23, 30),
                     get eventLength() {
                         return (this.eventEndTime - this.eventStartTime) / 36e5
                     },
@@ -2110,6 +2133,12 @@ const store = createStore({
             console.log(employee);
             state.commit('addEmployee', employee);
         },
+        addEmployeeToEvent(state, payload) {
+            console.log(payload.employee);
+            console.log(payload.eventId);
+            state.commit('addEmployeeToEvent', payload)
+
+        },
         getCombined({ commit }) {
             commit('clientEventCombine');
         },
@@ -2176,6 +2205,10 @@ const store = createStore({
         },
         addEmployee(state, payload) {
             state.contacts.employees.push(payload)
+        },
+        addEmployeeToEvent(state, payload) {
+            state.events.find((x) => x.id === payload.eventId).associatedContacts.push({id: payload.employee, role: 'employee'})
+            console.log(state.events.find((x) => x.id === payload.eventId))
         },
         addOrganizer(state, payload) {
             state.contacts.organizers.push(payload)

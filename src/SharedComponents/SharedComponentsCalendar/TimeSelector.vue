@@ -17,7 +17,7 @@
         :month="months.month"
         :class="{ currentMonth: months.isCurrentMonth }"
       >
-        <li @click="changeMonthData(months.id)">{{ months.month }}</li>
+        <li @click="changeMonthData(months.month)">{{ months.month }}</li>
       </ul>
     </div>
   </div>

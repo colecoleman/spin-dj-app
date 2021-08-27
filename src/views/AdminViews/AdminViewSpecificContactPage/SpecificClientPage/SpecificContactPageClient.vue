@@ -83,6 +83,7 @@ import clipboardsvg from "../../../../assets/SVGs/clipboard.svg";
 import automationsvg from "../../../../assets/SVGs/automation.svg";
 import emailsvg from "../../../../assets/SVGs/email.svg";
 import informationicon from "../../../../assets/SVGs/info-icon.svg";
+import keysvg from "../../../../assets/SVGs/key.svg";
 
 export default {
   data() {
@@ -92,15 +93,13 @@ export default {
       calendarsvg,
       clipboardsvg,
       automationsvg,
+      keysvg,
       informationicon,
       buttons: [
         {
           title: "Send Email",
           action: this.openEmailComposition,
-        },
-        {
-          title: "View Notes",
-          action: this.viewNotes,
+          icon: emailsvg,
         },
       ],
       dropdown: {
@@ -110,6 +109,11 @@ export default {
             title: "Email",
             action: this.openEmailComposition,
             icon: emailsvg,
+          },
+          {
+            title: "Reset Password",
+            action: this.resetPassword,
+            icon: keysvg,
           },
         ],
       },

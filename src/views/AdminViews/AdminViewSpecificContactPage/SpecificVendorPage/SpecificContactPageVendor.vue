@@ -19,13 +19,14 @@
         ></contact-card-company>
       </div>
       <div id="box-two">
-        <vendor-page-referral-button
-          :vendor="contact"
-          @referral-clicked="toggleReferral()"
-        ></vendor-page-referral-button>
+        <contact-page-to-do-list :id="contact.id"></contact-page-to-do-list>
       </div>
       <div id="box-three">
-        <contact-page-to-do-list :id="contact.id"></contact-page-to-do-list>
+        <contact-page-notes
+          :notes="contact.notes"
+          :contact="contact"
+          contactCategory="Vendor"
+        />
       </div>
     </div>
     <div id="right-column">
@@ -36,19 +37,10 @@
         ></four-button-bar-with-drop-down>
       </div>
       <div id="box-five">
-        <div id="box-five-half">
-          <contact-page-upcoming-events
-            :contact="contact"
-            :icon="calendarsvg"
-          ></contact-page-upcoming-events>
-        </div>
-        <div id="box-five-half-two">
-          <contact-page-notes
-            :notes="contact.notes"
-            :contact="contact"
-            contactCategory="Vendor"
-          />
-        </div>
+        <contact-page-upcoming-events
+          :contact="contact"
+          :icon="calendarsvg"
+        ></contact-page-upcoming-events>
       </div>
       <div id="box-six">
         <div id="box-six-half">
@@ -82,7 +74,6 @@ import PopupNotesView from "../../../../SharedComponents/SharedComponentsPopupUt
 import MessagingSingleComponent from "../../../../SharedComponents/SharedComponentsMessaging/MessagingSingleComponent.vue";
 import FourButtonBarWithDropDown from "../../../../SharedComponents/SharedComponentsUI/FourButtonBarWithDropDown.vue";
 import ContactCardCompany from "../../../../views/AdminViews/AdminViewSpecificContactPage/ContactPageComponents/ContactCardCompany.vue";
-import VendorPageReferralButton from "../ContactPageComponents/VendorPageComponents/VendorPageReferralButton.vue";
 import VendorPageReferralPopup from "../ContactPageComponents/VendorPageComponents/VendorPageReferralPopup.vue";
 import ContactPageNotes from "../ContactPageComponents/ContactPageNotes/ContactPageNotes.vue";
 
@@ -92,6 +83,7 @@ import calendarsvg from "../../../../assets/SVGs/calendar.svg";
 import clipboardsvg from "../../../../assets/SVGs/clipboard.svg";
 import automationsvg from "../../../../assets/SVGs/automation.svg";
 import emailsvg from "../../../../assets/SVGs/email.svg";
+import keysvg from "../../../../assets/SVGs/key.svg";
 
 export default {
   data() {
@@ -107,8 +99,8 @@ export default {
           action: this.openEmailComposition,
         },
         {
-          title: "View Notes",
-          action: this.viewNotes,
+          title: "Refer Vendor",
+          action: this.toggleReferral,
         },
       ],
       dropdown: {
@@ -118,6 +110,11 @@ export default {
             title: "Email",
             action: this.openEmailComposition,
             icon: emailsvg,
+          },
+          {
+            title: "Reset Password",
+            action: this.resetUserPassword,
+            icon: keysvg,
           },
         ],
       },
@@ -160,7 +157,6 @@ export default {
     ContactPageAutomation,
     ContactPageNotes,
     MessagingSingleComponent,
-    VendorPageReferralButton,
     VendorPageReferralPopup,
     FourButtonBarWithDropDown,
   },
@@ -188,10 +184,13 @@ svg {
 }
 
 #box-one {
-  height: fit-content;
+  height: 35%;
 }
 #box-two {
-  height: fit-content;
+  height: 32.5%;
+}
+#box-three {
+  height: 32.5%;
 }
 
 #right-column {
@@ -201,25 +200,16 @@ svg {
   flex-direction: column;
 }
 
-#box-three {
-  flex: 1 1 auto;
-}
-
 #box-four {
   height: 17%;
 }
 
 #box-five {
   height: 42%;
+  width: 100%;
+
   display: flex;
   flex-direction: row;
-}
-
-#box-five-half {
-  width: 60%;
-}
-#box-five-half-two {
-  width: 40%;
 }
 
 #box-six {

@@ -4,7 +4,7 @@
     :contact="contact"
     @cancel-send-email="closePopups()"
   ></popup-email-composition>
-  <popup-notes-view v-if="!emailPopupOpen && notesPopupOpen"></popup-notes-view>
+  <popup-employee-calendar :employee="contact"></popup-employee-calendar>
   <div id="section-wrapper">
     <div id="left-column">
       <div id="box-one">
@@ -16,25 +16,32 @@
       <div id="box-two">
         <contact-page-to-do-list :id="contact.id"></contact-page-to-do-list>
       </div>
+      <div id="box-three">
+        <contact-page-notes
+          :notes="contact.notes"
+          :contact="contact"
+          category="employee"
+        ></contact-page-notes>
+      </div>
     </div>
     <div id="right-column">
-      <div id="box-three">
+      <div id="box-four">
         <four-button-bar-with-drop-down
           :buttons="buttons"
           :dropdown="dropdown"
         ></four-button-bar-with-drop-down>
       </div>
-      <div id="box-four">
+      <div id="box-five">
         <contact-page-upcoming-events
-          :id="contact.id"
+          :contact="contact"
           :icon="calendarsvg"
         ></contact-page-upcoming-events>
       </div>
-      <div id="box-five">
-        <div id="box-five-half">
+      <div id="box-six">
+        <div id="box-six-half">
           <contact-page-automation></contact-page-automation>
         </div>
-        <div id="box-five-half-two">
+        <div id="box-six-half-two">
           <base-card :icon="messageBubble">
             <template v-slot:title>Messages</template>
             <template v-slot:content>
@@ -56,10 +63,11 @@ import {
   ContactCardPerson,
   ContactPageToDoList,
   ContactPageUpcomingEvents,
+  ContactPageNotes,
 } from "./ContactPageComponents/contactPageIndex.js";
 
+import PopupEmployeeCalendar from "./ContactPageComponents/EmployeePageComponents/PopupEmployeeCalendarUtility.vue";
 import PopupEmailComposition from "../../../SharedComponents/SharedComponentsPopupUtilities/PopupEmailComposition.vue";
-import PopupNotesView from "../../../SharedComponents/SharedComponentsPopupUtilities/PopupNotesView.vue";
 import MessagingSingleComponent from "../../../SharedComponents/SharedComponentsMessaging/MessagingSingleComponent.vue";
 import FourButtonBarWithDropDown from "../../../SharedComponents/SharedComponentsUI/FourButtonBarWithDropDown.vue";
 
@@ -69,6 +77,7 @@ import calendarsvg from "../../../assets/SVGs/calendar.svg";
 import clipboardsvg from "../../../assets/SVGs/clipboard.svg";
 import automationsvg from "../../../assets/SVGs/automation.svg";
 import emailsvg from "../../../assets/SVGs/email.svg";
+import keysvg from "../../../assets/SVGs/key.svg";
 
 export default {
   data() {
@@ -78,14 +87,15 @@ export default {
       calendarsvg,
       clipboardsvg,
       automationsvg,
+      keysvg,
       buttons: [
         {
           title: "Send Email",
           action: this.openEmailComposition,
         },
         {
-          title: "View Notes",
-          action: this.viewNotes,
+          title: "Assign Events",
+          action: this.openCalendarUtility,
         },
       ],
       dropdown: {
@@ -96,10 +106,16 @@ export default {
             action: this.openEmailComposition,
             icon: emailsvg,
           },
+          {
+            title: "Reset Password",
+            action: this.resetPassword,
+            icon: keysvg,
+          },
         ],
       },
       emailPopupOpen: false,
       notesPopupOpen: false,
+      calendarUtilityOpen: false,
     };
   },
   computed: {
@@ -115,23 +131,27 @@ export default {
     openEmailComposition() {
       this.emailPopupOpen = true;
     },
+    openCalendarUtility() {
+      this.calendarUtilityOpen = true;
+    },
     viewNotes() {
       console.log("notes open");
     },
     closePopups() {
       this.emailPopupOpen = false;
-      this.notesPopupOpen = false;
+      this.calendarUtilityOpen = false;
     },
   },
   components: {
     PopupEmailComposition,
-    PopupNotesView,
+
+    PopupEmployeeCalendar,
     ContactCardPerson,
     ContactPageToDoList,
     ContactPageUpcomingEvents,
     ContactPageAutomation,
+    ContactPageNotes,
     MessagingSingleComponent,
-
     FourButtonBarWithDropDown,
   },
 };
@@ -140,54 +160,55 @@ export default {
 <style scoped>
 #section-wrapper {
   width: 100%;
-  height: 95%;
+  height: 100%;
   padding-top: 10px;
   display: flex;
   /* flex-direction: row; */
 }
 
-svg {
-  fill: white;
-}
-
 #left-column {
   width: 30%;
   height: 100%;
-  /* display: flex; */
+  display: flex;
   flex-direction: column;
 }
 
 #box-one {
-  height: 60%;
+  height: 30%;
 }
 #box-two {
-  height: 40%;
+  height: 35%;
+}
+
+#box-three {
+  height: 35%;
 }
 
 #right-column {
   width: 70%;
-  height: calc(100% - 5px);
-}
-
-#box-three {
-  height: 18%;
+  display: flex;
+  flex-direction: column;
 }
 
 #box-four {
-  height: 40%;
+  height: 18%;
 }
 
 #box-five {
+  height: 40%;
+}
+
+#box-six {
   height: 42%;
   display: flex;
   flex-direction: row;
 }
 
-#box-five-half {
+#box-six-half {
   width: 55%;
 }
 
-#box-five-half-two {
+#box-six-half-two {
   width: 45%;
 }
 </style>
