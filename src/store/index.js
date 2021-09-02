@@ -686,6 +686,40 @@ const store = createStore({
                         emailAddress: "amandakoch@gmail.com",
                         recentMessage: "This is my most recent message! It should be truncated if it should get too long just like this one is getting a bit lengthy",
                         profilePicture: undefined,
+                        unavailableDates: ["2021-09-20"],
+                        availabilityRules: {
+                            dayOfWeek: {
+                                0: true,
+                                1: false,
+                                2: false,
+                                3: true,
+                                4: false,
+                                5: false,
+                                6: false,
+
+                            },
+                            months: {
+                                0: false,
+                                1: false,
+                                2: false,
+                                3: true,
+                                4: false,
+                                5: false,
+                                6: false,
+                                7: false,
+                                8: false,
+                                9: false,
+                                10: false,
+                                11: false,
+                              },
+                            dateRanges: [
+                                {
+                                    start: new Date(2021, 10, 3),
+                                    end: new Date(2021, 10, 10)
+                                }
+                            ],
+                        },
+                        availableDates: [],
                         notes: {
                             private: [
                                 {
@@ -717,6 +751,8 @@ const store = createStore({
                         emailAddress: "jennyjenkins@gmail.com",
                         recentMessage: "This is my most recent message! It should be truncated if it should get too long",
                         profilePicture: undefined,
+                        unavailableDates: [],
+                        availableDates: [],
                         notes: {
                             private: [
                                 {
@@ -750,6 +786,8 @@ const store = createStore({
                         emailAddress: "magsmahones@gmail.com",
                         recentMessage: "This is my most recent message! It should be truncated if it should get too long",
                         profilePicture: undefined,
+                        unavailableDates: [],
+                        availableDates: [],
                         notes: {
                             private: [
                                 {
@@ -783,6 +821,8 @@ const store = createStore({
                         emailAddress: "longemail@gmail.com",
                         recentMessage: "This is my most recent message! It should be truncated if it should get too long",
                         profilePicture: undefined,
+                        unavailableDates: [],
+                        availableDates: [],
                         notes: {
                             private: [
                                 {
@@ -816,6 +856,8 @@ const store = createStore({
                         emailAddress: "ghjklkoch@gmail.com",
                         recentMessage: "This is my most recent message! It should be truncated if it should get too long",
                         profilePicture: undefined,
+                        unavailableDates: [],
+                        availableDates: [],
                         notes: {
                             private: [
                                 {
@@ -2130,14 +2172,18 @@ const store = createStore({
             state.commit('addOrganizer', organizer);
         },
         addEmployee( state, employee) {
-            console.log(employee);
             state.commit('addEmployee', employee);
         },
         addEmployeeToEvent(state, payload) {
-            console.log(payload.employee);
-            console.log(payload.eventId);
             state.commit('addEmployeeToEvent', payload)
-
+        },
+        changeEmployeeAvailability(state, payload) {
+            console.log(payload)
+            state.commit('changeEmployeeAvailability', payload)
+        },
+        changeEmployeeAvailabilityRules(state, payload) {
+            console.log(payload)
+            state.commit('changeEmployeeAvailabilityRules', payload)
         },
         getCombined({ commit }) {
             commit('clientEventCombine');
@@ -2209,6 +2255,20 @@ const store = createStore({
         addEmployeeToEvent(state, payload) {
             state.events.find((x) => x.id === payload.eventId).associatedContacts.push({id: payload.employee, role: 'employee'})
             console.log(state.events.find((x) => x.id === payload.eventId))
+        },
+        changeEmployeeAvailability(state, payload) {
+            let employee = state.contacts.employees.find((x) => x.id === payload.employeeId)
+            if (payload.type === "availability") {
+                employee.availableDates.push(payload.date)
+            }
+            if (payload.type === "unavailability") {
+                employee.unavailableDates.push(payload.date)
+            }
+            console.log(employee)
+        },
+        changeEmployeeAvailabilityRules(state, payload) {
+            let employee = state.contacts.employees.find((x) => x.id === payload.employeeId)
+            employee.availabilityRules = payload.availabilityRules;
         },
         addOrganizer(state, payload) {
             state.contacts.organizers.push(payload)
