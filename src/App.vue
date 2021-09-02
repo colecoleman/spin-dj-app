@@ -102,6 +102,8 @@ a {
 input,
 select,
 textarea {
+  color: var(--textColor);
+  background-color: var(--backgroundColor);
   font-family: Montserrat, sans-serif;
   border: 1px solid;
   border-radius: 5px;
