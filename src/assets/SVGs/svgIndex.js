@@ -16,6 +16,7 @@ import FileOpenSVG from './file-open.svg'
 import FillableCircleSVG from './fillable-circle.svg'
 import FireColorSVG from './fire-color.svg'
 import FireSVG from './fire.svg'
+import GreenCheckmark from './green-checkmark.svg'
 import GroupPeopleSVG from './group-people.svg'
 import HealthSignSVG from './health-sign.svg'
 import InfoIconSVG from './info-icon.svg'
@@ -31,6 +32,7 @@ import NotificationBellSVG from './notification-bell.svg'
 import PassingTimeSVG from './passing-time.svg'
 import PersonSVG from './person.svg'
 import PlusSignSVG from './plus-sign.svg'
+import RedXCircle from './red-x-circle.svg'
 import ReferCircleSVG from './refer-circle.svg'
 import RightArrowSVG from './right-arrow.svg'
 import SnowflakeColorSVG from './snowflake-color.svg'
@@ -59,6 +61,7 @@ import XIconSVG from './x-icon.svg'
     FillableCircleSVG, 
     FireColorSVG, 
     FireSVG, 
+    GreenCheckmark,
     GroupPeopleSVG, 
     HealthSignSVG, 
     InfoIconSVG,  
@@ -74,6 +77,7 @@ import XIconSVG from './x-icon.svg'
     PassingTimeSVG, 
     PersonSVG, 
     PlusSignSVG, 
+    RedXCircle,
     ReferCircleSVG, 
     RightArrowSVG, 
     SnowflakeColorSVG, 
