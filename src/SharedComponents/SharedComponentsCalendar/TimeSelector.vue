@@ -17,7 +17,7 @@
         :month="months.month"
         :class="{ currentMonth: months.isCurrentMonth }"
       >
-        <li @click="changeMonthData(months.month)">{{ months.month }}</li>
+        <li @click="changeMonthData(months.id)">{{ months.month }}</li>
       </ul>
     </div>
   </div>
@@ -86,6 +86,7 @@ export default {
       this.selectYear(year);
     },
     changeMonthData(month) {
+      console.log(month);
       this.selectedMonth = month;
       this.selectMonth(month);
     },
