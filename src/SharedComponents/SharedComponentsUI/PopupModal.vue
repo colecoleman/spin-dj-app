@@ -20,19 +20,27 @@
   <!-- Popup Text: class="popup-text" -->
   <div class="popup-modal">
     <div class="window">
+      <img :src="XIconSvg" alt="" @click="closePopup()" />
       <slot name="window"></slot>
     </div>
   </div>
 </template>
 
 <script>
+import XIconSvg from "../../assets/SVGs/x-icon.svg";
 export default {
   data() {
     return {
+      XIconSvg,
       isVisible: false,
     };
   },
-  methods: {},
+  methods: {
+    closePopup() {
+      this.$emit("close-popup");
+    },
+  },
+  emits: ["close-popup"],
 };
 </script>
 
@@ -57,6 +65,14 @@ export default {
   width: 50%;
   background-color: white;
   border-radius: 14px;
+}
+
+img {
+  width: 14px;
+  height: 14px;
+  position: absolute;
+  right: 20px;
+  top: 20px;
 }
 </style>
 
