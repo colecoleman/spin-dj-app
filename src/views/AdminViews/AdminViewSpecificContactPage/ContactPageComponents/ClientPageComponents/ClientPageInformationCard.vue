@@ -40,7 +40,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 #contact-card-lower-div {
   display: flex;
   flex-direction: row;

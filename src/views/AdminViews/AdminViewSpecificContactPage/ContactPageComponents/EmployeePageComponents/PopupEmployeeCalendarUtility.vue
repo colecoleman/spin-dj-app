@@ -1,17 +1,26 @@
 <template>
-  <popup-modal>
+  <popup-modal @close-popup="closePopup()">
     <template v-slot:window>
-      <h4>Calendar Utility</h4>
-      <div class="container">
-        <popup-employee-calendar-dates
-          @selected-date="selectDate"
-          @current-month="assignMonth"
-          @send-date="sendDate"
-        ></popup-employee-calendar-dates>
-        <popup-employee-calendar-side-bar
-          :events="events"
-          :employee="employee"
-        ></popup-employee-calendar-side-bar></div
+      <section>
+        <div class="heading">
+          <h4>Calendar Utility</h4>
+        </div>
+        <div class="container">
+          <div class="calendar-container">
+            <popup-employee-calendar-dates
+              @selected-date="selectDate"
+              @current-month="assignMonth"
+              @send-date="sendDate"
+              :employee="employee"
+            ></popup-employee-calendar-dates>
+          </div>
+          <div class="side-bar-container">
+            <popup-employee-calendar-side-bar
+              :events="events"
+              :employee="employee"
+            ></popup-employee-calendar-side-bar>
+          </div>
+        </div></section
     ></template>
   </popup-modal>
 </template>
@@ -28,12 +37,13 @@ export default {
     };
   },
   methods: {
+    closePopup() {
+      this.$emit("close-popup");
+    },
     assignMonth(month) {
-      console.log(month);
       this.displayedMonth = month;
     },
     selectDate(date) {
-      console.log(date);
       this.selectedDate = date;
       this.events = this.$store.state.events.filter((event) => {
         return (
@@ -44,7 +54,6 @@ export default {
     },
     sendDate(date) {
       this.selectedTime = date;
-      console.log(this.selectedTime);
       this.mapClientsToEvents();
     },
     mapClientsToEvents() {
@@ -57,19 +66,21 @@ export default {
         event.primaryLocation = this.$store.state.contacts.locations.filter(
           (x) => x.id === event.eventLocations[0].locationId
         );
-        console.log(event);
       }
     },
   },
   computed: {
     events() {
       return this.$store.state.events.filter((event) => {
-        console.log(event);
-        return event.eventStartTime.getMonth() === this.selectedTime.getMonth();
+        return (
+          event.eventStartTime.getMonth() === this.selectedTime.getMonth() &&
+          event.eventStartTime.getYear() === this.selectedTime.getYear()
+        );
       });
     },
   },
   props: ["employee"],
+  emits: ["close-popup"],
   components: {
     PopupModal,
     PopupEmployeeCalendarDates,
@@ -79,9 +90,42 @@ export default {
 </script>
 
 <style>
+section {
+  display: flex;
+  flex-direction: column;
+}
+.heading {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+#close-x {
+  height: 10px;
+  width: 10px;
+  position: absolute;
+  right: 10%;
+}
+
 .container {
   display: flex;
   flex-direction: row;
+
   height: 40vh;
+  width: 100%;
+}
+
+.calendar-container {
+  width: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.side-bar-container {
+  width: 50%;
+  display: flex;
+
+  justify-content: center;
 }
 </style>

@@ -4,7 +4,16 @@
     :contact="contact"
     @cancel-send-email="closePopups()"
   ></popup-email-composition>
-  <popup-employee-calendar :employee="contact"></popup-employee-calendar>
+  <popup-employee-calendar
+    v-if="calendarUtilityOpen"
+    :employee="contact"
+    @close-popup="closePopups()"
+  ></popup-employee-calendar>
+  <employee-page-availability-manager
+    v-if="availabilityManagerOpen"
+    :employee="contact"
+    @close-popup="closePopups()"
+  ></employee-page-availability-manager>
   <div id="section-wrapper">
     <div id="left-column">
       <div id="box-one">
@@ -67,6 +76,7 @@ import {
 } from "./ContactPageComponents/contactPageIndex.js";
 
 import PopupEmployeeCalendar from "./ContactPageComponents/EmployeePageComponents/PopupEmployeeCalendarUtility.vue";
+import EmployeePageAvailabilityManager from "./ContactPageComponents/EmployeePageComponents/EmployeePageAvailabilityManager/EmployeePageAvailabilityManager.vue";
 import PopupEmailComposition from "../../../SharedComponents/SharedComponentsPopupUtilities/PopupEmailComposition.vue";
 import MessagingSingleComponent from "../../../SharedComponents/SharedComponentsMessaging/MessagingSingleComponent.vue";
 import FourButtonBarWithDropDown from "../../../SharedComponents/SharedComponentsUI/FourButtonBarWithDropDown.vue";
@@ -97,6 +107,10 @@ export default {
           title: "Assign Events",
           action: this.openCalendarUtility,
         },
+        {
+          title: "Availability",
+          action: this.openAvailabilityManager,
+        },
       ],
       dropdown: {
         title: "Actions",
@@ -116,6 +130,7 @@ export default {
       emailPopupOpen: false,
       notesPopupOpen: false,
       calendarUtilityOpen: false,
+      availabilityManagerOpen: false,
     };
   },
   computed: {
@@ -134,17 +149,21 @@ export default {
     openCalendarUtility() {
       this.calendarUtilityOpen = true;
     },
+    openAvailabilityManager() {
+      this.availabilityManagerOpen = true;
+    },
     viewNotes() {
       console.log("notes open");
     },
     closePopups() {
       this.emailPopupOpen = false;
       this.calendarUtilityOpen = false;
+      this.availabilityManagerOpen = false;
     },
   },
   components: {
     PopupEmailComposition,
-
+    EmployeePageAvailabilityManager,
     PopupEmployeeCalendar,
     ContactCardPerson,
     ContactPageToDoList,

@@ -1,34 +1,39 @@
 <template>
   <div class="list-wrapper">
     <div class="list-group">
+      <h4>Events:</h4>
       <div class="default-text" v-if="events.length < 1">
         <h5>No Events Found This Month!</h5>
       </div>
-      <div
-        :class="
-          chosenEvents.includes(event.id) ? 'faded list-item' : 'list-item'
-        "
-        v-for="event in events"
-        :key="event.id"
-        @click="selectEvent(event)"
-      >
-        <div id="client-event-identifier">
-          <img :src="defaultProfilePicture" alt="" />
-          <h5 id="client-name">
-            {{ event.client[0].firstName }} <br />
-            <span> {{ event.client[0].lastName }}</span>
-          </h5>
-        </div>
-        <div class="event-location-identifier">
-          <h5 class="venue-name">{{ event.primaryLocation[0].name }}</h5>
-        </div>
-        <div id="event-metadata-identifier">
-          <div id="date-and-time-identifier">
-            <h5>{{ formatDate(event.eventStartTime) }}</h5>
-            <h5>
-              {{ formatTime(event.eventStartTime) }} -
-              {{ formatTime(event.eventEndTime) }}
+      <div class="list-wrapper" v-if="events.length > 0">
+        <div
+          :class="
+            chosenEvents.includes(event.id) || event.unavailable === true
+              ? 'faded list-item'
+              : 'list-item'
+          "
+          v-for="event in events"
+          :key="event.id"
+          @click="event.unavailable ? '' : selectEvent(event)"
+        >
+          <div id="client-event-identifier">
+            <img :src="defaultProfilePicture" alt="" />
+            <h5 id="client-name">
+              {{ event.client[0].firstName }} <br />
+              <span> {{ event.client[0].lastName }}</span>
             </h5>
+          </div>
+          <div class="event-location-identifier">
+            <h5 class="venue-name">{{ event.primaryLocation[0].name }}</h5>
+          </div>
+          <div id="event-metadata-identifier">
+            <div id="date-and-time-identifier">
+              <h5>{{ formatDate(event.eventStartTime) }}</h5>
+              <h5>
+                {{ formatTime(event.eventStartTime) }} -
+                {{ formatTime(event.eventEndTime) }}
+              </h5>
+            </div>
           </div>
         </div>
       </div>
@@ -37,9 +42,9 @@
       <button-standard-with-icon
         :text="
           chosenEvents.length === 1
-            ? 'Assign To Event'
+            ? `Assign To Event (${chosenEvents.length})`
             : chosenEvents.length > 1
-            ? 'Assign To Events'
+            ? `Assign To Events (${chosenEvents.length})`
             : 'Click on Events To Assign'
         "
         @click="chosenEvents.length > 0 ? assignEmployeesToEvents() : ''"
@@ -58,6 +63,14 @@ export default {
       defaultProfilePicture,
       chosenEvents: [],
     };
+  },
+  beforeUpdate() {
+    this.events.map((event) => {
+      let unavailableDates = this.employee.unavailableDates;
+      let simpleDateFormat = event.eventStartTime.toISOString().split("T")[0];
+      event.unavailable = unavailableDates.includes(simpleDateFormat);
+    });
+    console.log(this.events);
   },
   methods: {
     formatDate: helpers.formatDate,
@@ -106,6 +119,7 @@ export default {
 .default-text {
   align-self: center;
   width: 100%;
+  margin: 10px;
 }
 
 .list-item {

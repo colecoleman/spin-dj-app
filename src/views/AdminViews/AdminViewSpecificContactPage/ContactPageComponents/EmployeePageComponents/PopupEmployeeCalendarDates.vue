@@ -11,7 +11,7 @@
         : ''
     "
   />
-  <div id="base-container">
+  <div id="base-container" @mouseleave="hoverDate = undefined">
     <time-selector
       v-if="timeSelectorOpen"
       :months="monthArray"
@@ -39,11 +39,11 @@
         </div>
         <div id="main-calendar-content">
           <div id="weekdays">
-            <div v-for="day in WEEKDAYS" :key="day.key">
-              {{ day.identifier }}
+            <div v-for="(day, index) in WEEKDAYS" :key="index">
+              {{ day }}
             </div>
           </div>
-          <div id="days">
+          <div id="days" @mouseleave="hoverDate = undefined">
             <div
               v-for="day in days"
               :key="day.UTC"
@@ -55,10 +55,37 @@
               :style="cssVars"
             >
               <div
-                :class="day.hasEvents ? 'hasEvents' : ' '"
+                :class="day.hasEvents ? 'hasEvents' : ''"
                 @click="day.hasEvents ? selectDay(day) : ''"
+                @mouseover="openDateUtility(day.date)"
+                @mouseleave="hoverDate = undefined"
               >
-                {{ day.dayOfMonth }}
+                <div class="hover-date" v-if="hoverDate == day.date">
+                  <h5>Mark as:</h5>
+                  <p @click="markUnavailable(day.date)">Unavailable</p>
+                  <br />
+                  <p @click="markAvailable(day.date)">Available</p>
+                </div>
+                <div class="availability-indicator">
+                  <img
+                    class="availability-icon"
+                    v-if="
+                      employee.unavailableDates.includes(day.date) ||
+                      day.unavailable
+                    "
+                    :src="RedXCircle"
+                    alt=""
+                  />
+                  <img
+                    class="availability-icon"
+                    v-if="employee.availableDates.includes(day.date)"
+                    :src="GreenCheckmark"
+                    alt=""
+                  />
+                </div>
+                <h4>
+                  {{ day.dayOfMonth }}
+                </h4>
               </div>
             </div>
           </div>
@@ -85,6 +112,8 @@ import {
   DownArrowSVG,
   LeftArrowSVG,
   RightArrowSVG,
+  GreenCheckmark,
+  RedXCircle,
 } from "../../../../../assets/SVGs/svgIndex.js";
 
 export default {
@@ -95,36 +124,10 @@ export default {
       DownArrowSVG,
       RightArrowSVG,
       LeftArrowSVG,
-      WEEKDAYS: {
-        sunday: {
-          key: 1,
-          identifier: "S",
-        },
-        monday: {
-          key: 2,
-          identifier: "M",
-        },
-        tuesday: {
-          key: 3,
-          identifier: "T",
-        },
-        wednesday: {
-          key: 4,
-          identifier: "W",
-        },
-        thursday: {
-          key: 5,
-          identifier: "T",
-        },
-        friday: {
-          key: 6,
-          identifier: "F",
-        },
-        saturday: {
-          key: 7,
-          identifier: "S",
-        },
-      },
+      GreenCheckmark,
+      RedXCircle,
+      hoverDate: undefined,
+      WEEKDAYS: ["S", "M", "T", "W", "T", "F", "S"],
       monthArray: [
         { id: 0, month: "January", isCurrentMonth: false },
         { id: 1, month: "February", isCurrentMonth: false },
@@ -153,14 +156,34 @@ export default {
     this.masterMonth = this.INITIAL_MONTH + this.yearChangeCount;
     this.masterYear = this.INITIAL_YEAR;
     this.sendCurrentTimeUp();
+    console.log(this.daysWithEvents);
+    console.log(this.masterYear);
   },
   methods: {
     sendCurrentTimeUp() {
       let monthDate = new Date();
-      monthDate.setMonth(this.masterMonth - 1);
+      monthDate.setMonth(this.masterMonth - 1, 1);
       monthDate.setYear(this.masterYear);
-      console.log(monthDate);
       this.$emit("send-date", monthDate);
+    },
+    openDateUtility(day) {
+      this.hoverDate = day;
+    },
+    markAvailable(date) {
+      let payload = {
+        type: "availability",
+        date: date,
+        employeeId: this.employee.id,
+      };
+      this.$store.dispatch("changeEmployeeAvailability", payload);
+    },
+    markUnavailable(date) {
+      let payload = {
+        type: "unavailability",
+        date: date,
+        employeeId: this.employee.id,
+      };
+      this.$store.dispatch("changeEmployeeAvailability", payload);
     },
     toggleMonthSelector() {
       this.timeSelectorOpen = !this.timeSelectorOpen;
@@ -261,6 +284,8 @@ export default {
       this.sendCurrentTimeUp();
     },
     newMonthSelected(id) {
+      console.log(id);
+      console.log(this.masterMonth);
       this.monthChangeCount = 0;
       this.masterMonth = id + 1;
       this.toggleMonthSelector();
@@ -280,11 +305,20 @@ export default {
     textColor() {
       return this.$store.state.businessSettings.brandingPreferences.textColor;
     },
+    foregroundColor() {
+      return this.$store.state.businessSettings.brandingPreferences
+        .foregroundColor;
+    },
+    cardOutline() {
+      return this.$store.state.businessSettings.brandingPreferences.cardOutline;
+    },
     cssVars() {
       return {
         /* variables you want to pass to css */
         "--color": this.color,
         "--textcolor": this.textColor,
+        "--foregroundcolor": this.foregroundColor,
+        "--cardoutline": this.cardOutline,
       };
     },
     //establishing data
@@ -314,11 +348,16 @@ export default {
     },
     events() {
       return this.$store.state.events.filter((event) => {
-        return event.eventStartTime.getMonth() === this.masterMonth - 1;
+        return (
+          event.eventStartTime.getMonth() === this.masterMonth - 1 ||
+          event.eventStartTime.getYear() === this.masterYear
+        );
       });
     },
     daysWithEvents() {
-      return this.events.map((a) => a.eventStartTime.getDate());
+      return this.events.map(
+        (a) => a.eventStartTime.toISOString().split("T")[0]
+      );
     },
     // used to establish the dates shown on calendar
     currentMonthDays: function () {
@@ -333,11 +372,34 @@ export default {
         } else {
           day.isCurrentDay = false;
         }
-        if (this.daysWithEvents.includes(day.dayOfMonth)) {
+        if (this.daysWithEvents.includes(day.date)) {
           day.hasEvents = true;
         } else {
           day.hasEvents = false;
         }
+        if (
+          this.employee.availabilityRules.dayOfWeek[day.UTC.getDay()] ||
+          this.employee.availabilityRules.months[day.UTC.getMonth()]
+        ) {
+          day.unavailable = true;
+        } else {
+          day.unavailable = false;
+        }
+        if (this.employee.availabilityRules.dateRanges.length) {
+          this.employee.availabilityRules.dateRanges.forEach((range) => {
+            let start = range.start.getTime();
+            let end = range.end.getTime();
+            let check = new Date(day.UTC);
+            if (start < check && check < end) {
+              day.unavailable = true;
+            } else {
+              return;
+            }
+          });
+        }
+        // if () {
+        //   return;
+        // }
       });
       return currentDays;
     },
@@ -356,6 +418,7 @@ export default {
     },
   },
   components: { TimeSelector },
+  props: ["employee"],
 };
 </script>
 
@@ -428,6 +491,28 @@ img {
   justify-content: center;
 }
 
+.day {
+  position: relative;
+  z-index: 2;
+}
+
+.hover-date {
+  position: absolute;
+  top: -100px;
+  display: flex;
+  min-width: 60px;
+  flex-direction: column;
+  background-color: var(--foregroundcolor);
+  border: 1px solid var(--cardoutline);
+  border-radius: 5px;
+  padding: 30px;
+  z-index: 100;
+}
+
+.hover-date > p {
+  margin: 0px;
+}
+
 .hasEvents {
   color: var(--textcolor);
   background: radial-gradient(
@@ -463,7 +548,30 @@ img {
   );
 }
 
-.today > * {
+.hover-date > p {
+  font-weight: 400;
+}
+.hover-date > p:hover {
+  font-weight: 600;
+}
+.hover-date > h5 {
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.availability-indicator {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  z-index: 1;
+}
+
+.availability-icon {
+  height: 8px;
+  width: 8px;
+}
+
+.today h4 {
   filter: invert(100%);
 }
 </style>
