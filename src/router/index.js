@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 import EventManager from '../views/AdminViews/AdminViewDashboard/EventManager.vue';
-import ContactsList from '../views/AdminViews/AdminViewContactList/ContactsList.vue'
+import ContactsList from '../views/AdminViews/AdminViewContactList/ContactsList.vue';
+import AdminConfigurationPage from '../views/AdminViews/AdminViewConfig/AdminViewConfigPage.vue';
 import SpecificContactPageClient from '../views/AdminViews/AdminViewSpecificContactPage/SpecificClientPage/SpecificContactPageClient.vue';
 import SpecificContactPageProspect from '../views/AdminViews/AdminViewSpecificContactPage/SpecificProspectPage/SpecificContactPageProspect.vue';
 import SpecificContactPageEmployee from '../views/AdminViews/AdminViewSpecificContactPage/SpecificContactPageEmployee.vue';
@@ -55,6 +56,11 @@ const routes = [
     name: 'specificEventPage',
     component: SpecificEventPage
   },
+  {
+    path: '/config/',
+    name: 'adminConfigPage',
+    component: AdminConfigurationPage,
+  }
 
 ];
 const router = createRouter({
