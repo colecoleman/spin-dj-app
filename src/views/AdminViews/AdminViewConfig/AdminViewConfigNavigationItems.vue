@@ -35,21 +35,21 @@ export default {
         {
           name: "Discounts",
         },
-        {
-          name: "Equipment",
-        },
+        // {
+        //   name: "Equipment",
+        // },
         {
           name: "Automations",
         },
         {
           name: "To-Dos",
         },
-        {
-          name: "Payments",
-        },
-        {
-          name: "Reports",
-        },
+        // {
+        //   name: "Payments",
+        // },
+        // {
+        //   name: "Reports",
+        // },
       ],
     };
   },

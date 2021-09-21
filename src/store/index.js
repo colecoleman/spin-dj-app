@@ -4,6 +4,7 @@ import { createStore } from "vuex";
 const store = createStore({
     state() {
         return {
+            user: undefined,
             notifications: [
                 {
                     id: 1,
@@ -2109,11 +2110,9 @@ const store = createStore({
                     ],
                 }
             ],
-            packages: [],
-            services: [],
-            addOns: [],
+            
             businessSettings: {
-                businessInfo: {
+                information: {
                     businessName: 'Spin Entertainment',
                     businessAddress: {
                         address1one: '12345 Anywhere St',
@@ -2136,12 +2135,68 @@ const store = createStore({
                     highlightColor: "#00F5FF",
                     textColor: "#000000"
                 },
+                packages: [ {
+                    id: "1",
+                    packageName: "Holy Matrimony",
+                    priceOption: 'Hourly Rate',
+                        flat: {
+                            flatRate: undefined,
+                        },
+                        hourly: {
+                            baseTime: 5,
+                            baseRate: 180000,
+                            addHourly: 10000,
+                        },
+                    employeesRequired: 2,
+                    photo: undefined,
+                }],
+                services: [
+                    {
+                        id: "1",
+                        serviceName: "Wedding DJ",
+                        priceOption: 'Hourly Rate',
+                        flat: {
+                            flatRate: undefined,
+                        },
+                        hourly: {
+                            baseTime: 5,
+                            baseRate: 150000,
+                            addHourly: 10000,
+                        },
+                        photo: undefined,
+                        equipmentNeeded: [],
+                        employeesRequired: undefined
+                    },
+                    {
+                        id: "2",
+                        serviceName: "Wedding Officiant",
+                        priceOption: "Flat Rate",
+                        flat: {
+                            flatRate: 30000,
+                        },
+                        hourly: {
+                            baseTime: undefined,
+                            baseRate: undefined,
+                            addHourly: undefined,
+                        },
+                        photo: undefined,
+                        equipmentNeeded: [],
+                        employeesRequired: undefined
+                    }
+                ],
+                addOns: [],
+                discounts: [],
+                automations: [],
             },
             users: [],
             clientEventCombined: [],
         };
     },
     actions: {
+        setUser(state, user) {
+            console.log(user);
+            state.commit('setUser', user);
+        },
         addClient( state, client) {
             console.log(client);
             state.commit('addClient', client);
@@ -2234,6 +2289,9 @@ const store = createStore({
         }
     },
     mutations: {
+        setUser(state, user) {
+            state.user = user;
+        },
         setClients(state, payload) {
             state.clients = payload;
         },
