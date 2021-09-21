@@ -12,8 +12,42 @@
       "AmplifyAppId": "d2mb6rzjiyafas"
     },
     "categories": {
+      "function": {
+        "spin49492a15DefineAuthChallenge": {
+          "deploymentBucketName": "amplify-spin-dev-134513-deployment",
+          "s3Key": "amplify-builds/spin49492a15DefineAuthChallenge-766f4956504e5969666f-build.zip"
+        },
+        "spin49492a15CreateAuthChallenge": {
+          "deploymentBucketName": "amplify-spin-dev-134513-deployment",
+          "s3Key": "amplify-builds/spin49492a15CreateAuthChallenge-777151412f6a2b394764-build.zip"
+        },
+        "spin49492a15VerifyAuthChallengeResponse": {
+          "RECAPTCHASECRET": "6LedXD0cAAAAAIJAzTiyRZi0O2h1CKzvEWtcPMVw",
+          "deploymentBucketName": "amplify-spin-dev-134513-deployment",
+          "s3Key": "amplify-builds/spin49492a15VerifyAuthChallengeResponse-35736e7a324c6a4c764a-build.zip"
+        },
+        "spin49492a15CustomMessage": {
+          "REDIRECTURL": "https://spindjapp.com",
+          "EMAILSUBJECT": "Welcome to your new account! ",
+          "EMAILMESSAGE": "Congratulations! We've been working hard on setting you up, and we're glad to say: \"It's finished!\" You can access your account below: ",
+          "deploymentBucketName": "amplify-spin-dev-134513-deployment",
+          "s3Key": "amplify-builds/spin49492a15CustomMessage-78333735665a7056774e-build.zip"
+        }
+      },
       "auth": {
-        "spin49492a15": {}
+        "spin065ea644": {
+          "userPoolId": "us-east-1_PGrL184V5",
+          "userPoolName": "tenants-1",
+          "webClientId": "3r81enf7o8f07c69bnlc6tf9lo",
+          "nativeClientId": "3r81enf7o8f07c69bnlc6tf9lo",
+          "identityPoolId": "us-east-1:61655840-a96e-4408-a05c-cb6fda6e8544",
+          "identityPoolName": "Spin DJ Tenants",
+          "allowUnauthenticatedIdentities": false,
+          "authRoleArn": "arn:aws:iam::756709574884:role/Cognito_SpinDJTenantsAuth_Role",
+          "authRoleName": "Cognito_SpinDJTenantsAuth_Role",
+          "unauthRoleArn": "arn:aws:iam::756709574884:role/Cognito_SpinDJTenantsUnauth_Role",
+          "unauthRoleName": "Cognito_SpinDJTenantsUnauth_Role"
+        }
       }
     }
   }
