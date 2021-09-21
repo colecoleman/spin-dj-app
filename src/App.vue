@@ -3,12 +3,9 @@
     id="application-wrapper"
     :style="{ backgroundColor: backgroundColor, color: textColor }"
   >
-    <div id="header">
-      <the-header></the-header>
-    </div>
     <div id="main-content">
       <div id="right-div">
-        <router-view></router-view>
+        <router-view name="main"></router-view>
       </div>
     </div>
   </div>
@@ -16,24 +13,39 @@
 
 <script>
 /* eslint-disable */
-import TheHeader from "./SharedComponents/SharedComponentsHeader/TheHeader.vue";
+// import TheHeader from "./SharedComponents/SharedComponentsHeader/TheHeader.vue";
 import EventManager from "./views/AdminViews/AdminViewDashboard/EventManager.vue";
 
 export default {
   computed: {
     backgroundColor() {
-      return this.$store.state.businessSettings.brandingPreferences
-        .backgroundColor;
+      let background =
+        this.$store.state.businessSettings.brandingPreferences.backgroundColor;
+      if (background) {
+        return background;
+      } else {
+        return "";
+      }
     },
     branding() {
-      return this.$store.state.businessSettings.brandingPreferences;
+      let item = this.$store.state.businessSettings.brandingPreferences;
+      if (item) {
+        return item;
+      } else {
+        return "";
+      }
     },
     textColor() {
-      return this.$store.state.businessSettings.brandingPreferences.textColor;
+      let textColor = this.$store.state.businessSettings.brandingPreferences;
+      if (textColor) {
+        return textColor;
+      } else {
+        return "";
+      }
     },
   },
   components: {
-    TheHeader,
+    // TheHeader,
     EventManager,
   },
 };
@@ -80,13 +92,11 @@ a {
 }
 
 #application-wrapper {
-  max-width: calc(100vw - 40px);
-  width: calc(100vw - 40px);
+  width: 100vw;
   height: 100vh;
   max-height: 100%;
   display: flex;
   flex-direction: column;
-  padding: 20px 20px 0px 20px;
 }
 #header {
   height: 10vh;
