@@ -35,9 +35,7 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  align-content: center;
-  padding: 20px 10px 0 10px;
-  width: 95vw;
+  margin: 20px 20px 10px 20px;
   height: 60px;
 }
 

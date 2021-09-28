@@ -1,6 +1,6 @@
 <template>
   <div id="tabs" :style="cssVars">
-    <router-link to="/">
+    <router-link to="/admin/dashboard">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="33"
@@ -15,7 +15,7 @@
         />
       </svg>
     </router-link>
-    <router-link to="/contacts">
+    <router-link to="/admin/contacts">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="33"
@@ -30,7 +30,7 @@
         />
       </svg>
     </router-link>
-    <router-link to="/config">
+    <router-link to="/admin/config">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="37.075"
