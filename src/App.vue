@@ -3,26 +3,25 @@
     id="application-wrapper"
     :style="{ backgroundColor: backgroundColor, color: textColor }"
   >
-    <div id="main-content">
-      <div id="right-div">
-        <router-view name="main"></router-view>
-      </div>
-    </div>
+    <router-view name="main"></router-view>
   </div>
 </template>
 
 <script>
 /* eslint-disable */
 // import TheHeader from "./SharedComponents/SharedComponentsHeader/TheHeader.vue";
+import { Auth } from "aws-amplify";
+import axios from "axios";
 import EventManager from "./views/AdminViews/AdminViewDashboard/EventManager.vue";
 
 export default {
   computed: {
     backgroundColor() {
-      let background =
-        this.$store.state.businessSettings.brandingPreferences.backgroundColor;
-      if (background) {
-        return background;
+      if (
+        this.$store.state.businessSettings.brandingPreferences.backgroundColor
+      ) {
+        return this.$store.state.businessSettings.brandingPreferences
+          .backgroundColor;
       } else {
         return "";
       }
@@ -43,10 +42,19 @@ export default {
         return "";
       }
     },
+    currentUser: async () => {
+      await Auth.currentAuthenticatedUser();
+    },
   },
   components: {
-    // TheHeader,
     EventManager,
+  },
+  async beforeCreate() {
+    let user = await Auth.currentAuthenticatedUser();
+    console.log(user);
+    if (user) {
+      this.$store.dispatch("setUser", user.username);
+    }
   },
 };
 </script>
@@ -94,19 +102,6 @@ a {
 #application-wrapper {
   width: 100vw;
   height: 100vh;
-  max-height: 100%;
-  display: flex;
-  flex-direction: column;
-}
-#header {
-  height: 10vh;
-}
-#main-content {
-  display: flex;
-  flex-direction: row;
-  min-width: 100%;
-  width: 100%;
-  height: 85vh;
 }
 
 input,
@@ -118,18 +113,5 @@ textarea {
   border: 1px solid;
   border-radius: 5px;
   padding: 3px;
-}
-
-#navigation-div {
-  height: calc(100% - 20px);
-}
-
-#contact-us-div {
-  flex: 1;
-}
-
-#right-div {
-  width: 100%;
-  height: inherit;
 }
 </style>
