@@ -69,7 +69,7 @@ export default {
       username: undefined,
       password: undefined,
       confirmPassword: undefined,
-      loading: true,
+      loading: false,
       usernameError: false,
       passwordError: {
         match: false,
@@ -95,11 +95,13 @@ export default {
       {
         try {
           const user = await Auth.signIn(username, password);
-          this.$store.dispatch("setUser", user);
+          console.log(user);
+          this.$store.dispatch("setUser", user.username);
           if (this.$store.state.user) {
             this.loading = false;
             this.$router.push("/admin/dashboard");
           }
+          this.$store.dispatch("getAdminUsers");
         } catch (error) {
           this.loading = false;
           console.log("error signing in", error);

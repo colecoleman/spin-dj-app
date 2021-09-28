@@ -42,14 +42,14 @@
             <span>{{ contact.businessName }}</span>
           </h5>
           <h5 id="client-name">
-            {{ contact.firstName }} <br />
-            <span> {{ contact.lastName }}</span>
+            {{ contact.given_name }} <br />
+            <span> {{ contact.family_name }}</span>
           </h5>
         </div>
       </div>
       <div class="email-and-phone">
-        <p>{{ contact.phoneNumber }}</p>
-        <p>{{ contact.emailAddress }}</p>
+        <p>{{ formatPhoneNumber(contact.phoneNumber) }}</p>
+        <p>{{ contact.email }}</p>
       </div>
       <div class="button-wrapper">
         <button-with-drop-down-selections
@@ -99,6 +99,7 @@ import PopupModal from "../../../SharedComponents/SharedComponentsUI/PopupModal.
 import eyeIcon from "../../../assets/SVGs/eye-icon.svg";
 import emailIcon from "../../../assets/SVGs/email.svg";
 import trashCan from "../../../assets/SVGs/trash-can.svg";
+import helpers from '../../../helpers.js';
 
 export default {
   data() {
@@ -134,8 +135,12 @@ export default {
   computed: {},
   methods: {
     viewContact() {
-      this.$router.push("/contacts/" + this.category + "/" + this.contact.id);
+      this.$router.push(
+        "contacts/" + this.category + "/" + this.contact.userId
+      );
     },
+    formatPhoneNumber: helpers.formatPhoneNumber,
+    
 
     emailContact() {
       this.composeEmailOpen = true;

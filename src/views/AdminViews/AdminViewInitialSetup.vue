@@ -17,10 +17,10 @@
             <p>Business Name:</p>
             <input
               type="text"
-              v-model="businessName"
-              :class="businessNameError ? 'error' : 'healthy'"
+              v-model="data.businessName"
+              :class="errors.businessNameError ? 'error' : 'healthy'"
             />
-            <p class="error-text" v-if="businessNameError">
+            <p class="error-text" v-if="errors.businessNameError">
               <i> Oops! We're missing something here.</i>
             </p>
           </div>
@@ -28,24 +28,47 @@
             <p>Business Phone:</p>
             <input
               type="phone"
-              v-model="businessPhone"
-              :class="businessPhoneError ? 'error' : 'healthy'"
+              v-model="data.businessPhone"
+              :class="errors.businessPhoneError ? 'error' : 'healthy'"
             />
           </div>
           <div class="input-field">
-            <p>Business Address 1:</p>
+            <p>Street Address:</p>
             <input
               type="address"
-              v-model="address1"
-              :class="address1error ? 'error' : 'healthy'"
+              v-model="data.address1"
+              :class="errors.address1error ? 'error' : 'healthy'"
             />
-            <p>Business Address 2:</p>
-            <input
-              type="address"
-              v-model="address2"
-              :class="address2error ? 'error' : 'healthy'"
-            />
-            <p class="error-text" v-if="address2error || address1error">
+            <div class="third-container">
+              <div class="input-field third-width">
+                <p>City:</p>
+                <input
+                  type="address"
+                  v-model="data.city"
+                  :class="errors.address2error ? 'error' : 'healthy'"
+                />
+              </div>
+              <div class="input-field third-width">
+                <p>State:</p>
+                <input
+                  type="address"
+                  v-model="data.state"
+                  :class="errors.address2error ? 'error' : 'healthy'"
+                />
+              </div>
+              <div class="input-field third-width">
+                <p>Zip Code:</p>
+                <input
+                  type="address"
+                  v-model="data.zipCode"
+                  :class="errors.address2error ? 'error' : 'healthy'"
+                />
+              </div>
+            </div>
+            <p
+              class="error-text"
+              v-if="errors.address2error || errors.address1error"
+            >
               <i>Oops! We're missing something here.</i>
             </p>
           </div>
@@ -79,7 +102,7 @@
 <script>
 import SpinLogoWithText from "../../assets/spin-logo-with-text.svg";
 import ButtonStandardWithIcon from "../../SharedComponents/SharedComponentsUI/ButtonStandardWithIcon.vue";
-import { Auth } from "aws-amplify";
+import axios from "axios";
 
 export default {
   components: { ButtonStandardWithIcon },
@@ -87,18 +110,24 @@ export default {
     return {
       SpinLogoWithText,
       loading: false,
-      businessName: undefined,
-      businessPhone: undefined,
-      address1: undefined,
-      address2: undefined,
+      data: {
+        businessName: null,
+        businessPhone: null,
+        address1: null,
+        city: null,
+        state: null,
+        zipCode: null,
+      },
+      errors: {
+        businessNameError: false,
+        businessPhoneError: false,
+        address1error: false,
+        address2error: false,
+        logoError: false,
+      },
       logo: undefined,
       importData: undefined,
       step: 1,
-      businessNameError: false,
-      businessPhoneError: false,
-      address1error: false,
-      address2error: false,
-      logoError: false,
       importIssue: false,
     };
   },
@@ -114,39 +143,56 @@ export default {
       console.log(this.logo);
     },
     step1validationBlock() {
-      this.loading = true;
-      if (!this.businessName) {
-        this.businessNameError = true;
+      console.log("hey");
+      if (!this.data.businessName) {
+        this.errors.businessNameError = true;
       } else {
-        this.businessNameError = false;
+        this.errors.businessNameError = false;
       }
-      if (!this.businessPhone) {
-        this.businessPhoneError = true;
+      if (!this.data.businessPhone) {
+        this.errors.businessPhoneError = true;
       }
-      if (!this.address1) {
-        this.address1error = true;
+      if (!this.data.address1) {
+        this.errors.address1error = true;
       }
 
-      if (!this.address2) {
-        this.address2error = true;
+      if (!this.data.city || !this.data.state || !this.data.zipCode) {
+        this.errors.address2error = true;
       }
       if (
-        !this.businessNameError &&
-        !this.businessPhoneError &&
-        !this.address1error &&
-        !this.address2error
+        !this.errors.businessNameError &&
+        !this.errors.businessPhoneError &&
+        !this.errors.address1error &&
+        !this.errors.address2error
       ) {
-        this.loading = false;
-        console.log(Auth.currentSession());
+        this.addToDB();
       }
     },
+    addToDB() {
+      this.loading = true;
+      Object.keys(this.data).forEach((key) => {
+        if (this.data[key] != null) {
+          let post = {
+            variable: key,
+            value: this.data[key],
+          };
+          axios
+            .put(
+              "https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/admin/f4863dca-bb43-4037-bdf8-b8a36189bfe7/users/f4863dca-bb43-4037-bdf8-b8a36189bfe7",
+              post
+            )
+            .then((result) => {
+              console.log(result);
+            });
+        }
+      });
+      this.loading = false;
+      this.navigateToDashboard();
+    },
+    navigateToDashboard() {
+      this.$router.push("/admin/dashboard");
+    },
   },
-  // created() {
-  //   AWS.config.region = "us-east-1"; // Region
-  //   AWS.config.credentials = new AWS.CognitoIdentityCredentials({
-  //     IdentityPoolId: "us-east-1:61655840-a96e-4408-a05c-cb6fda6e8544",
-  //   });
-  // },
 };
 </script>
 
@@ -231,6 +277,16 @@ p {
 
 .half-width {
   width: 45%;
+}
+
+.third-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.third-width {
+  width: 30%;
 }
 
 .healthy {

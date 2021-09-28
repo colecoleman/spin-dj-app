@@ -44,11 +44,11 @@
           </template>
           <template v-slot:title>{{ contact_category }}</template>
           <template v-slot:content>
-            <div class="personal-contact-list">
+            <div class="personal-contact-list" v-if="value.length > 0">
               <div
                 class="personal-contact-item"
                 v-for="contact in value"
-                :key="contact.id"
+                :key="contact.userId"
                 :category="contact_category"
               >
                 <contact-list-view
@@ -57,6 +57,9 @@
                 ></contact-list-view>
               </div>
             </div>
+            <h4 v-if="value.length <= 0" class="placeholder-text">
+              No {{ contact_category }} to view! Add some
+            </h4>
           </template>
         </base-card>
       </div>
@@ -130,9 +133,13 @@ export default {
   },
   computed: {
     contacts() {
-      let list = JSON.parse(JSON.stringify(this.$store.state.contacts));
-      return list;
+      return this.$store.state.contacts;
     },
+  },
+  beforeCreate() {
+  },
+  created() {
+    this.$store.dispatch("getAdminUsers");
   },
   components: {
     BaseNavigationCard,
@@ -196,5 +203,9 @@ export default {
   position: relative;
   width: fit-content;
   height: fit-content;
+}
+
+.placeholder-text {
+  margin-top: 45%;
 }
 </style>

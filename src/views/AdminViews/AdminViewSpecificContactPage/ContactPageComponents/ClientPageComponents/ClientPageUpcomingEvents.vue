@@ -25,7 +25,7 @@
         /></div
     ></template>
     <template v-slot:content>
-      <div id="events-content">
+      <div id="events-content" v-if="events.length > 0">
         <location-upcoming-events-list-item
           v-for="event in events"
           :key="event.id"
@@ -33,6 +33,7 @@
           @click="navigateToEventPage(event.id), sortByDateDescending()"
         ></location-upcoming-events-list-item>
       </div>
+      <h5>No events found for this client.</h5>
     </template>
   </base-card>
 </template>
@@ -92,7 +93,7 @@ export default {
         (event) =>
           event.eventStartTime > today &&
           event.associatedContacts.some(
-            (contact) => contact.id === this.contact.id
+            (contact) => contact.userId === this.contact.userId
           )
       );
     },

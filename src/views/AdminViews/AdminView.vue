@@ -1,6 +1,8 @@
 <template>
   <the-header></the-header>
-  <router-view name="content"></router-view>
+  <div class="content-container">
+    <router-view name="content"></router-view>
+  </div>
 </template>
 
 <script>
@@ -10,5 +12,11 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
+.content-container {
+  height: calc(100% - 130px);
+  display: flex;
+  width: calc(100% - 40px);
+  padding: 20px;
+}
 </style>

@@ -2,7 +2,7 @@
   <base-card :icon="automationsvg">
     <template v-slot:title>Automation</template>
     <template v-slot:content>
-      <div id="list-wrapper">
+      <div id="list-wrapper" v-if="automationsPending || automationsApproved">
         <automation-contact-list-item
           v-for="automation in automationsPending"
           :key="automation.id"

@@ -52,19 +52,19 @@ export default {
 #wrapper {
   display: flex;
   flex-direction: row;
-  width: 80%;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
 }
 
 #navigation {
   width: 20%;
 }
 section {
-  height: inherit;
-  width: inherit;
   display: flex;
+
   flex-direction: row;
-  height: 100%;
-  width: 100%;
+  /* margin: 20px; */
 }
 
 #left-content-div {

@@ -25,11 +25,11 @@
       placeholder="(123)456-7890"
       v-model.trim.lazy="client.phoneNumber"
     />
-    <h5 :class="errors.emailAddress ? 'danger' : ''">Email Address:</h5>
+    <h5 :class="errors.username ? 'danger' : ''">Email Address:</h5>
     <input
       type="email"
       placeholder="Email Address"
-      v-model.trim.lazy="client.emailAddress"
+      v-model.trim.lazy="client.username"
     />
     <h5>Associated Event:</h5>
     <input
@@ -54,41 +54,44 @@ export default {
     return {
       circleCheckmark,
       client: {
-        pronoun: undefined,
-        firstName: undefined,
-        lastName: undefined,
-        phoneNumber: undefined,
-        emailAddress: undefined,
+        role: "client",
+        pronoun: null,
+        firstName: null,
+        lastName: null,
+        phoneNumber: null,
+        username: null,
       },
       errors: {
         firstName: false,
         lastName: false,
         phoneNumber: false,
-        emailAddress: false,
+        username: false,
       },
-      associatedEvent: undefined,
+      associatedEvent: null,
     };
   },
   methods: {
     submitContact() {
       this.checkEmptyFields();
       if (!this.errors.phoneNumber) {
-        this.validatePhoneNumber(this.client.phoneNumber);
+        this.client.phoneNumber = this.validatePhoneNumber(
+          this.client.phoneNumber
+        );
       }
-      if (!this.errors.emailAddress) {
-        this.validateEmailAddress(this.client.emailAddress);
+      if (!this.errors.username) {
+        this.validateusername(this.client.username);
       }
       if (Object.values(this.errors).every((item) => item === false)) {
         this.$store.dispatch("addClient", this.client);
         console.log(this.client);
         this.client = {
-          pronoun: undefined,
-          firstName: undefined,
-          lastName: undefined,
-          phoneNumber: undefined,
-          emailAddress: undefined,
+          pronoun: null,
+          firstName: null,
+          lastName: null,
+          phoneNumber: null,
+          username: null,
         };
-        this.associatedEvent = undefined;
+        this.associatedEvent = null;
       } else {
         return;
       }
@@ -99,7 +102,7 @@ export default {
         firstName: false,
         lastName: false,
         phoneNumber: false,
-        emailAddress: false,
+        username: false,
       };
       if (!client.firstName) {
         this.errors.firstName = true;
@@ -107,8 +110,8 @@ export default {
       if (!client.lastName) {
         this.errors.lastName = true;
       }
-      if (!client.emailAddress) {
-        this.errors.emailAddress = true;
+      if (!client.username) {
+        this.errors.username = true;
       }
       if (!client.phoneNumber) {
         this.errors.phoneNumber = true;
@@ -117,9 +120,9 @@ export default {
     validatePhoneNumber(num) {
       return num.replace(/[^\d/+]/g, "");
     },
-    validateEmailAddress(add) {
+    validateusername(add) {
       var re = /\S+@\S+\.\S+/;
-      this.errors.emailAddress = !re.test(add);
+      this.errors.username = !re.test(add);
     },
   },
   components: { ButtonLongWithIcon },

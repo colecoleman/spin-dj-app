@@ -1,8 +1,8 @@
 <template>
   <div id="messaging-wrapper" :style="cssVars">
     <div id="contact-identification">
-      <p @click="navigateToEventPage(contact.id)">
-        {{ contact.firstName + " " + contact.lastName }}
+      <p @click="navigateToEventPage(contact.userId)">
+        {{ contact.given_name + " " + contact.family_name }}
       </p>
     </div>
     <div class="messages-container">
@@ -69,9 +69,6 @@ export default {
     },
   },
   computed: {
-    notificationItems() {
-      return this.$store.state.notifications;
-    },
     foregroundColor() {
       return this.$store.state.businessSettings.brandingPreferences
         .foregroundColor;

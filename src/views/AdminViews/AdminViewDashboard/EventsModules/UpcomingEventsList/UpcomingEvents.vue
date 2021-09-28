@@ -25,13 +25,16 @@
         /></div
     ></template>
     <template v-slot:content>
-      <div id="events-content">
-        <upcoming-events-list-item
-          v-for="event in events"
-          :key="event.id"
-          :event="event"
-          @click="navigateToEventPage(event.id), sortByDateDescending()"
-        ></upcoming-events-list-item>
+      <div class="wrapper">
+        <div id="events-content" v-if="events.length > 0">
+          <upcoming-events-list-item
+            v-for="event in events"
+            :key="event.id"
+            :event="event"
+            @click="navigateToEventPage(event.id), sortByDateDescending()"
+          ></upcoming-events-list-item>
+        </div>
+        <h5>No events to display! Add some!</h5>
       </div>
     </template>
   </base-card>
@@ -110,6 +113,14 @@ export default {
 </script>
 
 <style scoped>
+.wrapper {
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
 #events-content {
   flex-direction: column;
   overflow: scroll;

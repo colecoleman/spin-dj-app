@@ -16,18 +16,19 @@
         :contactCategory="contactCategory"
         @submit-note="addNewNote"
       ></contact-page-notes-add-new>
-      <div class="notes-wrapper" v-if="!addNewNoteOpen">
-        <div class="section-wrapper">
+      <h5 v-if="!notes">No notes found for this client.</h5>
+      <div class="notes-wrapper" v-if="!addNewNoteOpen && notes">
+        <div class="section-wrapper" v-if="notes.public">
           <h5>Public Notes:</h5>
           <p>Visible to others</p>
-          <div class="notes-item" v-for="note in notes.public" :key="note.none">
+          <div class="notes-item" v-for="note in notes.public" :key="note.note">
             <p class="note-date">
               <i>{{ formatDate(note.date) }}</i>
             </p>
             <p class="note-content">{{ note.note }}</p>
           </div>
         </div>
-        <div class="section-wrapper">
+        <div class="section-wrapper" v-if="notes.private">
           <h5>Private Notes:</h5>
           <p>Visible to you</p>
           <div
@@ -74,9 +75,6 @@ export default {
       this.$store.dispatch("addContactNote", payload);
     },
     formatDate: helpers.formatDate,
-  },
-  created() {
-    console.log(this.notes);
   },
   props: ["notes", "contact", "contactCategory"],
   components: {

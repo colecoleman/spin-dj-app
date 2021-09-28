@@ -6,12 +6,12 @@
         <div class="contact-card-lower-div-half">
           <div class="indented-item">
             <h5>Created:</h5>
-            <h5 class="indented">{{ contact.createdDate }}</h5>
+            <h5 class="indented">{{ formatDate(contact.createdAt) }}</h5>
           </div>
-          <div class="indented-item">
+          <!-- <div class="indented-item">
             <h5>Last Login:</h5>
             <h5 class="indented">{{ contact.lastLogin }}</h5>
-          </div>
+          </div> -->
         </div>
         <div class="contact-card-lower-div-half">
           <div class="indented-item">
@@ -34,7 +34,12 @@
 
 <script>
 import BaseCard from "../../../../../SharedComponents/SharedComponentsUI/BaseCard.vue";
+import helpers from "../../../../../helpers.js";
+
 export default {
+  methods: {
+    formatDate: helpers.formatDate,
+  },
   components: { BaseCard },
   props: ["contact", "icon"],
 };
