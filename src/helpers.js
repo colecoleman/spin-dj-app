@@ -7,12 +7,23 @@ export default class Helpers {
     // format helpers
 
     static formatDate(date) {
+      if (date.includes('T')) {
+        // let newDate = date.split('T');
+        // console.log(newDate);
+        console.log(new Date(date))
+        return new Date(date).toLocaleDateString("lookup", {
+          day: "numeric",
+          year: "numeric",
+          month: "long",
+        });
+      } else {
         return date.toLocaleDateString("lookup", {
           day: "numeric",
           year: "numeric",
           month: "long",
         });
     }
+  }
     static formattedDate(date) {
         // TO-DO: CHANGE TO JS DATE OBJECT, AND REMOVE THIS FUNCTION
         return dayjs(date).format("M/D/YYYY");
