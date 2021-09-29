@@ -37,8 +37,17 @@
       placeholder="Search For Event"
       v-model.trim.lazy="associatedEventSearch"
     />
+    <div class="row-flex">
+      <input
+        type="checkbox"
+        value="client.sendInvitation"
+        v-model="client.sendInvitation"
+      />
+      <h5>Send Invitation?</h5>
+    </div>
   </div>
-  <button-long-with-icon text="Submit and Invite" @click="submitContact">
+
+  <button-long-with-icon text="Submit" @click="submitContact">
     <template v-slot:icon>
       <img :src="circleCheckmark" alt="" />
     </template>
@@ -54,6 +63,7 @@ export default {
     return {
       circleCheckmark,
       client: {
+        sendInvitation: true,
         role: "client",
         pronoun: null,
         firstName: null,
@@ -82,9 +92,11 @@ export default {
         this.validateusername(this.client.username);
       }
       if (Object.values(this.errors).every((item) => item === false)) {
-        this.$store.dispatch("addClient", this.client);
+        this.$store.dispatch("addContact", this.client);
         console.log(this.client);
         this.client = {
+          sendInvitation: true,
+          role: "client",
           pronoun: null,
           firstName: null,
           lastName: null,
@@ -160,5 +172,15 @@ h5 {
 img {
   height: 15px;
   width: 15px;
+}
+
+.row-flex {
+  display: flex;
+  flex-direction: row;
+  margin-top: 20px;
+}
+
+.row-flex > input {
+  width: 20px;
 }
 </style>

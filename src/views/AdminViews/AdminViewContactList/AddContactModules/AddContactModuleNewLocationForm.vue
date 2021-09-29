@@ -12,16 +12,28 @@
       <input
         type="text"
         placeholder="12345 Address St"
-        v-model.trim.lazy="location.address.address1"
+        v-model.trim.lazy="location.address.streetAddress"
       />
-      <h5>Address 2:</h5>
+      <h5>City:</h5>
       <input
         type="text"
-        placeholder="City, State, 12345"
-        v-model.trim.lazy="location.address.address2"
+        placeholder="City"
+        v-model.trim.lazy="location.address.city"
+      />
+      <h5>State/Province:</h5>
+      <input
+        type="text"
+        placeholder="State/Province"
+        v-model.trim.lazy="location.address.state"
+      />
+      <h5>Zip Code:</h5>
+      <input
+        type="text"
+        placeholder="12345"
+        v-model.trim.lazy="location.address.zipCode"
       />
     </div>
-    <h4>Contact:</h4>
+    <!-- <h4>Contact:</h4>
     <h5>Pronoun/ Prefix:</h5>
     <select
       name="Preferred Pronoun"
@@ -55,13 +67,7 @@
       type="email"
       placeholder="Email Address"
       v-model.trim.lazy="location.contact.emailAddress"
-    />
-    <h5>Associated Event:</h5>
-    <input
-      type="text"
-      placeholder="Search For Event"
-      v-model.trim.lazy="associatedEventSearch"
-    />
+    /> -->
   </div>
   <button-long-with-icon text="Submit and Invite" @click="submitContact">
     <template v-slot:icon>
@@ -80,16 +86,21 @@ export default {
       location: {
         name: undefined,
         address: {
-          address1: undefined,
-          address2: undefined,
+          streetAddress: undefined,
+          city: undefined,
+          state: undefined,
+          zipCode: undefined,
         },
-        contact: {
-          pronoun: undefined,
-          firstName: undefined,
-          lastName: undefined,
-          phoneNumber: undefined,
-          emailAddress: undefined,
-        },
+        // contact: {
+        //   sendInvitation: false,
+        //   role: "vendor",
+        //   companyName: null,
+        //   pronoun: null,
+        //   firstName: null,
+        //   lastName: null,
+        //   phoneNumber: null,
+        //   username: null,
+        // },
       },
       errors: {
         name: false,
@@ -100,7 +111,6 @@ export default {
           emailAddress: false,
         },
       },
-      associatedEvent: undefined,
     };
   },
   methods: {
@@ -124,8 +134,10 @@ export default {
         this.location = {
           name: undefined,
           address: {
-            address1: undefined,
-            address2: undefined,
+            streetAddress: undefined,
+            city: undefined,
+            state: undefined,
+            zipCode: undefined,
           },
           contact: {
             pronoun: undefined,
@@ -135,7 +147,6 @@ export default {
             emailAddress: undefined,
           },
         };
-        this.associatedEvent = undefined;
       } else {
         return;
       }
@@ -193,7 +204,7 @@ input,
 select {
   border-radius: 5px;
   padding: 5px 8px;
-  margin: 5px;
+  margin: 5px 0px;
   width: calc(100% - 24px);
 }
 

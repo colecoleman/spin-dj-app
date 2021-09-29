@@ -31,11 +31,11 @@
       placeholder="(123)456-7890"
       v-model.trim.lazy="vendor.phoneNumber"
     />
-    <h5 :class="errors.emailAddress ? 'danger' : ''">Email Address:</h5>
+    <h5 :class="errors.username ? 'danger' : ''">Email Address:</h5>
     <input
       type="email"
       placeholder="Email Address"
-      v-model.trim.lazy="vendor.emailAddress"
+      v-model.trim.lazy="vendor.username"
     />
     <h5 :class="errors.vendorCategory ? 'danger' : ''">Vendor Category:</h5>
     <select v-model="vendor.vendorCategory">
@@ -51,8 +51,16 @@
       <option value="Bar Services">Bar Services</option>
       <option value="DJ">DJ</option>
     </select>
+    <div class="row-flex">
+      <input
+        type="checkbox"
+        value="vendor.sendInvitation"
+        v-model="vendor.sendInvitation"
+      />
+      <h5>Send Invitation?</h5>
+    </div>
   </div>
-  <button-long-with-icon text="Submit and Invite" @click="submitContact">
+  <button-long-with-icon text="Submit" @click="submitContact">
     <template v-slot:icon>
       <img :src="circleCheckmark" alt="" />
     </template>
@@ -68,22 +76,26 @@ export default {
     return {
       circleCheckmark,
       vendor: {
-        companyName: undefined,
-        pronoun: undefined,
-        firstName: undefined,
-        lastName: undefined,
-        phoneNumber: undefined,
-        emailAddress: undefined,
-        vendorCategory: undefined,
+        sendInvitation: false,
+        role: "vendor",
+        companyName: null,
+        pronoun: null,
+        firstName: null,
+        lastName: null,
+        phoneNumber: null,
+        username: null,
+        vendorCategory: null,
       },
       errors: {
-        firstName: false,
-        lastName: false,
-        phoneNumber: false,
-        emailAddress: false,
-        vendorCategory: false,
+        companyName: null,
+        pronoun: null,
+        firstName: null,
+        lastName: null,
+        phoneNumber: null,
+        username: null,
+        vendorCategory: null,
       },
-      associatedEvent: undefined,
+      associatedEvent: null,
     };
   },
   methods: {
@@ -92,20 +104,24 @@ export default {
       if (!this.errors.phoneNumber) {
         this.validatePhoneNumber(this.vendor.phoneNumber);
       }
-      if (!this.errors.emailAddress) {
-        this.validateEmailAddress(this.vendor.emailAddress);
+      if (!this.errors.username) {
+        this.validateusername(this.vendor.username);
       }
       if (Object.values(this.errors).every((item) => item === false)) {
-        this.$store.dispatch("addVendor", this.vendor);
+        this.$store.dispatch("addContact", this.vendor);
         console.log(this.vendor);
         this.vendor = {
-          pronoun: undefined,
-          firstName: undefined,
-          lastName: undefined,
-          phoneNumber: undefined,
-          emailAddress: undefined,
+          sendInvitation: false,
+          role: "vendor",
+          companyName: null,
+          pronoun: null,
+          firstName: null,
+          lastName: null,
+          phoneNumber: null,
+          username: null,
+          vendorCategory: null,
         };
-        this.associatedEvent = undefined;
+        this.associatedEvent = null;
       } else {
         return;
       }
@@ -116,7 +132,7 @@ export default {
         firstName: false,
         lastName: false,
         phoneNumber: false,
-        emailAddress: false,
+        username: false,
         vendorCategory: false,
       };
 
@@ -126,8 +142,8 @@ export default {
       if (!vendor.lastName) {
         this.errors.lastName = true;
       }
-      if (!vendor.emailAddress) {
-        this.errors.emailAddress = true;
+      if (!vendor.username) {
+        this.errors.username = true;
       }
       if (!vendor.phoneNumber) {
         this.errors.phoneNumber = true;
@@ -139,9 +155,9 @@ export default {
     validatePhoneNumber(num) {
       return num.replace(/[^\d/+]/g, "");
     },
-    validateEmailAddress(add) {
+    validateusername(add) {
       var re = /\S+@\S+\.\S+/;
-      this.errors.emailAddress = !re.test(add);
+      this.errors.username = !re.test(add);
     },
   },
   components: { ButtonLongWithIcon },
@@ -179,5 +195,15 @@ h5 {
 img {
   height: 15px;
   width: 15px;
+}
+
+.row-flex {
+  display: flex;
+  flex-direction: row;
+  margin-top: 20px;
+}
+
+.row-flex > input {
+  width: 20px;
 }
 </style>

@@ -31,14 +31,22 @@
       placeholder="(123)456-7890"
       v-model.trim.lazy="organizer.phoneNumber"
     />
-    <h5 :class="errors.emailAddress ? 'danger' : ''">Email Address:</h5>
+    <h5 :class="errors.username ? 'danger' : ''">Email Address:</h5>
     <input
       type="email"
       placeholder="Email Address"
-      v-model.trim.lazy="organizer.emailAddress"
+      v-model.trim.lazy="organizer.username"
     />
+    <div class="row-flex">
+      <input
+        type="checkbox"
+        value="organizer.sendInvitation"
+        v-model="organizer.sendInvitation"
+      />
+      <h5>Send Invitation?</h5>
+    </div>
   </div>
-  <button-long-with-icon text="Submit and Invite" @click="submitContact">
+  <button-long-with-icon text="Submit" @click="submitContact">
     <template v-slot:icon>
       <img :src="circleCheckmark" alt="" />
     </template>
@@ -53,20 +61,22 @@ export default {
     return {
       circleCheckmark,
       organizer: {
-        businessName: undefined,
-        pronoun: undefined,
-        firstName: undefined,
-        lastName: undefined,
-        phoneNumber: undefined,
-        emailAddress: undefined,
+        sendInvitation: true,
+        role: "organizer",
+        businessName: null,
+        pronoun: null,
+        firstName: null,
+        lastName: null,
+        phoneNumber: null,
+        username: null,
       },
       errors: {
         firstName: false,
         lastName: false,
         phoneNumber: false,
-        emailAddress: false,
+        username: false,
       },
-      associatedEvent: undefined,
+      associatedEvent: null,
     };
   },
   methods: {
@@ -75,20 +85,22 @@ export default {
       if (!this.errors.phoneNumber) {
         this.validatePhoneNumber(this.organizer.phoneNumber);
       }
-      if (!this.errors.emailAddress) {
-        this.validateEmailAddress(this.organizer.emailAddress);
+      if (!this.errors.username) {
+        this.validateusername(this.organizer.username);
       }
       if (Object.values(this.errors).every((item) => item === false)) {
-        this.$store.dispatch("addOrganizer", this.organizer);
+        this.$store.dispatch("addContact", this.organizer);
         console.log(this.organizer);
         this.organizer = {
-          pronoun: undefined,
-          firstName: undefined,
-          lastName: undefined,
-          phoneNumber: undefined,
-          emailAddress: undefined,
+          sendInvitation: true,
+          businessName: null,
+          pronoun: null,
+          firstName: null,
+          lastName: null,
+          phoneNumber: null,
+          username: null,
         };
-        this.associatedEvent = undefined;
+        this.associatedEvent = null;
       } else {
         return;
       }
@@ -99,7 +111,7 @@ export default {
         firstName: false,
         lastName: false,
         phoneNumber: false,
-        emailAddress: false,
+        username: false,
       };
       if (!organizer.firstName) {
         this.errors.firstName = true;
@@ -107,8 +119,8 @@ export default {
       if (!organizer.lastName) {
         this.errors.lastName = true;
       }
-      if (!organizer.emailAddress) {
-        this.errors.emailAddress = true;
+      if (!organizer.username) {
+        this.errors.username = true;
       }
       if (!organizer.phoneNumber) {
         this.errors.phoneNumber = true;
@@ -117,9 +129,9 @@ export default {
     validatePhoneNumber(num) {
       return num.replace(/[^\d/+]/g, "");
     },
-    validateEmailAddress(add) {
+    validateusername(add) {
       var re = /\S+@\S+\.\S+/;
-      this.errors.emailAddress = !re.test(add);
+      this.errors.username = !re.test(add);
     },
   },
   components: { ButtonLongWithIcon },
@@ -157,5 +169,15 @@ h5 {
 img {
   height: 15px;
   width: 15px;
+}
+
+.row-flex {
+  display: flex;
+  flex-direction: row;
+  margin-top: 20px;
+}
+
+.row-flex > input {
+  width: 20px;
 }
 </style>
