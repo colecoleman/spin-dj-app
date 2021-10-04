@@ -2144,58 +2144,50 @@ const store = createStore({
                     highlightColor: "#00F5FF",
                     textColor: "#000000"
                 },
-            //     packages: [ {
-            //         id: "1",
-            //         packageName: "Holy Matrimony",
-            //         priceOption: 'Hourly Rate',
-            //             flat: {
-            //                 flatRate: undefined,
-            //             },
-            //             hourly: {
-            //                 baseTime: 5,
-            //                 baseRate: 180000,
-            //                 addHourly: 10000,
-            //             },
-            //         employeesRequired: 2,
-            //         photo: undefined,
-            //     }],
-            //     services: [
-            //         {
-            //             id: "1",
-            //             serviceName: "Wedding DJ",
-            //             priceOption: 'Hourly Rate',
-            //             flat: {
-            //                 flatRate: undefined,
-            //             },
-            //             hourly: {
-            //                 baseTime: 5,
-            //                 baseRate: 150000,
-            //                 addHourly: 10000,
-            //             },
-            //             photo: undefined,
-            //             equipmentNeeded: [],
-            //             employeesRequired: undefined
-            //         },
-            //         {
-            //             id: "2",
-            //             serviceName: "Wedding Officiant",
-            //             priceOption: "Flat Rate",
-            //             flat: {
-            //                 flatRate: 30000,
-            //             },
-            //             hourly: {
-            //                 baseTime: undefined,
-            //                 baseRate: undefined,
-            //                 addHourly: undefined,
-            //             },
-            //             photo: undefined,
-            //             equipmentNeeded: [],
-            //             employeesRequired: undefined
-            //         }
-            //     ],
-            //     addOns: [],
-            //     discounts: [],
-            //     automations: [],
+                product: {
+                    eventTypes: ["wedding", "mitzvah"],
+                    packages: [ {
+                        id: "1",
+                        packageName: "Holy Matrimony",
+                        price: {
+                            baseTime: 5,
+                            baseRate: 180000,
+                            addHourly: 10000,
+                        },
+                        employeesRequired: 2,
+                        photo: undefined,
+                    }],
+                    services: [
+                        {
+                            id: "1",
+                            serviceName: "Wedding DJ",
+                            price: {
+                                baseTime: 5,
+                                baseRate: 150000,
+                                addHourly: 10000,
+                            },
+                            photo: undefined,
+                            equipmentNeeded: [],
+                            employeesRequired: undefined
+                        },
+                        {
+                            id: "2",
+                            serviceName: "Wedding Officiant",
+                            price: {
+                                baseTime: 1,
+                                baseRate: 30000,
+                                addHourly: 0,
+                            },
+                            photo: undefined,
+                            equipmentNeeded: [],
+                            employeesRequired: undefined
+                        }
+                    ],
+                },
+                
+                addOns: [],
+                discounts: [],
+                automations: [],
             },
             // users: [],
             // clientEventCombined: [],

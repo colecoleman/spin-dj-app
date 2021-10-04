@@ -45,7 +45,7 @@ export default class Helpers {
             ""
             );
         }
-      return null;
+      return num;
     }
 
     // invoice math helpers

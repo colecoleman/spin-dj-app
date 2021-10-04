@@ -96,7 +96,7 @@ export default {
 #contact-identification {
   position: absolute;
   background-color: var(--foregroundColor);
-  z-index: 5;
+  /* z-index: 2; */
   padding-right: 10px;
   top: -10px;
   border: 1px solid var(--cardOutline);

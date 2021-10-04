@@ -24,11 +24,13 @@
                 Uncategorized
               </h4>
             </div>
-            <h4 id="first-name">{{ contact.firstName }}</h4>
-            <h4 id="last-name">{{ contact.lastName }}</h4>
-            <p class="contact-contact-information">{{ contact.phoneNumber }}</p>
+            <h4 id="first-name">{{ contact.given_name }}</h4>
+            <h4 id="last-name">{{ contact.family_name }}</h4>
             <p class="contact-contact-information">
-              {{ contact.emailAddress }}
+              {{ formatPhoneNumber(contact.phoneNumber) }}
+            </p>
+            <p class="contact-contact-information">
+              {{ contact.email }}
             </p>
           </div>
         </div>
@@ -41,13 +43,16 @@
 <script>
 import defaultProfilePicture from "../../../../assets/default-profile-picture.svg";
 import editPen from "../../../../assets/SVGs/edit-pen.svg";
-
+import helpers from "../../../../helpers.js";
 export default {
   data() {
     return {
       defaultProfilePicture,
       editPen,
     };
+  },
+  methods: {
+    formatPhoneNumber: helpers.formatPhoneNumber,
   },
   props: ["contact", "icon"],
 };
@@ -57,6 +62,7 @@ export default {
 #wrapper {
   display: flex;
   flex-direction: column;
+  overflow: hidden;
 }
 
 img {

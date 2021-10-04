@@ -10,11 +10,11 @@
     <div id="body">
       <div class="config-section" id="branding">
         <base-card>
-          <template v-slot:title>Branding</template>
+          <template v-slot:title>Branding + Identity</template>
           <template v-slot:content>
             <div id="branding-preferences-wrapper">
               <div class="branding-preferences-item">
-                <p>
+                <p class="bold">
                   Background Color:
                   {{ businessSettings.brandingPreferences.backgroundColor }}
                 </p>
@@ -27,7 +27,7 @@
                 />
               </div>
               <div class="branding-preferences-item">
-                <p>
+                <p class="bold">
                   Foreground Color:
                   {{ businessSettings.brandingPreferences.foregroundColor }}
                 </p>
@@ -39,7 +39,7 @@
                 />
               </div>
               <div class="branding-preferences-item">
-                <p>
+                <p class="bold">
                   Card Outline:
                   {{ businessSettings.brandingPreferences.cardOutline }}
                 </p>
@@ -51,7 +51,7 @@
                 />
               </div>
               <div class="branding-preferences-item">
-                <p>
+                <p class="bold">
                   Highlight Color:
                   {{ businessSettings.brandingPreferences.highlightColor }}
                 </p>
@@ -63,7 +63,7 @@
                 />
               </div>
               <div class="branding-preferences-item">
-                <p>
+                <p class="bold">
                   Text Color:
                   {{ businessSettings.brandingPreferences.textColor }}
                 </p>
@@ -75,13 +75,6 @@
                 />
               </div>
             </div>
-          </template>
-        </base-card>
-      </div>
-      <div class="config-section">
-        <base-card
-          ><template v-slot:title>Information</template>
-          <template v-slot:content>
             <div class="business-information-wrapper">
               <div class="business-information-section">
                 <div class="business-information-item">
@@ -145,8 +138,159 @@
                   </div>
                 </div>
               </div>
-            </div> </template
-        ></base-card>
+            </div>
+          </template>
+        </base-card>
+      </div>
+      <div class="config-section">
+        <base-card>
+          <template v-slot:title>Product Setup:</template>
+          <template v-slot:content>
+            <div class="service-wrapper">
+              <div class="service-section">
+                <h5 class="bold">Types Of Events Serviced:</h5>
+                <div class="service-item">
+                  <p
+                    v-for="(index, type) in businessSettings.product.eventTypes"
+                    :key="index"
+                  >
+                    {{ type }}
+                  </p>
+                  <p>Event Type:</p>
+                  <input
+                    type="text"
+                    v-model.trim="inputs.services.serviceName"
+                  />
+                </div>
+                <div class="service-item">
+                  <p>Photo:</p>
+                  <input
+                    type="file"
+                    id="hidden-file-button"
+                    @change="onFileChange"
+                    style="display: none"
+                  />
+                  <button-standard-with-icon
+                    text="Choose File"
+                    @click="chooseFile()"
+                    class="form-button"
+                  />
+                </div>
+                <div class="service-item">
+                  <p>Employees Required</p>
+                  <input
+                    type="number"
+                    v-model.number="inputs.services.employeesRequired"
+                  />
+                </div>
+
+                <div class="service-item">
+                  <p>Price Option:</p>
+                  <select
+                    name="price-option"
+                    id=""
+                    v-model="inputs.services.priceOption"
+                  >
+                    <option disabled value="">Select a price option</option>
+                    <option>Hourly Rate</option>
+                    <option>Flat Rate</option>
+                  </select>
+                </div>
+                <div
+                  class="service-item"
+                  v-if="inputs.services.priceOption === 'Hourly Rate'"
+                >
+                  <div class="service-item">
+                    <p>Minimum # Hours:</p>
+                    <input
+                      type="number"
+                      v-model.number="inputs.services.hourly.baseTime"
+                    />
+                  </div>
+                  <div class="service-item">
+                    <p>
+                      Base Rate ({{ inputs.services.hourly.baseTime }}
+                      Hours)
+                    </p>
+                    <input v-model.number="inputs.services.hourly.baseRate" />
+                  </div>
+                  <div class="service-item">
+                    <p>Additional Hourly:</p>
+                    <input v-model.number="inputs.services.hourly.addHourly" />
+                  </div>
+                  <button-standard-with-icon
+                    text="Add Service"
+                    @click="addService()"
+                    class="form-button"
+                  />
+                </div>
+                <div
+                  class="service-item"
+                  v-if="inputs.services.priceOption == 'Flat Rate'"
+                >
+                  <div class="service-item">
+                    <p>Flat Rate:</p>
+                    <input
+                      type="number"
+                      v-model.number="inputs.services.flat.flatRate"
+                    />
+                  </div>
+                  <div class="service-item">
+                    <button-standard-with-icon
+                      text="Add Service"
+                      @click="addService()"
+                      class="form-button"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div class="service-section">
+                <h5 v-if="!businessSettings.services.length">
+                  No services have been added yet! Add some!
+                </h5>
+                <div
+                  class="service-item"
+                  style="border-bottom: 1px solid gray; margin-bottom: 10px"
+                  v-for="service in businessSettings.services"
+                  :key="service.id"
+                >
+                  <h4>{{ service.serviceName }}</h4>
+                  <div class="service-display-section">
+                    <div class="service-item" v-if="service.photo">
+                      <p>Photo: {{ service.photo.name }}</p>
+                    </div>
+                  </div>
+
+                  <div class="service-display-section">
+                    <div
+                      class="service-item"
+                      v-if="service.priceOption === 'Flat Rate'"
+                    >
+                      <p>
+                        <b>Flat Rate:</b>
+                        {{ formatPrice(service.flat.flatRate) }}
+                      </p>
+                    </div>
+                    <div
+                      class="service-item"
+                      v-if="service.priceOption === 'Hourly Rate'"
+                    >
+                      <p><b>Base Time: </b>{{ service.hourly.baseTime }}</p>
+                      <p>
+                        <b>Base Rate: </b
+                        >{{ formatPrice(service.hourly.baseRate) }}
+                      </p>
+                      <p>
+                        <b>Additional Hourly: </b
+                        >{{ formatPrice(service.hourly.addHourly) }}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </template>
+        </base-card>
       </div>
       <div class="config-section">
         <base-card>
@@ -1322,7 +1466,7 @@ section {
 }
 
 .config-section {
-  height: 75%;
+  height: auto;
 }
 
 #configuration-navigation {
@@ -1356,6 +1500,7 @@ section {
   flex-wrap: wrap;
   max-height: 100%;
   overflow-y: scroll;
+  margin-top: 10px;
 }
 
 .business-information-section,
@@ -1421,9 +1566,5 @@ section {
   bottom: 25px;
   right: 25px;
   background-color: var();
-}
-
-#branding {
-  height: 25%;
 }
 </style>

@@ -23,7 +23,7 @@
         ></contact-card-person>
       </div>
       <div id="box-two">
-        <contact-page-to-do-list :id="contact.id"></contact-page-to-do-list>
+        <contact-page-to-do-list :id="contact.userId"></contact-page-to-do-list>
       </div>
       <div id="box-three">
         <contact-page-notes
@@ -56,7 +56,7 @@
             <template v-slot:content>
               <messaging-single-component
                 :contact="contact"
-                :id="contact.id"
+                :id="contact.userId"
               ></messaging-single-component>
             </template>
           </base-card>
@@ -136,7 +136,7 @@ export default {
   computed: {
     contact() {
       let id = this.$route.params.id;
-      return this.$store.state.contacts.employees.find((x) => x.id == id);
+      return this.$store.state.contacts.employees.find((x) => x.userId == id);
     },
   },
   methods: {

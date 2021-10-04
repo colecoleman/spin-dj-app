@@ -1,16 +1,14 @@
 <template>
   <base-card :icon="infoIconSvg">
     <template v-slot:title>Event Details</template>
-    <template v-slot:content
-      ><div id="event-details-wrapper">
+    <template v-slot:content>
+      <h5 v-if="!prospect.eventDetails">No event found for this prospect.</h5>
+      <div id="event-details-wrapper">
         <div class="event-details-content">
           <div class="location-wrapper">
             <div
               id="location-add-button"
-              v-if="
-                !addLocationOpen &&
-                prospect.eventDetails.eventLocations.length <= 0
-              "
+              v-if="!prospect.eventDetails"
               @click="toggleAddLocation()"
             >
               <img :src="locationAddSvg" class="big-add-svg-icon" alt="" />
@@ -29,10 +27,7 @@
                 @click="addLocation()"
               ></button-standard-with-icon>
             </div>
-            <div
-              class="location-information"
-              v-if="prospect.eventDetails.eventLocations.length > 0"
-            >
+            <div class="location-information" v-if="prospect.eventDetails">
               <div class="map-box"></div>
               <h4>{{ prospect.eventDetails.eventLocations[0].venueName }}</h4>
               <h5>{{ prospect.eventDetails.eventLocations[0].address1 }}</h5>
@@ -42,7 +37,7 @@
           <div class="timeline-wrapper">
             <div
               id="date-time-add-button"
-              v-if="!addDateTimeOpen && !prospect.eventDetails.eventDate"
+              v-if="!addDateTimeOpen && !prospect.eventDetails"
               @click="toggleAddDateTime()"
             >
               <img :src="addTimeClockSvg" class="big-add-svg-icon" alt="" />
@@ -73,10 +68,7 @@
                 @click="addDateAndTime()"
               ></button-standard-with-icon>
             </div>
-            <div
-              class="location-information"
-              v-if="prospect.eventDetails.eventDate"
-            >
+            <div class="location-information" v-if="prospect.eventDetails">
               <h4>{{ formatDate(prospect.eventDetails.eventDate) }}</h4>
               <h5
                 v-if="
@@ -92,10 +84,7 @@
           <div class="package-wrapper">
             <div
               id="package-add-button"
-              v-if="
-                !addpackageOpen &&
-                prospect.eventDetails.eventPackage === undefined
-              "
+              v-if="!addpackageOpen"
               @click="toggleAddPackage()"
             >
               <img :src="packageSvg" class="big-add-svg-icon" alt="" />
@@ -158,6 +147,9 @@ export default {
     },
     toggleAddDateTime() {
       this.addDateTimeOpen = !this.addDateTimeOpen;
+    },
+    toggleAddPackage() {
+      
     },
     addLocation() {
       let payload = {

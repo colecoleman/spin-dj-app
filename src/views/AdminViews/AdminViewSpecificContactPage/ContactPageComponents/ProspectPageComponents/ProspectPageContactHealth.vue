@@ -11,12 +11,12 @@
         </div>
         <div class="prospect-contact-wrapper">
           <h4>Last Contact:</h4>
-          <h5>{{ formatDate(prospect.lastContact) }}</h5>
+          <!-- <h5>{{ formatDate(prospect.lastContact) }}</h5> -->
           <h4>Projected Value:</h4>
           <h5>
-            ${{
+            <!-- ${{
               (prospect.eventDetails.projectedValue * 0.01).toLocaleString()
-            }}
+            }} -->
           </h5>
         </div>
       </div>

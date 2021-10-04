@@ -327,9 +327,15 @@ export default {
       return this.monthArray[this.masterMonth - 1].month;
     },
     events() {
-      return this.$store.state.events.filter((event) => {
-        return event.eventStartTime.getMonth() === this.masterMonth - 1;
-      });
+      if (this.$store.state.events.length > 0) {
+        return this.$store.state.events.filter((event) => {
+          if (event.eventStartTime) {
+            return event.eventStartTime.getMonth() === this.masterMonth - 1;
+          }
+        });
+      } else {
+        return [];
+      }
     },
     daysWithEvents() {
       return this.events.map((a) => a.eventStartTime.getDate());

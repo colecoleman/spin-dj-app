@@ -7,6 +7,7 @@
         <div id="prospect-card-upper-div">
           <img
             :src="
+              (prospect.status == null ? neutralsvg : '') ||
               (prospect.status === 'cold' ? snowflakesvg : '') ||
               (prospect.status === 'neutral' ? neutralsvg : '') ||
               (prospect.status === 'hot' ? firesvg : '') ||
@@ -15,13 +16,13 @@
             alt=""
           />
           <div id="prospect-information">
-            <h4 id="first-name">{{ prospect.firstName }}</h4>
-            <h4 id="last-name">{{ prospect.lastName }}</h4>
+            <h4 id="first-name">{{ prospect.given_name }}</h4>
+            <h4 id="last-name">{{ prospect.family_name }}</h4>
             <p class="prospect-prospect-information">
-              {{ prospect.phoneNumber }}
+              {{ formatPhoneNumber(prospect.phoneNumber) }}
             </p>
             <p class="prospect-prospect-information">
-              {{ prospect.emailAddress }}
+              {{ prospect.email }}
             </p>
           </div>
         </div>
@@ -36,6 +37,7 @@ import editPen from "../../../../../assets/SVGs/edit-pen.svg";
 import firesvg from "../../../../../assets/SVGs/fire.svg";
 import snowflakesvg from "../../../../../assets/SVGs/snowflake.svg";
 import neutralsvg from "../../../../../assets/SVGs/neutral.svg";
+import helpers from "../../../../../helpers.js";
 
 export default {
   data() {
@@ -47,6 +49,9 @@ export default {
       neutralsvg,
     };
   },
+  methods: {
+    formatPhoneNumber: helpers.formatPhoneNumber,
+  },
   props: ["prospect", "icon"],
 };
 </script>
@@ -55,6 +60,7 @@ export default {
 #wrapper {
   display: flex;
   flex-direction: column;
+  overflow: hidden;
 }
 
 img {

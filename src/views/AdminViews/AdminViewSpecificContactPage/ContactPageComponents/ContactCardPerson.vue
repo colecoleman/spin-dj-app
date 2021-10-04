@@ -55,6 +55,7 @@ export default {
 #wrapper {
   display: flex;
   flex-direction: column;
+  overflow: hidden;
 }
 
 img {

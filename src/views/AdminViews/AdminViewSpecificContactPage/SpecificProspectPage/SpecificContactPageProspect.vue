@@ -19,7 +19,7 @@
         ></prospect-page-contact-health>
       </div>
       <div id="box-three">
-        <contact-page-to-do-list :id="contact.id"></contact-page-to-do-list>
+        <contact-page-to-do-list :id="contact.userId"></contact-page-to-do-list>
       </div>
     </div>
     <div id="right-column">
@@ -126,15 +126,11 @@ export default {
   computed: {
     contact() {
       let id = this.$route.params.id;
-      return this.$store.state.contacts.prospects.find((x) => x.id == id);
+      return this.$store.state.contacts.prospects.find((x) => x.userId == id);
     },
     contactStatus() {
-      let id = this.$route.params.id;
-      console.log(
-        this.$store.state.contacts.prospects.find((x) => x.id == id).status
-      );
-      return this.$store.state.contacts.prospects.find((x) => x.id == id)
-        .status;
+      console.log(this.contact.status);
+      return this.contact.status ? this.contact.status : 'Neutral';
     },
   },
   methods: {

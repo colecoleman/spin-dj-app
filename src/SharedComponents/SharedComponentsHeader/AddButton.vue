@@ -22,10 +22,12 @@
             </div>
             <div id="items">
               <ul>
-                <router-link to="/addnewproposal"
+                <router-link to="/admin/addnewproposal"
                   ><h4>Quick Proposal</h4></router-link
                 >
-                <router-link to="/addnewevent"><h4>Event</h4></router-link>
+                <router-link to="/admin/saddnewevent"
+                  ><h4>Event</h4></router-link
+                >
               </ul>
             </div>
           </div>
@@ -63,6 +65,10 @@ export default {
       return this.$store.state.businessSettings.brandingPreferences
         .foregroundColor;
     },
+    backgroundColor() {
+      return this.$store.state.businessSettings.brandingPreferences
+        .backgroundColor;
+    },
     cardOutline() {
       return this.$store.state.businessSettings.brandingPreferences.cardOutline;
     },
@@ -73,6 +79,8 @@ export default {
       return {
         "--cardOutline": this.cardOutline,
         "--foregroundColor": this.foregroundColor,
+        "--textColor": this.textColor,
+        "--backgroundColor": this.backgroundColor,
       };
     },
   },
@@ -96,21 +104,19 @@ img {
 
 #new-container {
   text-align: left;
-  /* color: white; */
-  border-bottom: 1px solid white;
+  border-bottom: 1px solid var(--textColor);
 }
 
-a {
-  color: var(--textcolor);
+h4 {
+  color: var(--textColor);
   text-decoration: none;
 }
 
 #items {
-  /* width: 100%; */
   line-height: 2.5;
 }
-#items h4:hover {
-  text-decoration: solid underline white 1px;
+h4:hover {
+  text-decoration: solid underline var(--textColor) 1px;
 }
 
 #add-button-popup-container {
@@ -119,10 +125,9 @@ a {
   top: 0;
   padding: 30px;
   background-color: var(--foregroundColor);
-  border: 1px solid white;
+  border: 1px solid var(--cardOutline);
   border-radius: 25px;
   z-index: 3;
-
   cursor: default;
 }
 
@@ -133,10 +138,6 @@ ul {
   z-index: 2;
   width: 100%;
   height: 100%;
-}
-
-#items {
-  text-align: left;
 }
 
 .pointer {
@@ -169,8 +170,6 @@ ul {
   margin: 10px;
   flex: 1;
 }
-svg {
-}
 
 .clicked {
   transform: rotate(315deg);
@@ -181,14 +180,6 @@ svg {
 .unclicked {
   transform: rotate(0);
   transition-duration: 0.5s;
-}
-
-.grow-enter-active {
-  animation: grow-popup 0.5s;
-}
-
-.grow-leave-active {
-  animation: grow-popup 0.5s reverse;
 }
 
 .fade-enter-active {
@@ -204,26 +195,6 @@ svg {
 
 .fade1-leave-active {
   animation: fade1 0.5s reverse;
-}
-
-@keyframes grow-popup {
-  from {
-    width: 55px;
-    height: 55px;
-    position: absolute;
-    right: 0px;
-    bottom: 55px;
-    opacity: 0;
-    font-size: 0pt;
-  }
-  to {
-    width: 200px;
-    height: 160px;
-    right: 0px;
-    position: absolute;
-    opacity: 1;
-    font-size: 20pt;
-  }
 }
 
 @keyframes fade {
