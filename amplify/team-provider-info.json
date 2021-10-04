@@ -50,5 +50,60 @@
         }
       }
     }
+  },
+  "prod": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-spin-prod-140016-authRole",
+      "UnauthRoleArn": "arn:aws:iam::756709574884:role/amplify-spin-prod-140016-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::756709574884:role/amplify-spin-prod-140016-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-spin-prod-140016-deployment",
+      "UnauthRoleName": "amplify-spin-prod-140016-unauthRole",
+      "StackName": "amplify-spin-prod-140016",
+      "StackId": "arn:aws:cloudformation:us-east-1:756709574884:stack/amplify-spin-prod-140016/51af5920-2545-11ec-b3cf-0e090a17fc55",
+      "AmplifyAppId": "d16kmmhgqky4nx"
+    },
+    "categories": {
+      "auth": {
+        "spin065ea644": {
+          "userPoolId": "us-east-1_PGrL184V5",
+          "userPoolName": "tenants-1",
+          "webClientId": "3r81enf7o8f07c69bnlc6tf9lo",
+          "nativeClientId": "3r81enf7o8f07c69bnlc6tf9lo",
+          "identityPoolId": "us-east-1:61655840-a96e-4408-a05c-cb6fda6e8544",
+          "identityPoolName": "Spin DJ Tenants",
+          "allowUnauthenticatedIdentities": false,
+          "authRoleArn": "arn:aws:iam::756709574884:role/Cognito_SpinDJTenantsAuth_Role",
+          "authRoleName": "Cognito_SpinDJTenantsAuth_Role",
+          "unauthRoleArn": "arn:aws:iam::756709574884:role/Cognito_SpinDJTenantsUnauth_Role",
+          "unauthRoleName": "Cognito_SpinDJTenantsUnauth_Role"
+        },
+        "spine3d8732e": {
+          "userPoolId": "us-east-1_PGrL184V5",
+          "userPoolName": "tenants-1",
+          "webClientId": "3r81enf7o8f07c69bnlc6tf9lo",
+          "nativeClientId": "3r81enf7o8f07c69bnlc6tf9lo",
+          "identityPoolId": "us-east-1:61655840-a96e-4408-a05c-cb6fda6e8544",
+          "identityPoolName": "Spin DJ Tenants",
+          "allowUnauthenticatedIdentities": false,
+          "authRoleArn": "arn:aws:iam::756709574884:role/Cognito_SpinDJTenantsAuth_Role",
+          "authRoleName": "Cognito_SpinDJTenantsAuth_Role",
+          "unauthRoleArn": "arn:aws:iam::756709574884:role/Cognito_SpinDJTenantsUnauth_Role",
+          "unauthRoleName": "Cognito_SpinDJTenantsUnauth_Role"
+        }
+      },
+      "function": {
+        "spin49492a15DefineAuthChallenge": {},
+        "spin49492a15CreateAuthChallenge": {},
+        "spin49492a15VerifyAuthChallengeResponse": {},
+        "spin49492a15CustomMessage": {}
+      },
+      "hosting": {
+        "amplifyhosting": {
+          "appId": "d16kmmhgqky4nx",
+          "type": "cicd"
+        }
+      }
+    }
   }
 }

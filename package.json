@@ -23,7 +23,6 @@
     "vue": "^3.0.0",
     "vue-html-to-paper": "^1.4.1",
     "vue-router": "^4.0.0-0",
-    "vue3-apexcharts": "^1.4.0",
     "vuex": "^4.0.0-0",
     "vuex-persistedstate": "^4.1.0"
   },

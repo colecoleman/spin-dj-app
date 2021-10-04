@@ -1,0 +1,6 @@
+{
+  "authSelections": "identityPoolAndUserPool",
+  "resourceName": "spine3d8732e",
+  "serviceType": "imported",
+  "region": "us-east-1"
+}
