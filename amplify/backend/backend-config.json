@@ -6,13 +6,6 @@
       "providerPlugin": "awscloudformation",
       "dependsOn": [],
       "customAuth": false
-    },
-    "spine3d8732e": {
-      "service": "Cognito",
-      "serviceType": "imported",
-      "providerPlugin": "awscloudformation",
-      "dependsOn": [],
-      "customAuth": false
     }
   },
   "function": {
