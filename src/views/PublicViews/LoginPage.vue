@@ -10,7 +10,9 @@
         </div>
       </div>
       <div class="hero-right hero-half">
-        <h5 class="sign-in-text">Don't Have an Account? Sign Up</h5>
+        <a href="/signup"
+          ><h5 class="sign-in-text">Don't Have an Account? Sign Up</h5></a
+        >
         <h1>Login:</h1>
 
         <div class="login-form">
@@ -95,7 +97,6 @@ export default {
       {
         try {
           const user = await Auth.signIn(username, password);
-          console.log(user);
           this.$store.dispatch("setUser", user.username);
           if (this.$store.state.user) {
             this.loading = false;
@@ -104,24 +105,11 @@ export default {
           this.$store.dispatch("getAdminUsers");
         } catch (error) {
           this.loading = false;
-          console.log("error signing in", error);
+          this.$store.dispatch("addError", error);
         }
-
-        // created() {
-        //   AWS.config.region = "us-east-1"; // Region
-        //   AWS.config.credentials = new AWS.CognitoIdentityCredentials({
-        //     IdentityPoolId: "us-east-1:61655840-a96e-4408-a05c-cb6fda6e8544",
-        //   });
-        // },
       }
     },
   },
-  // created() {
-  //   AWS.config.region = "us-east-1"; // Region
-  //   AWS.config.credentials = new AWS.CognitoIdentityCredentials({
-  //     IdentityPoolId: "us-east-1:61655840-a96e-4408-a05c-cb6fda6e8544",
-  //   });
-  // },
 };
 </script>
 

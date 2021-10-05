@@ -128,7 +128,6 @@
 <script>
 import SpinLogoWithText from "../../assets/spin-logo-with-text.svg";
 import ButtonStandardWithIcon from "../../SharedComponents/SharedComponentsUI/ButtonStandardWithIcon.vue";
-// import AWS from "aws-sdk";
 import { Auth } from "aws-amplify";
 
 export default {
@@ -158,7 +157,6 @@ export default {
       this.$router.push("/login");
     },
     validationBlock() {
-      console.log(Auth);
       const re = new RegExp(
         "^(?=.*d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$"
       );
@@ -213,9 +211,8 @@ export default {
         });
         this.step++;
         this.user = user;
-        console.log(this.user);
       } catch (error) {
-        console.log("error signing up:", error);
+        this.$store.dispatch("addError", `Error signing up: ${error}`);
       }
     },
     async submitConfirmationCode() {
@@ -229,12 +226,6 @@ export default {
       }
     },
   },
-  // created() {
-  //   AWS.config.region = "us-east-1"; // Region
-  //   AWS.config.credentials = new AWS.CognitoIdentityCredentials({
-  //     IdentityPoolId: "us-east-1:61655840-a96e-4408-a05c-cb6fda6e8544",
-  //   });
-  // },
 };
 </script>
 

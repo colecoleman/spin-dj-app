@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
+import { Auth } from "aws-amplify";
 import SignUpPage from '../views/PublicViews/SignUpPage.vue';
 import LoginPage from '../views/PublicViews/LoginPage.vue';
 import ForgotPage from '../views/PublicViews/ForgotPage.vue';
@@ -15,7 +16,32 @@ import SpecificContactPageLocation from '../views/AdminViews/AdminViewSpecificCo
 import SpecificContactPageOrganizer from '../views/AdminViews/AdminViewSpecificContactPage/SpecificContactPageOrganizer.vue';
 import SpecificEventPage from "../views/AdminViews/AdminViewSpecificEventPage/SpecificEventPage.vue";
 
+
+
 const routes = [
+  {
+    path: '/',
+    name: 'index', 
+    async beforeEnter(to, from ,next) {
+      try {
+        let user = await Auth.currentAuthenticatedUser().then(
+          (results) => {
+            console.log(results)
+            if (
+              user.signInUserSession.idToken.payload[`cognito:groups`].includes("admins") 
+            ) {
+              next({name: 'dash'})
+    
+            }
+          }
+        );
+        
+      } catch (e) {
+        console.log(e)
+        next({name: 'loginPage'})
+      }
+    }
+  },
   {
     path: '/admin',
     components: {
@@ -109,6 +135,10 @@ const routes = [
     name: 'loginPage',
     components: { 
       main:LoginPage
+    },
+    beforeEnter(to, from, next) {
+      console.log(to, from)
+      next()
     }
   },
   {
