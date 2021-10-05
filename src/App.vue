@@ -5,6 +5,9 @@
   >
     <router-view name="main"></router-view>
   </div>
+  <transition name="fade1">
+    <error-indicator :errors="errors" v-if="errors.length > 0" />
+  </transition>
 </template>
 
 <script>
@@ -13,6 +16,7 @@
 import { Auth } from "aws-amplify";
 import axios from "axios";
 import EventManager from "./views/AdminViews/AdminViewDashboard/EventManager.vue";
+import ErrorIndicator from "./SharedComponents/SharedComponentsUI/ErrorIndicator.vue";
 
 export default {
   computed: {
@@ -45,9 +49,13 @@ export default {
     currentUser: async () => {
       await Auth.currentAuthenticatedUser();
     },
+    errors() {
+      return this.$store.state.errors;
+    },
   },
   components: {
     EventManager,
+    ErrorIndicator,
   },
   async beforeCreate() {
     let user = await Auth.currentAuthenticatedUser();
@@ -113,5 +121,22 @@ textarea {
   border: 1px solid;
   border-radius: 5px;
   padding: 3px;
+}
+
+.fade1-enter-active {
+  animation: fade1 0.5s;
+}
+
+.fade1-leave-active {
+  animation: fade1 0.5s reverse;
+}
+
+@keyframes fade1 {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 </style>

@@ -7,6 +7,7 @@ const store = createStore({
     state() {
         return {
             user: undefined,
+            errors: [],
             notifications: [
                 // {
                 //     id: 1,
@@ -2201,6 +2202,12 @@ const store = createStore({
             }).then(() => {
             })
         },
+        addError(context, error) {
+            context.commit('addError', error)
+        },
+        clearErrors(context) {
+            context.commit('clearErrors');
+        },
         getAdminUsers(context) {
           
             console.log(context.state);
@@ -2224,36 +2231,7 @@ const store = createStore({
                 context.commit('addContact', result.data);
               });
         },
-        // async addClient( context, client) {
-        //     axios.put(
-        //         `https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/admin/${context.state.user.tentantId}/users`,
-        //         client
-        //       )
-        //       .then((result) => {
-        //         console.log(result.data);
-        //         context.commit('addClient', result.data);
-        //       });
-        // },
-        // addProspect( context, prospect) {
-        //     axios.put(
-        //         `https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/admin/${context.state.user.tentantId}/users`,
-        //         prospect
-        //       )
-        //       .then((result) => {
-        //         console.log(result.data);
-        //         context.commit('addProspect', result.data);
-        //       });
-        // },
-        // addVendor( context, vendor) {
-        //     axios.put(
-        //         `https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/admin/${context.state.user.tentantId}/users`,
-        //         vendor
-        //       )
-        //       .then((result) => {
-        //         console.log(result.data);
-        //         context.commit('addVendor', result.data);
-        //       });
-        // },
+        
         addLocation( context, location) {
             console.log(location);
             let item = {
@@ -2267,26 +2245,7 @@ const store = createStore({
             contact.businessName = location.name;
             context.commit('addVendor', contact)
         },
-        // addOrganizer( context, organizer) {
-        //     axios.put(
-        //         "https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/admin/${context.state.user.tentantId}/users",
-        //         organizer
-        //       )
-        //       .then((result) => {
-        //         console.log(result.data);
-        //         context.commit('addOrganizer', result.data);
-        //       });
-        // },
-        // addEmployee( context, employee) {
-        //     axios.put(
-        //         "https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/admin/${context.state.user.tentantId}/users",
-        //         employee
-        //       )
-        //       .then((result) => {
-        //         console.log(result.data);
-        //         context.commit('addEmployee', result.data);
-        //       });
-        // },
+       
         addEmployeeToEvent(context, payload) {
             context.commit('addEmployeeToEvent', payload)
         },
@@ -2350,6 +2309,12 @@ const store = createStore({
         setUser(state, user) {
             state.user = user;
             console.log(state.user);
+        },
+        addError(state, error) {
+            state.errors.push(error);
+        },
+        clearErrors(state) {
+            state.errors.length = 0;
         },
         setClients(state, payload) {
             state.contacts.clients = payload;
