@@ -5,6 +5,7 @@
     <search-bar></search-bar>
     <notification-button></notification-button>
     <add-button></add-button>
+    <logout-button></logout-button>
   </div>
 </template>
 
@@ -12,6 +13,7 @@
 import TabSwitcher from "./TabSwitcher.vue";
 import SearchBar from "./SearchBar.vue";
 import AddButton from "./AddButton.vue";
+import LogoutButton from "./LogoutButton.vue";
 import NotificationButton from "./NotificationButton/NotificationButton.vue";
 
 export default {
@@ -26,6 +28,7 @@ export default {
     SearchBar,
     NotificationButton,
     AddButton,
+    LogoutButton,
   },
 };
 </script>

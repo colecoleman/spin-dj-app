@@ -1,0 +1,136 @@
+<template>
+  <div id="notification-button" @mousedown.prevent="" :style="cssVars">
+    <img :src="exitDoor" alt="" @click="logout()" />
+  </div>
+</template>
+
+<script>
+import { Auth } from "aws-amplify";
+import exitDoor from "../../assets/SVGs/exit-door.svg";
+
+export default {
+  data() {
+    return {
+      exitDoor,
+    };
+  },
+  methods: {
+    async logout() {
+      try {
+        await Auth.signOut();
+        this.$router.push("/login");
+      } catch (e) {
+        console.log(e);
+      }
+    },
+  },
+  computed: {
+    notificationItems() {
+      return this.$store.state.notifications;
+    },
+    foregroundColor() {
+      return this.$store.state.businessSettings.brandingPreferences
+        .foregroundColor;
+    },
+    cardOutline() {
+      return this.$store.state.businessSettings.brandingPreferences.cardOutline;
+    },
+    cssVars() {
+      return {
+        "--cardOutline": this.cardOutline,
+        "--foregroundColor": this.foregroundColor,
+      };
+    },
+  },
+};
+</script>
+
+<style scoped>
+#notification-button-popup-container {
+  position: absolute;
+  right: -10px;
+  top: -10px;
+  width: 350px;
+  z-index: 3;
+  cursor: default;
+}
+
+.pointer {
+  cursor: pointer;
+}
+#backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 1;
+  background-color: black;
+  opacity: 0.5;
+}
+
+#popup-inner-wrapper {
+  height: 350px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
+#notification-button {
+  cursor: pointer;
+  position: relative;
+  max-width: 60px;
+  min-width: 60px;
+  height: 60px;
+  background-color: var(--foregroundColor);
+  border: 1px solid var(--cardOutline);
+  border-radius: 50px;
+  margin: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+img {
+  height: 20px;
+  width: 20px;
+  cursor: pointer;
+}
+
+.x-icon {
+  width: 14px;
+  height: 14px;
+}
+
+.fade-enter-active {
+  animation: fade 0.5s;
+}
+
+.fade-leave-active {
+  animation: fade 0.5s reverse;
+}
+.fade1-enter-active {
+  animation: fade1 0.5s;
+}
+
+.fade1-leave-active {
+  animation: fade1 0.5s reverse;
+}
+
+@keyframes fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 0.5;
+  }
+}
+
+@keyframes fade1 {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+</style>
+
