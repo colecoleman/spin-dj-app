@@ -7,8 +7,8 @@
         <slot name="title"></slot>
       </h3>
       <div class="right-top">
-        <img :src="actionIcon" alt="" />
         <slot name="action1" class="right-top"></slot>
+        <img :src="actionIcon" alt="" />
       </div>
     </div>
     <div id="content">
@@ -81,5 +81,6 @@ h3 {
 .right-top {
   margin-left: auto;
   display: flex;
+  position: relative;
 }
 </style>

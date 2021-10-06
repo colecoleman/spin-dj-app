@@ -1,31 +1,23 @@
 <template>
   <base-card :icon="calendar">
     <template v-slot:action1>
-      <svg
-        width="14"
-        height="14"
-        viewBox="0 0 14 14"
-        v-if="singleDayViewOpen || timeSelectorOpen"
-        @click="
-          singleDayViewOpen
-            ? (singleDayViewOpen = false)
-            : '' || timeSelectorOpen
-            ? (timeSelectorOpen = false)
-            : ''
-        "
-      >
-        <path
-          data-name="Icon metro-cancel"
-          d="M9.571,1.928a7,7,0,1,0,7,7,7,7,0,0,0-7-7Zm0,12.688a5.688,5.688,0,1,1,5.688-5.688,5.688,5.688,0,0,1-5.688,5.688Zm2.188-9.188L9.571,7.616,7.383,5.428,6.071,6.741,8.258,8.928,6.071,11.116l1.313,1.312,2.187-2.187,2.188,2.188,1.313-1.312L10.883,8.928l2.188-2.188Z"
-          transform="translate(-2.571 -1.928)"
-          fill="currentColor"
-        />
-      </svg>
+      <div class="right-title-parent">
+        <h4 @click="floatingMenuOpen = !floatingMenuOpen">
+          {{ `${displayedMonth + ", "}` }} {{ masterYear }}
+        </h4>
+        <dual-side-floating-menu-with-list-items
+          :actions="floatingIconActions"
+          :currentLeftSelection="masterYear"
+          :currentRightSelection="masterMonth"
+          v-if="floatingMenuOpen"
+          @actionsClicked="newTimeframeSelected"
+        ></dual-side-floating-menu-with-list-items>
+      </div>
     </template>
     <template v-slot:title>Calendar</template>
     <template v-slot:content>
       <div id="base-container">
-        <time-selector
+        <!-- <time-selector
           v-if="timeSelectorOpen && !singleDayViewOpen"
           :months="monthArray"
           :chosen-month="displayedMonth"
@@ -34,7 +26,7 @@
           @toggle-month-selector="toggleMonthSelector"
           @select-month="newMonthSelected"
           @select-year="newYearSelected"
-        ></time-selector>
+        ></time-selector> -->
         <single-day-view
           v-if="singleDayViewOpen && !timeSelectorOpen"
           :date="singleDayChosen"
@@ -44,12 +36,7 @@
           id="calendar-container"
           v-if="!timeSelectorOpen && !singleDayViewOpen"
         >
-          <div class="month-heading" @click="toggleMonthSelector">
-            <div id="text">
-              <h4>{{ `${displayedMonth + ", "}` }} {{ masterYear }}</h4>
-              <img :src="downArrow" alt="" />
-            </div>
-          </div>
+          <div class="month-heading" @click="toggleMonthSelector"></div>
           <div id="body">
             <div
               class="side-arrows"
@@ -99,8 +86,9 @@
 
 <script>
 import dayjs from "dayjs";
-import TimeSelector from "./TimeSelector.vue";
+// import TimeSelector from "./TimeSelector.vue";
 import SingleDayView from "./SingleDayView/SingleDayView.vue";
+import DualSideFloatingMenuWithListItems from "../SharedComponentsUI/DualSideFloatingMenuWithListItems.vue";
 
 import calendar from "../../assets/SVGs/calendar.svg";
 import xIcon from "../../assets/SVGs/x-icon.svg";
@@ -147,22 +135,22 @@ export default {
         },
       },
       monthArray: [
-        { id: 0, month: "January", isCurrentMonth: false },
-        { id: 1, month: "February", isCurrentMonth: false },
-        { id: 2, month: "March", isCurrentMonth: false },
-        { id: 3, month: "April", isCurrentMonth: false },
-        { id: 4, month: "May", isCurrentMonth: false },
-        { id: 5, month: "June", isCurrentMonth: false },
-        { id: 6, month: "July", isCurrentMonth: false },
-        { id: 7, month: "August", isCurrentMonth: false },
-        { id: 8, month: "September", isCurrentMonth: false },
-        { id: 9, month: "October", isCurrentMonth: false },
-        { id: 10, month: "November", isCurrentMonth: false },
-        { id: 11, month: "December", isCurrentMonth: false },
+        "January",
+        "February",
+        "March",
+        "April",
+        "May",
+        "June",
+        "July",
+        "August",
+        "September",
+        "October",
+        "November",
+        "December",
       ],
       monthChangeCount: 0,
       yearChangeCount: 0,
-      timeSelectorOpen: false,
+      floatingMenuOpen: false,
       singleDayViewOpen: false,
       singleDayChosen: undefined,
       masterMonth: undefined,
@@ -174,9 +162,6 @@ export default {
     this.masterYear = this.INITIAL_YEAR;
   },
   methods: {
-    toggleMonthSelector() {
-      this.timeSelectorOpen = !this.timeSelectorOpen;
-    },
     getNumberOfDaysInMonth: function (year, month) {
       return dayjs(`${year}-${month}-01`).daysInMonth();
     },
@@ -284,6 +269,15 @@ export default {
       this.singleDayChosen = day.UTC;
       this.singleDayViewOpen = true;
     },
+    newTimeframeSelected(selections) {
+      if (selections.right !== undefined) {
+        this.masterYear = selections.left;
+      }
+      if (selections.right !== undefined) {
+        this.masterMonth = selections.right + 1;
+      }
+      this.floatingMenuOpen = false;
+    },
   },
   computed: {
     //establishing data
@@ -309,7 +303,24 @@ export default {
       return this.monthSelection();
     },
     displayedMonth: function () {
-      return this.monthArray[this.masterMonth - 1].month;
+      return this.monthArray[this.masterMonth - 1];
+    },
+    surroundingYears() {
+      let array = [];
+      for (
+        let temporaryYear = this.masterYear - 3;
+        temporaryYear < this.masterYear + 7;
+        temporaryYear++
+      ) {
+        array.push(temporaryYear);
+      }
+      return array;
+    },
+    floatingIconActions() {
+      return {
+        left: this.surroundingYears,
+        right: this.monthArray,
+      };
     },
     events() {
       if (this.$store.state.events.length > 0) {
@@ -360,7 +371,13 @@ export default {
       ];
     },
   },
-  components: { TimeSelector, SingleDayView },
+  emits: ["actionsClicked"],
+
+  components: {
+    // TimeSelector,
+    SingleDayView,
+    DualSideFloatingMenuWithListItems,
+  },
 };
 </script>
 
@@ -379,7 +396,12 @@ img {
   width: 100%;
   height: 100%;
   flex-direction: column;
+  position: relative;
   justify-content: space-around;
+}
+
+.right-title-parent {
+  height: 100%;
 }
 
 #body {

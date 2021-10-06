@@ -33,7 +33,7 @@ export default {
   width: fit-content;
   height: fit-content;
   z-index: 100;
-  box-shadow: 0px 5px 10px rgba(122, 122, 122, 0.4);
+  box-shadow: 0px 12px 10px rgba(122, 122, 122, 0.4);
   border: 1px solid var(--cardOutline);
   border-top: 0;
   border-radius: 5px 5px 15px 15px;
