@@ -1,8 +1,5 @@
 <template>
-  <div
-    id="application-wrapper"
-    :style="{ backgroundColor: backgroundColor, color: textColor }"
-  >
+  <div id="application-wrapper" :style="cssVars">
     <router-view name="main"></router-view>
   </div>
   <transition name="fade1">
@@ -12,7 +9,6 @@
 
 <script>
 /* eslint-disable */
-// import TheHeader from "./SharedComponents/SharedComponentsHeader/TheHeader.vue";
 import { Auth } from "aws-amplify";
 import axios from "axios";
 import EventManager from "./views/AdminViews/AdminViewDashboard/EventManager.vue";
@@ -20,31 +16,27 @@ import ErrorIndicator from "./SharedComponents/SharedComponentsUI/ErrorIndicator
 
 export default {
   computed: {
-    backgroundColor() {
-      if (
-        this.$store.state.businessSettings.brandingPreferences.backgroundColor
-      ) {
-        return this.$store.state.businessSettings.brandingPreferences
-          .backgroundColor;
+    brandingPreferences() {
+      if (this.$store.state.businessSettings.brandingPreferences) {
+        return this.$store.state.businessSettings.brandingPreferences;
       } else {
-        return "";
+        return {
+          backgroundColor: "#F0F0F0",
+          foregroundColor: "#FFFFFF",
+          cardOutline: "#DDDDDD",
+          highlightColor: "#00F5FF",
+          textColor: "#000000",
+        };
       }
     },
-    branding() {
-      let item = this.$store.state.businessSettings.brandingPreferences;
-      if (item) {
-        return item;
-      } else {
-        return "";
-      }
-    },
-    textColor() {
-      let textColor = this.$store.state.businessSettings.brandingPreferences;
-      if (textColor) {
-        return textColor;
-      } else {
-        return "";
-      }
+    cssVars() {
+      return {
+        "--backgroundColor": this.brandingPreferences.backgroundColor,
+        "--foregroundColor": this.brandingPreferences.foregroundColor,
+        "--cardOutline": this.brandingPreferences.cardOutline,
+        "--highlightColor": this.brandingPreferences.highlightColor,
+        "--textColor": this.brandingPreferences.textColor,
+      };
     },
     currentUser: async () => {
       await Auth.currentAuthenticatedUser();
@@ -94,7 +86,17 @@ body {
 }
 
 .router-link-exact-active > svg {
-  fill: #00ffe2;
+  fill: var(--highlightColor);
+}
+
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+a {
+  color: var(--textColor);
 }
 
 h4 {
@@ -110,20 +112,25 @@ a {
 #application-wrapper {
   width: 100vw;
   height: 100vh;
+  background-color: var(--backgroundColor);
 }
 
 input,
 select,
 textarea {
   color: var(--textColor);
-  background-color: var(--backgroundColor);
+  background-color: var(--foregroundColor);
   font-family: Montserrat, sans-serif;
   border: 1px solid;
   border-radius: 5px;
   padding: 3px;
 }
 
-.fade1-enter-active {
+.router-link-exact-active {
+  color: var(--highlightColor);
+}
+
+/* .fade1-enter-active {
   animation: fade1 0.5s;
 }
 
@@ -138,5 +145,5 @@ textarea {
   to {
     opacity: 1;
   }
-}
+} */
 </style>

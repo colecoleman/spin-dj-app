@@ -52,7 +52,6 @@
                 isNotCurrentMonth: !day.isCurrentMonth,
                 today: day.isCurrentDay,
               }"
-              :style="cssVars"
             >
               <div
                 :class="day.hasEvents ? 'hasEvents' : ''"
@@ -298,29 +297,6 @@ export default {
     },
   },
   computed: {
-    color() {
-      return this.$store.state.businessSettings.brandingPreferences
-        .highlightColor;
-    },
-    textColor() {
-      return this.$store.state.businessSettings.brandingPreferences.textColor;
-    },
-    foregroundColor() {
-      return this.$store.state.businessSettings.brandingPreferences
-        .foregroundColor;
-    },
-    cardOutline() {
-      return this.$store.state.businessSettings.brandingPreferences.cardOutline;
-    },
-    cssVars() {
-      return {
-        /* variables you want to pass to css */
-        "--color": this.color,
-        "--textcolor": this.textColor,
-        "--foregroundcolor": this.foregroundColor,
-        "--cardoutline": this.cardOutline,
-      };
-    },
     //establishing data
     INITIAL_YEAR: function () {
       let year = parseInt(dayjs().format("YYYY"));

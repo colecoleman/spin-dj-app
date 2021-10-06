@@ -5,7 +5,6 @@
         ? 'button-standard-with-icon loading'
         : 'button-standard-with-icon'
     "
-    :style="cssVars"
   >
     <h5 v-if="!loading">{{ text }}</h5>
     <h5 v-if="loading">Loading</h5>
@@ -15,26 +14,6 @@
 
 <script>
 export default {
-  computed: {
-    foregroundColor() {
-      return this.$store.state.businessSettings.brandingPreferences
-        .foregroundColor;
-    },
-    backgroundColor() {
-      return this.$store.state.businessSettings.brandingPreferences
-        .backgroundColor;
-    },
-    textColor() {
-      return this.$store.state.businessSettings.brandingPreferences.textColor;
-    },
-    cssVars() {
-      return {
-        "--textcolor": this.textColor,
-        "--backgroundColor": this.backgroundColor,
-        "--foregroundColor": this.foregroundColor,
-      };
-    },
-  },
   props: ["text", "icon", "loading"],
 };
 </script>

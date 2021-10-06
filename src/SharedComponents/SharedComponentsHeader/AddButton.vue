@@ -4,7 +4,6 @@
     @click="toggleClick()"
     @mousedown.prevent=""
     :class="isClicked ? `` : `pointer`"
-    :style="cssVars"
   >
     <img
       :src="plusButton"
@@ -61,30 +60,8 @@ export default {
     clickHandler() {
       return this.isClicked === true ? "clicked" : "unclicked";
     },
-    foregroundColor() {
-      return this.$store.state.businessSettings.brandingPreferences
-        .foregroundColor;
-    },
-    backgroundColor() {
-      return this.$store.state.businessSettings.brandingPreferences
-        .backgroundColor;
-    },
-    cardOutline() {
-      return this.$store.state.businessSettings.brandingPreferences.cardOutline;
-    },
-    textColor() {
-      return this.$store.state.businessSettings.brandingPreferences.textColor;
-    },
-    cssVars() {
-      return {
-        "--cardOutline": this.cardOutline,
-        "--foregroundColor": this.foregroundColor,
-        "--textColor": this.textColor,
-        "--backgroundColor": this.backgroundColor,
-      };
-    },
   },
-  // components: { BaseCardNoHeading },
+
 };
 </script>
 

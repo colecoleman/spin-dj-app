@@ -1,5 +1,5 @@
 <template>
-  <div id="tabs" :style="cssVars">
+  <div id="tabs">
     <router-link to="/admin/dashboard">
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -70,30 +70,6 @@
     </router-link>
   </div>
 </template>
-
-<script>
-export default {
-  data() {
-    return {};
-  },
-  methods: {},
-  computed: {
-    foregroundColor() {
-      return this.$store.state.businessSettings.brandingPreferences
-        .foregroundColor;
-    },
-    cardOutline() {
-      return this.$store.state.businessSettings.brandingPreferences.cardOutline;
-    },
-    cssVars() {
-      return {
-        "--cardOutline": this.cardOutline,
-        "--foregroundColor": this.foregroundColor,
-      };
-    },
-  },
-};
-</script>
 
 <style scoped>
 #tabs {

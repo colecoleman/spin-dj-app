@@ -1,32 +1,8 @@
 <template>
-  <div id="search-bar-container" :style="cssVars">
-    <input type="text" placeholder="Search..." :style="cssVars" />
+  <div id="search-bar-container">
+    <input type="text" placeholder="Search..." />
   </div>
 </template>
-
-<script>
-export default {
-  computed: {
-    foregroundColor() {
-      return this.$store.state.businessSettings.brandingPreferences
-        .foregroundColor;
-    },
-    cardOutline() {
-      return this.$store.state.businessSettings.brandingPreferences.cardOutline;
-    },
-    textColor() {
-      return this.$store.state.businessSettings.brandingPreferences.textColor;
-    },
-    cssVars() {
-      return {
-        "--cardOutline": this.cardOutline,
-        "--foregroundColor": this.foregroundColor,
-        "--textcolor": this.textColor,
-      };
-    },
-  },
-};
-</script>
 
 <style scoped>
 #search-bar-container {
@@ -50,10 +26,6 @@ input {
   font-weight: 600;
   font-size: 1em;
   opacity: 1;
-}
-input:focus {
-  outline: none;
-  /* color: white; */
 }
 
 input::placeholder {

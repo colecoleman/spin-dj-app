@@ -318,7 +318,6 @@ p {
 }
 
 ul {
-  color: white;
   text-align: right;
   height: 90%;
   width: 100%;
@@ -338,7 +337,6 @@ li {
 a {
   font-family: Montserrat, Helvetica, sans-serif;
   text-decoration: none;
-  color: white;
   font-weight: 700;
 }
 

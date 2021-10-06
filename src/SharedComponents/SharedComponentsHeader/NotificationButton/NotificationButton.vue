@@ -1,5 +1,5 @@
 <template>
-  <div id="notification-button" @mousedown.prevent="" :style="cssVars">
+  <div id="notification-button" @mousedown.prevent="">
     <img :src="notificationBell" alt="" @click="toggleClick()" />
     <transition name="fade1">
       <div id="notification-button-popup-container">
@@ -48,19 +48,6 @@ export default {
   computed: {
     notificationItems() {
       return this.$store.state.notifications;
-    },
-    foregroundColor() {
-      return this.$store.state.businessSettings.brandingPreferences
-        .foregroundColor;
-    },
-    cardOutline() {
-      return this.$store.state.businessSettings.brandingPreferences.cardOutline;
-    },
-    cssVars() {
-      return {
-        "--cardOutline": this.cardOutline,
-        "--foregroundColor": this.foregroundColor,
-      };
     },
   },
   components: { BaseCard, NotificationButtonItem },

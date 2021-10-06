@@ -156,6 +156,6 @@ li {
 
 .currentYear,
 .currentMonth {
-  color: #00f5ff;
+  color: var(--color);
 }
 </style>

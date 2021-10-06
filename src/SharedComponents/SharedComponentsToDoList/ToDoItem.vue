@@ -1,5 +1,5 @@
 <template>
-  <div id="to-do-item" @click="clickToDo(toDo.id)" :style="cssVars">
+  <div id="to-do-item" @click="clickToDo(toDo.id)">
     <svg
       xmlns="http://www.w3.org/2000/svg"
       width="21"
@@ -42,25 +42,6 @@ export default {
           console.log("bitchass", id);
         }, 500);
       }
-    },
-  },
-  computed: {
-    foregroundColor() {
-      return this.$store.state.businessSettings.brandingPreferences
-        .foregroundColor;
-    },
-    cardOutline() {
-      return this.$store.state.businessSettings.brandingPreferences.cardOutline;
-    },
-    textColor() {
-      return this.$store.state.businessSettings.brandingPreferences.textColor;
-    },
-    cssVars() {
-      return {
-        "--cardOutline": this.cardOutline,
-        "--foregroundColor": this.foregroundColor,
-        "--textColor": this.textColor,
-      };
     },
   },
 };

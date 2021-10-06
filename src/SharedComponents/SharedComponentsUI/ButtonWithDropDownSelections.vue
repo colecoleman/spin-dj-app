@@ -7,7 +7,6 @@
     "
     @click="actionsClicked()"
     @mousedown.prevent=""
-    :style="cssVars"
   >
     <div class="primary-container">
       <h5>{{ text }}</h5>
@@ -37,26 +36,6 @@ export default {
       dropdownArrow,
       actionsActive: false,
     };
-  },
-  computed: {
-    foregroundColor() {
-      return this.$store.state.businessSettings.brandingPreferences
-        .foregroundColor;
-    },
-    backgroundColor() {
-      return this.$store.state.businessSettings.brandingPreferences
-        .backgroundColor;
-    },
-    textColor() {
-      return this.$store.state.businessSettings.brandingPreferences.textColor;
-    },
-    cssVars() {
-      return {
-        "--textcolor": this.textColor,
-        "--backgroundColor": this.backgroundColor,
-        "--foregroundColor": this.foregroundColor,
-      };
-    },
   },
   methods: {
     actionsClicked() {

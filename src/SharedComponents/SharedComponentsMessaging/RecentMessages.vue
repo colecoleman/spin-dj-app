@@ -58,7 +58,7 @@ export default {
   },
   computed: {
     contacts() {
-      return this.$store.state.contacts.clients;
+      return this.$store.state.contacts.clients.filter((x) => x.recentMessage);
     },
   },
   methods: {

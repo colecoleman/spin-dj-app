@@ -1,5 +1,5 @@
 <template>
-  <div class="card" :style="cssVars">
+  <div class="card">
     <div id="heading">
       <img :src="icon" alt="" />
       <slot name="icon"></slot>
@@ -22,21 +22,6 @@
 
 <script>
 export default {
-  computed: {
-    foregroundColor() {
-      return this.$store.state.businessSettings.brandingPreferences
-        .foregroundColor;
-    },
-    cardOutline() {
-      return this.$store.state.businessSettings.brandingPreferences.cardOutline;
-    },
-    cssVars() {
-      return {
-        "--cardOutline": this.cardOutline,
-        "--foregroundColor": this.foregroundColor,
-      };
-    },
-  },
   props: ["icon", "actionIcon"],
 };
 </script>
@@ -71,8 +56,6 @@ export default {
 img {
   width: 14px;
   height: 14px;
-  fill: white;
-  color: white;
 }
 #content {
   padding: 0 10px 0 10px;

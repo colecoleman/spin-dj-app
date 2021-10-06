@@ -2,7 +2,7 @@
   <base-card :icon="clipboardsvg">
     <template v-slot:title>To-Do</template>
     <template v-slot:content>
-      <div id="wrapper" :style="cssVars">
+      <div id="wrapper">
         <div class="to-do-item" v-if="newToDoOpened">
           <img :src="plusbuttonsvg" alt="" />
           <input
@@ -75,23 +75,6 @@ export default {
     },
     completedToDos() {
       return this.toDos.filter((item) => item.completed);
-    },
-    foregroundColor() {
-      return this.$store.state.businessSettings.brandingPreferences
-        .foregroundColor;
-    },
-    cardOutline() {
-      return this.$store.state.businessSettings.brandingPreferences.cardOutline;
-    },
-    textColor() {
-      return this.$store.state.businessSettings.brandingPreferences.textColor;
-    },
-    cssVars() {
-      return {
-        "--cardOutline": this.cardOutline,
-        "--foregroundColor": this.foregroundColor,
-        "--textColor": this.textColor,
-      };
     },
   },
   components: { ToDoItem },

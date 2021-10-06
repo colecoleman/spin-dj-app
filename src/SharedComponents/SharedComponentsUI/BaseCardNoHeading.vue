@@ -1,29 +1,8 @@
 <template>
-  <div class="card" :style="cssVars">
+  <div class="card">
     <slot></slot>
   </div>
 </template>
-
-<script>
-export default {
-  computed: {
-    foregroundColor() {
-      return this.$store.state.businessSettings.brandingPreferences
-        .foregroundColor;
-    },
-    cardOutline() {
-      return this.$store.state.businessSettings.brandingPreferences.cardOutline;
-    },
-    cssVars() {
-      return {
-        "--cardOutline": this.cardOutline,
-        "--foregroundColor": this.foregroundColor,
-      };
-    },
-  },
-};
-</script>
-
 <style scoped>
 .card {
   background-color: var(--foregroundColor);

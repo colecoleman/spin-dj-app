@@ -1,5 +1,5 @@
   <template>
-  <div class="square-button-icon" :style="cssVars">
+  <div class="square-button-icon">
     <img :src="trashCan" alt="" />
   </div>
 </template>
@@ -13,26 +13,7 @@ export default {
       trashCan,
     };
   },
-  computed: {
-    foregroundColor() {
-      return this.$store.state.businessSettings.brandingPreferences
-        .foregroundColor;
-    },
-    backgroundColor() {
-      return this.$store.state.businessSettings.brandingPreferences
-        .backgroundColor;
-    },
-    textColor() {
-      return this.$store.state.businessSettings.brandingPreferences.textColor;
-    },
-    cssVars() {
-      return {
-        "--textcolor": this.textColor,
-        "--backgroundColor": this.backgroundColor,
-        "--foregroundColor": this.foregroundColor,
-      };
-    },
-  },
+ 
   props: ["text", "icon"],
 };
 </script>

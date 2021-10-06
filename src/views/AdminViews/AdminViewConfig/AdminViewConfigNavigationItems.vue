@@ -71,7 +71,7 @@ export default {
 
 <style>
 ul {
-  color: white;
+  /* color: white; */
   text-align: right;
   height: 90%;
   width: 100%;
@@ -91,11 +91,11 @@ li {
 a {
   font-family: Montserrat, Helvetica, sans-serif;
   text-decoration: none;
-  color: white;
+  /* color: white; */
   font-weight: 700;
 }
 
 .active-link {
-  color: #00f5ff;
+  /* color: #00f5ff; */
 }
 </style>

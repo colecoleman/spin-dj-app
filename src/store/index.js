@@ -2141,7 +2141,7 @@ const store = createStore({
                 brandingPreferences: {
                     backgroundColor: '#F0F0F0',
                     foregroundColor: '#FFFFFF',
-                    cardOutline: "#DDDDDD",
+                    cardOutline: "#FFFFFF",
                     highlightColor: "#00F5FF",
                     textColor: "#000000"
                 },

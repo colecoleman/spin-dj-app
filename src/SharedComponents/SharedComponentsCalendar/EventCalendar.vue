@@ -73,7 +73,6 @@
                     isNotCurrentMonth: !day.isCurrentMonth,
                     today: day.isCurrentDay,
                   }"
-                  :style="cssVars"
                 >
                   <div
                     :class="day.hasEvents ? 'hasEvents' : ' '"
@@ -287,20 +286,6 @@ export default {
     },
   },
   computed: {
-    color() {
-      return this.$store.state.businessSettings.brandingPreferences
-        .highlightColor;
-    },
-    textColor() {
-      return this.$store.state.businessSettings.brandingPreferences.textColor;
-    },
-    cssVars() {
-      return {
-        /* variables you want to pass to css */
-        "--color": this.color,
-        "--textcolor": this.textColor,
-      };
-    },
     //establishing data
     INITIAL_YEAR: function () {
       let year = parseInt(dayjs().format("YYYY"));
@@ -330,7 +315,7 @@ export default {
       if (this.$store.state.events.length > 0) {
         return this.$store.state.events.filter((event) => {
           if (event.eventStartTime) {
-            return event.eventStartTime.getMonth() === this.masterMonth - 1;
+            // return event.eventStartTime.getMonth() === this.masterMonth - 1;
           }
         });
       } else {
@@ -449,11 +434,10 @@ img {
 }
 
 .hasEvents {
-  color: var(--textcolor);
   background: radial-gradient(
     ellipse at center,
-    var(--color) 0%,
-    var(--color) 50%,
+    var(--highlightColor) 0%,
+    var(--highglightColor) 50%,
     rgba(0, 0, 0, 0) 53%
   );
   cursor: pointer;
@@ -477,8 +461,8 @@ img {
 .today {
   background: radial-gradient(
     ellipse at center,
-    var(--textcolor) 0%,
-    var(--textcolor) 50%,
+    var(--textColor) 0%,
+    var(--textColor) 50%,
     rgba(0, 0, 0, 0) 53%
   );
 }

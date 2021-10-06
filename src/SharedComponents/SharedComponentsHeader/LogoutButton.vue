@@ -1,5 +1,5 @@
 <template>
-  <div id="notification-button" @mousedown.prevent="" :style="cssVars">
+  <div id="notification-button" @mousedown.prevent="">
     <img :src="exitDoor" alt="" @click="logout()" />
   </div>
 </template>
@@ -24,24 +24,7 @@ export default {
       }
     },
   },
-  computed: {
-    notificationItems() {
-      return this.$store.state.notifications;
-    },
-    foregroundColor() {
-      return this.$store.state.businessSettings.brandingPreferences
-        .foregroundColor;
-    },
-    cardOutline() {
-      return this.$store.state.businessSettings.brandingPreferences.cardOutline;
-    },
-    cssVars() {
-      return {
-        "--cardOutline": this.cardOutline,
-        "--foregroundColor": this.foregroundColor,
-      };
-    },
-  },
+  computed: {},
 };
 </script>
 

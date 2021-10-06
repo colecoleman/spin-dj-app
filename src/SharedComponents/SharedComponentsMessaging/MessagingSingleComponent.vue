@@ -1,5 +1,5 @@
 <template>
-  <div id="messaging-wrapper" :style="cssVars">
+  <div id="messaging-wrapper">
     <div id="contact-identification">
       <p @click="navigateToEventPage(contact.userId)">
         {{ contact.given_name + " " + contact.family_name }}
@@ -66,21 +66,6 @@ export default {
   methods: {
     navigateToEventPage(id) {
       this.$router.push("/contacts/clients/" + id);
-    },
-  },
-  computed: {
-    foregroundColor() {
-      return this.$store.state.businessSettings.brandingPreferences
-        .foregroundColor;
-    },
-    cardOutline() {
-      return this.$store.state.businessSettings.brandingPreferences.cardOutline;
-    },
-    cssVars() {
-      return {
-        "--cardOutline": this.cardOutline,
-        "--foregroundColor": this.foregroundColor,
-      };
     },
   },
   props: ["contact", "id", "icon"],

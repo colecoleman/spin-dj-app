@@ -1,5 +1,5 @@
 <template>
-  <div class="button-long-with-icon" :style="cssVars">
+  <div class="button-long-with-icon">
     <h5>{{ text }}</h5>
     <slot name="icon" id="svg"></slot>
   </div>
@@ -7,25 +7,6 @@
 
 <script>
 export default {
-  computed: {
-    foregroundColor() {
-      return this.$store.state.businessSettings.brandingPreferences
-        .foregroundColor;
-    },
-    cardOutline() {
-      return this.$store.state.businessSettings.brandingPreferences.cardOutline;
-    },
-    textColor() {
-      return this.$store.state.businessSettings.brandingPreferences.textColor;
-    },
-    cssVars() {
-      return {
-        "--cardOutline": this.cardOutline,
-        "--foregroundColor": this.foregroundColor,
-        "--textColor": this.textColor,
-      };
-    },
-  },
   props: ["text", "icon"],
 };
 </script>
