@@ -37,7 +37,7 @@ const routes = [
         );
         
       } catch (e) {
-        console.log(e)
+        this.$store.dispatch('addError', "Please login!")
         next({name: 'loginPage'})
       }
     }

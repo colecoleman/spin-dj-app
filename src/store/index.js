@@ -1251,874 +1251,874 @@ const store = createStore({
             },
             equipment: [],
             events: [
-                {
-                    id: 1,
-                    eventType: 'wedding',
-                    eventTitle: 'Wedding Package',
-                    get subtotal() {
-                        let eventHours = this.eventLength
-                        let packageTotal = 0;
-                        let serviceTotal = 0;
-                        let addOnTotal = 0;
-                        let total = 0;
+                // {
+                //     id: 1,
+                //     eventType: 'wedding',
+                //     eventTitle: 'Wedding Package',
+                //     get subtotal() {
+                //         let eventHours = this.eventLength
+                //         let packageTotal = 0;
+                //         let serviceTotal = 0;
+                //         let addOnTotal = 0;
+                //         let total = 0;
                         
-                        this.eventInvoice.packages.forEach(element => {
-                            if (element.priceOption === "hourly") {
+                //         this.eventInvoice.packages.forEach(element => {
+                //             if (element.priceOption === "hourly") {
                
-                                if (element.baseTime < eventHours) {
-                                  let additionalHourly = eventHours - element.baseTime;
+                //                 if (element.baseTime < eventHours) {
+                //                   let additionalHourly = eventHours - element.baseTime;
 
-                                  packageTotal = packageTotal + (element.baseRate + element.addHourly * additionalHourly);
-                                }
-                                if (element.baseTime >= element.eventHours) {
-                                  packageTotal = packageTotal + element.baseRate;
-                                }
-                              }
-                              if (element.priceOption === 'flat') {
-                                  packageTotal = packageTotal + element.flatRate
-                              }
-                        });
-                        total = total + packageTotal;
+                //                   packageTotal = packageTotal + (element.baseRate + element.addHourly * additionalHourly);
+                //                 }
+                //                 if (element.baseTime >= element.eventHours) {
+                //                   packageTotal = packageTotal + element.baseRate;
+                //                 }
+                //               }
+                //               if (element.priceOption === 'flat') {
+                //                   packageTotal = packageTotal + element.flatRate
+                //               }
+                //         });
+                //         total = total + packageTotal;
 
 
-                        this.eventInvoice.services.forEach(element => {
-                            if (element.priceOption === "hourly") {
-                                if (element.baseTime < this.eventLength) {
-                                  let additionalHourly = element.eventHours - element.baseTime;
-                                  serviceTotal = element.baseRate + element.addHourly * additionalHourly;
-                                }
-                                if (element.baseTime >= element.eventHours) {
-                                  serviceTotal = element.baseRate;
-                                }
-                              }
-                              if (element.priceOption === 'flat') {
-                                  serviceTotal = packageTotal + element.flatRate
-                              }
-                        });
-                        total = total + serviceTotal;
+                //         this.eventInvoice.services.forEach(element => {
+                //             if (element.priceOption === "hourly") {
+                //                 if (element.baseTime < this.eventLength) {
+                //                   let additionalHourly = element.eventHours - element.baseTime;
+                //                   serviceTotal = element.baseRate + element.addHourly * additionalHourly;
+                //                 }
+                //                 if (element.baseTime >= element.eventHours) {
+                //                   serviceTotal = element.baseRate;
+                //                 }
+                //               }
+                //               if (element.priceOption === 'flat') {
+                //                   serviceTotal = packageTotal + element.flatRate
+                //               }
+                //         });
+                //         total = total + serviceTotal;
                         
-                        this.eventInvoice.addOns.forEach(element => {
-                            if (element.priceOption === "hourly") {
-                                addOnTotal = addOnTotal + element.hourlyPrice * eventHours
-                              }
-                              if (element.priceOption === "unit") {
-                                addOnTotal = addOnTotal + element.unitPrice * element.eventUnits;
-                              }
-                              if (element.priceOption === 'flat') {
-                                  addOnTotal = addOnTotal + element.flatRate
-                              }
-                        });
-                        total = total + addOnTotal;
+                //         this.eventInvoice.addOns.forEach(element => {
+                //             if (element.priceOption === "hourly") {
+                //                 addOnTotal = addOnTotal + element.hourlyPrice * eventHours
+                //               }
+                //               if (element.priceOption === "unit") {
+                //                 addOnTotal = addOnTotal + element.unitPrice * element.eventUnits;
+                //               }
+                //               if (element.priceOption === 'flat') {
+                //                   addOnTotal = addOnTotal + element.flatRate
+                //               }
+                //         });
+                //         total = total + addOnTotal;
 
-                        return total;
-                    },
-                    get total() {
+                //         return total;
+                //     },
+                //     get total() {
 
-                        let adjustments = this.eventInvoice.adjustments.reduce((a, b) => a + (b["amount"] || 0), 0)
-                        let subtotal = this.subtotal;
+                //         let adjustments = this.eventInvoice.adjustments.reduce((a, b) => a + (b["amount"] || 0), 0)
+                //         let subtotal = this.subtotal;
 
-                        return subtotal + adjustments;
-                    },
-                    get paymentTotal() {
-                        return this.eventInvoice.paymentsCollected.reduce((a, b) => a + (b["amount"] || 0), 0)
-                    },
-                    get balanceOutstanding() {
-                        return this.total - this.paymentTotal
-                    },
-                    eventInvoice: {
-                        data: {
-                            invoiceNumber: 123456489,
-                            invoiceDate: '2021-04-21',
-                            eventDate: '2021-12-31',
-                            finalPaymentDue: '2021-12-01',
+                //         return subtotal + adjustments;
+                //     },
+                //     get paymentTotal() {
+                //         return this.eventInvoice.paymentsCollected.reduce((a, b) => a + (b["amount"] || 0), 0)
+                //     },
+                //     get balanceOutstanding() {
+                //         return this.total - this.paymentTotal
+                //     },
+                //     eventInvoice: {
+                //         data: {
+                //             invoiceNumber: 123456489,
+                //             invoiceDate: '2021-04-21',
+                //             eventDate: '2021-12-31',
+                //             finalPaymentDue: '2021-12-01',
                             
 
-                        },
-                        packages: [
+                //         },
+                //         packages: [
                             
-                            {
-                                name: "Holy Matrimony",
-                                priceOption: 'hourly',
-                                baseTime: 4,
-                                baseRate: 130000,
-                                addHourly: 10000,
-                            }
-                        ],
-                        services: [],
-                        addOns: [
-                            {
-                                name: 'Uplighting',
-                                priceOption: 'unit',
-                                unitPrice: 3000,
-                                eventUnits: 20,
-                            }
-                        ],
+                //             {
+                //                 name: "Holy Matrimony",
+                //                 priceOption: 'hourly',
+                //                 baseTime: 4,
+                //                 baseRate: 130000,
+                //                 addHourly: 10000,
+                //             }
+                //         ],
+                //         services: [],
+                //         addOns: [
+                //             {
+                //                 name: 'Uplighting',
+                //                 priceOption: 'unit',
+                //                 unitPrice: 3000,
+                //                 eventUnits: 20,
+                //             }
+                //         ],
                      
                         
-                        adjustments: [
-                            {
-                            name: 'Friends and Family',
-                            type: 'discount',
-                            amount: -20000,
-                            id: 123456789
-                            }
-                        ],
-                        paymentsCollected: [
-                            {
-                                referenceNumber: '123456789',
-                                source: 'Stripe',
-                                amount: 20000
-                            },
-                            {
-                                referenceNumber: '987654321',
-                                source: 'Stripe',
-                                amount: 20000
-                            },
-                        ],
-                    },
-                    eventLocations: [
-                        {
-                            locationId: 1,
-                            venueStartTime: "18:00",
-                            venueEndTime: "19:00",
-                        },
-                        {
-                            locationId: 2,
-                            venueStartTime: "19:00",
-                            venueEndTime: "22:00",
-                            address1: "54321 Nowhere Dr",
-                        }
-                    ],
-                    eventStartTime: new Date(2021, 10, 25, 18, 15),
-                    eventEndTime: new Date(2021, 10, 25, 23, 30),
-                    get eventLength() {
-                        return (this.eventEndTime - this.eventStartTime) / 36e5
-                    },
-                    associatedContacts: [
-                        {
-                            id: 1, 
-                            role: 'client',
-                        },
-                        {
-                            id: 2, 
-                            role: 'client',
-                        },
-                        {
-                            id: 1, 
-                            role: 'vendor',
-                        },
-                        {
-                            id: 5, 
-                            role: 'employee',
-                        },
-                    ],
+                //         adjustments: [
+                //             {
+                //             name: 'Friends and Family',
+                //             type: 'discount',
+                //             amount: -20000,
+                //             id: 123456789
+                //             }
+                //         ],
+                //         paymentsCollected: [
+                //             {
+                //                 referenceNumber: '123456789',
+                //                 source: 'Stripe',
+                //                 amount: 20000
+                //             },
+                //             {
+                //                 referenceNumber: '987654321',
+                //                 source: 'Stripe',
+                //                 amount: 20000
+                //             },
+                //         ],
+                //     },
+                //     eventLocations: [
+                //         {
+                //             locationId: 1,
+                //             venueStartTime: "18:00",
+                //             venueEndTime: "19:00",
+                //         },
+                //         {
+                //             locationId: 2,
+                //             venueStartTime: "19:00",
+                //             venueEndTime: "22:00",
+                //             address1: "54321 Nowhere Dr",
+                //         }
+                //     ],
+                //     eventStartTime: new Date(2021, 10, 25, 18, 15),
+                //     eventEndTime: new Date(2021, 10, 25, 23, 30),
+                //     get eventLength() {
+                //         return (this.eventEndTime - this.eventStartTime) / 36e5
+                //     },
+                //     associatedContacts: [
+                //         {
+                //             id: 1, 
+                //             role: 'client',
+                //         },
+                //         {
+                //             id: 2, 
+                //             role: 'client',
+                //         },
+                //         {
+                //             id: 1, 
+                //             role: 'vendor',
+                //         },
+                //         {
+                //             id: 5, 
+                //             role: 'employee',
+                //         },
+                //     ],
                     
-                    employeesNeeded: 2,
-                },
-                {
-                    id: 2,
-                    eventType: 'wedding',
-                    eventTitle: 'Wedding Package',
-                    get total() {
-                        let eventHours = this.eventLength
-                        let packageTotal = 0;
-                        let serviceTotal = 0;
-                        let addOnTotal = 0;
-                        let total = 0;
+                //     employeesNeeded: 2,
+                // },
+                // {
+                //     id: 2,
+                //     eventType: 'wedding',
+                //     eventTitle: 'Wedding Package',
+                //     get total() {
+                //         let eventHours = this.eventLength
+                //         let packageTotal = 0;
+                //         let serviceTotal = 0;
+                //         let addOnTotal = 0;
+                //         let total = 0;
                         
-                        this.eventInvoice.packages.forEach(element => {
-                            if (element.priceOption === "hourly") {
+                //         this.eventInvoice.packages.forEach(element => {
+                //             if (element.priceOption === "hourly") {
                
-                                if (element.baseTime < eventHours) {
-                                  let additionalHourly = eventHours - element.baseTime;
+                //                 if (element.baseTime < eventHours) {
+                //                   let additionalHourly = eventHours - element.baseTime;
 
-                                  packageTotal = packageTotal + (element.baseRate + element.addHourly * additionalHourly);
-                                }
-                                if (element.baseTime >= element.eventHours) {
-                                  packageTotal = packageTotal + element.baseRate;
-                                }
-                              }
-                              if (element.priceOption === 'flat') {
-                                  packageTotal = packageTotal + element.flatRate
-                              }
-                        });
-                        total = total + packageTotal;
+                //                   packageTotal = packageTotal + (element.baseRate + element.addHourly * additionalHourly);
+                //                 }
+                //                 if (element.baseTime >= element.eventHours) {
+                //                   packageTotal = packageTotal + element.baseRate;
+                //                 }
+                //               }
+                //               if (element.priceOption === 'flat') {
+                //                   packageTotal = packageTotal + element.flatRate
+                //               }
+                //         });
+                //         total = total + packageTotal;
 
 
-                        this.eventInvoice.services.forEach(element => {
-                            if (element.priceOption === "hourly") {
-                                if (element.baseTime < this.eventLength) {
-                                  let additionalHourly = element.eventHours - element.baseTime;
-                                  serviceTotal = element.baseRate + element.addHourly * additionalHourly;
-                                }
-                                if (element.baseTime >= element.eventHours) {
-                                  serviceTotal = element.baseRate;
-                                }
-                              }
-                              if (element.priceOption === 'flat') {
-                                  serviceTotal = packageTotal + element.flatRate
-                              }
-                        });
-                        total = total + serviceTotal;
+                //         this.eventInvoice.services.forEach(element => {
+                //             if (element.priceOption === "hourly") {
+                //                 if (element.baseTime < this.eventLength) {
+                //                   let additionalHourly = element.eventHours - element.baseTime;
+                //                   serviceTotal = element.baseRate + element.addHourly * additionalHourly;
+                //                 }
+                //                 if (element.baseTime >= element.eventHours) {
+                //                   serviceTotal = element.baseRate;
+                //                 }
+                //               }
+                //               if (element.priceOption === 'flat') {
+                //                   serviceTotal = packageTotal + element.flatRate
+                //               }
+                //         });
+                //         total = total + serviceTotal;
                         
-                        this.eventInvoice.addOns.forEach(element => {
-                            if (element.priceOption === "hourly") {
-                                addOnTotal = addOnTotal + element.hourlyPrice * eventHours
-                              }
-                              if (element.priceOption === 'flat') {
-                                  addOnTotal = addOnTotal + element.flatRate
-                              }
-                        });
-                        total = total + addOnTotal;
-                        let adjustments = this.eventInvoice.adjustments.reduce((a, b) => a + (b["amount"] || 0), 0)
-                        total = total + adjustments;
+                //         this.eventInvoice.addOns.forEach(element => {
+                //             if (element.priceOption === "hourly") {
+                //                 addOnTotal = addOnTotal + element.hourlyPrice * eventHours
+                //               }
+                //               if (element.priceOption === 'flat') {
+                //                   addOnTotal = addOnTotal + element.flatRate
+                //               }
+                //         });
+                //         total = total + addOnTotal;
+                //         let adjustments = this.eventInvoice.adjustments.reduce((a, b) => a + (b["amount"] || 0), 0)
+                //         total = total + adjustments;
 
-                        return total;
-                    },
-                    get paymentTotal() {
-                        return this.eventInvoice.paymentsCollected.reduce((a, b) => a + (b["amount"] || 0), 0)
-                    },
-                    get balanceOutstanding() {
-                        return this.total - this.paymentTotal
-                    },
-                    eventInvoice: {
-                        data: {
-                            invoiceNumber: 123456489,
-                            invoiceDate: '2021-04-21',
-                            eventDate: '2021-12-31',
-                            finalPaymentDue: '2021-12-01',
+                //         return total;
+                //     },
+                //     get paymentTotal() {
+                //         return this.eventInvoice.paymentsCollected.reduce((a, b) => a + (b["amount"] || 0), 0)
+                //     },
+                //     get balanceOutstanding() {
+                //         return this.total - this.paymentTotal
+                //     },
+                //     eventInvoice: {
+                //         data: {
+                //             invoiceNumber: 123456489,
+                //             invoiceDate: '2021-04-21',
+                //             eventDate: '2021-12-31',
+                //             finalPaymentDue: '2021-12-01',
                             
 
-                        },
-                        packages: [
+                //         },
+                //         packages: [
                             
-                            {
-                                name: "Holy Matrimony",
-                                priceOption: 'hourly',
-                                baseTime: 4,
-                                baseRate: 130000,
-                                addHourly: 10000,
-                            }
-                        ],
-                        services: [],
-                        addOns: [
-                            {
-                                name: 'Uplighting',
-                                priceOption: 'unit',
-                                unitPrice: 3000,
-                                eventUnits: 20,
-                            }
-                        ],
+                //             {
+                //                 name: "Holy Matrimony",
+                //                 priceOption: 'hourly',
+                //                 baseTime: 4,
+                //                 baseRate: 130000,
+                //                 addHourly: 10000,
+                //             }
+                //         ],
+                //         services: [],
+                //         addOns: [
+                //             {
+                //                 name: 'Uplighting',
+                //                 priceOption: 'unit',
+                //                 unitPrice: 3000,
+                //                 eventUnits: 20,
+                //             }
+                //         ],
                      
                         
-                        adjustments: [
-                            {
-                            name: 'Friends and Family',
-                            type: 'discount',
-                            amount: -20000,
-                            id: 123456789
-                            }
-                        ],
-                        paymentsCollected: [
-                            {
-                                referenceNumber: '123456789',
-                                source: 'Stripe',
-                                amount: 20000
-                            },
-                            {
-                                referenceNumber: '987654321',
-                                source: 'Stripe',
-                                amount: 20000
-                            },
-                        ],
-                    },
-                    eventLocations: [
-                        {
-                            locationId: 1,
-                        }
-                    ],
-                    // total: 100000,
-                    eventStartTime: new Date(2021, 9, 25, 18, 15),
-                    eventEndTime: new Date(2021, 9, 25, 23, 30),
-                    get eventLength() {
-                        return (this.eventEndTime - this.eventStartTime) / 36e5
-                    },
-                    associatedContacts: [
-                        {
-                            id: 1, 
-                            role: 'client',
-                        },
-                        {
-                            id: 2, 
-                            role: 'client',
-                        },
-                    ],
+                //         adjustments: [
+                //             {
+                //             name: 'Friends and Family',
+                //             type: 'discount',
+                //             amount: -20000,
+                //             id: 123456789
+                //             }
+                //         ],
+                //         paymentsCollected: [
+                //             {
+                //                 referenceNumber: '123456789',
+                //                 source: 'Stripe',
+                //                 amount: 20000
+                //             },
+                //             {
+                //                 referenceNumber: '987654321',
+                //                 source: 'Stripe',
+                //                 amount: 20000
+                //             },
+                //         ],
+                //     },
+                //     eventLocations: [
+                //         {
+                //             locationId: 1,
+                //         }
+                //     ],
+                //     // total: 100000,
+                //     eventStartTime: new Date(2021, 9, 25, 18, 15),
+                //     eventEndTime: new Date(2021, 9, 25, 23, 30),
+                //     get eventLength() {
+                //         return (this.eventEndTime - this.eventStartTime) / 36e5
+                //     },
+                //     associatedContacts: [
+                //         {
+                //             id: 1, 
+                //             role: 'client',
+                //         },
+                //         {
+                //             id: 2, 
+                //             role: 'client',
+                //         },
+                //     ],
 
-                    employeesNeeded: 2,
+                //     employeesNeeded: 2,
 
-                },
-                {
-                    id: 3,
-                    eventType: 'wedding',
-                    eventTitle: 'Wedding Package',
-                    get total() {
-                        let eventHours = this.eventLength
-                        let packageTotal = 0;
-                        let serviceTotal = 0;
-                        let addOnTotal = 0;
-                        let total = 0;
+                // },
+                // {
+                //     id: 3,
+                //     eventType: 'wedding',
+                //     eventTitle: 'Wedding Package',
+                //     get total() {
+                //         let eventHours = this.eventLength
+                //         let packageTotal = 0;
+                //         let serviceTotal = 0;
+                //         let addOnTotal = 0;
+                //         let total = 0;
                         
-                        this.eventInvoice.packages.forEach(element => {
-                            if (element.priceOption === "hourly") {
+                //         this.eventInvoice.packages.forEach(element => {
+                //             if (element.priceOption === "hourly") {
                
-                                if (element.baseTime < eventHours) {
-                                  let additionalHourly = eventHours - element.baseTime;
+                //                 if (element.baseTime < eventHours) {
+                //                   let additionalHourly = eventHours - element.baseTime;
 
-                                  packageTotal = packageTotal + (element.baseRate + element.addHourly * additionalHourly);
-                                }
-                                if (element.baseTime >= element.eventHours) {
-                                  packageTotal = packageTotal + element.baseRate;
-                                }
-                              }
-                              if (element.priceOption === 'flat') {
-                                  packageTotal = packageTotal + element.flatRate
-                              }
-                        });
-                        total = total + packageTotal;
+                //                   packageTotal = packageTotal + (element.baseRate + element.addHourly * additionalHourly);
+                //                 }
+                //                 if (element.baseTime >= element.eventHours) {
+                //                   packageTotal = packageTotal + element.baseRate;
+                //                 }
+                //               }
+                //               if (element.priceOption === 'flat') {
+                //                   packageTotal = packageTotal + element.flatRate
+                //               }
+                //         });
+                //         total = total + packageTotal;
 
 
-                        this.eventInvoice.services.forEach(element => {
-                            if (element.priceOption === "hourly") {
-                                if (element.baseTime < this.eventLength) {
-                                  let additionalHourly = element.eventHours - element.baseTime;
-                                  serviceTotal = element.baseRate + element.addHourly * additionalHourly;
-                                }
-                                if (element.baseTime >= element.eventHours) {
-                                  serviceTotal = element.baseRate;
-                                }
-                              }
-                              if (element.priceOption === 'flat') {
-                                  serviceTotal = packageTotal + element.flatRate
-                              }
-                        });
-                        total = total + serviceTotal;
+                //         this.eventInvoice.services.forEach(element => {
+                //             if (element.priceOption === "hourly") {
+                //                 if (element.baseTime < this.eventLength) {
+                //                   let additionalHourly = element.eventHours - element.baseTime;
+                //                   serviceTotal = element.baseRate + element.addHourly * additionalHourly;
+                //                 }
+                //                 if (element.baseTime >= element.eventHours) {
+                //                   serviceTotal = element.baseRate;
+                //                 }
+                //               }
+                //               if (element.priceOption === 'flat') {
+                //                   serviceTotal = packageTotal + element.flatRate
+                //               }
+                //         });
+                //         total = total + serviceTotal;
                         
-                        this.eventInvoice.addOns.forEach(element => {
-                            if (element.priceOption === "hourly") {
-                                addOnTotal = addOnTotal + element.hourlyPrice * eventHours
-                              }
-                              if (element.priceOption === 'flat') {
-                                  addOnTotal = addOnTotal + element.flatRate
-                              }
-                        });
-                        total = total + addOnTotal;
-                        let adjustments = this.eventInvoice.adjustments.reduce((a, b) => a + (b["amount"] || 0), 0)
-                        total = total + adjustments;
+                //         this.eventInvoice.addOns.forEach(element => {
+                //             if (element.priceOption === "hourly") {
+                //                 addOnTotal = addOnTotal + element.hourlyPrice * eventHours
+                //               }
+                //               if (element.priceOption === 'flat') {
+                //                   addOnTotal = addOnTotal + element.flatRate
+                //               }
+                //         });
+                //         total = total + addOnTotal;
+                //         let adjustments = this.eventInvoice.adjustments.reduce((a, b) => a + (b["amount"] || 0), 0)
+                //         total = total + adjustments;
 
-                        return total;
-                    },
-                    get paymentTotal() {
-                        return this.eventInvoice.paymentsCollected.reduce((a, b) => a + (b["amount"] || 0), 0)
-                    },
-                    get balanceOutstanding() {
-                        return this.total - this.paymentTotal
-                    },
-                    eventInvoice: {
-                        data: {
-                            invoiceNumber: 123456489,
-                            invoiceDate: '2021-04-21',
-                            eventDate: '2021-12-31',
-                            finalPaymentDue: '2021-12-01',
+                //         return total;
+                //     },
+                //     get paymentTotal() {
+                //         return this.eventInvoice.paymentsCollected.reduce((a, b) => a + (b["amount"] || 0), 0)
+                //     },
+                //     get balanceOutstanding() {
+                //         return this.total - this.paymentTotal
+                //     },
+                //     eventInvoice: {
+                //         data: {
+                //             invoiceNumber: 123456489,
+                //             invoiceDate: '2021-04-21',
+                //             eventDate: '2021-12-31',
+                //             finalPaymentDue: '2021-12-01',
                             
 
-                        },
-                        packages: [
+                //         },
+                //         packages: [
                             
-                            {
-                                name: "Holy Matrimony",
-                                priceOption: 'hourly',
-                                baseTime: 4,
-                                baseRate: 130000,
-                                addHourly: 10000,
-                            }
-                        ],
-                        services: [],
-                        addOns: [
-                            {
-                                name: 'Uplighting',
-                                priceOption: 'unit',
-                                unitPrice: 3000,
-                                eventUnits: 20,
-                            }
-                        ],
+                //             {
+                //                 name: "Holy Matrimony",
+                //                 priceOption: 'hourly',
+                //                 baseTime: 4,
+                //                 baseRate: 130000,
+                //                 addHourly: 10000,
+                //             }
+                //         ],
+                //         services: [],
+                //         addOns: [
+                //             {
+                //                 name: 'Uplighting',
+                //                 priceOption: 'unit',
+                //                 unitPrice: 3000,
+                //                 eventUnits: 20,
+                //             }
+                //         ],
                      
                         
-                        adjustments: [
-                            {
-                            name: 'Friends and Family',
-                            type: 'discount',
-                            amount: -20000,
-                            id: 123456789
-                            }
-                        ],
-                        paymentsCollected: [
-                            {
-                                referenceNumber: '123456789',
-                                source: 'Stripe',
-                                amount: 20000
-                            },
-                            {
-                                referenceNumber: '987654321',
-                                source: 'Stripe',
-                                amount: 20000
-                            },
-                        ],
-                    },
-                    eventLocations: [
-                        {
-                            locationId: 1
-                        }
-                    ],
+                //         adjustments: [
+                //             {
+                //             name: 'Friends and Family',
+                //             type: 'discount',
+                //             amount: -20000,
+                //             id: 123456789
+                //             }
+                //         ],
+                //         paymentsCollected: [
+                //             {
+                //                 referenceNumber: '123456789',
+                //                 source: 'Stripe',
+                //                 amount: 20000
+                //             },
+                //             {
+                //                 referenceNumber: '987654321',
+                //                 source: 'Stripe',
+                //                 amount: 20000
+                //             },
+                //         ],
+                //     },
+                //     eventLocations: [
+                //         {
+                //             locationId: 1
+                //         }
+                //     ],
                     
-                    eventStartTime: new Date(2021, 10, 30, 15, 15),
-                    eventEndTime: new Date(2021, 10, 30, 20, 30),
-                    get eventLength() {
-                        return (this.eventEndTime - this.eventStartTime) / 36e5
-                    },
-                    associatedContacts: [
-                        {
-                            id: 4, 
-                            role: 'client',
-                        },
-                        {
-                            id: 3, 
-                            role: 'client',
-                        },
-                    ],
+                //     eventStartTime: new Date(2021, 10, 30, 15, 15),
+                //     eventEndTime: new Date(2021, 10, 30, 20, 30),
+                //     get eventLength() {
+                //         return (this.eventEndTime - this.eventStartTime) / 36e5
+                //     },
+                //     associatedContacts: [
+                //         {
+                //             id: 4, 
+                //             role: 'client',
+                //         },
+                //         {
+                //             id: 3, 
+                //             role: 'client',
+                //         },
+                //     ],
 
-                    employeesNeeded: 2,
+                //     employeesNeeded: 2,
 
-                },
-                {
-                    id: 4,
-                    eventType: 'wedding',
-                    eventTitle: 'Wedding Package',
-                    get total() {
-                        let eventHours = this.eventLength
-                        let packageTotal = 0;
-                        let serviceTotal = 0;
-                        let addOnTotal = 0;
-                        let total = 0;
+                // },
+                // {
+                //     id: 4,
+                //     eventType: 'wedding',
+                //     eventTitle: 'Wedding Package',
+                //     get total() {
+                //         let eventHours = this.eventLength
+                //         let packageTotal = 0;
+                //         let serviceTotal = 0;
+                //         let addOnTotal = 0;
+                //         let total = 0;
                         
-                        this.eventInvoice.packages.forEach(element => {
-                            if (element.priceOption === "hourly") {
+                //         this.eventInvoice.packages.forEach(element => {
+                //             if (element.priceOption === "hourly") {
                
-                                if (element.baseTime < eventHours) {
-                                  let additionalHourly = eventHours - element.baseTime;
+                //                 if (element.baseTime < eventHours) {
+                //                   let additionalHourly = eventHours - element.baseTime;
 
-                                  packageTotal = packageTotal + (element.baseRate + element.addHourly * additionalHourly);
-                                }
-                                if (element.baseTime >= element.eventHours) {
-                                  packageTotal = packageTotal + element.baseRate;
-                                }
-                              }
-                              if (element.priceOption === 'flat') {
-                                  packageTotal = packageTotal + element.flatRate
-                              }
-                        });
-                        total = total + packageTotal;
+                //                   packageTotal = packageTotal + (element.baseRate + element.addHourly * additionalHourly);
+                //                 }
+                //                 if (element.baseTime >= element.eventHours) {
+                //                   packageTotal = packageTotal + element.baseRate;
+                //                 }
+                //               }
+                //               if (element.priceOption === 'flat') {
+                //                   packageTotal = packageTotal + element.flatRate
+                //               }
+                //         });
+                //         total = total + packageTotal;
 
 
-                        this.eventInvoice.services.forEach(element => {
-                            if (element.priceOption === "hourly") {
-                                if (element.baseTime < this.eventLength) {
-                                  let additionalHourly = element.eventHours - element.baseTime;
-                                  serviceTotal = element.baseRate + element.addHourly * additionalHourly;
-                                }
-                                if (element.baseTime >= element.eventHours) {
-                                  serviceTotal = element.baseRate;
-                                }
-                              }
-                              if (element.priceOption === 'flat') {
-                                  serviceTotal = packageTotal + element.flatRate
-                              }
-                        });
-                        total = total + serviceTotal;
+                //         this.eventInvoice.services.forEach(element => {
+                //             if (element.priceOption === "hourly") {
+                //                 if (element.baseTime < this.eventLength) {
+                //                   let additionalHourly = element.eventHours - element.baseTime;
+                //                   serviceTotal = element.baseRate + element.addHourly * additionalHourly;
+                //                 }
+                //                 if (element.baseTime >= element.eventHours) {
+                //                   serviceTotal = element.baseRate;
+                //                 }
+                //               }
+                //               if (element.priceOption === 'flat') {
+                //                   serviceTotal = packageTotal + element.flatRate
+                //               }
+                //         });
+                //         total = total + serviceTotal;
                         
-                        this.eventInvoice.addOns.forEach(element => {
-                            if (element.priceOption === "hourly") {
-                                addOnTotal = addOnTotal + element.hourlyPrice * eventHours
-                              }
-                              if (element.priceOption === 'flat') {
-                                  addOnTotal = addOnTotal + element.flatRate
-                              }
-                        });
-                        total = total + addOnTotal;
-                        let adjustments = this.eventInvoice.adjustments.reduce((a, b) => a + (b["amount"] || 0), 0)
-                        total = total + adjustments;
+                //         this.eventInvoice.addOns.forEach(element => {
+                //             if (element.priceOption === "hourly") {
+                //                 addOnTotal = addOnTotal + element.hourlyPrice * eventHours
+                //               }
+                //               if (element.priceOption === 'flat') {
+                //                   addOnTotal = addOnTotal + element.flatRate
+                //               }
+                //         });
+                //         total = total + addOnTotal;
+                //         let adjustments = this.eventInvoice.adjustments.reduce((a, b) => a + (b["amount"] || 0), 0)
+                //         total = total + adjustments;
 
-                        return total;
-                    },
-                    get paymentTotal() {
-                        return this.eventInvoice.paymentsCollected.reduce((a, b) => a + (b["amount"] || 0), 0)
-                    },
-                    get balanceOutstanding() {
-                        return this.total - this.paymentTotal
-                    },
-                    eventInvoice: {
-                        data: {
-                            invoiceNumber: 123456489,
-                            invoiceDate: '2021-04-21',
-                            eventDate: '2021-12-31',
-                            finalPaymentDue: '2021-12-01',
+                //         return total;
+                //     },
+                //     get paymentTotal() {
+                //         return this.eventInvoice.paymentsCollected.reduce((a, b) => a + (b["amount"] || 0), 0)
+                //     },
+                //     get balanceOutstanding() {
+                //         return this.total - this.paymentTotal
+                //     },
+                //     eventInvoice: {
+                //         data: {
+                //             invoiceNumber: 123456489,
+                //             invoiceDate: '2021-04-21',
+                //             eventDate: '2021-12-31',
+                //             finalPaymentDue: '2021-12-01',
                             
 
-                        },
-                        packages: [
+                //         },
+                //         packages: [
                             
-                            {
-                                name: "Holy Matrimony",
-                                priceOption: 'hourly',
-                                baseTime: 4,
-                                baseRate: 130000,
-                                addHourly: 10000,
-                            }
-                        ],
-                        services: [],
-                        addOns: [
-                            {
-                                name: 'Uplighting',
-                                priceOption: 'unit',
-                                unitPrice: 3000,
-                                eventUnits: 20,
-                            }
-                        ],
+                //             {
+                //                 name: "Holy Matrimony",
+                //                 priceOption: 'hourly',
+                //                 baseTime: 4,
+                //                 baseRate: 130000,
+                //                 addHourly: 10000,
+                //             }
+                //         ],
+                //         services: [],
+                //         addOns: [
+                //             {
+                //                 name: 'Uplighting',
+                //                 priceOption: 'unit',
+                //                 unitPrice: 3000,
+                //                 eventUnits: 20,
+                //             }
+                //         ],
                      
                         
-                        adjustments: [
-                            {
-                            name: 'Friends and Family',
-                            type: 'discount',
-                            amount: -20000,
-                            id: 123456789
-                            }
-                        ],
-                        paymentsCollected: [
-                            {
-                                referenceNumber: '123456789',
-                                source: 'Stripe',
-                                amount: 20000
-                            },
-                            {
-                                referenceNumber: '987654321',
-                                source: 'Stripe',
-                                amount: 20000
-                            },
-                        ],
-                    },
-                    eventLocations: [
-                        {
-                            locationId: 1
-                        }
-                    ],
+                //         adjustments: [
+                //             {
+                //             name: 'Friends and Family',
+                //             type: 'discount',
+                //             amount: -20000,
+                //             id: 123456789
+                //             }
+                //         ],
+                //         paymentsCollected: [
+                //             {
+                //                 referenceNumber: '123456789',
+                //                 source: 'Stripe',
+                //                 amount: 20000
+                //             },
+                //             {
+                //                 referenceNumber: '987654321',
+                //                 source: 'Stripe',
+                //                 amount: 20000
+                //             },
+                //         ],
+                //     },
+                //     eventLocations: [
+                //         {
+                //             locationId: 1
+                //         }
+                //     ],
                     
-                    eventStartTime: new Date(2021, 8, 20, 18, 15),
-                    eventEndTime: new Date(2021, 8, 20, 23, 30),
-                    get eventLength() {
+                //     eventStartTime: new Date(2021, 8, 20, 18, 15),
+                //     eventEndTime: new Date(2021, 8, 20, 23, 30),
+                //     get eventLength() {
 
-                        return (this.eventEndTime - this.eventStartTime) / 36e5
-                    },
-                    associatedContacts: [
-                        {
-                            id: 4, 
-                            role: 'client',
-                        },
-                        {
-                            id: 3, 
-                            role: 'client',
-                        },
-                    ],
-                    employeesNeeded: 2,
+                //         return (this.eventEndTime - this.eventStartTime) / 36e5
+                //     },
+                //     associatedContacts: [
+                //         {
+                //             id: 4, 
+                //             role: 'client',
+                //         },
+                //         {
+                //             id: 3, 
+                //             role: 'client',
+                //         },
+                //     ],
+                //     employeesNeeded: 2,
 
-                },
-                {
-                    id: 5,
-                    eventType: 'wedding',
-                    eventTitle: 'Wedding Package',
-                    get total() {
-                        let eventHours = this.eventLength
-                        let packageTotal = 0;
-                        let serviceTotal = 0;
-                        let addOnTotal = 0;
-                        let total = 0;
+                // },
+                // {
+                //     id: 5,
+                //     eventType: 'wedding',
+                //     eventTitle: 'Wedding Package',
+                //     get total() {
+                //         let eventHours = this.eventLength
+                //         let packageTotal = 0;
+                //         let serviceTotal = 0;
+                //         let addOnTotal = 0;
+                //         let total = 0;
                         
-                        this.eventInvoice.packages.forEach(element => {
-                            if (element.priceOption === "hourly") {
+                //         this.eventInvoice.packages.forEach(element => {
+                //             if (element.priceOption === "hourly") {
                
-                                if (element.baseTime < eventHours) {
-                                  let additionalHourly = eventHours - element.baseTime;
+                //                 if (element.baseTime < eventHours) {
+                //                   let additionalHourly = eventHours - element.baseTime;
 
-                                  packageTotal = packageTotal + (element.baseRate + element.addHourly * additionalHourly);
-                                }
-                                if (element.baseTime >= element.eventHours) {
-                                  packageTotal = packageTotal + element.baseRate;
-                                }
-                              }
-                              if (element.priceOption === 'flat') {
-                                  packageTotal = packageTotal + element.flatRate
-                              }
-                        });
-                        total = total + packageTotal;
+                //                   packageTotal = packageTotal + (element.baseRate + element.addHourly * additionalHourly);
+                //                 }
+                //                 if (element.baseTime >= element.eventHours) {
+                //                   packageTotal = packageTotal + element.baseRate;
+                //                 }
+                //               }
+                //               if (element.priceOption === 'flat') {
+                //                   packageTotal = packageTotal + element.flatRate
+                //               }
+                //         });
+                //         total = total + packageTotal;
 
 
-                        this.eventInvoice.services.forEach(element => {
-                            if (element.priceOption === "hourly") {
-                                if (element.baseTime < this.eventLength) {
-                                  let additionalHourly = element.eventHours - element.baseTime;
-                                  serviceTotal = element.baseRate + element.addHourly * additionalHourly;
-                                }
-                                if (element.baseTime >= element.eventHours) {
-                                  serviceTotal = element.baseRate;
-                                }
-                              }
-                              if (element.priceOption === 'flat') {
-                                  serviceTotal = packageTotal + element.flatRate
-                              }
-                        });
-                        total = total + serviceTotal;
+                //         this.eventInvoice.services.forEach(element => {
+                //             if (element.priceOption === "hourly") {
+                //                 if (element.baseTime < this.eventLength) {
+                //                   let additionalHourly = element.eventHours - element.baseTime;
+                //                   serviceTotal = element.baseRate + element.addHourly * additionalHourly;
+                //                 }
+                //                 if (element.baseTime >= element.eventHours) {
+                //                   serviceTotal = element.baseRate;
+                //                 }
+                //               }
+                //               if (element.priceOption === 'flat') {
+                //                   serviceTotal = packageTotal + element.flatRate
+                //               }
+                //         });
+                //         total = total + serviceTotal;
                         
-                        this.eventInvoice.addOns.forEach(element => {
-                            if (element.priceOption === "hourly") {
-                                addOnTotal = addOnTotal + element.hourlyPrice * eventHours
-                              }
-                              if (element.priceOption === 'flat') {
-                                  addOnTotal = addOnTotal + element.flatRate
-                              }
-                        });
-                        total = total + addOnTotal;
-                        let adjustments = this.eventInvoice.adjustments.reduce((a, b) => a + (b["amount"] || 0), 0)
-                        total = total + adjustments;
+                //         this.eventInvoice.addOns.forEach(element => {
+                //             if (element.priceOption === "hourly") {
+                //                 addOnTotal = addOnTotal + element.hourlyPrice * eventHours
+                //               }
+                //               if (element.priceOption === 'flat') {
+                //                   addOnTotal = addOnTotal + element.flatRate
+                //               }
+                //         });
+                //         total = total + addOnTotal;
+                //         let adjustments = this.eventInvoice.adjustments.reduce((a, b) => a + (b["amount"] || 0), 0)
+                //         total = total + adjustments;
 
-                        return total;
-                    },
-                    get paymentTotal() {
-                        return this.eventInvoice.paymentsCollected.reduce((a, b) => a + (b["amount"] || 0), 0)
-                    },
-                    get balanceOutstanding() {
-                        return this.total - this.paymentTotal
-                    },
-                    eventInvoice: {
-                        data: {
-                            invoiceNumber: 123456489,
-                            invoiceDate: '2021-04-21',
-                            eventDate: '2021-12-31',
-                            finalPaymentDue: '2021-12-01',
+                //         return total;
+                //     },
+                //     get paymentTotal() {
+                //         return this.eventInvoice.paymentsCollected.reduce((a, b) => a + (b["amount"] || 0), 0)
+                //     },
+                //     get balanceOutstanding() {
+                //         return this.total - this.paymentTotal
+                //     },
+                //     eventInvoice: {
+                //         data: {
+                //             invoiceNumber: 123456489,
+                //             invoiceDate: '2021-04-21',
+                //             eventDate: '2021-12-31',
+                //             finalPaymentDue: '2021-12-01',
                             
 
-                        },
-                        packages: [
+                //         },
+                //         packages: [
                             
-                            {
-                                name: "Holy Matrimony",
-                                priceOption: 'hourly',
-                                baseTime: 4,
-                                baseRate: 130000,
-                                addHourly: 10000,
-                            }
-                        ],
-                        services: [],
-                        addOns: [
-                            {
-                                name: 'Uplighting',
-                                priceOption: 'unit',
-                                unitPrice: 3000,
-                                eventUnits: 20,
-                            }
-                        ],
+                //             {
+                //                 name: "Holy Matrimony",
+                //                 priceOption: 'hourly',
+                //                 baseTime: 4,
+                //                 baseRate: 130000,
+                //                 addHourly: 10000,
+                //             }
+                //         ],
+                //         services: [],
+                //         addOns: [
+                //             {
+                //                 name: 'Uplighting',
+                //                 priceOption: 'unit',
+                //                 unitPrice: 3000,
+                //                 eventUnits: 20,
+                //             }
+                //         ],
                      
                         
-                        adjustments: [
-                            {
-                            name: 'Friends and Family',
-                            type: 'discount',
-                            amount: -20000,
-                            id: 123456789
-                            }
-                        ],
-                        paymentsCollected: [
-                            {
-                                referenceNumber: '123456789',
-                                source: 'Stripe',
-                                amount: 20000
-                            },
-                            {
-                                referenceNumber: '987654321',
-                                source: 'Stripe',
-                                amount: 20000
-                            },
-                        ],
-                    },
-                    eventLocations: [
-                        {
-                            locationId: 1
-                        }
-                    ],
-                    eventStartTime: new Date(2021, 9, 25, 18, 15),
-                    eventEndTime: new Date(2021, 9, 25, 23, 30),
-                    get eventLength() {
-                        return (this.eventEndTime - this.eventStartTime) / 36e5
-                    },
-                    associatedContacts: [
-                        {
-                            id: 5, 
-                            role: 'client',
-                        },
-                        {
-                            id: 6, 
-                            role: 'client',
-                        },
-                    ],
-                    employeesNeeded: 2,
+                //         adjustments: [
+                //             {
+                //             name: 'Friends and Family',
+                //             type: 'discount',
+                //             amount: -20000,
+                //             id: 123456789
+                //             }
+                //         ],
+                //         paymentsCollected: [
+                //             {
+                //                 referenceNumber: '123456789',
+                //                 source: 'Stripe',
+                //                 amount: 20000
+                //             },
+                //             {
+                //                 referenceNumber: '987654321',
+                //                 source: 'Stripe',
+                //                 amount: 20000
+                //             },
+                //         ],
+                //     },
+                //     eventLocations: [
+                //         {
+                //             locationId: 1
+                //         }
+                //     ],
+                //     eventStartTime: new Date(2021, 9, 25, 18, 15),
+                //     eventEndTime: new Date(2021, 9, 25, 23, 30),
+                //     get eventLength() {
+                //         return (this.eventEndTime - this.eventStartTime) / 36e5
+                //     },
+                //     associatedContacts: [
+                //         {
+                //             id: 5, 
+                //             role: 'client',
+                //         },
+                //         {
+                //             id: 6, 
+                //             role: 'client',
+                //         },
+                //     ],
+                //     employeesNeeded: 2,
 
-                },
-                {
-                    id: 6,
-                    eventType: 'wedding',
-                    eventTitle: 'Wedding Package',
-                    get total() {
-                        let eventHours = this.eventLength
-                        let packageTotal = 0;
-                        let serviceTotal = 0;
-                        let addOnTotal = 0;
-                        let total = 0;
+                // },
+                // {
+                //     id: 6,
+                //     eventType: 'wedding',
+                //     eventTitle: 'Wedding Package',
+                //     get total() {
+                //         let eventHours = this.eventLength
+                //         let packageTotal = 0;
+                //         let serviceTotal = 0;
+                //         let addOnTotal = 0;
+                //         let total = 0;
                         
-                        this.eventInvoice.packages.forEach(element => {
-                            if (element.priceOption === "hourly") {
+                //         this.eventInvoice.packages.forEach(element => {
+                //             if (element.priceOption === "hourly") {
                
-                                if (element.baseTime < eventHours) {
-                                  let additionalHourly = eventHours - element.baseTime;
+                //                 if (element.baseTime < eventHours) {
+                //                   let additionalHourly = eventHours - element.baseTime;
 
-                                  packageTotal = packageTotal + (element.baseRate + element.addHourly * additionalHourly);
-                                }
-                                if (element.baseTime >= element.eventHours) {
-                                  packageTotal = packageTotal + element.baseRate;
-                                }
-                              }
-                              if (element.priceOption === 'flat') {
-                                  packageTotal = packageTotal + element.flatRate
-                              }
-                        });
-                        total = total + packageTotal;
+                //                   packageTotal = packageTotal + (element.baseRate + element.addHourly * additionalHourly);
+                //                 }
+                //                 if (element.baseTime >= element.eventHours) {
+                //                   packageTotal = packageTotal + element.baseRate;
+                //                 }
+                //               }
+                //               if (element.priceOption === 'flat') {
+                //                   packageTotal = packageTotal + element.flatRate
+                //               }
+                //         });
+                //         total = total + packageTotal;
 
 
-                        this.eventInvoice.services.forEach(element => {
-                            if (element.priceOption === "hourly") {
-                                if (element.baseTime < this.eventLength) {
-                                  let additionalHourly = element.eventHours - element.baseTime;
-                                  serviceTotal = element.baseRate + element.addHourly * additionalHourly;
-                                }
-                                if (element.baseTime >= element.eventHours) {
-                                  serviceTotal = element.baseRate;
-                                }
-                              }
-                              if (element.priceOption === 'flat') {
-                                  serviceTotal = packageTotal + element.flatRate
-                              }
-                        });
-                        total = total + serviceTotal;
+                //         this.eventInvoice.services.forEach(element => {
+                //             if (element.priceOption === "hourly") {
+                //                 if (element.baseTime < this.eventLength) {
+                //                   let additionalHourly = element.eventHours - element.baseTime;
+                //                   serviceTotal = element.baseRate + element.addHourly * additionalHourly;
+                //                 }
+                //                 if (element.baseTime >= element.eventHours) {
+                //                   serviceTotal = element.baseRate;
+                //                 }
+                //               }
+                //               if (element.priceOption === 'flat') {
+                //                   serviceTotal = packageTotal + element.flatRate
+                //               }
+                //         });
+                //         total = total + serviceTotal;
                         
-                        this.eventInvoice.addOns.forEach(element => {
-                            if (element.priceOption === "hourly") {
-                                addOnTotal = addOnTotal + element.hourlyPrice * eventHours
-                              }
-                              if (element.priceOption === 'flat') {
-                                  addOnTotal = addOnTotal + element.flatRate
-                              }
-                        });
-                        total = total + addOnTotal;
-                        let adjustments = this.eventInvoice.adjustments.reduce((a, b) => a + (b["amount"] || 0), 0)
-                        total = total + adjustments;
+                //         this.eventInvoice.addOns.forEach(element => {
+                //             if (element.priceOption === "hourly") {
+                //                 addOnTotal = addOnTotal + element.hourlyPrice * eventHours
+                //               }
+                //               if (element.priceOption === 'flat') {
+                //                   addOnTotal = addOnTotal + element.flatRate
+                //               }
+                //         });
+                //         total = total + addOnTotal;
+                //         let adjustments = this.eventInvoice.adjustments.reduce((a, b) => a + (b["amount"] || 0), 0)
+                //         total = total + adjustments;
 
-                        return total;
-                    },
-                    get paymentTotal() {
-                        return this.eventInvoice.paymentsCollected.reduce((a, b) => a + (b["amount"] || 0), 0)
-                    },
-                    get balanceOutstanding() {
-                        return this.total - this.paymentTotal
-                    },
-                    eventInvoice: {
-                        data: {
-                            invoiceNumber: 123456489,
-                            invoiceDate: '2021-04-21',
-                            eventDate: '2021-12-31',
-                            finalPaymentDue: '2021-12-01',
+                //         return total;
+                //     },
+                //     get paymentTotal() {
+                //         return this.eventInvoice.paymentsCollected.reduce((a, b) => a + (b["amount"] || 0), 0)
+                //     },
+                //     get balanceOutstanding() {
+                //         return this.total - this.paymentTotal
+                //     },
+                //     eventInvoice: {
+                //         data: {
+                //             invoiceNumber: 123456489,
+                //             invoiceDate: '2021-04-21',
+                //             eventDate: '2021-12-31',
+                //             finalPaymentDue: '2021-12-01',
                             
 
-                        },
-                        packages: [
+                //         },
+                //         packages: [
                             
-                            {
-                                name: "Holy Matrimony",
-                                priceOption: 'hourly',
-                                baseTime: 4,
-                                baseRate: 130000,
-                                addHourly: 10000,
-                            }
-                        ],
-                        services: [],
-                        addOns: [
-                            {
-                                name: 'Uplighting',
-                                priceOption: 'unit',
-                                unitPrice: 3000,
-                                eventUnits: 20,
-                            }
-                        ],
+                //             {
+                //                 name: "Holy Matrimony",
+                //                 priceOption: 'hourly',
+                //                 baseTime: 4,
+                //                 baseRate: 130000,
+                //                 addHourly: 10000,
+                //             }
+                //         ],
+                //         services: [],
+                //         addOns: [
+                //             {
+                //                 name: 'Uplighting',
+                //                 priceOption: 'unit',
+                //                 unitPrice: 3000,
+                //                 eventUnits: 20,
+                //             }
+                //         ],
                      
                         
-                        adjustments: [
-                            {
-                            name: 'Friends and Family',
-                            type: 'discount',
-                            amount: -20000,
-                            id: 123456789
-                            }
-                        ],
-                        paymentsCollected: [
-                            {
-                                referenceNumber: '123456789',
-                                source: 'Stripe',
-                                amount: 20000
-                            },
-                            {
-                                referenceNumber: '987654321',
-                                source: 'Stripe',
-                                amount: 20000
-                            },
-                        ],
-                    },
-                    eventLocations: [
-                        {
-                            locationId: 1
-                        }
-                    ],
-                    eventStartTime: new Date(2021, 9, 25, 18, 15),
-                    eventEndTime: new Date(2021, 9, 25, 23, 30),
-                    get eventLength() {
-                        return (this.eventEndTime - this.eventStartTime) / 36e5
-                    },
-                    associatedContacts: [
-                        {
-                            id: 1, 
-                            role: 'client',
-                        },
-                        {
-                            id: 2, 
-                            role: 'client',
-                        },
-                    ],
-                }
+                //         adjustments: [
+                //             {
+                //             name: 'Friends and Family',
+                //             type: 'discount',
+                //             amount: -20000,
+                //             id: 123456789
+                //             }
+                //         ],
+                //         paymentsCollected: [
+                //             {
+                //                 referenceNumber: '123456789',
+                //                 source: 'Stripe',
+                //                 amount: 20000
+                //             },
+                //             {
+                //                 referenceNumber: '987654321',
+                //                 source: 'Stripe',
+                //                 amount: 20000
+                //             },
+                //         ],
+                //     },
+                //     eventLocations: [
+                //         {
+                //             locationId: 1
+                //         }
+                //     ],
+                //     eventStartTime: new Date(2021, 9, 25, 18, 15),
+                //     eventEndTime: new Date(2021, 9, 25, 23, 30),
+                //     get eventLength() {
+                //         return (this.eventEndTime - this.eventStartTime) / 36e5
+                //     },
+                //     associatedContacts: [
+                //         {
+                //             id: 1, 
+                //             role: 'client',
+                //         },
+                //         {
+                //             id: 2, 
+                //             role: 'client',
+                //         },
+                //     ],
+                // }
             ],
             
             businessSettings: {
@@ -2197,7 +2197,6 @@ const store = createStore({
     actions: {
         setUser(context, user) {
             axios.get(`https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/admin/${user}/users/${user}`).then(response => {
-                console.log(response);
                 context.commit('setUser', response.data.Item);
             }).then(() => {
             })
@@ -2209,16 +2208,13 @@ const store = createStore({
             context.commit('clearErrors');
         },
         getAdminUsers(context) {
-          
-            console.log(context.state);
 
-            axios.get(`https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/admin/${context.state.user.tenantId}/users`).then(response => {
-            console.log(response);    
+            axios.get(`https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/admin/${context.state.user.tenantId}/users`).then(response => {    
             context.commit('setClients', response.data.Items.filter(x => x.role === 'client'));
             context.commit('setEmployees', response.data.Items.filter(x => x.role === 'employee'));
             context.commit('setOrganizers', response.data.Items.filter(x => x.role === 'organizer'));
             context.commit('setVendors', response.data.Items.filter(x => x.role === 'vendor'));
-            });
+            }).catch(e => context.commit('addError', `Error: ${e}`));
             
         },
         async addContact( context, contact) {
@@ -2229,7 +2225,7 @@ const store = createStore({
               .then((result) => {
                 console.log(result.data);
                 context.commit('addContact', result.data);
-              });
+              }).catch(e => context.commit('addError', `Error: ${e}`));
         },
         
         addLocation( context, location) {
@@ -2308,7 +2304,6 @@ const store = createStore({
     mutations: {
         setUser(state, user) {
             state.user = user;
-            console.log(state.user);
         },
         addError(state, error) {
             state.errors.push(error);
@@ -2318,7 +2313,6 @@ const store = createStore({
         },
         setClients(state, payload) {
             state.contacts.clients = payload;
-            console.log(state.contacts);
         },
         setEmployees(state, payload) {
             state.contacts.employees = payload;
@@ -2480,7 +2474,9 @@ const store = createStore({
     getters: {
 
     },
-    plugins: [createPersistedState()]
+    plugins: [createPersistedState({
+        paths: ['user']
+    })]
     
 });
 

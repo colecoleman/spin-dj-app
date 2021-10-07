@@ -93,7 +93,6 @@ export default {
       }
       if (Object.values(this.errors).every((item) => item === false)) {
         this.$store.dispatch("addContact", this.client);
-        console.log(this.client);
         this.client = {
           sendInvitation: true,
           role: "client",

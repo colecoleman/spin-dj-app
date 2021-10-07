@@ -222,6 +222,7 @@ export default {
         await Auth.confirmSignUp(user.username, code);
         this.$router.push("/setup");
       } catch (error) {
+        this.$store.dispatch("addError", `Error signing up: ${error}`);
         console.log("error confirming sign up", error);
       }
     },
