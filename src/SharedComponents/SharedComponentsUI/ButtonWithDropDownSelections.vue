@@ -56,11 +56,8 @@ export default {
   justify-content: center;
   text-transform: uppercase;
   width: 100%;
-  border: 1px solid var(--textcolor);
+  border: 1px solid var(--textColor);
   border-radius: 7px;
-  fill: white;
-  /* z-index: 2; */
-  /* position: relative; */
 }
 
 .primary-container > img {
@@ -75,7 +72,7 @@ export default {
 
 .active {
   background-color: var(--foregroundColor);
-  color: var(--textcolor);
+  color: var(--textColor);
   z-index: 3;
   position: absolute;
 }

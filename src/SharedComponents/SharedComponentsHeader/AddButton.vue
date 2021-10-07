@@ -1,7 +1,7 @@
 <template>
   <div
     id="add-button"
-    @click="toggleClick()"
+    @click="isClicked = !isClicked"
     @mousedown.prevent=""
     :class="isClicked ? `` : `pointer`"
   >
@@ -43,7 +43,6 @@
 <script>
 import plusButton from "../../assets/SVGs/plus-sign.svg";
 
-// import BaseCardNoHeading from "../UI/BaseCardNoHeading.vue";
 export default {
   data() {
     return {
@@ -51,32 +50,14 @@ export default {
       isClicked: false,
     };
   },
-  methods: {
-    toggleClick() {
-      this.isClicked = !this.isClicked;
-    },
-  },
-  computed: {
-    clickHandler() {
-      return this.isClicked === true ? "clicked" : "unclicked";
-    },
-  },
-
 };
 </script>
 
 <style scoped>
 img {
-  position: absolute;
-  width: 24px;
-  height: 24px;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  margin: auto;
-  height: 20px;
-  z-index: 12;
+  width: 35%;
+  height: 35%;
+  margin: 32.5%;
 }
 
 #new-container {
@@ -85,7 +66,6 @@ img {
 }
 
 h4 {
-  color: var(--textColor);
   text-decoration: none;
 }
 
@@ -104,7 +84,7 @@ h4:hover {
   background-color: var(--foregroundColor);
   border: 1px solid var(--cardOutline);
   border-radius: 25px;
-  z-index: 3;
+  z-index: 2;
   cursor: default;
 }
 
@@ -112,9 +92,6 @@ ul {
   list-style: none;
   padding: 5px;
   margin: 0;
-  z-index: 2;
-  width: 100%;
-  height: 100%;
 }
 
 .pointer {
@@ -137,21 +114,17 @@ ul {
 
 #add-button {
   cursor: pointer;
-  display: inline;
   position: relative;
   max-width: 60px;
   height: 60px;
   background-color: var(--foregroundColor);
   border: 1px solid var(--cardOutline);
   border-radius: 50px;
-  margin: 10px;
-  flex: 1;
 }
 
 .clicked {
   transform: rotate(315deg);
   transition-duration: 0.5s;
-  fill: black;
 }
 
 .unclicked {
@@ -178,17 +151,11 @@ ul {
   from {
     opacity: 0;
   }
-  to {
-    opacity: 0.5;
-  }
 }
 
 @keyframes fade1 {
   from {
     opacity: 0;
-  }
-  to {
-    opacity: 1;
   }
 }
 </style>
