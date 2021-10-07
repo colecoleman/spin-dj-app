@@ -3,7 +3,7 @@
     <template v-slot:action1>
       <div class="right-title-parent">
         <h4 @click="floatingMenuOpen = !floatingMenuOpen">
-          {{ `${displayedMonth + ", "}` }} {{ masterYear }}
+          {{ `${monthArray[masterMonth] + ", "}` }} {{ masterYear }}
         </h4>
         <dual-side-floating-menu-with-list-items
           :actions="floatingIconActions"
@@ -17,25 +17,12 @@
     <template v-slot:title>Calendar</template>
     <template v-slot:content>
       <div id="base-container">
-        <!-- <time-selector
-          v-if="timeSelectorOpen && !singleDayViewOpen"
-          :months="monthArray"
-          :chosen-month="displayedMonth"
-          :chosen-year="masterYear"
-          :initial-year="INITIAL_YEAR"
-          @toggle-month-selector="toggleMonthSelector"
-          @select-month="newMonthSelected"
-          @select-year="newYearSelected"
-        ></time-selector> -->
         <single-day-view
-          v-if="singleDayViewOpen && !timeSelectorOpen"
+          v-if="singleDayViewOpen"
           :date="singleDayChosen"
           :events="events"
         ></single-day-view>
-        <div
-          id="calendar-container"
-          v-if="!timeSelectorOpen && !singleDayViewOpen"
-        >
+        <div id="calendar-container" v-if="!singleDayViewOpen">
           <div class="month-heading" @click="toggleMonthSelector"></div>
           <div id="body">
             <div
@@ -85,8 +72,6 @@
 </template>
 
 <script>
-import dayjs from "dayjs";
-// import TimeSelector from "./TimeSelector.vue";
 import SingleDayView from "./SingleDayView/SingleDayView.vue";
 import DualSideFloatingMenuWithListItems from "../SharedComponentsUI/DualSideFloatingMenuWithListItems.vue";
 
@@ -163,85 +148,21 @@ export default {
   },
   methods: {
     getNumberOfDaysInMonth: function (year, month) {
-      return dayjs(`${year}-${month}-01`).daysInMonth();
-    },
-    createDaysForCurrentMonth: function (year, month, today) {
-      return [...Array(this.getNumberOfDaysInMonth(year, month, today))].map(
-        (day, index) => {
-          return {
-            date: dayjs(`${year}-${month}-${index + 1}`).format("YYYY-MM-DD"),
-            get UTC() {
-              let ms = Date.parse(
-                dayjs(`${year}-${month}-${index + 2}`).format("YYYY-MM-DD")
-              );
-              let item = new Date(ms);
-              return item;
-            },
-            dayOfMonth: index + 1,
-            isCurrentMonth: true,
-          };
-        }
-      );
-    },
-    createDaysForPreviousMonth: function (year, month) {
-      let firstDayOfTheMonthWeekday = this.getWeekday(
-        this.currentMonthDays[1].date
-      );
-      const previousMonth = dayjs(`${year}-${month}-01`).subtract(1, "month");
-      const visibleNumberOfDaysFromPreviousMonth = firstDayOfTheMonthWeekday
-        ? firstDayOfTheMonthWeekday - 1
-        : 6;
-      const previousMonthLastMondayDayOfMonth = dayjs(
-        this.currentMonthDays[0].date
-      )
-        .subtract(visibleNumberOfDaysFromPreviousMonth, "day")
-        .date();
-
-      return [...Array(visibleNumberOfDaysFromPreviousMonth)].map(
-        (day, index) => {
-          return {
-            date: dayjs(
-              `${previousMonth.year()}-${previousMonth.month() + 1}-${
-                previousMonthLastMondayDayOfMonth + index
-              }`
-            ).format("YYYY-MM-DD"),
-            dayOfMonth: previousMonthLastMondayDayOfMonth + index,
-            isCurrentMonth: false,
-          };
-        }
-      );
-    },
-    createDaysForNextMonth: function (year, month) {
-      const lastDayOfTheMonthWeekday = this.getWeekday(
-        `${year}-${month}-${this.currentMonthDays.length + 1}`
-      );
-      const nextMonth = dayjs(`${year}-${month}-01`).add(1, "month");
-      const visibleNumberOfDaysFromNextMonth = lastDayOfTheMonthWeekday
-        ? 7 - lastDayOfTheMonthWeekday
-        : lastDayOfTheMonthWeekday;
-      return [...Array(visibleNumberOfDaysFromNextMonth)].map((day, index) => {
-        return {
-          date: dayjs(
-            `${nextMonth.year()}-${nextMonth.month() + 1}-${index + 1}`
-          ).format("YYYY-MM-DD"),
-          dayOfMonth: index + 1,
-          isCurrentMonth: false,
-        };
-      });
+      return new Date(year, month + 1, 0).getDate();
     },
     getWeekday(date) {
-      return dayjs(date).weekday();
+      return date.getDay();
     },
     monthChange(direction) {
       let count = this.masterMonth;
       let yearCount = this.yearChangeCount;
       const countGuards = function () {
-        if (count < 1) {
-          count = 12;
+        if (count < 0) {
+          count = 11;
           yearCount--;
         }
-        if (count > 12) {
-          count = 1;
+        if (count > 11) {
+          count = 0;
           yearCount++;
         }
       };
@@ -266,44 +187,28 @@ export default {
       this.masterYear = year;
     },
     selectDay(day) {
-      this.singleDayChosen = day.UTC;
+      this.singleDayChosen = day.date;
       this.singleDayViewOpen = true;
     },
     newTimeframeSelected(selections) {
-      if (selections.right !== undefined) {
+      if (selections.left !== undefined) {
         this.masterYear = selections.left;
       }
       if (selections.right !== undefined) {
-        this.masterMonth = selections.right + 1;
+        this.masterMonth = selections.right;
       }
       this.floatingMenuOpen = false;
     },
   },
   computed: {
-    //establishing data
+    today() {
+      return new Date();
+    },
     INITIAL_YEAR: function () {
-      let year = parseInt(dayjs().format("YYYY"));
-      return year;
+      return this.today.getFullYear();
     },
     INITIAL_MONTH: function () {
-      let month = parseInt(dayjs().format("M"));
-      return month;
-    },
-    TODAY: function () {
-      let day = dayjs().format("YYYY-MM-DD");
-      return day;
-    },
-    changeableMonth: function () {
-      return parseInt(this.INITIAL_MONTH + this.monthChangeCount);
-    },
-    changeableYear: function () {
-      return parseInt(this.INITIAL_YEAR + this.yearChangeCount);
-    },
-    selectedMonth: function () {
-      return this.monthSelection();
-    },
-    displayedMonth: function () {
-      return this.monthArray[this.masterMonth - 1];
+      return this.today.getMonth();
     },
     surroundingYears() {
       let array = [];
@@ -324,11 +229,7 @@ export default {
     },
     events() {
       if (this.$store.state.events.length > 0) {
-        return this.$store.state.events.filter((event) => {
-          if (event.eventStartTime) {
-            // return event.eventStartTime.getMonth() === this.masterMonth - 1;
-          }
-        });
+        return this.$store.state.events;
       } else {
         return [];
       }
@@ -338,30 +239,77 @@ export default {
     },
     // used to establish the dates shown on calendar
     currentMonthDays: function () {
-      var currentDays = this.createDaysForCurrentMonth(
-        this.masterYear,
-        this.masterMonth,
-        this.TODAY
+      let year = this.masterYear;
+      let month = this.masterMonth;
+      let eventDays = this.daysWithEvents;
+      return [...Array(this.getNumberOfDaysInMonth(year, month))].map(
+        (day, index) => {
+          return {
+            date: new Date(year, month, index + 1),
+            dayOfMonth: index + 1,
+            isCurrentMonth: true,
+            get isCurrentDay() {
+              if (this.date.toDateString() === new Date().toDateString()) {
+                return true;
+              } else {
+                return false;
+              }
+            },
+            get hasEvents() {
+              if (eventDays.includes(this.dayOfMonth)) {
+                return true;
+              } else {
+                return false;
+              }
+            },
+          };
+        }
       );
-      currentDays.forEach((day) => {
-        if (day.date === this.TODAY) {
-          day.isCurrentDay = true;
-        } else {
-          day.isCurrentDay = false;
-        }
-        if (this.daysWithEvents.includes(day.dayOfMonth)) {
-          day.hasEvents = true;
-        } else {
-          day.hasEvents = false;
-        }
-      });
-      return currentDays;
     },
     previousMonthDays: function () {
-      return this.createDaysForPreviousMonth(this.masterYear, this.masterMonth);
+      let year = this.masterYear;
+      let month = this.masterMonth - 1;
+      let firstDayOfTheMonthWeekday = this.getWeekday(
+        this.currentMonthDays[1].date
+      );
+      const visibleNumberOfDaysFromPreviousMonth = firstDayOfTheMonthWeekday
+        ? firstDayOfTheMonthWeekday - 1
+        : 6;
+      const previousMonthLastMondayDayOfMonth = new Date(
+        year,
+        month,
+        `${0 - visibleNumberOfDaysFromPreviousMonth}`
+      ).getDate();
+      return [...Array(visibleNumberOfDaysFromPreviousMonth)].map(
+        (day, index) => {
+          return {
+            date: new Date(
+              year,
+              month,
+              previousMonthLastMondayDayOfMonth + index
+            ),
+            dayOfMonth: previousMonthLastMondayDayOfMonth + index,
+            isCurrentMonth: false,
+          };
+        }
+      );
     },
     nextMonthDays: function () {
-      return this.createDaysForNextMonth(this.masterYear, this.masterMonth);
+      let year = this.masterYear;
+      let month = this.masterMonth + 1;
+      const lastDayOfTheMonthWeekday = this.getWeekday(
+        this.currentMonthDays[this.currentMonthDays.length - 1].date
+      );
+      const visibleNumberOfDaysFromNextMonth = lastDayOfTheMonthWeekday
+        ? 6 - lastDayOfTheMonthWeekday
+        : 6;
+      return [...Array(visibleNumberOfDaysFromNextMonth)].map((day, index) => {
+        return {
+          date: new Date(year, month, index + 1),
+          dayOfMonth: index + 1,
+          isCurrentMonth: false,
+        };
+      });
     },
     days() {
       return [

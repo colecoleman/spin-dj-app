@@ -15,7 +15,7 @@
         v-for="(action, index) in actions.right"
         :key="index"
         @click="selectRight(index)"
-        :class="index === currentRightSelected - 1 ? 'selected' : ''"
+        :class="index === currentRightSelected ? 'selected' : ''"
       >
         {{ action }}
       </p>
