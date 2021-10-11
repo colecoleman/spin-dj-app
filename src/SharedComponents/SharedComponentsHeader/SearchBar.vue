@@ -22,7 +22,6 @@ input {
   color: var(--textcolor);
   background: none;
   border: none;
-  font-family: montserrat, sans-serif;
   font-weight: 600;
   font-size: 1em;
   opacity: 1;

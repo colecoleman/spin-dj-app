@@ -38,7 +38,6 @@ export default {
       //     labels: {
       //       style: {
       //         colors: "#ffffff",
-      //         fontFamily: "montserrat, arial, sans-serif",
       //         fontWeight: 600,
       //       },
       //     },
@@ -63,7 +62,6 @@ export default {
       //       rotateAlways: false,
       //       style: {
       //         colors: "#ffffff",
-      //         fontFamily: "montserrat, arial, sans-serif",
       //         fontWeight: 600,
       //       },
       //     },
@@ -113,8 +111,6 @@ export default {
           labels: {
             style: {
               colors: [this.brandingPreferences.textColor],
-
-              fontFamily: "montserrat, arial, sans-serif",
               fontWeight: 600,
             },
           },
@@ -140,7 +136,6 @@ export default {
             style: {
               colors: [this.brandingPreferences.textColor],
 
-              fontFamily: "montserrat, arial, sans-serif",
               fontWeight: 600,
             },
           },

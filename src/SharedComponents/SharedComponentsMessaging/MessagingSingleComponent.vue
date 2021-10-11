@@ -136,7 +136,7 @@ input {
   width: 95%;
   border-radius: 10px;
   height: 20px;
-  font-family: Montserrat, sans-serif;
+
   padding-left: 20px;
 }
 

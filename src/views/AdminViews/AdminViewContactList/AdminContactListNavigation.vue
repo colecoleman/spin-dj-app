@@ -53,12 +53,12 @@ li {
   text-transform: uppercase;
   font-size: 12pt;
   list-style: none;
-  font-family: Montserrat, arial, sans-serif;
+
   font-weight: 600;
 }
 
 a {
-  font-family: Montserrat, Helvetica, sans-serif;
+
   text-decoration: none;
   color: white;
   font-weight: 700;

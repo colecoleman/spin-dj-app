@@ -126,7 +126,6 @@ h5 {
 input {
   background-color: black;
   color: white;
-  font-family: Montserrat, sans-serif;
   border: none;
   border-bottom: 1px solid white;
   width: 80%;

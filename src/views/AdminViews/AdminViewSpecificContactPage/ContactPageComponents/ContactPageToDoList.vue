@@ -120,7 +120,6 @@ input {
   border: none;
   border-bottom: 1px solid gray;
   color: var(--textColor);
-  font-family: Montserrat, sans-serif;
 }
 
 input:active,
