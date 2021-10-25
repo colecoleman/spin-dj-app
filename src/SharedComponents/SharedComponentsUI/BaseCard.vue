@@ -1,14 +1,16 @@
 <template>
   <div class="card">
     <div id="heading">
-      <img :src="icon" alt="" />
+      <img v-if="icon" :src="icon" alt="" />
       <slot name="icon"></slot>
       <h3>
         <slot name="title"></slot>
       </h3>
       <div class="right-top">
-        <slot name="action1" class="right-top"></slot>
-        <img :src="actionIcon" alt="" />
+        <h4>
+          <slot name="action1" class="right-top"></slot>
+        </h4>
+        <img v-if="actionIcon" :src="actionIcon" alt="" />
       </div>
     </div>
     <div id="content">
@@ -69,12 +71,12 @@ img {
   flex-direction: row;
   align-items: center;
   text-transform: uppercase;
-  font-size: 13px;
   margin-bottom: 10px;
 }
 
-h3 {
-  font-size: 10pt;
+h3,
+h4 {
+  font-size: 11pt;
   margin: 0 0 0 10px;
 }
 
