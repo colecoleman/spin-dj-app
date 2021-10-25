@@ -278,19 +278,13 @@ export default {
 
 <style scoped>
 #side-wrapper {
-  margin: 0;
+  /* margin: 0; */
   height: 100%;
-  min-width: 20%;
   display: flex;
   flex-direction: column;
 }
 #navigation-wrapper {
   height: 100%;
-  padding-bottom: 10px;
-}
-
-#contact-container {
-  flex-direction: row;
 }
 
 #contact-us-logo-svg {
@@ -312,6 +306,7 @@ h3 {
   font-weight: 200;
   text-transform: uppercase;
   text-decoration: none;
+  text-align: right;
 }
 p {
   font-size: 5pt;
