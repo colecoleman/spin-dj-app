@@ -7,7 +7,8 @@ export default class Helpers {
     // format helpers
 
     static formatDate(date) {
-      if (date.includes('T')) {
+      console.log(date);
+      if (date.toDateString().includes('T')) {
         // let newDate = date.split('T');
         // console.log(newDate);
         console.log(new Date(date))
