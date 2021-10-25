@@ -5,6 +5,9 @@
   <transition name="fade1">
     <error-indicator :errors="errors" v-if="errors.length > 0" />
   </transition>
+  <transition name="fade1">
+    <success-indicator :successes="successes" v-if="successes.length > 0" />
+  </transition>
 </template>
 
 <script>
@@ -13,12 +16,13 @@ import { Auth } from "aws-amplify";
 import axios from "axios";
 import EventManager from "./views/AdminViews/AdminViewDashboard/EventManager.vue";
 import ErrorIndicator from "./SharedComponents/SharedComponentsUI/ErrorIndicator.vue";
+import SuccessIndicator from "./SharedComponents/SharedComponentsUI/SuccessIndicator.vue";
 
 export default {
   computed: {
-    brandingPreferences() {
-      if (this.$store.state.businessSettings.brandingPreferences) {
-        return this.$store.state.businessSettings.brandingPreferences;
+    branding() {
+      if (this.$store.state.businessSettings.identity.branding) {
+        return this.$store.state.businessSettings.identity.branding;
       } else {
         return {
           backgroundColor: "#F0F0F0",
@@ -31,11 +35,11 @@ export default {
     },
     cssVars() {
       return {
-        "--backgroundColor": this.brandingPreferences.backgroundColor,
-        "--foregroundColor": this.brandingPreferences.foregroundColor,
-        "--cardOutline": this.brandingPreferences.cardOutline,
-        "--highlightColor": this.brandingPreferences.highlightColor,
-        "--textColor": this.brandingPreferences.textColor,
+        "--backgroundColor": this.branding.backgroundColor,
+        "--foregroundColor": this.branding.foregroundColor,
+        "--cardOutline": this.branding.cardOutline,
+        "--highlightColor": this.branding.highlightColor,
+        "--textColor": this.branding.textColor,
       };
     },
     currentUser: async () => {
@@ -44,10 +48,14 @@ export default {
     errors() {
       return this.$store.state.errors;
     },
+    successes() {
+      return this.$store.state.successes;
+    },
   },
   components: {
     EventManager,
     ErrorIndicator,
+    SuccessIndicator,
   },
   async beforeCreate() {
     let user = await Auth.currentAuthenticatedUser();
@@ -56,11 +64,14 @@ export default {
       this.$store.dispatch("setUser", user.username);
     }
   },
+  mounted() {
+    document.title = this.$store.state.businessSettings.identity.businessName;
+  },
 };
 </script>
 
 <style>
-@import url("https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,400;1,700;1,900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,300;1,400;1,500;1,700;1,900&display=swap");
 
 html,
 body {
@@ -74,7 +85,7 @@ body {
 }
 
 #app {
-  font-family: Lato, Helvetica, Arial, sans-serif;
+  font-family: Roboto, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
@@ -87,6 +98,10 @@ body {
 
 .router-link-exact-active > svg {
   fill: var(--highlightColor);
+}
+
+ul {
+  list-style: none;
 }
 
 p,
