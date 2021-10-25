@@ -1,0 +1,221 @@
+<template>
+  <base-card>
+    <template v-slot:title>Services</template>
+    <template v-slot:content>
+      <div class="service-wrapper">
+        <div class="service-section">
+          <h5 class="bold">Add New Service:</h5>
+          <div class="service-item">
+            <p>Service Name:</p>
+            <input type="text" v-model.trim="input.serviceName" />
+          </div>
+          <div class="service-item">
+            <p>Photo:</p>
+            <input
+              type="file"
+              id="hidden-file-button"
+              @change="onFileChange"
+              style="display: none"
+            />
+            <button-standard-with-icon
+              text="Choose File"
+              @click="chooseFile()"
+              class="form-button"
+            />
+          </div>
+          <div class="service-item">
+            <p>Employees Required</p>
+            <input type="number" v-model.number="input.employeesRequired" />
+          </div>
+
+          <div class="service-item">
+            <p>Price Option:</p>
+            <select name="price-option" id="" v-model="input.priceOption">
+              <option disabled value="">Select a price option:</option>
+              <option>Hourly</option>
+              <option>Flat</option>
+            </select>
+          </div>
+          <div class="service-item" v-if="input.priceOption === 'Hourly'">
+            <div class="service-item">
+              <p>Minimum # Hours:</p>
+              <input type="number" v-model.number="input.pricing.baseTime" />
+            </div>
+            <div class="service-item">
+              <p>
+                Base Rate ({{ input.pricing.baseTime }}
+                Hours)
+              </p>
+              <input v-model.number="input.pricing.baseRate" />
+            </div>
+            <div class="service-item">
+              <p>Additional Hourly:</p>
+              <input v-model.number="input.pricing.addHourly" />
+            </div>
+            <button-standard-with-icon
+              text="Add Service"
+              @click="addService()"
+              class="form-button"
+            />
+          </div>
+          <div class="service-item" v-if="input.priceOption == 'Flat'">
+            <div class="service-item">
+              <p>Flat Rate:</p>
+              <input type="number" v-model.number="input.pricing.baseRate" />
+            </div>
+            <div class="service-item">
+              <button-standard-with-icon
+                text="Add Service"
+                @click="addService()"
+                class="form-button"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="service-section">
+          <h5 v-if="!services">No services have been added yet! Add some!</h5>
+          <div class="service-empty-wrapper" v-if="services">
+            <h5 v-if="!services.length">
+              No services have been added yet! Add some!
+            </h5>
+            <div
+              class="service-item"
+              style="border-bottom: 1px solid gray; margin-bottom: 10px"
+              v-for="service in services"
+              :key="service.id"
+            >
+              <h4>{{ service.serviceName }}</h4>
+              <div class="service-display-section">
+                <div class="service-item" v-if="service.photo">
+                  <p>Photo: {{ service.photo.name }}</p>
+                </div>
+              </div>
+
+              <div class="service-display-section">
+                <div class="service-item" v-if="service.priceOption === 'Flat'">
+                  <p>
+                    <b>Flat Rate:</b>
+                    {{ formatPrice(service.pricing.baseRate) }}
+                  </p>
+                </div>
+                <div
+                  class="service-item"
+                  v-if="service.priceOption === 'Hourly'"
+                >
+                  <p><b>Base Time: </b>{{ service.pricing.baseTime }}</p>
+                  <p>
+                    <b>Base Rate: </b
+                    >{{ formatPrice(service.pricing.baseRate) }}
+                  </p>
+                  <p>
+                    <b>Additional Hourly: </b
+                    >{{ formatPrice(service.pricing.addHourly) }}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </template>
+  </base-card>
+</template>
+
+<script>
+import helpers from "../../../../helpers.js";
+import ButtonStandardWithIcon from "../../../../SharedComponents/SharedComponentsUI/ButtonStandardWithIcon.vue";
+export default {
+  data() {
+    return {
+      services: [],
+      input: {
+        serviceName: undefined,
+        pricing: {
+          baseTime: undefined,
+          baseRate: undefined,
+          addHourly: undefined,
+        },
+        priceOption: undefined,
+        photo: undefined,
+        equipmentNeeded: [],
+        employeesRequired: undefined,
+      },
+    };
+  },
+  methods: {
+    formatPrice: helpers.formatPrice,
+    addService() {
+      let service = this.input;
+      service.pricing.baseRate *= 100;
+      service.pricing.addHourly *= 100;
+      this.services.push(service);
+      service = {
+        serviceName: undefined,
+        pricing: {
+          baseTime: undefined,
+          baseRate: undefined,
+          addHourly: undefined,
+        },
+        priceOption: undefined,
+        photo: undefined,
+        equipmentNeeded: [],
+        employeesRequired: undefined,
+      };
+    },
+    chooseFile() {
+      document.getElementById("hidden-file-button").click();
+    },
+    onFileChange(e) {
+      var files = e.target.files || e.dataTransfer.files;
+      if (!files.length) return;
+      this.inputs.services.photo = files[0];
+      console.log(files);
+      console.log(this.inputs.services.photo);
+    },
+  },
+  created() {
+    this.services = this.$store.state.businessSettings.product.services;
+  },
+  components: {
+    ButtonStandardWithIcon,
+  },
+};
+</script>
+
+<style scoped>
+.service-wrapper {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  max-height: 100%;
+  overflow-y: scroll;
+  margin-top: 10px;
+}
+
+.service-section {
+  width: 50%;
+}
+
+.service-item {
+  display: flex;
+  flex-direction: column;
+  justify-content: left;
+  margin-left: 10px;
+}
+.service-item > p,
+.service-section > h5 {
+  text-align: left;
+}
+.service-item > input,
+.service-item > select,
+.button-standard-with-icon {
+  width: 50%;
+  align-self: left;
+  justify-self: left;
+}
+
+.bold {
+  font-weight: 600;
+  margin-top: 20px;
+}
+</style>

@@ -5,7 +5,6 @@
       :key="name"
       @click="scroll(`${name + '-card'}`)"
       :class="activeLink === `${name + '-card'}` ? 'active-link' : ' '"
-      :style="{ color: brandingPreferences.textColor }"
     >
       {{ name }}
     </li>
@@ -23,9 +22,6 @@ export default {
     contacts() {
       return this.$store.state.contacts;
     },
-    brandingPreferences() {
-      return this.$store.state.businessSettings.brandingPreferences;
-    },
   },
   methods: {
     scroll(id) {
@@ -40,10 +36,9 @@ export default {
 
 <style scoped>
 ul {
-  color: white;
+  /* color: white; */
   text-align: right;
   height: 90%;
-  width: 100%;
   padding: 0;
 }
 
@@ -58,9 +53,8 @@ li {
 }
 
 a {
-
   text-decoration: none;
-  color: white;
+  /* color: white; */
   font-weight: 700;
 }
 
