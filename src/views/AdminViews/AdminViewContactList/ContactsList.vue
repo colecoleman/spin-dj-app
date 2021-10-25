@@ -1,12 +1,11 @@
 <template>
   <section id="contacts-wrapper">
-    <div id="navigation">
-      <base-navigation-card>
-        <template v-slot:navigation>
-          <contact-navigation></contact-navigation>
-        </template>
-      </base-navigation-card>
-    </div>
+    <base-navigation-card>
+      <template v-slot:navigation>
+        <contact-navigation></contact-navigation>
+      </template>
+    </base-navigation-card>
+
     <div id="left-container">
       <div
         class="contacts-container"
@@ -96,18 +95,18 @@ export default {
         {
           title: "Alphabetically Descending",
           icon: undefined,
-          sortLogic: function (a, b) {
-            let textA = a.lastName.toUpperCase();
-            let textB = b.lastName.toUpperCase();
+          logic: function (a, b) {
+            let textA = a.family_name.toUpperCase();
+            let textB = b.family_name.toUpperCase();
             return textA > textB ? -1 : textA < textB ? 1 : 0;
           },
         },
         {
           title: "Alphabetically Ascending",
           icon: undefined,
-          sortLogic: function (a, b) {
-            let textA = a.lastName.toUpperCase();
-            let textB = b.lastName.toUpperCase();
+          logic: function (a, b) {
+            let textA = a.family_name.toUpperCase();
+            let textB = b.family_name.toUpperCase();
             return textA < textB ? -1 : textA > textB ? 1 : 0;
           },
         },
@@ -136,8 +135,7 @@ export default {
       return this.$store.state.contacts;
     },
   },
-  beforeCreate() {
-  },
+  beforeCreate() {},
   created() {
     this.$store.dispatch("getAdminUsers");
   },
@@ -157,16 +155,16 @@ export default {
   flex-direction: row;
   min-width: 100%;
   height: 100%;
-  padding-top: 5px;
+  /* padding-top: 5px; */
   /* overflow: hidden; */
 }
 
 #navigation {
-  min-width: 20%;
+  /* width: 20%; */
 }
 
 #left-container {
-  width: 100%;
+  width: 60%;
   height: 108%;
   overflow: scroll;
 }
@@ -192,7 +190,7 @@ export default {
   height: 100%;
 }
 #right-container {
-  width: 45%;
+  width: 20%;
   margin-top: -5px;
   /* height: fit-content; */
   margin-bottom: 20px;

@@ -174,7 +174,6 @@ p {
 }
 
 .hero-right h1 {
-  color: white;
   text-align: center;
 }
 
@@ -187,15 +186,12 @@ p {
 }
 
 .healthy {
-  border: 1px solid white;
   width: 100%;
-  color: white;
+
 }
 .error {
-  border: 1px solid white;
   border-bottom: 2px solid red;
   width: 100%;
-  color: white;
 }
 
 .error-text {

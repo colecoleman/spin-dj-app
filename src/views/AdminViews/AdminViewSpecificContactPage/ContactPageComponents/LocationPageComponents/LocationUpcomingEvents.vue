@@ -51,7 +51,7 @@ export default {
         {
           title: "Date Ascending",
           icon: undefined,
-          sortLogic: function (a, b) {
+          logic: function (a, b) {
             return a.eventStartTime < b.eventStartTime
               ? -1
               : a.eventStartTime > b.eventStartTime
@@ -62,7 +62,7 @@ export default {
         {
           title: "Date Descending",
           icon: undefined,
-          sortLogic: function (a, b) {
+          logic: function (a, b) {
             return a.eventStartTime > b.eventStartTime
               ? -1
               : a.eventStartTime < b.eventStartTime

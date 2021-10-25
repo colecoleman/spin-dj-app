@@ -121,11 +121,7 @@ export default {
 
 <style scoped>
 .add-contact-module-wrapper {
-  max-height: 100%;
   height: 100%;
-  width: 100%;
-  justify-items: center;
-  justify-content: center;
 }
 
 .add-contact-button {
@@ -134,7 +130,6 @@ export default {
 }
 
 #form-container {
-  z-index: 2;
   height: 100%;
 }
 </style>

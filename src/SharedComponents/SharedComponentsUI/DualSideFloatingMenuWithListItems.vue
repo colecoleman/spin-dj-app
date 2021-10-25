@@ -76,7 +76,7 @@ export default {
   background-color: var(--foregroundColor);
   width: fit-content;
   height: fit-content;
-  z-index: 100;
+  z-index: 2;
   box-shadow: 0px 12px 10px rgba(122, 122, 122, 0.4);
   border: 1px solid var(--cardOutline);
   border-top: 0;

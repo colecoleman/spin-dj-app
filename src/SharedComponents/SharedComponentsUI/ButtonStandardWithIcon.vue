@@ -25,10 +25,9 @@ export default {
   align-items: center;
   justify-content: center;
   text-transform: uppercase;
-  margin: 10px;
-  padding: 5px 15px 5px 5px;
-  outline: 1px solid var(--textcolor);
-  outline-radius: 7px;
+  /* margin: 1%; */
+  border: 1px solid var(--textColor);
+  border-radius: 7px;
   cursor: pointer;
 }
 
@@ -51,17 +50,5 @@ img {
 
 h5 {
   margin: 10px;
-}
-
-@keyframes spin {
-  0% {
-    outline-width: 1px;
-  }
-  50% {
-    outline-width: 3px;
-  }
-  100% {
-    outline-width: 1px;
-  }
 }
 </style>

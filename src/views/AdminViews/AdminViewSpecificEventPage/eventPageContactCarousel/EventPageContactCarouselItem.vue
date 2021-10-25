@@ -37,7 +37,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .contact-carousel-item-wrapper {
   max-width: 40%;
   min-width: 40%;

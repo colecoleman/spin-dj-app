@@ -5,7 +5,6 @@
       :key="value"
       @click="scroll(`${name + '-card'}`)"
       :class="activeLink === `${name + '-card'}` ? 'active-link' : ' '"
-      :style="{ color: brandingPreferences.textColor }"
     >
       {{ value.name }}
     </li>
@@ -16,6 +15,7 @@
 export default {
   data() {
     return {
+      activeLink: "clients-card",
       configItems: [
         {
           name: "Branding",
@@ -55,7 +55,7 @@ export default {
   },
   computed: {
     brandingPreferences() {
-      return this.$store.state.businessSettings.brandingPreferences;
+      return this.$store.state.businessSettings.identity.branding;
     },
   },
   methods: {
@@ -69,12 +69,11 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 ul {
   /* color: white; */
   text-align: right;
   height: 90%;
-  width: 100%;
   padding: 0;
 }
 
@@ -89,13 +88,12 @@ li {
 }
 
 a {
-
   text-decoration: none;
   /* color: white; */
   font-weight: 700;
 }
 
 .active-link {
-  /* color: #00f5ff; */
+  color: #00f5ff;
 }
 </style>

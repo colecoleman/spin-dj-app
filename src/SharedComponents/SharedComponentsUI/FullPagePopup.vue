@@ -20,7 +20,7 @@
 <script>
 </script>
 
-<style>
+<style scoped>
 @page {
   size: A4;
   margin: 0mm;

@@ -1,12 +1,11 @@
 <template>
-  <section>
-    <div id="navigation">
-      <base-navigation-card>
-        <template v-slot:navigation>
-          <admin-dashboard-navigation></admin-dashboard-navigation>
-        </template>
-      </base-navigation-card>
-    </div>
+  <section id="dashboard-wrapper">
+    <base-navigation-card>
+      <template v-slot:navigation>
+        <admin-dashboard-navigation></admin-dashboard-navigation>
+      </template>
+    </base-navigation-card>
+
     <div id="wrapper">
       <div id="left-content-div">
         <div id="box-1" class="box">
@@ -54,17 +53,12 @@ export default {
   flex-direction: row;
   justify-content: center;
   align-items: center;
+  width: 80%;
+}
+#dashboard-wrapper {
   width: 100%;
-}
-
-#navigation {
-  width: 20%;
-}
-section {
   display: flex;
-  width: 100%;
   flex-direction: row;
-  /* margin: 20px; */
 }
 
 #left-content-div {
@@ -73,29 +67,18 @@ section {
   align-content: stretch;
   align-items: stretch;
   flex-flow: column;
-  min-width: 65%;
+  width: 65%;
 }
 
 #right-content-div {
   height: 100%;
-  /* display: flex; */
-  align-items: stretch;
-  align-content: stretch;
   flex-flow: column;
   width: 35%;
 }
 
-#box-1 {
-  height: 50%;
-}
-#box-2 {
-  height: 50%;
-}
-
-#box-3 {
-  height: 50%;
-}
-
+#box-1,
+#box-2,
+#box-3,
 #box-4 {
   height: 50%;
 }
