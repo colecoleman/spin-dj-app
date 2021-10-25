@@ -15,6 +15,7 @@ import SpecificContactPageVendor from '../views/AdminViews/AdminViewSpecificCont
 import SpecificContactPageLocation from '../views/AdminViews/AdminViewSpecificContactPage/SpecificLocationPage/SpecificContactPageLocation.vue';
 import SpecificContactPageOrganizer from '../views/AdminViews/AdminViewSpecificContactPage/SpecificContactPageOrganizer.vue';
 import SpecificEventPage from "../views/AdminViews/AdminViewSpecificEventPage/SpecificEventPage.vue";
+import AdminViewCreateEvent from '../views/AdminViews/AdminViewCreate/AdminViewCreateEvent.vue';
 
 
 
@@ -30,14 +31,16 @@ const routes = [
             if (
               user.signInUserSession.idToken.payload[`cognito:groups`].includes("admins") 
             ) {
-              next({name: 'dash'})
+              next({path: '/admin/dash'})
     
+            } else {
+              next({name: 'loginPage'})
             }
           }
         );
         
       } catch (e) {
-        this.$store.dispatch('addError', "Please login!")
+        this.$store.dispatch('addError', "Please login!");
         next({name: 'loginPage'})
       }
     }
@@ -109,6 +112,13 @@ const routes = [
         name: 'specificEventPage',
         components: {
           content: SpecificEventPage
+        }
+      },
+      {
+        path: 'createnewevent',
+        name: 'admincreateevent',
+        components: {
+          content: AdminViewCreateEvent
         }
       },
       {
