@@ -4,7 +4,7 @@ import router from "./router";
 import store from './store/index.js';
 import dayjs from "dayjs";
 import jsPDF from 'jspdf';
-import html2canvas from 'html2canvas'
+// import html2canvas from 'html2canvas'
 
 import maplibregl from "maplibre-gl";
 import BaseCard from './SharedComponents/SharedComponentsUI/BaseCard.vue';
@@ -46,7 +46,7 @@ createApp(App)
   .use(jsPDF)
   .use(maplibregl)
   .use(Amplify)
-  .use(html2canvas)
+  // .use(html2canvas)
   .mount("#app");
 
 
