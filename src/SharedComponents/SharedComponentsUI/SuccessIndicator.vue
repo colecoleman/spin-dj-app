@@ -1,7 +1,7 @@
 <template>
   <div class="successes-wrapper" v-if="successes.length > 0">
     <img :src="XIconSVG" alt="" @click="clearSuccesses()" />
-    <h5 v-for="(successes, index) in successs" :key="index">
+    <h5 v-for="(successes, index) in successes" :key="index">
       {{ successes }}
     </h5>
   </div>
