@@ -63,7 +63,7 @@ export default {
   height: fit-content;
   padding: 40px;
   width: 50%;
-  background-color: white;
+  background-color: var(--foregroundColor);
   border-radius: 14px;
 }
 

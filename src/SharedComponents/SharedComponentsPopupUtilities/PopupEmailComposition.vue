@@ -64,8 +64,7 @@ export default {
   },
   computed: {
     emailAddresses() {
-      return this.$store.state.businessSettings.businessInfo
-        .businessEmailAddresses;
+      return this.$store.state.businessSettings.identity.businessEmailAddresses;
     },
   },
   props: ["contact"],
@@ -74,11 +73,6 @@ export default {
 </script>
 
 <style scoped>
-.popup-heading,
-.popup-text {
-  color: black;
-}
-
 .popup-text {
   width: 80%;
   margin: 10px;
@@ -96,11 +90,9 @@ export default {
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
-  color: black;
 }
 
 .black-outline {
-  border-color: black;
   border-radius: 5px;
 }
 </style>

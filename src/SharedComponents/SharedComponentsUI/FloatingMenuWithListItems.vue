@@ -26,17 +26,16 @@ export default {
 <style scoped>
 #section {
   position: absolute;
-  padding: 10px;
-  top: 15px;
-  right: 0;
+  top: 150%;
+  right: 0%;
   background-color: var(--foregroundColor);
-  width: fit-content;
-  height: fit-content;
-  z-index: 2;
-  box-shadow: 0px 12px 10px rgba(122, 122, 122, 0.4);
+  /* width: fit-content; */
+  /* height: fit-content; */
+  z-index: 4;
+  box-shadow: 0px 8px 8px rgba(122, 122, 122, 0.4);
   border: 1px solid var(--cardOutline);
   border-top: 0;
-  border-radius: 5px 5px 15px 15px;
+  border-radius: 0px 0px 15px 15px;
 }
 
 p {
@@ -45,8 +44,8 @@ p {
 }
 
 p:hover {
-  font-weight: bold;
-  margin-left: 11px;
+  font-weight: 800;
+  margin-left: 14px;
   cursor: pointer;
 }
 </style>

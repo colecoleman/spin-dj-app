@@ -197,12 +197,6 @@ export default {
   max-height: 100%;
 }
 
-#floating-menu-container {
-  position: relative;
-  width: fit-content;
-  height: fit-content;
-}
-
 .placeholder-text {
   margin-top: 45%;
 }

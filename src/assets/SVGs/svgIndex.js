@@ -37,7 +37,7 @@ import ReferCircleSVG from './refer-circle.svg'
 import RightArrowSVG from './right-arrow.svg'
 import SnowflakeColorSVG from './snowflake-color.svg'
 import SnowflakeSVG from './snowflake.svg'
-import SortAlphaSVG from './sort-alpha.svg'
+import sortalpha from './sort-alpha.svg'
 import TrashCanSVG from './trash-can.svg'
 import XIconSVG from './x-icon.svg'
 
@@ -82,7 +82,7 @@ import XIconSVG from './x-icon.svg'
     RightArrowSVG, 
     SnowflakeColorSVG, 
     SnowflakeSVG, 
-    SortAlphaSVG, 
+    sortalpha, 
     TrashCanSVG, 
-    XIconSVG 
+    XIconSVG, 
 }
