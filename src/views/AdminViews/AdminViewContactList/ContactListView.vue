@@ -5,7 +5,7 @@
         <div class="container">
           <h3 class="popup-heading">
             Are you sure you want to delete
-            {{ contact.firstName + " " + contact.lastName }}?
+            {{ contact.given_name + " " + contact.family_name }}?
           </h3>
           <div class="button-container">
             <button-standard-with-icon
@@ -99,7 +99,7 @@ import PopupModal from "../../../SharedComponents/SharedComponentsUI/PopupModal.
 import eyeIcon from "../../../assets/SVGs/eye-icon.svg";
 import emailIcon from "../../../assets/SVGs/email.svg";
 import trashCan from "../../../assets/SVGs/trash-can.svg";
-import helpers from '../../../helpers.js';
+import helpers from "../../../helpers.js";
 
 export default {
   data() {
@@ -140,10 +140,10 @@ export default {
       );
     },
     formatPhoneNumber: helpers.formatPhoneNumber,
-    
 
     emailContact() {
       this.composeEmailOpen = true;
+      console.log(this.$store.state.businessSettings);
     },
     cancelSendEmail() {
       this.composeEmailOpen = false;
@@ -152,10 +152,36 @@ export default {
     deleteContact() {
       this.deleteContactOpen = true;
     },
-    confirmDeleteContact() {
-      let category = this.category;
-      let id = this.contact.id;
-      this.$store.dispatch("deleteContact", { category, id });
+    async confirmDeleteContact() {
+      if (this.contact.associatedEvents) {
+        this.contact.associatedEvents.forEach((event) => {
+          let eventObject;
+          this.$store.dispatch("adminGetEvent", event).then(
+            (res) => {
+              eventObject = res.data.Item;
+              console.log(eventObject);
+              let index = eventObject.contacts.indexOf(this.contact.userId);
+              let payload = {
+                eventId: eventObject.userId,
+                variable: "contacts",
+                value: index,
+                operation: "removeFromList",
+              };
+
+              console.log(payload);
+              this.$store.dispatch("editEvent", payload);
+            },
+            (error) => {
+              console.log(error);
+            }
+          );
+        });
+      }
+      let deletePayload = {
+        category: this.category,
+        id: this.contact.userId,
+      };
+      this.$store.dispatch("deleteUser", deletePayload);
       this.deleteContactOpen = false;
     },
     cancelDeleteContact() {
