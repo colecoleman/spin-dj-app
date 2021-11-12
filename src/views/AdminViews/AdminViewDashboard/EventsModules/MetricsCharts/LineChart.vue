@@ -87,9 +87,6 @@ export default {
     };
   },
   computed: {
-    branding() {
-      return this.$store.state.businessSettings.identity.branding;
-    },
     chartOptions() {
       return {
         chart: {
@@ -98,19 +95,19 @@ export default {
             show: false,
           },
         },
-        colors: [this.branding.highlightColor, "#000000"],
+        // colors: [this.branding.highlightColor, "#000000"],
         stroke: {
           curve: "smooth",
         },
         dataLabels: {
           style: {
-            colors: [this.branding.textColor],
+            // colors: [this.branding.textColor],
           },
         },
         yaxis: {
           labels: {
             style: {
-              colors: [this.branding.textColor],
+              // colors: [this.branding.textColor],
               fontWeight: 600,
             },
           },
@@ -134,7 +131,7 @@ export default {
             rotate: 0,
             rotateAlways: false,
             style: {
-              colors: [this.branding.textColor],
+              // colors: [this.branding.textColor],
 
               fontWeight: 600,
             },
