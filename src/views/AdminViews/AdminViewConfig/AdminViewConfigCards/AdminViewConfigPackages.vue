@@ -4,10 +4,10 @@
     <template v-slot:content>
       <div class="package-wrapper">
         <div class="package-section">
-          <h5 class="bold">Add New package:</h5>
+          <h5 class="bold">Add New Package:</h5>
           <div class="package-item">
             <p>Package Name:</p>
-            <input type="text" v-model.trim="input.packages.packageName" />
+            <input type="text" v-model.trim="input.packages.name" />
           </div>
           <div class="package-item">
             <p>Photo:</p>
@@ -29,15 +29,32 @@
               class="package-item row-flex"
               v-for="service in this.$store.state.businessSettings.product
                 .services"
-              :key="service.serviceName"
+              :key="service.name"
             >
               <p>
                 <input
                   type="checkbox"
-                  :id="service.serviceName"
-                  @change="toggleServiceFromPackage(service.serviceName)"
-                  :name="service.serviceName"
-                />{{ service.serviceName }}
+                  :id="service.name"
+                  @change="toggleServiceFromPackage(service.name)"
+                  :name="service.name"
+                />{{ service.name }}
+              </p>
+            </div>
+          </div>
+          <div class="package-item">
+            <p>Standard Forms Included:</p>
+            <div
+              class="package-item row-flex"
+              v-for="form in this.$store.state.businessSettings.product.forms"
+              :key="form.id"
+            >
+              <p>
+                <input
+                  type="checkbox"
+                  :id="form.name"
+                  @change="toggleFormFromPackage(form.id)"
+                  :name="form.name"
+                />{{ form.name }}
               </p>
             </div>
           </div>
@@ -113,10 +130,17 @@
             <div
               class="package-item"
               style="border-bottom: 1px solid gray; margin-bottom: 10px"
-              v-for="packag in businessSettings.product.packages"
+              v-for="(packag, index) in businessSettings.product.packages"
               :key="packag.id"
             >
-              <h4>{{ packag.packageName }}</h4>
+              <h4>
+                {{ packag.name }}
+                <img
+                  :src="XIconSVG"
+                  class="x-icon"
+                  @click="deletePackage(index)"
+                />
+              </h4>
               <div class="package-display-section">
                 <div class="package-item" v-if="packag.photo">
                   <p>Photo: {{ packag.photo.name }}</p>
@@ -153,15 +177,17 @@
 </template>
 
 <script>
+import XIconSVG from "../../../../assets/SVGs/x-icon.svg";
 import helpers from "../../../../helpers.js";
 import ButtonStandardWithIcon from "../../../../SharedComponents/SharedComponentsUI/ButtonStandardWithIcon.vue";
 export default {
   data() {
     return {
+      XIconSVG,
       packages: undefined,
       input: {
         packages: {
-          packageName: undefined,
+          name: undefined,
           priceOption: undefined,
           pricing: {
             baseTime: undefined,
@@ -202,15 +228,24 @@ export default {
         array.push(service);
       }
     },
+    toggleFormFromPackage(form) {
+      let array = this.input.packages.forms;
+      let index = array.indexOf(form);
+      if (index > -1) {
+        array.splice(index, 1);
+      } else {
+        array.push(form);
+      }
+    },
     addPackage() {
       let item = this.input.packages;
-      item.baseRate *= 100;
-      if (item.addHourly) {
-        item.addHourly *= 100;
+      item.pricing.baseRate *= 100;
+      if (item.pricing.addHourly) {
+        item.pricing.addHourly *= 100;
       }
       this.$store.dispatch("adminConfigAddPackage", item);
       this.input.packages = {
-        packageName: undefined,
+        name: undefined,
         priceOption: undefined,
         pricing: {
           baseTime: undefined,
@@ -221,6 +256,9 @@ export default {
         employeesRequired: undefined,
         photo: undefined,
       };
+    },
+    deletePackage(index) {
+      this.$store.dispatch("adminConfigDeletePackage", index);
     },
   },
   created() {
@@ -270,5 +308,10 @@ export default {
 .bold {
   font-weight: 600;
   margin-top: 20px;
+}
+
+.x-icon {
+  height: 10px;
+  width: 10px;
 }
 </style>

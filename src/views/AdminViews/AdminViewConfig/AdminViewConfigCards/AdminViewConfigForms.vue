@@ -187,9 +187,15 @@
           <div v-if="businessSettings.product.forms.length > 0">
             <h5
               v-for="(form, index) in businessSettings.product.forms"
-              :key="index" class="bolds"
+              :key="index"
+              class="bolds"
             >
               {{ form.name }}
+              <img
+                :src="XIconSVG"
+                class="x-icon"
+                @click="deletePackage(index)"
+              />
             </h5>
           </div>
         </div>
@@ -199,11 +205,14 @@
 </template>
 
 <script>
+import XIconSVG from "../../../../assets/SVGs/x-icon.svg";
 import ButtonStandardWithIcon from "../../../../SharedComponents/SharedComponentsUI/ButtonStandardWithIcon.vue";
 export default {
   data() {
     return {
+      XIconSVG,
       form: {
+        id: "form" + new Date().getTime(),
         name: undefined,
         description: undefined,
         fields: [],
@@ -242,6 +251,11 @@ export default {
     saveField() {
       this.form.fields.push(this.newField);
       console.log(this.newField);
+      this.form = {
+        name: undefined,
+        description: undefined,
+        fields: [],
+      };
       this.newField = {
         name: undefined,
         inputQuantity: undefined,
@@ -328,5 +342,10 @@ export default {
 .bold {
   font-weight: 600;
   margin-top: 20px;
+}
+
+.x-icon {
+  height: 10px;
+  width: 10px;
 }
 </style>

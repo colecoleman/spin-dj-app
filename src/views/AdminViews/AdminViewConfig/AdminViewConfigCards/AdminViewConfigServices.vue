@@ -7,7 +7,7 @@
           <h5 class="bold">Add New Service:</h5>
           <div class="service-item">
             <p>Service Name:</p>
-            <input type="text" v-model.trim="input.serviceName" />
+            <input type="text" v-model.trim="input.name" />
           </div>
           <div class="service-item">
             <p>Photo:</p>
@@ -84,7 +84,14 @@
               v-for="service in services"
               :key="service.id"
             >
-              <h4>{{ service.serviceName }}</h4>
+              <h4>
+                {{ service.name }}
+                <img
+                  :src="XIconSVG"
+                  class="x-icon"
+                  @click="deleteService(index)"
+                />
+              </h4>
               <div class="service-display-section">
                 <div class="service-item" v-if="service.photo">
                   <p>Photo: {{ service.photo.name }}</p>
@@ -122,14 +129,16 @@
 </template>
 
 <script>
+import XIconSVG from "../../../../assets/SVGs/x-icon.svg";
 import helpers from "../../../../helpers.js";
 import ButtonStandardWithIcon from "../../../../SharedComponents/SharedComponentsUI/ButtonStandardWithIcon.vue";
 export default {
   data() {
     return {
+      XIconSVG,
       services: [],
       input: {
-        serviceName: undefined,
+        name: undefined,
         pricing: {
           baseTime: undefined,
           baseRate: undefined,
@@ -149,8 +158,8 @@ export default {
       service.pricing.baseRate *= 100;
       service.pricing.addHourly *= 100;
       this.services.push(service);
-      service = {
-        serviceName: undefined,
+      this.input = {
+        name: undefined,
         pricing: {
           baseTime: undefined,
           baseRate: undefined,
@@ -161,6 +170,9 @@ export default {
         equipmentNeeded: [],
         employeesRequired: undefined,
       };
+    },
+    deleteService(index) {
+      this.$store.dispatch("adminConfigDeleteService", index);
     },
     chooseFile() {
       document.getElementById("hidden-file-button").click();
@@ -217,5 +229,10 @@ export default {
 .bold {
   font-weight: 600;
   margin-top: 20px;
+}
+
+.x-icon {
+  height: 10px;
+  width: 10px;
 }
 </style>

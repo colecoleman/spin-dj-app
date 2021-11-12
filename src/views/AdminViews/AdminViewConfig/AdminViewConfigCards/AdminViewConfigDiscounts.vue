@@ -55,7 +55,15 @@
               .discounts"
             :key="discount.id"
           >
-            <h4>{{ discount.name }}</h4>
+            <h4>
+              {{ discount.name }}
+
+              <img
+                :src="XIconSVG"
+                class="x-icon"
+                @click="deletePackage(index)"
+              />
+            </h4>
 
             <div class="discounts-display-section">
               <div class="discounts-item" v-if="discount.type === 'percentage'">
@@ -78,11 +86,13 @@
 </template>
 
 <script>
+import XIconSVG from "../../../../assets/SVGs/x-icon.svg";
 import ButtonStandardWithIcon from "../../../../SharedComponents/SharedComponentsUI/ButtonStandardWithIcon.vue";
 import helpers from "../../../../helpers.js";
 export default {
   data() {
     return {
+      XIconSVG,
       discount: {
         name: undefined,
         type: undefined,
@@ -233,5 +243,10 @@ section {
   bottom: 25px;
   right: 25px;
   background-color: var();
+}
+
+.x-icon {
+  height: 10px;
+  width: 10px;
 }
 </style>

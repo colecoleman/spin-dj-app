@@ -74,7 +74,14 @@
             v-for="addOn in this.$store.state.businessSettings.product.addOns"
             :key="addOn.name"
           >
-            <h4>{{ addOn.name }}</h4>
+            <h4>
+              {{ addOn.name }}
+              <img
+                :src="XIconSVG"
+                class="x-icon"
+                @click="deletePackage(index)"
+              />
+            </h4>
             <div class="add-on-display-section">
               <div class="add-on-item" v-if="addOn.photo">
                 <p>Photo: {{ addOn.photo.name }}</p>
@@ -103,12 +110,14 @@
 </template>
 
 <script>
+import XIconSVG from "../../../../assets/SVGs/x-icon.svg";
 import ButtonStandardWithIcon from "../../../../SharedComponents/SharedComponentsUI/ButtonStandardWithIcon.vue";
 import helpers from "../../../../helpers.js";
 
 export default {
   data() {
     return {
+      XIconSVG,
       addOn: {
         name: undefined,
         priceOption: undefined,
@@ -191,5 +200,10 @@ export default {
 .bold {
   font-weight: 600;
   margin-top: 20px;
+}
+
+.x-icon {
+  height: 10px;
+  width: 10px;
 }
 </style>
