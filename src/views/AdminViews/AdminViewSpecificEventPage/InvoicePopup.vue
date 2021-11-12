@@ -145,11 +145,16 @@
             <h5>Packages:</h5>
             <div
               class="price-item"
-              v-for="item in invoice.packages"
-              :key="item.id"
+              v-for="item in invoice.products"
+              :key="item.name"
             >
-              <p>{{ item.name }} ({{ event.eventLength }} hours):</p>
-              <h5>{{ calculatePackagePrice(item, event) }}</h5>
+              <p>
+                {{ item.name }} ({{
+                  calculateEventTime(event.data) / (60 * 60 * 1000)
+                }}
+                hours):
+              </p>
+              <h5>{{ formatPrice(productTotal(item, event.data)) }}</h5>
             </div>
           </div>
           <div class="invoice-item">
@@ -160,12 +165,12 @@
               :key="item.id"
             >
               <p>{{ item.name }} ({{ item.eventUnits }}):</p>
-              <h5>{{ calculateAddOnPrice(item) }}</h5>
+              <h5>{{ productTotal(item, event.date) }}</h5>
             </div>
           </div>
           <div class="summary-item">
             <h4>Subtotal:</h4>
-            <h5>{{ formatPrice(event.subtotal) }}</h5>
+            <h5>{{ formatPrice(subtotal(event.invoice, event.data)) }}</h5>
           </div>
           <div class="invoice-item">
             <h5>Adjustments:</h5>
@@ -175,27 +180,34 @@
               :key="adjustment.id"
             >
               <p>{{ adjustment.name }}:</p>
-              <h5>{{ formatPrice(adjustment.amount) }}</h5>
+              <h5 v-if="adjustment.type === 'percentage'">
+                {{ adjustment.amount * 100 }}%
+              </h5>
+              <h5 v-if="adjustment.type === 'dollar'">
+                {{ formatPrice(adjustment.amount) }}
+              </h5>
             </div>
           </div>
           <div class="summary-item">
             <h4>Invoice Total:</h4>
-            <h5>{{ formatPrice(event.total) }}</h5>
+            <h5>{{ formatPrice(total(event.invoice, event.data)) }}</h5>
           </div>
           <div class="invoice-item">
             <h5>Payments Collected:</h5>
             <div
               class="price-item"
-              v-for="payment in invoice.paymentsCollected"
+              v-for="payment in invoice.payments"
               :key="payment.referenceNumber"
             >
-              <p>{{ payment.referenceNumber }}</p>
+              <p>{{ payment.name }}</p>
               <h5>{{ formatPrice(payment.amount) }}</h5>
             </div>
           </div>
           <div class="summary-item">
             <h4>Outstanding Balance</h4>
-            <h5>{{ formatPrice(event.balanceOutstanding) }}</h5>
+            <h5>
+              {{ formatPrice(balanceOutstanding(event.invoice, event.data)) }}
+            </h5>
           </div>
         </div>
       </div>
@@ -228,25 +240,16 @@ export default {
     },
   },
   methods: {
-    calculatePackagePrice: helpers.calculatePackagePrice,
-    calculateAddOnPrice: helpers.calculateAddOnPrice,
+    productTotal: helpers.productTotal,
+    calculateEventTime: helpers.calculateEventTime,
     formatPrice: helpers.formatPrice,
     saveInvoice: helpers.saveElement,
     printInvoice: helpers.printElement,
-
+    subtotal: helpers.subtotal,
+    total: helpers.total,
+    balanceOutstanding: helpers.balanceOutstanding,
     closePopup() {
       this.$emit("closePopup");
-    },
-    subtotal() {
-      return this.servicesTotal + this.packagesTotal + this.addOnTotal;
-    },
-    total() {
-      let t = this.subtotal() + this.adjustmentsTotal;
-      return t;
-    },
-    balanceOutstanding() {
-      let b = this.total() - this.paymentsTotal;
-      return b;
     },
   },
   props: ["invoice", "event", "client"],
@@ -271,6 +274,7 @@ export default {
 #invoice-popup-right-column {
   width: 20%;
   padding: 15px;
+  overflow: scroll;
 }
 
 #invoice-document-view-wrapper {

@@ -4,9 +4,9 @@
       <img :src="logo" alt="Logo" />
       <div id="heading-copy">
         <h4>{{ businessInfo.businessName }}</h4>
-        <p>{{ businessInfo.businessAddress.address1one }}</p>
-        <p v-if="businessInfo.businessAddress.address1two">
-          {{ businessInfo.businessAddress.address1two }}
+        <p>{{ businessInfo.businessAddress.streetAddress1 }}</p>
+        <p v-if="businessInfo.businessAddress.streetAddress2">
+          {{ businessInfo.businessAddress.streetAddress2 }}
         </p>
         <p>{{ businessInfo.businessAddress.address2 }}</p>
         <p>{{ formatPhoneNumber(businessInfo.businessPhoneNumber) }}</p>
@@ -18,7 +18,7 @@
         <div class="invoice-item">
           <h5>Prepared For:</h5>
           <p>
-            <span>{{ client.firstName }} {{ client.lastName }}</span>
+            <span>{{ client.given_name }} {{ client.family_name }}</span>
           </p>
           <p>{{ formatPhoneNumber(client.phoneNumber) }}</p>
           <p>{{ client.emailAddress }}</p>
@@ -26,13 +26,13 @@
         <div class="invoice-item">
           <h5>Invoice Number:</h5>
           <p>
-            <span>{{ invoice.data.invoiceNumber }}</span>
+            <span>{{ event.userId }}</span>
           </p>
         </div>
         <div class="invoice-item">
           <h5>Invoice Date:</h5>
           <p>
-            <span>{{ formattedDate(invoice.data.invoiceDate) }}</span>
+            <span>{{ bookDate }}</span>
           </p>
         </div>
       </div>
@@ -40,13 +40,14 @@
         <div class="invoice-item">
           <h5>Event Date:</h5>
           <p>
-            <span>{{ formattedDate(invoice.data.eventDate) }}</span>
+            <span>{{ formattedDate(event.data.date) }}</span>
           </p>
         </div>
         <div class="invoice-item">
           <h5>Final Payment Due:</h5>
           <p>
-            <span>{{ formattedDate(invoice.data.finalPaymentDue) }}</span>
+            TODO
+            <!-- <span>{{ formattedDate(invoice.data.finalPaymentDue) }}</span> -->
           </p>
         </div>
       </div>
@@ -58,18 +59,11 @@
         <th>Unit Price:</th>
         <th>Cost:</th>
       </tr>
-      <tr v-for="item in invoice.packages" :key="item.id">
+      <tr v-for="item in invoice.products" :key="item.name">
         <td>{{ item.name }}</td>
         <td>1</td>
-        <td>{{ calculatePackagePrice(item, event) }}</td>
-        <td>{{ calculatePackagePrice(item, event) }}</td>
-      </tr>
-
-      <tr v-for="item in invoice.addOns" :key="item.id">
-        <td>{{ item.name }}</td>
-        <td v-if="item.priceOption === 'unit'">{{ item.eventUnits }}</td>
-        <td>{{ formatPrice(item.unitPrice) }}</td>
-        <td>{{ calculateAddOnPrice(item, event) }}</td>
+        <td>{{ formatPrice(productTotal(item, event.data)) }}</td>
+        <td>{{ formatPrice(productTotal(item, event.data)) }}</td>
       </tr>
       <tr class="divider">
         <td></td>
@@ -81,7 +75,7 @@
         <th>Subtotal:</th>
         <th></th>
         <th></th>
-        <th>{{ formatPrice(event.subtotal) }}</th>
+        <th>{{ formatPrice(subtotal(event.invoice, event.data)) }}</th>
       </tr>
       <tr>
         <th>Adjustments:</th>
@@ -93,13 +87,13 @@
         <td>{{ item.name }}:</td>
         <td></td>
         <td></td>
-        <td>-{{ formatPrice(item.amount) }}</td>
+        <td v-if="item.type === 'percentage'">- {{ item.amount * 100 }}%</td>
       </tr>
       <tr>
         <th>Invoice Total:</th>
         <th></th>
         <th></th>
-        <th>{{ formatPrice(event.total) }}</th>
+        <th>{{ formatPrice(total(event.invoice, event.data)) }}</th>
       </tr>
       <tr>
         <th>Payments:</th>
@@ -107,8 +101,8 @@
         <th></th>
         <th></th>
       </tr>
-      <tr v-for="item in invoice.paymentsCollected" :key="item.referenceNumber">
-        <td>{{ item.referenceNumber }}:</td>
+      <tr v-for="item in invoice.payments" :key="item.referenceNumber">
+        <td>{{ item.name }}:</td>
         <td></td>
         <td></td>
         <td>-{{ formatPrice(item.amount) }}</td>
@@ -117,7 +111,9 @@
         <th>Balance Outstanding:</th>
         <th></th>
         <th></th>
-        <th>{{ formatPrice(event.balanceOutstanding) }}</th>
+        <th>
+          {{ formatPrice(balanceOutstanding(event.invoice, event.data)) }}
+        </th>
       </tr>
       <tr class="divider">
         <td></td>
@@ -142,15 +138,31 @@ export default {
   },
   computed: {
     businessInfo() {
-      return this.$store.state.businessSettings.businessInfo;
+      return this.$store.state.businessSettings.identity;
+    },
+    bookDate() {
+      let ms = this.event.userId.replace("event", "");
+      let date = new Date(parseInt(ms));
+      return date.toLocaleDateString("lookup", {
+        day: "numeric",
+        year: "numeric",
+        month: "long",
+      });
     },
   },
   methods: {
-    calculatePackagePrice: helpers.calculatePackagePrice,
-    calculateAddOnPrice: helpers.calculateAddOnPrice,
+    productTotal: helpers.productTotal,
     formatPhoneNumber: helpers.formatPhoneNumber,
-    formattedDate: helpers.formattedDate,
+    formattedDate: helpers.formatDate,
     formatPrice: helpers.formatPrice,
+    subtotal: helpers.subtotal,
+    total: helpers.total,
+    balanceOutstanding: helpers.balanceOutstanding,
+  },
+  created() {
+    console.log(this.event);
+    console.log(this.client);
+    console.log(this.invoice);
   },
   props: ["event", "client", "invoice"],
 };
@@ -217,6 +229,7 @@ p {
 
 img {
   object-fit: contain;
+  width: 50px;
   padding: 10px;
   border-right: 1px solid black;
   margin-right: 10px;
