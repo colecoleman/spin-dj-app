@@ -8,11 +8,11 @@
     @click="actionsClicked()"
     @mousedown.prevent=""
   >
-    <div class="primary-container">
+    <div class="heading-container">
       <h5>{{ text }}</h5>
       <img :src="dropdownArrow" alt="" />
     </div>
-    <div v-if="actionsActive">
+    <div v-if="actionsActive" class="dropdown">
       <div
         class="actions-item"
         v-for="action in actions"
@@ -49,32 +49,21 @@ export default {
 
 <style scoped>
 .button-standard-with-icon {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  align-content: center;
-  justify-content: center;
-  text-transform: uppercase;
+  position: absolute;
+  z-index: 2;
   width: 100%;
+  text-transform: uppercase;
   border: 1px solid var(--textColor);
   border-radius: 7px;
-}
-
-.primary-container > img {
-  height: 14px;
-  width: 14px;
-  margin: 5px;
-}
-
-.inactive {
   background-color: var(--foregroundColor);
 }
 
 .active {
-  background-color: var(--foregroundColor);
-  color: var(--textColor);
   z-index: 3;
-  position: absolute;
+}
+
+.heading-container > img {
+  margin: 5px;
 }
 
 .actions-item {
@@ -82,21 +71,15 @@ export default {
   flex-direction: row;
 }
 
-.actions-item > h5:hover {
-  font-weight: 600;
-}
-
 .danger {
   color: red;
 }
 
-.primary-container {
+.heading-container {
   display: flex;
-  flex-direction: row;
-  align-items: center;
-  align-content: center;
   justify-content: center;
-  position: relative;
+  align-items: center;
+  height: 100%;
 }
 
 .button-standard-with-icon:hover {
@@ -104,14 +87,12 @@ export default {
 }
 
 .actions-item {
-  display: flex;
-  flex-direction: row;
+  justify-content: center;
   align-items: center;
 }
 
 .actions-item > img {
   height: 12px;
-  width: 12px;
   margin-right: 10px;
 }
 
