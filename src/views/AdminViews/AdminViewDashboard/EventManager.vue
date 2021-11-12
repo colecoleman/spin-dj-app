@@ -9,7 +9,7 @@
     <div id="wrapper">
       <div id="left-content-div">
         <div id="box-1" class="box">
-          <upcoming-events></upcoming-events>
+          <upcoming-events :events="events"></upcoming-events>
         </div>
         <div id="box-2" class="box">
           <metrics-chart></metrics-chart>
@@ -36,6 +36,18 @@ import BaseNavigationCard from "../../../SharedComponents/SharedComponentsUI/Bas
 import AdminDashboardNavigation from "./AdminDashboardNavigation.vue";
 
 export default {
+  data() {
+    return {
+      events: undefined,
+    };
+  },
+  created() {
+    this.$store.dispatch("adminGetEvents").then((res) => {
+      this.events = [...res.data.Items];
+      console.log(this.events);
+    });
+  },
+
   components: {
     UpcomingEvents,
     EventCalendar,
