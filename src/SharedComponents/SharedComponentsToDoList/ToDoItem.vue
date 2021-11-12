@@ -1,5 +1,5 @@
 <template>
-  <div id="to-do-item" @click="clickToDo(toDo.id)">
+  <div id="to-do-item" @click="clickToDo(toDo)">
     <svg
       xmlns="http://www.w3.org/2000/svg"
       width="21"
@@ -11,11 +11,9 @@
         data-name="Icon feather-circle"
         d="M22,12.5A9.5,9.5,0,1,1,12.5,3,9.5,9.5,0,0,1,22,12.5Z"
         transform="translate(-2 -2)"
-        :fill="clicked || toDo.completed ? textColor : `none`"
-        :stroke="textColor"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        stroke-width="2"
+        :fill="clicked || toDo.completed ? 'currentColor' : `none`"
+        stroke="currentColor"
+        stroke-width="1"
       />
     </svg>
     <h4 :class="clicked || toDo.completed ? `strike` : ``">{{ toDo.title }}</h4>
@@ -34,14 +32,16 @@ export default {
   },
   props: ["toDo"],
   methods: {
-    clickToDo(id) {
-      if (!this.toDo.completed) {
-        this.clicked = true;
-        setTimeout(() => {
-          this.$store.dispatch("completeToDo", id);
-          console.log("bitchass", id);
-        }, 500);
-      }
+    clickToDo(toDo) {
+      this.clicked = true;
+      setTimeout(() => {
+        this.$store.dispatch("completeToDo", {
+          id: toDo.userId,
+          variable: "completed",
+          value: !toDo.completed,
+        });
+      }, 500);
+      toDo.completed = !toDo.completed;
     },
   },
 };
@@ -49,16 +49,14 @@ export default {
 
 <style scoped>
 #to-do-item {
-  height: 50px;
+  height: 30px;
   display: flex;
-  flex-direction: row;
-  align-content: center;
   align-items: center;
 }
 
 h4 {
   margin: 10px;
-  text-align: left;
+  font-size: 10pt;
 }
 
 @keyframes strike {
@@ -77,8 +75,7 @@ h4 {
   position: absolute;
   top: 50%;
   left: 0;
-  width: 100%;
-  height: 2px;
+  height: 1px;
   background: var(--textColor);
   animation-name: strike;
   animation-duration: 0.3s;

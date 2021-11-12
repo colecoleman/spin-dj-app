@@ -21,7 +21,7 @@
                 d="M18,7.5v18"
                 transform="translate(-9 -7.5)"
                 fill="none"
-                stroke="#fff"
+                stroke="currentColor"
                 stroke-linecap="round"
                 stroke-linejoin="round"
                 stroke-width="3"
@@ -32,7 +32,7 @@
                 d="M7.5,18h18"
                 transform="translate(-7.5 -9)"
                 fill="none"
-                stroke="#000"
+                stroke="currentColor"
                 stroke-linecap="round"
                 stroke-linejoin="round"
                 stroke-width="3"
@@ -45,7 +45,7 @@
             v-model="newToDo"
             @keyup.enter="submitToDo()"
           />
-          <img :src="circleCheckmark" alt="" />
+          <img :src="svg.circleCheckmarkSvg" @click="submitToDo()" alt="" />
         </div>
         <div class="to-do-item" v-for="toDo in uncompletedToDos" :key="toDo.id">
           <to-do-item :toDo="toDo"></to-do-item>
@@ -74,7 +74,7 @@
             d="M18,7.5v18"
             transform="translate(-9 -7.5)"
             fill="none"
-            stroke="#fff"
+            stroke="currentColor"
             stroke-linecap="round"
             stroke-linejoin="round"
             stroke-width="3"
@@ -85,7 +85,7 @@
             d="M7.5,18h18"
             transform="translate(-7.5 -9)"
             fill="none"
-            stroke="#fff"
+            stroke="currentColor"
             stroke-linecap="round"
             stroke-linejoin="round"
             stroke-width="3"
@@ -104,6 +104,7 @@ import circleCheckmarkSvg from "../../../assets/SVGs/circle-checkmark.svg";
 export default {
   data() {
     return {
+      toDos: [],
       svg: {
         clipboardsvg,
         circleCheckmarkSvg,
@@ -115,31 +116,60 @@ export default {
   methods: {
     submitToDo() {
       let item = {
-        id: this.$store.state.toDos.length + 1,
-        associatedEventId: this.id,
+        id: "todo" + new Date().getTime(),
+        associatedContacts: [],
+        associatedEvents: [this.event.userId],
         title: this.newToDo,
         completed: false,
       };
-      this.$store.dispatch("addToDo", item);
+      this.$store.dispatch("addToDo", item).then((res) => {
+        this.toDos.unshift(res.data);
+      });
       this.newToDo = undefined;
       this.newToDoOpened = false;
     },
   },
   computed: {
-    toDos() {
-      return this.$store.state.toDos.filter(
-        (item) => item.associatedEventId === this.id
-      );
-    },
     uncompletedToDos() {
       return this.toDos.filter((item) => !item.completed);
     },
     completedToDos() {
       return this.toDos.filter((item) => item.completed);
     },
+    watch: {
+      event: function () {
+        let payload = {
+          associatedEventId: this.event.userId,
+        };
+        this.$store.dispatch("getToDos", payload).then(
+          (res) => {
+            console.log(res);
+            this.toDos = [...res.Items];
+          },
+          (error) => {
+            this.$store.dispatch("addError", error);
+          }
+        );
+      },
+    },
+  },
+  created() {
+    console.log(this.event);
+    let payload = {
+      associatedEventId: this.event.userId,
+    };
+    this.$store.dispatch("getToDos", payload).then(
+      (res) => {
+        console.log(res);
+        this.toDos = [...res.Items];
+      },
+      (error) => {
+        this.$store.dispatch("addError", error);
+      }
+    );
   },
   components: { ToDoItem },
-  props: ["id"],
+  props: ["event"],
 };
 </script>
 
