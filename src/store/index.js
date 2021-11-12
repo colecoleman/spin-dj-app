@@ -7,338 +7,56 @@ const store = createStore({
     state() {
         return {
             user: undefined,
+            branding: undefined,
             errors: [],
             successes: [],
-            notifications: [
-                // {
-                //     id: 5,
-                //     title: "Congrats! New Booking!",
-                //     body: "Bob Bobertson's Wedding Package",
-                //     date: new Date(2021, 6, 15, 11, 15),
-                //     read: false,
-                // },
-            ],
-            toDos: [
-                // {
-                //     id: 8,
-                //     associatedClientId: 8,
-                //     associatedEventId: 8,
-                //     title: "Setup Call",
-                //     completed: false,
-                // },
-            ],
-            automations: {
-                // approved: [
-                    
-                // ],
-                // pending: [{
-                //     id: 1,
-                //     title: 'Send Review Request',
-                //     performDate: new Date(2021, 2, 1, 18, 15),
-                //     associatedContactId: 1,
-                //     associatedEventId: 1,
-                // },
-            // ]
-            },
+            notifications: [],
+            toDos: [],
+            automations: {},
             contacts: {
-                clients: [
-             
-                ],
-                prospects: [
-                 
-            ],
-                vendors: [
-                    
-                    ],
-                employees: [
-            ],
-                locations: [
-                    {
-                    id: 1,
-                    name: "The Venue Name",
-                    address: {
-                        address1: "12345 Venue Dr",
-                        address2: "Anywhere, MO, 12345",
-                    },
-                    associatedVendorId: 1,
-                    notes: {
-                        private: [
-                            {
-                                date: new Date(2021, 10, 3),
-                                note: 'Lorem ipsum m fur fur fur fur fur r'
-                            },
-                            {
-                                date: new Date(2021, 10, 3),
-                                note: 'Lorem ipsum fur fur fur fur fur fur r'
-                            },
-                        ],
-                        public: [
-                            {
-                                date: new Date(2021, 10, 3),
-                                note: 'Lorem ipsum fur fur fur fur fur fur r'
-                            },
-                            {
-                                date: new Date(2021, 10, 3),
-                                note: 'Lorem ipsum fur fur fur fur fur fur r'
-                            },
-                        ],
-                    }
-
-                },
-                {
-                    id: 2,
-                    name: "The Venue Name",
-                    address: {
-                        address1: "12345 Venue Dr",
-                        address2: "Anywhere, MO, 12345",
-                    },
-                    associatedVendorId: 2,
-                    notes: {
-                        private: [
-                            {
-                                date: new Date(2021, 10, 3),
-                                note: 'Lorem ipsum fur dur dur dur dur dur r'
-                            },
-                            {
-                                date: new Date(2021, 10, 3),
-                                note: 'Lorem ipsum dur dur dur dur dur dur r'
-                            },
-                        ],
-                        public: [
-                            {
-                                date: new Date(2021, 10, 3),
-                                note: 'Lorem ipsum dur dur dur dur dur dur r'
-                            },
-                            {
-                                date: new Date(2021, 10, 3),
-                                note: 'Lorem ipsum dur dur dur dur dur dur r'
-                            },
-                        ],
-                    }
-
-                },{
-                    id: 3,
-                    name: "The Venue Name",
-                    address: {
-                        address1: "12345 Venue Dr",
-                        address2: "Anywhere, MO, 12345",
-                    },
-                    associatedVendorId: 3,
-                    notes: {
-                        private: [
-                            {
-                                date: new Date(2021, 10, 3),
-                                note: 'Lorem ipsum dur dur dur dur dur dur r'
-                            },
-                            {
-                                date: new Date(2021, 10, 3),
-                                note: 'Lorem ipsum dur dur dur dur dur dur r'
-                            },
-                        ],
-                        public: [
-                            {
-                                date: new Date(2021, 10, 3),
-                                note: 'Lorem ipsum dur dur dur dur dur dur r'
-                            },
-                            {
-                                date: new Date(2021, 10, 3),
-                                note: 'Lorem ipsum dur dur dur dur dur dur r'
-                            },
-                        ],
-                    }
-
-                },{
-                    id: 4,
-                    name: "The Venue Name",
-                    address: {
-                        address1: "12345 Venue Dr",
-                        address2: "Anywhere, MO, 12345",
-                    },
-                    associatedVendorId: 4,
-                    notes: {
-                        private: [
-                            {
-                                date: new Date(2021, 10, 3),
-                                note: 'Lorem ipsum dur dur dur dur dur dur r'
-                            },
-                            {
-                                date: new Date(2021, 10, 3),
-                                note: 'Lorem ipsum dur dur dur dur dur dur r'
-                            },
-                        ],
-                        public: [
-                            {
-                                date: new Date(2021, 10, 3),
-                                note: 'Lorem ipsum dur dur dur dur dur dur r'
-                            },
-                            {
-                                date: new Date(2021, 10, 3),
-                                note: 'Lorem ipsum dur dur dur dur dur dur r'
-                            },
-                        ],
-                    }
-
-                },{
-                    id: 5,
-                    name: "The Venue Name",
-                    address: {
-                        address1: "12345 Venue Dr",
-                        address2: "Anywhere, MO, 12345",
-                    },
-                    associatedVendorId: 5,
-                    notes: {
-                        private: [
-                            {
-                                date: new Date(2021, 10, 3),
-                                note: 'Lorem ipsum dur dur dur dur dur dur r'
-                            },
-                            {
-                                date: new Date(2021, 10, 3),
-                                note: 'Lorem ipsum dur dur dur dur dur dur r'
-                            },
-                        ],
-                        public: [
-                            {
-                                date: new Date(2021, 10, 3),
-                                note: 'Lorem ipsum dur dur dur dur dur dur r'
-                            },
-                            {
-                                date: new Date(2021, 10, 3),
-                                note: 'Lorem ipsum dur dur dur dur dur dur r'
-                            },
-                        ],
-                    }
-
-                },{
-                    id: 6,
-                    name: "The Venue Name",
-                    address: {
-                        address1: "12345 Venue Dr",
-                        address2: "Anywhere, MO, 12345",
-                    },
-                    associatedVendorId: 6,
-                    notes: {
-                        private: [
-                            {
-                                date: new Date(2021, 10, 3),
-                                note: 'Lorem ipsum dur dur dur dur dur dur r'
-                            },
-                            {
-                                date: new Date(2021, 10, 3),
-                                note: 'Lorem ipsum dur dur dur dur dur dur r'
-                            },
-                        ],
-                        public: [
-                            {
-                                date: new Date(2021, 10, 3),
-                                note: 'Lorem ipsum dur dur dur dur dur dur r'
-                            },
-                            {
-                                date: new Date(2021, 10, 3),
-                                note: 'Lorem ipsum dur dur dur dur dur dur r'
-                            },
-                        ],
-                    }
-
-                },
-                    ],
-                organizers: [
-                  
-            ]
+                clients: [],
+                prospects: [],
+                vendors: [],
+                employees: [],
+                locations: [],
+                organizers: []
             },
             equipment: [],
             events: [],        
-            businessSettings: {
-                identity: {
-                    businessName: 'DJ Cole Coleman',
-                    businessAddress: {
-                        address1one: '12345 Anywhere St',
-                        address1two: undefined,
-                        address2: 'Anywhere, AZ, 12345'
-                    },
-                    businessPhoneNumber: 13148568522,
-                    businessEmailAddresses: [
-                        {
-                            address: 'name@domain.com',
-                        },
-                        {
-                            address: 'company@domain.com',
-                        }],
-                    branding: {
-                        backgroundColor: '#F0F0F0',
-                        foregroundColor: '#FFFFFF',
-                        cardOutline: "#FFFFFF",
-                        highlightColor: "#00F5FF",
-                        textColor: "#000000"
-                    },
-                },
-                product: {
-                    eventTypes: ["wedding", "mitzvah"],
-                    packages: [ {
-                        id: "1",
-                        name: "Holy Matrimony",
-                        pricing: {
-                            baseTime: 5,
-                            baseRate: 180000,
-                            addHourly: 10000,
-                        },
-                        priceOption: "Hourly",
-                        employeesRequired: 2,
-                        photo: undefined,
-                    }],
-                    services: [
-                        {
-                            id: "1",
-                            name: "Wedding DJ",
-                            pricing: {
-                                baseTime: 5,
-                                baseRate: 150000,
-                                addHourly: 10000,
-                            },
-                            priceOption: "Hourly",
-                            photo: undefined,
-                            equipmentNeeded: [],
-                            employeesRequired: undefined
-                        },
-                        {
-                            id: "2",
-                            name: "Wedding Officiant",
-                            pricing: {
-                                baseTime: 1,
-                                baseRate: 30000,
-                                addHourly: 0,
-                            },
-                            priceOption: 'Flat',
-                            photo: undefined,
-                            equipmentNeeded: [],
-                            employeesRequired: undefined
-                        }
-                    ],
-                    addOns: [],
-                    forms: [],
-                    discounts: [{
-                        name: 'Friends and Family',
-                        type: 'percentage',
-                        amount: 10
-                    }],
-                },
-                automations: [],
-                
-            },
+            businessSettings: {},
         };
     },
     actions: {
-        setUser(context, user) {
-            axios.get(`https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/admin/${user}/users/${user}`).then(response => {
-                context.commit('setUser', response.data.Item);
-                console.log(response.data.Item)
+        async getUser(context, user) {
+            return new Promise((resolve, reject) => {
+                axios.get(`https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/admin/${context.state.user.tenantId}/users/${user}`).then((result)=> {
+                    resolve(result.data);
+                    console.log(result)
+                }, error => {
+                    context.commit('addError', error);
+                    reject(error);
+                })
             })
+        },
+        async setUser(context, user) {
+            await axios.get(`https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/admin/${user}/users/${user}`).then(response => {
+                context.commit('setUser', response.data.Item);
+            })
+        },
+        async setBusinessSettings(context) {
+            await axios.get(`https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/admin/${context.state.user.tenantId}/settings`).then(response => {
+                context.commit('setBusinessSettings', response.data.Item.businessSettings);
+                context.commit('setBranding', response.data.Item.businessSettings.identity);
+            }).catch((e) => context.commit('addError', e))
         },
         addError(context, error) {
             context.commit('addError', error)
         },
         clearErrors(context) {
             context.commit('clearErrors');
+        },
+        addSuccess(context) {
+            context.commit('addSuccess');
         },
         clearSuccesses(context) {
             context.commit('clearSuccesses');
@@ -352,6 +70,26 @@ const store = createStore({
             context.commit('setVendors', response.data.Items.filter(x => x.role === 'vendor'));
             }).catch(e => context.commit('addError', `Error: ${e}`));
             
+        },
+        adminConfigIdentitySetBusinessName(context, payload) {
+            context.commit('adminConfigIdentitySetBusinessName', payload);
+        },
+        adminConfigIdentitySetBusinessAddress(context, payload) {
+            context.commit('adminConfigIdentitySetBusinessAddress', payload);
+        },
+        adminConfigIdentitySetBusinessPhoneNumber(context, payload) {
+            context.commit('adminConfigIdentitySetBusinessPhoneNumber', payload);
+        },
+        updateBusinessSettings({commit, state}) {
+            let payload = {
+                variable: 'businessSettings',
+                value: state.businessSettings
+            }
+            axios.put(`https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/admin/${state.user.tenantId}/users/${state.user.userId}`, payload).then(() => {
+                commit('setBusinessSettings', payload.value);
+            }).catch((e) => {
+                console.log(e);
+            })
         },
         async addContact( context, contact) {
             return new Promise((resolve, reject) => {
@@ -369,8 +107,22 @@ const store = createStore({
             })
             
         },
-        async addEvent(context, event) {
-            console.log(context.state.user)
+        async editContact(context, payload) {
+            return new Promise((resolve, reject) => {
+                axios.put(
+                    `https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/admin/${context.state.user.tenantId}/users/${payload.clientId}`,
+                    payload
+                  ).then((result) => {
+                    resolve(result);
+                    console.log(result);
+                    context.commit('editEvent', result)
+                }, error => {
+                    context.commit('addError', error);
+                    reject(error);
+                });
+            })
+        },
+        addEvent(context, event) {
             return new Promise((resolve, reject) => {
                 axios.put(
                     `https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/admin/${context.state.user.tenantId}/events`,
@@ -384,8 +136,34 @@ const store = createStore({
                 })
             })
         },
+        addLocation(context, location) {
+            location = {...location, id: 'location' + new Date().getTime()};
+            return new Promise((resolve, reject) => {
+                axios.put(
+                    `https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/admin/${context.state.user.tenantId}/locations`,
+                    location
+                  ).then((result) => {
+                      resolve(result)
+                      context.commit('addLocation', result.data);
+                }, error => {
+                    context.commit('addError', `Error: ${error}`);
+                    reject(error)
+                })
+            })
+        },
+        async getLocation(context, location) {
+            console.log(location);
+            return new Promise((resolve, reject) => {
+                axios.get(`https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/admin/${context.state.user.tenantId}/locations/${location}`).then((result)=> {
+                    resolve(result.data);
+                    console.log(result.data);
+                }, error => {
+                    context.commit('addError', error);
+                    reject(error);
+                })
+            })
+        },
         async editEvent(context, payload) {
-            console.log(payload);
             return new Promise((resolve, reject) => {
                 axios.put(
                     `https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/admin/${context.state.user.tenantId}/events/${payload.eventId}`,
@@ -402,16 +180,95 @@ const store = createStore({
 
             
         },
-        async addLocation( context, location) {
-            axios.put(
-                `https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/admin/${context.state.user.tenantId}/events`,
-                location
-              ).then((result) => {
-                  console.log(result.data);
-                  context.commit('addLocation', result.data);
-              }).catch(e => context.commit('addError', `Error: ${e}`))
-
+        async deleteEvent(context, payload) {
+            console.log(payload)
+            await axios.delete(`https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/admin/${context.state.user.tenantId}/events/${payload}`).then(() => {
+                context.commit('addSuccess', "Successfully Deleted Event");
+            }).catch((e) => {
+                context.commit('addError', e)
+            })
         },
+        async deleteUser(context, payload) {
+            console.log(payload)
+            await axios.delete(`https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/admin/${context.state.user.tenantId}/users/${payload.id}`).then(() => {
+                context.commit('addSuccess', "Successfully Deleted User");
+                context.commit('deleteUser', payload);
+            }).catch((e) => {
+                context.commit('addError', e)
+            })
+        },
+        async adminGetEvents(context) {
+            return new Promise((resolve, reject) => {
+                axios.get(`https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/admin/${context.state.user.tenantId}/events`).then((result)=> {
+                    resolve(result);
+                }, error => {
+                    context.commit('addError', error);
+                    reject(error);
+                })
+            })
+        },
+        async adminGetEvent(context, payload) {
+            return new Promise((resolve, reject) => {
+                axios.get(`https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/admin/${context.state.user.tenantId}/events/${payload}`).then((result)=> {
+                    resolve(result);
+                }, error => {
+                    context.commit('addError', error);
+                    reject(error);
+                })
+            })
+        },
+        async adminGetContact(context, payload) {
+            return new Promise((resolve, reject) => {
+                axios.get(`https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/admin/${context.state.user.tenantId}/users/${payload}`).then((result) => {
+                    resolve(result);
+                }, error => {
+                    context.commit('addError', error);
+                    reject(error);
+                })
+            })
+        },
+
+        async addToDo(context, payload) {
+            return new Promise((resolve, reject) => {
+                axios.put(
+                    `https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/admin/${context.state.user.tenantId}/todo`,
+                    payload
+                  ).then((result) => {
+                    resolve(result);
+                    context.commit('addToDo', result.data);
+                }, error => {
+                    context.commit('addError', error);
+                    reject(error);
+                });
+            })
+        },
+        async completeToDo(context, payload) {
+            console.log(payload);
+            await axios.put(
+                `https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/admin/${context.state.user.tenantId}/todo/${payload.id}`,
+                payload
+              ).then((result) => {
+                  console.log(result);
+                  context.commit('addSuccess', 'To-Do Added');
+                  context.commit('completeToDo', payload.id)
+            }, error => {
+                context.commit('addError', `Error: ${error}`);
+            })
+        },
+        async getToDos(context, payload) {
+            let category = payload.associatedContactId ? 'contact' : 'event';
+            let id = payload.associatedContactId ? payload.associatedContactId : payload.associatedEventId;
+            return new Promise((resolve, reject) => {
+                axios.get(`https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/admin/${context.state.user.tenantId}/todo/${category}/${id}`).then((result)=> {
+                    resolve(result.data);
+                }, error => {
+                    context.commit('addError', error);
+                    reject(error);
+                })
+            })
+    },
+
+
         adminAddEvent(context, payload) {
             context.commit('adminAddEvent', payload)
         },
@@ -419,8 +276,14 @@ const store = createStore({
         adminConfigAddService(context, payload) {
             context.commit('adminConfigAddService', payload);
         },
+        adminConfigDeleteService(context, payload) {
+            context.commit('adminConfigDeleteService', payload);
+        },
         adminConfigAddPackage(context, payload) {
             context.commit('adminConfigAddPackage', payload);
+        },
+        adminConfigDeletePackage(context, payload) {
+            context.commit('adminConfigDeletePackage', payload);
         },
         adminConfigAddAddOn(context, payload) {
             context.commit('adminConfigAddAddOn', payload)
@@ -455,8 +318,6 @@ const store = createStore({
         deleteApprovedAutomation( context, id ) {
             context.commit('deleteApprovedAutomation', id)
         },
-
-        // prospect-specific actions
         
         changeProspectStatus(context, payload) {
             context.commit('changeProspectStatus', payload)
@@ -470,12 +331,8 @@ const store = createStore({
         },
 
 
-        completeToDo( context, id) {
-            context.commit('completeToDo', id)
-        },
-        addToDo(context, payload) {
-            context.commit('addToDo', payload)
-        },
+        
+   
         addContactNote(context, payload) {
             context.commit('addContactNote', payload)
         },
@@ -490,15 +347,23 @@ const store = createStore({
     },
     mutations: {
         setUser(state, user) {
-            console.log(user)
             state.user = user;
+        },
+        setBusinessSettings(state, settings) {
+            state.businessSettings = settings;
+            document.title = state.businessSettings.identity.businessName;
+        },
+        setBranding(state, settings) {
+            state.branding = settings;
         },
         addError(state, error) {
             state.errors.push(error);
-            console.log(error)
         },
         clearErrors(state) {
             state.errors.length = 0;
+        },
+        addSuccess(state, payload) {
+            state.successes.push(payload);
         },
         clearSuccesses(state) {
             state.successes.length = 0;
@@ -508,18 +373,12 @@ const store = createStore({
         },
         setEmployees(state, payload) {
             state.contacts.employees = payload;
-            console.log(state.contacts);
-
         },
         setOrganizers(state, payload) {
             state.contacts.organizers = payload;
-            console.log(state.contacts);
-
         },
         setVendors(state, payload) {
             state.contacts.vendors = payload;
-            console.log(state.contacts);
-
         },
         addContact(state, payload) {
             state.contacts[`${payload.role}s`].push(payload)
@@ -527,11 +386,20 @@ const store = createStore({
         addEvent(state, payload) {
             state.events.push(payload);
         },
+        addLocation(state, payload) {
+            state.contacts.location.push(payload);
+        },
         adminConfigAddService(state, payload) {
             state.businessSettings.product.services.push(payload);
         },
+        adminConfigDeleteService(state, payload) {
+            state.businessSettings.product.services.splice(payload, 1);
+        },
         adminConfigAddPackage(state, payload) {
             state.businessSettings.product.packages.push(payload);
+        },
+        adminConfigDeletePackage(state, payload) {
+            state.businessSettings.product.packages.splice(payload, 1);
         },
         adminConfigAddAddOn(state, payload) {
             state.businessSettings.product.addOns.push(payload);
@@ -542,6 +410,15 @@ const store = createStore({
         addFormToDb(state, payload) {
             state.businessSettings.product.forms.push(payload);
         },
+        adminConfigIdentitySetBusinessName(state, payload) {
+            state.businessSettings.identity.businessName = payload;
+        },
+        adminConfigIdentitySetBusinessAddress(state, payload) {
+            state.businessSettings.identity.businessAddress = payload;
+        },
+        adminConfigIdentitySetBusinessPhoneNumber(state, payload) {
+            state.businessSettings.identity.phoneNumber = payload;
+        },
         addClient(state, payload) {
             state.contacts.clients.push(payload);
         },
@@ -551,9 +428,7 @@ const store = createStore({
         addVendor(state, payload) {
             state.contacts.vendors.push(payload)
         },
-        addLocation(state, payload) {
-            state.contacts.locations.push(payload)
-        },
+     
         addEmployee(state, payload) {
             state.contacts.employees.push(payload)
         },
@@ -614,11 +489,10 @@ const store = createStore({
            state.automations.approved.splice(matchingIndex, 1)
         },
         completeToDo(state, id) {
-            let matchingIndex = state.toDos.findIndex(element => element.id === id);
-            state.toDos[matchingIndex].completed = true;
-            console.log(state.toDos[matchingIndex]);
+            console.log(state, id);
         },
         addToDo(state, payload) {
+            console.log(payload)
             state.toDos.unshift(payload)
         },
 
@@ -674,25 +548,20 @@ const store = createStore({
             console.log(payload)
             
         },
-        deleteContact(state, {category, id}) {
-            let cat = state.contacts[category];
-            let subject = cat.findIndex(e => e.id === id);
+        deleteUser(state, payload) {
+            let cat = state.contacts[payload.category];
+            let subject = cat.findIndex(e => e.id === payload.id);
             cat.splice(subject, 1);
 
-        }
+        },
     },
     getters: {
 
     },
     plugins: [createPersistedState({
-        paths: ['user']
+        paths: ['user', 'businessSettings']
     })]
     
 });
-
-// store.dispatch('getClients');
-// store.dispatch('getEvents');
-// store.dispatch('getAddOns');
-// store.dispatch('getCombined');
 
 export default store;
