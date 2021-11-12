@@ -1,12 +1,12 @@
 <template>
   <ul>
     <li
-      v-for="(value, name) in configItems"
-      :key="value"
-      @click="scroll(`${name + '-card'}`)"
-      :class="activeLink === `${name + '-card'}` ? 'active-link' : ' '"
+      v-for="(name, index) in configItems"
+      :key="index"
+      @click="scroll(name.toLowerCase())"
+      :class="activeLink === name.toLowerCase() ? 'active-link' : ' '"
     >
-      {{ value.name }}
+      {{ name }}
     </li>
   </ul>
 </template>
@@ -15,48 +15,17 @@
 export default {
   data() {
     return {
-      activeLink: "clients-card",
+      activeLink: "identity",
       configItems: [
-        {
-          name: "Branding",
-        },
-        {
-          name: "Information",
-        },
-        {
-          name: "Services",
-        },
-        {
-          name: "Packages",
-        },
-        {
-          name: "Add-Ons",
-        },
-        {
-          name: "Discounts",
-        },
-        // {
-        //   name: "Equipment",
-        // },
-        {
-          name: "Automations",
-        },
-        {
-          name: "To-Dos",
-        },
-        // {
-        //   name: "Payments",
-        // },
-        // {
-        //   name: "Reports",
-        // },
+        "Identity",
+        "Services",
+        "Packages",
+        "Forms",
+        "Add-Ons",
+        "Discounts",
+        "Automations",
       ],
     };
-  },
-  computed: {
-    brandingPreferences() {
-      return this.$store.state.businessSettings.identity.branding;
-    },
   },
   methods: {
     scroll(id) {
@@ -71,26 +40,13 @@ export default {
 
 <style scoped>
 ul {
-  /* color: white; */
   text-align: right;
-  height: 90%;
-  padding: 0;
 }
 
 li {
   line-height: 3.25;
-  width: 100%;
   text-transform: uppercase;
-  font-size: 12pt;
-  list-style: none;
-
   font-weight: 600;
-}
-
-a {
-  text-decoration: none;
-  /* color: white; */
-  font-weight: 700;
 }
 
 .active-link {
