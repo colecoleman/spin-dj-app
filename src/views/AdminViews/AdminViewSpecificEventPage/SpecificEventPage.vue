@@ -1,61 +1,74 @@
 <template>
-  <backdrop
-    v-if="invoiceOpen || formsOpen || contractOpen"
-    @click="closePopup()"
-  ></backdrop>
-  <invoice-popup
-    :invoice="event.eventInvoice"
-    :event="event"
-    :client="client"
-    v-if="invoiceOpen"
-    @close-popup="closePopup()"
-  ></invoice-popup>
-  <forms-popup v-if="formsOpen" @close-popup="closePopup()"></forms-popup>
-  <contract-popup
-    v-if="contractOpen"
-    @close-popup="closePopup()"
-  ></contract-popup>
-  <section>
-    <div id="upper-div">
-      <div id="upper-div-left-container">
-        <event-page-contact-card
-          :client="client"
-          :event="event"
-        ></event-page-contact-card>
-      </div>
-      <div id="upper-div-right-container">
-        <div id="upper-div-right-upper-container">
-          <four-button-bar-with-drop-down
-            :buttons="buttons"
-            :dropdown="dropdown"
-          ></four-button-bar-with-drop-down>
+  <div v-if="event" id="div-wrapper">
+    <backdrop
+      v-if="invoiceOpen || formsOpen || contractOpen"
+      @click="closePopup()"
+    ></backdrop>
+    <invoice-popup
+      :invoice="event.invoice"
+      :event="event"
+      :client="client"
+      v-if="invoiceOpen"
+      @close-popup="closePopup()"
+    ></invoice-popup>
+    <forms-popup v-if="formsOpen" @close-popup="closePopup()"></forms-popup>
+    <contract-popup
+      v-if="contractOpen"
+      @close-popup="closePopup()"
+    ></contract-popup>
+    <two-button-dialog-modal
+      v-if="deleteEventOpen"
+      @select-button-one="confirmDeleteEvent()"
+      @select-button-two="closePopup()"
+      @close-modal="closePopup()"
+    ></two-button-dialog-modal>
+    <section>
+      <div id="upper-div">
+        <div id="upper-div-left-container">
+          <event-page-contact-card
+            v-if="client && event"
+            :client="client"
+            :event="event"
+          ></event-page-contact-card>
         </div>
-        <div id="upper-div-right-lower-container">
-          <div id="upper-div-right-lower-container-box-1">
-            <specific-event-page-location-scroller
-              :locations="event.eventLocations"
-            ></specific-event-page-location-scroller>
+        <div id="upper-div-right-container">
+          <div id="upper-div-right-upper-container">
+            <four-button-bar-with-drop-down
+              :buttons="buttons"
+              :dropdown="dropdown"
+            ></four-button-bar-with-drop-down>
           </div>
-          <div id="upper-div-right-lower-container-box-2">
-            <automation-event-component></automation-event-component>
+          <div id="upper-div-right-lower-container">
+            <div id="upper-div-right-lower-container-box-1">
+              <specific-event-page-location-scroller
+                :locations="locations"
+                :loading="locations ? false : true"
+              ></specific-event-page-location-scroller>
+            </div>
+            <div id="upper-div-right-lower-container-box-2">
+              <automation-event-component
+                :automations="automations"
+                :loading="automations ? 'false' : 'true'"
+              ></automation-event-component>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-    <div id="lower-div">
-      <div id="lower-div-box-1">
-        <event-page-contact-carousel
-          :contacts="contacts"
-        ></event-page-contact-carousel>
+      <div id="lower-div">
+        <div id="lower-div-box-1">
+          <event-page-contact-carousel
+            :contacts="contacts"
+          ></event-page-contact-carousel>
+        </div>
+        <div id="lower-div-box-2">
+          <to-do-specific-event :event="event"></to-do-specific-event>
+        </div>
+        <div id="lower-div-box-3">
+          <recent-messages-event></recent-messages-event>
+        </div>
       </div>
-      <div id="lower-div-box-2">
-        <to-do-specific-event></to-do-specific-event>
-      </div>
-      <div id="lower-div-box-3">
-        <recent-messages-event></recent-messages-event>
-      </div>
-    </div>
-  </section>
+    </section>
+  </div>
 </template>
 
 <script>
@@ -70,8 +83,7 @@ import FormsPopup from "./FormsPopup.vue";
 import InvoicePopup from "./InvoicePopup.vue";
 import ContractPopup from "./ContractPopup.vue";
 import FourButtonBarWithDropDown from "../../../SharedComponents/SharedComponentsUI/FourButtonBarWithDropDown.vue";
-
-// svg imports
+import TwoButtonDialogModal from "../../../SharedComponents/SharedComponentsUI/TwoButtonDialogModal.vue";
 
 import editPen from "../../../assets/SVGs/edit-pen.svg";
 import passingTime from "../../../assets/SVGs/passing-time.svg";
@@ -80,6 +92,11 @@ import trashCan from "../../../assets/SVGs/trash-can.svg";
 export default {
   data() {
     return {
+      event: undefined,
+      contacts: [],
+      locations: [],
+      clients: [],
+      automations: undefined,
       buttons: [
         {
           title: "View Forms",
@@ -94,6 +111,7 @@ export default {
           action: this.openContract,
         },
       ],
+
       dropdown: {
         title: "Actions",
         actionItems: [
@@ -120,12 +138,17 @@ export default {
       passingTime,
       editPen,
       trashCan,
-
+      deleteEventOpen: false,
       backdropOpen: false,
       contractOpen: false,
       invoiceOpen: false,
       formsOpen: false,
     };
+  },
+  computed: {
+    client() {
+      return this.clients[0];
+    },
   },
   methods: {
     openForms() {
@@ -140,14 +163,40 @@ export default {
       this.contractOpen = true;
       this.backdropOpen = true;
     },
+    deleteEvent() {
+      this.deleteEventOpen = true;
+    },
+    async confirmDeleteEvent() {
+      let contacts = [...this.contacts];
+      console.log(contacts);
+      await contacts.forEach((contact) => {
+        let index = contact.associatedEvents.indexOf(this.event.userId);
+        let payload = {
+          clientId: contact.userId,
+          variable: "associatedEvents",
+          value: index,
+          operation: "removeFromList",
+        };
+        console.log(payload);
+        this.$store
+          .dispatch("editContact", payload)
+          .then((res) => {
+            console.log(res);
+            this.$store.commit("addSuccess", "Event Removed From Contact");
+          })
+          .catch((e) => {
+            this.$store.dispatch("addError", e);
+          });
+      });
+      await this.$store.dispatch("deleteEvent", this.event.userId);
+      this.$router.push("/admin/dashboard");
+    },
     closePopup() {
       this.contractOpen = false;
       this.invoiceOpen = false;
       this.formsOpen = false;
       this.backdropOpen = false;
-    },
-    deleteEvent() {
-      alert("deleted!");
+      this.deleteEventOpen = false;
     },
     editEvent() {
       alert("edited!");
@@ -156,28 +205,30 @@ export default {
       alert("postponed");
     },
   },
-  computed: {
-    client() {
-      return this.$store.state.contacts.clients[0];
-    },
-    event() {
-      return this.$store.state.events[0];
-    },
-    contacts() {
-      let associatedContacts = this.event.associatedContacts;
-      let contacts = [];
-      associatedContacts.forEach((element) => {
-        let item = this.$store.state.contacts[`${element.role + "s"}`].find(
-          (x) => x.id === element.id
-        );
-        item.role = element.role;
-        if (item) {
-          contacts.push(item);
+
+  async created() {
+    await this.$store
+      .dispatch("adminGetEvent", this.$route.params.id)
+      .then((res) => {
+        console.log(res.data.Item);
+        this.event = res.data.Item;
+      })
+      .catch((e) => this.$store.dispatch("addError", e));
+    await this.event.contacts.forEach((contact) => {
+      this.$store.dispatch("getUser", contact).then((res) => {
+        this.contacts.push(res.Item);
+        if (res.Item.role === "client") {
+          this.clients.push(res.Item);
         }
       });
-      console.log(contacts);
-      return contacts;
-    },
+    });
+    await this.event.locations.forEach((location) => {
+      this.$store.dispatch("getLocation", location).then((res) => {
+        this.locations.push(res.Item);
+        console.log(this.locations);
+      });
+    });
+    return this.event.contacts;
   },
   components: {
     ToDoSpecificEvent,
@@ -191,11 +242,17 @@ export default {
     FormsPopup,
     ContractPopup,
     FourButtonBarWithDropDown,
+    TwoButtonDialogModal,
   },
 };
 </script>
 
 <style scoped>
+#div-wrapper {
+  width: 100%;
+  height: 100%;
+}
+
 section {
   width: 100%;
   height: 100%;
@@ -223,7 +280,7 @@ section {
 
 #upper-div-right-upper-container {
   width: 100%;
-  height: 30%;
+  /* height: 30%; */
   display: flex;
   flex-direction: row;
 }

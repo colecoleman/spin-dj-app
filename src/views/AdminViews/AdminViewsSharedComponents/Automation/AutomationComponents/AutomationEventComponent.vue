@@ -1,8 +1,8 @@
 <template>
-  <base-card :icon="svg.automationSvg">
+  <base-card :icon="svg.automationSvg" :loading="loading">
     <template v-slot:title>Automation</template>
     <template v-slot:content
-      ><div id="list-wrapper">
+      ><div id="list-wrapper" v-if="automations">
         <automation-contact-list-item
           v-for="automation in automationsPending"
           :key="automation.id"
@@ -51,6 +51,7 @@ export default {
       return this.$store.state.automations.approved;
     },
   },
+  props: ["automations", "loading"],
   components: {
     AutomationContactListItem,
     AutomationContactListItemApproved,

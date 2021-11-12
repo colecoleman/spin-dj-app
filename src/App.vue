@@ -1,5 +1,5 @@
 <template>
-  <div id="application-wrapper" :style="cssVars">
+  <div id="application-wrapper" :style="cssVars" v-if="loaded">
     <router-view name="main"></router-view>
   </div>
   <transition name="fade1">
@@ -19,10 +19,20 @@ import ErrorIndicator from "./SharedComponents/SharedComponentsUI/ErrorIndicator
 import SuccessIndicator from "./SharedComponents/SharedComponentsUI/SuccessIndicator.vue";
 
 export default {
+  data() {
+    return {
+      loaded: false,
+    };
+  },
   computed: {
+    identity() {
+      if (this.$store.state.branding) {
+        return this.$store.state.branding;
+      }
+    },
     branding() {
-      if (this.$store.state.businessSettings.identity.branding) {
-        return this.$store.state.businessSettings.identity.branding;
+      if (this.$store.state.branding.branding) {
+        return this.$store.state.branding.branding;
       } else {
         return {
           backgroundColor: "#F0F0F0",
@@ -57,15 +67,18 @@ export default {
     ErrorIndicator,
     SuccessIndicator,
   },
-  async beforeCreate() {
+
+  async mounted() {
     let user = await Auth.currentAuthenticatedUser();
     console.log(user);
     if (user) {
-      this.$store.dispatch("setUser", user.username);
+      await this.$store.dispatch("setUser", user.username);
+      // await this.$store.dispatch("setBranding", user.username);
+      await this.$store.dispatch("setBusinessSettings", user.username);
     }
-  },
-  mounted() {
-    document.title = this.$store.state.businessSettings.identity.businessName;
+    console.log(this.$store.state.businessSettings);
+    document.title = this.$store.state.branding.businessName;
+    this.loaded = true;
   },
 };
 </script>
@@ -114,6 +127,10 @@ a {
   color: var(--textColor);
 }
 
+p {
+  font-size: 8pt;
+}
+
 h4 {
   font-size: 15px;
   text-transform: uppercase;
@@ -135,6 +152,7 @@ select,
 textarea {
   color: var(--textColor);
   background-color: var(--foregroundColor);
+  font-family: Roboto, Helvetica, Arial, sans-serif;
   border: 1px solid;
   border-radius: 5px;
   padding: 3px;

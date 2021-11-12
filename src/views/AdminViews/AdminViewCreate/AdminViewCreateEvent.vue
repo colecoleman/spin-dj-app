@@ -1,5 +1,5 @@
 <template>
-  <section id="event-creation-wrapper">
+  <section id="event-creation-wrapper" v-if="loaded">
     <div id="form-wrapper">
       <div class="event-details-wrapper">
         <base-card>
@@ -119,21 +119,21 @@
                   <p>Street Address 1:</p>
                   <input
                     type="text"
-                    v-model.lazy="fields.location.streetAddress1"
+                    v-model.lazy="fields.location.address.streetAddress1"
                   />
                 </div>
                 <div class="form-input">
                   <p>Street Address 2:</p>
                   <input
                     type="text"
-                    v-model.lazy="fields.location.streetAddress2"
+                    v-model.lazy="fields.location.address.streetAddress2"
                   />
                 </div>
                 <div class="form-input">
                   <p>City, State/Province, Zip Code:</p>
                   <input
                     type="text"
-                    v-model.lazy="fields.location.cityStateZip"
+                    v-model.lazy="fields.location.address.cityStateZip"
                   />
                 </div>
               </div>
@@ -281,6 +281,7 @@ export default {
   components: { AdminViewCreateEventSummary, FloatingMenuWithListItems },
   data() {
     return {
+      loaded: false,
       XIcon,
       locations: [],
       clients: [],
@@ -315,10 +316,12 @@ export default {
         endTime: null,
         locationSearch: null,
         location: {
-          name: null,
-          streetAddress1: null,
-          streetAddress2: null,
-          cityStateZip: null,
+          name: undefined,
+          address: {
+            streetAddress1: undefined,
+            streetAddress2: undefined,
+            cityStateZip: undefined,
+          },
         },
         adjustment: {
           name: null,
@@ -342,15 +345,12 @@ export default {
       },
 
       event: {
-        eventId: "event#" + new Date().getTime(),
+        eventId: "event" + new Date().getTime(),
         data: {
           date: null,
           startTime: null,
           endTime: null,
         },
-        locations: [],
-        associatedContacts: [],
-        clients: [],
         invoice: {
           adjustments: [],
           payments: [],
@@ -458,11 +458,17 @@ export default {
           discounts[x].display = this.formatPrice(discounts[x].amount);
         }
         if (discounts[x].type === "percentage") {
-          discounts[x].display = `${discounts[x].amount}%`;
+          discounts[x].display = `${discounts[x].amount * 100}%`;
         }
       }
       return discounts;
     },
+  },
+  async created() {
+    await this.$store.dispatch("setBusinessSettings");
+
+    console.log(this.$store.state.businessSettings);
+    this.loaded = true;
   },
 };
 </script>

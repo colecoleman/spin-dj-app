@@ -1,8 +1,8 @@
 <template>
-  <base-card :icon="icon">
+  <base-card :icon="icon" :loading="contact ? false : true">
     <template v-slot:title>Information</template>
     <template v-slot:content>
-      <div id="contact-card-lower-div">
+      <div id="contact-card-lower-div" v-if="contact">
         <div class="contact-card-lower-div-half">
           <div class="indented-item">
             <h5>Created:</h5>
@@ -15,16 +15,6 @@
         </div>
         <div class="contact-card-lower-div-half">
           <div class="indented-item">
-            <h5>Source:</h5>
-            <h5 class="indented">
-              {{ contact.source }}
-            </h5>
-          </div>
-          <div class="indented-item">
-            <h5>Lifetime Value:</h5>
-            <h5 class="indented">
-              {{ `$${contact.lifetimeValue * 0.01} ` }}
-            </h5>
           </div>
         </div>
       </div>

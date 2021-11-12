@@ -11,6 +11,7 @@
 
         <specific-event-page-location-scroller-item
           :location="locations[counter]"
+          v-if="locations.length > 0"
         ></specific-event-page-location-scroller-item>
 
         <img

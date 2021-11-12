@@ -1,23 +1,24 @@
 <template>
   <div id="single-event-item" @click="routeToEvent()">
     <div class="event-location-identifier">
-      <h4 class="venue-name">{{ primaryLocation.name }}</h4>
+      <h4 class="venue-name">{{ location.name }}</h4>
       <div class="event-address">
-        <h5>{{ primaryLocation.address.address1 }}</h5>
-        <h5>{{ primaryLocation.address.address2 }}</h5>
+        <p>{{ location.address.streetAddress1 }}</p>
+        <p>{{ location.address.cityStateZip }}</p>
       </div>
     </div>
     <div id="event-metadata-identifier">
       <div id="date-and-time-identifier">
-        <h5>{{ formatDate(event.eventStartTime) }}</h5>
-        <h5>
-          {{ formatTime(event.eventStartTime) }} -
-          {{ formatTime(event.eventEndTime) }}
-        </h5>
+        <p>{{ formatDate(event.data.date) }}</p>
+        <p>
+          {{ formatTime(event.data.startTime) }} -
+          {{ formatTime(event.data.endTime) }}
+        </p>
       </div>
       <div id="event-invoice-metadata">
         <p>
-          ${{ (event.balanceOutstanding * 0.01).toLocaleString() }} Outstanding
+          {{ formatPrice(balanceOutstanding(event.invoice, event.data)) }}
+          Outstanding
         </p>
       </div>
     </div>
@@ -32,11 +33,14 @@ export default {
   data() {
     return {
       defaultProfilePicture,
+      location: undefined,
     };
   },
   methods: {
     formatDate: helpers.formatDate,
     formatTime: helpers.formatTime,
+    formatPrice: helpers.formatPrice,
+    balanceOutstanding: helpers.balanceOutstanding,
     routeToEvent() {
       this.$router.push("events/" + this.event.id);
     },
@@ -54,17 +58,21 @@ export default {
     },
     primaryLocation() {
       let locationId = this.event.eventLocations[0].locationId;
-
-      console.log(
-        this.$store.state.contacts.locations.find((x) => x.id === locationId)
-      );
-
       return this.$store.state.contacts.locations.find(
         (x) => x.id === locationId
       );
     },
   },
   props: ["event"],
+  async created() {
+    console.log(this.event);
+    await this.$store
+      .dispatch("getLocation", this.event.locations[0])
+      .then((res) => {
+        this.location = res.Item;
+        console.log(this.location);
+      });
+  },
 };
 </script>
 
@@ -72,15 +80,21 @@ export default {
 #event-location-identifier,
 #event-metadata-identifier {
   display: flex;
-  max-width: 50%;
+  /* max-width: 50%; */
   width: 50%;
 }
+
+.event-address {
+  text-align: left;
+}
+
 #single-event-item {
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-evenly;
-  padding-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--cardOutline);
   cursor: pointer;
 }
 

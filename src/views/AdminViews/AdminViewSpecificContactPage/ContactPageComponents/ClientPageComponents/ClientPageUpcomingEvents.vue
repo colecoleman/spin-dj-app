@@ -1,5 +1,5 @@
 <template>
-  <base-card :icon="discsvg">
+  <base-card :icon="discsvg" :loading="events && contact ? false : true">
     <template v-slot:icon> </template>
     <template v-slot:title>Events</template>
     <template v-slot:action1
@@ -25,15 +25,15 @@
         /></div
     ></template>
     <template v-slot:content>
-      <div id="events-content" v-if="events.length > 0">
+      <div id="events-content" v-if="events">
         <location-upcoming-events-list-item
           v-for="event in events"
-          :key="event.id"
+          :key="event.userId"
           :event="event"
-          @click="navigateToEventPage(event.id), sortByDateDescending()"
+          @click="navigateToEventPage(event.userId), sortByDateDescending()"
         ></location-upcoming-events-list-item>
       </div>
-      <h5>No events found for this client.</h5>
+      <h5 v-if="!events">No events found for this client.</h5>
     </template>
   </base-card>
 </template>
@@ -45,6 +45,7 @@ import discsvg from "../../../../../assets/SVGs/disc.svg";
 export default {
   data() {
     return {
+      events: undefined,
       discsvg,
       isFetching: this.$store.state.isFetching,
       sortMenuOpened: false,
@@ -83,24 +84,22 @@ export default {
       this.toggleSortMenuOpened();
     },
     navigateToEventPage(id) {
-      this.$router.push("/events/" + id);
-    },
-  },
-  computed: {
-    events() {
-      let today = new Date();
-      return this.$store.state.events.filter(
-        (event) =>
-          event.eventStartTime > today &&
-          event.associatedContacts.some(
-            (contact) => contact.userId === this.contact.userId
-          )
-      );
+      this.$router.push("/admin/events/" + id);
     },
   },
   props: ["contact"],
-
-  created() {},
+  watch: {
+    contact: function () {
+      this.events = [];
+      console.log(this.contact);
+      this.contact.associatedEvents.forEach((event) => {
+        this.$store.dispatch("adminGetEvent", event).then((res) => {
+          this.events.push(res.data.Item);
+          console.log(res.data.Item);
+        });
+      });
+    },
+  },
   components: { LocationUpcomingEventsListItem, FloatingMenuWithListItems },
 };
 </script>

@@ -12,15 +12,15 @@
       />
     </div>
     <div id="contact-carousel-item-name">
-      <h5>{{ contact.firstName }}</h5>
+      <h5>{{ contact.given_name }}</h5>
       <h5>
-        <span>{{ contact.lastName }}</span>
+        <span>{{ contact.family_name }}</span>
       </h5>
     </div>
 
     <div id="contact-carousel-item-contact-information">
       <p>{{ contact.phoneNumber }}</p>
-      <p>{{ contact.emailAddress }}</p>
+      <p>{{ contact.email }}</p>
     </div>
   </div>
 </template>
@@ -48,8 +48,9 @@ export default {
 }
 
 img {
-  height: 75px;
-  width: 75px;
+  height: 50px;
+  width: 50px;
+  margin: 5px;
 }
 
 h5 {
@@ -64,5 +65,6 @@ h5 span {
 
 p {
   font-size: 8pt;
+  margin: 5px;
 }
 </style>

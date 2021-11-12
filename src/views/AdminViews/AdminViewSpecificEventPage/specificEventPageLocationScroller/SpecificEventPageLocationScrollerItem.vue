@@ -1,28 +1,23 @@
 <template>
   <div id="specific-event-page-location-scroll-item-wrapper">
-    <h4>{{ location.venueName }}</h4>
-    <!-- <p>
-      {{ formatTime(location.venueStartTime) }} -
-      {{ formatTime(location.venueEndTime) }}
-    </p> -->
-    <div class="map-box" id="map">
-      <!-- <VueMapboxMap
-        v-if="mapInstance"
-        :map="mapInstance"
-        :lng="lng"
-        :lat="lat"
-      ></VueMapboxMap> -->
-    </div>
+    <h4>{{ location.name }}</h4>
+
+    <div
+      :class="loading ? 'loading-background map-box' : 'map-box'"
+      id="map"
+    ></div>
     <div class="address">
-      <h4>{{ location.address1 }}</h4>
-      <h4>{{ location.address2 }}</h4>
+      <p>{{ location.address.streetAddress1 }}</p>
+      <p v-if="location.address.streetAddress2">
+        {{ location.address.streetAddress2 }}
+      </p>
+      <p>{{ location.address.cityStateZip }}</p>
     </div>
   </div>
 </template>
 
 <script>
 import { Auth, Signer } from "aws-amplify";
-// import VueMapboxMap from "@benchmark-urbanism/vue-mapbox-map";
 import maplibregl from "maplibre-gl";
 import Location from "aws-sdk/clients/location";
 import awsconfig from "../../../../aws-exports";
@@ -31,7 +26,11 @@ import helpers from "../../../../helpers.js";
 export default {
   data: function () {
     return {
-      place: "5535 Hwy N, Cottleville, MO 63304",
+      loading: true,
+      place:
+        this.location.address.address1 +
+        ", " +
+        this.location.address.cityStateZip,
       client: null,
       mapInstance: null,
       mapName: "SpinSampleDisplay",
@@ -62,7 +61,7 @@ export default {
       const credentials = await Auth.currentCredentials();
       const client = new Location({
         credentials,
-        region: "us-east-2",
+        region: "us-east-1",
       });
       return client;
     },
@@ -96,13 +95,11 @@ export default {
           }
         }
       });
+      this.loading = false;
     },
     formatTime: helpers.formatTime,
   },
   props: ["location"],
-  components: {
-    // VueMapboxMap,
-  },
   beforeMount: async function () {
     this.client = await this.createClient();
     this.credentials = await Auth.currentCredentials();
@@ -133,11 +130,11 @@ export default {
   height: 75px;
   margin: 10px;
   min-height: 50%;
-  z-index: 3;
+  z-index: 2;
 }
 
 p {
-  margin: 5px;
+  /* margin: 5px; */
 }
 
 .address > h4 {
@@ -145,5 +142,46 @@ p {
 }
 input {
   z-index: 2;
+}
+
+.loading-background {
+  background: var(--foregroundColor);
+  background: linear-gradient(
+    90deg,
+    var(--foregroundColor) -50%,
+    var(--foregroundColor) 45%,
+    var(--backgroundColor) 50%,
+    var(--foregroundColor) 55%,
+    var(--foregroundColor) 150%
+  );
+  background-size: 300%;
+  -webkit-animation-name: shimmer;
+  -moz-animation-name: shimmer;
+  animation-name: shimmer;
+  -webkit-animation-duration: 2.5s;
+  -moz-animation-duration: 2.5s;
+  animation-duration: 2.5s;
+  -webkit-animation-iteration-count: infinite;
+  -moz-animation-iteration-count: infinite;
+  animation-iteration-count: infinite;
+  animation-direction: normal;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: top right;
+  }
+  100% {
+    background-position: top left;
+  }
+}
+
+@-moz-keyframes shimmer {
+  0% {
+    background-position: top left;
+  }
+  100% {
+    background-position: top right;
+  }
 }
 </style>

@@ -7,10 +7,10 @@
         <h4>{{ event.eventTitle }}</h4>
       </div>
       <div id="date">
-        <p>{{ formatDate(event.eventStartTime) }}</p>
+        <p>{{ formatDate(event.data.startTime) }}</p>
         <p>
-          {{ formatTime(event.eventStartTime) }} -
-          {{ formatTime(event.eventEndTime) }}
+          {{ formatTime(event.data.startTime) }} -
+          {{ formatTime(event.data.endTime) }}
         </p>
       </div>
       <div id="contact-card-lower-div">
@@ -18,24 +18,29 @@
           <div class="indented-item">
             <h5>Invoice Total:</h5>
             <h5 class="indented">
-              ${{ (event.total * 0.01).toLocaleString() }}
+              {{ formatPrice(total(event.invoice, event.data)) }}
             </h5>
           </div>
           <div class="indented-item">
             <h5>Payments Received:</h5>
             <h5 class="indented">
-              ${{ (event.paymentTotal * 0.01).toLocaleString() }}
+              {{
+                formatPrice(
+                  total(event.invoice, event.data) -
+                    balanceOutstanding(event.invoice, event.data)
+                )
+              }}
             </h5>
           </div>
           <div class="indented-item">
             <h5>Balance Outstanding:</h5>
             <h5 class="indented">
-              ${{ (event.balanceOutstanding * 0.01).toLocaleString() }}
+              {{ formatPrice(balanceOutstanding(event.invoice, event.data)) }}
             </h5>
           </div>
         </div>
         <div class="contact-card-lower-div-half">
-          <div class="indented-item">
+          <!-- <div class="indented-item">
             <h5>Employees Needed:</h5>
             <h5 class="indented" v-if="!editEmployeesNeededOpen">
               <svg
@@ -76,8 +81,8 @@
                 "
               />
             </svg>
-          </div>
-          <div class="indented-item">
+          </div> -->
+          <!-- <div class="indented-item">
             <h5>Contact Source:</h5>
             <h5 class="indented" v-if="!editClientSourceOpen">
               <svg
@@ -118,7 +123,7 @@
                 "
               />
             </svg>
-          </div>
+          </div> -->
         </div>
       </div>
     </template>
@@ -142,7 +147,7 @@ export default {
 
   computed: {
     clientFullName() {
-      return this.client.firstName + " " + this.client.lastName;
+      return this.client.given_name + " " + this.client.family_name;
     },
     possessive() {
       if (this.clientFullName.slice(-1) == "s") {
@@ -155,6 +160,10 @@ export default {
   methods: {
     formatDate: helpers.formatDate,
     formatTime: helpers.formatTime,
+    subtotal: helpers.subtotal,
+    total: helpers.total,
+    balanceOutstanding: helpers.balanceOutstanding,
+    formatPrice: helpers.formatPrice,
     editEventField(key, value) {
       if (key === "source") {
         this.editSourceOpen = false;

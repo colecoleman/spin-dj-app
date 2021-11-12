@@ -1,9 +1,9 @@
 <template>
-  <base-card :icon="icon" :actionIcon="editPen">
+  <base-card :icon="icon" :actionIcon="editPen" :loading="loading">
     <template v-slot:title>Contact</template>
     <template v-slot:action1></template>
     <template v-slot:content>
-      <div id="wrapper">
+      <div id="wrapper" v-if="!loading">
         <div id="contact-card-upper-div">
           <img
             :src="
@@ -47,7 +47,7 @@ export default {
   methods: {
     formatPhoneNumber: helpers.formatPhoneNumber,
   },
-  props: ["contact", "icon"],
+  props: ["contact", "icon", "loading"],
 };
 </script>
 

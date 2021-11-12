@@ -9,15 +9,16 @@
     <div id="left-column">
       <div id="box-one">
         <contact-card-client
+          :loading="contact ? false : true"
           :contact="contact"
           :icon="personsvg"
         ></contact-card-client>
       </div>
       <div id="box-two">
-        <contact-page-to-do-list :id="contact.userId"></contact-page-to-do-list>
+        <contact-page-to-do-list :contact="contact"></contact-page-to-do-list>
       </div>
       <div id="box-three">
-        <contact-page-notes :notes="contact.notes"></contact-page-notes>
+        <contact-page-notes :contact="contact"></contact-page-notes>
       </div>
     </div>
     <div id="right-column">
@@ -34,24 +35,24 @@
             :icon="calendarsvg"
           ></client-page-upcoming-events>
         </div>
-        <div id="box-five-half-two">
+        <!-- <div id="box-five-half-two">
           <client-page-information-card
             :contact="contact"
             :icon="informationicon"
           ></client-page-information-card>
-        </div>
+        </div> -->
       </div>
       <div id="box-six">
         <div id="box-six-half">
           <contact-page-automation></contact-page-automation>
         </div>
         <div id="box-six-half-two">
-          <base-card :icon="messageBubble">
+          <base-card :icon="messageBubble" :loading="contact ? false : true">
             <template v-slot:title>Messages</template>
             <template v-slot:content>
               <messaging-single-component
+                v-if="contact"
                 :contact="contact"
-                :id="contact.userId"
               ></messaging-single-component>
             </template>
           </base-card>
@@ -69,26 +70,29 @@ import {
 
 import ContactCardClient from "../ContactPageComponents/ContactCardPerson.vue";
 import ClientPageUpcomingEvents from "../ContactPageComponents/ClientPageComponents/ClientPageUpcomingEvents.vue";
-import ClientPageInformationCard from "../ContactPageComponents/ClientPageComponents/ClientPageInformationCard.vue";
+// import ClientPageInformationCard from "../ContactPageComponents/ClientPageComponents/ClientPageInformationCard.vue";
 import PopupEmailComposition from "../../../../SharedComponents/SharedComponentsPopupUtilities/PopupEmailComposition.vue";
 import PopupNotesView from "../../../../SharedComponents/SharedComponentsPopupUtilities/PopupNotesView.vue";
-import BaseCard from "../../../../SharedComponents/SharedComponentsUI/BaseCard.vue";
+
 import MessagingSingleComponent from "../../../../SharedComponents/SharedComponentsMessaging/MessagingSingleComponent.vue";
 import FourButtonBarWithDropDown from "../../../../SharedComponents/SharedComponentsUI/FourButtonBarWithDropDown.vue";
 import ContactPageNotes from "../ContactPageComponents/ContactPageNotes/ContactPageNotes.vue";
-import personsvg from "../../../../assets/SVGs/person.svg";
-import messageBubble from "../../../../assets/SVGs/message-bubble.svg";
-import calendarsvg from "../../../../assets/SVGs/calendar.svg";
-import clipboardsvg from "../../../../assets/SVGs/clipboard.svg";
-import automationsvg from "../../../../assets/SVGs/automation.svg";
-import emailsvg from "../../../../assets/SVGs/email.svg";
-import informationicon from "../../../../assets/SVGs/info-icon.svg";
-import keysvg from "../../../../assets/SVGs/key.svg";
+import {
+  personsvg,
+  messageBubble,
+  calendarsvg,
+  clipboardsvg,
+  automationsvg,
+  emailsvg,
+  informationicon,
+  keysvg,
+} from "../../../../assets/SVGs/person.svg";
 
 export default {
   data() {
     return {
       personsvg,
+      contact: undefined,
       messageBubble,
       calendarsvg,
       clipboardsvg,
@@ -121,12 +125,6 @@ export default {
       notesPopupOpen: false,
     };
   },
-  computed: {
-    contact() {
-      let id = this.$route.params.id;
-      return this.$store.state.contacts.clients.find((x) => x.userId == id);
-    },
-  },
   methods: {
     addToDo() {
       console.log("clicked!");
@@ -142,18 +140,24 @@ export default {
       this.notesPopupOpen = false;
     },
   },
+  async created() {
+    await this.$store
+      .dispatch("adminGetContact", this.$route.params.id)
+      .then((res) => {
+        console.log(res.data.Item);
+        this.contact = res.data.Item;
+      });
+  },
   components: {
     PopupEmailComposition,
     PopupNotesView,
-    BaseCard,
     ContactCardClient,
     ContactPageToDoList,
     ClientPageUpcomingEvents,
-    ClientPageInformationCard,
+    // ClientPageInformationCard,
     ContactPageAutomation,
     MessagingSingleComponent,
     ContactPageNotes,
-
     FourButtonBarWithDropDown,
   },
 };
@@ -212,12 +216,12 @@ svg {
 }
 
 #box-five-half-one {
-  width: 60%;
+  width: 100%;
 }
 
-#box-five-half-two {
+/* #box-five-half-two {
   width: 40%;
-}
+} */
 
 #box-six {
   height: 42%;

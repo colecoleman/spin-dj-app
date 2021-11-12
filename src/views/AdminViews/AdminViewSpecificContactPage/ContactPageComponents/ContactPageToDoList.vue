@@ -1,8 +1,8 @@
 <template>
-  <base-card :icon="clipboardsvg">
+  <base-card :icon="clipboardsvg" :loading="contact ? false : true">
     <template v-slot:title>To-Do</template>
     <template v-slot:content>
-      <div id="wrapper">
+      <div id="wrapper" v-if="contact">
         <div class="to-do-item" v-if="newToDoOpened">
           <img :src="plusbuttonsvg" alt="" />
           <input
@@ -44,6 +44,7 @@ import circleCheckmarkSvg from "../../../../assets/SVGs/circle-checkmark.svg";
 export default {
   data() {
     return {
+      toDos: [],
       clipboardsvg,
       plusbuttonsvg,
       circleCheckmarkSvg,
@@ -54,22 +55,20 @@ export default {
   methods: {
     submitToDo() {
       let item = {
-        id: this.$store.state.toDos.length + 1,
-        associatedClientId: this.id,
+        id: "todo" + new Date().getTime(),
+        associatedContacts: [this.contact.userId],
+        associatedEvents: [],
         title: this.newToDo,
         completed: false,
       };
-      this.$store.dispatch("addToDo", item);
+      this.$store.dispatch("addToDo", item).then((res) => {
+        this.toDos.unshift(res.data);
+      });
       this.newToDo = undefined;
       this.newToDoOpened = false;
     },
   },
   computed: {
-    toDos() {
-      return this.$store.state.toDos.filter(
-        (item) => item.associatedClientId === this.id
-      );
-    },
     uncompletedToDos() {
       return this.toDos.filter((item) => !item.completed);
     },
@@ -77,8 +76,23 @@ export default {
       return this.toDos.filter((item) => item.completed);
     },
   },
+  watch: {
+    contact: function () {
+      let payload = {
+        associatedContactId: this.contact.userId,
+      };
+      this.$store.dispatch("getToDos", payload).then(
+        (res) => {
+          this.toDos = [...res.Items];
+        },
+        (error) => {
+          this.$store.dispatch("addError", error);
+        }
+      );
+    },
+  },
   components: { ToDoItem },
-  props: ["id"],
+  props: ["contact"],
 };
 </script>
 

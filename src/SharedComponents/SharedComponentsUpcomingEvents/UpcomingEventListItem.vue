@@ -1,30 +1,34 @@
 <template>
-  <div id="single-event-item">
-    <div id="client-event-identifier">
+  <div id="single-event-item" :class="loading ? loading : ''">
+    <div id="client-event-identifier" v-if="matchedClient">
       <img :src="defaultProfilePicture" alt="" />
       <h5 id="client-name">
-        {{ matchedClient.firstName }} <br />
-        <span> {{ matchedClient.lastName }}</span>
+        {{ matchedClient.given_name }} <br />
+        <span> {{ matchedClient.family_name }}</span>
       </h5>
     </div>
-    <div class="event-location-identifier">
+    <div class="event-location-identifier" v-if="primaryLocation">
       <h4 class="venue-name">{{ primaryLocation.name }}</h4>
       <div class="event-address">
-        <h5>{{ primaryLocation.address.address1 }}</h5>
-        <h5>{{ primaryLocation.address.address2 }}</h5>
+        <p>{{ primaryLocation.address.streetAddress1 }}</p>
+        <p v-if="primaryLocation.address.streetAddress2">
+          {{ primaryLocation.address.streetAddress2 }}
+        </p>
+        <p>{{ primaryLocation.address.cityStateZip }}</p>
       </div>
     </div>
     <div id="event-metadata-identifier">
       <div id="date-and-time-identifier">
-        <h5>{{ formatDate(event.eventStartTime) }}</h5>
-        <h5>
-          {{ formatTime(event.eventStartTime) }} -
-          {{ formatTime(event.eventEndTime) }}
-        </h5>
+        <p>{{ formatDate(event.data.date) }}</p>
+        <p>
+          {{ formatTime(event.data.startTime) }} -
+          {{ formatTime(event.data.endTime) }}
+        </p>
       </div>
       <div id="event-invoice-metadata">
         <p>
-          ${{ (event.balanceOutstanding * 0.01).toLocaleString() }} Outstanding
+          {{ formatPrice(balanceOutstanding(event.invoice, event.data)) }}
+          Outstanding
         </p>
       </div>
     </div>
@@ -39,34 +43,29 @@ export default {
   data() {
     return {
       defaultProfilePicture,
+      loading: true,
+      primaryLocation: undefined,
+      matchedClient: undefined,
     };
   },
   methods: {
     formatDate: helpers.formatDate,
     formatTime: helpers.formatTime,
+    formatPrice: helpers.formatPrice,
+    balanceOutstanding: helpers.balanceOutstanding,
   },
-  computed: {
-    matchedClient() {
-      let firstClient = this.event.associatedContacts.find(
-        (x) => x.role === "client"
-      );
-      let item = this.$store.state.contacts[`${firstClient.role + "s"}`].find(
-        (x) => x.id === firstClient.id
-      );
-      item.role = firstClient.role;
-      return item;
-    },
-    primaryLocation() {
-      let locationId = this.event.eventLocations[0].locationId;
-
-      console.log(
-        this.$store.state.contacts.locations.find((x) => x.id === locationId)
-      );
-
-      return this.$store.state.contacts.locations.find(
-        (x) => x.id === locationId
-      );
-    },
+  created() {
+    this.loading = true;
+    this.$store.dispatch("getLocation", this.event.locations[0]).then((res) => {
+      console.log(res);
+      if (res.Item) {
+        this.primaryLocation = res.Item;
+      }
+    });
+    this.$store.dispatch("getUser", this.event.contacts[0]).then((res) => {
+      this.matchedClient = res.Item;
+    });
+    this.loading = false;
   },
   props: ["event"],
 };
@@ -84,8 +83,9 @@ export default {
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: space-evenly;
-  padding-bottom: 20px;
+  justify-content: space-between;
+  padding: 20px 0;
+  border-bottom: 1px solid var(--cardOutline);
   cursor: pointer;
 }
 
@@ -119,18 +119,6 @@ export default {
   overflow: hidden;
   text-overflow: ellipsis;
   font-size: 12px;
-}
-
-h5 {
-  font-weight: 300;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  text-transform: capitalize;
-}
-
-h5 span {
-  font-weight: 600;
 }
 
 #event-metadata-identifier {

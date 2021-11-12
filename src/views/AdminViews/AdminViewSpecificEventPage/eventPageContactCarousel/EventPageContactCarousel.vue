@@ -73,7 +73,9 @@ export default {
       }
     },
     navigateToContactPage(contact) {
-      this.$router.push("/contacts/" + contact.role + "s/" + contact.id);
+      this.$router.push(
+        "/admin/contacts/" + contact.role + "s/" + contact.userId
+      );
     },
   },
   components: { EventPageContactCarouselItem },

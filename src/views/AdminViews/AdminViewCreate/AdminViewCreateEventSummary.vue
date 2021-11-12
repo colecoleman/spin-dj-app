@@ -3,7 +3,7 @@
     <base-card>
       <template v-slot:title>Summary</template>
       <template v-slot:content>
-        <div class="summary-inner-wrapper">
+        <div class="summary-inner-wrapper" v-if="event">
           <div class="column-flex">
             <div class="row-flex">
               <div class="title-and-indented-text">
@@ -102,15 +102,16 @@
               v-for="(product, index) in event.invoice.products"
               :key="index"
             >
+              <!-- <p>{{ event }}</p> -->
               <p class="product">{{ product.name }}</p>
               <p class="right-aligned-text">
-                <b>{{ formatPrice(productTotal(product)) }}</b>
+                <b>{{ formatPrice(productTotal(product, event.data)) }}</b>
               </p>
             </div>
             <div class="indented-text row-flex">
               <p>Subtotal:</p>
               <p class="right-aligned-text">
-                <b>{{ formatPrice(subtotal()) }}</b>
+                <b>{{ formatPrice(subtotal(event.invoice, event.data)) }}</b>
               </p>
             </div>
             <div
@@ -128,7 +129,7 @@
             <div class="indented-text row-flex">
               <p>Total:</p>
               <p class="right-aligned-text">
-                <b>{{ formatPrice(total()) }}</b>
+                <b>{{ formatPrice(total(event.invoice, event.data)) }}</b>
               </p>
             </div>
             <div class="indented-text row-flex">
@@ -144,7 +145,11 @@
             <div class="indented-text row-flex">
               <p>Balance Outstanding:</p>
               <p class="right-aligned-text">
-                <b>{{ formatPrice(balanceOutstanding()) }}</b>
+                <b>{{
+                  event.invoice
+                    ? formatPrice(balanceOutstanding(event.invoice, event.data))
+                    : formatPrice(0)
+                }}</b>
               </p>
             </div>
           </div>
@@ -166,87 +171,136 @@ export default {
     return {
       eventId: undefined,
       clientId: undefined,
+      locationId: undefined,
     };
   },
   methods: {
     formatPrice: helpers.formatPrice,
     formatTime: helpers.formatTime,
     formatDate: helpers.formatDate,
-    subtotal() {
-      let subtotal = 0;
-      for (let x = 0; x < this.event.invoice.products.length; x++) {
-        subtotal += this.productTotal(this.event.invoice.products[x]);
+    productTotal: helpers.productTotal,
+    subtotal: helpers.subtotal,
+    total: helpers.total,
+    balanceOutstanding: helpers.balanceOutstanding,
+    calculateEventTime: helpers.calculateEventTime,
+
+    createLocation() {
+      if (
+        this.fields.location.name ||
+        this.fields.location.address.streetAddress1 ||
+        this.fields.location.address.streetAddress2 ||
+        this.fields.location.address.cityStateZip
+      ) {
+        this.$store
+          .dispatch("addLocation", this.fields.location)
+          .then((res) => {
+            this.$store.commit("addSuccess", "Location Added Successfully");
+            this.locationId = res.data.userId;
+            this.createUser();
+          })
+          .catch((e) => {
+            this.$store.dispatch("addError", e);
+          });
       }
-      return subtotal;
     },
-    total() {
-      let subtotal = this.subtotal();
-      for (let x = 0; x < this.event.invoice.adjustments.length; x++) {
-        if (this.event.invoice.adjustments[x].type === "percentage") {
-          subtotal -=
-            subtotal * this.event.invoice.adjustments[x].amount * 0.01;
-        }
-        if (this.event.invoice.adjustments[x].type === "dollar") {
-          subtotal = subtotal - this.event.invoice.adjustments[x].amount;
-        }
-      }
-      return subtotal;
-    },
-    balanceOutstanding() {
-      let total = this.total();
-      if (this.fields.payment.amount) {
-        total -= this.event.invoice.payments[0].amount;
-      }
-      return total;
-    },
-    async createEvent() {
-      await this.$store
-        .dispatch("addEvent", this.event)
-        .then((res) => {
-          this.eventId = res.data.userId;
-        })
-        .catch((e) => console.log(e));
-      this.createUser();
-    },
-    async createUser() {
+    createUser() {
       if (!Object.values(this.fields.client).every((v) => v == null)) {
         let client = this.fields.client;
         client.associatedEvents.push(this.eventId);
-        await this.$store
+        this.$store
           .dispatch("addContact", client)
           .then((res) => {
             this.clientId = res.userId;
+            this.$store.commit("addSuccess", "Client Added Successfully");
+            this.addEventToDB();
           })
-          .catch((e) => console.log(e));
+          .catch((e) => {
+            this.$store.dispatch("addError", e);
+          });
       }
-      this.addUserToEvent();
     },
-    async addUserToEvent() {
-      let payload = {
-        eventId: this.eventId,
-        variable: "contacts",
-        value: this.clientId,
-      };
-      await this.$store
-        .dispatch("editEvent", payload)
+    addEventToDB() {
+      this.$store
+        .dispatch("addEvent", this.event)
         .then((res) => {
-          console.log(res);
+          this.eventId = res.data.userId;
+          this.$store.commit("addSuccess", "Event Added Successfully");
+          this.addUserToEvent();
         })
-        .catch((e) => console.log(e));
+        .catch((e) => {
+          this.$store.dispatch("addError", e);
+        });
     },
-    calculateEventTime() {
-      return Math.abs(this.event.data.startTime - this.event.data.endTime);
-    },
-    productTotal(product) {
-      if (product.type === "Package" || product.type === "Service") {
-        let hours = this.calculateEventTime() / (60 * 60 * 1000);
-        let overage = hours - product.pricing.baseTime;
-        return product.pricing.baseRate + product.pricing.addHourly * overage;
+
+    addUserToEvent() {
+      if (this.clientId) {
+        let payload = {
+          eventId: this.eventId,
+          variable: "contacts",
+          value: this.clientId,
+          operation: "addToList",
+        };
+        this.$store
+          .dispatch("editEvent", payload)
+          .then((res) => {
+            console.log(res);
+            this.$store.commit("addSuccess", "Client Added To Event");
+            this.addEventToUser();
+          })
+          .catch((e) => {
+            this.$store.dispatch("addError", e);
+          });
       }
-      if (product.type === "Add-On") {
-        console.log(this.calculateEventTime() / (60 * 60 * 1000));
+    },
+    addEventToUser() {
+      if (this.clientId) {
+        let payload = {
+          clientId: this.clientId,
+          variable: "associatedEvents",
+          value: this.eventId,
+          operation: "addToList",
+        };
+        this.$store
+          .dispatch("editContact", payload)
+          .then((res) => {
+            console.log(res);
+            this.$store.commit("addSuccess", "Event Added To Contact");
+            this.addLocationToEvent();
+          })
+          .catch((e) => {
+            this.$store.dispatch("addError", e);
+          });
       }
     },
+    addLocationToEvent() {
+      if (this.locationId) {
+        let payload = {
+          eventId: this.eventId,
+          variable: "locations",
+          value: this.locationId,
+          operation: 'addToList'
+        };
+        this.$store
+          .dispatch("editEvent", payload)
+          .then(() => {
+            this.$store.commit("addSuccess", "Location Added To Event");
+            this.$router.push("/admin/events/" + this.eventId);
+          })
+          .catch((e) => {
+            this.$store.dispatch("addError", e);
+          });
+      }
+    },
+    async createEvent() {
+      this.eventId = undefined;
+      this.locationId = undefined;
+      this.clientId = undefined;
+      this.createLocation();
+    },
+    //
+  },
+  created() {
+    console.log(this.event);
   },
   components: { ButtonStandardWithIcon },
   props: ["event", "locations", "fields", "clients"],
