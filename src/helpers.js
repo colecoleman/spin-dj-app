@@ -1,40 +1,39 @@
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
-import dayjs from 'dayjs';
 
 export default class Helpers {
 
     // format helpers
 
     static formatDate(date) {
-      console.log(date);
-      if (date.toDateString().includes('T')) {
-        // let newDate = date.split('T');
-        // console.log(newDate);
-        console.log(new Date(date))
-        return new Date(date).toLocaleDateString("lookup", {
-          day: "numeric",
-          year: "numeric",
-          month: "long",
-        });
-      } else {
+      if (typeof date === 'object') {
         return date.toLocaleDateString("lookup", {
           day: "numeric",
           year: "numeric",
           month: "long",
         });
-    }
+      } else if (date.includes('T')) {
+        return new Date(date).toLocaleDateString("lookup", {
+          day: "numeric",
+          year: "numeric",
+          month: "long",
+        });
+      } 
   }
-    static formattedDate(date) {
-        // TO-DO: CHANGE TO JS DATE OBJECT, AND REMOVE THIS FUNCTION
-        return dayjs(date).format("M/D/YYYY");
-    }
+ 
     
     static formatTime(date) {
+      if (typeof date === 'object') {
         return date.toLocaleString("lookup", {
-        hour: "2-digit",
-        minute: "2-digit",
-        });
+          hour: "2-digit",
+          minute: "2-digit",
+          });
+      } else if (date.includes('T')) {
+        return new Date(date).toLocaleString("lookup", {
+          hour: "2-digit",
+          minute: "2-digit",
+          });
+      } 
     }
 
     static formatPhoneNumber(num) {
@@ -50,40 +49,59 @@ export default class Helpers {
     }
 
     // invoice math helpers
-
-    static calculatePackagePrice(pckg, event) {
-        let packageTotal = 0;
-        if (pckg.priceOption === "hourly") {
-          if (pckg.baseTime < event.eventLength) {
-            let additionalHourly = event.eventLength - pckg.baseTime;
-  
-            packageTotal =
-              packageTotal + (pckg.baseRate + pckg.addHourly * additionalHourly);
-          }
-          if (pckg.baseTime >= event.eventLength) {
-            packageTotal = packageTotal + pckg.baseRate;
-          }
-        }
-        if (pckg.priceOption === "flat") {
-          packageTotal = packageTotal + pckg.flatRate;
-        }
-        return this.formatPrice(packageTotal);
+    static calculateEventTime(data) {
+      if (typeof data.startTime === 'object' && typeof data.endTime === 'object') {
+        return Math.abs(data.startTime - data.endTime);
+      } else if (data.startTime.includes('T') && data.startTime.includes('T')) {
+        return Math.abs(Date.parse(data.startTime) - Date.parse(data.endTime))
       }
-
-    static calculateAddOnPrice(addOn, event) {
-        let addOnTotal = 0;
-        if (addOn.priceOption === "hourly") {
-          addOnTotal = addOnTotal + addOn.hourlyPrice * event.eventLength;
-        }
-        if (addOn.priceOption === "unit") {
-          addOnTotal = addOnTotal + addOn.unitPrice * addOn.eventUnits;
-        }
-        if (addOn.priceOption === "flat") {
-          addOnTotal = addOnTotal + addOn.flatRate;
-        }
-        return this.formatPrice(addOnTotal);
+  }
+    static productTotal(product, data) {
+      if (product.type === "Package" || product.type === "Service") {
+        let hours = Helpers.calculateEventTime(data) / (60 * 60 * 1000);
+        let overage = hours - product.pricing.baseTime;
+        return product.pricing.baseRate + product.pricing.addHourly * overage;
       }
+      if (product.type === "Add-On") {
+        console.log(Helpers.calculateEventTime(data) / (60 * 60 * 1000));
+      }
+    }
 
+    static subtotal(invoice, data) {
+      let subtotal = 0;
+      for (let x = 0; x < invoice.products.length; x++) {
+        subtotal += Helpers.productTotal(invoice.products[x], data);
+      }
+      return subtotal;
+    }
+    static total(invoice, data) {
+      let subtotal = Helpers.subtotal(invoice, data);
+      for (let x = 0; x < invoice.adjustments.length; x++) {
+        if (invoice.adjustments[x].type === "percentage") {
+          subtotal -= subtotal * invoice.adjustments[x].amount;
+        }
+        if (invoice.adjustments[x].type === "dollar") {
+          subtotal = subtotal - invoice.adjustments[x].amount;
+        }
+      }
+      return subtotal;
+    }
+    static balanceOutstanding(invoice, data) {
+      let total = Helpers.total(invoice, data);
+      if (invoice.payments.length > 0) {
+        invoice.payments.forEach((element) => {
+          if (element.amount) {
+            total -= element.amount;
+          }  
+        });
+      }
+      return total;
+    }
+    static formatPrice(n) {
+      let price = n / 100;
+      return `${"$" + price.toLocaleString()}`;
+    }
+    
     // system helpers
 
     static printElement(elementName) {
@@ -174,16 +192,13 @@ export default class Helpers {
       }
     // utility functions to help other helpers
     
-    static formatPrice(n) {
-        let price = n / 100;
-        return `${"$" + price.toLocaleString()}`;
-    }
+    
 }
 
 export class Routers {
 
   static navigateToClientPage(id) {
-    this.$router.push("contacts/clients/" + id);
+    Helpers.$router.push("contacts/clients/" + id);
   }
 
 }
