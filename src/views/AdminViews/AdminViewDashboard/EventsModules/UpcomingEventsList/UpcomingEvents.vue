@@ -43,7 +43,7 @@ export default {
       sortalpha,
       mutableEvents: undefined,
       isFetching: this.$store.state.isFetching,
-      sortMenuOpened: false,
+      sortMenuOpened: true,
       sortItems: [
         {
           title: "Date Ascending",
