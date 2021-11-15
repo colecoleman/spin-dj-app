@@ -74,6 +74,7 @@ export default {
     if (user) {
       await this.$store.dispatch("setUser", user.username);
       // await this.$store.dispatch("setBranding", user.username);
+      await this.$store.dispatch("adminGetEvents");
       await this.$store.dispatch("setBusinessSettings", user.username);
     }
     console.log(this.$store.state.businessSettings);

@@ -31,7 +31,6 @@ const store = createStore({
             return new Promise((resolve, reject) => {
                 axios.get(`https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/admin/${context.state.user.tenantId}/users/${user}`).then((result)=> {
                     resolve(result.data);
-                    console.log(result)
                 }, error => {
                     context.commit('addError', error);
                     reject(error);
@@ -152,11 +151,9 @@ const store = createStore({
             })
         },
         async getLocation(context, location) {
-            console.log(location);
             return new Promise((resolve, reject) => {
                 axios.get(`https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/admin/${context.state.user.tenantId}/locations/${location}`).then((result)=> {
                     resolve(result.data);
-                    console.log(result.data);
                 }, error => {
                     context.commit('addError', error);
                     reject(error);
@@ -201,6 +198,7 @@ const store = createStore({
             return new Promise((resolve, reject) => {
                 axios.get(`https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/admin/${context.state.user.tenantId}/events`).then((result)=> {
                     resolve(result);
+                    context.commit('setEvents', result);
                 }, error => {
                     context.commit('addError', error);
                     reject(error);
@@ -298,18 +296,15 @@ const store = createStore({
             context.commit('addEmployeeToEvent', payload)
         },
         changeEmployeeAvailability(context, payload) {
-            console.log(payload)
             context.commit('changeEmployeeAvailability', payload)
         },
         changeEmployeeAvailabilityRules(context, payload) {
-            console.log(payload)
             context.commit('changeEmployeeAvailabilityRules', payload)
         },
         getCombined({ commit }) {
             commit('clientEventCombine');
         },
         approveAutomation( context, id ) {
-            console.log(id)
             context.commit('approveAutomation', id)
         },
         deleteAutomation( context, id ) {
@@ -340,7 +335,6 @@ const store = createStore({
             context.commit('editClient', {id, key, value})
           },
         deleteContact(context, {category, id}) {
-            console.log(category)
             context.commit('deleteContact', {category, id})
         },
        
@@ -434,7 +428,6 @@ const store = createStore({
         },
         addEmployeeToEvent(state, payload) {
             state.events.find((x) => x.id === payload.eventId).associatedContacts.push({id: payload.employee, role: 'employee'})
-            console.log(state.events.find((x) => x.id === payload.eventId))
         },
         changeEmployeeAvailability(state, payload) {
             let employee = state.contacts.employees.find((x) => x.id === payload.employeeId)
@@ -444,7 +437,6 @@ const store = createStore({
             if (payload.type === "unavailability") {
                 employee.unavailableDates.push(payload.date)
             }
-            console.log(employee)
         },
         changeEmployeeAvailabilityRules(state, payload) {
             let employee = state.contacts.employees.find((x) => x.id === payload.employeeId)
@@ -454,8 +446,7 @@ const store = createStore({
             state.contacts.organizers.push(payload)
         },
         setEvents(state, payload) {
-            state.events = payload;
-            // this.commit('clientEventCombine');
+            state.events = payload.data.Items;
         },
         setAddOns(state, payload) {
             state.addOns = payload;
