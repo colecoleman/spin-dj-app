@@ -1,5 +1,5 @@
 <template>
-  <div id="single-event-item" :class="loading ? loading : ''">
+  <div class="single-event-item" :class="loading ? loading : ''">
     <div id="client-event-identifier" v-if="matchedClient">
       <img :src="defaultProfilePicture" alt="" />
       <h5 id="client-name">
@@ -57,7 +57,6 @@ export default {
   created() {
     this.loading = true;
     this.$store.dispatch("getLocation", this.event.locations[0]).then((res) => {
-      console.log(res);
       if (res.Item) {
         this.primaryLocation = res.Item;
       }
@@ -67,7 +66,7 @@ export default {
     });
     this.loading = false;
   },
-  props: ["event"],
+  props: ["event", "first"],
 };
 </script>
 
@@ -79,12 +78,11 @@ export default {
   max-width: 33%;
   width: 33%;
 }
-#single-event-item {
+.single-event-item {
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  padding: 20px 0;
   border-bottom: 1px solid var(--cardOutline);
   cursor: pointer;
 }

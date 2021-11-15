@@ -21,6 +21,7 @@
             v-for="event in mutableEvents"
             :key="event.userId"
             :event="event"
+            :first="event === mutableEvents[0]"
             @click="navigateToEventPage(event.userId)"
           ></upcoming-events-list-item>
         </div>
@@ -48,9 +49,9 @@ export default {
           title: "Date Ascending",
           icon: undefined,
           logic: function (a, b) {
-            return a.date.startTime < b.date.startTime
+            return a.data.startTime < b.data.startTime
               ? -1
-              : a.date.startTime > b.date.startTime
+              : a.data.startTime > b.data.startTime
               ? 1
               : 0;
           },
@@ -59,9 +60,9 @@ export default {
           title: "Date Descending",
           icon: undefined,
           logic: function (a, b) {
-            return a.date.startTime > b.date.startTime
+            return a.data.startTime > b.data.startTime
               ? -1
-              : a.date.startTime < b.date.startTime
+              : a.data.startTime < b.data.startTime
               ? 1
               : 0;
           },
@@ -83,8 +84,6 @@ export default {
   },
   created() {
     this.mutableEvents = this.events;
-    console.log(this.mutableEvents);
-    console.log(this.events);
     this.selectSort(this.sortItems[0].logic);
   },
   props: ["events"],

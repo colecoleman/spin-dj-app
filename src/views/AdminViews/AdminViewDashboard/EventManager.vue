@@ -9,15 +9,15 @@
     <div id="wrapper">
       <div id="left-content-div">
         <div id="box-1" class="box">
-          <upcoming-events :events="events"></upcoming-events>
+          <upcoming-events :events="events" v-if="events"></upcoming-events>
         </div>
         <div id="box-2" class="box">
-          <metrics-chart></metrics-chart>
+          <metrics-chart :events="events"></metrics-chart>
         </div>
       </div>
       <div id="right-content-div">
         <div id="box-3" class="box">
-          <event-calendar></event-calendar>
+          <event-calendar :events="events" v-if="events"></event-calendar>
         </div>
         <div id="box-4" class="box">
           <recent-messages></recent-messages>
@@ -42,10 +42,7 @@ export default {
     };
   },
   created() {
-    this.$store.dispatch("adminGetEvents").then((res) => {
-      this.events = [...res.data.Items];
-      console.log(this.events);
-    });
+    this.events = [...this.$store.state.events];
   },
 
   components: {
@@ -75,16 +72,15 @@ export default {
 
 #left-content-div {
   height: 100%;
-  /* display: flex; */
-  align-content: stretch;
-  align-items: stretch;
-  flex-flow: column;
+  display: flex;
+  flex-direction: column;
   width: 65%;
 }
 
 #right-content-div {
   height: 100%;
-  flex-flow: column;
+  display: flex;
+  flex-direction: column;
   width: 35%;
 }
 
