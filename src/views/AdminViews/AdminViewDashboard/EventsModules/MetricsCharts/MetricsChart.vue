@@ -3,7 +3,7 @@
     <base-card :icon="metricsChartsvg">
       <template v-slot:title>Metrics</template>
       <template v-slot:content>
-        <div id="chart-content"><line-chart></line-chart></div>
+        <line-chart :events="events"></line-chart>
       </template>
     </base-card>
   </div>
@@ -20,6 +20,7 @@ export default {
       metricsChartsvg,
     };
   },
+  props: ["events"],
 
   components: { LineChart },
 };
@@ -27,11 +28,6 @@ export default {
 
 <style scoped>
 #metrics-chart-container {
-  height: 100%;
-}
-
-#chart-content {
-  width: 100%;
   height: 100%;
 }
 </style>

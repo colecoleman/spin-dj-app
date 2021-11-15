@@ -1,163 +1,113 @@
 <template>
-  <div id="wrapper">
-    <apexchart
-      width="100%"
-      height="100%"
-      type="line"
-      :options="chartOptions"
-      :series="series"
-    ></apexchart>
-  </div>
+  <div id="chart"></div>
 </template>
 
 <script>
+import ApexCharts from "apexcharts";
+import helpers from "../../../../../helpers.js";
 export default {
   data() {
     return {
-      // chartOptions: {
-      //   chart: {
-      //     id: "vuechart-example",
-      //     toolbar: {
-      //       show: false,
-      //     },
-      //   },
-      //   colors: [
-      //     console.log(this.highlightColor),
-      //     this.highlightColor,
-      //     `"${this.highlightColor}"`,
-      //   ],
-      //   stroke: {
-      //     curve: "smooth",
-      //   },
-      //   dataLabels: {
-      //     style: {
-      //       colors: ["#ffffff"],
-      //     },
-      //   },
-      //   yaxis: {
-      //     labels: {
-      //       style: {
-      //         colors: "#ffffff",
-      //         fontWeight: 600,
-      //       },
-      //     },
-      //   },
-      //   xaxis: {
-      //     categories: [
-      //       "Jan",
-      //       "Feb",
-      //       "Mar",
-      //       "Apr",
-      //       "May",
-      //       "Jun",
-      //       "Jul",
-      //       "Aug",
-      //       "Sep",
-      //       "Oct",
-      //       "Nov",
-      //       "Dec",
-      //     ],
-      //     labels: {
-      //       rotate: 0,
-      //       rotateAlways: false,
-      //       style: {
-      //         colors: "#ffffff",
-      //         fontWeight: 600,
-      //       },
-      //     },
-      //   },
-      //   markers: {
-      //     size: 0.5,
-      //   },
-      //   tooltip: {
-      //     fillSeriesColor: false,
-      //     theme: "dark",
-      //     x: {
-      //       show: false,
-      //     },
-      //     y: {},
-      //   },
-      // },
-      series: [
-        {
-          name: "Event Count",
-          data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        },
+      months: [
+        "January",
+        "February",
+        "March",
+        "April",
+        "May",
+        "June",
+        "July",
+        "August",
+        "September",
+        "October",
+        "November",
+        "December",
       ],
     };
   },
+  methods: {
+    calculateTotal: helpers.total,
+    formatPrice: helpers.formatPrice,
+  },
   computed: {
+    branding() {
+      return this.$store.state.branding.branding;
+    },
     chartOptions() {
-      return {
+      let totals = [];
+      let months = this.months;
+      let formatPrice = this.formatPrice;
+      this.months.forEach((_, index) => {
+        let monthTotal = 0;
+        let monthEvents = this.events.filter(
+          (x) => new Date(x.data.date).getMonth() === index
+        );
+        monthEvents.forEach((event) => {
+          monthTotal += this.calculateTotal(event.invoice, event.data);
+        });
+        totals.push(monthTotal);
+      });
+
+      let chart = {
         chart: {
-          id: "vuechart-example",
+          height: "100%",
           toolbar: {
             show: false,
           },
         },
-        // colors: [this.branding.highlightColor, "#000000"],
+        colors: [this.$store.state.branding.branding.highlightColor],
         stroke: {
           curve: "smooth",
         },
         dataLabels: {
           style: {
-            // colors: [this.branding.textColor],
+            colors: [this.$store.state.branding.branding.textColor],
+            fontFamily: "Roboto, Sans-Serif",
+            fontWeight: 700,
           },
         },
         yaxis: {
           labels: {
-            style: {
-              // colors: [this.branding.textColor],
-              fontWeight: 600,
-            },
+            formatter: formatPrice,
           },
         },
+        series: [
+          {
+            name: "Sales",
+            data: totals,
+          },
+        ],
         xaxis: {
-          categories: [
-            "Jan",
-            "Feb",
-            "Mar",
-            "Apr",
-            "May",
-            "Jun",
-            "Jul",
-            "Aug",
-            "Sep",
-            "Oct",
-            "Nov",
-            "Dec",
-          ],
+          categories: months,
           labels: {
-            rotate: 0,
-            rotateAlways: false,
-            style: {
-              // colors: [this.branding.textColor],
-
-              fontWeight: 600,
+            formatter: function (value) {
+              if (value) {
+                return value.substring(0, 3);
+              }
             },
           },
-        },
-        markers: {
-          size: 0.5,
-        },
-        tooltip: {
-          fillSeriesColor: false,
-          theme: "dark",
-          x: {
-            show: false,
+          tooltip: {
+            enabled: false,
           },
-          y: {},
         },
       };
+      return chart;
     },
+  },
+  props: ["events"],
+  mounted() {
+    if (document.querySelector("#chart")) {
+      var chart = new ApexCharts(
+        document.querySelector("#chart"),
+        this.chartOptions
+      );
+      chart.render();
+    }
   },
 };
 </script>
 
 <style scoped>
-#wrapper {
-  height: 100%;
-  width: 100%;
-  margin: 0;
+#chart {
+  cursor: pointer;
 }
 </style>
