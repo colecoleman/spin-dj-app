@@ -1,5 +1,5 @@
 <template>
-  <div id="single-event-item" @click="routeToEvent()">
+  <div id="single-event-item" @click="routeToEvent()" v-if="loaded">
     <div class="event-location-identifier">
       <h4 class="venue-name">{{ location.name }}</h4>
       <div class="event-address">
@@ -34,6 +34,7 @@ export default {
     return {
       defaultProfilePicture,
       location: undefined,
+      loaded: false,
     };
   },
   methods: {
@@ -56,22 +57,14 @@ export default {
       item.role = firstClient.role;
       return item;
     },
-    primaryLocation() {
-      let locationId = this.event.eventLocations[0].locationId;
-      return this.$store.state.contacts.locations.find(
-        (x) => x.id === locationId
-      );
-    },
   },
   props: ["event"],
-  async created() {
+  created() {
     console.log(this.event);
-    await this.$store
-      .dispatch("getLocation", this.event.locations[0])
-      .then((res) => {
-        this.location = res.Item;
-        console.log(this.location);
-      });
+    this.$store.dispatch("getLocation", this.event.locations[0]).then((res) => {
+      this.location = res.Item;
+      this.loaded = true;
+    });
   },
 };
 </script>
