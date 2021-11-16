@@ -83,7 +83,9 @@ export default {
     },
   },
   created() {
-    this.mutableEvents = this.events;
+    this.mutableEvents = this.events.filter(
+      (x) => new Date(x.data.date).getTime() > new Date().getTime()
+    );
     this.selectSort(this.sortItems[0].logic);
   },
   props: ["events"],
