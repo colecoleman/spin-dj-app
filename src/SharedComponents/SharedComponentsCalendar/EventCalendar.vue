@@ -1,5 +1,5 @@
 <template>
-  <base-card :icon="calendar">
+  <base-card :icon="calendar" v-if="!singleDayViewOpen">
     <template v-slot:action1>
       <div class="right-title-parent">
         <h4 @click="floatingMenuOpen = !floatingMenuOpen">
@@ -17,11 +17,6 @@
     <template v-slot:title>Calendar</template>
     <template v-slot:content>
       <div id="base-container">
-        <single-day-view
-          v-if="singleDayViewOpen"
-          :date="singleDayChosen"
-          :events="events"
-        ></single-day-view>
         <div id="calendar-container" v-if="!singleDayViewOpen">
           <div class="month-heading" @click="toggleMonthSelector"></div>
           <div id="body">
@@ -49,7 +44,7 @@
                   }"
                 >
                   <div
-                    :class="day.hasEvents ? 'hasEvents' : ' '"
+                    :class="day.hasEvents > 0 ? 'hasEvents' : ''"
                     @click="day.hasEvents ? selectDay(day) : ''"
                   >
                     {{ day.dayOfMonth }}
@@ -69,6 +64,12 @@
       </div>
     </template>
   </base-card>
+  <single-day-view
+    v-if="singleDayViewOpen"
+    :date="singleDayChosen"
+    :events="events"
+    @close-single-day-view="singleDayViewOpen = false"
+  ></single-day-view>
 </template>
 
 <script>
@@ -227,15 +228,8 @@ export default {
         right: this.monthArray,
       };
     },
-    events() {
-      if (this.$store.state.events.length > 0) {
-        return this.$store.state.events;
-      } else {
-        return [];
-      }
-    },
     daysWithEvents() {
-      return this.events.map((a) => a.eventStartTime.getDate());
+      return this.events.map((a) => new Date(a.data.date));
     },
     // used to establish the dates shown on calendar
     currentMonthDays: function () {
@@ -249,18 +243,14 @@ export default {
             dayOfMonth: index + 1,
             isCurrentMonth: true,
             get isCurrentDay() {
-              if (this.date.toDateString() === new Date().toDateString()) {
-                return true;
-              } else {
-                return false;
-              }
+              return this.date
+                .toDateString()
+                .includes(new Date().toDateString());
             },
             get hasEvents() {
-              if (eventDays.includes(this.dayOfMonth)) {
-                return true;
-              } else {
-                return false;
-              }
+              return eventDays.findIndex((element) =>
+                element.toDateString().includes(this.date.toDateString())
+              );
             },
           };
         }
@@ -320,6 +310,7 @@ export default {
     },
   },
   emits: ["actionsClicked"],
+  props: ["events"],
 
   components: {
     // TimeSelector,
@@ -407,7 +398,7 @@ img {
   background: radial-gradient(
     ellipse at center,
     var(--highlightColor) 0%,
-    var(--highglightColor) 50%,
+    var(--highlightColor) 50%,
     rgba(0, 0, 0, 0) 53%
   );
   cursor: pointer;

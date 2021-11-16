@@ -20,6 +20,7 @@ import AdminViewCreateEvent from '../views/AdminViews/AdminViewCreate/AdminViewC
 
 
 const routes = [
+  
   {
     path: '/',
     name: 'index', 

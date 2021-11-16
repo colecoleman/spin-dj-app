@@ -1,27 +1,37 @@
 <template>
-  <div id="single-day-view-wrapper">
-    <h5>{{ displayableDate }}</h5>
-    <div id="single-day-scroll-container">
-      <single-day-view-item
-        v-for="event in events"
-        :key="event.id"
-        :event="event"
-        @click="navigateToEventPage(event.id)"
-      />
-    </div>
-  </div>
+  <base-card :actionIcon="xIcon" @action-one-clicked="closeSingleDayView">
+    <template v-slot:title>{{ displayableDate }}</template>
+    <template v-slot:content>
+      <div id="single-day-scroll-container">
+        <single-day-view-item
+          v-for="event in eventsOnDay"
+          :key="event.id"
+          :event="event"
+          @click="navigateToEventPage(event.userId)"
+        />
+      </div>
+    </template>
+  </base-card>
 </template>
 
+
 <script>
+import BaseCard from "../../SharedComponentsUI/BaseCard.vue";
 import SingleDayViewItem from "../SingleDayView/SingleDayViewItem.vue";
+import xIcon from "../../../assets/SVGs/x-icon.svg";
 
 export default {
   data() {
-    return {};
+    return {
+      xIcon,
+    };
   },
   methods: {
     navigateToEventPage(id) {
-      this.$router.push("/events/" + id);
+      this.$router.push("/admin/events/" + id);
+    },
+    closeSingleDayView() {
+      this.$emit("closeSingleDayView");
     },
   },
   computed: {
@@ -34,41 +44,32 @@ export default {
       });
     },
     eventsOnDay() {
-      console.log(this.events);
-      return this.$store.state.events.filter((event) => {
-        let eventDate = event.eventStartTime.toLocaleDateString("lookup", {
-          day: "numeric",
-          year: "numeric",
-          month: "2-digit",
-        });
-
-        let chosenDate = this.date.toLocaleDateString("lookup", {
-          day: "numeric",
-          year: "numeric",
-          month: "2-digit",
-        });
-
-        return eventDate === chosenDate;
+      return this.events.filter((event) => {
+        return (
+          new Date(event.data.date).getTime() == new Date(this.date).getTime()
+        );
       });
     },
-
   },
   props: ["date", "events"],
-  components: { SingleDayViewItem },
+  components: { SingleDayViewItem, BaseCard },
 };
 </script>
 
 <style scoped>
 #single-day-view-wrapper {
   height: 100%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
-#single-day-view-wrapper > h5 {
-  height: 10%;
+h5 {
+  margin: 10px;
 }
 
 #single-day-scroll-container {
-  height: 90%;
+  /* height: 100%; */
   overflow: scroll;
 }
 </style>

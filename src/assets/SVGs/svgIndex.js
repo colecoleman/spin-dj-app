@@ -39,7 +39,7 @@ import SnowflakeColorSVG from './snowflake-color.svg'
 import SnowflakeSVG from './snowflake.svg'
 import sortalpha from './sort-alpha.svg'
 import TrashCanSVG from './trash-can.svg'
-import XIconSVG from './x-icon.svg'
+import xIconSVG from './x-icon.svg'
 
 
  export {
@@ -84,5 +84,5 @@ import XIconSVG from './x-icon.svg'
     SnowflakeSVG, 
     sortalpha, 
     TrashCanSVG, 
-    XIconSVG, 
+    xIconSVG, 
 }

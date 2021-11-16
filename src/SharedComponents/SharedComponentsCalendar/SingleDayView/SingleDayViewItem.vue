@@ -1,5 +1,5 @@
 <template>
-  <div class="single-day-item">
+  <div class="single-day-item" v-if="!loading">
     <div class="client-identifier">
       <img
         :src="
@@ -10,18 +10,18 @@
         alt=""
       />
       <div class="client-name">
-        <p>{{ matchedClient.firstName }}</p>
-        <p>{{ matchedClient.lastName }}</p>
+        <p>{{ matchedClient.given_name }}</p>
+        <p>{{ matchedClient.family_name }}</p>
       </div>
     </div>
     <div class="quick-info">
-      <p class="venue-name">
-        <b>{{ event.eventLocations[0].venueName }}</b>
+      <p class="venue-name" v-if="primaryLocation.name">
+        <b>{{ primaryLocation.name }}</b>
       </p>
       <p>
-        {{ formatTime(event.eventStartTime) }}
+        {{ formatTime(event.data.startTime) }}
         -
-        {{ formatTime(event.eventEndTime) }}
+        {{ formatTime(event.data.endTime) }}
       </p>
     </div>
   </div>
@@ -35,22 +35,32 @@ export default {
   data() {
     return {
       defaultProfilePicture,
+      loading: true,
+      primaryLocation: undefined,
+      matchedClient: undefined,
     };
   },
   methods: {
     formatTime: helpers.formatTime,
   },
-  computed: {
-    matchedClient() {
-      let firstClient = this.event.associatedContacts.find(
-        (x) => x.role === "client"
-      );
-      let item = this.$store.state.contacts[`${firstClient.role + "s"}`].find(
-        (x) => x.id === firstClient.id
-      );
-      item.role = firstClient.role;
-      return item;
-    },
+  created() {
+    console.log(this.event);
+    this.$store.dispatch("getUser", this.event.contacts[0]).then((res) => {
+      console.log(res.Item);
+      this.matchedClient = res.Item;
+      if (this.event.locations.length > 0) {
+        this.$store
+          .dispatch("getLocation", this.event.locations[0])
+          .then((res) => {
+            if (res.Item) {
+              this.primaryLocation = res.Item;
+            }
+            this.loading = false;
+          });
+      } else {
+        this.loading = false;
+      }
+    });
   },
   props: ["event"],
 };
