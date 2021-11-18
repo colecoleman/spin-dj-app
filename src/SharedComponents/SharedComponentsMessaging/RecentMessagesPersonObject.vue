@@ -4,7 +4,7 @@
       <img :src="profilePicture ? profilePicture : defaultProfilePicture" />
     </div>
     <div id="messaging-content">
-      <h5>{{ firstName }} {{ lastName }}</h5>
+      <h5>{{ given_name }} {{ family_name }}</h5>
       <p>{{ textPreview }}</p>
     </div>
   </section>
@@ -19,7 +19,7 @@ export default {
       defaultProfilePicture,
     };
   },
-  props: ["id", "firstName", "lastName", "recentMessage", "profilePicture"],
+  props: ["id", "given_name", "family_name", "recentMessage", "profilePicture"],
   computed: {
     textPreview: function () {
       return this.recentMessage.length >= 100

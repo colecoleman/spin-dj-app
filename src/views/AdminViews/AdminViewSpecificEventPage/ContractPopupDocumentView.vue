@@ -137,7 +137,7 @@
     </div>
     <div id="contract-data">
       <h5>Signer Name:</h5>
-      <p>First LastName</p>
+      <p>First family_name</p>
       <h5>Date Signed:</h5>
       <p>12/31/2021</p>
       <h5>IP Address:</h5>

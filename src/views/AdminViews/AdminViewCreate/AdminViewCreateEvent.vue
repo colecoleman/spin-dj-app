@@ -202,11 +202,11 @@
                 </div>
                 <div class="form-input">
                   <p>First Name:</p>
-                  <input type="text" v-model.lazy="fields.client.firstName" />
+                  <input type="text" v-model.lazy="fields.client.given_name" />
                 </div>
                 <div class="form-input">
                   <p>Last Name:</p>
-                  <input type="text" v-model.lazy="fields.client.lastName" />
+                  <input type="text" v-model.lazy="fields.client.family_name" />
                 </div>
               </div>
               <div class="column-flex">
@@ -337,8 +337,8 @@ export default {
           associatedEvents: [],
           pronoun: null,
           role: "client",
-          firstName: null,
-          lastName: null,
+          given_name: null,
+          family_name: null,
           phoneNumber: null,
           username: null,
         },
@@ -391,8 +391,8 @@ export default {
         sendInvitation: true,
         pronoun: null,
         role: "client",
-        firstName: null,
-        lastName: null,
+        given_name: null,
+        family_name: null,
         phoneNumber: null,
         username: null,
       };

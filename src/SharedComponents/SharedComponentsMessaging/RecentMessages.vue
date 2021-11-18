@@ -27,8 +27,8 @@
         <recent-messages-person-object
           v-for="contact in contacts"
           :key="contact.id"
-          :firstName="contact.firstName"
-          :lastName="contact.lastName"
+          :given_name="contact.given_name"
+          :family_name="contact.family_name"
           :profilePicture="contact.profilePicture"
           :recentMessage="contact.recentMessage"
           @click="openSingleMessaging(contact, contact.id)"

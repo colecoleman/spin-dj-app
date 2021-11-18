@@ -75,8 +75,8 @@
         </div>
       </div>
       <div class="location-address">
-        <p>{{ contact.address.address1 }}</p>
-        <p>{{ contact.address.address2 }}</p>
+        <p>{{ contact.address.streetAddress1 }}</p>
+        <p>{{ contact.address.cityStateZip }}</p>
       </div>
       <div class="button-wrapper">
         <button-with-drop-down-selections
@@ -194,6 +194,9 @@ export default {
     PopupEmailComposition,
     PopupModal,
     ButtonStandardWithIcon,
+  },
+  created() {
+    console.log(this.category);
   },
 };
 </script>

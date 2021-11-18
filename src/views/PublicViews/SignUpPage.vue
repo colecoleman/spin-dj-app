@@ -23,8 +23,8 @@
               <p>First Name</p>
               <input
                 type="text"
-                v-model="firstName"
-                :class="firstNameError ? 'error' : 'healthy'"
+                v-model="given_name"
+                :class="given_nameError ? 'error' : 'healthy'"
               />
             </div>
             <div class="half-width">
@@ -36,7 +36,7 @@
               />
             </div>
           </div>
-          <p class="error-text" v-if="familyNameError || firstNameError">
+          <p class="error-text" v-if="familyNameError || given_nameError">
             <i> Oops! We're missing your name.</i>
           </p>
           <div class="input-field">
@@ -135,7 +135,7 @@ export default {
   data() {
     return {
       SpinLogoWithText,
-      firstName: undefined,
+      given_name: undefined,
       familyName: undefined,
       username: undefined,
       password: undefined,
@@ -143,7 +143,7 @@ export default {
       confirmationCode: undefined,
       step: 1,
       user: undefined,
-      firstNameError: false,
+      given_nameError: false,
       familyNameError: false,
       usernameError: false,
       passwordError: {
@@ -160,10 +160,10 @@ export default {
       const re = new RegExp(
         "^(?=.*d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$"
       );
-      if (!this.firstName) {
-        this.firstNameError = true;
+      if (!this.given_name) {
+        this.given_nameError = true;
       } else {
-        this.firstNameError = false;
+        this.given_nameError = false;
       }
       if (!this.familyName) {
         this.familyNameError = true;
@@ -194,11 +194,11 @@ export default {
           this.username,
           this.password,
           this.familyName,
-          this.firstName
+          this.given_name
         );
       }
     },
-    async signUp(username, password, familyName, firstName) {
+    async signUp(username, password, familyName, given_name) {
       try {
         const { user } = await Auth.signUp({
           username,
@@ -206,7 +206,7 @@ export default {
           attributes: {
             email: username,
             family_name: familyName,
-            given_name: firstName,
+            given_name: given_name,
           },
         });
         this.step++;

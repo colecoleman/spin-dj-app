@@ -13,17 +13,17 @@
       <option value="Ms.">Ms.</option>
       <option value="Other">Other (please prefix first name)</option>
     </select>
-    <h5 :class="errors.firstName ? 'danger' : ''">First Name:</h5>
+    <h5 :class="errors.given_name ? 'danger' : ''">First Name:</h5>
     <input
       type="text"
       placeholder="First Name"
-      v-model.trim.lazy="vendor.firstName"
+      v-model.trim.lazy="vendor.given_name"
     />
-    <h5 :class="errors.lastName ? 'danger' : ''">Last Name:</h5>
+    <h5 :class="errors.family_name ? 'danger' : ''">Last Name:</h5>
     <input
       type="text"
       placeholder="Last Name"
-      v-model.trim.lazy="vendor.lastName"
+      v-model.trim.lazy="vendor.family_name"
     />
     <h5 :class="errors.phoneNumber ? 'danger' : ''">Phone Number:</h5>
     <input
@@ -80,8 +80,8 @@ export default {
         role: "vendor",
         companyName: null,
         pronoun: null,
-        firstName: null,
-        lastName: null,
+        given_name: null,
+        family_name: null,
         phoneNumber: null,
         username: null,
         vendorCategory: null,
@@ -89,8 +89,8 @@ export default {
       errors: {
         companyName: null,
         pronoun: null,
-        firstName: null,
-        lastName: null,
+        given_name: null,
+        family_name: null,
         phoneNumber: null,
         username: null,
         vendorCategory: null,
@@ -115,8 +115,8 @@ export default {
           role: "vendor",
           companyName: null,
           pronoun: null,
-          firstName: null,
-          lastName: null,
+          given_name: null,
+          family_name: null,
           phoneNumber: null,
           username: null,
           vendorCategory: null,
@@ -129,18 +129,18 @@ export default {
     checkEmptyFields() {
       let vendor = this.vendor;
       this.errors = {
-        firstName: false,
-        lastName: false,
+        given_name: false,
+        family_name: false,
         phoneNumber: false,
         username: false,
         vendorCategory: false,
       };
 
-      if (!vendor.firstName) {
-        this.errors.firstName = true;
+      if (!vendor.given_name) {
+        this.errors.given_name = true;
       }
-      if (!vendor.lastName) {
-        this.errors.lastName = true;
+      if (!vendor.family_name) {
+        this.errors.family_name = true;
       }
       if (!vendor.username) {
         this.errors.username = true;

@@ -142,7 +142,7 @@
         <div id="contract-popup-right-column">
           <div class="contract-item">
             <p>Signed By:</p>
-            <h5>Firstname LastName</h5>
+            <h5>given_name family_name</h5>
           </div>
           <div class="contract-item">
             <p>Signed On:</p>

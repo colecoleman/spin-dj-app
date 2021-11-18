@@ -44,17 +44,17 @@
       <option value="Ms.">Ms.</option>
       <option value="Other">Other (please prefix first name)</option>
     </select>
-    <h5 :class="errors.contact.firstName ? 'danger' : ''">First Name:</h5>
+    <h5 :class="errors.contact.given_name ? 'danger' : ''">First Name:</h5>
     <input
       type="text"
       placeholder="First Name"
-      v-model.trim.lazy="location.contact.firstName"
+      v-model.trim.lazy="location.contact.given_name"
     />
-    <h5 :class="errors.contact.lastName ? 'danger' : ''">Last Name:</h5>
+    <h5 :class="errors.contact.family_name ? 'danger' : ''">Last Name:</h5>
     <input
       type="text"
       placeholder="Last Name"
-      v-model.trim.lazy="location.contact.lastName"
+      v-model.trim.lazy="location.contact.family_name"
     />
     <h5 :class="errors.contact.phoneNumber ? 'danger' : ''">Phone Number:</h5>
     <input
@@ -96,8 +96,8 @@ export default {
         //   role: "vendor",
         //   companyName: null,
         //   pronoun: null,
-        //   firstName: null,
-        //   lastName: null,
+        //   given_name: null,
+        //   family_name: null,
         //   phoneNumber: null,
         //   username: null,
         // },
@@ -105,8 +105,8 @@ export default {
       errors: {
         name: false,
         contact: {
-          firstName: false,
-          lastName: false,
+          given_name: false,
+          family_name: false,
           phoneNumber: false,
           emailAddress: false,
         },
@@ -141,8 +141,8 @@ export default {
           },
           contact: {
             pronoun: undefined,
-            firstName: undefined,
-            lastName: undefined,
+            given_name: undefined,
+            family_name: undefined,
             phoneNumber: undefined,
             emailAddress: undefined,
           },
@@ -156,8 +156,8 @@ export default {
       this.errors = {
         name: false,
         contact: {
-          firstName: false,
-          lastName: false,
+          given_name: false,
+          family_name: false,
           emailAddress: false,
           phoneNumber: false,
         },
@@ -165,11 +165,11 @@ export default {
       if (!location.name) {
         this.errors.name = true;
       }
-      if (!location.contact.firstName) {
-        this.errors.contact.firstName = true;
+      if (!location.contact.given_name) {
+        this.errors.contact.given_name = true;
       }
-      if (!location.contact.lastName) {
-        this.errors.contact.lastName = true;
+      if (!location.contact.family_name) {
+        this.errors.contact.family_name = true;
       }
       if (!location.contact.emailAddress) {
         this.errors.contact.emailAddress = true;

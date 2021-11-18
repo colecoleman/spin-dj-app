@@ -13,17 +13,17 @@
       <option value="Ms.">Ms.</option>
       <option value="Other">Other (please prefix first name)</option>
     </select>
-    <h5 :class="errors.firstName ? 'danger' : ''">First Name:</h5>
+    <h5 :class="errors.given_name ? 'danger' : ''">First Name:</h5>
     <input
       type="text"
       placeholder="First Name"
-      v-model.trim.lazy="organizer.firstName"
+      v-model.trim.lazy="organizer.given_name"
     />
-    <h5 :class="errors.lastName ? 'danger' : ''">Last Name:</h5>
+    <h5 :class="errors.family_name ? 'danger' : ''">Last Name:</h5>
     <input
       type="text"
       placeholder="Last Name"
-      v-model.trim.lazy="organizer.lastName"
+      v-model.trim.lazy="organizer.family_name"
     />
     <h5 :class="errors.phoneNumber ? 'danger' : ''">Phone Number:</h5>
     <input
@@ -65,14 +65,14 @@ export default {
         role: "organizer",
         businessName: null,
         pronoun: null,
-        firstName: null,
-        lastName: null,
+        given_name: null,
+        family_name: null,
         phoneNumber: null,
         username: null,
       },
       errors: {
-        firstName: false,
-        lastName: false,
+        given_name: false,
+        family_name: false,
         phoneNumber: false,
         username: false,
       },
@@ -95,8 +95,8 @@ export default {
           sendInvitation: true,
           businessName: null,
           pronoun: null,
-          firstName: null,
-          lastName: null,
+          given_name: null,
+          family_name: null,
           phoneNumber: null,
           username: null,
         };
@@ -108,16 +108,16 @@ export default {
     checkEmptyFields() {
       let organizer = this.organizer;
       this.errors = {
-        firstName: false,
-        lastName: false,
+        given_name: false,
+        family_name: false,
         phoneNumber: false,
         username: false,
       };
-      if (!organizer.firstName) {
-        this.errors.firstName = true;
+      if (!organizer.given_name) {
+        this.errors.given_name = true;
       }
-      if (!organizer.lastName) {
-        this.errors.lastName = true;
+      if (!organizer.family_name) {
+        this.errors.family_name = true;
       }
       if (!organizer.username) {
         this.errors.username = true;

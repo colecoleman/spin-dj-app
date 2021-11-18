@@ -6,8 +6,8 @@
         <recent-messages-person-object
           v-for="client in clients"
           :key="client.id"
-          :firstName="client.firstName"
-          :lastName="client.lastName"
+          :given_name="client.given_name"
+          :family_name="client.family_name"
           :profilePicture="client.profilePicture"
           :recentMessage="client.recentMessage"
         >

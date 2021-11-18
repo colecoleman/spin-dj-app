@@ -112,7 +112,7 @@ export default {
   data() {
     return {
       SpinLogoWithText,
-      firstName: undefined,
+      given_name: undefined,
       familyName: undefined,
       username: undefined,
       password: undefined,
@@ -120,7 +120,7 @@ export default {
       confirmationCode: undefined,
       step: 1,
       user: undefined,
-      firstNameError: false,
+      given_nameError: false,
       familyNameError: false,
       usernameError: false,
       passwordError: {
