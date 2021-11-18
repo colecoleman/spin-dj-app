@@ -16,11 +16,7 @@
         @actionClicked="selectSort"
       />
     </template>
-<<<<<<< HEAD
     <template v-slot:content v-if="events">
-=======
-    <template v-slot:content v-if="events && loaded">
->>>>>>> d620c054c2e7953cd71736bb3ffd4ce9924abed8
       <div class="events-content" v-if="!eventAssignmentOpen && contact">
         <h5 @click="eventAssignmentToggle()" v-if="events.length == 0">
           {{ contact.given_name }} {{ contact.family_name }} has no events.
@@ -74,10 +70,7 @@ export default {
       xiconsvg,
       sortMenuOpened: false,
       addEventId: undefined,
-<<<<<<< HEAD
       events: [],
-=======
->>>>>>> d620c054c2e7953cd71736bb3ffd4ce9924abed8
       loaded: false,
       sortItems: [
         {
@@ -147,34 +140,16 @@ export default {
     title() {
       return this.eventAssignmentOpen ? "Assign To Events" : "Events";
     },
-<<<<<<< HEAD
-    allEvents() {
-      let today = new Date().getTime();
-      return this.$store.state.events.filter((event) => {
-        return new Date(event.data.date).getTime() > today;
-      });
-=======
-    events() {
-      let today = new Date().getTime();
-      let contact = this.contact;
-      let array = [...this.$store.state.events];
-      return array.filter(
-        (event) =>
-          new Date(event.data.date).getTime() > today &&
-          event.contacts.includes(contact.userId)
-      );
->>>>>>> d620c054c2e7953cd71736bb3ffd4ce9924abed8
-    },
     allEvents() {
       let today = new Date().getTime();
       return this.$store.state.events.filter((event) => {
         return new Date(event.data.date).getTime() > today;
       });
     },
+
   },
 
   props: ["contact", "eventAssignmentOpen"],
-<<<<<<< HEAD
   created() {
     console.log(this.contact);
     this.events = this.$store.state.events.filter(
@@ -183,8 +158,6 @@ export default {
         new Date(x.data.date).getTime() > new Date().getTime()
     );
   },
-=======
->>>>>>> d620c054c2e7953cd71736bb3ffd4ce9924abed8
   components: {
     LocationUpcomingEventsListItem,
     FloatingMenuWithListItems,
