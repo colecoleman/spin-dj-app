@@ -45,18 +45,18 @@
           <template v-slot:content>
             <div class="row-flex">
               <div class="form-input">
-                <p>Select Product(s):</p>
-                <select name="" id="">
-                  <option value="">Select a product</option>
-                  <option
-                    v-for="(product, index) in businessProducts"
-                    :key="index"
-                    :value="product.name"
-                    @click="event.invoice.products.push(product)"
-                  >
-                    {{ product.name }} ({{ product.type }})
-                  </option>
-                </select>
+                <p><b>Select Product(s):</b></p>
+                <div
+                  class="checkboxes"
+                  v-for="(product, index) in businessProducts"
+                  :key="index"
+                >
+                  <input
+                    type="checkbox"
+                    @change="toggleProductFromPackage(product)"
+                  />
+                  <p>{{ product.name }}</p>
+                </div>
               </div>
               <div class="form-input">
                 <p>Select Adjustment(s):</p>
@@ -88,6 +88,43 @@
                     @blur="assignPaymentToEvent()"
                     placeholder="Amount"
                   />
+                </div>
+              </div>
+            </div>
+          </template>
+        </base-card>
+      </div>
+      <div class="forms-wrapper">
+        <base-card>
+          <template v-slot:title>Select Form(s):</template>
+          <template v-slot:content>
+            <div class="row-flex">
+              <div class="form-input">
+                <p>Suggested Form(s):</p>
+                <div
+                  class="checkboxes"
+                  v-for="(form, index) in suggestedForms"
+                  :key="index"
+                >
+                  <input
+                    type="checkbox"
+                    @change="toggleFormFromPackage(form)"
+                  />
+                  <p>{{ form.name }}</p>
+                </div>
+              </div>
+              <div class="form-input">
+                <p>All Forms:</p>
+                <div
+                  class="checkboxes"
+                  v-for="(form, index) in forms"
+                  :key="index"
+                >
+                  <input
+                    type="checkbox"
+                    @change="toggleFormFromPackage(form)"
+                  />
+                  <p>{{ form.name }}</p>
                 </div>
               </div>
             </div>
@@ -372,6 +409,15 @@ export default {
       this.clientView = action;
       this.clientOptionsOpen = false;
     },
+    toggleProductFromPackage(product) {
+      let array = this.event.invoice.products;
+      let index = array.indexOf(product);
+      if (index > -1) {
+        array.splice(index, 1);
+      } else {
+        array.push(product);
+      }
+    },
     addLocation() {
       this.location.push(this.fields.location);
       this.fields.location = {
@@ -437,7 +483,27 @@ export default {
           x.given_name.toLowerCase().includes(term)
       );
     },
+    forms() {
+      return this.$store.state.businessSettings.product.forms;
+    },
+    suggestedForms() {
+      return this.forms.filter((form) => {
+        console.log(form.id);
+        console.log(this.event.invoice.products.map((x) => x.forms));
+        console.log(
+          this.event.invoice.products.map((x) => x.forms).includes(form.id)
+        );
+        return this.event.invoice.products.map((x) => x.forms);
+        // this.event.invoice.products.filter((x) => {
+        //   console.log(x.forms);
+        //   console.log(form.id);
+        //   console.log(x.forms.includes(form.id));
+        //   x.forms.includes(form.id);
+        // });
+      });
+    },
     businessProducts() {
+      // console.log(this.suggestedForms);
       let array = [];
       let packages = this.$store.state.businessSettings.product.packages.map(
         (x) => ({ ...x, type: "Package" })
@@ -448,6 +514,7 @@ export default {
       let addOns = this.$store.state.businessSettings.product.addOns.map(
         (x) => ({ ...x, type: "Add-On" })
       );
+
       array = [...packages, ...services, ...addOns];
       return array;
     },
@@ -523,6 +590,18 @@ export default {
 
 .align-center {
   align-self: center;
+}
+
+.checkboxes {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: left;
+  align-items: center;
+}
+
+.checkboxes > input {
+  width: unset;
 }
 
 input {

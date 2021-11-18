@@ -138,6 +138,7 @@ export default {
       XIconSVG,
       services: [],
       input: {
+        id: "service" + new Date().getTime(),
         name: undefined,
         pricing: {
           baseTime: undefined,

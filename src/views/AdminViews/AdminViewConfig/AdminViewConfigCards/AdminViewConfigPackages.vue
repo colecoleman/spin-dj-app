@@ -187,6 +187,7 @@ export default {
       packages: undefined,
       input: {
         packages: {
+          id: "package" + new Date().getTime(),
           name: undefined,
           priceOption: undefined,
           pricing: {
@@ -194,6 +195,7 @@ export default {
             baseRate: undefined,
             addHourly: undefined,
           },
+          forms: [],
           serviceIds: [],
           employeesRequired: undefined,
           photo: undefined,

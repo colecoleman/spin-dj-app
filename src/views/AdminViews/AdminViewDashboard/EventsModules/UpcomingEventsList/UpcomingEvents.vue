@@ -79,7 +79,7 @@ export default {
       this.toggleSortMenuOpened();
     },
     navigateToEventPage(id) {
-      this.$router.push("/events/" + id);
+      this.$router.push("/admin/events/" + id);
     },
   },
   created() {

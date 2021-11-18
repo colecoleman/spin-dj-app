@@ -64,7 +64,7 @@
           <to-do-specific-event :event="event"></to-do-specific-event>
         </div>
         <div id="lower-div-box-3">
-          <recent-messages-event v-if="loclkj"></recent-messages-event>
+          <recent-messages-event v-if="contacts"></recent-messages-event>
         </div>
       </div>
     </section>
@@ -115,18 +115,6 @@ export default {
       dropdown: {
         title: "Actions",
         actionItems: [
-          {
-            title: "postpone",
-            action: this.postponeEvent,
-            danger: false,
-            icon: passingTime,
-          },
-          {
-            title: "edit",
-            action: this.editEvent,
-            danger: false,
-            icon: editPen,
-          },
           {
             title: "delete",
             action: this.deleteEvent,

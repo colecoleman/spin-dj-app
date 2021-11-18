@@ -2,8 +2,8 @@
   <div class="add-new-note-wrapper">
     <h5>Privacy:</h5>
     <select name="Privacy" id="" v-model="note.privacy">
-      <option value="Private" selected>Private</option>
-      <option value="Public">Public</option>
+      <option value="notesPrivate" selected>Private</option>
+      <option value="notesPublic">Public</option>
     </select>
     <h5>Note:</h5>
     <textarea
@@ -29,7 +29,7 @@ export default {
   data() {
     return {
       note: {
-        privacy: "Private",
+        privacy: "notesPrivate",
         date: new Date(),
         note: undefined,
       },

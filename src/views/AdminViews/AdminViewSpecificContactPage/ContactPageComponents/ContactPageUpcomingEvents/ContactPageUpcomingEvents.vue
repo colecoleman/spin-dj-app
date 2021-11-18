@@ -16,7 +16,7 @@
         @actionClicked="selectSort"
       />
     </template>
-    <template v-slot:content v-if="events && loaded">
+    <template v-slot:content v-if="events">
       <div class="events-content" v-if="!eventAssignmentOpen && contact">
         <h5 @click="eventAssignmentToggle()" v-if="events.length == 0">
           {{ contact.given_name }} {{ contact.family_name }} has no events.
@@ -70,6 +70,7 @@ export default {
       xiconsvg,
       sortMenuOpened: false,
       addEventId: undefined,
+      events: [],
       loaded: false,
       sortItems: [
         {
@@ -139,16 +140,6 @@ export default {
     title() {
       return this.eventAssignmentOpen ? "Assign To Events" : "Events";
     },
-    events() {
-      let today = new Date().getTime();
-      let contact = this.contact;
-      let array = [...this.$store.state.events];
-      return array.filter(
-        (event) =>
-          new Date(event.data.date).getTime() > today &&
-          event.contacts.includes(contact.userId)
-      );
-    },
     allEvents() {
       let today = new Date().getTime();
       return this.$store.state.events.filter((event) => {
@@ -158,6 +149,14 @@ export default {
   },
 
   props: ["contact", "eventAssignmentOpen"],
+  created() {
+    console.log(this.contact);
+    this.events = this.$store.state.events.filter(
+      (x) =>
+        x.contacts.includes(this.contact.userId) &&
+        new Date(x.data.date).getTime() > new Date().getTime()
+    );
+  },
   components: {
     LocationUpcomingEventsListItem,
     FloatingMenuWithListItems,

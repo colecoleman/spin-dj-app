@@ -295,13 +295,7 @@ const store = createStore({
     },
 
 
-        adminAddEvent(context, payload) {
-            context.commit('adminAddEvent', payload)
-        },
-    
-        adminConfigAddService(context, payload) {
-            context.commit('adminConfigAddService', payload);
-        },
+        
         adminConfigDeleteService(context, payload) {
             context.commit('adminConfigDeleteService', payload);
         },
@@ -319,51 +313,6 @@ const store = createStore({
         },
         addFormToDb(context, payload) {
             context.commit('addFormToDb', payload)
-        },
-        addEmployeeToEvent(context, payload) {
-            context.commit('addEmployeeToEvent', payload)
-        },
-        changeEmployeeAvailability(context, payload) {
-            context.commit('changeEmployeeAvailability', payload)
-        },
-        changeEmployeeAvailabilityRules(context, payload) {
-            context.commit('changeEmployeeAvailabilityRules', payload)
-        },
-        getCombined({ commit }) {
-            commit('clientEventCombine');
-        },
-        approveAutomation( context, id ) {
-            context.commit('approveAutomation', id)
-        },
-        deleteAutomation( context, id ) {
-            context.commit('deleteAutomation', id)
-        },
-        deleteApprovedAutomation( context, id ) {
-            context.commit('deleteApprovedAutomation', id)
-        },
-        
-        changeProspectStatus(context, payload) {
-            context.commit('changeProspectStatus', payload)
-        },
-
-        addProspectLocation(context, payload) {
-            context.commit('addProspectLocation', payload)
-        },
-        addProspectDateTime(context, payload) {
-            context.commit('addProspectDateTime', payload)
-        },
-
-
-        
-   
-        addContactNote(context, payload) {
-            context.commit('addContactNote', payload)
-        },
-        editClient(context, {id, key, value}) {
-            context.commit('editClient', {id, key, value})
-          },
-        deleteContact(context, {category, id}) {
-            context.commit('deleteContact', {category, id})
         },
        
     },
@@ -551,14 +500,14 @@ const store = createStore({
 
 
 
-        addContactNote(state, payload) {
-             let subject = state.contacts[payload.category].find((c) => c.id = payload.id);
-             let privacy = payload.note.privacy.toLowerCase();
-             let note = {
-                date: payload.note.date,
-                note: payload.note.note};
-            subject.notes[privacy].push(note);
-        },
+        // addContactNote(state, payload) {
+        //      let subject = state.contacts[payload.category].find((c) => c.id = payload.id);
+        //      let privacy = payload.note.privacy.toLowerCase();
+        //      let note = {
+        //         date: payload.note.date,
+        //         note: payload.note.note};
+        //     subject.notes[privacy].push(note);
+        // },
         editClient(state, {id, key, value}) {
             let subject = state.contacts.clients.find((c) => c.id === id);
             subject[key] = value;

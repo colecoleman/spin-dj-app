@@ -9,31 +9,41 @@
         alt=""
       />
     </template>
-    <template v-slot:content>
+    <template v-slot:content v-if="contact">
       <contact-page-notes-add-new
         v-if="addNewNoteOpen"
         :contact="contact"
-        :contactCategory="contactCategory"
         @submit-note="addNewNote"
       ></contact-page-notes-add-new>
-      <h5 v-if="!notes">No notes found for this client.</h5>
-      <div class="notes-wrapper" v-if="!addNewNoteOpen && notes">
-        <div class="section-wrapper" v-if="notes.public">
+      <h5
+        v-if="!contact.notesPublic && !contact.notesPrivate && !addNewNoteOpen"
+      >
+        No notes found for this client.
+      </h5>
+      <div
+        class="notes-wrapper"
+        v-if="!addNewNoteOpen && (contact.notesPublic || contact.notesPrivate)"
+      >
+        <div class="section-wrapper" v-if="contact.notesPublic">
           <h5>Public Notes:</h5>
           <p>Visible to others</p>
-          <div class="notes-item" v-for="note in notes.public" :key="note.note">
+          <div
+            class="notes-item"
+            v-for="note in contact.notesPublic"
+            :key="note.note"
+          >
             <p class="note-date">
               <i>{{ formatDate(note.date) }}</i>
             </p>
             <p class="note-content">{{ note.note }}</p>
           </div>
         </div>
-        <div class="section-wrapper" v-if="notes.private">
+        <div class="section-wrapper" v-if="contact.notesPrivate">
           <h5>Private Notes:</h5>
           <p>Visible to you</p>
           <div
             class="notes-item"
-            v-for="note in notes.private"
+            v-for="note in contact.notesPrivate"
             :key="note.none"
           >
             <p class="note-date">
@@ -68,15 +78,19 @@ export default {
     addNewNote(note) {
       this.toggleOpenNote();
       let payload = {
-        category: this.contactCategory,
-        id: this.contact.id,
-        note: note,
+        operation: "addToList",
+        variable: note.privacy,
+        value: {
+          date: note.date,
+          note: note.note,
+        },
+        clientId: this.contact.userId,
       };
-      this.$store.dispatch("addContactNote", payload);
+      this.$store.dispatch("editContact", payload);
     },
     formatDate: helpers.formatDate,
   },
-  props: ["notes", "contact", "contactCategory"],
+  props: ["contact"],
   components: {
     ContactPageNotesAddNew,
   },
