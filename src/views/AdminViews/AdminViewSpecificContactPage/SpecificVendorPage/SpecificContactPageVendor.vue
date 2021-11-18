@@ -9,7 +9,6 @@
     :vendor="contact"
     @close-referral-window="closePopups()"
   ></vendor-page-referral-popup>
-  <popup-notes-view v-if="!emailPopupOpen && notesPopupOpen"></popup-notes-view>
   <div id="section-wrapper">
     <div id="left-column">
       <div id="box-one">
@@ -69,7 +68,6 @@ import {
 } from "../ContactPageComponents/contactPageIndex.js";
 
 import PopupEmailComposition from "../../../../SharedComponents/SharedComponentsPopupUtilities/PopupEmailComposition.vue";
-import PopupNotesView from "../../../../SharedComponents/SharedComponentsPopupUtilities/PopupNotesView.vue";
 import MessagingSingleComponent from "../../../../SharedComponents/SharedComponentsMessaging/MessagingSingleComponent.vue";
 import FourButtonBarWithDropDown from "../../../../SharedComponents/SharedComponentsUI/FourButtonBarWithDropDown.vue";
 import ContactCardCompany from "../../../../views/AdminViews/AdminViewSpecificContactPage/ContactPageComponents/ContactCardCompany.vue";
@@ -155,7 +153,6 @@ export default {
   },
   components: {
     PopupEmailComposition,
-    PopupNotesView,
     ContactCardCompany,
     ContactPageToDoList,
     ContactPageUpcomingEvents,

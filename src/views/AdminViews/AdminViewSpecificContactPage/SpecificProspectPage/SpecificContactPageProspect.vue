@@ -4,7 +4,6 @@
     :contact="contact"
     @cancel-send-email="closePopups()"
   ></popup-email-composition>
-  <popup-notes-view v-if="!emailPopupOpen && notesPopupOpen"></popup-notes-view>
   <div id="section-wrapper">
     <div id="left-column">
       <div id="box-one">
@@ -58,7 +57,6 @@ import {
 } from "../ContactPageComponents/contactPageIndex.js";
 
 import PopupEmailComposition from "../../../../SharedComponents/SharedComponentsPopupUtilities/PopupEmailComposition.vue";
-import PopupNotesView from "../../../../SharedComponents/SharedComponentsPopupUtilities/PopupNotesView.vue";
 import FourButtonBarWithDropDown from "../../../../SharedComponents/SharedComponentsUI/FourButtonBarWithDropDown.vue";
 import ProspectPageEventDetails from "../ContactPageComponents/ProspectPageComponents/ProspectPageEventDetails.vue";
 import ProspectPageContactHealth from "../ContactPageComponents/ProspectPageComponents/ProspectPageContactHealth.vue";
@@ -160,7 +158,6 @@ export default {
 
   components: {
     PopupEmailComposition,
-    PopupNotesView,
     ContactPageNotes,
 
     ContactPageToDoList,

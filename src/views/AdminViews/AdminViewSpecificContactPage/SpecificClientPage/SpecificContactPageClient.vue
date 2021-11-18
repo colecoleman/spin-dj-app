@@ -1,10 +1,10 @@
 <template>
   <popup-email-composition
-    v-if="emailPopupOpen && !notesPopupOpen"
+    v-if="emailPopupOpen"
     :contact="contact"
-    @cancel-send-email="closePopups()"
+    @close-window="closePopups()"
   ></popup-email-composition>
-  <popup-notes-view v-if="!emailPopupOpen && notesPopupOpen"></popup-notes-view>
+
   <div id="section-wrapper">
     <div id="left-column">
       <div id="box-one">
@@ -77,7 +77,6 @@ import ContactCardClient from "../ContactPageComponents/ContactCardPerson.vue";
 import ClientPageUpcomingEvents from "../ContactPageComponents/ClientPageComponents/ClientPageUpcomingEvents.vue";
 // import ClientPageInformationCard from "../ContactPageComponents/ClientPageComponents/ClientPageInformationCard.vue";
 import PopupEmailComposition from "../../../../SharedComponents/SharedComponentsPopupUtilities/PopupEmailComposition.vue";
-import PopupNotesView from "../../../../SharedComponents/SharedComponentsPopupUtilities/PopupNotesView.vue";
 
 import MessagingSingleComponent from "../../../../SharedComponents/SharedComponentsMessaging/MessagingSingleComponent.vue";
 import FourButtonBarWithDropDown from "../../../../SharedComponents/SharedComponentsUI/FourButtonBarWithDropDown.vue";
@@ -137,9 +136,6 @@ export default {
     openEmailComposition() {
       this.emailPopupOpen = true;
     },
-    viewNotes() {
-      console.log("notes open");
-    },
     closePopups() {
       this.emailPopupOpen = false;
       this.notesPopupOpen = false;
@@ -155,7 +151,6 @@ export default {
   },
   components: {
     PopupEmailComposition,
-    PopupNotesView,
     ContactCardClient,
     ContactPageToDoList,
     ClientPageUpcomingEvents,
