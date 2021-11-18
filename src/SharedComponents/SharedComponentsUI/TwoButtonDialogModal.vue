@@ -2,7 +2,7 @@
   <div class="wrapper">
     <backdrop @click="closeModal()"></backdrop>
     <div class="modal">
-      <base-card :actionIcon="XIcon">
+      <base-card :actionIcon="XIcon" @action-one-clicked="closeModal()">
         <template v-slot:title>Are you sure?</template>
         <template v-slot:content>
           <div class="button-container">
@@ -40,6 +40,7 @@ export default {
     },
     closeModal() {
       this.$emit("closeModal");
+      console.log("heyy");
     },
   },
   components: { Backdrop, ButtonStandardWithIcon },
