@@ -64,7 +64,11 @@
           <to-do-specific-event :event="event"></to-do-specific-event>
         </div>
         <div id="lower-div-box-3">
+<<<<<<< HEAD
           <recent-messages-event v-if="contacts"></recent-messages-event>
+=======
+          <recent-messages-event v-if="loclkj"></recent-messages-event>
+>>>>>>> d620c054c2e7953cd71736bb3ffd4ce9924abed8
         </div>
       </div>
     </section>
