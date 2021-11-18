@@ -1,22 +1,14 @@
 <template>
-  <popup-modal>
+  <popup-modal
+    :title="`Refer ${
+      vendor.businessName
+        ? vendor.businessName
+        : vendor.given_name + vendor.family_name
+    } to a client:`"
+    @close-popup="closeWindow()"
+  >
     <template v-slot:window>
-      <div class="page-one" v-if="activePage === 1">
-        <div class="heading">
-          <h4>
-            Refer
-            <span>
-              {{
-                `${
-                  vendor.businessName
-                    ? vendor.businessName
-                    : vendor.firstName + vendor.lastName
-                }`
-              }}
-            </span>
-            to a client:
-          </h4>
-        </div>
+      <div class="page-one">
         <div class="body">
           <input
             id="client-search"
@@ -28,67 +20,30 @@
           <div class="window">
             <div
               class="client-item"
-              @click="selectClient(client)"
               v-for="client in clients"
-              :key="client.id"
+              :key="client.userId"
             >
-              <img
-                :src="
-                  client.profilePicture
-                    ? client.profilePicture
-                    : defaultProfilePicture
-                "
-                alt=""
-              />
-              <h5>{{ client.firstName }} {{ client.lastName }}</h5>
+              <div class="detail-wrapper">
+                <img
+                  :src="
+                    client.profilePicture
+                      ? client.profilePicture
+                      : defaultProfilePicture
+                  "
+                  alt=""
+                />
+                <h5>{{ client.given_name }} {{ client.family_name }}</h5>
+              </div>
+              <div class="refer-button-wrapper">
+                <button-standard-with-icon
+                  :text="selectedClient == client ? 'Confirm' : 'Refer'"
+                  @click="selectClient(client)"
+                ></button-standard-with-icon>
+              </div>
             </div>
           </div>
         </div>
-        <button-standard-with-icon text="Cancel" />
-      </div>
-      <div class="page-two" v-if="activePage === 2">
-        <div class="heading">
-          <h4>
-            Send
-            <span>
-              {{
-                `${
-                  vendor.businessName
-                    ? vendor.businessName
-                    : vendor.firstName + vendor.lastName
-                }`
-              }}
-            </span>
-
-            to
-            <span
-              >{{ selectedClient.firstName }}
-              {{ selectedClient.lastName }}</span
-            >
-          </h4>
-        </div>
-        <div class="client-item">
-          <img
-            :src="
-              selectedClient.profilePicture
-                ? selectedClient.profilePicture
-                : defaultProfilePicture
-            "
-            alt=""
-          />
-          <h5>{{ selectedClient.firstName }} {{ selectedClient.lastName }}</h5>
-        </div>
-        <textarea id="message" v-model="referralMessageToClient"></textarea>
-        <div class="button-div">
-          <button-standard-with-icon
-            text="Cancel Referral"
-            @click="cancelReferral()"
-          ></button-standard-with-icon>
-          <button-standard-with-icon
-            text="Send Referral"
-            @click="sendReferral()"
-          ></button-standard-with-icon>
-        </div>
+        <button-standard-with-icon text="Cancel" @click="closeWindow()" />
       </div>
     </template>
   </popup-modal>
@@ -102,42 +57,48 @@ export default {
   data() {
     return {
       defaultProfilePicture,
-      activePage: 1,
       searchTerm: undefined,
       selectedClient: undefined,
-      clients: undefined,
-      referralMessageToClient: `Hi! I am sending you ${
-        this.vendor.businessName
-          ? this.vendor.businessName
-          : this.vendor.firstName + this.vendor.lastName
-      }'s information because I think you'll like their work!`,
     };
   },
   computed: {
-    selectedClientFirstName() {
-      return this.selectedClient ? this.selectedClient.firstName : "";
+    clients() {
+      let clients = this.$store.state.contacts.clients;
+      if (this.searchTerm) {
+        clients = clients.filter(
+          (x) =>
+            x.given_name
+              .toLowerCase()
+              .includes(this.searchTerm.toLowerCase()) ||
+            x.family_name.toLowerCase().includes(this.searchTerm.toLowerCase())
+        );
+      }
+      return clients;
     },
   },
   props: ["vendor"],
   methods: {
-    searchForClients() {
-      this.clients = this.$store.state.contacts.clients.filter(
-        (x) =>
-          x.firstName.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-          x.lastName.toLowerCase().includes(this.searchTerm.toLowerCase())
-      );
-    },
     selectClient(client) {
-      this.activePage = 2;
-      this.selectedClient = client;
+      if (this.selectedClient === client) {
+        this.sendReferral();
+        this.selectedClient = undefined;
+        return;
+      }
+      if (this.selectedClient !== client) {
+        this.selectedClient = client;
+        return;
+      }
     },
-    cancelReferral() {
-      console.log("canceled");
+    closeWindow() {
       this.$emit("close-referral-window");
     },
     sendReferral() {
       console.log("sent!");
+      this.closeWindow();
     },
+  },
+  async mounted() {
+    await this.$store.dispatch("getAdminUsers");
   },
   components: { PopupModal, ButtonStandardWithIcon },
 };
@@ -181,10 +142,21 @@ span {
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: left;
-  width: 60%;
-  margin-left: 10%;
+  justify-content: space-evenly;
+  width: 80%;
   height: 60px;
+}
+
+.refer-button-wrapper {
+  width: 20%;
+}
+
+.detail-wrapper {
+  display: flex;
+  flex-direction: row;
+  width: 70%;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .page-two {
@@ -204,12 +176,12 @@ img {
 
 .window {
   height: 200px;
+  width: 100%;
   overflow: scroll;
-  width: 80%;
-  /* border: 1px solid rgba(0, 0, 0, 0.4); */
-  /* display: flex; */
+  display: flex;
   flex-direction: column;
   align-items: center;
+  justify-items: center;
 }
 
 .button-div {

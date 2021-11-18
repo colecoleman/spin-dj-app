@@ -2,7 +2,7 @@
   <popup-email-composition
     v-if="emailPopupOpen && !notesPopupOpen"
     :contact="contact"
-    @cancel-send-email="closePopups()"
+    @closeWindow="closePopups()"
   ></popup-email-composition>
   <vendor-page-referral-popup
     v-if="referPopupOpen && !emailPopupOpen && !notesPopupOpen"
@@ -19,14 +19,10 @@
         ></contact-card-company>
       </div>
       <div id="box-two">
-        <contact-page-to-do-list :id="contact.userId"></contact-page-to-do-list>
+        <contact-page-to-do-list :contact="contact"></contact-page-to-do-list>
       </div>
       <div id="box-three">
-        <contact-page-notes
-          :notes="contact.notes"
-          :contact="contact"
-          contactCategory="Vendor"
-        />
+        <contact-page-notes :contact="contact" />
       </div>
     </div>
     <div id="right-column">
@@ -40,6 +36,9 @@
         <contact-page-upcoming-events
           :contact="contact"
           :icon="calendarsvg"
+          @event-assignment-toggle="toggleEventAssignment()"
+          :eventAssignmentOpen="eventAssignmentOpen"
+          v-if="contact"
         ></contact-page-upcoming-events>
       </div>
       <div id="box-six">
@@ -49,7 +48,7 @@
         <div id="box-six-half-two">
           <base-card :icon="messageBubble">
             <template v-slot:title>Messages</template>
-            <template v-slot:content>
+            <template v-slot:content v-if="contact">
               <messaging-single-component
                 :contact="contact"
                 :id="contact.userId"
@@ -83,7 +82,7 @@ import calendarsvg from "../../../../assets/SVGs/calendar.svg";
 import clipboardsvg from "../../../../assets/SVGs/clipboard.svg";
 import automationsvg from "../../../../assets/SVGs/automation.svg";
 import emailsvg from "../../../../assets/SVGs/email.svg";
-import keysvg from "../../../../assets/SVGs/key.svg";
+// import keysvg from "../../../../assets/SVGs/key.svg";
 
 export default {
   data() {
@@ -93,6 +92,8 @@ export default {
       calendarsvg,
       clipboardsvg,
       automationsvg,
+      eventAssignmentOpen: false,
+      contact: undefined,
       buttons: [
         {
           title: "Send Email",
@@ -101,6 +102,10 @@ export default {
         {
           title: "Refer Vendor",
           action: this.toggleReferral,
+        },
+        {
+          title: "Assign Event",
+          action: this.toggleEventAssignment,
         },
       ],
       dropdown: {
@@ -111,42 +116,42 @@ export default {
             action: this.openEmailComposition,
             icon: emailsvg,
           },
-          {
-            title: "Reset Password",
-            action: this.resetUserPassword,
-            icon: keysvg,
-          },
+          // {
+          //   title: "Reset Password",
+          //   action: this.resetUserPassword,
+          //   icon: keysvg,
+          // },
         ],
       },
       emailPopupOpen: false,
-      notesPopupOpen: false,
       referPopupOpen: false,
     };
   },
-  computed: {
-    contact() {
-      let id = this.$route.params.id;
-      return this.$store.state.contacts.vendors.find((x) => x.userId == id);
-    },
-  },
+
   methods: {
-    addToDo() {
-      console.log("clicked!");
-    },
     openEmailComposition() {
       this.emailPopupOpen = true;
     },
-    viewNotes() {
-      console.log("notes open");
-    },
     toggleReferral() {
       this.referPopupOpen = !this.referPopupOpen;
+    },
+    toggleEventAssignment() {
+      this.eventAssignmentOpen = !this.eventAssignmentOpen;
     },
     closePopups() {
       this.emailPopupOpen = false;
       this.notesPopupOpen = false;
       this.referPopupOpen = false;
     },
+  },
+
+  async created() {
+    await this.$store
+      .dispatch("adminGetContact", this.$route.params.id)
+      .then((res) => {
+        console.log(res.data.Item);
+        this.contact = res.data.Item;
+      });
   },
   components: {
     PopupEmailComposition,

@@ -1,8 +1,19 @@
 <template>
-  <base-card :icon="icon" :actionIcon="editPen" :loading="loading">
+  <base-card
+    :icon="icon"
+    :actionIcon="editPen"
+    :loading="loading"
+    @action-one-clicked="toggleEditCard()"
+  >
     <template v-slot:title>Contact</template>
-    <template v-slot:action1></template>
-    <template v-slot:content>
+    <template v-slot:dropdownContainer>
+      <contact-information-edit
+        v-if="editCardOpen"
+        :contact="contact"
+        @close-edit-card="toggleEditCard()"
+      ></contact-information-edit
+    ></template>
+    <template v-slot:content v-if="contact">
       <div id="wrapper" v-if="!loading">
         <div id="contact-card-upper-div">
           <img
@@ -33,6 +44,7 @@
 </template>
 
 <script>
+import ContactInformationEdit from "./ContactInformationEdit.vue";
 import defaultProfilePicture from "../../../../assets/default-profile-picture.svg";
 import editPen from "../../../../assets/SVGs/edit-pen.svg";
 import helpers from "../../../../helpers.js";
@@ -42,12 +54,17 @@ export default {
     return {
       defaultProfilePicture,
       editPen,
+      editCardOpen: false,
     };
   },
   methods: {
     formatPhoneNumber: helpers.formatPhoneNumber,
+    toggleEditCard() {
+      this.editCardOpen = !this.editCardOpen;
+    },
   },
   props: ["contact", "icon", "loading"],
+  components: { ContactInformationEdit },
 };
 </script>
 
