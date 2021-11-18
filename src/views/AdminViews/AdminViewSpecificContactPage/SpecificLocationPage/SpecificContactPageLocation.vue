@@ -2,25 +2,20 @@
   <popup-email-composition
     v-if="emailPopupOpen && !notesPopupOpen"
     :contact="contact"
-    @cancel-send-email="closePopups()"
+    @closeWindow="closePopups()"
   ></popup-email-composition>
-  <popup-notes-view v-if="!emailPopupOpen && notesPopupOpen"></popup-notes-view>
   <div id="section-wrapper">
     <div id="left-column">
       <div id="box-one">
         <contact-card-location
+          v-if="location"
           :icon="locationmarker"
           :location="location"
         ></contact-card-location>
       </div>
-      <div id="box-two">
-        <location-contact-card-person
-          :contact="contact"
-          :icon="personsvg"
-        ></location-contact-card-person>
-      </div>
+      <div id="box-two"></div>
       <div id="box-three">
-        <contact-page-to-do-list :id="contact.id"></contact-page-to-do-list>
+        <contact-page-to-do-list :contact="location"></contact-page-to-do-list>
       </div>
     </div>
     <div id="right-column">
@@ -33,12 +28,20 @@
       <div id="box-five">
         <div id="box-five-half-one">
           <location-page-upcoming-events
+            v-if="location"
             :location="location"
             :icon="calendarsvg"
+            @event-assignment-toggle="toggleEventAssignment()"
+            :eventAssignmentOpen="eventAssignmentOpen"
           ></location-page-upcoming-events>
         </div>
         <div id="box-five-half-two">
-          <location-preferred-information></location-preferred-information>
+          <!-- <location-preferred-information></location-preferred-information> -->
+          <location-contact-card-person
+            :contact="contact"
+            :location="location"
+            :icon="personsvg"
+          ></location-contact-card-person>
         </div>
       </div>
       <div id="box-six">
@@ -46,11 +49,7 @@
           <contact-page-automation></contact-page-automation>
         </div>
         <div id="box-six-half-two">
-          <contact-page-notes
-            :notes="location.notes"
-            :contact="location"
-            contactCategory="location"
-          ></contact-page-notes>
+          <contact-page-notes :contact="location"></contact-page-notes>
         </div>
       </div>
     </div>
@@ -65,11 +64,11 @@ import {
 } from "../ContactPageComponents/contactPageIndex.js";
 
 import LocationPageUpcomingEvents from "../ContactPageComponents/LocationPageComponents/LocationUpcomingEvents.vue";
-import LocationPreferredInformation from "../ContactPageComponents/LocationPageComponents/LocationPreferredInformation.vue";
+// import LocationPreferredInformation from "../ContactPageComponents/LocationPageComponents/LocationPreferredInformation.vue";
 import ContactCardLocation from "../ContactPageComponents/LocationPageComponents/ContactCardLocation.vue";
 import LocationContactCardPerson from "../ContactPageComponents/LocationPageComponents/LocationContactCardPerson.vue";
 import PopupEmailComposition from "../../../../SharedComponents/SharedComponentsPopupUtilities/PopupEmailComposition.vue";
-import PopupNotesView from "../../../../SharedComponents/SharedComponentsPopupUtilities/PopupNotesView.vue";
+
 import FourButtonBarWithDropDown from "../../../../SharedComponents/SharedComponentsUI/FourButtonBarWithDropDown.vue";
 
 import personsvg from "../../../../assets/SVGs/person.svg";
@@ -89,14 +88,17 @@ export default {
       clipboardsvg,
       automationsvg,
       locationmarker,
+      eventAssignmentOpen: false,
+      location: undefined,
+      contact: undefined,
       buttons: [
         {
           title: "Send Email",
           action: this.openEmailComposition,
         },
         {
-          title: "View Notes",
-          action: this.viewNotes,
+          title: "Assign Event",
+          action: this.toggleEventAssignment,
         },
       ],
       dropdown: {
@@ -110,41 +112,43 @@ export default {
         ],
       },
       emailPopupOpen: false,
-      notesPopupOpen: false,
     };
   },
-  computed: {
-    location() {
-      let id = this.$route.params.id;
-      return this.$store.state.contacts.locations.find((x) => x.id == id);
-    },
-    contact() {
-      let id = this.location.associatedVendorId;
-      return this.$store.state.contacts.vendors.find((x) => (x.id = id));
-    },
+  async created() {
+    await this.$store
+      .dispatch("adminGetContact", this.$route.params.id)
+      .then((res) => {
+        console.log(res.data.Item);
+        this.location = res.data.Item;
+      });
+    if (this.location.contacts.length > 0) {
+      await this.$store
+        .dispatch("adminGetContact", this.location.contacts[0])
+        .then((res) => {
+          console.log(res.data.Item);
+          this.contact = res.data.Item;
+        });
+    }
   },
   methods: {
-    addToDo() {
-      console.log("clicked!");
-    },
     openEmailComposition() {
       this.emailPopupOpen = true;
     },
-    viewNotes() {
-      console.log("notes open");
+    toggleEventAssignment() {
+      this.eventAssignmentOpen = !this.eventAssignmentOpen;
     },
     closePopups() {
       this.emailPopupOpen = false;
       this.notesPopupOpen = false;
     },
   },
+
   components: {
     PopupEmailComposition,
-    PopupNotesView,
     LocationContactCardPerson,
     ContactPageToDoList,
     LocationPageUpcomingEvents,
-    LocationPreferredInformation,
+    // LocationPreferredInformation,
     ContactPageNotes,
     ContactPageAutomation,
     ContactCardLocation,
@@ -159,7 +163,6 @@ export default {
   height: 95%;
   padding-top: 10px;
   display: flex;
-  /* flex-direction: row; */
 }
 
 svg {
@@ -177,6 +180,7 @@ svg {
   /* height: 25%; */
 }
 #box-two {
+  /* height: 70%; */
 }
 
 #box-three {
@@ -194,8 +198,8 @@ svg {
 }
 
 #box-five {
-  max-height: 40%;
-  height: 40%;
+  /* max-height: 40%; */
+  height: 45%;
   display: flex;
   flex-direction: row;
 }
@@ -208,7 +212,7 @@ svg {
 }
 
 #box-six {
-  height: 41%;
+  height: 40%;
   display: flex;
   flex-direction: row;
 }

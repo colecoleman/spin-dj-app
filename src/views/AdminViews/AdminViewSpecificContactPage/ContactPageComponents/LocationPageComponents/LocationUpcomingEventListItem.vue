@@ -1,24 +1,25 @@
 <template>
   <div id="single-event-item">
-    <div id="client-event-identifier">
+    <div id="client-event-identifier" v-if="matchedClient">
       <img :src="defaultProfilePicture" alt="" />
       <h5 id="client-name">
-        {{ matchedClient.firstName }} <br />
-        <span> {{ matchedClient.lastName }}</span>
+        {{ matchedClient.given_name }} <br />
+        <span> {{ matchedClient.family_name }}</span>
       </h5>
     </div>
 
     <div id="event-metadata-identifier">
       <div id="date-and-time-identifier">
-        <h5>{{ formatDate(event.eventStartTime) }}</h5>
-        <h5>
-          {{ formatTime(event.eventStartTime) }} -
-          {{ formatTime(event.eventEndTime) }}
-        </h5>
+        <p>{{ formatDate(event.data.date) }}</p>
+        <p>
+          {{ formatTime(event.data.startTime) }} -
+          {{ formatTime(event.data.endTime) }}
+        </p>
       </div>
       <div id="event-invoice-metadata">
         <p>
-          ${{ (event.balanceOutstanding * 0.01).toLocaleString() }} Outstanding
+          {{ formatPrice(balanceOutstanding(event.invoice, event.data)) }}
+          Outstanding
         </p>
       </div>
     </div>
@@ -33,23 +34,23 @@ export default {
   data() {
     return {
       defaultProfilePicture,
+      matchedClient: undefined,
     };
   },
   methods: {
     formatDate: helpers.formatDate,
     formatTime: helpers.formatTime,
+    formatPrice: helpers.formatPrice,
+    balanceOutstanding: helpers.balanceOutstanding,
   },
-  computed: {
-    matchedClient() {
-      let firstClient = this.event.associatedContacts.find(
-        (x) => x.role === "client"
-      );
-      let item = this.$store.state.contacts[`${firstClient.role + "s"}`].find(
-        (x) => x.id === firstClient.id
-      );
-      item.role = firstClient.role;
-      return item;
-    },
+  mounted() {
+    this.loading = true;
+
+    this.$store.dispatch("getUser", this.event.contacts[0]).then((res) => {
+      console.log(res.Item);
+      this.matchedClient = res.Item;
+    });
+    this.loading = false;
   },
   props: ["event"],
 };
@@ -65,7 +66,7 @@ export default {
 #single-event-item {
   display: flex;
   flex-direction: row;
-  padding-bottom: 20px;
+  padding-bottom: 10px;
   cursor: pointer;
 }
 
@@ -77,7 +78,7 @@ export default {
 #client-event-identifier img {
   height: 40px;
   width: 40px;
-  margin: 10px;
+  margin: 10px 10px 10px 0;
 }
 #client-name {
   font-size: 10pt;
@@ -89,17 +90,9 @@ export default {
   text-overflow: ellipsis;
 }
 
-.event-location-identifier {
-  font-size: 10pt;
-  flex-direction: column;
-  justify-content: center;
-}
 
-.venue-name {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  font-size: 12px;
-}
+
+
 
 h5 {
   font-weight: 300;

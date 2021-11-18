@@ -1,19 +1,46 @@
 <template>
-  <base-card :icon="icon">
+  <base-card
+    :icon="icon"
+    :actionIcon="editPen"
+    @action-one-clicked="toggleEditCard()"
+  >
     <template v-slot:title>Location</template>
-    <template v-slot:content>
+    <template v-slot:dropdownContainer>
+      <location-information-edit
+        v-if="editCardOpen"
+        :location="location"
+        @close-edit-card="toggleEditCard()"
+      ></location-information-edit
+    ></template>
+    <template v-slot:content v-if="location">
       <div class="address-container">
         <h4>{{ location.name }}</h4>
-        <p>{{ location.address.address1 }}</p>
-        <p>{{ location.address.address2 }}</p>
+        <p>{{ location.address.streetAddress1 }}</p>
+        <p>{{ location.address.cityStateZip }}</p>
       </div>
     </template>
   </base-card>
 </template>
 
 <script>
+import editPen from "../../../../../assets/SVGs/edit-pen.svg";
+import LocationInformationEdit from "./LocationInformationEdit.vue";
 export default {
+  data() {
+    return {
+      editPen,
+      editCardOpen: false,
+    };
+  },
+  methods: {
+    toggleEditCard() {
+      this.editCardOpen = !this.editCardOpen;
+    },
+  },
   props: ["icon", "location"],
+  components: {
+    LocationInformationEdit,
+  },
 };
 </script>
 
