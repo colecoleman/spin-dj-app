@@ -19,8 +19,8 @@
           <div id="client-event-identifier">
             <img :src="defaultProfilePicture" alt="" />
             <h5 id="client-name">
-              {{ event.client[0].firstName }} <br />
-              <span> {{ event.client[0].lastName }}</span>
+              {{ event.client[0].given_name }} <br />
+              <span> {{ event.client[0].family_name }}</span>
             </h5>
           </div>
           <div class="event-location-identifier">

@@ -45,11 +45,11 @@ export default {
     },
     selectDate(date) {
       this.selectedDate = date;
+      console.log(date);
       this.events = this.$store.state.events.filter((event) => {
-        return (
-          event.eventStartTime.getMonth() ===
-          this.selectedDate.UTC.getUTCMonth()
-        );
+        return event;
+        // event.eventStartTime.getMonth() ===
+        // this.selectedDate.UTC.getUTCMonth()
       });
     },
     sendDate(date) {
@@ -73,8 +73,9 @@ export default {
     events() {
       return this.$store.state.events.filter((event) => {
         return (
-          event.eventStartTime.getMonth() === this.selectedTime.getMonth() &&
-          event.eventStartTime.getYear() === this.selectedTime.getYear()
+          new Date(event.data.date).getMonth() ===
+            this.selectedTime.getMonth() &&
+          new Date(event.data.date).getYear() === this.selectedTime.getYear()
         );
       });
     },

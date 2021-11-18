@@ -325,15 +325,13 @@ export default {
     events() {
       return this.$store.state.events.filter((event) => {
         return (
-          event.eventStartTime.getMonth() === this.masterMonth - 1 ||
-          event.eventStartTime.getYear() === this.masterYear
+          new Date(event.data.date).getMonth() === this.masterMonth - 1 ||
+          new Date(event.data.date).getYear() === this.masterYear
         );
       });
     },
     daysWithEvents() {
-      return this.events.map(
-        (a) => a.eventStartTime.toISOString().split("T")[0]
-      );
+      return this.events.map((a) => a.data.date.toISOString().split("T")[0]);
     },
     // used to establish the dates shown on calendar
     currentMonthDays: function () {

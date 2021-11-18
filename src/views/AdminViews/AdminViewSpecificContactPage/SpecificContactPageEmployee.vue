@@ -4,11 +4,6 @@
     :contact="contact"
     @cancel-send-email="closePopups()"
   ></popup-email-composition>
-  <popup-employee-calendar
-    v-if="calendarUtilityOpen"
-    :employee="contact"
-    @close-popup="closePopups()"
-  ></popup-employee-calendar>
   <employee-page-availability-manager
     v-if="availabilityManagerOpen"
     :employee="contact"
@@ -23,14 +18,10 @@
         ></contact-card-person>
       </div>
       <div id="box-two">
-        <contact-page-to-do-list :id="contact.userId"></contact-page-to-do-list>
+        <contact-page-to-do-list :contact="contact"></contact-page-to-do-list>
       </div>
       <div id="box-three">
-        <contact-page-notes
-          :notes="contact.notes"
-          :contact="contact"
-          category="employee"
-        ></contact-page-notes>
+        <contact-page-notes :contact="contact"></contact-page-notes>
       </div>
     </div>
     <div id="right-column">
@@ -42,8 +33,11 @@
       </div>
       <div id="box-five">
         <contact-page-upcoming-events
+          v-if="contact"
           :contact="contact"
           :icon="calendarsvg"
+          @event-assignment-toggle="toggleEventAssignment()"
+          :eventAssignmentOpen="eventAssignmentOpen"
         ></contact-page-upcoming-events>
       </div>
       <div id="box-six">
@@ -55,6 +49,7 @@
             <template v-slot:title>Messages</template>
             <template v-slot:content>
               <messaging-single-component
+                v-if="contact"
                 :contact="contact"
                 :id="contact.userId"
               ></messaging-single-component>
@@ -75,7 +70,6 @@ import {
   ContactPageNotes,
 } from "./ContactPageComponents/contactPageIndex.js";
 
-import PopupEmployeeCalendar from "./ContactPageComponents/EmployeePageComponents/PopupEmployeeCalendarUtility.vue";
 import EmployeePageAvailabilityManager from "./ContactPageComponents/EmployeePageComponents/EmployeePageAvailabilityManager/EmployeePageAvailabilityManager.vue";
 import PopupEmailComposition from "../../../SharedComponents/SharedComponentsPopupUtilities/PopupEmailComposition.vue";
 import MessagingSingleComponent from "../../../SharedComponents/SharedComponentsMessaging/MessagingSingleComponent.vue";
@@ -98,6 +92,8 @@ export default {
       clipboardsvg,
       automationsvg,
       keysvg,
+      contact: undefined,
+      eventAssignmentOpen: false,
       buttons: [
         {
           title: "Send Email",
@@ -105,7 +101,7 @@ export default {
         },
         {
           title: "Assign Events",
-          action: this.openCalendarUtility,
+          action: this.toggleEventAssignment,
         },
         {
           title: "Availability",
@@ -120,25 +116,19 @@ export default {
             action: this.openEmailComposition,
             icon: emailsvg,
           },
-          {
-            title: "Reset Password",
-            action: this.resetPassword,
-            icon: keysvg,
-          },
+          // {
+          //   title: "Reset Password",
+          //   action: this.resetPassword,
+          //   icon: keysvg,
+          // },
         ],
       },
       emailPopupOpen: false,
       notesPopupOpen: false,
-      calendarUtilityOpen: false,
       availabilityManagerOpen: false,
     };
   },
-  computed: {
-    contact() {
-      let id = this.$route.params.id;
-      return this.$store.state.contacts.employees.find((x) => x.userId == id);
-    },
-  },
+  computed: {},
   methods: {
     addToDo() {
       console.log("clicked!");
@@ -146,14 +136,11 @@ export default {
     openEmailComposition() {
       this.emailPopupOpen = true;
     },
-    openCalendarUtility() {
-      this.calendarUtilityOpen = true;
+    toggleEventAssignment() {
+      this.eventAssignmentOpen = !this.eventAssignmentOpen;
     },
     openAvailabilityManager() {
       this.availabilityManagerOpen = true;
-    },
-    viewNotes() {
-      console.log("notes open");
     },
     closePopups() {
       this.emailPopupOpen = false;
@@ -161,10 +148,17 @@ export default {
       this.availabilityManagerOpen = false;
     },
   },
+  async created() {
+    await this.$store
+      .dispatch("adminGetContact", this.$route.params.id)
+      .then((res) => {
+        console.log(res.data.Item);
+        this.contact = res.data.Item;
+      });
+  },
   components: {
     PopupEmailComposition,
     EmployeePageAvailabilityManager,
-    PopupEmployeeCalendar,
     ContactCardPerson,
     ContactPageToDoList,
     ContactPageUpcomingEvents,

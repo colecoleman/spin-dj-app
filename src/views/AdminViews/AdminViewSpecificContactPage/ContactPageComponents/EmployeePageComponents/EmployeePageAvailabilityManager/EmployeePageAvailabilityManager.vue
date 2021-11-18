@@ -1,28 +1,24 @@
 <template>
-  <popup-modal @close-popup="closePopup()">
+  <popup-modal @close-popup="closePopup()" title="Availability Rules">
     <template v-slot:window>
-      <div class="heading"><h4>Availability Rules</h4></div>
       <div class="body">
-        <h5 v-if="employee.availabilityRules.length <= 0">
-          This employee has no rules! Add A new one below.
-        </h5>
-        <div class="list-container">
+        <h5>This employee has no rules! Click to add one.</h5>
+        <div class="add-availability-container"></div>
+        <div class="list-container" v-if="availabilityRules">
           <h5>Select Unavailable Times:</h5>
           <div class="availability-list-item">
             <p>Days Of The Week:</p>
             <div
               class="input-item"
-              v-for="(day, index) in availabilityRules.dayOfWeek"
+              v-for="(value, key, index) in availabilityRules.dayOfWeek"
               :key="index"
             >
               <input
                 type="checkbox"
-                :name="daysOfWeek[index]"
-                v-model="availabilityRules.dayOfWeek[index]"
+                :name="daysOfWeek[key]"
+                v-model="availabilityRules.dayOfWeek[key]"
               />
-              <label :for="daysOfWeek[index]"
-                ><p>{{ daysOfWeek[index] }}</p></label
-              >
+              <p>{{ daysOfWeek[index] }}</p>
             </div>
           </div>
           <div class="availability-list-item">
@@ -49,23 +45,25 @@
               :key="index"
             >
               {{
-                range.start.toLocaleDateString("lookup", {
+                new Date(range.start).toLocaleDateString("en-US", {
                   year: "numeric",
                   month: "short",
                   day: "numeric",
+                  timeZone: "UTC",
                 })
               }}
               -
               {{
-                range.end.toLocaleDateString("lookup", {
+                new Date(range.end).toLocaleDateString("en-US", {
                   year: "numeric",
                   month: "short",
                   day: "numeric",
+                  timeZone: "UTC",
                 })
               }}
               <img
                 class="x-icon"
-                :src="XIconSVG"
+                :src="xIconSvg"
                 alt=""
                 @click="removeDateRange(index)"
               />
@@ -96,14 +94,14 @@ import ButtonStandardWithIcon from "../../../../../../SharedComponents/SharedCom
 import {
   PlusSignSVG,
   CircleCheckmarkSVG,
-  XIconSVG,
 } from "../../../../../../assets/SVGs/svgIndex.js";
+import xIconSvg from "../../../../../../assets/SVGs/x-icon.svg";
 export default {
   data() {
     return {
       PlusSignSVG,
       CircleCheckmarkSVG,
-      XIconSVG,
+      xIconSvg,
       months: [
         "January",
         "February",
@@ -129,13 +127,13 @@ export default {
       ],
       availabilityRules: {
         dayOfWeek: {
-          sunday: false,
-          monday: false,
-          tuesday: false,
-          wednesday: false,
-          thursday: false,
-          friday: false,
-          saturday: false,
+          0: false,
+          1: false,
+          2: false,
+          3: false,
+          4: false,
+          5: false,
+          6: false,
         },
         months: {
           0: false,
@@ -151,12 +149,7 @@ export default {
           10: false,
           11: false,
         },
-        dateRanges: [
-          {
-            start: new Date(),
-            end: new Date(),
-          },
-        ],
+        dateRanges: [],
       },
       dateRangeInput: {
         start: undefined,
@@ -167,15 +160,16 @@ export default {
   },
   methods: {
     closePopup() {
-      console.log("dur");
       this.$emit("close-popup");
     },
     saveChanges() {
       let payload = {
-        availabilityRules: this.availabilityRules,
-        employeeId: this.employee.id,
+        variable: "availabilityRules",
+        value: this.availabilityRules,
+        clientId: this.employee.userId,
       };
-      this.$store.dispatch("changeEmployeeAvailabilityRules", payload);
+      this.$store.dispatch("editContact", payload);
+      this.closePopup();
     },
     submitNewDateRange() {
       console.log(this.dateRangeInput);
@@ -199,7 +193,9 @@ export default {
     },
   },
   created() {
-    this.availabilityRules = this.employee.availabilityRules;
+    if (this.employee.availabilityRules) {
+      this.availabilityRules = this.employee.availabilityRules;
+    }
   },
 
   props: ["employee"],
