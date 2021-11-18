@@ -1,37 +1,55 @@
 <template>
-  <base-card :icon="discsvg">
-    <template v-slot:icon> </template>
-    <template v-slot:title>Events</template>
+  <base-card
+    :icon="discsvg"
+    :actionIcon="eventAssignmentOpen ? xiconsvg : sortalpha"
+    @action-one-clicked="
+      eventAssignmentOpen ? eventAssignmentToggle() : toggleSortMenuOpened()
+    "
+  >
+    <template v-slot:title>{{ title }}</template>
     <template v-slot:action1
-      >Sort:
-      <svg
-        width="15.375"
-        height="15.375"
-        viewBox="0 0 18.375 18.375"
-        style="margin-left: 10px"
-        @click="toggleSortMenuOpened()"
-      >
-        <path
-          d="M7.219,14.438H5.25V1.969a.656.656,0,0,0-.656-.656H3.281a.656.656,0,0,0-.656.656V14.438H.656a.657.657,0,0,0-.463,1.12L3.474,19.5a.656.656,0,0,0,.928,0l3.281-3.938A.657.657,0,0,0,7.219,14.438Zm9.844-2.625h-5.25a.656.656,0,0,0-.656.656v1.313a.656.656,0,0,0,.656.656h2.3L11.6,17.327a1.313,1.313,0,0,0-.441.981v.723a.656.656,0,0,0,.656.656h5.25a.656.656,0,0,0,.656-.656V17.719a.656.656,0,0,0-.656-.656h-2.3l2.513-2.89a1.312,1.312,0,0,0,.441-.981v-.723A.656.656,0,0,0,17.063,11.813Zm1.274-3.5L15.905,1.748a.656.656,0,0,0-.618-.436h-1.7a.656.656,0,0,0-.618.436L10.539,8.311a.656.656,0,0,0,.618.877h1.018a.656.656,0,0,0,.625-.454l.181-.53h2.912l.181.53a.656.656,0,0,0,.626.454h1.019a.656.656,0,0,0,.618-.877Zm-4.571-2.4.672-1.969.672,1.969Z"
-          transform="translate(0 -1.313)"
-          fill="currentColor"
-        />
-      </svg>
-      <div id="floating-menu-container">
-        <floating-menu-with-list-items
-          v-if="sortMenuOpened"
-          :actions="sortItems"
-          @actionClicked="selectSort"
-        /></div
-    ></template>
-    <template v-slot:content>
-      <div id="events-content">
-        <location-upcoming-events-list-item
-          v-for="event in events"
-          :key="event.id"
-          :event="event"
-          @click="navigateToEventPage(event.id), sortByDateDescending()"
-        ></location-upcoming-events-list-item>
+      >{{ eventAssignmentOpen ? "Cancel" : "Sort" }}
+
+      <floating-menu-with-list-items
+        v-if="sortMenuOpened"
+        :actions="sortItems"
+        @actionClicked="selectSort"
+      />
+    </template>
+    <template v-slot:content v-if="events && loaded">
+      <div class="events-content" v-if="!eventAssignmentOpen && contact">
+        <h5 @click="eventAssignmentToggle()" v-if="events.length == 0">
+          {{ contact.given_name }} {{ contact.family_name }} has no events.
+          <br />
+          Click to assign to one.
+        </h5>
+        <div v-if="events.length > 0">
+          <location-upcoming-events-list-item
+            v-for="event in events"
+            :key="event.id"
+            :event="event"
+            @click="navigateToEventPage(event.id), sortByDateDescending()"
+          ></location-upcoming-events-list-item>
+        </div>
+      </div>
+      <div class="events-content" v-if="eventAssignmentOpen">
+        <div
+          v-for="(event, index) in allEvents"
+          :key="index"
+          class="upcoming-event-list-item-container"
+        >
+          <location-upcoming-events-list-item
+            @click="initializeAddToEvent(event.userId)"
+            :event="event"
+          >
+          </location-upcoming-events-list-item>
+          <two-button-dialog-modal
+            v-if="addEventId"
+            @close-modal="closeConfirmationDialog()"
+            @select-button-one="addUserToEvent()"
+            @select-button-two="closeConfirmationDialog()"
+          ></two-button-dialog-modal>
+        </div>
       </div>
     </template>
   </base-card>
@@ -40,13 +58,19 @@
 <script>
 import LocationUpcomingEventsListItem from "../../../../../SharedComponents/SharedComponentsUpcomingEvents/UpcomingEventListItem.vue";
 import FloatingMenuWithListItems from "../../../../../SharedComponents/SharedComponentsUI/FloatingMenuWithListItems.vue";
+import TwoButtonDialogModal from "../../../../../SharedComponents/SharedComponentsUI/TwoButtonDialogModal.vue";
 import discsvg from "../../../../../assets/SVGs/disc.svg";
+import sortalpha from "../../../../../assets/SVGs/sort-alpha.svg";
+import xiconsvg from "../../../../../assets/SVGs/x-icon.svg";
 export default {
   data() {
     return {
       discsvg,
-      isFetching: this.$store.state.isFetching,
+      sortalpha,
+      xiconsvg,
       sortMenuOpened: false,
+      addEventId: undefined,
+      loaded: false,
       sortItems: [
         {
           title: "Date Ascending",
@@ -84,28 +108,66 @@ export default {
     navigateToEventPage(id) {
       this.$router.push("admin/events/" + id);
     },
-  },
-  computed: {
-    events() {
-      let today = new Date();
-      return this.$store.state.events.filter(
-        (event) =>
-          event.eventStartTime > today &&
-          event.associatedContacts.some(
-            (contact) => contact.id === this.contact.id
-          )
-      );
+    eventAssignmentToggle() {
+      this.$emit("eventAssignmentToggle");
+    },
+    initializeAddToEvent(id) {
+      this.addEventId = id;
+    },
+    closeConfirmationDialog() {
+      this.addEventId = undefined;
+    },
+    async addUserToEvent() {
+      let contactPayload = {
+        clientId: this.contact.userId,
+        variable: "associatedEvents",
+        value: this.addEventId,
+        operation: "addToList",
+      };
+      let eventPayload = {
+        eventId: this.addEventId,
+        operation: "addToList",
+        variable: "contacts",
+        value: this.contact.userId,
+      };
+      await this.$store.dispatch("editContact", contactPayload);
+      await this.$store.dispatch("editEvent", eventPayload);
+      this.closeConfirmationDialog();
     },
   },
-  props: ["contact"],
+  computed: {
+    title() {
+      return this.eventAssignmentOpen ? "Assign To Events" : "Events";
+    },
+    events() {
+      let today = new Date().getTime();
+      let contact = this.contact;
+      let array = [...this.$store.state.events];
+      return array.filter(
+        (event) =>
+          new Date(event.data.date).getTime() > today &&
+          event.contacts.includes(contact.userId)
+      );
+    },
+    allEvents() {
+      let today = new Date().getTime();
+      return this.$store.state.events.filter((event) => {
+        return new Date(event.data.date).getTime() > today;
+      });
+    },
+  },
 
-  created() {},
-  components: { LocationUpcomingEventsListItem, FloatingMenuWithListItems },
+  props: ["contact", "eventAssignmentOpen"],
+  components: {
+    LocationUpcomingEventsListItem,
+    FloatingMenuWithListItems,
+    TwoButtonDialogModal,
+  },
 };
 </script>
 
 <style scoped>
-#events-content {
+.events-content {
   flex-direction: column;
   overflow: scroll;
   height: 100%;
@@ -114,5 +176,9 @@ export default {
   position: relative;
   width: fit-content;
   height: fit-content;
+}
+
+.upcoming-event-list-item-container {
+  position: relative;
 }
 </style>

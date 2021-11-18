@@ -1,9 +1,20 @@
 <template>
-  <base-card :icon="icon" :actionIcon="editPen">
+  <base-card
+    :icon="icon"
+    :actionIcon="editPen"
+    :loading="contact ? false : true"
+    @action-one-clicked="toggleEditCard()"
+  >
     <template v-slot:title>Contact</template>
-    <template v-slot:action1></template>
+    <template v-slot:dropdownContainer>
+      <contact-information-edit-company
+        v-if="editCardOpen"
+        :contact="contact"
+        @close-edit-card="toggleEditCard()"
+      ></contact-information-edit-company>
+    </template>
     <template v-slot:content>
-      <div id="wrapper">
+      <div id="wrapper" v-if="contact">
         <div id="contact-card-upper-div">
           <img
             :src="
@@ -17,10 +28,10 @@
             <div id="business-name-and-category">
               <h4 id="business-name">{{ contact.businessName }}</h4>
 
-              <h4 v-if="contact.vendorCategory" id="vendor-category">
-                {{ contact.vendorCategory }}
+              <h4 v-if="contact.businessCategory" id="vendor-category">
+                {{ contact.businessCategory }}
               </h4>
-              <h4 v-if="!contact.vendorCategory" id="vendor-category">
+              <h4 v-if="!contact.businessCategory" id="vendor-category">
                 Uncategorized
               </h4>
             </div>
@@ -42,6 +53,7 @@
 
 <script>
 import defaultProfilePicture from "../../../../assets/default-profile-picture.svg";
+import ContactInformationEditCompany from "./ContactInformationEditCompany.vue";
 import editPen from "../../../../assets/SVGs/edit-pen.svg";
 import helpers from "../../../../helpers.js";
 export default {
@@ -49,11 +61,16 @@ export default {
     return {
       defaultProfilePicture,
       editPen,
+      editCardOpen: false,
     };
   },
   methods: {
     formatPhoneNumber: helpers.formatPhoneNumber,
+    toggleEditCard() {
+      this.editCardOpen = !this.editCardOpen;
+    },
   },
+  components: { ContactInformationEditCompany },
   props: ["contact", "icon"],
 };
 </script>
@@ -102,7 +119,6 @@ img {
   display: flex;
   flex-direction: row;
   align-items: center;
-  padding: 10px;
 }
 
 #contact-information {

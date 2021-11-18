@@ -64,7 +64,7 @@
           <to-do-specific-event :event="event"></to-do-specific-event>
         </div>
         <div id="lower-div-box-3">
-          <recent-messages-event></recent-messages-event>
+          <recent-messages-event v-if="loclkj"></recent-messages-event>
         </div>
       </div>
     </section>

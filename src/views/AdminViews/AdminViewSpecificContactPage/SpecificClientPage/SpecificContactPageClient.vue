@@ -18,7 +18,12 @@
         <contact-page-to-do-list :contact="contact"></contact-page-to-do-list>
       </div>
       <div id="box-three">
-        <contact-page-notes :contact="contact"></contact-page-notes>
+        <contact-page-notes
+          :contact="contact"
+          :notesPrivate="contact.notesPrivate"
+          :notesPublic="contact.notesPublic"
+          v-if="contact"
+        ></contact-page-notes>
       </div>
     </div>
     <div id="right-column">

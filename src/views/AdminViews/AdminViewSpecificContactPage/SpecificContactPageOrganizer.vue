@@ -2,25 +2,28 @@
   <popup-email-composition
     v-if="emailPopupOpen && !notesPopupOpen"
     :contact="contact"
-    @cancel-send-email="closePopups()"
+    @closeWindow="toggleEmailComposition()"
   ></popup-email-composition>
-  <popup-notes-view v-if="!emailPopupOpen && notesPopupOpen"></popup-notes-view>
   <div id="section-wrapper">
     <div id="left-column">
       <div id="box-one">
         <contact-card-person
+          v-if="contact"
           :contact="contact"
           :icon="personsvg"
         ></contact-card-person>
       </div>
       <div id="box-two">
         <contact-page-notes
+          v-if="contact"
           :contact="contact"
-          contactCategory="organizer"
         ></contact-page-notes>
       </div>
       <div id="box-three">
-        <contact-page-to-do-list :id="contact.userId"></contact-page-to-do-list>
+        <contact-page-to-do-list
+          v-if="contact"
+          :contact="contact"
+        ></contact-page-to-do-list>
       </div>
     </div>
     <div id="right-column">
@@ -34,6 +37,9 @@
         <contact-page-upcoming-events
           :contact="contact"
           :icon="calendarsvg"
+          @event-assignment-toggle="toggleEventAssignment()"
+          :eventAssignmentOpen="eventAssignmentOpen"
+          v-if="contact"
         ></contact-page-upcoming-events>
       </div>
       <div id="box-six">
@@ -45,6 +51,7 @@
             <template v-slot:title>Messages</template>
             <template v-slot:content>
               <messaging-single-component
+                v-if="contact"
                 :contact="contact"
                 :id="contact.userId"
               ></messaging-single-component>
@@ -66,7 +73,6 @@ import {
 } from "./ContactPageComponents/contactPageIndex.js";
 
 import PopupEmailComposition from "../../../SharedComponents/SharedComponentsPopupUtilities/PopupEmailComposition.vue";
-import PopupNotesView from "../../../SharedComponents/SharedComponentsPopupUtilities/PopupNotesView.vue";
 import MessagingSingleComponent from "../../../SharedComponents/SharedComponentsMessaging/MessagingSingleComponent.vue";
 import FourButtonBarWithDropDown from "../../../SharedComponents/SharedComponentsUI/FourButtonBarWithDropDown.vue";
 
@@ -80,23 +86,22 @@ import emailsvg from "../../../assets/SVGs/email.svg";
 export default {
   data() {
     return {
+      contact: undefined,
       personsvg,
       messageBubble,
       calendarsvg,
       clipboardsvg,
       automationsvg,
+      eventAssignmentOpen: false,
       buttons: [
         {
           title: "Send Email",
-          action: this.openEmailComposition,
+          action: this.toggleEmailComposition,
         },
+
         {
-          title: "View Notes",
-          action: this.viewNotes,
-        },
-        {
-          title: "Assign To Event",
-          action: this.assignToEvent,
+          title: "Assign Event",
+          action: this.toggleEventAssignment,
         },
       ],
       dropdown: {
@@ -104,7 +109,7 @@ export default {
         actionItems: [
           {
             title: "Email",
-            action: this.openEmailComposition,
+            action: this.toggleEmailComposition,
             icon: emailsvg,
           },
         ],
@@ -113,30 +118,24 @@ export default {
       notesPopupOpen: false,
     };
   },
-  computed: {
-    contact() {
-      let id = this.$route.params.id;
-      return this.$store.state.contacts.organizers.find((x) => x.userId == id);
+
+  methods: {
+    toggleEventAssignment() {
+      this.eventAssignmentOpen = !this.eventAssignmentOpen;
+    },
+    toggleEmailComposition() {
+      this.emailPopupOpen = !this.emailPopupOpen;
     },
   },
-  methods: {
-    addToDo() {
-      console.log("clicked!");
-    },
-    openEmailComposition() {
-      this.emailPopupOpen = true;
-    },
-    viewNotes() {
-      console.log("notes open");
-    },
-    closePopups() {
-      this.emailPopupOpen = false;
-      this.notesPopupOpen = false;
-    },
+  async created() {
+    await this.$store
+      .dispatch("adminGetContact", this.$route.params.id)
+      .then((res) => {
+        this.contact = res.data.Item;
+      });
   },
   components: {
     PopupEmailComposition,
-    PopupNotesView,
     ContactCardPerson,
     ContactPageNotes,
     ContactPageToDoList,
@@ -152,7 +151,7 @@ export default {
 <style scoped>
 #section-wrapper {
   width: 100%;
-  height: 95%;
+  /* height: 95%; */
   padding-top: 10px;
   display: flex;
   /* flex-direction: row; */
@@ -181,7 +180,7 @@ svg {
 
 #right-column {
   width: 70%;
-  height: calc(100% - 5px);
+  /* height: calc(100% - 5px); */
 }
 #box-four {
 }
