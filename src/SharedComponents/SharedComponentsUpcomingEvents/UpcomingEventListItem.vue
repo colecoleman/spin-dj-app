@@ -1,5 +1,5 @@
 <template>
-  <div class="single-event-item" :class="loading ? loading : ''">
+  <div class="single-event-item" v-if="event" :class="loading ? loading : ''">
     <div id="client-event-identifier" v-if="matchedClient">
       <img :src="defaultProfilePicture" alt="" />
       <h5 id="client-name">
@@ -54,7 +54,7 @@ export default {
     formatPrice: helpers.formatPrice,
     balanceOutstanding: helpers.balanceOutstanding,
   },
-  created() {
+  mounted() {
     this.loading = true;
     this.$store.dispatch("getLocation", this.event.locations[0]).then((res) => {
       if (res.Item) {
