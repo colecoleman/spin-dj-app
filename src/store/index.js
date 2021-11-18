@@ -114,6 +114,7 @@ const store = createStore({
                   ).then((result) => {
                     resolve(result);
                     console.log(result);
+                    context.commit('addSuccess', "Contact Successfully Updated")
                     context.commit('editEvent', result)
                 }, error => {
                     context.commit('addError', error);
@@ -158,6 +159,33 @@ const store = createStore({
                     context.commit('addError', error);
                     reject(error);
                 })
+            })
+        },
+        async getLocations(context) {
+            return new Promise((resolve, reject) => {
+                axios.get(`https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/admin/${context.state.user.tenantId}/locations`).then((result)=> {
+                    resolve(result.data);
+                    console.log(result);
+                    context.commit('setLocations', result.data.Items)
+                }, error => {
+                    context.commit('addError', error);
+                    reject(error);
+                })
+            })
+        },
+        async editLocation(context, payload) {
+            return new Promise((resolve, reject) => {
+                axios.put(
+                    `https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/admin/${context.state.user.tenantId}/events/${payload.locationId}`,
+                    payload
+                  ).then((result) => {
+                    resolve(result);
+                    console.log(result);
+                    // context.commit('editLocation', result)
+                }, error => {
+                    context.commit('addError', error);
+                    reject(error);
+                });
             })
         },
         async editEvent(context, payload) {
@@ -373,6 +401,9 @@ const store = createStore({
         },
         setVendors(state, payload) {
             state.contacts.vendors = payload;
+        },
+        setLocations(state, payload) {
+            state.contacts.locations = payload;
         },
         addContact(state, payload) {
             state.contacts[`${payload.role}s`].push(payload)
