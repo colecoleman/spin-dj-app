@@ -6,11 +6,17 @@
       <h3>
         <slot name="title"></slot>
       </h3>
-      <div class="right-top" @click="actionOneClicked()">
-        <h4>
+      <div class="right-top">
+        <h4 @click="actionOneClicked()">
           <slot name="action1"></slot>
         </h4>
-        <img v-if="actionIcon" :src="actionIcon" alt="" />
+        <slot name="dropdownContainer"></slot>
+        <img
+          v-if="actionIcon"
+          :src="actionIcon"
+          alt=""
+          @click="actionOneClicked()"
+        />
       </div>
     </div>
     <div id="content">
@@ -27,6 +33,7 @@ export default {
   props: ["icon", "actionIcon", "loading"],
   methods: {
     actionOneClicked() {
+      console.log("hey");
       this.$emit("actionOneClicked");
     },
   },

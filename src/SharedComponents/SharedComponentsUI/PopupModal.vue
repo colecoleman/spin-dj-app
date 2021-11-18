@@ -16,19 +16,21 @@
       </div>  
  -->
 
-  <!-- Popup Headings: class="popup-heading" -->
-  <!-- Popup Text: class="popup-text" -->
   <div class="popup-modal">
     <div class="window">
-      <img :src="XIconSvg" alt="" @click="closePopup()" />
-      <slot name="window"></slot>
+      <base-card :actionIcon="XIconSvg" @action-one-clicked="closePopup()">
+        <template v-slot:title>{{ title }}</template>
+        <template v-slot:content><slot name="window"></slot></template>
+      </base-card>
     </div>
   </div>
 </template>
 
 <script>
 import XIconSvg from "../../assets/SVGs/x-icon.svg";
+import BaseCard from "./BaseCard.vue";
 export default {
+  components: { BaseCard },
   data() {
     return {
       XIconSvg,
@@ -40,6 +42,7 @@ export default {
       this.$emit("close-popup");
     },
   },
+  props: ["title"],
   emits: ["close-popup"],
 };
 </script>
@@ -60,19 +63,18 @@ export default {
 
 .window {
   position: relative;
-  height: fit-content;
+  /* height: fit-content; */
   padding: 40px;
   width: 50%;
-  background-color: var(--foregroundColor);
   border-radius: 14px;
 }
-
+/* 
 img {
   width: 14px;
   height: 14px;
   position: absolute;
   right: 20px;
   top: 20px;
-}
+} */
 </style>
 

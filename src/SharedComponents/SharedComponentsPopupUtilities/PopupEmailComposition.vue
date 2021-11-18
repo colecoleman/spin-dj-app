@@ -1,9 +1,10 @@
 <template>
-  <popup-modal>
+  <popup-modal
+    :title="`Send email to ${contact.given_name} ${contact.family_name}`"
+    @close-popup="closeWindow()"
+  >
     <template v-slot:window>
-      <h3 class="popup-heading">
-        Send email to {{ contact.firstName }} {{ contact.lastName }}
-      </h3>
+      <h3 class="popup-heading"></h3>
       <h5 class="popup-text">From:</h5>
       <select name="from-email" id="from-email" v-model="emailFields.fromEmail">
         <option
@@ -29,7 +30,7 @@
         <button-standard-with-icon
           class="black-outline"
           text="Cancel Email"
-          @click="cancelSendEmail()"
+          @click="closeWindow()"
         ></button-standard-with-icon>
         <button-standard-with-icon
           class="black-outline"
@@ -55,8 +56,8 @@ export default {
     };
   },
   methods: {
-    cancelSendEmail() {
-      this.$emit("cancelSendEmail");
+    closeWindow() {
+      this.$emit("closeWindow");
     },
     confirmSendEmail() {
       console.log(this.emailFields);
@@ -87,6 +88,7 @@ export default {
 
 .button-container {
   width: 100%;
+  padding-top: 10px;
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
