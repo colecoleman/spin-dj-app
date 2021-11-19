@@ -63,7 +63,7 @@ export default class Helpers {
         return product.pricing.baseRate + product.pricing.addHourly * overage;
       }
       if (product.type === "Add-On") {
-        console.log(Helpers.calculateEventTime(data) / (60 * 60 * 1000));
+        return product.pricing.units * product.pricing.unitRate
       }
     }
 

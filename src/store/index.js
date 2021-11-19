@@ -123,6 +123,7 @@ const store = createStore({
             })
         },
         addEvent(context, event) {
+            console.log(event)
             return new Promise((resolve, reject) => {
                 axios.put(
                     `https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/admin/${context.state.user.tenantId}/events`,
@@ -174,15 +175,17 @@ const store = createStore({
             })
         },
         async editLocation(context, payload) {
+            console.log(payload);
             return new Promise((resolve, reject) => {
                 axios.put(
-                    `https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/admin/${context.state.user.tenantId}/events/${payload.locationId}`,
+                    `https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/admin/${context.state.user.tenantId}/locations/${payload.locationId}`,
                     payload
                   ).then((result) => {
                     resolve(result);
                     console.log(result);
                     // context.commit('editLocation', result)
                 }, error => {
+                    // console.log(error)
                     context.commit('addError', error);
                     reject(error);
                 });

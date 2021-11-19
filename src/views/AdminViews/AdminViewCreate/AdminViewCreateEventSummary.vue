@@ -26,39 +26,46 @@
             <div class="title-and-indented-text">
               <h5>Location(s):</h5>
               <div class="row-flex" v-if="locations.length > 0">
-                <p
-                  class="indented-text"
+                <div
+                  class="row-flex"
                   v-for="(location, index) in locations"
                   :key="index"
                 >
-                  {{ location.name }},<br />
-                  {{ location.streetAddress1 }},<br />
-                  {{
-                    location.streetAdress2 ? location.streetAddress2 : ""
-                  }},<br />
-                  {{ location.cityStateZip }}
-                </p>
-                <img :src="XIcon" alt="" @click="removeLocation(index)" />
+                  <div>
+                    <p class="indented-text">{{ location.name }},</p>
+                    <p class="indented-text">
+                      {{ location.address.streetAddress1 }},
+                    </p>
+                    <p class="indented-text" v-if="location.streetAddress2">
+                      {{ location.address.streetAddress2 }},
+                    </p>
+                    <p class="indented-text" v-if="location.streetAddress2">
+                      {{ location.address.cityStateZip }}
+                    </p>
+                  </div>
+                  <img :src="xIconSVG" alt="" @click="removeLocation(index)" />
+                </div>
               </div>
-              <p class="indented-text">
-                {{ fields.location.name ? fields.location.name + "," : ""
-                }}<br />
-                {{
-                  fields.location.streetAddress1
-                    ? fields.location.streetAddress1 + ","
-                    : ""
-                }}<br />
-                {{
-                  fields.location.streetAddress2
-                    ? fields.location.streetAddress2 + ","
-                    : ""
-                }}<br />
-                {{
-                  fields.location.cityStateZip
-                    ? fields.location.cityStateZip + ","
-                    : ""
-                }}
-              </p>
+              <div class="row-flex">
+                <div v-if="fields.location.name">
+                  <p class="indented-text">{{ fields.location.name }},</p>
+                  <p class="indented-text">
+                    {{ fields.location.address.streetAddress1 }}
+                  </p>
+                  <p
+                    class="indented-text"
+                    v-if="fields.location.streetAddress2"
+                  >
+                    {{ fields.location.address.streetAddress2 }}
+                  </p>
+                  <p
+                    class="indented-text"
+                    v-if="fields.location.streetAddress2"
+                  >
+                    {{ fields.location.address.cityStateZip }}
+                  </p>
+                </div>
+              </div>
             </div>
             <div class="title-and-indented-text">
               <h5>Client(s):</h5>
@@ -68,13 +75,13 @@
                   v-for="(client, index) in clients"
                   :key="index"
                 >
-                  {{ client.givenName }} {{ client.familyName }},<br />
-                  {{ client.emailAddress }},<br />
-                  {{ client.phoneNumber }}
+                  {{ client.given_name }} {{ client.family_name }},<br />
+                  {{ client.email }},<br />
+                  {{ formatPhoneNumber(client.phoneNumber) }}
                 </p>
                 <img
                   v-if="clients.length > 0"
-                  :src="XIcon"
+                  :src="xIconSVG"
                   alt=""
                   @click="removeClient(index)"
                 />
@@ -82,16 +89,16 @@
               <p
                 class="indented-text"
                 v-if="
-                  fields.client.givenName &&
-                  fields.client.familyName &&
-                  fields.client.emailAddress &&
-                  fields.client.phoneNumber
+                  fields.client.given_name &&
+                  fields.client.family_name &&
+                  fields.client.email &&
+                  formatPhoneNumber(fields.client.phoneNumber)
                 "
               >
-                {{ fields.client.givenName }}
-                {{ fields.client.familyName }},<br />
-                {{ fields.client.emailAddress }},<br />
-                {{ fields.client.phoneNumber }}
+                {{ fields.client.given_name }}
+                {{ fields.client.family_name }},<br />
+                {{ fields.client.email }},<br />
+                {{ formatPhoneNumber(fields.client.phoneNumber) }}
               </p>
             </div>
           </div>
@@ -156,7 +163,7 @@
         </div>
         <button-standard-with-icon
           text="Create Event"
-          @click="createEvent()"
+          @click="startCreate()"
         ></button-standard-with-icon>
       </template>
     </base-card>
@@ -166,18 +173,22 @@
 <script>
 import helpers from "../../../helpers.js";
 import ButtonStandardWithIcon from "../../../SharedComponents/SharedComponentsUI/ButtonStandardWithIcon.vue";
+// import XIcon from "../../../assets/SVGs/x-icon.svg";
+import { xIconSVG } from "../../../assets/SVGs/svgIndex.js";
 export default {
   data() {
     return {
       eventId: undefined,
-      clientId: undefined,
-      locationId: undefined,
+      clientId: [],
+      locationId: [],
+      xIconSVG,
     };
   },
   methods: {
     formatPrice: helpers.formatPrice,
     formatTime: helpers.formatTime,
     formatDate: helpers.formatDate,
+    formatPhoneNumber: helpers.formatPhoneNumber,
     productTotal: helpers.productTotal,
     subtotal: helpers.subtotal,
     total: helpers.total,
@@ -191,116 +202,167 @@ export default {
         this.fields.location.address.streetAddress2 ||
         this.fields.location.address.cityStateZip
       ) {
+        console.log("addingLocation");
         this.$store
           .dispatch("addLocation", this.fields.location)
           .then((res) => {
             this.$store.commit("addSuccess", "Location Added Successfully");
-            this.locationId = res.data.userId;
-            this.createUser();
+            this.locationId.push(res.data.userId);
           })
           .catch((e) => {
             this.$store.dispatch("addError", e);
           });
       }
     },
+    removeLocation(index) {
+      this.$emit("removeLocation", index);
+    },
     createUser() {
-      if (!Object.values(this.fields.client).every((v) => v == null)) {
+      if (Object.values(this.fields.client).every((v) => v !== null)) {
+        console.log("creatingClient");
         let client = this.fields.client;
         client.associatedEvents.push(this.eventId);
         this.$store
           .dispatch("addContact", client)
           .then((res) => {
-            this.clientId = res.userId;
+            this.clientId.push(res.userId);
             this.$store.commit("addSuccess", "Client Added Successfully");
-            this.addEventToDB();
           })
           .catch((e) => {
             this.$store.dispatch("addError", e);
           });
       }
     },
-    addEventToDB() {
+    createEvent() {
+      let dbEvent = Object.assign(this.event);
+      dbEvent.contacts = this.clientId;
+      dbEvent.locations = this.locationId;
+      console.log(dbEvent);
       this.$store
-        .dispatch("addEvent", this.event)
+        .dispatch("addEvent", dbEvent)
         .then((res) => {
+          console.log(res);
           this.eventId = res.data.userId;
+          console.log(this.eventId);
           this.$store.commit("addSuccess", "Event Added Successfully");
-          this.addUserToEvent();
+          this.editContactAndLocation();
         })
         .catch((e) => {
           this.$store.dispatch("addError", e);
         });
     },
-
-    addUserToEvent() {
-      if (this.clientId) {
-        let payload = {
-          eventId: this.eventId,
-          variable: "contacts",
-          value: this.clientId,
-          operation: "addToList",
-        };
-        this.$store
-          .dispatch("editEvent", payload)
-          .then((res) => {
-            console.log(res);
-            this.$store.commit("addSuccess", "Client Added To Event");
-            this.addEventToUser();
-          })
-          .catch((e) => {
-            this.$store.dispatch("addError", e);
-          });
-      }
+    editContactAndLocation() {
+      this.addEventToUser();
+      this.addEventToLocation();
     },
+    // addUserToEvent() {
+    //   if (this.clientId.length > 0) {
+    //     let payload = {
+    //       eventId: this.eventId,
+    //       variable: "contacts",
+    //       value: this.clientId,
+    //       // operation: "addToList",
+    //     };
+    //     this.$store
+    //       .dispatch("editEvent", payload)
+    //       .then((res) => {
+    //         console.log(res);
+    //         this.$store.commit("addSuccess", "Client Added To Event");
+    //       })
+    //       .catch((e) => {
+    //         this.$store.dispatch("addError", e);
+    //       });
+    //     this.addEventToUser();
+    //   }
+    // },
     addEventToUser() {
-      if (this.clientId) {
-        let payload = {
-          clientId: this.clientId,
-          variable: "associatedEvents",
-          value: this.eventId,
-          operation: "addToList",
-        };
-        this.$store
-          .dispatch("editContact", payload)
-          .then((res) => {
-            console.log(res);
-            this.$store.commit("addSuccess", "Event Added To Contact");
-            this.addLocationToEvent();
-          })
-          .catch((e) => {
-            this.$store.dispatch("addError", e);
-          });
+      let eventId = this.eventId;
+      if (this.clientId.length > 0) {
+        console.log(this.clientId);
+        this.clientId.forEach((client) => {
+          let payload = {
+            clientId: client,
+            variable: "associatedEvents",
+            value: eventId,
+            operation: "addToList",
+          };
+          console.log(payload);
+          this.$store
+            .dispatch("editContact", payload)
+            .then((res) => {
+              console.log(res);
+              this.$store.commit("addSuccess", "Event Added To Contact");
+            })
+            .catch((e) => {
+              this.$store.dispatch("addError", e);
+            });
+        });
       }
     },
-    addLocationToEvent() {
-      if (this.locationId) {
-        let payload = {
-          eventId: this.eventId,
-          variable: "locations",
-          value: this.locationId,
-          operation: 'addToList'
-        };
-        this.$store
-          .dispatch("editEvent", payload)
-          .then(() => {
-            this.$store.commit("addSuccess", "Location Added To Event");
-            this.$router.push("/admin/events/" + this.eventId);
-          })
-          .catch((e) => {
-            this.$store.dispatch("addError", e);
-          });
+    // addLocationToEvent() {
+    //   if (this.locationId.length > 0) {
+    //     this.locationId.forEach((location) => {
+    //       let payload = {
+    //         eventId: this.eventId,
+    //         variable: "locations",
+    //         value: location,
+    //         operation: "addToList",
+    //       };
+    //       this.$store
+    //         .dispatch("editEvent", payload)
+    //         .then(() => {
+    //           this.$store.commit("addSuccess", "Location Added To Event");
+    //           this.$router.push("/admin/events/" + this.eventId);
+    //         })
+    //         .catch((e) => {
+    //           this.$store.dispatch("addError", e);
+    //         });
+    //     });
+    //   }
+    // },
+    addEventToLocation() {
+      let eventId = this.eventId;
+      if (this.locationId.length > 0) {
+        console.log(this.locationId);
+        console.log(eventId);
+        this.locationId.forEach((location) => {
+          let payload = {
+            locationId: location,
+            variable: "associatedEvents",
+            value: eventId,
+            operation: "addToList",
+          };
+          console.log(payload);
+          this.$store
+            .dispatch("editLocation", payload)
+            .then((res) => {
+              console.log(res);
+              this.$store.commit("addSuccess", "Event Added To Contact");
+            })
+            .catch((e) => {
+              this.$store.dispatch("addError", e);
+            });
+        });
       }
     },
-    async createEvent() {
-      this.eventId = undefined;
-      this.locationId = undefined;
-      this.clientId = undefined;
-      this.createLocation();
+    async startCreate() {
+      // this.eventId = undefined;
+      this.locationId = this.locations.map((x) => x.userId);
+      this.clientId = this.clients.map((x) => x.userId);
+      console.log(this.locationId);
+      console.log(this.clientId);
+      await this.createLocation();
+      await this.createUser();
+      await this.createEvent();
+      // console.log(this.eventId);
+      // await this.addEventToUser();
+      // await this.addEventToLocation();
+      console.log(this.event);
+      console.log(this.locations);
+      console.log(this.clients);
+      console.log(this.fields);
     },
     //
-  },
-  created() {
-    console.log(this.event);
   },
   components: { ButtonStandardWithIcon },
   props: ["event", "locations", "fields", "clients"],

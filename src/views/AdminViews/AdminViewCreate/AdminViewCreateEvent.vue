@@ -1,11 +1,11 @@
 <template>
   <section id="event-creation-wrapper" v-if="loaded">
     <div id="form-wrapper">
-      <div class="event-details-wrapper">
+      <div class="event-creation-card">
         <base-card>
           <template v-slot:title>Event Details</template>
           <template v-slot:content>
-            <div class="row-flex">
+            <div class="row-flex section-inner-wrapper">
               <div class="event-date">
                 <div class="form-input">
                   <p>Event Date:</p>
@@ -39,11 +39,11 @@
           </template>
         </base-card>
       </div>
-      <div class="product-details-wrapper">
+      <div class="event-creation-card">
         <base-card>
           <template v-slot:title>Product</template>
           <template v-slot:content>
-            <div class="row-flex">
+            <div class="row-flex section-inner-wrapper">
               <div class="form-input">
                 <p><b>Select Product(s):</b></p>
                 <div
@@ -51,11 +51,27 @@
                   v-for="(product, index) in businessProducts"
                   :key="index"
                 >
-                  <input
-                    type="checkbox"
-                    @change="toggleProductFromPackage(product)"
-                  />
-                  <p>{{ product.name }}</p>
+                  <div v-if="product.type != 'Add-On'" class="checkboxes">
+                    <input
+                      type="checkbox"
+                      @change="toggleProductFromEvent(product)"
+                    />
+                    <p>{{ product.name }}</p>
+                  </div>
+                  <div v-if="product.type === 'Add-On'" class="checkboxes">
+                    <input
+                      type="checkbox"
+                      @change="toggleProductFromEvent(product)"
+                    />
+                    <p>{{ product.name }} x</p>
+                    <input
+                      type="number"
+                      :min="product.pricing.minUnits"
+                      @change="changeAddOnQuantity($event, product)"
+                      :disabled="productAssigned(product)"
+                      class="checkbox-add-on-units"
+                    />
+                  </div>
                 </div>
               </div>
               <div class="form-input">
@@ -94,22 +110,30 @@
           </template>
         </base-card>
       </div>
-      <div class="forms-wrapper">
+      <div class="event-creation-card">
         <base-card>
           <template v-slot:title>Select Form(s):</template>
           <template v-slot:content>
-            <div class="row-flex">
+            <div class="row-flex section-inner-wrapper">
               <div class="form-input">
                 <p>Suggested Form(s):</p>
+                <div class="checkboxes">
+                  <input
+                    :disabled="event.invoice.products.length > 0 ? false : true"
+                    type="checkbox"
+                    @change="toggleAllDefaultForms()"
+                  />
+                  <p>Attach All Default Forms For Chosen Product(s)</p>
+                </div>
+                <p>
+                  <i>Default forms from event products will appear here.</i>
+                </p>
                 <div
                   class="checkboxes"
                   v-for="(form, index) in suggestedForms"
                   :key="index"
                 >
-                  <input
-                    type="checkbox"
-                    @change="toggleFormFromPackage(form)"
-                  />
+                  <input type="checkbox" @change="toggleFormFromEvent(form)" />
                   <p>{{ form.name }}</p>
                 </div>
               </div>
@@ -120,10 +144,7 @@
                   v-for="(form, index) in forms"
                   :key="index"
                 >
-                  <input
-                    type="checkbox"
-                    @change="toggleFormFromPackage(form)"
-                  />
+                  <input type="checkbox" @change="toggleFormFromEvent(form)" />
                   <p>{{ form.name }}</p>
                 </div>
               </div>
@@ -131,7 +152,7 @@
           </template>
         </base-card>
       </div>
-      <div class="location-details-wrapper">
+      <div class="event-creation-card">
         <base-card>
           <template v-slot:title>Location</template>
           <template v-slot:action1
@@ -146,7 +167,10 @@
               ></floating-menu-with-list-items></div
           ></template>
           <template v-slot:content>
-            <div class="row-flex" v-if="locationView === 'newLocation'">
+            <div
+              class="row-flex section-inner-wrapper"
+              v-if="locationView === 'newLocation'"
+            >
               <div class="form-input">
                 <p>Location Name:</p>
                 <input type="text" v-model.lazy="fields.location.name" />
@@ -180,7 +204,10 @@
                 @click="addLocation()"
               ></button-standard-with-icon> -->
             </div>
-            <div class="column-flex" v-if="locationView === 'existingLocation'">
+            <div
+              class="column-flex section-inner-wrapper"
+              v-if="locationView === 'existingLocation'"
+            >
               <div class="form-input">
                 <p>Search for Location:</p>
                 <input
@@ -189,17 +216,30 @@
                   placeholder="Start Typing To Search"
                 />
               </div>
-              <h5
-                v-for="(location, index) in locationSearchResults"
-                :key="index"
-                @click="addLocationToEvent(location)"
+              <div
+                class="location-item"
+                v-for="location in searchLocations"
+                :key="location.userId"
               >
-                {{ location.name }}
-              </h5>
+                <img
+                  :src="
+                    location.profilePicture
+                      ? location.profilePicture
+                      : locationmarker
+                  "
+                  alt=""
+                />
+                <h5>{{ location.name }}</h5>
+
+                <div class="refer-button-wrapper">
+                  <button-standard-with-icon
+                    :text="selectedLocation == location ? 'Confirm' : 'Add'"
+                    @click="selectLocation(location)"
+                  ></button-standard-with-icon>
+                </div>
+              </div>
               <h5
-                v-if="
-                  locationSearchResults.length <= 0 && fields.locationSearch
-                "
+                v-if="searchLocations.length <= 0 && fields.locationSearch"
                 @click="selectLocationView('newLocation')"
               >
                 No Locations Found. Add New Location!
@@ -208,7 +248,7 @@
           </template>
         </base-card>
       </div>
-      <div class="client-details-wrapper">
+      <div class="event-creation-card">
         <base-card>
           <template v-slot:title>Client</template>
           <template v-slot:action1
@@ -221,7 +261,10 @@
               ></floating-menu-with-list-items></div
           ></template>
           <template v-slot:content>
-            <div class="row-flex" v-if="clientView === 'newClient'">
+            <div
+              class="row-flex section-inner-wrapper"
+              v-if="clientView === 'newClient'"
+            >
               <div class="column-flex">
                 <div class="form-input">
                   <p>Pronoun/ Prefix:</p>
@@ -266,11 +309,6 @@
                   </p>
                 </div>
               </div>
-              <!-- <button-standard-with-icon
-                text="Add Another Client"
-                class="align-center"
-                @click="addClient()"
-              ></button-standard-with-icon> -->
             </div>
             <div class="column-flex" v-if="clientView === 'existingClient'">
               <div class="form-input">
@@ -281,13 +319,28 @@
                   placeholder="Start Typing To Search"
                 />
               </div>
-              <h5
-                v-for="(client, index) in clientSearchResults"
-                :key="index"
-                @click="addClientToEvent(client)"
+              <div
+                class="location-item"
+                v-for="client in clientSearchResults"
+                :key="client.userId"
               >
-                {{ client.given_name }} {{ client.family_name }}
-              </h5>
+                <img
+                  :src="
+                    client.profilePicture
+                      ? client.profilePicture
+                      : defaultProfilePicture
+                  "
+                  alt=""
+                />
+                <h5>{{ client.given_name }} {{ client.family_name }}</h5>
+
+                <div class="refer-button-wrapper">
+                  <button-standard-with-icon
+                    :text="selectedClient == client ? 'Confirm' : 'Add'"
+                    @click="selectClient(client)"
+                  ></button-standard-with-icon>
+                </div>
+              </div>
               <h5
                 v-if="clientSearchResults.length <= 0 && fields.clientSearch"
                 @click="selectClientView('newClient')"
@@ -300,6 +353,7 @@
       </div>
     </div>
     <admin-view-create-event-summary
+      @remove-location="removeLocation"
       :event="event"
       :locations="locations"
       :fields="fields"
@@ -310,19 +364,28 @@
 
 <script>
 import XIcon from "../../../assets/SVGs/x-icon.svg";
+import locationmarker from "../../../assets/SVGs/location-marker.svg";
 import helpers from "../../../helpers.js";
 import AdminViewCreateEventSummary from "./AdminViewCreateEventSummary.vue";
+import ButtonStandardWithIcon from "../../../SharedComponents/SharedComponentsUI/ButtonStandardWithIcon.vue";
 import FloatingMenuWithListItems from "../../../SharedComponents/SharedComponentsUI/FloatingMenuWithListItems.vue";
 
 export default {
-  components: { AdminViewCreateEventSummary, FloatingMenuWithListItems },
+  components: {
+    AdminViewCreateEventSummary,
+    FloatingMenuWithListItems,
+    ButtonStandardWithIcon,
+  },
   data() {
     return {
       loaded: false,
       XIcon,
+      locationmarker,
       locations: [],
       clients: [],
       locationView: "existingLocation",
+      selectedLocation: undefined,
+      selectedClient: undefined,
       locationOptionsOpen: false,
       locationOptions: [
         {
@@ -383,6 +446,7 @@ export default {
 
       event: {
         eventId: "event" + new Date().getTime(),
+        forms: [],
         data: {
           date: null,
           startTime: null,
@@ -405,17 +469,80 @@ export default {
       this.locationView = action;
       this.locationOptionsOpen = false;
     },
+    selectLocation(location) {
+      if (this.selectedLocation === location) {
+        this.locations.push(location);
+        this.selectedLocation = undefined;
+        return;
+      }
+      if (this.selectedLocation !== location) {
+        this.selectedLocation = location;
+        return;
+      }
+    },
     selectClientView(action) {
       this.clientView = action;
       this.clientOptionsOpen = false;
     },
-    toggleProductFromPackage(product) {
+    selectClient(client) {
+      if (this.selectedClient === client) {
+        this.clients.push(client);
+        this.selectedClient = undefined;
+        return;
+      }
+      if (this.selectedClient !== client) {
+        this.selectedClient = client;
+        return;
+      }
+    },
+    toggleProductFromEvent(product) {
       let array = this.event.invoice.products;
       let index = array.indexOf(product);
       if (index > -1) {
         array.splice(index, 1);
       } else {
         array.push(product);
+      }
+    },
+    productAssigned(product) {
+      let array = this.event.invoice.products;
+      return array.indexOf(product);
+    },
+    changeAddOnQuantity(e, product) {
+      console.log(e.target.value);
+      console.log(product);
+      let array = this.event.invoice.products;
+      let index = array.indexOf(product);
+      if (index > -1) {
+        array[index].pricing.units = e.target.value;
+      } else {
+        return;
+      }
+    },
+    toggleFormFromEvent(form) {
+      let array = this.event.forms;
+      let index = array.indexOf(form);
+      if (index > -1) {
+        array.splice(index, 1);
+      } else {
+        array.push(form);
+      }
+    },
+    toggleAllDefaultForms() {
+      console.log(this.event.forms);
+      if (this.event.forms.length === 0) {
+        this.event.forms = [...this.suggestedForms];
+        console.log(this.event.forms);
+
+        return;
+      }
+      if (this.event.forms.length > 0) {
+        this.suggestedForms.forEach((form) => {
+          this.toggleFormFromEvent(form);
+        });
+        console.log(this.event.forms);
+
+        return;
       }
     },
     addLocation() {
@@ -426,6 +553,9 @@ export default {
         streetAddress2: null,
         cityStateZip: null,
       };
+    },
+    removeLocation(index) {
+      this.locations.splice(index, 1);
     },
     addLocationToEvent(location) {
       this.event.locations.push(location.id);
@@ -469,37 +599,30 @@ export default {
     },
   },
   computed: {
-    locationSearchResults() {
-      let term = this.fields.locationSearch;
-      return this.$store.state.contacts.locations.filter((x) =>
-        x.name.toLowerCase().includes(term)
-      );
-    },
     clientSearchResults() {
-      let term = this.fields.clientSearch;
-      return this.$store.state.contacts.clients.filter(
-        (x) =>
-          x.family_name.toLowerCase().includes(term) ||
-          x.given_name.toLowerCase().includes(term)
-      );
+      if (this.fields.clientSearch) {
+        let term = this.fields.clientSearch;
+        return this.$store.state.contacts.clients.filter(
+          (x) =>
+            x.family_name.toLowerCase().includes(term.toLowerCase()) ||
+            x.given_name.toLowerCase().includes(term.toLowerCase())
+        );
+      } else {
+        return this.$store.state.contacts.clients;
+      }
     },
     forms() {
       return this.$store.state.businessSettings.product.forms;
     },
     suggestedForms() {
       return this.forms.filter((form) => {
-        console.log(form.id);
-        console.log(this.event.invoice.products.map((x) => x.forms));
-        console.log(
-          this.event.invoice.products.map((x) => x.forms).includes(form.id)
-        );
-        return this.event.invoice.products.map((x) => x.forms);
-        // this.event.invoice.products.filter((x) => {
-        //   console.log(x.forms);
-        //   console.log(form.id);
-        //   console.log(x.forms.includes(form.id));
-        //   x.forms.includes(form.id);
-        // });
+        let suggestedFormsIds = [];
+        this.event.invoice.products.map((x) => {
+          if (x.forms) {
+            suggestedFormsIds = [...suggestedFormsIds, ...x.forms];
+          }
+        });
+        return suggestedFormsIds.includes(form.id);
       });
     },
     businessProducts() {
@@ -530,10 +653,31 @@ export default {
       }
       return discounts;
     },
+    searchLocations() {
+      let locations = this.$store.state.contacts.locations;
+      if (this.fields.locationSearch) {
+        locations = locations.filter(
+          (x) =>
+            x.name
+              .toLowerCase()
+              .includes(this.fields.locationSearch.toLowerCase()) ||
+            x.address.cityStateZip
+              .toLowerCase()
+              .includes(this.fields.locationSearch.toLowerCase()) ||
+            x.address.streetAddress1
+              .toLowerCase()
+              .includes(this.fields.locationSearch.toLowerCase())
+        );
+      }
+      return locations;
+    },
   },
   async created() {
     await this.$store.dispatch("setBusinessSettings");
+    await this.$store.dispatch("getLocations");
+    await this.$store.dispatch("getAdminUsers");
 
+    console.log(this.$store.state.contacts);
     console.log(this.$store.state.businessSettings);
     this.loaded = true;
   },
@@ -552,6 +696,31 @@ export default {
   width: 70%;
   height: 100%;
   overflow-y: scroll;
+}
+
+.event-creation-card {
+  min-height: 300px;
+  max-height: 300px;
+}
+.section-inner-wrapper {
+  height: 100%;
+  overflow-y: scroll;
+}
+
+.location-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 50%;
+  align-self: center;
+}
+
+.location-item > h5 {
+  text-align: right;
+}
+
+.location-item > img {
+  height: 20px;
 }
 
 .row-flex {
@@ -602,6 +771,15 @@ export default {
 
 .checkboxes > input {
   width: unset;
+}
+
+.checkboxes > .checkbox-add-on-units {
+  width: 40px;
+  height: 10px;
+  outline: none;
+  border: none;
+  border-radius: 0;
+  border-bottom: 1px solid var(--textColor);
 }
 
 input {
