@@ -3,8 +3,8 @@
     <template v-slot:icon
       ><svg
         xmlns="http://www.w3.org/2000/svg"
-        width="18.375"
-        height="18.379"
+        width="14.375"
+        height="14.379"
         viewBox="0 0 18.375 18.379"
       >
         <path
@@ -18,8 +18,8 @@
     <template v-slot:action1>
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        width="17.995"
-        height="17.995"
+        width="10.995"
+        height="10.995"
         viewBox="0 0 17.995 17.995"
         @click="closePopup()"
       >
@@ -29,26 +29,168 @@
           fill="currentColor"
         /></svg
     ></template>
-    <template v-slot:content></template>
+    <template v-slot:content>
+      <div class="wrapper">
+        <div class="sidebar">
+          <h4
+            v-for="form in forms"
+            :key="form.id"
+            @click="this.selectedForm = form"
+            :class="form === selectedForm ? 'activeLink title' : 'title'"
+          >
+            {{ form.name }}
+          </h4>
+          <div class="button-container">
+            <button-standard-with-icon
+              text="Save"
+              @click="saveForms()"
+            ></button-standard-with-icon>
+          </div>
+        </div>
+        <div class="form-content">
+          <div
+            class="form-field"
+            v-for="(formItem, index) in selectedForm.fields"
+            :key="index"
+          >
+            <h5>{{ formItem.name }}</h5>
+            <div class="field-container">
+              <div
+                class="field-item"
+                v-for="(input, index) in formItem.fields"
+                :key="index"
+              >
+                <p>{{ input.inputTitle }}</p>
+                <input
+                  v-if="
+                    input.inputType === 'text' ||
+                    input.inputType === 'tel' ||
+                    input.inputType === 'email'
+                  "
+                  :type="input.inputType"
+                  :placeholder="input.placeholder"
+                  v-model="input.value"
+                />
+
+                <div class="radio-container" v-if="input.inputType === 'radio'">
+                  <input
+                    v-for="(option, index) in input.options"
+                    :key="index"
+                    :type="input.inputType"
+                    :name="input.name"
+                    v-model="input.value"
+                  />
+                  <p>{{ option }}</p>
+                </div>
+                <select
+                  v-if="input.inputType === 'select'"
+                  v-model="input.value"
+                >
+                  <option v-for="(option, index) in input.options" :key="index">
+                    {{ option }}
+                  </option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </template>
   </full-page-popup>
 </template>
 
 
 <script>
 import FullPagePopup from "../../../SharedComponents/SharedComponentsUI/FullPagePopup.vue";
+import ButtonStandardWithIcon from "../../../SharedComponents/SharedComponentsUI/ButtonStandardWithIcon.vue";
 
 export default {
+  data() {
+    return {
+      selectedForm: this.forms[0],
+    };
+  },
   methods: {
     closePopup() {
       this.$emit("closePopup");
     },
+    saveForms() {
+      console.log(this.forms);
+      let payload = {
+        variable: "forms",
+        value: this.forms,
+        eventId: this.eventId,
+      };
+      this.$store.dispatch("editEvent", payload);
+    },
   },
-  props: ["forms"],
+  props: ["forms", "eventId"],
+
   components: {
     FullPagePopup,
+    ButtonStandardWithIcon,
+  },
+  created() {
+    console.log(this.forms);
+    console.log(this.eventId);
   },
 };
 </script>
 
 <style scoped>
+.wrapper {
+  display: flex;
+  flex-direction: row;
+  height: 100%;
+  width: 100%;
+}
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  justify-items: center;
+  border-right: 1px solid var(--textColor);
+  margin: 10px 30px 10px 10px;
+  padding: 10px 30px 10px 10px;
+}
+
+.title {
+  cursor: pointer;
+}
+
+.activeLink {
+  text-decoration: underline;
+}
+
+.button-container {
+  margin-top: auto;
+}
+
+.form-field {
+  text-align: left;
+  align-items: center;
+  justify-content: center;
+}
+
+.field-container {
+  display: flex;
+  flex-direction: row;
+}
+
+h5 {
+  margin-bottom: 0;
+}
+
+.field-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  max-width: 200px;
+  margin-left: 20px;
+}
+
+input {
+  margin-left: 20px;
+}
 </style>

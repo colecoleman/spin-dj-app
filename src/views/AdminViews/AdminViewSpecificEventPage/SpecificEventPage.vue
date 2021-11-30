@@ -11,7 +11,12 @@
       v-if="invoiceOpen"
       @close-popup="closePopup()"
     ></invoice-popup>
-    <forms-popup v-if="formsOpen" @close-popup="closePopup()"></forms-popup>
+    <forms-popup
+      v-if="formsOpen"
+      @close-popup="closePopup()"
+      :forms="event.forms"
+      :eventId="event.userId"
+    ></forms-popup>
     <contract-popup
       v-if="contractOpen"
       @close-popup="closePopup()"
