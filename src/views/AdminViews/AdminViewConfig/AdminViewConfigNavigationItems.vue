@@ -20,9 +20,10 @@ export default {
         "Identity",
         "Services",
         "Packages",
-        "Forms",
         "Add-Ons",
         "Discounts",
+        "Forms",
+        "Contracts",
         "Automations",
       ],
     };

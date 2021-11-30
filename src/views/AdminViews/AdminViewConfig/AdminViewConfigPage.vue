@@ -157,9 +157,6 @@
           :storePackages="businessSettings.product.services"
         />
       </div>
-      <div class="config-section" id="forms">
-        <admin-view-config-forms :storeForms="businessSettings.product.form" />
-      </div>
       <div class="config-section" id="add-ons">
         <admin-view-config-add-ons
           :storeAddOns="businessSettings.product.addOns"
@@ -170,6 +167,16 @@
           :storeDiscounts="businessSettings.product.discounts"
         />
       </div>
+      <div class="config-section" id="forms">
+        <admin-view-config-forms :storeForms="businessSettings.product.form" />
+      </div>
+
+      <div class="config-section" id="contracts">
+        <admin-view-config-contracts
+          :storeContracts="businessSettings.product.contracts"
+        />
+      </div>
+
       <div class="config-section" id="automations">
         <admin-view-config-automations
           :storeAutomations="businessSettings.automations"
@@ -191,6 +198,7 @@ import AdminViewConfigServices from "./AdminViewConfigCards/AdminViewConfigServi
 import AdminViewConfigForms from "./AdminViewConfigCards/AdminViewConfigForms.vue";
 import AdminViewConfigAddOns from "./AdminViewConfigCards/AdminViewConfigAddOns.vue";
 import AdminViewConfigAutomations from "./AdminViewConfigCards/AdminViewConfigAutomations.vue";
+import AdminViewConfigContracts from "./AdminViewConfigCards/AdminViewConfigContracts.vue";
 import AdminViewConfigDiscounts from "./AdminViewConfigCards/AdminViewConfigDiscounts.vue";
 import ButtonStandardWithIcon from "../../../SharedComponents/SharedComponentsUI/ButtonStandardWithIcon.vue";
 
@@ -269,6 +277,7 @@ export default {
     AdminViewConfigForms,
     AdminViewConfigAddOns,
     AdminViewConfigDiscounts,
+    AdminViewConfigContracts,
     AdminViewConfigAutomations,
     ButtonStandardWithIcon,
   },
