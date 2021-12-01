@@ -20,6 +20,7 @@
     <contract-popup
       v-if="contractOpen"
       @close-popup="closePopup()"
+      :contracts="event.contracts"
     ></contract-popup>
     <two-button-dialog-modal
       v-if="deleteEventOpen"

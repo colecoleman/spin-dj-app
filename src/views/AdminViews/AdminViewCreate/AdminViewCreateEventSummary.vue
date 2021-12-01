@@ -237,6 +237,7 @@ export default {
       let dbEvent = Object.assign(this.event);
       dbEvent.contacts = this.clientId;
       dbEvent.locations = this.locationId;
+      dbEvent.contracts = this.contracts;
       console.log(dbEvent);
       this.$store
         .dispatch("addEvent", dbEvent)
@@ -365,7 +366,7 @@ export default {
     //
   },
   components: { ButtonStandardWithIcon },
-  props: ["event", "locations", "fields", "clients"],
+  props: ["event", "locations", "fields", "clients", "contracts"],
 };
 </script>
 

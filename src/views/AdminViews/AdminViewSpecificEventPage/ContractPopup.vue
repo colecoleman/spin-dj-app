@@ -3,7 +3,7 @@
     <template v-slot:icon
       ><svg
         xmlns="http://www.w3.org/2000/svg"
-        width="16.75"
+        width="10.75"
         height="22"
         viewBox="0 0 16.75 22"
       >
@@ -19,8 +19,8 @@
     <template v-slot:title>Contract</template>
     <template v-slot:action1>
       <svg
-        width="17.995"
-        height="17.995"
+        width="10.995"
+        height="10.995"
         viewBox="0 0 17.995 17.995"
         @click="closePopup()"
       >
@@ -34,110 +34,32 @@
     <template v-slot:content>
       <div id="contract-popup-content-wrapper">
         <div id="contract-popup-left-menu">
-          <h3>Document View</h3>
+          <div class="heading-container">
+            <img
+              :src="contractScroller != 0 ? LeftArrowSVG : ''"
+              @click="contractScroller != 0 ? previousContract : ''"
+            />
+            <h3>{{ contract.contractName }}</h3>
+            <img
+              :src="contractScroller != contractQuantity ? RightArrowSVG : ''"
+              @click="contractScroller != contractQuantity ? nextContract : ''"
+            />
+          </div>
           <button-standard-with-icon
             text="Print"
             @click="printContract('contract-popup-document-view')"
           >
-            <template v-slot:icon
-              ><svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="19.25"
-                height="19.25"
-                viewBox="0 0 19.25 19.25"
-              >
-                <g
-                  id="Icon_feather-printer"
-                  data-name="Icon feather-printer"
-                  transform="translate(-0.875 -0.875)"
-                >
-                  <path
-                    id="Path_129"
-                    data-name="Path 129"
-                    d="M5.25,7.875V1.75h10.5V7.875"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="1.75"
-                  />
-                  <path
-                    id="Path_130"
-                    data-name="Path 130"
-                    d="M5.25,15.75H3.5A1.75,1.75,0,0,1,1.75,14V9.625A1.75,1.75,0,0,1,3.5,7.875h14a1.75,1.75,0,0,1,1.75,1.75V14a1.75,1.75,0,0,1-1.75,1.75H15.75"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="1.75"
-                  />
-                  <path
-                    id="Path_131"
-                    data-name="Path 131"
-                    d="M5.25,12.25h10.5v7H5.25Z"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="1.75"
-                  />
-                </g>
-              </svg>
-            </template>
           </button-standard-with-icon>
           <button-standard-with-icon
             text="Save"
             @click="saveContract('contract-popup-document-view')"
           >
-            <template v-slot:icon
-              ><svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="19.25"
-                height="19.25"
-                viewBox="0 0 19.25 19.25"
-              >
-                <g
-                  id="Icon_feather-printer"
-                  data-name="Icon feather-printer"
-                  transform="translate(-0.875 -0.875)"
-                >
-                  <path
-                    id="Path_129"
-                    data-name="Path 129"
-                    d="M5.25,7.875V1.75h10.5V7.875"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="1.75"
-                  />
-                  <path
-                    id="Path_130"
-                    data-name="Path 130"
-                    d="M5.25,15.75H3.5A1.75,1.75,0,0,1,1.75,14V9.625A1.75,1.75,0,0,1,3.5,7.875h14a1.75,1.75,0,0,1,1.75,1.75V14a1.75,1.75,0,0,1-1.75,1.75H15.75"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="1.75"
-                  />
-                  <path
-                    id="Path_131"
-                    data-name="Path 131"
-                    d="M5.25,12.25h10.5v7H5.25Z"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="1.75"
-                  />
-                </g>
-              </svg>
-            </template>
           </button-standard-with-icon>
         </div>
         <div id="contract-document-view-wrapper">
-          <contract-popup-document-view></contract-popup-document-view>
+          <contract-popup-document-view
+            :contract="contracts[contractScroller]"
+          ></contract-popup-document-view>
         </div>
         <div id="contract-popup-right-column">
           <div class="contract-item">
@@ -146,7 +68,7 @@
           </div>
           <div class="contract-item">
             <p>Signed On:</p>
-            <h5>12/31/2021</h5>
+            <h5>{{ new Date().toDateString() }}</h5>
           </div>
           <div class="contract-item">
             <p>IP Address:</p>
@@ -160,15 +82,39 @@
 
 
 <script>
+import { LeftArrowSVG, RightArrowSVG } from "../../../assets/SVGs/svgIndex.js";
 import FullPagePopup from "../../../SharedComponents/SharedComponentsUI/FullPagePopup.vue";
 import ContractPopupDocumentView from "./ContractPopupDocumentView.vue";
 import ButtonStandardWithIcon from "../../../SharedComponents/SharedComponentsUI/ButtonStandardWithIcon.vue";
 import helpers from "../../../helpers.js";
 
 export default {
+  data() {
+    return {
+      LeftArrowSVG,
+      RightArrowSVG,
+      contractScroller: 0,
+    };
+  },
+  computed: {
+    contractQuantity() {
+      return this.contracts.length - 1;
+    },
+    contract() {
+      return this.$store.state.businessSettings.contracts.find(
+        (x) => x.id === this.contracts[this.contractScroller]
+      );
+    },
+  },
   methods: {
     closePopup() {
       this.$emit("closePopup");
+    },
+    nextContract() {
+      this.contractScroller++;
+    },
+    previousContract() {
+      this.contractScroller--;
     },
     saveContact: helpers.saveElement,
     printContract: helpers.printElement,
@@ -178,6 +124,7 @@ export default {
     ContractPopupDocumentView,
     ButtonStandardWithIcon,
   },
+  props: ["contracts"],
 };
 </script>
 
@@ -193,6 +140,12 @@ export default {
 #contract-popup-right-column {
   width: 20%;
   padding: 15px;
+}
+
+.heading-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
 }
 
 #contract-document-view-wrapper {

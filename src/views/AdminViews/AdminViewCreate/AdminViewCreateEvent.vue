@@ -358,6 +358,7 @@
       :locations="locations"
       :fields="fields"
       :clients="clients"
+      :contracts="contracts"
     ></admin-view-create-event-summary>
   </section>
 </template>
@@ -447,6 +448,7 @@ export default {
       event: {
         eventId: "event" + new Date().getTime(),
         forms: [],
+        contracts: [],
         data: {
           date: null,
           startTime: null,
@@ -625,6 +627,20 @@ export default {
         return suggestedFormsIds.includes(form.id);
       });
     },
+    contracts() {
+      let item = this.$store.state.businessSettings.contracts.filter(
+        (contract) => {
+          let contracts = [];
+          this.event.invoice.products.map((x) => {
+            if (x.contracts) {
+              contracts = [...contracts, ...x.contracts];
+            }
+          });
+          return contracts.includes(contract.id);
+        }
+      );
+      return item.map((x) => x.id);
+    },
     businessProducts() {
       // console.log(this.suggestedForms);
       let array = [];
@@ -676,9 +692,6 @@ export default {
     await this.$store.dispatch("setBusinessSettings");
     await this.$store.dispatch("getLocations");
     await this.$store.dispatch("getAdminUsers");
-
-    console.log(this.$store.state.contacts);
-    console.log(this.$store.state.businessSettings);
     this.loaded = true;
   },
 };
