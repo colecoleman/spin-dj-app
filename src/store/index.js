@@ -86,6 +86,7 @@ const store = createStore({
             }
             axios.put(`https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/admin/${state.user.tenantId}/users/${state.user.userId}`, payload).then(() => {
                 commit('setBusinessSettings', payload.value);
+                console.log(payload.value)
             }).catch((e) => {
                 console.log(e);
             })
@@ -314,6 +315,12 @@ const store = createStore({
         adminConfigAddDiscount(context, payload) {
             context.commit('adminConfigAddDiscount', payload)
         },
+        adminConfigAddContract(context, payload) {
+            context.commit('adminConfigAddContract', payload)
+        },
+        adminConfigDeleteContract(context, payload) {
+            context.commit('adminConfigDeleteContract', payload)
+        },
         addFormToDb(context, payload) {
             context.commit('addFormToDb', payload)
         },
@@ -383,6 +390,15 @@ const store = createStore({
         },
         adminConfigAddDiscount(state, payload) {
             state.businessSettings.product.discounts.push(payload);
+        },
+        adminConfigAddContract(state, payload) {
+            if (!state.businessSettings.contracts) {
+                state.businessSettings.contracts = []
+            }
+            state.businessSettings.contracts.push(payload)
+        },
+        adminConfigDeleteContract(state, payload) {
+            state.businessSettings.contracts.splice(payload, 1)
         },
         addFormToDb(state, payload) {
             state.businessSettings.product.forms.push(payload);

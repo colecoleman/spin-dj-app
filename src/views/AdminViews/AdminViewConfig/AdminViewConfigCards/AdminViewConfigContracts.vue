@@ -35,10 +35,23 @@
           <div
             class="contracts-item"
             style="border-bottom: 1px solid gray; margin-bottom: 10px"
-            v-for="contract in this.$store.state.businessSettings.contracts"
+            v-for="(contract, index) in this.$store.state.businessSettings
+              .contracts"
             :key="contract.id"
           >
-            <h4>{{ contract.contractName }}</h4>
+            <h4>
+              {{ contract.contractName
+              }}<img
+                :src="xIconSVG"
+                class="x-icon"
+                @click="deleteContract(index)"
+              />
+              <img
+                :src="EditPenSVG"
+                class="x-icon"
+                @click="editContract(contract, index)"
+              />
+            </h4>
             <div class="window-box">
               <p>{{ contract.contractBody }}</p>
             </div>
@@ -51,25 +64,41 @@
 
 <script>
 import ButtonStandardWithIcon from "../../../../SharedComponents/SharedComponentsUI/ButtonStandardWithIcon.vue";
+import { xIconSVG, EditPenSVG } from "../../../../assets/SVGs/svgIndex";
 
 export default {
   data() {
     return {
+      xIconSVG,
+      EditPenSVG,
       contract: {
         contractName: undefined,
-        contractbody: undefined,
-        id: new Date().getTime(),
+        contractBody: undefined,
+        id: "contract" + new Date().getTime(),
       },
+      editIndex: undefined,
     };
   },
   methods: {
     addContract() {
-      this.$store.commit("adminConfigAddContract", this.contract);
+      if (this.editIndex) {
+        this.$store.state.businessSettings.contracts[this.editIndex] =
+          this.contract;
+      } else {
+        this.$store.commit("adminConfigAddContract", this.contract);
+      }
       this.contract = {
         contractName: undefined,
-        contractbody: undefined,
-        id: new Date().getTime(),
+        contractBody: undefined,
+        id: "contract" + new Date().getTime(),
       };
+    },
+    editContract(contract, index) {
+      this.editIndex = index;
+      this.contract = { ...contract };
+    },
+    deleteContract(index) {
+      this.$store.dispatch("adminConfigDeleteContract", index);
     },
   },
   components: { ButtonStandardWithIcon },
@@ -187,19 +216,14 @@ section {
   margin-right: 5px;
 }
 
+.x-icon {
+  height: 10px;
+  width: 10px;
+  margin: 0px 5px;
+}
+
 .bold {
   font-weight: 600;
   margin-top: 20px;
-}
-
-:disabled {
-  opacity: 0.5;
-}
-
-.floating-button {
-  position: fixed;
-  bottom: 25px;
-  right: 25px;
-  background-color: var();
 }
 </style>

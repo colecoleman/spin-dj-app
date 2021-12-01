@@ -2,7 +2,7 @@
   <base-card>
     <template v-slot:title>Packages</template>
     <template v-slot:content>
-      <div class="package-wrapper">
+      <div class="package-wrapper" v-if="businessSettings">
         <div class="package-section">
           <h5 class="bold">Add New Package:</h5>
           <div class="package-item">
@@ -27,13 +27,13 @@
             <p>Services Included:</p>
             <div
               class="package-item row-flex"
-              v-for="service in this.$store.state.businessSettings.product
-                .services"
+              v-for="service in businessSettings.product.services"
               :key="service.name"
             >
               <p>
                 <input
                   type="checkbox"
+                  class="checkbox"
                   :id="service.name"
                   @change="toggleServiceFromPackage(service.name)"
                   :name="service.name"
@@ -45,16 +45,35 @@
             <p>Standard Forms Included:</p>
             <div
               class="package-item row-flex"
-              v-for="form in this.$store.state.businessSettings.product.forms"
+              v-for="form in businessSettings.product.forms"
               :key="form.id"
             >
               <p>
                 <input
                   type="checkbox"
-                  :id="form.name"
+                  :id="form.id"
+                  class="checkbox"
                   @change="toggleFormFromPackage(form.id)"
                   :name="form.name"
                 />{{ form.name }}
+              </p>
+            </div>
+          </div>
+          <div class="package-item">
+            <p>Standard Contract Included:</p>
+            <div
+              class="package-item row-flex"
+              v-for="contract in businessSettings.contracts"
+              :key="contract.id"
+            >
+              <p>
+                <input
+                  type="checkbox"
+                  :id="contract.id"
+                  class="checkbox"
+                  @change="toggleContractFromPackage(contract.id)"
+                  :name="contract.contractName"
+                />{{ contract.contractName }}
               </p>
             </div>
           </div>
@@ -130,7 +149,7 @@
             <div
               class="package-item"
               style="border-bottom: 1px solid gray; margin-bottom: 10px"
-              v-for="(packag, index) in businessSettings.product.packages"
+              v-for="(packag, index) in packages"
               :key="packag.id"
             >
               <h4>
@@ -139,6 +158,11 @@
                   :src="XIconSVG"
                   class="x-icon"
                   @click="deletePackage(index)"
+                />
+                <img
+                  :src="EditPenSVG"
+                  class="x-icon"
+                  @click="editPackage(packag, index)"
                 />
               </h4>
               <div class="package-display-section">
@@ -167,6 +191,22 @@
                     >{{ formatPrice(packag.pricing.addHourly) }}
                   </p>
                 </div>
+                <div class="package-item" v-if="packag.forms">
+                  <p>
+                    <b>Included Forms: </b
+                    ><span v-for="form in packag.forms" :key="form">
+                      {{ findForm(form, index) }}</span
+                    >
+                  </p>
+                </div>
+                <div class="package-item" v-if="packag.contracts">
+                  <p>
+                    <b>Included Contracts: </b
+                    ><span v-for="contract in packag.contracts" :key="contract">
+                      {{ findContract(contract, index) }}</span
+                    >
+                  </p>
+                </div>
               </div>
             </div>
           </div>
@@ -178,13 +218,15 @@
 
 <script>
 import XIconSVG from "../../../../assets/SVGs/x-icon.svg";
+import { EditPenSVG } from "../../../../assets/SVGs/svgIndex";
 import helpers from "../../../../helpers.js";
 import ButtonStandardWithIcon from "../../../../SharedComponents/SharedComponentsUI/ButtonStandardWithIcon.vue";
 export default {
   data() {
     return {
       XIconSVG,
-      packages: undefined,
+      EditPenSVG,
+      editIndex: undefined,
       input: {
         packages: {
           id: "package" + new Date().getTime(),
@@ -196,12 +238,18 @@ export default {
             addHourly: undefined,
           },
           forms: [],
+          contracts: [],
           serviceIds: [],
           employeesRequired: undefined,
           photo: undefined,
         },
       },
     };
+  },
+  computed: {
+    packages() {
+      return this.businessSettings.product.packages;
+    },
   },
   methods: {
     formatPrice: helpers.formatPrice,
@@ -216,8 +264,6 @@ export default {
       console.log(this.input.services.photo);
     },
     submitEventType() {
-      console.log(this.input.eventTypesInput);
-      console.log(this.businessSettings.product.eventTypes);
       this.businessSettings.product.eventTypes.push(this.input.eventTypesInput);
     },
 
@@ -226,17 +272,58 @@ export default {
       let index = array.indexOf(service);
       if (index > -1) {
         array.splice(index, 1);
+        console.log("here");
       } else {
+        console.log("not here");
         array.push(service);
       }
     },
-    toggleFormFromPackage(form) {
-      let array = this.input.packages.forms;
+    toggleFormFromPackage(form, packageIndex) {
+      let packages = this.businessSettings.product.packages;
+      let array;
+      if (packageIndex) {
+        array = packages[packageIndex].forms;
+      } else {
+        array = this.input.packages.forms;
+      }
       let index = array.indexOf(form);
       if (index > -1) {
         array.splice(index, 1);
       } else {
         array.push(form);
+      }
+    },
+    toggleContractFromPackage(contract, packageIndex) {
+      let packages = this.businessSettings.product.packages;
+      let array;
+      if (packageIndex) {
+        array = packages[packageIndex].contracts;
+      } else {
+        array = this.input.packages.contracts;
+      }
+      let index = array.indexOf(contract);
+      if (index > -1) {
+        array.splice(index, 1);
+      } else {
+        array.push(contract);
+      }
+    },
+    findForm(form, packageIndex) {
+      console.log(packageIndex);
+      let item = this.businessSettings.product.forms.find((x) => x.id === form);
+      if (!item) {
+        this.toggleFormFromPackage(form, packageIndex);
+      } else {
+        return item.name;
+      }
+    },
+    findContract(contract, packageIndex) {
+      let item = this.businessSettings.contracts.find((x) => x.id === contract);
+      if (!item) {
+        this.toggleContractFromPackage(contract, packageIndex);
+        return;
+      } else {
+        return item.contractName;
       }
     },
     addPackage() {
@@ -245,8 +332,14 @@ export default {
       if (item.pricing.addHourly) {
         item.pricing.addHourly *= 100;
       }
-      this.$store.dispatch("adminConfigAddPackage", item);
+
+      if (this.editIndex) {
+        this.businessSettings.products.packages[this.editIndex] = item;
+      } else {
+        this.$store.dispatch("adminConfigAddPackage", item);
+      }
       this.input.packages = {
+        id: "package" + new Date().getTime(),
         name: undefined,
         priceOption: undefined,
         pricing: {
@@ -254,13 +347,36 @@ export default {
           baseRate: undefined,
           addHourly: undefined,
         },
+        forms: [],
+        contracts: [],
         serviceIds: [],
         employeesRequired: undefined,
         photo: undefined,
       };
+      document
+        .querySelectorAll("input[type=checkbox")
+        .forEach((el) => (el.checked = false));
     },
     deletePackage(index) {
       this.$store.dispatch("adminConfigDeletePackage", index);
+    },
+    editPackage(packag, index) {
+      this.input.packages = { ...this.input.packages, ...packag };
+      this.editIndex = index;
+      this.input.packages.pricing = {
+        baseTime: this.input.packages.pricing.baseTime,
+        baseRate: this.input.packages.pricing.baseRate / 100,
+        addHourly: this.input.packages.pricing.addHourly / 100,
+      };
+      packag.forms.forEach((form) => {
+        document.getElementById(form).checked = true;
+      });
+      packag.contracts.forEach((contracts) => {
+        document.getElementById(contracts).checked = true;
+      });
+      packag.serviceIds.forEach((service) => {
+        document.getElementById(service).checked = true;
+      });
     },
   },
   created() {
@@ -307,6 +423,10 @@ export default {
   justify-self: left;
 }
 
+.button-standard-with-icon {
+  margin-top: 10px;
+}
+
 .bold {
   font-weight: 600;
   margin-top: 20px;
@@ -315,5 +435,6 @@ export default {
 .x-icon {
   height: 10px;
   width: 10px;
+  margin: 0px 5px;
 }
 </style>
