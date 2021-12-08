@@ -44,7 +44,6 @@
 
 <script>
 import PopupModal from "../SharedComponentsUI/PopupModal.vue";
-import ButtonStandardWithIcon from "../SharedComponentsUI/ButtonStandardWithIcon.vue";
 export default {
   data() {
     return {
@@ -69,7 +68,7 @@ export default {
     },
   },
   props: ["contact"],
-  components: { PopupModal, ButtonStandardWithIcon },
+  components: { PopupModal },
 };
 </script>
 

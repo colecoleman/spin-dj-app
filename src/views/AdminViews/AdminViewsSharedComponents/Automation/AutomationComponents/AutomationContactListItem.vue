@@ -19,7 +19,6 @@
 </template>
 
 <script>
-import ButtonStandardWithIcon from "../../../../../SharedComponents/SharedComponentsUI/ButtonStandardWithIcon.vue";
 import SquareIconButton from "../../../../../SharedComponents/SharedComponentsUI/TrashButtonIcon.vue";
 import circleCheckmarkSvg from "../../../../../assets/SVGs/circle-checkmark.svg";
 import helpers from "../../../../../helpers.js";
@@ -46,7 +45,7 @@ export default {
     },
   },
   props: ["automation-item"],
-  components: { ButtonStandardWithIcon, SquareIconButton },
+  components: { SquareIconButton },
 };
 </script>
 

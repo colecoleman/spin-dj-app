@@ -52,7 +52,7 @@
 <script>
 import defaultProfilePicture from "../../../../../assets/default-profile-picture.svg";
 import PopupModal from "../../../../../SharedComponents/SharedComponentsUI/PopupModal.vue";
-import ButtonStandardWithIcon from "../../../../../SharedComponents/SharedComponentsUI/ButtonStandardWithIcon.vue";
+
 export default {
   data() {
     return {
@@ -100,7 +100,7 @@ export default {
   async mounted() {
     await this.$store.dispatch("getAdminUsers");
   },
-  components: { PopupModal, ButtonStandardWithIcon },
+  components: { PopupModal },
 };
 </script>
 

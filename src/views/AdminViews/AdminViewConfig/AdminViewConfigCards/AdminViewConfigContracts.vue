@@ -63,7 +63,6 @@
 </template>
 
 <script>
-import ButtonStandardWithIcon from "../../../../SharedComponents/SharedComponentsUI/ButtonStandardWithIcon.vue";
 import { xIconSVG, EditPenSVG } from "../../../../assets/SVGs/svgIndex";
 
 export default {
@@ -101,7 +100,6 @@ export default {
       this.$store.dispatch("adminConfigDeleteContract", index);
     },
   },
-  components: { ButtonStandardWithIcon },
 };
 </script>
 

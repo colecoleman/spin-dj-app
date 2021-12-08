@@ -93,7 +93,7 @@
 import defaultProfilePicture from "../../../assets/default-profile-picture.svg";
 import defaultLocationPicture from "../../../assets/SVGs/location-circle-icon.svg";
 import ButtonWithDropDownSelections from "../../../SharedComponents/SharedComponentsUI/ButtonWithDropDownSelections.vue";
-import ButtonStandardWithIcon from "../../../SharedComponents/SharedComponentsUI/ButtonStandardWithIcon.vue";
+
 import PopupEmailComposition from "../../../SharedComponents/SharedComponentsPopupUtilities/PopupEmailComposition.vue";
 import PopupModal from "../../../SharedComponents/SharedComponentsUI/PopupModal.vue";
 import eyeIcon from "../../../assets/SVGs/eye-icon.svg";
@@ -192,8 +192,7 @@ export default {
   components: {
     ButtonWithDropDownSelections,
     PopupEmailComposition,
-    PopupModal,
-    ButtonStandardWithIcon,
+    PopupModal
   },
   created() {
     console.log(this.category);

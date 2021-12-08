@@ -54,7 +54,6 @@
 </template>
 
 <script>
-import ButtonStandardWithIcon from "../../../../../SharedComponents/SharedComponentsUI/ButtonStandardWithIcon.vue";
 import helpers from "../../../../../helpers.js";
 import defaultProfilePicture from "../../../../../assets/default-profile-picture.svg";
 export default {
@@ -94,7 +93,6 @@ export default {
     },
   },
   props: ["events", "employee"],
-  components: { ButtonStandardWithIcon },
 };
 </script>
 

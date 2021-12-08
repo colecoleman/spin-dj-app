@@ -104,7 +104,6 @@ import infoIconSvg from "../../../../../assets/SVGs/info-icon.svg";
 import locationAddSvg from "../../../../../assets/SVGs/location-add.svg";
 import addTimeClockSvg from "../../../../../assets/SVGs/add-time-clock.svg";
 import packageSvg from "../../../../../assets/SVGs/add-package.svg";
-import ButtonStandardWithIcon from "../../../../../SharedComponents/SharedComponentsUI/ButtonStandardWithIcon.vue";
 
 import helpers from "../../../../../helpers.js";
 
@@ -148,9 +147,7 @@ export default {
     toggleAddDateTime() {
       this.addDateTimeOpen = !this.addDateTimeOpen;
     },
-    toggleAddPackage() {
-      
-    },
+    toggleAddPackage() {},
     addLocation() {
       let payload = {
         location: this.event.location,
@@ -223,7 +220,6 @@ export default {
   },
   props: ["prospect"],
   components: {
-    ButtonStandardWithIcon,
   },
 };
 </script>

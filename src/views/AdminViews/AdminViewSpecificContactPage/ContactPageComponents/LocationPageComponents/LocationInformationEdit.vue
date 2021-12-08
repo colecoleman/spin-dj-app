@@ -43,9 +43,8 @@
 
 <script>
 import xIconSVG from "../../../../../assets/SVGs/x-icon.svg";
-import ButtonStandardWithIcon from "../../../../../SharedComponents/SharedComponentsUI/ButtonStandardWithIcon.vue";
+
 export default {
-  components: { ButtonStandardWithIcon },
   data() {
     return {
       fieldToEdit: "undefined",

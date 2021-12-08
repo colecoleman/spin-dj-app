@@ -22,13 +22,12 @@
 
 <script>
 import BaseCardNoHeading from "./BaseCardNoHeading.vue";
-import ButtonStandardWithIcon from "./ButtonStandardWithIcon.vue";
+
 import ButtonWithDropDownSelections from "./ButtonWithDropDownSelections.vue";
 
 export default {
   components: {
     BaseCardNoHeading,
-    ButtonStandardWithIcon,
     ButtonWithDropDownSelections,
   },
   props: ["buttons", "dropdown"],

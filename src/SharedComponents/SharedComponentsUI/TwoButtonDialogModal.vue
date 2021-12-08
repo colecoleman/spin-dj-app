@@ -24,7 +24,7 @@
 <script>
 import Backdrop from "./Backdrop.vue";
 import XIcon from "../../assets/SVGs/x-icon.svg";
-import ButtonStandardWithIcon from "./ButtonStandardWithIcon.vue";
+
 export default {
   data() {
     return {
@@ -43,7 +43,7 @@ export default {
       console.log("heyy");
     },
   },
-  components: { Backdrop, ButtonStandardWithIcon },
+  components: { Backdrop },
 };
 </script>
 

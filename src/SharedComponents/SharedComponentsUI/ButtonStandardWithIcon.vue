@@ -49,6 +49,7 @@ img {
 }
 
 h5 {
+  color: inherit;
   margin: 10px;
 }
 </style>

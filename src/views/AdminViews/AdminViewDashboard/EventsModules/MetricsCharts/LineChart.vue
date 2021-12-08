@@ -30,7 +30,7 @@ export default {
   },
   computed: {
     branding() {
-      return this.$store.state.branding.branding;
+      return this.$root.branding;
     },
     chartOptions() {
       let totals = [];
@@ -54,13 +54,13 @@ export default {
             show: false,
           },
         },
-        colors: [this.$store.state.branding.branding.highlightColor],
+        colors: [this.$root.branding.highlightColor],
         stroke: {
           curve: "smooth",
         },
         dataLabels: {
           style: {
-            colors: [this.$store.state.branding.branding.textColor],
+            colors: [this.$root.branding.textColor],
             fontFamily: "Roboto, Sans-Serif",
             fontWeight: 700,
           },

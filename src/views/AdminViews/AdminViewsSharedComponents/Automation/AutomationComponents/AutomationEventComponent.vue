@@ -29,7 +29,6 @@
 </template>
 
 <script>
-import ButtonStandardWithIcon from "../../../../../SharedComponents/SharedComponentsUI/ButtonStandardWithIcon.vue";
 import AutomationContactListItem from "./AutomationContactListItem.vue";
 import AutomationContactListItemApproved from "./AutomationContactListItemApproved.vue";
 import BaseCard from "../../../../../SharedComponents/SharedComponentsUI/BaseCard.vue";
@@ -55,7 +54,6 @@ export default {
   components: {
     AutomationContactListItem,
     AutomationContactListItemApproved,
-    ButtonStandardWithIcon,
     BaseCard,
   },
 };

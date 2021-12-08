@@ -220,7 +220,7 @@
 import XIconSVG from "../../../../assets/SVGs/x-icon.svg";
 import { EditPenSVG } from "../../../../assets/SVGs/svgIndex";
 import helpers from "../../../../helpers.js";
-import ButtonStandardWithIcon from "../../../../SharedComponents/SharedComponentsUI/ButtonStandardWithIcon.vue";
+
 export default {
   data() {
     return {
@@ -381,10 +381,6 @@ export default {
   },
   created() {
     this.businessSettings = this.$store.state.businessSettings;
-  },
-
-  components: {
-    ButtonStandardWithIcon,
   },
 };
 </script>

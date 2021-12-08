@@ -131,7 +131,7 @@
 <script>
 import XIconSVG from "../../../../assets/SVGs/x-icon.svg";
 import helpers from "../../../../helpers.js";
-import ButtonStandardWithIcon from "../../../../SharedComponents/SharedComponentsUI/ButtonStandardWithIcon.vue";
+
 export default {
   data() {
     return {
@@ -189,9 +189,7 @@ export default {
   created() {
     this.services = this.$store.state.businessSettings.product.services;
   },
-  components: {
-    ButtonStandardWithIcon,
-  },
+
 };
 </script>
 

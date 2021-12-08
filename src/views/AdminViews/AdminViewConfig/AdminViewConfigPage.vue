@@ -200,7 +200,6 @@ import AdminViewConfigAddOns from "./AdminViewConfigCards/AdminViewConfigAddOns.
 import AdminViewConfigAutomations from "./AdminViewConfigCards/AdminViewConfigAutomations.vue";
 import AdminViewConfigContracts from "./AdminViewConfigCards/AdminViewConfigContracts.vue";
 import AdminViewConfigDiscounts from "./AdminViewConfigCards/AdminViewConfigDiscounts.vue";
-import ButtonStandardWithIcon from "../../../SharedComponents/SharedComponentsUI/ButtonStandardWithIcon.vue";
 
 export default {
   data() {
@@ -279,7 +278,6 @@ export default {
     AdminViewConfigDiscounts,
     AdminViewConfigContracts,
     AdminViewConfigAutomations,
-    ButtonStandardWithIcon,
   },
 };
 </script>

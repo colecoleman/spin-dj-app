@@ -74,7 +74,7 @@
 
 <script>
 import defaultProfilePicture from "../../../../../assets/default-profile-picture.svg";
-import ButtonStandardWithIcon from "../../../../../SharedComponents/SharedComponentsUI/ButtonStandardWithIcon.vue";
+
 import helpers from "../../../../../helpers.js";
 export default {
   data() {
@@ -130,7 +130,7 @@ export default {
   created() {
     this.$store.dispatch("getAdminUsers");
   },
-  components: { ButtonStandardWithIcon },
+
 };
 </script>
 

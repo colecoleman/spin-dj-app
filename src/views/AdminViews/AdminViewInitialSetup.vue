@@ -100,11 +100,10 @@
 
 <script>
 import SpinLogoWithText from "../../assets/spin-logo-with-text.svg";
-import ButtonStandardWithIcon from "../../SharedComponents/SharedComponentsUI/ButtonStandardWithIcon.vue";
+
 import axios from "axios";
 
 export default {
-  components: { ButtonStandardWithIcon },
   data() {
     return {
       SpinLogoWithText,

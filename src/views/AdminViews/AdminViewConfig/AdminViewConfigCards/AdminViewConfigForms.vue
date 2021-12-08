@@ -206,7 +206,7 @@
 
 <script>
 import XIconSVG from "../../../../assets/SVGs/x-icon.svg";
-import ButtonStandardWithIcon from "../../../../SharedComponents/SharedComponentsUI/ButtonStandardWithIcon.vue";
+
 export default {
   data() {
     return {
@@ -271,7 +271,6 @@ export default {
       return this.$store.state.businessSettings;
     },
   },
-  components: { ButtonStandardWithIcon },
 };
 </script>
 

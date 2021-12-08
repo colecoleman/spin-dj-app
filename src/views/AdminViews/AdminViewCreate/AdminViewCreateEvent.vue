@@ -368,14 +368,13 @@ import XIcon from "../../../assets/SVGs/x-icon.svg";
 import locationmarker from "../../../assets/SVGs/location-marker.svg";
 import helpers from "../../../helpers.js";
 import AdminViewCreateEventSummary from "./AdminViewCreateEventSummary.vue";
-import ButtonStandardWithIcon from "../../../SharedComponents/SharedComponentsUI/ButtonStandardWithIcon.vue";
+
 import FloatingMenuWithListItems from "../../../SharedComponents/SharedComponentsUI/FloatingMenuWithListItems.vue";
 
 export default {
   components: {
     AdminViewCreateEventSummary,
     FloatingMenuWithListItems,
-    ButtonStandardWithIcon,
   },
   data() {
     return {

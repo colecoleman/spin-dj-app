@@ -111,7 +111,7 @@
 
 <script>
 import XIconSVG from "../../../../assets/SVGs/x-icon.svg";
-import ButtonStandardWithIcon from "../../../../SharedComponents/SharedComponentsUI/ButtonStandardWithIcon.vue";
+
 import helpers from "../../../../helpers.js";
 
 export default {
@@ -159,7 +159,7 @@ export default {
     },
   },
   computed: {},
-  components: { ButtonStandardWithIcon },
+
 };
 </script>
 

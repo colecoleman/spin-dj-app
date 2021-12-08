@@ -30,7 +30,6 @@
 </template>
 
 <script>
-import ButtonStandardWithIcon from "../../../../SharedComponents/SharedComponentsUI/ButtonStandardWithIcon.vue";
 import AutomationContactListItem from "../../AdminViewsSharedComponents/Automation/AutomationComponents/AutomationContactListItem.vue";
 import AutomationContactListItemApproved from "../../AdminViewsSharedComponents/Automation/AutomationComponents/AutomationContactListItemApproved.vue";
 import automationsvg from "../../../../assets/SVGs/automation.svg";
@@ -52,7 +51,6 @@ export default {
   components: {
     AutomationContactListItem,
     AutomationContactListItemApproved,
-    ButtonStandardWithIcon,
   },
 };
 </script>

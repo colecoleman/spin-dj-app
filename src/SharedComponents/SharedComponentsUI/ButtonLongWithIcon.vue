@@ -30,7 +30,7 @@ export default {
 
 .button-long-with-icon:active {
   background: var(--foregroundColor);
-  color: black;
+  /* color: black; */
 }
 .button-long-with-icon:active > svg {
   fill: black;

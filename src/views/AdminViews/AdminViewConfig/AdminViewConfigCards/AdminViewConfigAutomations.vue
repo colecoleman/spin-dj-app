@@ -221,8 +221,6 @@
 </template>
 
 <script>
-import ButtonStandardWithIcon from "../../../../SharedComponents/SharedComponentsUI/ButtonStandardWithIcon.vue";
-
 export default {
   data() {
     return {
@@ -284,8 +282,6 @@ export default {
       };
     },
   },
-  computed: {},
-  components: { ButtonStandardWithIcon },
 };
 </script>
 

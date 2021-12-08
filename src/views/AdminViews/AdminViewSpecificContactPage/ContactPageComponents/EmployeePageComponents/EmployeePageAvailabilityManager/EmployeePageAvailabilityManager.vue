@@ -90,7 +90,6 @@
 
 <script>
 import popupModal from "../../../../../../SharedComponents/SharedComponentsUI/PopupModal.vue";
-import ButtonStandardWithIcon from "../../../../../../SharedComponents/SharedComponentsUI/ButtonStandardWithIcon.vue";
 import {
   PlusSignSVG,
   CircleCheckmarkSVG,
@@ -200,7 +199,7 @@ export default {
 
   props: ["employee"],
   emits: ["close-popup"],
-  components: { popupModal, ButtonStandardWithIcon },
+  components: { popupModal },
 };
 </script>
 
