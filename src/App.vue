@@ -17,11 +17,12 @@ import axios from "axios";
 import EventManager from "./views/AdminViews/AdminViewDashboard/EventManager.vue";
 import ErrorIndicator from "./SharedComponents/SharedComponentsUI/ErrorIndicator.vue";
 import SuccessIndicator from "./SharedComponents/SharedComponentsUI/SuccessIndicator.vue";
+import ButtonStandardWithIcon from "./SharedComponents/SharedComponentsUI/ButtonStandardWithIcon.vue";
 
 export default {
   data() {
     return {
-      loaded: false,
+      loaded: true,
     };
   },
   computed: {
@@ -31,8 +32,8 @@ export default {
       }
     },
     branding() {
-      if (this.$store.state.branding.branding) {
-        return this.$store.state.branding.branding;
+      if (this.identity) {
+        return this.identity.branding;
       } else {
         return {
           backgroundColor: "#F0F0F0",
@@ -52,9 +53,6 @@ export default {
         "--textColor": this.branding.textColor,
       };
     },
-    currentUser: async () => {
-      await Auth.currentAuthenticatedUser();
-    },
     errors() {
       return this.$store.state.errors;
     },
@@ -66,19 +64,31 @@ export default {
     EventManager,
     ErrorIndicator,
     SuccessIndicator,
+    ButtonStandardWithIcon,
   },
 
   async mounted() {
-    let user = await Auth.currentAuthenticatedUser();
+    let user;
+    await Auth.currentAuthenticatedUser()
+      .then((res) => {
+        user = res;
+      })
+      .catch((e) => {
+        console.log(e);
+      });
     console.log(user);
     if (user) {
-      await this.$store.dispatch("setUser", user.username);
+      await this.$store.dispatch("setUser", user);
       // await this.$store.dispatch("setBranding", user.username);
-      await this.$store.dispatch("adminGetEvents");
-      await this.$store.dispatch("setBusinessSettings", user.username);
+      // await this.$store.dispatch("getEvents");
+      // await this.$store.dispatch("setBusinessSettings", user.username);
     }
     console.log(this.$store.state.businessSettings);
-    document.title = this.$store.state.branding.businessName;
+    if (this.$store.state.branding) {
+      document.title = this.$store.state.branding.businessName;
+    } else {
+      document.title = "Spin";
+    }
     this.loaded = true;
   },
 };
