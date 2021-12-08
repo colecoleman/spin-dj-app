@@ -17,33 +17,66 @@ import SpecificContactPageOrganizer from '../views/AdminViews/AdminViewSpecificC
 import SpecificEventPage from "../views/AdminViews/AdminViewSpecificEventPage/SpecificEventPage.vue";
 import AdminViewCreateEvent from '../views/AdminViews/AdminViewCreate/AdminViewCreateEvent.vue';
 
+import ClientView from '../views/ClientViews/ClientView.vue';
+import ClientDashboard from '../views/ClientViews/ClientViewsTopLevelComponents/ClientDashboard.vue';
+import ClientEventView from '../views/ClientViews/ClientViewsTopLevelComponents/ClientEventView.vue';
 
+import EmployeeView from '../views/EmployeeViews/EmployeeView.vue';
+import EmployeeDashboard from '../views/EmployeeViews/EmployeeViewsTopLevelComponents/EmployeeDashboard.vue';
+
+import OrganizerView from '../views/OrganizerViews/OrganizerView.vue';
+import OrganizerDashboard from '../views/OrganizerViews/OrganizerViewsTopLevelComponents/OrganizerDashboard.vue';
+
+import VendorView from '../views/VendorViews/VendorView.vue';
+import VendorDashboard from '../views/VendorViews/VendorViewsTopLevelComponents/VendorDashboard.vue';
+
+// async function ionViewCanEnter() {
+//   try {
+//       await Auth.currentAuthenticatedUser();
+//       return true;
+//   } catch {
+//       return false;
+//   }
+// }
+let user;
+let setAuthStatus = async function () {
+  await Auth.currentAuthenticatedUser()
+    .then((res) => {
+      user = res;
+    })
+    .catch((e) => {
+      console.log(e);
+    });
+    console.log(user)
+}
+
+// setAuthStatus();
 
 const routes = [
   
   {
     path: '/',
     name: 'index', 
-    async beforeEnter(to, from ,next) {
-      try {
-        let user = await Auth.currentAuthenticatedUser().then(
-          (results) => {
-            console.log(results)
-            if (
-              user.signInUserSession.idToken.payload[`cognito:groups`].includes("admins") 
-            ) {
-              next({path: '/admin/dash'})
-    
-            } else {
-              next({name: 'loginPage'})
-            }
-          }
-        );
-        
-      } catch (e) {
-        this.$store.dispatch('addError', "Please login!");
-        next({name: 'loginPage'})
-      }
+    beforeEnter: async (to, from, next) => {
+      await setAuthStatus(); 
+      if (user == undefined) {
+        next({path: "/login"})
+      } else if (user.signInUserSession.idToken.payload["cognito:preferred_role"].includes('Admin')) {
+        console.log('admin, biatch')
+        next({path: '/admin/dashboard'})
+      } else if (user.signInUserSession.idToken.payload['cognito:preferred_role'].includes("Client")) {
+        console.log('client, biatch');
+        next({path: '/client/dashboard'})
+      } else if (user.signInUserSession.idToken.payload['cognito:preferred_role'].includes("Employee")) {
+        console.log('employee, biatch');
+        next({path: '/employee/dashboard'})
+      } else if (user.signInUserSession.idToken.payload['cognito:preferred_role'].includes("Organizer")) {
+        console.log('client, biatch');
+        next({path: '/organizer/dashboard'})
+      } else if (user.signInUserSession.idToken.payload['cognito:preferred_role'].includes("Vendor")) {
+        console.log('client, biatch');
+        next({path: '/vendor/dashboard'})
+      } 
     }
   },
   {
@@ -54,7 +87,8 @@ const routes = [
     children: [
       { 
         path: 'dashboard',
-        name: "dash",
+        name: "dashboard",
+        meta: {requiresAdminAuth: true},
         components: {
          content: EventManager
         },  
@@ -62,6 +96,7 @@ const routes = [
       {
       path: 'contacts',
       name: 'contacts',
+      meta: {requiresAdminAuth: true},
       components: {
         content: ContactsList
       },
@@ -69,6 +104,7 @@ const routes = [
       {
         path: 'contacts/clients/:id',
         name: 'specificContactPageClient',
+        meta: {requiresAdminAuth: true},
         components: {
           content: SpecificContactPageClient
         }
@@ -76,6 +112,7 @@ const routes = [
       {
         path: 'contacts/prospects/:id',
         name: 'specificContactPageProspect',
+        meta: {requiresAdminAuth: true},
         components: { 
           content:SpecificContactPageProspect
         },
@@ -83,6 +120,7 @@ const routes = [
       {
         path: 'contacts/vendors/:id',
         name: 'specificContactPageVendor',
+        meta: {requiresAdminAuth: true},
         components: { 
           content: SpecificContactPageVendor
         },
@@ -90,6 +128,7 @@ const routes = [
       {
         path: 'contacts/employees/:id',
         name: 'specificContactPageEmployee',
+        meta: {requiresAdminAuth: true},
         components: {
           content: SpecificContactPageEmployee
         },
@@ -97,6 +136,7 @@ const routes = [
       {
         path: 'contacts/locations/:id',
         name: 'specificContactPageLocation',
+        meta: {requiresAdminAuth: true},
         components: {
           content: SpecificContactPageLocation
         }
@@ -104,6 +144,7 @@ const routes = [
       {
         path: 'contacts/organizers/:id',
         name: 'specificContactPageOrganizer',
+        meta: {requiresAdminAuth: true},
         components: {
           content: SpecificContactPageOrganizer
         }
@@ -111,6 +152,7 @@ const routes = [
       {
         path: 'events/:id',
         name: 'specificEventPage',
+        meta: {requiresAdminAuth: true},
         components: {
           content: SpecificEventPage
         }
@@ -118,6 +160,7 @@ const routes = [
       {
         path: 'createnewevent',
         name: 'admincreateevent',
+        meta: {requiresAdminAuth: true},
         components: {
           content: AdminViewCreateEvent
         }
@@ -125,6 +168,7 @@ const routes = [
       {
         path: 'config/',
         name: 'adminConfigPage',
+        meta: {requiresAdminAuth: true},
         components: {
           content: AdminConfigurationPage,
           }
@@ -133,7 +177,77 @@ const routes = [
     ]
   
   },
-  
+  {
+    path: '/client',
+    components: {
+      main: ClientView
+    }, 
+    children: [
+      {
+        path: 'dashboard',
+        name: 'clientDashboard',
+        meta: {requiresClientAuth: true},
+        components: {
+          content: ClientDashboard
+        }
+      }, {
+        path: 'event/{eventId}',
+        name: 'clientEventView',
+        meta: {requiresClientAuth: true},
+        components: {
+          content: ClientEventView
+        }
+      }
+    ]
+  },
+  {
+    path: '/employee',
+    components: {
+      main: EmployeeView
+    }, 
+    children: [
+      {
+        path: 'dashboard',
+        name: 'employeeDashboard',
+        meta: {requiresEmployeeAuth: true},
+        components: {
+          content: EmployeeDashboard
+        }
+      }
+    ]
+  },
+  {
+    path: '/organizer',
+    components: {
+      main: OrganizerView
+    }, 
+    children: [
+      {
+        path: 'dashboard',
+        name: 'organizerDashboard',
+        meta: {requiresOrganizerAuth: true},
+        components: {
+          content: OrganizerDashboard
+        }
+      }
+    ]
+  },
+  {
+    path: '/vendor',
+    components: {
+      main: VendorView
+    }, 
+    children: [
+      {
+        path: 'dashboard',
+        name: 'vendorDashboard',
+        meta: {requiresVendorAuth: true},
+        components: {
+          content: VendorDashboard
+        }
+      }
+    ]
+  },
   {
     path: '/signup',
     name: 'signUpPage',
@@ -147,10 +261,6 @@ const routes = [
     components: { 
       main:LoginPage
     },
-    beforeEnter(to, from, next) {
-      console.log(to, from)
-      next()
-    }
   },
   {
     path: '/forgot',
@@ -181,5 +291,30 @@ const router = createRouter({
     }
   }
 });
+
+// router.beforeEach(async (to, from, next) => {
+  // await setAuthStatus();
+  // if (user == undefined && to.name !== 'loginPage') {
+  //   next({path: '/login'})
+  // } else {
+  //   if (to.name === 'loginPage') {
+  //     user = undefined;
+  //     next();
+  //   }
+  //   console.log(to.meta.requiresAdminAuth)
+  //   console.log(user.signInUserSession.idToken.payload)
+  //   // if (to.meta.requiresAdminAuth && user.signInUserSession.idToken.payload["cognito:preferred_role"].includes('Admin')) {
+  //   //   console.log('admin, biatch')
+  //   //   next({path: 'admin/dashboard'})
+  //   // } else if (to.meta.requiresClientAuth && user.signInUserSession.idToken.payload['cognito:preferred_role'].includes("Client")) {
+  //   //   console.log('user is client');
+  //   // }
+  // } 
+  // if (to.matched.some(record => record.meta.requiresAdminAuth)) {
+  //   // let user = await Auth.currentAuthenticatedUser();
+  //   // console.log(user);
+  //   return true;
+  // }
+// })
 
 export default router;
