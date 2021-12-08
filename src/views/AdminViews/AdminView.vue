@@ -1,14 +1,14 @@
 <template>
-  <the-header></the-header>
+  <admin-header></admin-header>
   <div class="content-container">
     <router-view name="content"></router-view>
   </div>
 </template>
 
 <script>
-import TheHeader from "../../SharedComponents/SharedComponentsHeader/TheHeader.vue";
+import AdminHeader from "../../SharedComponents/SharedComponentsHeader/AdminHeader.vue";
 export default {
-  components: { TheHeader },
+  components: { AdminHeader },
 };
 </script>
 

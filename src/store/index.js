@@ -30,7 +30,8 @@ const store = createStore({
         async getUser(context, user) {
             return new Promise((resolve, reject) => {
                 axios.get(`https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/admin/${context.state.user.tenantId}/users/${user}`).then((result)=> {
-                    resolve(result.data);
+                    resolve(result.data.Item);
+                    console.log(result.data.Item)
                 }, error => {
                     context.commit('addError', error);
                     reject(error);
@@ -38,8 +39,18 @@ const store = createStore({
             })
         },
         async setUser(context, user) {
-            await axios.get(`https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/admin/${user}/users/${user}`).then(response => {
+            let tenantId = function() {
+                if (user.challengeParam) {
+                    return user.challengeParam.userAttributes['custom:tenantId']
+                } else {
+                    return user.attributes['custom:tenantId']
+                }
+            };
+            await axios.get(`https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/admin/${tenantId()}/users/${user.username}`).then(response => {
                 context.commit('setUser', response.data.Item);
+                console.log(response)
+            }).catch((e) => {
+                console.log(e)
             })
         },
         async setBusinessSettings(context) {
@@ -226,10 +237,11 @@ const store = createStore({
                 context.commit('addError', e)
             })
         },
-        async adminGetEvents(context) {
+        async getEvents(context) {
             return new Promise((resolve, reject) => {
                 axios.get(`https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/admin/${context.state.user.tenantId}/events`).then((result)=> {
                     resolve(result);
+                    console.log(result)
                     context.commit('setEvents', result);
                 }, error => {
                     context.commit('addError', error);
@@ -237,6 +249,9 @@ const store = createStore({
                 })
             })
         },
+        // async getEvents(context) {
+
+        // },
         async adminGetEvent(context, payload) {
             return new Promise((resolve, reject) => {
                 axios.get(`https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/admin/${context.state.user.tenantId}/events/${payload}`).then((result)=> {
@@ -339,6 +354,7 @@ const store = createStore({
         },
         addError(state, error) {
             state.errors.push(error);
+            console.log(error)
         },
         clearErrors(state) {
             state.errors.length = 0;
