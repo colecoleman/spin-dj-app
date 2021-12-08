@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import logo from "../../../assets/company-logo.svg";
+import logo from "../../assets/company-logo.svg";
 export default {
   data() {
     return {

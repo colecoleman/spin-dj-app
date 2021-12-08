@@ -127,8 +127,8 @@
 </template>
 
 <script>
-import logo from "../../../assets/company-logo.svg";
-import helpers from "../../../helpers.js";
+import logo from "../../assets/company-logo.svg";
+import helpers from "../../helpers.js";
 
 export default {
   data() {
@@ -183,7 +183,7 @@ h3,
 h4,
 h5,
 p {
-  color: black;
+  /* color: black; */
 }
 
 #heading {

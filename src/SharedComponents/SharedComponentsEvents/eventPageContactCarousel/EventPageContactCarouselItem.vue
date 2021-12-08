@@ -26,7 +26,7 @@
 </template>
 
 <script>
-import defaultProfilePicture from "../../../../assets/default-profile-picture.svg";
+import defaultProfilePicture from "../../../assets/default-profile-picture.svg";
 export default {
   data() {
     return {

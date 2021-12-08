@@ -217,10 +217,9 @@
 
 
 <script>
-import ButtonStandardWithIcon from "../../../SharedComponents/SharedComponentsUI/ButtonStandardWithIcon.vue";
-import FullPagePopup from "../../../SharedComponents/SharedComponentsUI/FullPagePopup.vue";
+import FullPagePopup from "../../SharedComponents/SharedComponentsUI/FullPagePopup.vue";
 import InvoicePopupDocumentView from "./InvoicePopupDocumentView.vue";
-import helpers from "../../../helpers.js";
+import helpers from "../../helpers.js";
 
 export default {
   computed: {
@@ -257,7 +256,6 @@ export default {
   components: {
     FullPagePopup,
     InvoicePopupDocumentView,
-    ButtonStandardWithIcon,
   },
 };
 </script>

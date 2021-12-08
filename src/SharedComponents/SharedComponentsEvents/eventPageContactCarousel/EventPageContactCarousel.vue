@@ -22,9 +22,9 @@
 
 <script>
 import EventPageContactCarouselItem from "./EventPageContactCarouselItem.vue";
-import rightArrow from "../../../../assets/SVGs/right-arrow.svg";
-import leftArrow from "../../../../assets/SVGs/left-arrow.svg";
-import groupPeopleSvg from "../../../../assets/SVGs/group-people.svg";
+import rightArrow from "../../../assets/SVGs/right-arrow.svg";
+import leftArrow from "../../../assets/SVGs/left-arrow.svg";
+import groupPeopleSvg from "../../../assets/SVGs/group-people.svg";
 
 export default {
   data() {

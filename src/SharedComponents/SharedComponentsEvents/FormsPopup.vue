@@ -101,8 +101,7 @@
 
 
 <script>
-import FullPagePopup from "../../../SharedComponents/SharedComponentsUI/FullPagePopup.vue";
-import ButtonStandardWithIcon from "../../../SharedComponents/SharedComponentsUI/ButtonStandardWithIcon.vue";
+import FullPagePopup from "../SharedComponentsUI/FullPagePopup.vue";
 
 export default {
   data() {
@@ -128,7 +127,6 @@ export default {
 
   components: {
     FullPagePopup,
-    ButtonStandardWithIcon,
   },
   created() {
     console.log(this.forms);

@@ -25,10 +25,10 @@
 </template>
 
 <script>
-import leftArrow from "../../../../assets/SVGs/left-arrow.svg";
-import rightArrow from "../../../../assets/SVGs/right-arrow.svg";
+import leftArrow from "../../../assets/SVGs/left-arrow.svg";
+import rightArrow from "../../../assets/SVGs/right-arrow.svg";
 import SpecificEventPageLocationScrollerItem from "./SpecificEventPageLocationScrollerItem.vue";
-import locationMarkerSvg from "../../../../assets/SVGs/location-marker.svg";
+import locationMarkerSvg from "../../../assets/SVGs/location-marker.svg";
 
 export default {
   data() {

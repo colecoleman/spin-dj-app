@@ -20,8 +20,8 @@
 import { Auth, Signer } from "aws-amplify";
 import maplibregl from "maplibre-gl";
 import Location from "aws-sdk/clients/location";
-import awsconfig from "../../../../aws-exports";
-import helpers from "../../../../helpers.js";
+import awsconfig from "../../../aws-exports";
+import helpers from "../../../helpers.js";
 
 export default {
   data: function () {

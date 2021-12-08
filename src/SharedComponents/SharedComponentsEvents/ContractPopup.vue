@@ -82,11 +82,11 @@
 
 
 <script>
-import { LeftArrowSVG, RightArrowSVG } from "../../../assets/SVGs/svgIndex.js";
-import FullPagePopup from "../../../SharedComponents/SharedComponentsUI/FullPagePopup.vue";
+import { LeftArrowSVG, RightArrowSVG } from "../../assets/SVGs/svgIndex.js";
+import FullPagePopup from "../SharedComponentsUI/FullPagePopup.vue";
 import ContractPopupDocumentView from "./ContractPopupDocumentView.vue";
-import ButtonStandardWithIcon from "../../../SharedComponents/SharedComponentsUI/ButtonStandardWithIcon.vue";
-import helpers from "../../../helpers.js";
+
+import helpers from "../../helpers.js";
 
 export default {
   data() {
@@ -122,7 +122,6 @@ export default {
   components: {
     FullPagePopup,
     ContractPopupDocumentView,
-    ButtonStandardWithIcon,
   },
   props: ["contracts"],
 };

@@ -131,8 +131,8 @@
 </template>
 
 <script>
-import infoIconSvg from "../../../assets/SVGs/info-icon.svg";
-import helpers from "../../../helpers.js";
+import infoIconSvg from "../../assets/SVGs/info-icon.svg";
+import helpers from "../../helpers.js";
 
 export default {
   data() {

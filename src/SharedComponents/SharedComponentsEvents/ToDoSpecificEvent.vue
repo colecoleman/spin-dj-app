@@ -97,9 +97,9 @@
 </template>
 
 <script>
-import ToDoItem from "../../../SharedComponents/SharedComponentsToDoList/ToDoItem.vue";
-import clipboardsvg from "../../../assets/SVGs/clipboard.svg";
-import circleCheckmarkSvg from "../../../assets/SVGs/circle-checkmark.svg";
+import ToDoItem from "../SharedComponentsToDoList/ToDoItem.vue";
+import clipboardsvg from "../../assets/SVGs/clipboard.svg";
+import circleCheckmarkSvg from "../../assets/SVGs/circle-checkmark.svg";
 
 export default {
   data() {

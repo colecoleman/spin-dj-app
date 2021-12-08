@@ -78,16 +78,16 @@
 </template>
 
 <script>
-import ToDoSpecificEvent from "./ToDoSpecificEvent.vue";
+import ToDoSpecificEvent from "../../../SharedComponents/SharedComponentsEvents/ToDoSpecificEvent.vue";
 import RecentMessagesEvent from "../../../SharedComponents/SharedComponentsMessaging/RecentMessagesEvent.vue";
-import EventPageContactCard from "./EventPageContactCard.vue";
+import EventPageContactCard from "../../../SharedComponents/SharedComponentsEvents/EventPageContactCard.vue";
 import EventPageContactCarousel from "./eventPageContactCarousel/EventPageContactCarousel.vue";
 import SpecificEventPageLocationScroller from "./specificEventPageLocationScroller/SpecificEventPageLocationScroller.vue";
 import AutomationEventComponent from "../AdminViewsSharedComponents/Automation/AutomationComponents/AutomationEventComponent.vue";
 import Backdrop from "../../../SharedComponents/SharedComponentsUI/Backdrop.vue";
-import FormsPopup from "./FormsPopup.vue";
-import InvoicePopup from "./InvoicePopup.vue";
-import ContractPopup from "./ContractPopup.vue";
+import FormsPopup from "../../../SharedComponents/SharedComponentsEvents/FormsPopup.vue";
+import InvoicePopup from "../../../SharedComponents/SharedComponentsEvents/InvoicePopup.vue";
+import ContractPopup from "../../../SharedComponents/SharedComponentsEvents/ContractPopup.vue";
 import FourButtonBarWithDropDown from "../../../SharedComponents/SharedComponentsUI/FourButtonBarWithDropDown.vue";
 import TwoButtonDialogModal from "../../../SharedComponents/SharedComponentsUI/TwoButtonDialogModal.vue";
 
