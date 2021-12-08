@@ -15,7 +15,7 @@
         >
         <h1>Login:</h1>
 
-        <div class="login-form">
+        <div class="login-form" v-if="!newPasswordNeeded">
           <div class="input-field">
             <p>Email Address:</p>
             <input
@@ -41,8 +41,67 @@
           </div>
           <button-standard-with-icon
             text="Sign In"
-            @click="validationBlock()"
+            @click="login()"
             :loading="loading"
+          ></button-standard-with-icon>
+        </div>
+        <div class="login-form" v-if="newPasswordNeeded">
+          <div class="input-field">
+            <p>First Name:</p>
+            <input
+              type="text"
+              v-model="given_name"
+              :class="firstNameError ? 'error' : 'healthy'"
+            />
+            <p class="error-text" v-if="firstNameError">
+              <i>Missing a first name!</i>
+            </p>
+          </div>
+          <div class="input-field">
+            <p>Last Name:</p>
+            <input
+              type="text"
+              v-model="family_name"
+              :class="lastNameError ? 'error' : 'healthy'"
+            />
+            <p class="error-text" v-if="lastNameError">
+              <i>Oops! We're missing a last name!</i>
+            </p>
+          </div>
+          <div class="input-field">
+            <p>New Password:</p>
+            <input
+              type="password"
+              v-model="newPassword"
+              :class="
+                passwordError.strength || passwordError.match
+                  ? 'error'
+                  : 'healthy'
+              "
+            />
+            <p
+              class="error-text"
+              v-if="passwordError.strength || passwordError.match"
+            >
+              <i></i>
+            </p>
+          </div>
+          <div class="input-field">
+            <p>Confirm Password:</p>
+            <input
+              type="password"
+              v-model="confirmPassword"
+              :class="
+                confirmPasswordError.strength || confirmPasswordError.match
+                  ? 'error'
+                  : 'healthy'
+              "
+            />
+          </div>
+          <button-standard-with-icon
+            text="Sign In"
+            :loading="loading"
+            @click="completeNewPassword"
           ></button-standard-with-icon>
         </div>
         <p class="disclaimer">
@@ -58,18 +117,21 @@
 
 <script>
 import SpinLogoWithText from "../../assets/spin-logo-with-text.svg";
-
-import ButtonStandardWithIcon from "../../SharedComponents/SharedComponentsUI/ButtonStandardWithIcon.vue";
-// import AWS from "aws-sdk";
 import { Auth } from "aws-amplify";
 
 export default {
-  components: { ButtonStandardWithIcon },
   data() {
     return {
       SpinLogoWithText,
+      user: undefined,
+      tempUser: undefined,
+      newPasswordNeeded: false,
+      subdomain: undefined,
       username: undefined,
       password: undefined,
+      family_name: undefined,
+      given_name: undefined,
+      newPassword: undefined,
       confirmPassword: undefined,
       loading: false,
       usernameError: false,
@@ -77,38 +139,83 @@ export default {
         match: false,
         strength: false,
       },
+      confirmPasswordError: false,
     };
   },
   methods: {
-    validationBlock() {
+    usernameValidationBlock() {
       if (!this.username) {
         this.usernameError = true;
       } else {
         this.usernameError = false;
       }
-
-      if (!this.usernameError) {
-        this.login(this.username, this.password);
+    },
+    newPasswordValidationBlock() {
+      const re = new RegExp(
+        "^(?=.*d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$"
+      );
+      if (this.newPassword !== this.confirmPassword) {
+        this.passwordError.match = true;
+      }
+      if (!re.test(this.newPassword)) {
+        this.passwordError.strength = true;
+      } else {
+        this.passwordError.strength = false;
       }
     },
-
-    async login(username, password) {
+    async completeNewPassword() {
       this.loading = true;
-      {
-        try {
-          const user = await Auth.signIn(username, password);
-          this.$store.dispatch("setUser", user.username);
-          if (this.$store.state.user) {
-            this.loading = false;
-            this.$router.push("/admin/dashboard");
-          }
-          this.$store.dispatch("getAdminUsers");
-        } catch (error) {
-          this.loading = false;
-          this.$store.dispatch("addError", error);
-        }
+      this.newPasswordValidationBlock();
+      if (!this.passwordError.strength && !this.passwordError.match) {
+        // this.user = await Auth.signIn(this.username, this.password);
+        console.log(this.tempUser);
+        Auth.signIn(this.username, this.password)
+          .then((res) => {
+            console.log(res);
+            // const { requiredAttributes } = res.challengeParam;
+
+            return Auth.completeNewPassword(res, this.newPassword, {
+              family_name: this.family_name,
+              given_name: this.given_name,
+            }).then((res) => {
+              console.log(res);
+              this.$router.push("/");
+            });
+          })
+          .catch((e) => {
+            console.log(e);
+          });
+        // await Auth.currentAuthenticatedUser()
+        //   .then((user) => {
+        //     console.log(user);
+        //   })
+        //   .then((data) => console.log(data))
+        //   .catch((err) => console.log(err));
+        // return;
       }
+      this.loading = false;
     },
+    async login() {
+      this.usernameValidationBlock();
+      this.loading = true;
+      await Auth.signIn(this.username, this.password)
+        .then((user) => {
+          console.log(user);
+          if (user.challengeName === "NEW_PASSWORD_REQUIRED") {
+            this.newPasswordNeeded = true;
+            this.tempUser = user;
+          } else {
+            this.$router.push("/");
+          }
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+      this.loading = false;
+    },
+  },
+  created() {
+    console.log(window.location.host);
   },
 };
 </script>
@@ -187,7 +294,6 @@ p {
 
 .healthy {
   width: 100%;
-
 }
 .error {
   border-bottom: 2px solid red;

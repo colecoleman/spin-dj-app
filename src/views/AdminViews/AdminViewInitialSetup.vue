@@ -83,7 +83,6 @@
             <button-standard-with-icon
               text="Choose File"
               @click="chooseFileLogo()"
-              style="margin: 0px; padding: 5px; height: 30px"
             />
             <p v-if="logo">
               <i>{{ logo.name }}</i>
@@ -117,6 +116,7 @@ export default {
         city: null,
         state: null,
         zipCode: null,
+        subdomain: this.domain,
       },
       errors: {
         businessNameError: false,
@@ -131,6 +131,15 @@ export default {
       importIssue: false,
     };
   },
+  computed: {
+    domain() {
+      console.log(this.data.businessName.replaceAll(" ", "").toLowerCase());
+      return this.data.businessName.replaceAll(" ", "").toLowerCase();
+    },
+    user() {
+      return this.$store.state.user;
+    },
+  },
   methods: {
     chooseFileLogo() {
       document.getElementById("hidden-file-button-logo").click();
@@ -143,7 +152,6 @@ export default {
       console.log(this.logo);
     },
     step1validationBlock() {
-      console.log("hey");
       if (!this.data.businessName) {
         this.errors.businessNameError = true;
       } else {
@@ -165,7 +173,11 @@ export default {
         !this.errors.address1error &&
         !this.errors.address2error
       ) {
+        this.data.subdomain = this.data.businessName
+          .replaceAll(" ", "")
+          .toLowerCase();
         this.addToDB();
+        console.log(this.data);
       }
     },
     addToDB() {
@@ -178,7 +190,7 @@ export default {
           };
           axios
             .put(
-              "https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/admin/f4863dca-bb43-4037-bdf8-b8a36189bfe7/users/f4863dca-bb43-4037-bdf8-b8a36189bfe7",
+              `https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/admin/${this.user.tenantId}/users/${this.user.userId}`,
               post
             )
             .then((result) => {
@@ -257,7 +269,7 @@ p {
 }
 
 .hero-right h1 {
-  color: white;
+  /* color: white; */
   text-align: center;
 }
 
@@ -292,13 +304,13 @@ p {
 .healthy {
   border: 1px solid white;
   width: 100%;
-  color: white;
+  /* color: white; */
 }
 .error {
   border: 1px solid white;
   border-bottom: 2px solid red;
   width: 100%;
-  color: white;
+  /* color: white; */
 }
 
 .error-text {
@@ -326,6 +338,7 @@ input:focus {
 
 .sign-in-text {
   position: absolute;
+  color: white;
   top: 20px;
   right: 20px;
   font-weight: 600;

@@ -103,12 +103,9 @@
 
 <script>
 import SpinLogoWithText from "../../assets/spin-logo-with-text.svg";
-import ButtonStandardWithIcon from "../../SharedComponents/SharedComponentsUI/ButtonStandardWithIcon.vue";
-// import AWS from "aws-sdk";
 import { Auth } from "aws-amplify";
 
 export default {
-  components: { ButtonStandardWithIcon },
   data() {
     return {
       SpinLogoWithText,
