@@ -22,12 +22,7 @@
       @close-popup="closePopup()"
       :contracts="event.contracts"
     ></contract-popup>
-    <!-- <two-button-dialog-modal
-      v-if="deleteEventOpen"
-      @select-button-one="confirmDeleteEvent()"
-      @select-button-two="closePopup()"
-      @close-modal="closePopup()"
-    ></two-button-dialog-modal> -->
+
     <section>
       <div id="upper-div">
         <div id="upper-div-left-container">
@@ -152,40 +147,12 @@ export default {
       this.contractOpen = true;
       this.backdropOpen = true;
     },
-    deleteEvent() {
-      this.deleteEventOpen = true;
-    },
-    async confirmDeleteEvent() {
-      let contacts = [...this.contacts];
-      console.log(contacts);
-      await contacts.forEach((contact) => {
-        let index = contact.associatedEvents.indexOf(this.event.userId);
-        let payload = {
-          clientId: contact.userId,
-          variable: "associatedEvents",
-          value: index,
-          operation: "removeFromList",
-        };
-        console.log(payload);
-        this.$store
-          .dispatch("editContact", payload)
-          .then((res) => {
-            console.log(res);
-            this.$store.commit("addSuccess", "Event Removed From Contact");
-          })
-          .catch((e) => {
-            this.$store.dispatch("addError", e);
-          });
-      });
-      await this.$store.dispatch("deleteEvent", this.event.userId);
-      this.$router.push("/admin/dashboard");
-    },
+
     closePopup() {
       this.contractOpen = false;
       this.invoiceOpen = false;
       this.formsOpen = false;
       this.backdropOpen = false;
-      this.deleteEventOpen = false;
     },
     editEvent() {
       alert("edited!");
@@ -197,17 +164,17 @@ export default {
 
   async created() {
     await this.$store
-      .dispatch("adminGetEvent", this.$route.params.id)
+      .dispatch("getEvent", this.$route.params.eventId)
       .then((res) => {
-        console.log(res.data.Item);
         this.event = res.data.Item;
+        console.log(this.event);
       })
       .catch((e) => this.$store.dispatch("addError", e));
     await this.event.contacts.forEach((contact) => {
-      this.$store.dispatch("getUser", contact).then((res) => {
-        this.contacts.push(res.Item);
-        if (res.Item.role === "client") {
-          this.clients.push(res.Item);
+      this.$store.dispatch("nonAdminGetUser", contact).then((res) => {
+        this.contacts.push(res.data.Item);
+        if (res.data.Item.role === "client") {
+          this.clients.push(res.data.Item);
         }
       });
     });

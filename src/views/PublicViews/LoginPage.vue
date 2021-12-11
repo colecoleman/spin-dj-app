@@ -13,38 +13,44 @@
         <a href="/signup"
           ><h5 class="sign-in-text">Don't Have an Account? Sign Up</h5></a
         >
-        <h1>Login:</h1>
+        <authenticator>
+          <template> </template>
+        </authenticator>
+        <!-- <template v-slot="{ user, signOut }">
+            <h1>Hello {{ user.username }}!</h1>
+            <button @click="signOut">Sign Out</button>
+          </template> -->
+        <!-- <div class="login-form" v-if="!newPasswordNeeded">
+            <div class="input-field">
+              <p>Email Address:</p>
+              <input
+                type="text"
+                v-model="username"
+                :class="usernameError ? 'error' : 'healthy'"
+              />
+              <p class="error-text" v-if="usernameError">
+                <i> Oops! Username must be a valid email address.</i>
+              </p>
+            </div>
+            <div class="input-field">
+              <p>Password:</p>
+              <input
+                type="password"
+                v-model="password"
+                :class="
+                  passwordError.strength || passwordError.match
+                    ? 'error'
+                    : 'healthy'
+                "
+              />
+            </div>
+            <button-standard-with-icon
+              text="Sign In"
+              @click="login()"
+              :loading="loading"
+            ></button-standard-with-icon>
+          </div> -->
 
-        <div class="login-form" v-if="!newPasswordNeeded">
-          <div class="input-field">
-            <p>Email Address:</p>
-            <input
-              type="text"
-              v-model="username"
-              :class="usernameError ? 'error' : 'healthy'"
-            />
-            <p class="error-text" v-if="usernameError">
-              <i> Oops! Username must be a valid email address.</i>
-            </p>
-          </div>
-          <div class="input-field">
-            <p>Password:</p>
-            <input
-              type="password"
-              v-model="password"
-              :class="
-                passwordError.strength || passwordError.match
-                  ? 'error'
-                  : 'healthy'
-              "
-            />
-          </div>
-          <button-standard-with-icon
-            text="Sign In"
-            @click="login()"
-            :loading="loading"
-          ></button-standard-with-icon>
-        </div>
         <div class="login-form" v-if="newPasswordNeeded">
           <div class="input-field">
             <p>First Name:</p>
@@ -118,12 +124,17 @@
 <script>
 import SpinLogoWithText from "../../assets/spin-logo-with-text.svg";
 import { Auth } from "aws-amplify";
+import { Authenticator } from "@aws-amplify/ui-vue";
+// import { AmplifyEventxBus } from "aws-amplify-vue";
+import { Hub } from "aws-amplify";
+
+import ButtonStandardWithIcon from "../../SharedComponents/SharedComponentsUI/ButtonStandardWithIcon.vue";
 
 export default {
   data() {
     return {
       SpinLogoWithText,
-      user: undefined,
+      // user: undefined,
       tempUser: undefined,
       newPasswordNeeded: false,
       subdomain: undefined,
@@ -143,6 +154,16 @@ export default {
     };
   },
   methods: {
+    checkForAuth() {
+      Hub.listen("auth", (data) => {
+        const { payload } = data;
+        this.onAuthEvent(payload);
+        console.log(
+          "A new auth event has happened: ",
+          data.payload.data.username + " has " + data.payload.event
+        );
+      });
+    },
     usernameValidationBlock() {
       if (!this.username) {
         this.usernameError = true;
@@ -214,8 +235,48 @@ export default {
       this.loading = false;
     },
   },
-  created() {
-    console.log(window.location.host);
+  components: {
+    ButtonStandardWithIcon,
+    Authenticator,
+  },
+  computed: {
+    user() {
+      return this.$store.state.user;
+    },
+  },
+  mounted() {
+    Hub.listen("auth", (data) => {
+      switch (data.payload.event) {
+        case "signIn":
+          console.log("user signed in");
+          console.log(data);
+          this.$router.push("/");
+
+          break;
+        case "signUp":
+          console.log("user signed up");
+          break;
+        case "signOut":
+          console.log("user signed out");
+          break;
+        case "signIn_failure":
+          console.log("user sign in failed");
+          this.$store.dispatch("addError", "Sign In Failed, Try Again");
+          break;
+        case "configured":
+          console.log("the Auth module is configured");
+      }
+    });
+    // AmplifyEventBus.$on("authState", (info) => {
+    //   console.log(
+    //     `Here is the auth event that was just emitted by an Amplify component: ${info}`
+    //   );
+    // });
+  },
+  watch: {
+    user() {
+      console.log("hjk");
+    },
   },
 };
 </script>

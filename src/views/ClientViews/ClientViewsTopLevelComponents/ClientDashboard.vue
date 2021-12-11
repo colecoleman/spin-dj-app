@@ -46,6 +46,7 @@ export default {
       });
     await this.$store.dispatch("getEvents").then((res) => {
       this.events = res.data.Items;
+      console.log(this.events);
     });
     this.loading = false;
   },
