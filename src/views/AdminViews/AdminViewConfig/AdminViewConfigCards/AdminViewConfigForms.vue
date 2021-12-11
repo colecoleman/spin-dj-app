@@ -181,21 +181,15 @@
           />
         </div>
         <div class="quarter-width">
-          <h5 v-if="businessSettings.product.forms.length <= 0">
-            No forms added yet! Add One!
-          </h5>
-          <div v-if="businessSettings.product.forms.length > 0">
+          <h5 v-if="!hasForms">No forms added yet! Add One!</h5>
+          <div v-if="hasForms">
             <h5
               v-for="(form, index) in businessSettings.product.forms"
               :key="index"
               class="bolds"
             >
               {{ form.name }}
-              <img
-                :src="XIconSVG"
-                class="x-icon"
-                @click="deletePackage(index)"
-              />
+              <img :src="XIconSVG" class="x-icon" @click="deleteForm(index)" />
             </h5>
           </div>
         </div>
@@ -251,11 +245,12 @@ export default {
     saveField() {
       this.form.fields.push(this.newField);
       console.log(this.newField);
-      this.form = {
-        name: undefined,
-        description: undefined,
-        fields: [],
-      };
+      console.log(this.form);
+      // this.form = {
+      //   name: undefined,
+      //   description: undefined,
+      //   fields: [],
+      // };
       this.newField = {
         name: undefined,
         inputQuantity: undefined,
@@ -264,11 +259,29 @@ export default {
     },
     saveForm() {
       this.$store.dispatch("addFormToDb", this.form);
+      this.form = {
+        name: undefined,
+        description: undefined,
+        fields: [],
+      };
+    },
+    deleteForm(index) {
+      this.$store.dispatch("adminConfigDeleteForm", index);
     },
   },
   computed: {
     businessSettings() {
       return this.$store.state.businessSettings;
+    },
+    hasForms() {
+      if ("product" in this.$store.state.businessSettings) {
+        if ("forms" in this.$store.state.businessSettings.product) {
+          if (this.$store.state.businessSettings.product.forms.length > 0) {
+            return true;
+          }
+        }
+      }
+      return false;
     },
   },
 };

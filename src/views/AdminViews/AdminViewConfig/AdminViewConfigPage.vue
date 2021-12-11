@@ -17,12 +17,12 @@
                 <div class="branding-preferences-item">
                   <p class="bold">
                     Background Color:
-                    {{ branding.branding.backgroundColor }}
+                    {{ branding.backgroundColor }}
                   </p>
 
                   <input
                     type="color"
-                    v-model="branding.branding.backgroundColor"
+                    v-model="branding.backgroundColor"
                     name=""
                     id=""
                   />
@@ -30,11 +30,11 @@
                 <div class="branding-preferences-item">
                   <p class="bold">
                     Foreground Color:
-                    {{ branding.branding.foregroundColor }}
+                    {{ branding.foregroundColor }}
                   </p>
                   <input
                     type="color"
-                    v-model="branding.branding.foregroundColor"
+                    v-model="branding.foregroundColor"
                     name=""
                     id=""
                   />
@@ -42,11 +42,11 @@
                 <div class="branding-preferences-item">
                   <p class="bold">
                     Card Outline:
-                    {{ branding.branding.cardOutline }}
+                    {{ branding.cardOutline }}
                   </p>
                   <input
                     type="color"
-                    v-model="branding.branding.cardOutline"
+                    v-model="branding.cardOutline"
                     name=""
                     id=""
                   />
@@ -54,11 +54,11 @@
                 <div class="branding-preferences-item">
                   <p class="bold">
                     Highlight Color:
-                    {{ branding.branding.highlightColor }}
+                    {{ branding.highlightColor }}
                   </p>
                   <input
                     type="color"
-                    v-model="branding.branding.highlightColor"
+                    v-model="branding.highlightColor"
                     name=""
                     id=""
                   />
@@ -66,11 +66,11 @@
                 <div class="branding-preferences-item">
                   <p class="bold">
                     Text Color:
-                    {{ branding.branding.textColor }}
+                    {{ branding.textColor }}
                   </p>
                   <input
                     type="color"
-                    v-model="branding.branding.textColor"
+                    v-model="branding.textColor"
                     name=""
                     id=""
                   />
@@ -154,7 +154,7 @@
       </div>
       <div class="config-section" id="packages">
         <admin-view-config-packages
-          :storePackages="businessSettings.product.services"
+          :storePackages="businessSettings.product.packages"
         />
       </div>
       <div class="config-section" id="add-ons">
@@ -244,19 +244,67 @@ export default {
   },
   computed: {
     identity() {
-      return this.$store.state.businessSettings.identity;
+      if (this.$store.state.businessSettings.identity) {
+        return this.$store.state.businessSettings.identity;
+      } else {
+        return null;
+      }
     },
     branding() {
-      return this.$store.state.branding;
+      if (this.$store.state.branding) {
+        return this.$store.state.businessSettings.identity.branding;
+      } else {
+        return {
+          branding: {
+            backgroundColor: "#F0F0F0",
+            foregroundColor: "#FFFFFF",
+            cardOutline: "#DDDDDD",
+            highlightColor: "#00F5FF",
+            textColor: "#000000",
+          },
+        };
+      }
     },
     businessSettings() {
-      return this.$store.state.businessSettings;
+      if (Object.keys(this.$store.state.businessSettings).length > 0) {
+        console.log("there are settings here, line 270 admin config");
+        console.log(this.$store.state.businessSettings);
+        return this.$store.state.businessSettings;
+      } else {
+        console.log("this is wrong, line 272 in admin config");
+        return {
+          identity: {
+            branding: {
+              backgroundColor: undefined,
+              foregroundColor: undefined,
+              textColor: undefined,
+              cardOutline: undefined,
+              highlightColor: undefined,
+            },
+            businessName: undefined,
+            businessPhoneNumber: undefined,
+            businessAddress: {
+              streetAddress1: undefined,
+              streetAddress2: undefined,
+              address2: undefined,
+            },
+          },
+          product: {
+            services: [],
+            addOns: [],
+            packages: [],
+            discounts: [],
+            form: [],
+          },
+          contracts: [],
+          automations: [],
+        };
+      }
     },
   },
   async created() {
     await this.$store.dispatch("setBusinessSettings");
     this.fields.identity.businessName = this.identity.businessName;
-
     this.fields.identity.businessAddress.streetAddress1 =
       this.identity.businessAddress.streetAddress1;
     this.fields.identity.businessAddress.streetAddress2 =

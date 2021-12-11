@@ -63,43 +63,41 @@
           </div>
         </div>
         <div class="add-on-section">
-          <h5
-            v-if="this.$store.state.businessSettings.product.addOns.length <= 0"
-          >
-            You don't have any add-ons yet. Add One!
-          </h5>
-          <div
-            class="add-on-item"
-            style="border-bottom: 1px solid gray; margin-bottom: 10px"
-            v-for="addOn in this.$store.state.businessSettings.product.addOns"
-            :key="addOn.name"
-          >
-            <h4>
-              {{ addOn.name }}
-              <img
-                :src="XIconSVG"
-                class="x-icon"
-                @click="deletePackage(index)"
-              />
-            </h4>
-            <div class="add-on-display-section">
-              <div class="add-on-item" v-if="addOn.photo">
-                <p>Photo: {{ addOn.photo.name }}</p>
+          <h5 v-if="!hasAddOns">You don't have any add-ons yet. Add One!</h5>
+          <div v-if="hasAddOns">
+            <div
+              class="add-on-item"
+              style="border-bottom: 1px solid gray; margin-bottom: 10px"
+              v-for="addOn in this.$store.state.businessSettings.product.addOns"
+              :key="addOn.name"
+            >
+              <h4>
+                {{ addOn.name }}
+                <img
+                  :src="XIconSVG"
+                  class="x-icon"
+                  @click="deletePackage(index)"
+                />
+              </h4>
+              <div class="add-on-display-section">
+                <div class="add-on-item" v-if="addOn.photo">
+                  <p>Photo: {{ addOn.photo.name }}</p>
+                </div>
               </div>
-            </div>
 
-            <div class="add-on-display-section">
-              <div class="add-on-item" v-if="addOn.priceOption === 'Flat'">
-                <p>
-                  <b>Flat Rate:</b>
-                  {{ formatPrice(addOn.pricing.unitRate) }}
-                </p>
-              </div>
-              <div class="add-on-item" v-if="addOn.priceOption === 'Unit'">
-                <p>
-                  <b>Unit Rate: </b>{{ formatPrice(addOn.pricing.unitRate) }}
-                </p>
-                <p><b>Minimum # Units: </b>{{ addOn.pricing.minUnits }}</p>
+              <div class="add-on-display-section">
+                <div class="add-on-item" v-if="addOn.priceOption === 'Flat'">
+                  <p>
+                    <b>Flat Rate:</b>
+                    {{ formatPrice(addOn.pricing.unitRate) }}
+                  </p>
+                </div>
+                <div class="add-on-item" v-if="addOn.priceOption === 'Unit'">
+                  <p>
+                    <b>Unit Rate: </b>{{ formatPrice(addOn.pricing.unitRate) }}
+                  </p>
+                  <p><b>Minimum # Units: </b>{{ addOn.pricing.minUnits }}</p>
+                </div>
               </div>
             </div>
           </div>
@@ -158,8 +156,18 @@ export default {
       console.log(this.addOn.photo);
     },
   },
-  computed: {},
-
+  computed: {
+    hasAddOns() {
+      if ("product" in this.$store.state.businessSettings) {
+        if ("addOns" in this.$store.state.businessSettings.product) {
+          if (this.$store.state.businessSettings.product.addOns.length > 0) {
+            return true;
+          }
+        }
+      }
+      return false;
+    },
+  },
 };
 </script>
 

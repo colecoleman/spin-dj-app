@@ -70,7 +70,7 @@
           <to-do-specific-event :event="event"></to-do-specific-event>
         </div>
         <div id="lower-div-box-3">
-          <recent-messages-event v-if="contacts"></recent-messages-event>
+          <!-- <recent-messages-event v-if="contacts"></recent-messages-event> -->
         </div>
       </div>
     </section>
@@ -79,10 +79,10 @@
 
 <script>
 import ToDoSpecificEvent from "../../../SharedComponents/SharedComponentsEvents/ToDoSpecificEvent.vue";
-import RecentMessagesEvent from "../../../SharedComponents/SharedComponentsMessaging/RecentMessagesEvent.vue";
+// import RecentMessagesEvent from "../../../SharedComponents/SharedComponentsMessaging/RecentMessagesEvent.vue";
 import EventPageContactCard from "../../../SharedComponents/SharedComponentsEvents/EventPageContactCard.vue";
-import EventPageContactCarousel from "./eventPageContactCarousel/EventPageContactCarousel.vue";
-import SpecificEventPageLocationScroller from "./specificEventPageLocationScroller/SpecificEventPageLocationScroller.vue";
+import EventPageContactCarousel from "../../../SharedComponents/SharedComponentsEvents/eventPageContactCarousel/EventPageContactCarousel.vue";
+import SpecificEventPageLocationScroller from "../../../SharedComponents/SharedComponentsEvents/specificEventPageLocationScroller/SpecificEventPageLocationScroller.vue";
 import AutomationEventComponent from "../AdminViewsSharedComponents/Automation/AutomationComponents/AutomationEventComponent.vue";
 import Backdrop from "../../../SharedComponents/SharedComponentsUI/Backdrop.vue";
 import FormsPopup from "../../../SharedComponents/SharedComponentsEvents/FormsPopup.vue";
@@ -210,9 +210,9 @@ export default {
       .catch((e) => this.$store.dispatch("addError", e));
     await this.event.contacts.forEach((contact) => {
       this.$store.dispatch("getUser", contact).then((res) => {
-        this.contacts.push(res.Item);
-        if (res.Item.role === "client") {
-          this.clients.push(res.Item);
+        this.contacts.push(res);
+        if (res.role === "client") {
+          this.clients.push(res);
         }
       });
     });
@@ -226,7 +226,7 @@ export default {
   },
   components: {
     ToDoSpecificEvent,
-    RecentMessagesEvent,
+    // RecentMessagesEvent,
     EventPageContactCard,
     EventPageContactCarousel,
     SpecificEventPageLocationScroller,

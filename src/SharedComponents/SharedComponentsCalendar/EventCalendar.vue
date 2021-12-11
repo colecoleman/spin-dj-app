@@ -15,7 +15,7 @@
       </div>
     </template>
     <template v-slot:title>Calendar</template>
-    <template v-slot:content>
+    <template v-slot:content v-if="events">
       <div id="base-container">
         <div id="calendar-container" v-if="!singleDayViewOpen">
           <div class="month-heading" @click="toggleMonthSelector"></div>
@@ -44,7 +44,7 @@
                   }"
                 >
                   <div
-                    :class="day.hasEvents > 0 ? 'hasEvents' : ''"
+                    :class="day.hasEvents ? 'hasEvents' : ''"
                     @click="day.hasEvents ? selectDay(day) : ''"
                   >
                     {{ day.dayOfMonth }}
@@ -146,6 +146,8 @@ export default {
   created: function () {
     this.masterMonth = this.INITIAL_MONTH + this.yearChangeCount;
     this.masterYear = this.INITIAL_YEAR;
+    console.log(this.events);
+    console.log(this.daysWithEvents);
   },
   methods: {
     getNumberOfDaysInMonth: function (year, month) {
@@ -155,6 +157,7 @@ export default {
       return date.getDay();
     },
     monthChange(direction) {
+      console.log(this.currentMonthDays);
       let count = this.masterMonth;
       let yearCount = this.yearChangeCount;
       const countGuards = function () {
@@ -248,9 +251,9 @@ export default {
                 .includes(new Date().toDateString());
             },
             get hasEvents() {
-              return eventDays.findIndex((element) =>
-                element.toDateString().includes(this.date.toDateString())
-              );
+              return eventDays.some((x) => {
+                return x.toDateString() == this.date.toDateString();
+              });
             },
           };
         }
@@ -311,7 +314,6 @@ export default {
   },
   emits: ["actionsClicked"],
   props: ["events"],
-
   components: {
     // TimeSelector,
     SingleDayView,

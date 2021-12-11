@@ -237,7 +237,12 @@ export default {
       let dbEvent = Object.assign(this.event);
       dbEvent.contacts = this.clientId;
       dbEvent.locations = this.locationId;
-      dbEvent.contracts = this.contracts;
+      dbEvent.contracts = this.contracts.map((x) => ({
+        id: x,
+        signerName: null,
+        signerDate: null,
+        signerIP: null,
+      }));
       console.log(dbEvent);
       this.$store
         .dispatch("addEvent", dbEvent)

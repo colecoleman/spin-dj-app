@@ -153,63 +153,66 @@
           </div>
         </div>
         <div class="discounts-section">
-          <h5 v-if="!this.$store.state.businessSettings.automations.length">
+          <h5 v-if="!hasAutomations">
             No automations have been added yet! Add some!
           </h5>
-          <div
-            class="discounts-item"
-            style="border-bottom: 1px solid gray; margin-bottom: 10px"
-            v-for="automation in this.$store.state.businessSettings.automations"
-            :key="automation.id"
-          >
-            <h4>{{ automation.automationName }}</h4>
+          <div v-if="hasAutomations">
+            <div
+              class="discounts-item"
+              style="border-bottom: 1px solid gray; margin-bottom: 10px"
+              v-for="automation in this.$store.state.businessSettings
+                .automations"
+              :key="automation.id"
+            >
+              <h4>{{ automation.automationName }}</h4>
 
-            <div class="discounts-display-section">
-              <div class="discounts-item">
-                <p>
-                  <b>Contact Type:</b>
-                  {{ automation.automationName }}
-                </p>
-                <p>
-                  <b>Trigger: </b>
-                  {{
-                    `${automation.trigger.distance} ${automation.trigger.timeCategory} ${automation.trigger.direction} ${automation.trigger.trigger}`
-                  }}
-                </p>
-                <p>
-                  <b>Approval Required:</b>
-                  {{ automation.approvalRequired }}
-                </p>
-                <p>
-                  <b>Automation Type:</b>
-                  {{ automation.actionType.type }}
-                </p>
+              <div class="discounts-display-section">
+                <div class="discounts-item">
+                  <p>
+                    <b>Contact Type:</b>
+                    {{ automation.automationName }}
+                  </p>
+                  <p>
+                    <b>Trigger: </b>
+                    {{
+                      `${automation.trigger.distance} ${automation.trigger.timeCategory} ${automation.trigger.direction} ${automation.trigger.trigger}`
+                    }}
+                  </p>
+                  <p>
+                    <b>Approval Required:</b>
+                    {{ automation.approvalRequired }}
+                  </p>
+                  <p>
+                    <b>Automation Type:</b>
+                    {{ automation.actionType.type }}
+                  </p>
 
-                <div
-                  class="discounts-item"
-                  v-if="automation.actionType.type === 'email'"
-                >
-                  <p>
-                    <b>From Email: </b>
-                    {{ automation.actionType.email.from }}
-                  </p>
-                  <p>
-                    <b>Subject: </b>
-                    {{ automation.actionType.email.subject }}
-                  </p>
-                  <p>
-                    <b>Content: </b>
-                    {{ automation.actionType.email.content }}
-                  </p>
-                </div>
-                <div
-                  class="discounts-item"
-                  v-if="automation.actionType.type === 'toDo'"
-                >
-                  <p>
-                    <b>Content: </b>
-                    {{ automation.actionType.toDo.content }}
-                  </p>
+                  <div
+                    class="discounts-item"
+                    v-if="automation.actionType.type === 'email'"
+                  >
+                    <p>
+                      <b>From Email: </b>
+                      {{ automation.actionType.email.from }}
+                    </p>
+                    <p>
+                      <b>Subject: </b>
+                      {{ automation.actionType.email.subject }}
+                    </p>
+                    <p>
+                      <b>Content: </b>
+                      {{ automation.actionType.email.content }}
+                    </p>
+                  </div>
+                  <div
+                    class="discounts-item"
+                    v-if="automation.actionType.type === 'toDo'"
+                  >
+                    <p>
+                      <b>Content: </b>
+                      {{ automation.actionType.toDo.content }}
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
@@ -280,6 +283,16 @@ export default {
           },
         },
       };
+    },
+  },
+  computed: {
+    hasAutomations() {
+      if ("automations" in this.$store.state.businessSettings) {
+        if (this.$store.state.businessSettings.automations.length > 0) {
+          return true;
+        }
+      }
+      return false;
     },
   },
 };

@@ -187,9 +187,12 @@ export default {
     },
   },
   created() {
-    this.services = this.$store.state.businessSettings.product.services;
+    if ("product" in this.$store.state.businessSettings) {
+      if ("services" in this.$store.state.businessSettings.product) {
+        this.services = this.$store.state.businessSettings.product.services;
+      }
+    }
   },
-
 };
 </script>
 

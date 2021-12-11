@@ -43,39 +43,42 @@
           </div>
         </div>
         <div class="discounts-section">
-          <h5
-            v-if="!this.$store.state.businessSettings.product.discounts.length"
-          >
+          <h5 v-if="!hasDiscounts">
             No discounts have been added yet! Add some!
           </h5>
-          <div
-            class="discounts-item"
-            style="border-bottom: 1px solid gray; margin-bottom: 10px"
-            v-for="discount in this.$store.state.businessSettings.product
-              .discounts"
-            :key="discount.id"
-          >
-            <h4>
-              {{ discount.name }}
+          <div v-if="hasDiscounts">
+            <div
+              class="discounts-item"
+              style="border-bottom: 1px solid gray; margin-bottom: 10px"
+              v-for="discount in this.$store.state.businessSettings.product
+                .discounts"
+              :key="discount.id"
+            >
+              <h4>
+                {{ discount.name }}
 
-              <img
-                :src="XIconSVG"
-                class="x-icon"
-                @click="deletePackage(index)"
-              />
-            </h4>
+                <img
+                  :src="XIconSVG"
+                  class="x-icon"
+                  @click="deletePackage(index)"
+                />
+              </h4>
 
-            <div class="discounts-display-section">
-              <div class="discounts-item" v-if="discount.type === 'percentage'">
-                <p>
-                  <b>Discount Amount:</b>
-                  {{ discount.amount * 100 }}%
-                </p>
-              </div>
-              <div class="discounts-item" v-if="discount.type === 'dollar'">
-                <p>
-                  <b>Discount Amount: </b>{{ formatPrice(discount.amount) }}
-                </p>
+              <div class="discounts-display-section">
+                <div
+                  class="discounts-item"
+                  v-if="discount.type === 'percentage'"
+                >
+                  <p>
+                    <b>Discount Amount:</b>
+                    {{ discount.amount * 100 }}%
+                  </p>
+                </div>
+                <div class="discounts-item" v-if="discount.type === 'dollar'">
+                  <p>
+                    <b>Discount Amount: </b>{{ formatPrice(discount.amount) }}
+                  </p>
+                </div>
               </div>
             </div>
           </div>
@@ -117,8 +120,18 @@ export default {
       };
     },
   },
-  computed: {},
-
+  computed: {
+    hasDiscounts() {
+      if ("product" in this.$store.state.businessSettings) {
+        if ("discounts" in this.$store.state.businessSettings.product) {
+          if (this.$store.state.businessSettings.product.discounts.length > 0) {
+            return true;
+          }
+        }
+      }
+      return false;
+    },
+  },
 };
 </script>
 

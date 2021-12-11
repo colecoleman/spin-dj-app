@@ -1,4 +1,5 @@
 <template>
+  <!-- <amplify-authenticator> -->
   <div id="application-wrapper" :style="cssVars" v-if="loaded">
     <router-view name="main"></router-view>
   </div>
@@ -8,12 +9,15 @@
   <transition name="fade1">
     <success-indicator :successes="successes" v-if="successes.length > 0" />
   </transition>
+  <!-- </amplify-authenticator> -->
 </template>
 
 <script>
 /* eslint-disable */
 import { Auth } from "aws-amplify";
 import axios from "axios";
+// import { components } from "aws-amplify-vue";
+// import { Hub } from "aws-amplify";
 import EventManager from "./views/AdminViews/AdminViewDashboard/EventManager.vue";
 import ErrorIndicator from "./SharedComponents/SharedComponentsUI/ErrorIndicator.vue";
 import SuccessIndicator from "./SharedComponents/SharedComponentsUI/SuccessIndicator.vue";
@@ -32,8 +36,8 @@ export default {
       }
     },
     branding() {
-      if (this.identity) {
-        return this.identity.branding;
+      if (this.$store.state.businessSettings.identity.branding) {
+        return this.$store.state.businessSettings.identity.branding;
       } else {
         return {
           backgroundColor: "#F0F0F0",
@@ -69,6 +73,7 @@ export default {
 
   async mounted() {
     let user;
+
     await Auth.currentAuthenticatedUser()
       .then((res) => {
         user = res;
@@ -106,6 +111,10 @@ body {
   padding: 0px;
   overflow: none;
   position: fixed;
+}
+
+.signout {
+  display: none;
 }
 
 #app {
@@ -171,5 +180,12 @@ textarea {
 
 .router-link-exact-active {
   color: var(--highlightColor);
+}
+
+[data-amplify-authenticator] {
+  --amplify-colors-background-primary: var(--foregroundColor);
+  --amplify-colors-background-secondary: var(--backgroundColor);
+  --amplify-colors-background-tertiary: var(--textColor);
+  --amplify-components-text-color: var(--textColor);
 }
 </style>

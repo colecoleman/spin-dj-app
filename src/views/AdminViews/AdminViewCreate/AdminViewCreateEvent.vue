@@ -688,7 +688,7 @@ export default {
     },
   },
   async created() {
-    await this.$store.dispatch("setBusinessSettings");
+    // await this.$store.dispatch("setBusinessSettings");
     await this.$store.dispatch("getLocations");
     await this.$store.dispatch("getAdminUsers");
     this.loaded = true;

@@ -38,11 +38,16 @@ import AdminDashboardNavigation from "./AdminDashboardNavigation.vue";
 export default {
   data() {
     return {
-      events: undefined,
+      // events: [],
     };
   },
+  computed: {
+    events() {
+      return this.$store.state.events;
+    },
+  },
   created() {
-    this.events = [...this.$store.state.events];
+    // this.events = [...this.$store.stat .e.events];
   },
 
   components: {

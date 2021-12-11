@@ -15,13 +15,13 @@
       />
     </template>
     <template v-slot:content>
-      <div class="wrapper" v-if="mutableEvents">
-        <div id="events-content" v-if="mutableEvents.length > 0">
+      <div class="wrapper">
+        <div id="events-content">
           <upcoming-events-list-item
-            v-for="event in mutableEvents"
+            v-for="event in sortedEvents"
             :key="event.userId"
             :event="event"
-            :first="event === mutableEvents[0]"
+            :first="event === sortedEvents[0]"
             @click="navigateToEventPage(event.userId)"
           ></upcoming-events-list-item>
         </div>
@@ -42,8 +42,7 @@ export default {
       discsvg,
       sortalpha,
       mutableEvents: undefined,
-      isFetching: this.$store.state.isFetching,
-      sortMenuOpened: true,
+      sortMenuOpened: false,
       sortItems: [
         {
           title: "Date Ascending",
@@ -68,24 +67,43 @@ export default {
           },
         },
       ],
+      selectedSortLogic: function (a, b) {
+        return a.data.startTime < b.data.startTime
+          ? -1
+          : a.data.startTime > b.data.startTime
+          ? 1
+          : 0;
+      },
     };
+  },
+  computed: {
+    sortedEvents() {
+      return [...this.events].sort(this.selectedSortLogic).filter((x) => {
+        let date = new Date().getTime();
+        let eventDate = new Date(x.data.startTime).getTime();
+        return eventDate > date;
+      });
+    },
   },
   methods: {
     toggleSortMenuOpened() {
       this.sortMenuOpened = !this.sortMenuOpened;
     },
     selectSort(action) {
-      this.mutableEvents.sort(action);
-      this.toggleSortMenuOpened();
+      this.selectedSortLogic = action;
     },
     navigateToEventPage(id) {
-      this.$router.push("/admin/events/" + id);
+      let user = this.$store.state.user;
+      if (user.tenantId === user.userId) {
+        this.$router.push(`/admin/events/` + id);
+      } else {
+        this.$router.push(`/${this.$store.state.user.role}/events/` + id);
+      }
     },
   },
   created() {
-    this.mutableEvents = this.events.filter(
-      (x) => new Date(x.data.date).getTime() > new Date().getTime()
-    );
+    console.log(this.events);
+    console.log(this.mutableEvents);
     this.selectSort(this.sortItems[0].logic);
   },
   props: ["events"],

@@ -380,7 +380,9 @@ export default {
     },
   },
   created() {
-    this.businessSettings = this.$store.state.businessSettings;
+    if ("product" in this.$store.state.businessSettings) {
+      this.businessSettings = this.$store.state.businessSettings;
+    }
   },
 };
 </script>

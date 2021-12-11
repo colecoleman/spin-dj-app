@@ -191,7 +191,7 @@ const routes = [
           content: ClientDashboard
         }
       }, {
-        path: 'event/{eventId}',
+        path: 'events/:eventId',
         name: 'clientEventView',
         meta: {requiresClientAuth: true},
         components: {

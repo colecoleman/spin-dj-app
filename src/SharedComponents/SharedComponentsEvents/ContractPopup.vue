@@ -1,5 +1,5 @@
 <template>
-  <full-page-popup>
+  <full-page-popup v-if="!loading">
     <template v-slot:icon
       ><svg
         xmlns="http://www.w3.org/2000/svg"
@@ -91,6 +91,7 @@ import helpers from "../../helpers.js";
 export default {
   data() {
     return {
+      loading: true,
       LeftArrowSVG,
       RightArrowSVG,
       contractScroller: 0,
@@ -101,7 +102,8 @@ export default {
       return this.contracts.length - 1;
     },
     contract() {
-      return this.$store.state.businessSettings.contracts.find(
+      console.log(this.$store.state.publicSettings);
+      return this.$store.state.publicSettings.contracts.find(
         (x) => x.id === this.contracts[this.contractScroller]
       );
     },
@@ -122,6 +124,11 @@ export default {
   components: {
     FullPagePopup,
     ContractPopupDocumentView,
+  },
+  async created() {
+    this.loading = true;
+    await this.$store.dispatch("getPublicSettings");
+    this.loading = false;
   },
   props: ["contracts"],
 };

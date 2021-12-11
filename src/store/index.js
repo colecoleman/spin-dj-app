@@ -7,7 +7,13 @@ const store = createStore({
     state() {
         return {
             user: undefined,
-            branding: undefined,
+            branding: {
+                backgroundColor: "#F0F0F0",
+                foregroundColor: "#FFFFFF",
+                cardOutline: "#DDDDDD",
+                highlightColor: "#00F5FF",
+                textColor: "#000000",
+            },
             errors: [],
             successes: [],
             notifications: [],
@@ -23,10 +29,51 @@ const store = createStore({
             },
             equipment: [],
             events: [],        
-            businessSettings: {},
+            businessSettings: {
+                product: {
+                    discounts: [],
+                    addOns: [],
+                    services: [],
+                    packages: [],
+                    forms: [],
+                },
+                contracts: [],
+                identity: {
+                    businessName: undefined,
+                    businessAddress: {
+                        streetAddress1: undefined,
+                        streetAddress2: undefined,
+                        address2: undefined,
+                    },
+                    businessPhoneNumber: undefined,
+                    branding: {
+                        backgroundColor: "#F0F0F0",
+                        foregroundColor: "#FFFFFF",
+                        cardOutline: "#DDDDDD",
+                        highlightColor: "#00F5FF",
+                        textColor: "#000000",
+                    },
+                }
+            },
+            publicSettings: {},
         };
     },
     actions: {
+        async getPublicSettings(context) {
+            return new Promise((resolve, reject) => {
+                    axios.get(`https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/public/${context.state.user.tenantId}/settings`).then((result)=> {
+                    resolve(result.data)
+                    console.log(result.data)
+                    context.commit('setPublicSettings', result.data);
+                }, error => {
+                    context.commit('addError', error);
+                    reject(error);
+                })
+            })
+        },
+        async getPublicBranding() {
+
+        },
         async getUser(context, user) {
             return new Promise((resolve, reject) => {
                 axios.get(`https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/admin/${context.state.user.tenantId}/users/${user}`).then((result)=> {
@@ -42,10 +89,13 @@ const store = createStore({
             let tenantId = function() {
                 if (user.challengeParam) {
                     return user.challengeParam.userAttributes['custom:tenantId']
-                } else {
+                } else if (user.attributes['custom:tenantId']) {
                     return user.attributes['custom:tenantId']
+                } else {
+                    return user.username;
                 }
             };
+            console.log(user)
             await axios.get(`https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/admin/${tenantId()}/users/${user.username}`).then(response => {
                 context.commit('setUser', response.data.Item);
                 console.log(response)
@@ -54,9 +104,13 @@ const store = createStore({
             })
         },
         async setBusinessSettings(context) {
-            await axios.get(`https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/admin/${context.state.user.tenantId}/settings`).then(response => {
-                context.commit('setBusinessSettings', response.data.Item.businessSettings);
-                context.commit('setBranding', response.data.Item.businessSettings.identity);
+            await axios.get(`https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/admin/${context.state.user.userId}/settings`).then(response => {
+                console.log(response)
+                if ('businessSettings' in response.data.Item) {
+                    context.commit('setBusinessSettings', response.data.Item.businessSettings);
+                    if ('identity' in response.data.Item.businessSettings)
+                        context.commit('setBranding', response.data.Item.businessSettings.identity);
+                }
             }).catch((e) => context.commit('addError', e))
         },
         addError(context, error) {
@@ -81,6 +135,18 @@ const store = createStore({
             }).catch(e => context.commit('addError', `Error: ${e}`));
             
         },
+        async getAdminEvents(context) {
+            return new Promise((resolve, reject) => {
+                axios.get(`https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/admin/${context.state.user.tenantId}/events`).then((result)=> {
+                    resolve(result);
+                    console.log(result)
+                    context.commit('setEvents', result)
+                }, error => {
+                    context.commit('addError', error);
+                    reject(error);
+                })
+            })
+        },
         adminConfigIdentitySetBusinessName(context, payload) {
             context.commit('adminConfigIdentitySetBusinessName', payload);
         },
@@ -95,9 +161,11 @@ const store = createStore({
                 variable: 'businessSettings',
                 value: state.businessSettings
             }
-            axios.put(`https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/admin/${state.user.tenantId}/users/${state.user.userId}`, payload).then(() => {
+            console.log( payload);
+            axios.put(`https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/admin/${state.user.tenantId}/users/${state.user.userId}`, payload).then((res) => {
                 commit('setBusinessSettings', payload.value);
                 console.log(payload.value)
+                console.log(res)
             }).catch((e) => {
                 console.log(e);
             })
@@ -238,8 +306,9 @@ const store = createStore({
             })
         },
         async getEvents(context) {
+            console.log(context.state.user.role)
             return new Promise((resolve, reject) => {
-                axios.get(`https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/admin/${context.state.user.tenantId}/events`).then((result)=> {
+                axios.get(`https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/${context.state.user.role}/${context.state.user.tenantId}/${context.state.user.userId}/events`).then((result)=> {
                     resolve(result);
                     console.log(result)
                     context.commit('setEvents', result);
@@ -249,9 +318,28 @@ const store = createStore({
                 })
             })
         },
-        // async getEvents(context) {
-
-        // },
+        async nonAdminGetUser(context, payload) {
+            console.log(context.state.user.role)
+            return new Promise((resolve, reject) => {
+                axios.get(`https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/${context.state.user.role}/${context.state.user.tenantId}/${context.state.user.userId}/users/${payload}`).then((result)=> {
+                    resolve(result);
+                    console.log(result)
+                }, error => {
+                    context.commit('addError', error);
+                    reject(error);
+                })
+            })
+        },
+        async getEvent(context, payload) {
+            return new Promise((resolve, reject) => {
+                axios.get(`https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/${context.state.user.role}/${context.state.user.tenantId}/${context.state.user.userId}/events/${payload}`).then((result)=> {
+                    resolve(result);
+                }, error => {
+                    context.commit('addError', error);
+                    reject(error);
+                })
+            })
+        },
         async adminGetEvent(context, payload) {
             return new Promise((resolve, reject) => {
                 axios.get(`https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/admin/${context.state.user.tenantId}/events/${payload}`).then((result)=> {
@@ -339,6 +427,9 @@ const store = createStore({
         addFormToDb(context, payload) {
             context.commit('addFormToDb', payload)
         },
+        adminConfigDeleteForm(context, payload) {
+            context.commit('adminConfigDeleteForm', payload);
+        },
        
     },
     mutations: {
@@ -346,11 +437,27 @@ const store = createStore({
             state.user = user;
         },
         setBusinessSettings(state, settings) {
-            state.businessSettings = settings;
-            document.title = state.businessSettings.identity.businessName;
+            console.log(settings)
+            // if (settings != undefined) {
+            //     console.log('settings arent undefined')
+            // state.businessSettings = settings;
+            // }
+            if ('identity' in state.businessSettings) {
+                console.log('this should also be null')
+                console.log(state.businessSettings)
+                if ('businessName' in state.businessSettings.identity) {
+                    document.title = state.businessSettings.identity.businessName;
+                }
+            } else {
+                document.title = "SPIN"
+            }
+            console.log(state.businessSettings)
         },
         setBranding(state, settings) {
             state.branding = settings;
+        },
+        setPublicSettings(state, settings) {
+            state.publicSettings = settings;
         },
         addError(state, error) {
             state.errors.push(error);
@@ -419,8 +526,18 @@ const store = createStore({
         addFormToDb(state, payload) {
             state.businessSettings.product.forms.push(payload);
         },
+        adminConfigDeleteForm(state, payload) {
+            state.businessSettings.product.forms.splice(payload, 1);
+        },
         adminConfigIdentitySetBusinessName(state, payload) {
-            state.businessSettings.identity.businessName = payload;
+            console.log(payload)
+            console.log(state.businessSettings)
+            if ("identity" in state.businessSettings) {
+                state.businessSettings.identity.businessName = payload;
+            } else {
+                Object.defineProperty(state.businessSettings, "identity", {});
+                // state.businessSettings.identity.businessName = payload;
+            }
         },
         adminConfigIdentitySetBusinessAddress(state, payload) {
             state.businessSettings.identity.businessAddress = payload;

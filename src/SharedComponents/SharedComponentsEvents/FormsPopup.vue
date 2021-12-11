@@ -42,54 +42,66 @@
           </h4>
           <div class="button-container">
             <button-standard-with-icon
+              text="Download"
+              @click="downloadForms('form-wrapper-print')"
+            ></button-standard-with-icon>
+            <button-standard-with-icon
               text="Save"
               @click="saveForms()"
             ></button-standard-with-icon>
           </div>
         </div>
         <div class="form-content">
-          <div
-            class="form-field"
-            v-for="(formItem, index) in selectedForm.fields"
-            :key="index"
-          >
-            <h5>{{ formItem.name }}</h5>
-            <div class="field-container">
-              <div
-                class="field-item"
-                v-for="(input, index) in formItem.fields"
-                :key="index"
-              >
-                <p>{{ input.inputTitle }}</p>
-                <input
-                  v-if="
-                    input.inputType === 'text' ||
-                    input.inputType === 'tel' ||
-                    input.inputType === 'email'
-                  "
-                  :type="input.inputType"
-                  :placeholder="input.placeholder"
-                  v-model="input.value"
-                />
-
-                <div class="radio-container" v-if="input.inputType === 'radio'">
+          <div id="form-wrapper-print">
+            <div
+              class="form-field"
+              v-for="(formItem, index) in selectedForm.fields"
+              :key="index"
+            >
+              <h5>{{ formItem.name }}</h5>
+              <div class="field-container">
+                <div
+                  class="field-item"
+                  v-for="(input, index) in formItem.fields"
+                  :key="index"
+                >
+                  <p>{{ input.inputTitle }}</p>
                   <input
-                    v-for="(option, index) in input.options"
-                    :key="index"
+                    v-if="
+                      input.inputType === 'text' ||
+                      input.inputType === 'tel' ||
+                      input.inputType === 'email'
+                    "
                     :type="input.inputType"
-                    :name="input.name"
+                    :placeholder="input.placeholder"
                     v-model="input.value"
                   />
-                  <p>{{ option }}</p>
+
+                  <div
+                    class="radio-container"
+                    v-if="input.inputType === 'radio'"
+                  >
+                    <input
+                      v-for="(option, index) in input.options"
+                      :key="index"
+                      :type="input.inputType"
+                      :name="input.name"
+                      v-model="input.value"
+                    />
+                    <p>{{ option }}</p>
+                  </div>
+                  <select
+                    v-if="input.inputType === 'select'"
+                    v-model="input.value"
+                  >
+                    <option
+                      v-for="(option, index) in input.options"
+                      :key="index"
+                    >
+                      {{ option }}
+                    </option>
+                  </select>
                 </div>
-                <select
-                  v-if="input.inputType === 'select'"
-                  v-model="input.value"
-                >
-                  <option v-for="(option, index) in input.options" :key="index">
-                    {{ option }}
-                  </option>
-                </select>
               </div>
             </div>
           </div>
@@ -102,6 +114,8 @@
 
 <script>
 import FullPagePopup from "../SharedComponentsUI/FullPagePopup.vue";
+import ButtonStandardWithIcon from "../SharedComponentsUI/ButtonStandardWithIcon.vue";
+import helpers from "../../helpers.js";
 
 export default {
   data() {
@@ -113,6 +127,7 @@ export default {
     closePopup() {
       this.$emit("closePopup");
     },
+    downloadForms: helpers.saveElement,
     saveForms() {
       console.log(this.forms);
       let payload = {
@@ -127,6 +142,7 @@ export default {
 
   components: {
     FullPagePopup,
+    ButtonStandardWithIcon,
   },
   created() {
     console.log(this.forms);

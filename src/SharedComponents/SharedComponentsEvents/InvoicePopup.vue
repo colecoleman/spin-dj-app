@@ -35,53 +35,7 @@
       <div id="invoice-popup-content-wrapper">
         <div id="invoice-popup-left-menu">
           <h3>Document View</h3>
-          <button-standard-with-icon text="Print" @click="printInvoice()">
-            <template v-slot:icon
-              ><svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="19.25"
-                height="19.25"
-                viewBox="0 0 19.25 19.25"
-              >
-                <g
-                  id="Icon_feather-printer"
-                  data-name="Icon feather-printer"
-                  transform="translate(-0.875 -0.875)"
-                >
-                  <path
-                    id="Path_129"
-                    data-name="Path 129"
-                    d="M5.25,7.875V1.75h10.5V7.875"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="1.75"
-                  />
-                  <path
-                    id="Path_130"
-                    data-name="Path 130"
-                    d="M5.25,15.75H3.5A1.75,1.75,0,0,1,1.75,14V9.625A1.75,1.75,0,0,1,3.5,7.875h14a1.75,1.75,0,0,1,1.75,1.75V14a1.75,1.75,0,0,1-1.75,1.75H15.75"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="1.75"
-                  />
-                  <path
-                    id="Path_131"
-                    data-name="Path 131"
-                    d="M5.25,12.25h10.5v7H5.25Z"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="1.75"
-                  />
-                </g>
-              </svg>
-            </template>
-          </button-standard-with-icon>
+
           <button-standard-with-icon
             text="Download"
             @click="saveInvoice('invoice-popup-document-view')"
@@ -220,6 +174,7 @@
 import FullPagePopup from "../../SharedComponents/SharedComponentsUI/FullPagePopup.vue";
 import InvoicePopupDocumentView from "./InvoicePopupDocumentView.vue";
 import helpers from "../../helpers.js";
+import ButtonStandardWithIcon from "../../SharedComponents/SharedComponentsUI/ButtonStandardWithIcon.vue";
 
 export default {
   computed: {
@@ -256,6 +211,7 @@ export default {
   components: {
     FullPagePopup,
     InvoicePopupDocumentView,
+    ButtonStandardWithIcon,
   },
 };
 </script>
