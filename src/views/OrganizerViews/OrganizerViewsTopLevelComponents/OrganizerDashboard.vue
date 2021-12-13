@@ -25,7 +25,7 @@
 import RecentMessages from "../../../SharedComponents/SharedComponentsMessaging/RecentMessages.vue";
 import ContactPageToDoList from "../../../SharedComponents/SharedComponentsContact/ContactPageToDoList.vue";
 import EventCalendar from "../../../SharedComponents/SharedComponentsCalendar/EventCalendar.vue";
-import UpcomingEvents from "../../AdminViews/AdminViewDashboard/EventsModules/UpcomingEventsList/UpcomingEvents.vue";
+import UpcomingEvents from "../../../SharedComponents/SharedComponentsUpcomingEvents/UpcomingEvents.vue";
 import ContactCardPerson from "../../../SharedComponents/SharedComponentsContact/ContactCardPerson.vue";
 export default {
   data() {

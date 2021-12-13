@@ -9,6 +9,9 @@
 import NonAdminHeader from "../../SharedComponents/SharedComponentsHeader/NonAdminHeader.vue";
 export default {
   components: { NonAdminHeader },
+  created() {
+    this.$store.dispatch("getPublicSettings");
+  },
 };
 </script>
 

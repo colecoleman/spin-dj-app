@@ -28,7 +28,7 @@
 </template>
 
 <script>
-import UpcomingEvents from "./EventsModules/UpcomingEventsList/UpcomingEvents.vue";
+import UpcomingEvents from "../../../SharedComponents/SharedComponentsUpcomingEvents/UpcomingEvents.vue";
 import MetricsChart from "./EventsModules/MetricsCharts/MetricsChart";
 import EventCalendar from "../../../SharedComponents/SharedComponentsCalendar/EventCalendar.vue";
 import RecentMessages from "../../../SharedComponents/SharedComponentsMessaging/RecentMessages.vue";

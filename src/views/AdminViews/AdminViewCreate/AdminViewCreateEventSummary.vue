@@ -241,8 +241,8 @@ export default {
         id: x,
         signerName: null,
         signerDate: null,
-        signerIP: null,
-        status: null,
+        signerUUID: null,
+        status: 'pending',
       }));
       console.log(dbEvent);
       this.$store
