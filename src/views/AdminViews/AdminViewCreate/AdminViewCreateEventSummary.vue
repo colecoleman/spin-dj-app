@@ -242,6 +242,7 @@ export default {
         signerName: null,
         signerDate: null,
         signerIP: null,
+        status: null,
       }));
       console.log(dbEvent);
       this.$store
