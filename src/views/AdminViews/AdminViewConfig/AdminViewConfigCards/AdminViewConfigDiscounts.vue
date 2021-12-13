@@ -50,8 +50,7 @@
             <div
               class="discounts-item"
               style="border-bottom: 1px solid gray; margin-bottom: 10px"
-              v-for="discount in this.$store.state.businessSettings.product
-                .discounts"
+              v-for="(discount, index) in discounts"
               :key="discount.id"
             >
               <h4>
@@ -60,7 +59,12 @@
                 <img
                   :src="XIconSVG"
                   class="x-icon"
-                  @click="deletePackage(index)"
+                  @click="deleteDiscount(index)"
+                />
+                <img
+                  :src="EditPenSVG"
+                  class="x-icon"
+                  @click="editDiscount(discount, index)"
                 />
               </h4>
 
@@ -90,12 +94,14 @@
 
 <script>
 import XIconSVG from "../../../../assets/SVGs/x-icon.svg";
-
+import { EditPenSVG } from "../../../../assets/SVGs/svgIndex.js";
 import helpers from "../../../../helpers.js";
 export default {
   data() {
     return {
       XIconSVG,
+      EditPenSVG,
+      editIndex: undefined,
       discount: {
         name: undefined,
         type: undefined,
@@ -112,12 +118,33 @@ export default {
       if (this.discount.type === "percentage") {
         this.discount.amount *= 0.01;
       }
-      this.$store.commit("adminConfigAddDiscount", this.discount);
+      if (this.editIndex != undefined) {
+        let payload = {
+          index: this.editIndex,
+          discount: this.discount,
+        };
+        this.$store.commit("adminConfigEditDiscount", payload);
+      } else {
+        this.$store.commit("adminConfigAddDiscount", this.discount);
+      }
       this.discount = {
         name: undefined,
         type: undefined,
         amount: undefined,
       };
+    },
+    deleteDiscount(index) {
+      this.$store.commit("adminConfigDeleteDiscount", index);
+    },
+    editDiscount(discount, index) {
+      this.discount = { ...this.discount, ...discount };
+      this.editIndex = index;
+      if (this.discount.type === "dollar") {
+        this.discount.amount = this.discount.amount / 100;
+      }
+      if (discount.type === "percentage") {
+        this.discount.amount = this.discount.amount / 0.01;
+      }
     },
   },
   computed: {
@@ -130,6 +157,9 @@ export default {
         }
       }
       return false;
+    },
+    discounts() {
+      return this.$store.state.businessSettings.product.discounts;
     },
   },
 };
@@ -259,5 +289,6 @@ section {
 .x-icon {
   height: 10px;
   width: 10px;
+  margin: 0px 5px;
 }
 </style>

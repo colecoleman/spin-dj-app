@@ -80,9 +80,12 @@ export default {
   },
   methods: {
     addContract() {
-      if (this.editIndex) {
-        this.$store.state.businessSettings.contracts[this.editIndex] =
-          this.contract;
+      if (this.editIndex != undefined) {
+        let payload = {
+          index: this.editIndex,
+          contract: this.contract,
+        };
+        this.$store.commit("adminConfigEditContract", payload);
       } else {
         this.$store.commit("adminConfigAddContract", this.contract);
       }

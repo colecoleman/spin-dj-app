@@ -68,7 +68,7 @@
             <div
               class="add-on-item"
               style="border-bottom: 1px solid gray; margin-bottom: 10px"
-              v-for="addOn in this.$store.state.businessSettings.product.addOns"
+              v-for="(addOn, index) in addOns"
               :key="addOn.name"
             >
               <h4>
@@ -76,7 +76,12 @@
                 <img
                   :src="XIconSVG"
                   class="x-icon"
-                  @click="deletePackage(index)"
+                  @click="deleteAddOn(index)"
+                />
+                <img
+                  :src="EditPenSVG"
+                  class="x-icon"
+                  @click="editAddOn(addOn, index)"
                 />
               </h4>
               <div class="add-on-display-section">
@@ -109,13 +114,15 @@
 
 <script>
 import XIconSVG from "../../../../assets/SVGs/x-icon.svg";
-
+import { EditPenSVG } from "../../../../assets/SVGs/svgIndex.js";
 import helpers from "../../../../helpers.js";
 
 export default {
   data() {
     return {
       XIconSVG,
+      EditPenSVG,
+      editIndex: undefined,
       addOn: {
         name: undefined,
         priceOption: undefined,
@@ -133,7 +140,16 @@ export default {
     formatPrice: helpers.formatPrice,
     addAddOn() {
       this.addOn.pricing.unitRate *= 100;
-      this.$store.commit("adminConfigAddAddOn", this.addOn);
+      if (this.editIndex != undefined) {
+        let payload = {
+          index: this.editIndex,
+          addOn: this.addOn,
+        };
+        console.log(payload);
+        this.$store.commit("adminConfigEditAddOn", payload);
+      } else {
+        this.$store.commit("adminConfigAddAddOn", this.addOn);
+      }
       this.addOn = {
         name: undefined,
         priceOption: undefined,
@@ -145,6 +161,9 @@ export default {
         equipmentNeeded: undefined,
       };
     },
+    deleteAddOn(index) {
+      this.$store.commit("adminConfigDeleteAddOn", index);
+    },
     chooseFile() {
       document.getElementById("add-on-hidden-file-button").click();
     },
@@ -154,6 +173,14 @@ export default {
       this.addOn.photo = files[0];
       console.log(files);
       console.log(this.addOn.photo);
+    },
+    editAddOn(addOn, index) {
+      this.addOn = { ...this.addOn, ...addOn };
+      this.editIndex = index;
+      this.addOn.pricing = {
+        minUnits: this.addOn.pricing.minUnits,
+        unitRate: this.addOn.pricing.unitRate / 100,
+      };
     },
   },
   computed: {
@@ -166,6 +193,9 @@ export default {
         }
       }
       return false;
+    },
+    addOns() {
+      return this.$store.state.businessSettings.product.addOns;
     },
   },
 };
@@ -210,8 +240,13 @@ export default {
   margin-top: 20px;
 }
 
+.button-standard-with-icon {
+  margin-top: 10px;
+}
+
 .x-icon {
   height: 10px;
   width: 10px;
+  margin: 0px 5px;
 }
 </style>

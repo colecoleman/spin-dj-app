@@ -190,6 +190,11 @@
             >
               {{ form.name }}
               <img :src="XIconSVG" class="x-icon" @click="deleteForm(index)" />
+              <img
+                :src="EditPenSVG"
+                class="x-icon"
+                @click="editForm(form, index)"
+              />
             </h5>
           </div>
         </div>
@@ -200,11 +205,13 @@
 
 <script>
 import XIconSVG from "../../../../assets/SVGs/x-icon.svg";
+import { EditPenSVG } from "../../../../assets/SVGs/svgIndex";
 
 export default {
   data() {
     return {
       XIconSVG,
+      EditPenSVG,
       form: {
         id: "form" + new Date().getTime(),
         name: undefined,
@@ -216,6 +223,7 @@ export default {
         inputQuantity: undefined,
         fields: [],
       },
+      editIndex: undefined,
     };
   },
   methods: {
@@ -258,7 +266,15 @@ export default {
       };
     },
     saveForm() {
-      this.$store.dispatch("addFormToDb", this.form);
+      if (this.editIndex != undefined) {
+        let payload = {
+          index: this.editIndex,
+          form: this.form,
+        };
+        this.$store.commit("adminConfigEditForm", payload);
+      } else {
+        this.$store.commit("adminConfigAddForm", this.form);
+      }
       this.form = {
         name: undefined,
         description: undefined,
@@ -266,7 +282,11 @@ export default {
       };
     },
     deleteForm(index) {
-      this.$store.dispatch("adminConfigDeleteForm", index);
+      this.$store.commit("adminConfigDeleteForm", index);
+    },
+    editForm(form, index) {
+      this.form = { ...this.form, ...form };
+      this.editIndex = index;
     },
   },
   computed: {
@@ -359,5 +379,6 @@ export default {
 .x-icon {
   height: 10px;
   width: 10px;
+  margin: 0px 5px;
 }
 </style>

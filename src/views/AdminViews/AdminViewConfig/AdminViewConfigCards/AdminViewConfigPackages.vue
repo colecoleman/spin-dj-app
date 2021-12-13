@@ -309,7 +309,7 @@ export default {
       }
     },
     findForm(form, packageIndex) {
-      console.log(packageIndex);
+      // console.log(packageIndex);
       let item = this.businessSettings.product.forms.find((x) => x.id === form);
       if (!item) {
         this.toggleFormFromPackage(form, packageIndex);
@@ -333,10 +333,15 @@ export default {
         item.pricing.addHourly *= 100;
       }
 
-      if (this.editIndex) {
-        this.businessSettings.products.packages[this.editIndex] = item;
+      if (this.editIndex != undefined) {
+        // this.businessSettings.products.packages[this.editIndex] = item;
+        let payload = {
+          index: this.editIndex,
+          package: item,
+        };
+        this.$store.commit("adminConfigEditPackage", payload);
       } else {
-        this.$store.dispatch("adminConfigAddPackage", item);
+        this.$store.commit("adminConfigAddPackage", item);
       }
       this.input.packages = {
         id: "package" + new Date().getTime(),

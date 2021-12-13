@@ -402,11 +402,19 @@ const store = createStore({
     },
 
 
-        
+        adminConfigAddService(context, payload) {
+            context.commit('adminConfigAddService', payload);
+        },
+        adminConfigEditService(context, payload) {
+            context.commit('adminConfigEditService', payload);
+        },
         adminConfigDeleteService(context, payload) {
             context.commit('adminConfigDeleteService', payload);
         },
         adminConfigAddPackage(context, payload) {
+            context.commit('adminConfigAddPackage', payload);
+        },
+        adminConfigEditPackage(context, payload) {
             context.commit('adminConfigAddPackage', payload);
         },
         adminConfigDeletePackage(context, payload) {
@@ -421,6 +429,7 @@ const store = createStore({
         adminConfigAddContract(context, payload) {
             context.commit('adminConfigAddContract', payload)
         },
+
         adminConfigDeleteContract(context, payload) {
             context.commit('adminConfigDeleteContract', payload)
         },
@@ -499,11 +508,17 @@ const store = createStore({
         adminConfigAddService(state, payload) {
             state.businessSettings.product.services.push(payload);
         },
+        adminConfigEditService(state, payload) {
+            state.businessSettings.product.services[payload.index] = payload.service;
+        },
         adminConfigDeleteService(state, payload) {
             state.businessSettings.product.services.splice(payload, 1);
         },
         adminConfigAddPackage(state, payload) {
             state.businessSettings.product.packages.push(payload);
+        },
+        adminConfigEditPackage(state, payload) {
+            state.businessSettings.product.packages[payload.index] = payload.package;
         },
         adminConfigDeletePackage(state, payload) {
             state.businessSettings.product.packages.splice(payload, 1);
@@ -511,8 +526,20 @@ const store = createStore({
         adminConfigAddAddOn(state, payload) {
             state.businessSettings.product.addOns.push(payload);
         },
+        adminConfigDeleteAddOn(state, payload) {
+            state.businessSettings.product.addOns.splice(payload, 1)
+        },
+        adminConfigEditAddOn(state,payload) {
+            state.businessSettings.product.addOns[payload.index] = payload.addOn;
+        },
         adminConfigAddDiscount(state, payload) {
             state.businessSettings.product.discounts.push(payload);
+        },
+        adminConfigDeleteDiscount(state, payload) {
+            state.businessSettings.product.discounts.splice(payload, 1)
+        },
+        adminConfigEditDiscount(state, payload) {
+            state.businessSettings.product.discounts[payload.index] = payload.discount;
         },
         adminConfigAddContract(state, payload) {
             if (!state.businessSettings.contracts) {
@@ -523,11 +550,17 @@ const store = createStore({
         adminConfigDeleteContract(state, payload) {
             state.businessSettings.contracts.splice(payload, 1)
         },
-        addFormToDb(state, payload) {
+        adminConfigEditContract(state, payload) {
+            state.businessSettings.contracts[payload.index] = payload.contract;
+        },
+        adminConfigAddForm(state, payload) {
             state.businessSettings.product.forms.push(payload);
         },
         adminConfigDeleteForm(state, payload) {
             state.businessSettings.product.forms.splice(payload, 1);
+        },
+        adminConfigEditForm(state, payload) {
+            state.businessSettings.product.forms[payload.index] = payload.form;
         },
         adminConfigIdentitySetBusinessName(state, payload) {
             console.log(payload)

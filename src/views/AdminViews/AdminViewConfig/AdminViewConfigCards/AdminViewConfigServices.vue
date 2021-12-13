@@ -81,7 +81,7 @@
             <div
               class="service-item"
               style="border-bottom: 1px solid gray; margin-bottom: 10px"
-              v-for="service in services"
+              v-for="(service, index) in services"
               :key="service.id"
             >
               <h4>
@@ -90,6 +90,11 @@
                   :src="XIconSVG"
                   class="x-icon"
                   @click="deleteService(index)"
+                />
+                <img
+                  :src="EditPenSVG"
+                  class="x-icon"
+                  @click="editService(service, index)"
                 />
               </h4>
               <div class="service-display-section">
@@ -130,13 +135,16 @@
 
 <script>
 import XIconSVG from "../../../../assets/SVGs/x-icon.svg";
+import { EditPenSVG } from "../../../../assets/SVGs/svgIndex";
 import helpers from "../../../../helpers.js";
 
 export default {
   data() {
     return {
+      EditPenSVG,
       XIconSVG,
-      services: [],
+      // services: [],
+      editIndex: undefined,
       input: {
         id: "service" + new Date().getTime(),
         name: undefined,
@@ -152,13 +160,28 @@ export default {
       },
     };
   },
+  computed: {
+    services() {
+      return this.$store.state.businessSettings.product.services;
+    },
+  },
   methods: {
     formatPrice: helpers.formatPrice,
     addService() {
       let service = this.input;
       service.pricing.baseRate *= 100;
       service.pricing.addHourly *= 100;
-      this.services.push(service);
+      if (this.editIndex != undefined) {
+        let payload = {
+          index: this.editIndex,
+          service: service,
+        };
+        this.$store.dispatch("adminConfigEditService", payload);
+        // this.services[this.editIndex] = service;
+      } else {
+        // this.services.push(service);
+        this.$store.dispatch("adminConfigAddService", service);
+      }
       this.input = {
         name: undefined,
         pricing: {
@@ -175,6 +198,18 @@ export default {
     deleteService(index) {
       this.$store.dispatch("adminConfigDeleteService", index);
     },
+    editService(service, index) {
+      this.input = { ...this.input, ...service };
+      this.editIndex = index;
+      this.input.pricing = {
+        baseTime: this.input.pricing.baseTime,
+        baseRate: this.input.pricing.baseRate / 100,
+        addHourly: this.input.pricing.addHourly / 100,
+      };
+      // service.contracts.forEach((contracts) => {
+      //   document.getElementById(contracts).checked = true;
+      // });
+    },
     chooseFile() {
       document.getElementById("hidden-file-button").click();
     },
@@ -185,13 +220,6 @@ export default {
       console.log(files);
       console.log(this.inputs.services.photo);
     },
-  },
-  created() {
-    if ("product" in this.$store.state.businessSettings) {
-      if ("services" in this.$store.state.businessSettings.product) {
-        this.services = this.$store.state.businessSettings.product.services;
-      }
-    }
   },
 };
 </script>
@@ -228,6 +256,10 @@ export default {
   justify-self: left;
 }
 
+.button-standard-with-icon {
+  margin-top: 10px;
+}
+
 .bold {
   font-weight: 600;
   margin-top: 20px;
@@ -236,5 +268,6 @@ export default {
 .x-icon {
   height: 10px;
   width: 10px;
+  margin: 0px 5px;
 }
 </style>
