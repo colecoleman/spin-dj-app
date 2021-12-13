@@ -16,7 +16,7 @@
     </template>
     <template v-slot:content>
       <div class="wrapper">
-        <div id="events-content">
+        <div id="events-content" v-if="userRole === 'admin'">
           <upcoming-events-list-item
             v-for="event in sortedEvents"
             :key="event.userId"
@@ -24,6 +24,31 @@
             :first="event === sortedEvents[0]"
             @click="navigateToEventPage(event.userId)"
           ></upcoming-events-list-item>
+          <upcoming-events-list-item
+            v-for="event in pastEvents"
+            :key="event.userId"
+            :event="event"
+            :first="event === sortedEvents[0]"
+            @click="navigateToEventPage(event.userId)"
+            class="past-event"
+          ></upcoming-events-list-item>
+        </div>
+        <div id="events-content" v-if="userRole === 'client'">
+          <client-view-upcoming-event-list-item
+            v-for="event in sortedEvents"
+            :key="event.userId"
+            :event="event"
+            :first="event === sortedEvents[0]"
+            @click="navigateToEventPage(event.userId)"
+          ></client-view-upcoming-event-list-item>
+          <client-view-upcoming-event-list-item
+            v-for="event in pastEvents"
+            :key="event.userId"
+            :event="event"
+            :first="event === sortedEvents[0]"
+            @click="navigateToEventPage(event.userId)"
+            class="past-event"
+          ></client-view-upcoming-event-list-item>
         </div>
         <h5 v-if="events.length <= 0">No events to display! Add some!</h5>
       </div>
@@ -32,10 +57,11 @@
 </template>
 
 <script>
-import UpcomingEventsListItem from "../../../../../SharedComponents/SharedComponentsUpcomingEvents/UpcomingEventListItem.vue";
-import FloatingMenuWithListItems from "../../../../../SharedComponents/SharedComponentsUI/FloatingMenuWithListItems.vue";
-import discsvg from "../../../../../assets/SVGs/disc.svg";
-import sortalpha from "../../../../../assets/SVGs/sort-alpha.svg";
+import UpcomingEventsListItem from "./UpcomingEventListItem.vue";
+import FloatingMenuWithListItems from "../SharedComponentsUI/FloatingMenuWithListItems.vue";
+import discsvg from "../../assets/SVGs/disc.svg";
+import sortalpha from "../../assets/SVGs/sort-alpha.svg";
+import ClientViewUpcomingEventListItem from "./ClientViewUpcomingEventListItem.vue";
 export default {
   data() {
     return {
@@ -88,6 +114,14 @@ export default {
         return eventDate > date;
       });
     },
+    userRole() {
+      let user = this.$store.state.user;
+      if (user.tenantId === user.userId) {
+        return "admin";
+      } else {
+        return user.role;
+      }
+    },
   },
   methods: {
     toggleSortMenuOpened() {
@@ -105,8 +139,12 @@ export default {
       }
     },
   },
-  props: ["events"],
-  components: { UpcomingEventsListItem, FloatingMenuWithListItems },
+  props: ["events", "pastEvents"],
+  components: {
+    UpcomingEventsListItem,
+    FloatingMenuWithListItems,
+    ClientViewUpcomingEventListItem,
+  },
 };
 </script>
 
@@ -130,5 +168,9 @@ export default {
   position: relative;
   width: fit-content;
   height: fit-content;
+}
+
+.past-event {
+  opacity: 0.5;
 }
 </style>

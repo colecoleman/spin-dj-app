@@ -9,7 +9,10 @@
       </div>
     </div>
     <div class="column-two">
-      <upcoming-events :events="events"></upcoming-events>
+      <upcoming-events
+        :events="events"
+        :pastEvents="pastEvents"
+      ></upcoming-events>
     </div>
     <div class="column-three">
       <div id="box-four-wrapper">
@@ -25,29 +28,38 @@
 import RecentMessages from "../../../SharedComponents/SharedComponentsMessaging/RecentMessages.vue";
 import ContactPageToDoList from "../../../SharedComponents/SharedComponentsContact/ContactPageToDoList.vue";
 import EventCalendar from "../../../SharedComponents/SharedComponentsCalendar/EventCalendar.vue";
-import UpcomingEvents from "../../AdminViews/AdminViewDashboard/EventsModules/UpcomingEventsList/UpcomingEvents.vue";
+import UpcomingEvents from "../../../SharedComponents/SharedComponentsUpcomingEvents/UpcomingEvents.vue";
 import ContactCardPerson from "../../../SharedComponents/SharedComponentsContact/ContactCardPerson.vue";
 export default {
   data() {
     return {
       loading: true,
-      client: undefined,
-      events: undefined,
     };
   },
   methods: {},
-  computed: {},
+  computed: {
+    client() {
+      return this.$store.state.user;
+    },
+    events() {
+      return this.$store.state.events;
+    },
+    pastEvents() {
+      return this.$store.state.events.filter((x) => {
+        let date = new Date().getTime();
+        let eventDate = new Date(x.data.endTime).getTime();
+        return eventDate < date;
+      });
+    },
+  },
   async created() {
     this.loading = true;
-    await this.$store
-      .dispatch("getUser", this.$store.state.user.userId)
-      .then((res) => {
-        this.client = res;
-      });
-    await this.$store.dispatch("getEvents").then((res) => {
-      this.events = res.data.Items;
-      console.log(this.events);
-    });
+    await this.$store.dispatch(
+      "nonAdminGetUser",
+      this.$store.state.user.userId
+    );
+
+    await this.$store.dispatch("getEvents");
     this.loading = false;
   },
   components: {
