@@ -24,19 +24,13 @@
           />
         </div>
         <div class="contracts-section">
-          <h5
-            v-if="
-              !this.$store.state.businessSettings.contracts ||
-              this.$store.state.businessSettings.contracts.length < 0
-            "
-          >
+          <h5 v-if="!contracts || contracts.length < 0">
             No contracts have been added yet! Add some!
           </h5>
           <div
             class="contracts-item"
             style="border-bottom: 1px solid gray; margin-bottom: 10px"
-            v-for="(contract, index) in this.$store.state.businessSettings
-              .contracts"
+            v-for="(contract, index) in contracts"
             :key="contract.id"
           >
             <h4>
@@ -78,6 +72,11 @@ export default {
       editIndex: undefined,
     };
   },
+  computed: {
+    contracts() {
+      return this.$store.state.businessSettings.contracts;
+    },
+  },
   methods: {
     addContract() {
       if (this.editIndex != undefined) {
@@ -100,7 +99,7 @@ export default {
       this.contract = { ...contract };
     },
     deleteContract(index) {
-      this.$store.dispatch("adminConfigDeleteContract", index);
+      this.$store.commit("adminConfigDeleteContract", index);
     },
   },
 };

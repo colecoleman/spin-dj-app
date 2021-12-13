@@ -363,7 +363,7 @@ export default {
         .forEach((el) => (el.checked = false));
     },
     deletePackage(index) {
-      this.$store.dispatch("adminConfigDeletePackage", index);
+      this.$store.commit("adminConfigDeletePackage", index);
     },
     editPackage(packag, index) {
       this.input.packages = { ...this.input.packages, ...packag };

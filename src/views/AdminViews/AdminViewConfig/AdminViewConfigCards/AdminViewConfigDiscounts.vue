@@ -151,7 +151,7 @@ export default {
     hasDiscounts() {
       if ("product" in this.$store.state.businessSettings) {
         if ("discounts" in this.$store.state.businessSettings.product) {
-          if (this.$store.state.businessSettings.product.discounts.length > 0) {
+          if (this.discounts.length > 0) {
             return true;
           }
         }

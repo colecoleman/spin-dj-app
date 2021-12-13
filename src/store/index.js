@@ -399,47 +399,7 @@ const store = createStore({
                     reject(error);
                 })
             })
-    },
-
-
-        adminConfigAddService(context, payload) {
-            context.commit('adminConfigAddService', payload);
         },
-        adminConfigEditService(context, payload) {
-            context.commit('adminConfigEditService', payload);
-        },
-        adminConfigDeleteService(context, payload) {
-            context.commit('adminConfigDeleteService', payload);
-        },
-        adminConfigAddPackage(context, payload) {
-            context.commit('adminConfigAddPackage', payload);
-        },
-        adminConfigEditPackage(context, payload) {
-            context.commit('adminConfigAddPackage', payload);
-        },
-        adminConfigDeletePackage(context, payload) {
-            context.commit('adminConfigDeletePackage', payload);
-        },
-        adminConfigAddAddOn(context, payload) {
-            context.commit('adminConfigAddAddOn', payload)
-        },
-        adminConfigAddDiscount(context, payload) {
-            context.commit('adminConfigAddDiscount', payload)
-        },
-        adminConfigAddContract(context, payload) {
-            context.commit('adminConfigAddContract', payload)
-        },
-
-        adminConfigDeleteContract(context, payload) {
-            context.commit('adminConfigDeleteContract', payload)
-        },
-        addFormToDb(context, payload) {
-            context.commit('addFormToDb', payload)
-        },
-        adminConfigDeleteForm(context, payload) {
-            context.commit('adminConfigDeleteForm', payload);
-        },
-       
     },
     mutations: {
         setUser(state, user) {

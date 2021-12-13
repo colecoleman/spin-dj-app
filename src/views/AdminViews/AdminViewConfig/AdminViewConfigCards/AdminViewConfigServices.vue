@@ -176,11 +176,11 @@ export default {
           index: this.editIndex,
           service: service,
         };
-        this.$store.dispatch("adminConfigEditService", payload);
+        this.$store.commit("adminConfigEditService", payload);
         // this.services[this.editIndex] = service;
       } else {
         // this.services.push(service);
-        this.$store.dispatch("adminConfigAddService", service);
+        this.$store.commit("adminConfigAddService", service);
       }
       this.input = {
         name: undefined,
@@ -196,7 +196,7 @@ export default {
       };
     },
     deleteService(index) {
-      this.$store.dispatch("adminConfigDeleteService", index);
+      this.$store.commit("adminConfigDeleteService", index);
     },
     editService(service, index) {
       this.input = { ...this.input, ...service };
