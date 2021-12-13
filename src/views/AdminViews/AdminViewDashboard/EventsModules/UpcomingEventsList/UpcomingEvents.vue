@@ -68,6 +68,7 @@ export default {
         },
       ],
       selectedSortLogic: function (a, b) {
+        console.log(a.data.startTime, b.data.startTime);
         return a.data.startTime < b.data.startTime
           ? -1
           : a.data.startTime > b.data.startTime
@@ -102,8 +103,6 @@ export default {
     },
   },
   created() {
-    console.log(this.events);
-    console.log(this.mutableEvents);
     this.selectSort(this.sortItems[0].logic);
   },
   props: ["events"],

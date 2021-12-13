@@ -63,7 +63,7 @@ export default {
     });
     this.$store.dispatch("getUser", this.event.contacts[0]).then((res) => {
       this.matchedClient = res;
-      console.log(this.matchedClient);
+
     });
     this.loading = false;
   },

@@ -81,14 +81,12 @@ export default {
       .catch((e) => {
         console.log(e);
       });
-    console.log(user);
     if (user) {
       await this.$store.dispatch("setUser", user);
       // await this.$store.dispatch("setBranding", user.username);
       // await this.$store.dispatch("getEvents");
       // await this.$store.dispatch("setBusinessSettings", user.username);
     }
-    console.log(this.$store.state.businessSettings);
     if (this.$store.state.branding) {
       document.title = this.$store.state.branding.businessName;
     } else {

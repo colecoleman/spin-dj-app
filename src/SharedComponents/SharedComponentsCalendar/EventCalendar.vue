@@ -146,8 +146,6 @@ export default {
   created: function () {
     this.masterMonth = this.INITIAL_MONTH + this.yearChangeCount;
     this.masterYear = this.INITIAL_YEAR;
-    console.log(this.events);
-    console.log(this.daysWithEvents);
   },
   methods: {
     getNumberOfDaysInMonth: function (year, month) {

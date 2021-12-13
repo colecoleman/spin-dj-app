@@ -78,7 +78,6 @@ const store = createStore({
             return new Promise((resolve, reject) => {
                 axios.get(`https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/admin/${context.state.user.tenantId}/users/${user}`).then((result)=> {
                     resolve(result.data.Item);
-                    console.log(result.data.Item)
                 }, error => {
                     context.commit('addError', error);
                     reject(error);
@@ -95,17 +94,14 @@ const store = createStore({
                     return user.username;
                 }
             };
-            console.log(user)
             await axios.get(`https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/admin/${tenantId()}/users/${user.username}`).then(response => {
                 context.commit('setUser', response.data.Item);
-                console.log(response)
             }).catch((e) => {
                 console.log(e)
             })
         },
         async setBusinessSettings(context) {
             await axios.get(`https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/admin/${context.state.user.userId}/settings`).then(response => {
-                console.log(response)
                 if ('businessSettings' in response.data.Item) {
                     context.commit('setBusinessSettings', response.data.Item.businessSettings);
                     if ('identity' in response.data.Item.businessSettings)
@@ -139,7 +135,6 @@ const store = createStore({
             return new Promise((resolve, reject) => {
                 axios.get(`https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/admin/${context.state.user.tenantId}/events`).then((result)=> {
                     resolve(result);
-                    console.log(result)
                     context.commit('setEvents', result)
                 }, error => {
                     context.commit('addError', error);
@@ -407,20 +402,13 @@ const store = createStore({
         },
         setBusinessSettings(state, settings) {
             console.log(settings)
-            // if (settings != undefined) {
-            //     console.log('settings arent undefined')
-            // state.businessSettings = settings;
-            // }
             if ('identity' in state.businessSettings) {
-                console.log('this should also be null')
-                console.log(state.businessSettings)
                 if ('businessName' in state.businessSettings.identity) {
                     document.title = state.businessSettings.identity.businessName;
                 }
             } else {
                 document.title = "SPIN"
             }
-            console.log(state.businessSettings)
         },
         setBranding(state, settings) {
             state.branding = settings;
