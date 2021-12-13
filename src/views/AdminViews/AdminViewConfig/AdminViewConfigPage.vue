@@ -303,7 +303,7 @@ export default {
     },
   },
   async created() {
-    await this.$store.dispatch("setBusinessSettings");
+    // await this.$store.dispatch("setBusinessSettings");
     this.fields.identity.businessName = this.identity.businessName;
     this.fields.identity.businessAddress.streetAddress1 =
       this.identity.businessAddress.streetAddress1;

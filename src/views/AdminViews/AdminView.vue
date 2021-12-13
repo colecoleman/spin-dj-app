@@ -20,6 +20,8 @@ export default {
     await this.$store.dispatch("setUser", user);
     await this.$store.dispatch("getAdminEvents");
     await this.$store.dispatch("setBusinessSettings");
+    await this.$store.dispatch("getAdminUsers");
+    await this.$store.dispatch("getLocations");
   },
 };
 </script>

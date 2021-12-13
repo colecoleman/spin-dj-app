@@ -135,11 +135,7 @@ export default {
       return this.$store.state.contacts;
     },
   },
-  beforeCreate() {},
-  created() {
-    this.$store.dispatch("getAdminUsers");
-    this.$store.dispatch("getLocations");
-  },
+  
   mounted() {
     console.log(this.contacts);
   },

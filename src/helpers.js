@@ -63,7 +63,6 @@ export default class Helpers {
         if (product.priceOption === 'Flat') {
           return product.pricing.baseRate
         } else {
-
           return product.pricing.baseRate + product.pricing.addHourly * overage;
         }
       }
