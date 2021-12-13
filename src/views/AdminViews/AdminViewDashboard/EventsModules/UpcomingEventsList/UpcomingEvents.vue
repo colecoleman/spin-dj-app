@@ -59,19 +59,22 @@ export default {
           title: "Date Descending",
           icon: undefined,
           logic: function (a, b) {
-            return a.data.startTime > b.data.startTime
+            return new Date(a.data.startTime).getTime() >
+              new Date(b.data.startTime).getTime()
               ? -1
-              : a.data.startTime < b.data.startTime
+              : new Date(a.data.startTime).getTime() <
+                new Date(b.data.startTime).getTime()
               ? 1
               : 0;
           },
         },
       ],
       selectedSortLogic: function (a, b) {
-        console.log(a.data.startTime, b.data.startTime);
-        return a.data.startTime < b.data.startTime
+        return new Date(a.data.startTime).getTime() <
+          new Date(b.data.startTime).getTime()
           ? -1
-          : a.data.startTime > b.data.startTime
+          : new Date(a.data.startTime).getTime() >
+            new Date(b.data.startTime).getTime()
           ? 1
           : 0;
       },
@@ -81,7 +84,7 @@ export default {
     sortedEvents() {
       return [...this.events].sort(this.selectedSortLogic).filter((x) => {
         let date = new Date().getTime();
-        let eventDate = new Date(x.data.startTime).getTime();
+        let eventDate = new Date(x.data.endTime).getTime();
         return eventDate > date;
       });
     },
@@ -101,9 +104,6 @@ export default {
         this.$router.push(`/${this.$store.state.user.role}/events/` + id);
       }
     },
-  },
-  created() {
-    this.selectSort(this.sortItems[0].logic);
   },
   props: ["events"],
   components: { UpcomingEventsListItem, FloatingMenuWithListItems },
