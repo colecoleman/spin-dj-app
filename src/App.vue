@@ -87,8 +87,9 @@ export default {
       // await this.$store.dispatch("getEvents");
       // await this.$store.dispatch("setBusinessSettings", user.username);
     }
+    console.log(this.$store.state.businessSettings);
     if (this.$store.state.branding) {
-      document.title = this.$store.state.branding.businessName;
+      document.title = this.$store.state.businessSettings.identity.businessName;
     } else {
       document.title = "Spin";
     }
