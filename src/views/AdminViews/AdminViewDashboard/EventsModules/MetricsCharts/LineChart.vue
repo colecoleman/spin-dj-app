@@ -5,6 +5,7 @@
 <script>
 import ApexCharts from "apexcharts";
 import helpers from "../../../../../helpers.js";
+
 export default {
   data() {
     return {
@@ -24,18 +25,12 @@ export default {
       ],
     };
   },
-  methods: {
-    calculateTotal: helpers.total,
-    formatPrice: helpers.formatPrice,
-  },
   computed: {
     branding() {
       return this.$root.branding;
     },
-    chartOptions() {
+    totals() {
       let totals = [];
-      let months = this.months;
-      let formatPrice = this.formatPrice;
       this.months.forEach((_, index) => {
         let monthTotal = 0;
         let monthEvents = this.events.filter(
@@ -46,9 +41,19 @@ export default {
         });
         totals.push(monthTotal);
       });
-
-      let chart = {
+      return totals;
+    },
+  },
+  methods: {
+    calculateTotal: helpers.total,
+    formatPrice: helpers.formatPrice,
+  },
+  props: ["events"],
+  mounted() {
+    if (document.getElementById("chart")) {
+      var chart = new ApexCharts(document.getElementById("chart"), {
         chart: {
+          id: "adminChart",
           height: "100%",
           toolbar: {
             show: false,
@@ -67,17 +72,17 @@ export default {
         },
         yaxis: {
           labels: {
-            formatter: formatPrice,
+            formatter: this.formatPrice,
           },
         },
         series: [
           {
             name: "Sales",
-            data: totals,
+            data: this.totals,
           },
         ],
         xaxis: {
-          categories: months,
+          categories: this.months,
           labels: {
             formatter: function (value) {
               if (value) {
@@ -89,19 +94,18 @@ export default {
             enabled: false,
           },
         },
-      };
-      return chart;
-    },
-  },
-  props: ["events"],
-  mounted() {
-    if (document.querySelector("#chart")) {
-      var chart = new ApexCharts(
-        document.querySelector("#chart"),
-        this.chartOptions
-      );
+      });
       chart.render();
     }
+  },
+  watch: {
+    events() {
+      ApexCharts.exec("adminChart", "updateSeries", [
+        {
+          data: this.totals,
+        },
+      ]);
+    },
   },
 };
 </script>

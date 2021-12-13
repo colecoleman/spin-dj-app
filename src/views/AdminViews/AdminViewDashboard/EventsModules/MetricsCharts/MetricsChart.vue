@@ -1,9 +1,9 @@
 <template>
   <div id="metrics-chart-container">
-    <base-card :icon="metricsChartsvg">
+    <base-card :icon="metricsChartsvg" :loading="events ? false : true">
       <template v-slot:title>Metrics</template>
       <template v-slot:content>
-        <line-chart :events="events"></line-chart>
+        <line-chart :events="events" v-if="events"></line-chart>
       </template>
     </base-card>
   </div>
