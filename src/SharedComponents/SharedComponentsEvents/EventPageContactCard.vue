@@ -7,7 +7,7 @@
         <h4>{{ event.eventTitle }}</h4>
       </div>
       <div id="date">
-        <p>{{ formatDate(event.data.startTime) }}</p>
+        <p>{{ formatDate(event.data.date) }}</p>
         <p>
           {{ formatTime(event.data.startTime) }} -
           {{ formatTime(event.data.endTime) }}
@@ -176,6 +176,9 @@ export default {
     },
   },
   props: ["client", "event"],
+  created() {
+    console.log(this.event);
+  },
 };
 </script>
 
