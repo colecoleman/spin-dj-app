@@ -60,7 +60,12 @@ export default class Helpers {
       if (product.type === "Package" || product.type === "Service") {
         let hours = Helpers.calculateEventTime(data) / (60 * 60 * 1000);
         let overage = hours - product.pricing.baseTime;
-        return product.pricing.baseRate + product.pricing.addHourly * overage;
+        if (product.priceOption === 'Flat') {
+          return product.pricing.baseRate
+        } else {
+
+          return product.pricing.baseRate + product.pricing.addHourly * overage;
+        }
       }
       if (product.type === "Add-On") {
         return product.pricing.units * product.pricing.unitRate
