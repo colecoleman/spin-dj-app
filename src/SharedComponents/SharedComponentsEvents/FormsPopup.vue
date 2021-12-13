@@ -32,14 +32,19 @@
     <template v-slot:content>
       <div class="wrapper">
         <div class="sidebar">
-          <h4
-            v-for="form in forms"
-            :key="form.id"
-            @click="this.selectedForm = form"
-            :class="form === selectedForm ? 'activeLink title' : 'title'"
-          >
-            {{ form.name }}
-          </h4>
+          <div v-if="forms.length > 0">
+            <h4
+              v-for="form in forms"
+              :key="form.id"
+              @click="this.selectedForm = form"
+              :class="form === selectedForm ? 'activeLink title' : 'title'"
+            >
+              {{ form.name }}
+            </h4>
+          </div>
+          <div v-if="forms.length <= 0">
+            <h4>No forms found for this event.</h4>
+          </div>
           <div class="button-container">
             <button-standard-with-icon
               text="Download"
@@ -53,54 +58,56 @@
         </div>
         <div class="form-content">
           <div id="form-wrapper-print">
-            <div
-              class="form-field"
-              v-for="(formItem, index) in selectedForm.fields"
-              :key="index"
-            >
-              <h5>{{ formItem.name }}</h5>
-              <div class="field-container">
-                <div
-                  class="field-item"
-                  v-for="(input, index) in formItem.fields"
-                  :key="index"
-                >
-                  <p>{{ input.inputTitle }}</p>
-                  <input
-                    v-if="
-                      input.inputType === 'text' ||
-                      input.inputType === 'tel' ||
-                      input.inputType === 'email'
-                    "
-                    :type="input.inputType"
-                    :placeholder="input.placeholder"
-                    v-model="input.value"
-                  />
-
+            <div v-if="this.forms.length > 0">
+              <div
+                class="form-field"
+                v-for="(formItem, index) in selectedForm.fields"
+                :key="index"
+              >
+                <h5>{{ formItem.name }}</h5>
+                <div class="field-container">
                   <div
-                    class="radio-container"
-                    v-if="input.inputType === 'radio'"
+                    class="field-item"
+                    v-for="(input, index) in formItem.fields"
+                    :key="index"
                   >
+                    <p>{{ input.inputTitle }}</p>
                     <input
-                      v-for="(option, index) in input.options"
-                      :key="index"
+                      v-if="
+                        input.inputType === 'text' ||
+                        input.inputType === 'tel' ||
+                        input.inputType === 'email'
+                      "
                       :type="input.inputType"
-                      :name="input.name"
+                      :placeholder="input.placeholder"
                       v-model="input.value"
                     />
-                    <p>{{ option }}</p>
-                  </div>
-                  <select
-                    v-if="input.inputType === 'select'"
-                    v-model="input.value"
-                  >
-                    <option
-                      v-for="(option, index) in input.options"
-                      :key="index"
+
+                    <div
+                      class="radio-container"
+                      v-if="input.inputType === 'radio'"
                     >
-                      {{ option }}
-                    </option>
-                  </select>
+                      <input
+                        v-for="(option, index) in input.options"
+                        :key="index"
+                        :type="input.inputType"
+                        :name="input.name"
+                        v-model="input.value"
+                      />
+                      <p>{{ option }}</p>
+                    </div>
+                    <select
+                      v-if="input.inputType === 'select'"
+                      v-model="input.value"
+                    >
+                      <option
+                        v-for="(option, index) in input.options"
+                        :key="index"
+                      >
+                        {{ option }}
+                      </option>
+                    </select>
+                  </div>
                 </div>
               </div>
             </div>
