@@ -14,7 +14,7 @@
       <div id="box-one">
         <contact-card-person
           :contact="contact"
-          :icon="personsvg"
+          :icon="SVGs.PersonSVG"
         ></contact-card-person>
       </div>
       <div id="box-two">
@@ -35,7 +35,7 @@
         <contact-page-upcoming-events
           v-if="contact"
           :contact="contact"
-          :icon="calendarsvg"
+          :icon="SVGs.CalendarSVG"
           @event-assignment-toggle="toggleEventAssignment()"
           :eventAssignmentOpen="eventAssignmentOpen"
         ></contact-page-upcoming-events>
@@ -45,7 +45,7 @@
           <contact-page-automation></contact-page-automation>
         </div>
         <div id="box-six-half-two">
-          <base-card :icon="messageBubble">
+          <base-card :icon="SVGs.MessageBubbleSVG">
             <template v-slot:title>Messages</template>
             <template v-slot:content>
               <messaging-single-component
@@ -74,24 +74,12 @@ import EmployeePageAvailabilityManager from "./ContactPageComponents/EmployeePag
 import PopupEmailComposition from "../../../SharedComponents/SharedComponentsPopupUtilities/PopupEmailComposition.vue";
 import MessagingSingleComponent from "../../../SharedComponents/SharedComponentsMessaging/MessagingSingleComponent.vue";
 import FourButtonBarWithDropDown from "../../../SharedComponents/SharedComponentsUI/FourButtonBarWithDropDown.vue";
-
-import personsvg from "../../../assets/SVGs/person.svg";
-import messageBubble from "../../../assets/SVGs/message-bubble.svg";
-import calendarsvg from "../../../assets/SVGs/calendar.svg";
-import clipboardsvg from "../../../assets/SVGs/clipboard.svg";
-import automationsvg from "../../../assets/SVGs/automation.svg";
-import emailsvg from "../../../assets/SVGs/email.svg";
-import keysvg from "../../../assets/SVGs/key.svg";
+import SVGs from "../../../assets/SVGs/svgIndex.js";
 
 export default {
   data() {
     return {
-      personsvg,
-      messageBubble,
-      calendarsvg,
-      clipboardsvg,
-      automationsvg,
-      keysvg,
+      SVGs,
       contact: undefined,
       eventAssignmentOpen: false,
       buttons: [
@@ -114,7 +102,7 @@ export default {
           {
             title: "Email",
             action: this.openEmailComposition,
-            icon: emailsvg,
+            icon: SVGs.EmailSVG,
           },
           // {
           //   title: "Reset Password",

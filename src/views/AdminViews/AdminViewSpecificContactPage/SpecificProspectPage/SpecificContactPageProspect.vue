@@ -9,7 +9,7 @@
       <div id="box-one">
         <prospect-page-card
           :prospect="contact"
-          :icon="personsvg"
+          :icon="SVGs.PersonSVG"
         ></prospect-page-card>
       </div>
       <div id="box-two">
@@ -61,32 +61,17 @@ import FourButtonBarWithDropDown from "../../../../SharedComponents/SharedCompon
 import ProspectPageEventDetails from "../ContactPageComponents/ProspectPageComponents/ProspectPageEventDetails.vue";
 import ProspectPageContactHealth from "../ContactPageComponents/ProspectPageComponents/ProspectPageContactHealth.vue";
 import ProspectPageCard from "../ContactPageComponents/ProspectPageComponents/ProspectPageCard.vue";
-import personsvg from "../../../../assets/SVGs/person.svg";
-import messageBubble from "../../../../assets/SVGs/message-bubble.svg";
-import calendarsvg from "../../../../assets/SVGs/calendar.svg";
-import clipboardsvg from "../../../../assets/SVGs/clipboard.svg";
-import automationsvg from "../../../../assets/SVGs/automation.svg";
-import emailsvg from "../../../../assets/SVGs/email.svg";
-import firesvg from "../../../../assets/SVGs/fire.svg";
-import snowflakesvg from "../../../../assets/SVGs/snowflake.svg";
-import neutralsvg from "../../../../assets/SVGs/neutral.svg";
+import SVGs from "../../../../assets/SVGs/svgIndex.js";
 
 export default {
   data() {
     return {
-      personsvg,
-      messageBubble,
-      calendarsvg,
-      clipboardsvg,
-      automationsvg,
-      firesvg,
-      snowflakesvg,
-      neutralsvg,
+      SVGs,
       buttons: [
         {
           title: "Send Email",
           action: this.openEmailComposition,
-          icon: emailsvg,
+          icon: SVGs.EmailSVG,
         },
         {
           title: "Send Proposal",
@@ -103,17 +88,17 @@ export default {
           {
             title: "hot",
             action: this.changeProspectStatus,
-            icon: firesvg,
+            icon: SVGs.FireSVG,
           },
           {
             title: "neutral",
             action: this.changeProspectStatus,
-            icon: neutralsvg,
+            icon: SVGs.NeutralSVG,
           },
           {
             title: "cold",
             action: this.changeProspectStatus,
-            icon: snowflakesvg,
+            icon: SVGs.SnowflakeSVG,
           },
         ],
       },
@@ -128,7 +113,7 @@ export default {
     },
     contactStatus() {
       console.log(this.contact.status);
-      return this.contact.status ? this.contact.status : 'Neutral';
+      return this.contact.status ? this.contact.status : "Neutral";
     },
   },
   methods: {

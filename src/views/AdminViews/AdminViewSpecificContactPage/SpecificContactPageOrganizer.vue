@@ -10,7 +10,7 @@
         <contact-card-person
           v-if="contact"
           :contact="contact"
-          :icon="personsvg"
+          :icon="SVGs.PersonSVG"
         ></contact-card-person>
       </div>
       <div id="box-two">
@@ -36,7 +36,7 @@
       <div id="box-five">
         <contact-page-upcoming-events
           :contact="contact"
-          :icon="calendarsvg"
+          :icon="SVGs.CalendarSVG"
           @event-assignment-toggle="toggleEventAssignment()"
           :eventAssignmentOpen="eventAssignmentOpen"
           v-if="contact"
@@ -47,7 +47,7 @@
           <contact-page-automation></contact-page-automation>
         </div>
         <div id="box-six-half-two">
-          <base-card :icon="messageBubble">
+          <base-card :icon="SVGs.MessageBubbleSVG">
             <template v-slot:title>Messages</template>
             <template v-slot:content>
               <messaging-single-component
@@ -76,22 +76,13 @@ import PopupEmailComposition from "../../../SharedComponents/SharedComponentsPop
 import MessagingSingleComponent from "../../../SharedComponents/SharedComponentsMessaging/MessagingSingleComponent.vue";
 import FourButtonBarWithDropDown from "../../../SharedComponents/SharedComponentsUI/FourButtonBarWithDropDown.vue";
 
-import personsvg from "../../../assets/SVGs/person.svg";
-import messageBubble from "../../../assets/SVGs/message-bubble.svg";
-import calendarsvg from "../../../assets/SVGs/calendar.svg";
-import clipboardsvg from "../../../assets/SVGs/clipboard.svg";
-import automationsvg from "../../../assets/SVGs/automation.svg";
-import emailsvg from "../../../assets/SVGs/email.svg";
+import SVGs from "../../../assets/SVGs/svgIndex.js";
 
 export default {
   data() {
     return {
+      SVGs,
       contact: undefined,
-      personsvg,
-      messageBubble,
-      calendarsvg,
-      clipboardsvg,
-      automationsvg,
       eventAssignmentOpen: false,
       buttons: [
         {
@@ -110,7 +101,7 @@ export default {
           {
             title: "Email",
             action: this.toggleEmailComposition,
-            icon: emailsvg,
+            icon: SVGs.EmailSVG,
           },
         ],
       },

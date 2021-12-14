@@ -1,5 +1,5 @@
 <template>
-  <base-card :icon="healthSignSvg">
+  <base-card :icon="SVGs.HealthSignSvg">
     <template v-slot:title>Prospect Health</template>
     <template v-slot:content>
       <div id="prospect-health-wrapper">
@@ -25,20 +25,13 @@
 </template>
 
 <script>
-import healthSignSvg from "../../../../../assets/SVGs/health-sign.svg";
-import firesvg from "../../../../../assets/SVGs/fire-color.svg";
-import snowflakesvg from "../../../../../assets/SVGs/snowflake-color.svg";
-import neutralsvg from "../../../../../assets/SVGs/neutral.svg";
-
+import SVGs from "../../../../../assets/SVGs/svgIndex.js";
 import helpers from "../../../../../helpers.js";
 
 export default {
   data() {
     return {
-      healthSignSvg,
-      firesvg,
-      snowflakesvg,
-      neutralsvg,
+      SVGs,
     };
   },
   methods: {

@@ -65,7 +65,7 @@
           :src="
             contact.profilePicture
               ? contact.profilePicture
-              : defaultLocationPicture
+              : SVGs.LocationCircleIconSVG
           "
         />
         <div class="name" @click="viewContact()">
@@ -91,21 +91,18 @@
 
 <script>
 import defaultProfilePicture from "../../../assets/default-profile-picture.svg";
-import defaultLocationPicture from "../../../assets/SVGs/location-circle-icon.svg";
 import ButtonWithDropDownSelections from "../../../SharedComponents/SharedComponentsUI/ButtonWithDropDownSelections.vue";
 
 import PopupEmailComposition from "../../../SharedComponents/SharedComponentsPopupUtilities/PopupEmailComposition.vue";
 import PopupModal from "../../../SharedComponents/SharedComponentsUI/PopupModal.vue";
-import eyeIcon from "../../../assets/SVGs/eye-icon.svg";
-import emailIcon from "../../../assets/SVGs/email.svg";
-import trashCan from "../../../assets/SVGs/trash-can.svg";
+import SVGs from "../../../assets/SVGs/svgIndex.js";
 import helpers from "../../../helpers.js";
 
 export default {
   data() {
     return {
+      SVGs,
       defaultProfilePicture,
-      defaultLocationPicture,
       actionsClicked: false,
       composeEmailOpen: false,
       deleteContactOpen: false,
@@ -114,20 +111,20 @@ export default {
           title: "View",
           danger: false,
           action: this.viewContact,
-          icon: eyeIcon,
+          icon: SVGs.EyeIconSVG,
         },
         {
           title: "Email",
           danger: false,
           action: this.emailContact,
-          icon: emailIcon,
+          icon: SVGs.EmailSVG,
         },
 
         {
           title: "Delete",
           danger: true,
           action: this.deleteContact,
-          icon: trashCan,
+          icon: SVGs.TrashCanSVG,
         },
       ],
     };
@@ -192,7 +189,7 @@ export default {
   components: {
     ButtonWithDropDownSelections,
     PopupEmailComposition,
-    PopupModal
+    PopupModal,
   },
   created() {
     console.log(this.category);

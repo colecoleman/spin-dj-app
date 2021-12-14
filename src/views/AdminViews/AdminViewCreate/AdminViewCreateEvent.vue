@@ -225,7 +225,7 @@
                   :src="
                     location.profilePicture
                       ? location.profilePicture
-                      : locationmarker
+                      : SVGs.LocationMarkerSVG
                   "
                   alt=""
                 />
@@ -364,23 +364,17 @@
 </template>
 
 <script>
-import XIcon from "../../../assets/SVGs/x-icon.svg";
-import locationmarker from "../../../assets/SVGs/location-marker.svg";
+import SVGs from "../../../assets/SVGs/svgIndex.js";
 import helpers from "../../../helpers.js";
 import AdminViewCreateEventSummary from "./AdminViewCreateEventSummary.vue";
 
 import FloatingMenuWithListItems from "../../../SharedComponents/SharedComponentsUI/FloatingMenuWithListItems.vue";
 
 export default {
-  components: {
-    AdminViewCreateEventSummary,
-    FloatingMenuWithListItems,
-  },
   data() {
     return {
+      SVGs,
       loaded: false,
-      XIcon,
-      locationmarker,
       locations: [],
       clients: [],
       locationView: "existingLocation",
@@ -686,6 +680,10 @@ export default {
       }
       return locations;
     },
+  },
+  components: {
+    AdminViewCreateEventSummary,
+    FloatingMenuWithListItems,
   },
   async created() {
     // await this.$store.dispatch("setBusinessSettings");

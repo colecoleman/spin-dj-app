@@ -13,25 +13,14 @@
         :key="contact_category"
         :id="`${contact_category + `-card`}`"
       >
-        <base-card :icon="personsvg">
+        <base-card :icon="SVGs.PersonSVG">
           <template v-slot:action1>
             Sort:
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="15.375"
-              height="15.375"
-              viewBox="0 0 18.375 18.375"
-              style="margin-left: 10px"
+            <img
+              :src="SVGs.SortAlphaSVG"
               @click="toggleSortMenuOpened(contact_category)"
-            >
-              <path
-                id="Icon_awesome-sort-alpha-down"
-                data-name="Icon awesome-sort-alpha-down"
-                d="M7.219,14.438H5.25V1.969a.656.656,0,0,0-.656-.656H3.281a.656.656,0,0,0-.656.656V14.438H.656a.657.657,0,0,0-.463,1.12L3.474,19.5a.656.656,0,0,0,.928,0l3.281-3.938A.657.657,0,0,0,7.219,14.438Zm9.844-2.625h-5.25a.656.656,0,0,0-.656.656v1.313a.656.656,0,0,0,.656.656h2.3L11.6,17.327a1.313,1.313,0,0,0-.441.981v.723a.656.656,0,0,0,.656.656h5.25a.656.656,0,0,0,.656-.656V17.719a.656.656,0,0,0-.656-.656h-2.3l2.513-2.89a1.312,1.312,0,0,0,.441-.981v-.723A.656.656,0,0,0,17.063,11.813Zm1.274-3.5L15.905,1.748a.656.656,0,0,0-.618-.436h-1.7a.656.656,0,0,0-.618.436L10.539,8.311a.656.656,0,0,0,.618.877h1.018a.656.656,0,0,0,.625-.454l.181-.53h2.912l.181.53a.656.656,0,0,0,.626.454h1.019a.656.656,0,0,0,.618-.877Zm-4.571-2.4.672-1.969.672,1.969Z"
-                transform="translate(0 -1.313)"
-                fill="currentColor"
-              />
-            </svg>
+              alt=""
+            />
             <div id="floating-menu-container">
               <floating-menu-with-list-items
                 v-if="sortMenuOpened === contact_category"
@@ -65,7 +54,7 @@
       <div id="scroll-padding"></div>
     </div>
     <div id="right-container">
-      <base-card :icon="addPersonsvg">
+      <base-card :icon="SVGs.AddPersonSVG">
         <template v-slot:title>Add new</template>
         <template v-slot:content>
           <add-contact-module></add-contact-module>
@@ -82,14 +71,12 @@ import AddContactModule from "./AddContactModules/AddContactModule.vue";
 import BaseNavigationCard from "../../../SharedComponents/SharedComponentsUI/BaseNavigationCard.vue";
 import ContactNavigation from "./AdminContactListNavigation.vue";
 import FloatingMenuWithListItems from "../../../SharedComponents/SharedComponentsUI/FloatingMenuWithListItems.vue";
-import personsvg from "../../../assets/SVGs/person.svg";
-import addPersonsvg from "../../../assets/SVGs/add-person.svg";
+import SVGs from "../../../assets/SVGs/svgIndex.js";
 
 export default {
   data() {
     return {
-      personsvg,
-      addPersonsvg,
+      SVGs,
       sortMenuOpened: undefined,
       sortItems: [
         {
@@ -135,7 +122,7 @@ export default {
       return this.$store.state.contacts;
     },
   },
-  
+
   mounted() {
     console.log(this.contacts);
   },

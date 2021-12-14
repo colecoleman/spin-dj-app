@@ -1,5 +1,5 @@
 <template>
-  <base-card :icon="svg.clipboardsvg">
+  <base-card :icon="SVGs.ClipboardSVG">
     <template v-slot:title>To-Do</template>
     <template v-slot:content>
       <div id="wrapper">
@@ -45,7 +45,7 @@
             v-model="newToDo"
             @keyup.enter="submitToDo()"
           />
-          <img :src="svg.circleCheckmarkSvg" @click="submitToDo()" alt="" />
+          <img :src="SVGs.CircleCheckmarkSVG" @click="submitToDo()" alt="" />
         </div>
         <div class="to-do-item" v-for="toDo in uncompletedToDos" :key="toDo.id">
           <to-do-item :toDo="toDo"></to-do-item>
@@ -98,17 +98,13 @@
 
 <script>
 import ToDoItem from "../SharedComponentsToDoList/ToDoItem.vue";
-import clipboardsvg from "../../assets/SVGs/clipboard.svg";
-import circleCheckmarkSvg from "../../assets/SVGs/circle-checkmark.svg";
+import SVGs from "../../assets/SVGs/svgIndex.js";
 
 export default {
   data() {
     return {
       toDos: [],
-      svg: {
-        clipboardsvg,
-        circleCheckmarkSvg,
-      },
+      SVGs,
       newToDoOpened: false,
       newToDo: undefined,
     };

@@ -36,7 +36,7 @@
             <h4>
               {{ contract.contractName
               }}<img
-                :src="xIconSVG"
+                :src="XIconSVG"
                 class="x-icon"
                 @click="deleteContract(index)"
               />
@@ -57,12 +57,12 @@
 </template>
 
 <script>
-import { xIconSVG, EditPenSVG } from "../../../../assets/SVGs/svgIndex";
+import { XIconSVG, EditPenSVG } from "../../../../assets/SVGs/svgIndex.js";
 
 export default {
   data() {
     return {
-      xIconSVG,
+      XIconSVG,
       EditPenSVG,
       contract: {
         contractName: undefined,

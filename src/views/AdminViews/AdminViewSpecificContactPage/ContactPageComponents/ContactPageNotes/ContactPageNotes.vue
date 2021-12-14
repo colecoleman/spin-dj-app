@@ -1,9 +1,9 @@
 <template>
-  <base-card :icon="notessvg">
+  <base-card :icon="SVGs.FileOpenSVG">
     <template v-slot:title>Notes</template>
     <template v-slot:action1>
       <img
-        :src="plussignsvg"
+        :src="SVGs.PlusSignSVG"
         :class="addNewNoteOpen ? 'tilted' : ''"
         @click="toggleOpenNote()"
         alt=""
@@ -58,16 +58,14 @@
 </template>
 
 <script>
-import notessvg from "../../../../../assets/SVGs/file-open.svg";
-import plussignsvg from "../../../../../assets/SVGs/plus-sign.svg";
+import SVGs from "../../../../../assets/SVGs/svgIndex.js";
 import helpers from "../../../../../helpers.js";
 import ContactPageNotesAddNew from "./ContactPageNotesAddNew.vue";
 
 export default {
   data() {
     return {
-      notessvg,
-      plussignsvg,
+      SVGs,
       addNewNoteOpen: false,
     };
   },

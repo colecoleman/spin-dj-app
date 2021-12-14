@@ -1,9 +1,13 @@
 <template>
-  <base-card :icon="groupPeopleSvg">
+  <base-card :icon="SVGs.GroupPeopleSVG">
     <template v-slot:title>Event Contacts</template>
     <template v-slot:content>
       <div id="contact-carousel-top-wrapper">
-        <img @click="scrollToPreviousElement()" :src="leftArrow" alt="" />
+        <img
+          @click="scrollToPreviousElement()"
+          :src="SVGs.LeftArrowSVG"
+          alt=""
+        />
 
         <div id="contact-carousel-wrapper">
           <event-page-contact-carousel-item
@@ -14,7 +18,7 @@
             @click="navigateToContactPage(contact)"
           ></event-page-contact-carousel-item>
         </div>
-        <img @click="scrollToNextElement()" :src="rightArrow" alt="" />
+        <img @click="scrollToNextElement()" :src="SVGs.RightArrowSVG" alt="" />
       </div>
     </template>
   </base-card>
@@ -22,16 +26,12 @@
 
 <script>
 import EventPageContactCarouselItem from "./EventPageContactCarouselItem.vue";
-import rightArrow from "../../../assets/SVGs/right-arrow.svg";
-import leftArrow from "../../../assets/SVGs/left-arrow.svg";
-import groupPeopleSvg from "../../../assets/SVGs/group-people.svg";
+import SVGs from "../../../assets/SVGs/svgIndex.js";
 
 export default {
   data() {
     return {
-      groupPeopleSvg,
-      rightArrow,
-      leftArrow,
+      SVGs,
     };
   },
   props: ["contacts"],

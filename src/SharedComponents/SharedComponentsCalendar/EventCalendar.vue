@@ -1,5 +1,5 @@
 <template>
-  <base-card :icon="calendar" v-if="!singleDayViewOpen">
+  <base-card :icon="SVGs.CalendarSVG" v-if="!singleDayViewOpen">
     <template v-slot:action1>
       <div class="right-title-parent">
         <h4 @click="floatingMenuOpen = !floatingMenuOpen">
@@ -25,7 +25,7 @@
               @click="monthChange(`backward`)"
               @mousedown.prevent=""
             >
-              <img :src="leftArrow" alt="" />
+              <img :src="SVGs.LeftArrowSVG" alt="" />
             </div>
             <div id="main-calendar-content">
               <div id="weekdays">
@@ -57,7 +57,7 @@
               @click="monthChange(`forward`)"
               @mousedown.prevent=""
             >
-              <img :src="rightArrow" alt="" />
+              <img :src="SVGs.RightArrowSVG" alt="" />
             </div>
           </div>
         </div>
@@ -75,21 +75,12 @@
 <script>
 import SingleDayView from "./SingleDayView/SingleDayView.vue";
 import DualSideFloatingMenuWithListItems from "../SharedComponentsUI/DualSideFloatingMenuWithListItems.vue";
-
-import calendar from "../../assets/SVGs/calendar.svg";
-import xIcon from "../../assets/SVGs/x-icon.svg";
-import downArrow from "../../assets/SVGs/down-arrow.svg";
-import leftArrow from "../../assets/SVGs/left-arrow.svg";
-import rightArrow from "../../assets/SVGs/right-arrow.svg";
+import SVGs from "../../assets/SVGs/svgIndex.js";
 
 export default {
   data() {
     return {
-      xIcon,
-      downArrow,
-      rightArrow,
-      leftArrow,
-      calendar,
+      SVGs,
       WEEKDAYS: {
         sunday: {
           key: 1,

@@ -1,7 +1,7 @@
 <template>
   <base-card
-    :icon="discsvg"
-    :actionIcon="sortalpha"
+    :icon="SVGs.DiscSVG"
+    :actionIcon="SVGs.SortAlphaSVG"
     @action-one-clicked="sortMenuOpened = !sortMenuOpened"
     :loading="events ? false : true"
   >
@@ -59,14 +59,12 @@
 <script>
 import UpcomingEventsListItem from "./UpcomingEventListItem.vue";
 import FloatingMenuWithListItems from "../SharedComponentsUI/FloatingMenuWithListItems.vue";
-import discsvg from "../../assets/SVGs/disc.svg";
-import sortalpha from "../../assets/SVGs/sort-alpha.svg";
+import SVGs from "../../assets/SVGs/svgIndex.js";
 import ClientViewUpcomingEventListItem from "./ClientViewUpcomingEventListItem.vue";
 export default {
   data() {
     return {
-      discsvg,
-      sortalpha,
+      SVGs,
       mutableEvents: undefined,
       sortMenuOpened: false,
       sortItems: [

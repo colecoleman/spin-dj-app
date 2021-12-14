@@ -1,7 +1,7 @@
 <template>
   <base-card
-    :icon="discsvg"
-    :actionIcon="eventAssignmentOpen ? xiconsvg : sortalpha"
+    :icon="SVGs.DiscSVG"
+    :actionIcon="eventAssignmentOpen ? SVGs.XIconSVG : SVGs.SortAlphaSVG"
     @action-one-clicked="
       eventAssignmentOpen ? eventAssignmentToggle() : toggleSortMenuOpened()
     "
@@ -59,15 +59,11 @@
 import LocationUpcomingEventsListItem from "../../../../../SharedComponents/SharedComponentsUpcomingEvents/UpcomingEventListItem.vue";
 import FloatingMenuWithListItems from "../../../../../SharedComponents/SharedComponentsUI/FloatingMenuWithListItems.vue";
 import TwoButtonDialogModal from "../../../../../SharedComponents/SharedComponentsUI/TwoButtonDialogModal.vue";
-import discsvg from "../../../../../assets/SVGs/disc.svg";
-import sortalpha from "../../../../../assets/SVGs/sort-alpha.svg";
-import xiconsvg from "../../../../../assets/SVGs/x-icon.svg";
+import SVGs from "../../../../../assets/SVGs/svgIndex.js";
 export default {
   data() {
     return {
-      discsvg,
-      sortalpha,
-      xiconsvg,
+      SVGs,
       sortMenuOpened: false,
       addEventId: undefined,
       events: [],
@@ -146,7 +142,6 @@ export default {
         return new Date(event.data.date).getTime() > today;
       });
     },
-
   },
 
   props: ["contact", "eventAssignmentOpen"],

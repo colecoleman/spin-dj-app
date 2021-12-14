@@ -1,12 +1,17 @@
 <template>
   <div id="notification-button" @mousedown.prevent="">
-    <img :src="notificationBell" alt="" @click="toggleClick()" />
+    <img :src="SVGs.NotificationBellSVG" alt="" @click="toggleClick()" />
     <transition name="fade1">
       <div id="notification-button-popup-container">
-        <base-card v-if="isClicked" :icon="notificationBell">
+        <base-card v-if="isClicked" :icon="SVGs.NotificationBellSVG">
           <template v-slot:title>Notifications</template>
           <template v-slot:action1>
-            <img :src="xIcon" alt="" class="x-icon" @click="toggleClick()" />
+            <img
+              :src="SVGs.XIconSVG"
+              alt=""
+              class="x-icon"
+              @click="toggleClick()"
+            />
           </template>
           <template v-slot:content>
             <div id="popup-inner-wrapper">
@@ -27,16 +32,13 @@
 </template>
 
 <script>
-import BaseCard from "../../SharedComponentsUI/BaseCard.vue";
 import NotificationButtonItem from "./NotificationButtonItem.vue";
-import notificationBell from "../../../assets/SVGs/notification-bell.svg";
-import xIcon from "../../../assets/SVGs/x-icon.svg";
+import SVGs from "../../../assets/SVGs/svgIndex.js";
 
 export default {
   data() {
     return {
-      notificationBell,
-      xIcon,
+      SVGs,
       isClicked: false,
     };
   },
@@ -50,7 +52,7 @@ export default {
       return this.$store.state.notifications;
     },
   },
-  components: { BaseCard, NotificationButtonItem },
+  components: { NotificationButtonItem },
 };
 </script>
 

@@ -1,6 +1,6 @@
 <template>
   <div class="edit-card-wrapper">
-    <base-card :actionIcon="xIconSVG" @action-one-clicked="closeEditCard()">
+    <base-card :actionIcon="XIconSVG" @action-one-clicked="closeEditCard()">
       <template v-slot:title>Edit Contact</template>
       <template v-slot:action1></template>
       <template v-slot:content>
@@ -47,7 +47,7 @@
 </template>
 
 <script>
-import xIconSVG from "../../../../assets/SVGs/x-icon.svg";
+import XIconSVG from "../../../../assets/SVGs/x-icon.svg";
 
 export default {
   data() {
@@ -60,7 +60,7 @@ export default {
         phoneNumber: undefined,
         email: undefined,
       },
-      xIconSVG,
+      XIconSVG,
     };
   },
   methods: {

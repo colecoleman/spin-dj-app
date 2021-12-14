@@ -1,5 +1,5 @@
 <template>
-  <base-card :icon="icon" :actionIcon="editPen">
+  <base-card :icon="icon" :actionIcon="SVGs.EditPenSVG">
     <template v-slot:title>prospect</template>
     <template v-slot:action1></template>
     <template v-slot:content>
@@ -7,10 +7,10 @@
         <div id="prospect-card-upper-div">
           <img
             :src="
-              (prospect.status == null ? neutralsvg : '') ||
-              (prospect.status === 'cold' ? snowflakesvg : '') ||
-              (prospect.status === 'neutral' ? neutralsvg : '') ||
-              (prospect.status === 'hot' ? firesvg : '') ||
+              (prospect.status == null ? SVGs.NeutralSVG : '') ||
+              (prospect.status === 'cold' ? SVGs.SnowflakeSVG : '') ||
+              (prospect.status === 'neutral' ? SVGs.NeutralSVG : '') ||
+              (prospect.status === 'hot' ? SVGs.FireSVG : '') ||
               ''
             "
             alt=""
@@ -33,20 +33,14 @@
 
 <script>
 import defaultProfilePicture from "../../../../../assets/default-profile-picture.svg";
-import editPen from "../../../../../assets/SVGs/edit-pen.svg";
-import firesvg from "../../../../../assets/SVGs/fire.svg";
-import snowflakesvg from "../../../../../assets/SVGs/snowflake.svg";
-import neutralsvg from "../../../../../assets/SVGs/neutral.svg";
+import SVGs from "../../../../../assets/SVGs/svgIndex.js";
 import helpers from "../../../../../helpers.js";
 
 export default {
   data() {
     return {
+      SVGs,
       defaultProfilePicture,
-      editPen,
-      firesvg,
-      snowflakesvg,
-      neutralsvg,
     };
   },
   methods: {

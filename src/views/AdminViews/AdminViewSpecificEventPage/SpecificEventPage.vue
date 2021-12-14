@@ -91,13 +91,12 @@ import ContractPopup from "../../../SharedComponents/SharedComponentsEvents/Cont
 import FourButtonBarWithDropDown from "../../../SharedComponents/SharedComponentsUI/FourButtonBarWithDropDown.vue";
 import TwoButtonDialogModal from "../../../SharedComponents/SharedComponentsUI/TwoButtonDialogModal.vue";
 
-import editPen from "../../../assets/SVGs/edit-pen.svg";
-import passingTime from "../../../assets/SVGs/passing-time.svg";
-import trashCan from "../../../assets/SVGs/trash-can.svg";
+import SVGs from "../../../assets/SVGs/svgIndex.js";
 
 export default {
   data() {
     return {
+      SVGs,
       event: undefined,
       contacts: [],
       locations: [],
@@ -125,13 +124,10 @@ export default {
             title: "delete",
             action: this.deleteEvent,
             danger: true,
-            icon: trashCan,
+            icon: SVGs.TrashCanSVG,
           },
         ],
       },
-      passingTime,
-      editPen,
-      trashCan,
       deleteEventOpen: false,
       backdropOpen: false,
       contractOpen: false,

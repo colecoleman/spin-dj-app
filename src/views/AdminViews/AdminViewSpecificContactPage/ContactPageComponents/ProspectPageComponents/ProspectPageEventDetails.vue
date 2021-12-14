@@ -1,5 +1,5 @@
 <template>
-  <base-card :icon="infoIconSvg">
+  <base-card :icon="SVGs.InfoIconSvg">
     <template v-slot:title>Event Details</template>
     <template v-slot:content>
       <h5 v-if="!prospect.eventDetails">No event found for this prospect.</h5>
@@ -11,7 +11,7 @@
               v-if="!prospect.eventDetails"
               @click="toggleAddLocation()"
             >
-              <img :src="locationAddSvg" class="big-add-svg-icon" alt="" />
+              <img :src="SVGs.LocationAddSVG" class="big-add-svg-icon" alt="" />
               <h5>No locations yet.</h5>
               <h5><b>Click to add one.</b></h5>
             </div>
@@ -40,7 +40,11 @@
               v-if="!addDateTimeOpen && !prospect.eventDetails"
               @click="toggleAddDateTime()"
             >
-              <img :src="addTimeClockSvg" class="big-add-svg-icon" alt="" />
+              <img
+                :src="SVGs.AddTimeClockSVG"
+                class="big-add-svg-icon"
+                alt=""
+              />
               <h5>No date or time yet.</h5>
               <h5><b>Click to add.</b></h5>
             </div>
@@ -87,7 +91,7 @@
               v-if="!addpackageOpen"
               @click="toggleAddPackage()"
             >
-              <img :src="packageSvg" class="big-add-svg-icon" alt="" />
+              <img :src="SVGs.AddPackageSVG" class="big-add-svg-icon" alt="" />
               <h5>No packages yet.</h5>
               <h5><b>Click to add one.</b></h5>
             </div>
@@ -100,21 +104,13 @@
 </template>
 
 <script>
-import infoIconSvg from "../../../../../assets/SVGs/info-icon.svg";
-import locationAddSvg from "../../../../../assets/SVGs/location-add.svg";
-import addTimeClockSvg from "../../../../../assets/SVGs/add-time-clock.svg";
-import packageSvg from "../../../../../assets/SVGs/add-package.svg";
-
+import SVGs from "../../../../../assets/SVGs/svgIndex.js";
 import helpers from "../../../../../helpers.js";
 
 export default {
   data() {
     return {
-      infoIconSvg,
-      locationAddSvg,
-      addTimeClockSvg,
-      packageSvg,
-
+      SVGs,
       addLocationOpen: false,
       addDateTimeOpen: false,
 
@@ -219,8 +215,7 @@ export default {
     },
   },
   props: ["prospect"],
-  components: {
-  },
+  components: {},
 };
 </script>
 

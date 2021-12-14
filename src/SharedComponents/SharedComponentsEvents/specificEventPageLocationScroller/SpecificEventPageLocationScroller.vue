@@ -1,11 +1,11 @@
 <template>
-  <base-card :icon="locationMarkerSvg">
+  <base-card :icon="SVGs.LocationMarkerSVG">
     <template v-slot:title>Locations</template>
     <template v-slot:content>
       <div id="specific-event-page-location-scroller-wrapper">
         <img
           v-if="locations.length > 1"
-          :src="leftArrow"
+          :src="SVGs.LeftArrowSVG"
           @click="decrementCounter()"
         />
 
@@ -16,7 +16,7 @@
 
         <img
           v-if="locations.length > 1"
-          :src="rightArrow"
+          :src="SVGs.RightArrowSVG"
           @click="incrementCounter()"
         />
       </div>
@@ -25,17 +25,13 @@
 </template>
 
 <script>
-import leftArrow from "../../../assets/SVGs/left-arrow.svg";
-import rightArrow from "../../../assets/SVGs/right-arrow.svg";
+import SVGs from "../../../assets/SVGs/svgIndex.js";
 import SpecificEventPageLocationScrollerItem from "./SpecificEventPageLocationScrollerItem.vue";
-import locationMarkerSvg from "../../../assets/SVGs/location-marker.svg";
 
 export default {
   data() {
     return {
-      leftArrow,
-      rightArrow,
-      locationMarkerSvg,
+      SVGs,
       counter: 0,
     };
   },

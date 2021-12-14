@@ -1,17 +1,17 @@
 <template>
-  <base-card :icon="clipboardsvg" :loading="contact ? false : true">
+  <base-card :icon="SVGs.ClipboardSVG" :loading="contact ? false : true">
     <template v-slot:title>To-Do</template>
     <template v-slot:content>
       <div id="wrapper" v-if="contact">
         <div class="to-do-item" v-if="newToDoOpened">
-          <img :src="plusbuttonsvg" alt="" />
+          <img :src="SVGs.PlusSignSVG" alt="" />
           <input
             type="text"
             placeholder="Start typing.."
             v-model="newToDo"
             @keyup.enter="submitToDo()"
           />
-          <img :src="circleCheckmarkSvg" @click="submitToDo()" alt="" />
+          <img :src="SVGs.CircleCheckmarkSVG" @click="submitToDo()" alt="" />
         </div>
         <div class="to-do-item" v-for="toDo in uncompletedToDos" :key="toDo.id">
           <to-do-item :toDo="toDo"></to-do-item>
@@ -27,7 +27,7 @@
     </template>
     <template v-slot:action1>
       <img
-        :src="plusbuttonsvg"
+        :src="SVGs.PlusSignSVG"
         @click="newToDoOpened = !newToDoOpened"
         alt=""
       />
@@ -37,17 +37,13 @@
 
 <script>
 import ToDoItem from "../../../../SharedComponents/SharedComponentsToDoList/ToDoItem.vue";
-import clipboardsvg from "../../../../assets/SVGs/clipboard.svg";
-import plusbuttonsvg from "../../../../assets/SVGs/plus-sign.svg";
-import circleCheckmarkSvg from "../../../../assets/SVGs/circle-checkmark.svg";
+import SVGs from "../../../../assets/SVGs/svgIndex.js";
 
 export default {
   data() {
     return {
       toDos: [],
-      clipboardsvg,
-      plusbuttonsvg,
-      circleCheckmarkSvg,
+      SVGs,
       newToDoOpened: false,
       newToDo: undefined,
     };

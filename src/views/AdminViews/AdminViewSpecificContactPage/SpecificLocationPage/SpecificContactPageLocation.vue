@@ -9,7 +9,7 @@
       <div id="box-one">
         <contact-card-location
           v-if="location"
-          :icon="locationmarker"
+          :icon="SVGs.LocationMarkerSVG"
           :location="location"
         ></contact-card-location>
       </div>
@@ -30,7 +30,7 @@
           <location-page-upcoming-events
             v-if="location"
             :location="location"
-            :icon="calendarsvg"
+            :icon="SVGs.CalendarSVG"
             @event-assignment-toggle="toggleEventAssignment()"
             :eventAssignmentOpen="eventAssignmentOpen"
           ></location-page-upcoming-events>
@@ -40,7 +40,7 @@
           <location-contact-card-person
             :contact="contact"
             :location="location"
-            :icon="personsvg"
+            :icon="SVGs.PersonSVG"
           ></location-contact-card-person>
         </div>
       </div>
@@ -68,26 +68,13 @@ import LocationPageUpcomingEvents from "../ContactPageComponents/LocationPageCom
 import ContactCardLocation from "../ContactPageComponents/LocationPageComponents/ContactCardLocation.vue";
 import LocationContactCardPerson from "../ContactPageComponents/LocationPageComponents/LocationContactCardPerson.vue";
 import PopupEmailComposition from "../../../../SharedComponents/SharedComponentsPopupUtilities/PopupEmailComposition.vue";
-
 import FourButtonBarWithDropDown from "../../../../SharedComponents/SharedComponentsUI/FourButtonBarWithDropDown.vue";
-
-import personsvg from "../../../../assets/SVGs/person.svg";
-import messageBubble from "../../../../assets/SVGs/message-bubble.svg";
-import calendarsvg from "../../../../assets/SVGs/calendar.svg";
-import clipboardsvg from "../../../../assets/SVGs/clipboard.svg";
-import automationsvg from "../../../../assets/SVGs/automation.svg";
-import emailsvg from "../../../../assets/SVGs/email.svg";
-import locationmarker from "../../../../assets/SVGs/location-marker.svg";
+import SVGs from "../../../../assets/SVGs/svgIndex.js";
 
 export default {
   data() {
     return {
-      personsvg,
-      messageBubble,
-      calendarsvg,
-      clipboardsvg,
-      automationsvg,
-      locationmarker,
+      SVGs,
       eventAssignmentOpen: false,
       location: undefined,
       contact: undefined,
@@ -107,7 +94,7 @@ export default {
           {
             title: "Email",
             action: this.openEmailComposition,
-            icon: emailsvg,
+            icon: SVGs.EmailSVG,
           },
         ],
       },

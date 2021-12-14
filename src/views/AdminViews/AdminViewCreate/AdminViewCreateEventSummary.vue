@@ -43,7 +43,7 @@
                       {{ location.address.cityStateZip }}
                     </p>
                   </div>
-                  <img :src="xIconSVG" alt="" @click="removeLocation(index)" />
+                  <img :src="XIconSVG" alt="" @click="removeLocation(index)" />
                 </div>
               </div>
               <div class="row-flex">
@@ -81,7 +81,7 @@
                 </p>
                 <img
                   v-if="clients.length > 0"
-                  :src="xIconSVG"
+                  :src="XIconSVG"
                   alt=""
                   @click="removeClient(index)"
                 />
@@ -174,14 +174,14 @@
 import helpers from "../../../helpers.js";
 
 // import XIcon from "../../../assets/SVGs/x-icon.svg";
-import { xIconSVG } from "../../../assets/SVGs/svgIndex.js";
+import { XIconSVG } from "../../../assets/SVGs/svgIndex.js";
 export default {
   data() {
     return {
       eventId: undefined,
       clientId: [],
       locationId: [],
-      xIconSVG,
+      XIconSVG,
     };
   },
   methods: {
@@ -242,7 +242,7 @@ export default {
         signerName: null,
         signerDate: null,
         signerUUID: null,
-        status: 'pending',
+        status: "pending",
       }));
       console.log(dbEvent);
       this.$store
