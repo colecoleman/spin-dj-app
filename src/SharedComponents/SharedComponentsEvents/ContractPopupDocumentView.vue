@@ -2,17 +2,17 @@
   <div id="contract-popup-document-view" class="page">
     <div id="heading"><h4>Contract</h4></div>
     <div id="contract-copy">
-      <p>{{ contractText }}</p>
+      <p>{{ contract.contractBody }}</p>
     </div>
     <div id="contract-data">
       <h5>Signer Name:</h5>
-      <p>First family_name</p>
+      <p>{{ contract.signerName }}</p>
       <h5>Date Signed:</h5>
-      <p>12/31/2021</p>
+      <p>{{ contract.signerDate }}</p>
       <h5>IP Address:</h5>
-      <p>123.12.12.123</p>
+      <p>{{ contract.signerUUID }}</p>
     </div>
-    <h4>Thank you for choosing Spin Entertainment!</h4>
+    <h4>Thank you for choosing {{ businessName }}!</h4>
   </div>
 </template>
 
@@ -25,17 +25,8 @@ export default {
     };
   },
   computed: {
-    contractText() {
-      console.log(this.contract);
-      console.log(
-        this.$store.state.businessSettings.contracts.find(
-          (x) => x.id === this.contract
-        )
-      );
-
-      return this.$store.state.businessSettings.contracts.find(
-        (x) => x.id === this.contract
-      ).contractBody;
+    businessName() {
+      return this.$store.state.publicSettings.identity.businessName;
     },
   },
   props: ["contract"],

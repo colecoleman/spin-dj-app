@@ -5,6 +5,9 @@
       <base-card :actionIcon="XIcon" @action-one-clicked="closeModal()">
         <template v-slot:title>Are you sure?</template>
         <template v-slot:content>
+          <h5>
+            {{ modalBody }}
+          </h5>
           <div class="button-container">
             <button-standard-with-icon
               text="Yes"
@@ -44,6 +47,7 @@ export default {
     },
   },
   components: { Backdrop },
+  props: ["modalBody"],
 };
 </script>
 
@@ -57,10 +61,11 @@ export default {
 .modal {
   z-index: 3;
   position: fixed;
-  height: 160px;
-  width: 30%;
-  top: 35%;
-  left: 35%;
+  /* height: 160px; */
+  max-width: 50%;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .button-container {

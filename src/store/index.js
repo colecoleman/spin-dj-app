@@ -7,13 +7,13 @@ const store = createStore({
     state() {
         return {
             user: undefined,
-            branding: {
-                backgroundColor: "#F0F0F0",
-                foregroundColor: "#FFFFFF",
-                cardOutline: "#DDDDDD",
-                highlightColor: "#00F5FF",
-                textColor: "#000000",
-            },
+            // branding: {
+            //     backgroundColor: "#F0F0F0",
+            //     foregroundColor: "#FFFFFF",
+            //     cardOutline: "#DDDDDD",
+            //     highlightColor: "#00F5FF",
+            //     textColor: "#000000",
+            // },
             errors: [],
             successes: [],
             notifications: [],
@@ -70,9 +70,6 @@ const store = createStore({
                     reject(error);
                 })
             })
-        },
-        async getPublicBranding() {
-
         },
         async getUser(context, user) {
             return new Promise((resolve, reject) => {
@@ -305,7 +302,6 @@ const store = createStore({
             return new Promise((resolve, reject) => {
                 axios.get(`https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/${context.state.user.role}/${context.state.user.tenantId}/${context.state.user.userId}/events`).then((result)=> {
                     resolve(result);
-                    console.log(result)
                     context.commit('setEvents', result);
                 }, error => {
                     context.commit('addError', error);
@@ -314,11 +310,27 @@ const store = createStore({
             })
         },
         async nonAdminGetUser(context, payload) {
-            console.log(context.state.user.role)
             return new Promise((resolve, reject) => {
                 axios.get(`https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/${context.state.user.role}/${context.state.user.tenantId}/${context.state.user.userId}/users/${payload}`).then((result)=> {
                     resolve(result);
-                    console.log(result)
+                    context.commit('setUser', result.data.Item);
+                }, error => {
+                    context.commit('addError', error);
+                    reject(error);
+                })
+            })
+        },
+        async clientSignContract(context, callerPayload) {
+            let payload = {
+                value: callerPayload.contracts,
+                variable: 'contracts',
+            }
+            console.log(payload)
+            return new Promise((resolve, reject) => {
+                axios.put(`https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/${context.state.user.role}/${context.state.user.tenantId}/${context.state.user.userId}/events/${callerPayload.eventId}`, payload).then((result)=> {
+                    resolve(result);
+                    console.log(result);
+                    context.commit('setUser', result.data.Item);
                 }, error => {
                     context.commit('addError', error);
                     reject(error);
