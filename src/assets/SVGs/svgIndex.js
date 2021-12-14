@@ -11,6 +11,7 @@ import DownArrowSVG from './down-arrow.svg'
 import DropdownArrowSVG from './dropdown-arrow.svg'
 import EditPenSVG from './edit-pen.svg'
 import EmailSVG from './email.svg'
+import ExclamationSVG from './exclamation-mark.svg'
 import EyeIconSVG from './eye-icon.svg'
 import FileOpenSVG from './file-open.svg'
 import FillableCircleSVG from './fillable-circle.svg'
@@ -56,6 +57,7 @@ import xIconSVG from './x-icon.svg'
     DropdownArrowSVG, 
     EditPenSVG, 
     EmailSVG, 
+    ExclamationSVG,
     EyeIconSVG, 
     FileOpenSVG, 
     FillableCircleSVG, 

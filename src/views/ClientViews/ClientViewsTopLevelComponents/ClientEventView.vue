@@ -47,7 +47,9 @@
                 :loading="locations ? false : true"
               ></specific-event-page-location-scroller>
             </div>
-            <div id="upper-div-right-lower-container-box-2"></div>
+            <div id="upper-div-right-lower-container-box-2">
+              <event-page-alerts :alerts="eventAlerts"></event-page-alerts>
+            </div>
           </div>
         </div>
       </div>
@@ -81,7 +83,7 @@ import InvoicePopup from "../../../SharedComponents/SharedComponentsEvents/Invoi
 import ContractPopup from "../../../SharedComponents/SharedComponentsEvents/ContractPopup.vue";
 import FourButtonBarWithDropDown from "../../../SharedComponents/SharedComponentsUI/FourButtonBarWithDropDown.vue";
 // import TwoButtonDialogModal from "../../../SharedComponents/SharedComponentsUI/TwoButtonDialogModal.vue";
-
+import EventPageAlerts from "../../../SharedComponents/SharedComponentsEvents/EventPageAlerts.vue";
 import editPen from "../../../assets/SVGs/edit-pen.svg";
 import passingTime from "../../../assets/SVGs/passing-time.svg";
 import trashCan from "../../../assets/SVGs/trash-can.svg";
@@ -133,6 +135,16 @@ export default {
   computed: {
     client() {
       return this.clients[0];
+    },
+    eventAlerts() {
+      let alerts = [];
+      if (this.event.contracts.some((e) => e.status === "signed")) {
+        alerts.push({
+          urgency: "high",
+          text: "Unsigned Contracts",
+        });
+      }
+      return alerts;
     },
   },
   methods: {
@@ -193,6 +205,7 @@ export default {
     EventPageContactCard,
     EventPageContactCarousel,
     SpecificEventPageLocationScroller,
+    EventPageAlerts,
     // AutomationEventComponent,
     Backdrop,
     InvoicePopup,
