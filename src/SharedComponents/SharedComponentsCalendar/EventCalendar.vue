@@ -358,6 +358,7 @@ img {
 
 #main-calendar-content {
   padding: 10px;
+  width: 100%;
   height: 220px;
   display: flex;
   flex-direction: column;
@@ -370,16 +371,19 @@ img {
   height: 100%;
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  align-items: center;
-  justify-content: center;
+  /* align-items: center; */
+  /* justify-content: center; */
   cursor: default;
 }
 
 #days div {
-  width: calc(266px / 7);
+  flex: 1;
+
+  /* width: calc(250px / 7); */
   font-size: 12px;
   font-weight: 700;
-  height: 100%;
+  height: 35px;
+  width: 35px;
   display: flex;
   align-items: center;
   justify-content: center;
