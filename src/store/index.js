@@ -194,6 +194,46 @@ const store = createStore({
                 });
             })
         },
+        async createMessagingThread(context, payload) {
+            return new Promise((resolve, reject) => {
+                axios.put(
+                    `https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/messaging/createThread`,
+                    payload
+                  ).then((result) => {
+                    resolve(result);
+                    context.commit('addSuccess', "Message Thread Complete")
+                    context.commit('editEvent', result)
+                }, error => {
+                    context.commit('addError', error);
+                    reject(error);
+                });
+            })
+        },
+        async sendMessage(context, payload) {
+            return new Promise((resolve, reject) => {
+                axios.put(
+                    `https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/messaging/message`,
+                    payload
+                  ).then((result) => {
+                    resolve(result);
+                    // console.log(result);
+                    // context.commit('addSuccess', "Message Sent")
+                }, error => {
+                    context.commit('addError', error);
+                    reject(error);
+                });
+            })
+        },
+        async getMessageThread(context, thread) {
+            return new Promise((resolve, reject) => {
+                axios.get(`https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/messaging/getThread/${thread.replaceAll('#', '%23')}`).then((result)=> {
+                    resolve(result.data);
+                }, error => {
+                    context.commit('addError', error);
+                    reject(error);
+                })
+            })
+        },
         addEvent(context, event) {
             console.log(event)
             return new Promise((resolve, reject) => {
@@ -238,7 +278,6 @@ const store = createStore({
             return new Promise((resolve, reject) => {
                 axios.get(`https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/admin/${context.state.user.tenantId}/locations`).then((result)=> {
                     resolve(result.data);
-                    console.log(result);
                     context.commit('setLocations', result.data.Items)
                 }, error => {
                     context.commit('addError', error);

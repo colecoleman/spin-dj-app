@@ -1,10 +1,14 @@
 <template>
   <section>
     <div id="messaging-profile-photo">
-      <img :src="profilePicture ? profilePicture : defaultProfilePicture" />
+      <img
+        :src="
+          person.profilePicture ? person.profilePicture : defaultProfilePicture
+        "
+      />
     </div>
     <div id="messaging-content">
-      <h5>{{ given_name }} {{ family_name }}</h5>
+      <h5>{{ fullName }}</h5>
       <p>{{ textPreview }}</p>
     </div>
   </section>
@@ -17,17 +21,46 @@ export default {
   data() {
     return {
       defaultProfilePicture,
+      conversation: [],
     };
   },
-  props: ["id", "given_name", "family_name", "recentMessage", "profilePicture"],
+  props: ["id", "conversationId", "person"],
   computed: {
-    textPreview: function () {
-      return this.recentMessage.length >= 100
-        ? this.recentMessage.substring(0, 100) + "..."
-        : this.recentMessage;
+    fullName() {
+      return `${this.person.given_name} ${this.person.family_name}`;
+    },
+    sortedMessages() {
+      let tempArray = [...this.conversation];
+      return tempArray.sort((a, b) => {
+        return a.data.sentDate < b.data.sentDate
+          ? 1
+          : a.data.sentDate > b.data.sentDate
+          ? -1
+          : 0;
+      });
+    },
+    textPreview() {
+      if (this.sortedMessages[0]) {
+        let mostRecentMessage = this.sortedMessages[0].data.body;
+        return mostRecentMessage.length >= 100
+          ? mostRecentMessage.substring(0, 100) + "..."
+          : mostRecentMessage;
+      } else {
+        return "...";
+      }
     },
   },
   methods: {},
+  async created() {
+    await this.$store
+      .dispatch("getMessageThread", this.conversationId)
+      .then((res) => {
+        this.conversation = [...res.Items];
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  },
 };
 </script>
 
