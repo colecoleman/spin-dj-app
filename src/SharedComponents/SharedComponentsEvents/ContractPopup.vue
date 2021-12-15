@@ -60,12 +60,14 @@
           <div class="heading-container">
             <div v-if="contracts.length > 0">
               <img
-                :src="contractScroller != 0 ? LeftArrowSVG : ''"
+                :src="contractScroller != 0 ? SVGs.LeftArrowSVG : ''"
                 @click="contractScroller != 0 ? previousContract : ''"
               />
               <h3>{{ contract.contractName }}</h3>
               <img
-                :src="contractScroller != contractQuantity ? RightArrowSVG : ''"
+                :src="
+                  contractScroller != contractQuantity ? SVGs.RightArrowSVG : ''
+                "
                 @click="
                   contractScroller != contractQuantity ? nextContract : ''
                 "
@@ -154,7 +156,7 @@
 
 
 <script>
-import { LeftArrowSVG, RightArrowSVG } from "../../assets/SVGs/svgIndex.js";
+import SVGs from "../../assets/SVGs/svgIndex.js";
 import FullPagePopup from "../SharedComponentsUI/FullPagePopup.vue";
 import PopupModal from "../SharedComponentsUI/PopupModal.vue";
 import TwoButtonDialogModal from "../SharedComponentsUI/TwoButtonDialogModal.vue";
@@ -166,8 +168,7 @@ export default {
   data() {
     return {
       loading: true,
-      LeftArrowSVG,
-      RightArrowSVG,
+      SVGs,
       contractScroller: 0,
       scrolledToBottom: false,
       eSignEnabled: false,

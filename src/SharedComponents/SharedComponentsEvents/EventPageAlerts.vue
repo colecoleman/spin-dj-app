@@ -1,12 +1,12 @@
 <template>
-  <base-card :icon="NotificationBellSVG">
+  <base-card :icon="SVGs.NotificationBellSVG">
     <template v-slot:title>Alerts</template>
     <template v-slot:content>
       <div class="scroll-container">
         <div v-for="(alert, index) in alerts" :key="index" class="alert-item">
           <h4 class="alert-icon">
             <img
-              :src="ExclamationSVG"
+              :src="SVGs.ExclamationSVG"
               alt=""
               :class="alert.urgency + '-alert-icon'"
             />
@@ -21,15 +21,11 @@
   </base-card>
 </template>
 <script>
-import {
-  NotificationBellSVG,
-  ExclamationSVG,
-} from "../../assets/SVGs/svgIndex.js";
+import SVGs from "../../assets/SVGs/svgIndex.js";
 export default {
   data() {
     return {
-      NotificationBellSVG,
-      ExclamationSVG,
+      SVGs,
     };
   },
   methods: {},

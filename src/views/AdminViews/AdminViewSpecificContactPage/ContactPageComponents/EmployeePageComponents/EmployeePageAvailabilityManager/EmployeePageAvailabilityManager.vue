@@ -63,7 +63,7 @@
               }}
               <img
                 class="x-icon"
-                :src="xIconSvg"
+                :src="SVGs.XIconSvg"
                 alt=""
                 @click="removeDateRange(index)"
               />
@@ -72,7 +72,10 @@
               <input type="date" v-model="dateRangeInput.start" />
               <p>-</p>
               <input type="date" v-model="dateRangeInput.end" />
-              <img :src="CircleCheckmarkSVG" @click="submitNewDateRange()" />
+              <img
+                :src="SVGs.CircleCheckmarkSVG"
+                @click="submitNewDateRange()"
+              />
             </div>
             <p v-if="dateErrorMessage" class="danger">
               Oops! Looks like a date is missing?
@@ -90,17 +93,11 @@
 
 <script>
 import popupModal from "../../../../../../SharedComponents/SharedComponentsUI/PopupModal.vue";
-import {
-  PlusSignSVG,
-  CircleCheckmarkSVG,
-} from "../../../../../../assets/SVGs/svgIndex.js";
-import xIconSvg from "../../../../../../assets/SVGs/x-icon.svg";
+import SVGs from "../../../../../../assets/SVGs/svgIndex.js";
 export default {
   data() {
     return {
-      PlusSignSVG,
-      CircleCheckmarkSVG,
-      xIconSvg,
+      SVGs,
       months: [
         "January",
         "February",

@@ -33,7 +33,6 @@ export default {
   props: ["icon", "actionIcon", "loading"],
   methods: {
     actionOneClicked() {
-      console.log("hey");
       this.$emit("actionOneClicked");
     },
   },
@@ -73,7 +72,7 @@ img {
   height: 12px;
 }
 #content {
-  padding: 0 10px 0 10px;
+  /* padding: 0 10px 0 10px; */
   height: 90%;
   display: inherit;
 }

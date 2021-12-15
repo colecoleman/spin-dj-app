@@ -36,12 +36,12 @@
             <h4>
               {{ contract.contractName
               }}<img
-                :src="XIconSVG"
+                :src="SVGs.XIconSVG"
                 class="x-icon"
                 @click="deleteContract(index)"
               />
               <img
-                :src="EditPenSVG"
+                :src="SVGS.EditPenSVG"
                 class="x-icon"
                 @click="editContract(contract, index)"
               />
@@ -57,13 +57,12 @@
 </template>
 
 <script>
-import { XIconSVG, EditPenSVG } from "../../../../assets/SVGs/svgIndex.js";
+import SVGs from "../../../../assets/SVGs/svgIndex.js";
 
 export default {
   data() {
     return {
-      XIconSVG,
-      EditPenSVG,
+      SVGs,
       contract: {
         contractName: undefined,
         contractBody: undefined,

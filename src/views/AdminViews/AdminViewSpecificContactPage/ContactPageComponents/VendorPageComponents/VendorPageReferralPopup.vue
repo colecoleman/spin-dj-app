@@ -15,7 +15,6 @@
             type="text"
             v-model="searchTerm"
             placeholder="Start Typing To Search..."
-            @keyup="searchForClients()"
           />
           <div class="window">
             <div

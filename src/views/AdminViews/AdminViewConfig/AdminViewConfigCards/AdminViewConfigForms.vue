@@ -189,9 +189,13 @@
               class="bolds"
             >
               {{ form.name }}
-              <img :src="XIconSVG" class="x-icon" @click="deleteForm(index)" />
               <img
-                :src="EditPenSVG"
+                :src="SVGs.XIconSVG"
+                class="x-icon"
+                @click="deleteForm(index)"
+              />
+              <img
+                :src="SVGs.EditPenSVG"
                 class="x-icon"
                 @click="editForm(form, index)"
               />
@@ -204,14 +208,12 @@
 </template>
 
 <script>
-import XIconSVG from "../../../../assets/SVGs/x-icon.svg";
-import { EditPenSVG } from "../../../../assets/SVGs/svgIndex";
+import SVGs from "../../../../assets/SVGs/svgIndex";
 
 export default {
   data() {
     return {
-      XIconSVG,
-      EditPenSVG,
+      SVGs,
       form: {
         id: "form" + new Date().getTime(),
         name: undefined,

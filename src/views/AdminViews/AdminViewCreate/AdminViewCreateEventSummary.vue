@@ -43,7 +43,11 @@
                       {{ location.address.cityStateZip }}
                     </p>
                   </div>
-                  <img :src="XIconSVG" alt="" @click="removeLocation(index)" />
+                  <img
+                    :src="SVGs.XIconSVG"
+                    alt=""
+                    @click="removeLocation(index)"
+                  />
                 </div>
               </div>
               <div class="row-flex">
@@ -81,7 +85,7 @@
                 </p>
                 <img
                   v-if="clients.length > 0"
-                  :src="XIconSVG"
+                  :src="SVGs.XIconSVG"
                   alt=""
                   @click="removeClient(index)"
                 />
@@ -172,16 +176,14 @@
 
 <script>
 import helpers from "../../../helpers.js";
-
-// import XIcon from "../../../assets/SVGs/x-icon.svg";
-import { XIconSVG } from "../../../assets/SVGs/svgIndex.js";
+import SVGs from "../../../assets/SVGs/svgIndex.js";
 export default {
   data() {
     return {
       eventId: undefined,
       clientId: [],
       locationId: [],
-      XIconSVG,
+      SVGs,
     };
   },
   methods: {

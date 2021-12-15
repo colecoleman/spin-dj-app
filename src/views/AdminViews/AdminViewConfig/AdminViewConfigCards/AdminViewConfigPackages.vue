@@ -155,12 +155,12 @@
               <h4>
                 {{ packag.name }}
                 <img
-                  :src="XIconSVG"
+                  :src="SVGs.XIconSVG"
                   class="x-icon"
                   @click="deletePackage(index)"
                 />
                 <img
-                  :src="EditPenSVG"
+                  :src="SVGs.EditPenSVG"
                   class="x-icon"
                   @click="editPackage(packag, index)"
                 />
@@ -217,15 +217,13 @@
 </template>
 
 <script>
-import XIconSVG from "../../../../assets/SVGs/x-icon.svg";
-import { EditPenSVG } from "../../../../assets/SVGs/svgIndex";
+import SVGs from "../../../../assets/SVGs/svgIndex";
 import helpers from "../../../../helpers.js";
 
 export default {
   data() {
     return {
-      XIconSVG,
-      EditPenSVG,
+      SVGs,
       editIndex: undefined,
       input: {
         packages: {
