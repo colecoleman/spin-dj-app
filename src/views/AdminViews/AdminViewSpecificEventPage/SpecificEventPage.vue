@@ -70,7 +70,9 @@
           <to-do-specific-event :event="event"></to-do-specific-event>
         </div>
         <div id="lower-div-box-3">
-          <!-- <recent-messages-event v-if="contacts"></recent-messages-event> -->
+          <recent-messages
+            :conversationList="eventConversations"
+          ></recent-messages>
         </div>
       </div>
     </section>
@@ -79,7 +81,7 @@
 
 <script>
 import ToDoSpecificEvent from "../../../SharedComponents/SharedComponentsEvents/ToDoSpecificEvent.vue";
-// import RecentMessagesEvent from "../../../SharedComponents/SharedComponentsMessaging/RecentMessagesEvent.vue";
+import RecentMessages from "../../../SharedComponents/SharedComponentsMessaging/RecentMessages.vue";
 import EventPageContactCard from "../../../SharedComponents/SharedComponentsEvents/EventPageContactCard.vue";
 import EventPageContactCarousel from "../../../SharedComponents/SharedComponentsEvents/eventPageContactCarousel/EventPageContactCarousel.vue";
 import SpecificEventPageLocationScroller from "../../../SharedComponents/SharedComponentsEvents/specificEventPageLocationScroller/SpecificEventPageLocationScroller.vue";
@@ -101,6 +103,7 @@ export default {
       contacts: [],
       locations: [],
       clients: [],
+      // eventConversations: [],
       automations: undefined,
       buttons: [
         {
@@ -139,6 +142,23 @@ export default {
     client() {
       return this.clients[0];
     },
+    currentUser() {
+      return this.$store.state.user;
+    },
+    eventConversations() {
+      console.log(
+        this.contacts.map((x) => {
+          return x.conversations.find((x) => {
+            return this.currentUser.conversations.includes(x);
+          });
+        })
+      );
+      return this.contacts.map((x) => {
+        return x.conversations.find((x) => {
+          return this.currentUser.conversations.includes(x);
+        });
+      });
+    },
   },
   methods: {
     openForms() {
@@ -158,7 +178,6 @@ export default {
     },
     async confirmDeleteEvent() {
       let contacts = [...this.contacts];
-      console.log(contacts);
       await contacts.forEach((contact) => {
         let index = contact.associatedEvents.indexOf(this.event.userId);
         let payload = {
@@ -167,15 +186,16 @@ export default {
           value: index,
           operation: "removeFromList",
         };
-        console.log(payload);
         this.$store
           .dispatch("editContact", payload)
-          .then((res) => {
-            console.log(res);
-            this.$store.commit("addSuccess", "Event Removed From Contact");
+          .then(() => {
+            this.$store.commit("addStatus", {
+              type: "success",
+              note: "Event Removed From Contact",
+            });
           })
           .catch((e) => {
-            this.$store.dispatch("addError", e);
+            this.$store.commit("addStatus", { type: "error", note: e });
           });
       });
       await this.$store.dispatch("deleteEvent", this.event.userId);
@@ -200,10 +220,11 @@ export default {
     await this.$store
       .dispatch("adminGetEvent", this.$route.params.id)
       .then((res) => {
-        console.log(res.data.Item);
         this.event = res.data.Item;
       })
-      .catch((e) => this.$store.dispatch("addError", e));
+      .catch((e) =>
+        this.$store.commit("addStatus", { type: "error", note: e })
+      );
     await this.event.contacts.forEach((contact) => {
       this.$store.dispatch("getUser", contact).then((res) => {
         this.contacts.push(res);
@@ -215,14 +236,14 @@ export default {
     await this.event.locations.forEach((location) => {
       this.$store.dispatch("getLocation", location).then((res) => {
         this.locations.push(res.Item);
-        console.log(this.locations);
       });
     });
-    return this.event.contacts;
+    // console.log(this.eventConversations);
+    // return this.event.contacts;
   },
   components: {
     ToDoSpecificEvent,
-    // RecentMessagesEvent,
+    RecentMessages,
     EventPageContactCard,
     EventPageContactCarousel,
     SpecificEventPageLocationScroller,

@@ -261,7 +261,10 @@ export default {
           break;
         case "signIn_failure":
           console.log("user sign in failed");
-          this.$store.dispatch("addError", "Sign In Failed, Try Again");
+          this.$store.commit("addStatus", {
+            type: "error",
+            note: "Sign In Failed, Try Again",
+          });
           break;
         case "configured":
           console.log("the Auth module is configured");

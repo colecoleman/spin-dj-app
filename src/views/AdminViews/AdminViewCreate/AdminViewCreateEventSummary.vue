@@ -208,11 +208,14 @@ export default {
         this.$store
           .dispatch("addLocation", this.fields.location)
           .then((res) => {
-            this.$store.commit("addSuccess", "Location Added Successfully");
+            this.$store.commit("addStatus", {
+              type: "success",
+              note: "Location Added Successfully",
+            });
             this.locationId.push(res.data.userId);
           })
           .catch((e) => {
-            this.$store.dispatch("addError", e);
+            this.$store.commit("addStatus", { type: "error", note: e });
           });
       }
     },
@@ -228,10 +231,13 @@ export default {
           .dispatch("addContact", client)
           .then((res) => {
             this.clientId.push(res.userId);
-            this.$store.commit("addSuccess", "Client Added Successfully");
+            this.$store.commit("addStatus", {
+              type: "success",
+              note: "Client Added Successfully",
+            });
           })
           .catch((e) => {
-            this.$store.dispatch("addError", e);
+            this.$store.commit("addStatus", { type: "error", note: e });
           });
       }
     },
@@ -253,11 +259,14 @@ export default {
           console.log(res);
           this.eventId = res.data.userId;
           console.log(this.eventId);
-          this.$store.commit("addSuccess", "Event Added Successfully");
+          this.$store.commit("addStatus", {
+            type: "success",
+            note: "Event Added Successfully",
+          });
           this.editContactAndLocation();
         })
         .catch((e) => {
-          this.$store.dispatch("addError", e);
+          this.$store.commit("addStatus", { type: "error", note: e });
         });
     },
     editContactAndLocation() {
@@ -276,10 +285,10 @@ export default {
     //       .dispatch("editEvent", payload)
     //       .then((res) => {
     //         console.log(res);
-    //         this.$store.commit("addSuccess", "Client Added To Event");
+    //         this.$store.commit("addStatus", {type: 'success', note: "Client Added To Event"});
     //       })
     //       .catch((e) => {
-    //         this.$store.dispatch("addError", e);
+    //         this.$store.commit("addStatus", { type: 'error', note: e});
     //       });
     //     this.addEventToUser();
     //   }
@@ -300,10 +309,13 @@ export default {
             .dispatch("editContact", payload)
             .then((res) => {
               console.log(res);
-              this.$store.commit("addSuccess", "Event Added To Contact");
+              this.$store.commit("addStatus", {
+                type: "success",
+                note: "Event Added To Contact",
+              });
             })
             .catch((e) => {
-              this.$store.dispatch("addError", e);
+              this.$store.commit("addStatus", { type: "error", note: e });
             });
         });
       }
@@ -320,11 +332,11 @@ export default {
     //       this.$store
     //         .dispatch("editEvent", payload)
     //         .then(() => {
-    //           this.$store.commit("addSuccess", "Location Added To Event");
+    //           this.$store.commit("addStatus", {type: 'success', note: "Location Added To Event"});
     //           this.$router.push("/admin/events/" + this.eventId);
     //         })
     //         .catch((e) => {
-    //           this.$store.dispatch("addError", e);
+    //           this.$store.commit("addStatus", { type: 'error', note: e});
     //         });
     //     });
     //   }
@@ -346,10 +358,13 @@ export default {
             .dispatch("editLocation", payload)
             .then((res) => {
               console.log(res);
-              this.$store.commit("addSuccess", "Event Added To Contact");
+              this.$store.commit("addStatus", {
+                type: "success",
+                note: "Event Added To Contact",
+              });
             })
             .catch((e) => {
-              this.$store.dispatch("addError", e);
+              this.$store.commit("addStatus", { type: "error", note: e });
             });
         });
       }

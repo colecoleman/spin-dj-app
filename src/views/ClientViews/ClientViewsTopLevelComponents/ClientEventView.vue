@@ -178,12 +178,23 @@ export default {
         this.event = res.data.Item;
         console.log(this.event);
       })
-      .catch((e) => this.$store.dispatch("addError", e));
+      .catch((e) =>
+        this.$store.commit("addStatus", { type: "error", note: e })
+      );
     await this.event.contacts.forEach((contact) => {
       this.$store.dispatch("nonAdminGetUser", contact).then((res) => {
         this.contacts.push(res.data.Item);
         if (res.data.Item.role === "client") {
           this.clients.push(res.data.Item);
+        }
+        if (res.conversations) {
+          let matchedItem = res.conversations.find((x) => {
+            return this.currentUser.conversations.includes(x);
+          });
+          if (matchedItem) {
+            this.eventConversations.push(matchedItem);
+          }
+          console.log(this.eventConversations);
         }
       });
     });

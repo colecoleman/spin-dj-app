@@ -143,7 +143,7 @@ export default {
             this.toDos = [...res.Items];
           },
           (error) => {
-            this.$store.dispatch("addError", error);
+            this.$store.commit("addStatus", { type: "error", note: error });
           }
         );
       },
@@ -160,7 +160,7 @@ export default {
         this.toDos = [...res.Items];
       },
       (error) => {
-        this.$store.dispatch("addError", error);
+        this.$store.commit("addStatus", { type: "error", note: error });
       }
     );
   },

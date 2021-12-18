@@ -20,7 +20,9 @@
           <event-calendar :events="events" v-if="events"></event-calendar>
         </div>
         <div id="box-4" class="box">
-          <recent-messages></recent-messages>
+          <recent-messages
+            :conversationList="userConversations"
+          ></recent-messages>
         </div>
       </div>
     </div>
@@ -42,14 +44,16 @@ export default {
     };
   },
   computed: {
+    currentUser() {
+      return this.$store.state.user;
+    },
     events() {
       return this.$store.state.events;
     },
+    userConversations() {
+      return [...new Set(this.currentUser.conversations)];
+    },
   },
-  created() {
-    // this.events = [...this.$store.stat .e.events];
-  },
-
   components: {
     UpcomingEvents,
     EventCalendar,

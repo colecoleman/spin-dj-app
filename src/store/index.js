@@ -14,8 +14,7 @@ const store = createStore({
             //     highlightColor: "#00F5FF",
             //     textColor: "#000000",
             // },
-            errors: [],
-            successes: [],
+            statuses: [],
             notifications: [],
             toDos: [],
             automations: {},
@@ -66,7 +65,10 @@ const store = createStore({
                     console.log(result.data)
                     context.commit('setPublicSettings', result.data);
                 }, error => {
-                    context.commit('addError', error);
+                    context.commit('addStatus', {
+                        type: 'error',
+                        note: error
+                    });
                     reject(error);
                 })
             })
@@ -76,7 +78,10 @@ const store = createStore({
                 axios.get(`https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/admin/${context.state.user.tenantId}/users/${user}`).then((result)=> {
                     resolve(result.data.Item);
                 }, error => {
-                    context.commit('addError', error);
+                    context.commit('addStatus', {
+                        type: 'error',
+                        note: error
+                    });
                     reject(error);
                 })
             })
@@ -104,19 +109,10 @@ const store = createStore({
                     if ('identity' in response.data.Item.businessSettings)
                         context.commit('setBranding', response.data.Item.businessSettings.identity);
                 }
-            }).catch((e) => context.commit('addError', e))
-        },
-        addError(context, error) {
-            context.commit('addError', error)
-        },
-        clearErrors(context) {
-            context.commit('clearErrors');
-        },
-        addSuccess(context) {
-            context.commit('addSuccess');
-        },
-        clearSuccesses(context) {
-            context.commit('clearSuccesses');
+            }).catch((e) => context.commit('addStatus', {
+                type: 'error',
+                note: e
+            }))
         },
         getAdminUsers(context) {
 
@@ -125,7 +121,7 @@ const store = createStore({
             context.commit('setEmployees', response.data.Items.filter(x => x.role === 'employee'));
             context.commit('setOrganizers', response.data.Items.filter(x => x.role === 'organizer'));
             context.commit('setVendors', response.data.Items.filter(x => x.role === 'vendor'));
-            }).catch(e => context.commit('addError', `Error: ${e}`));
+            }).catch(e => context.commit('addStatus', `Error: ${e}`));
             
         },
         async getAdminEvents(context) {
@@ -134,7 +130,10 @@ const store = createStore({
                     resolve(result);
                     context.commit('setEvents', result)
                 }, error => {
-                    context.commit('addError', error);
+                    context.commit('addStatus', {
+                        type: 'error',
+                        note: error
+                    });
                     reject(error);
                 })
             })
@@ -172,7 +171,7 @@ const store = createStore({
                       resolve(result.data)
                       context.commit('addContact', result.data);
                 }, error => {
-                    context.commit('addError', `Error: ${error}`);
+                    context.commit('addStatus', `Error: ${error}`);
                     reject(error)
                 })
             })
@@ -186,10 +185,13 @@ const store = createStore({
                   ).then((result) => {
                     resolve(result);
                     console.log(result);
-                    context.commit('addSuccess', "Contact Successfully Updated")
-                    context.commit('editEvent', result)
+                    context.commit('addStatus', {type: 'success', note: "Contact Successfully Updated"});
+                    context.commit('editEvent', result);
                 }, error => {
-                    context.commit('addError', error);
+                    context.commit('addStatus', {
+                        type: 'error',
+                        note: error
+                    });
                     reject(error);
                 });
             })
@@ -201,10 +203,13 @@ const store = createStore({
                     payload
                   ).then((result) => {
                     resolve(result);
-                    context.commit('addSuccess', "Message Thread Complete")
+                    context.commit('addStatus', {type: 'success', note: "Message Thread Complete"})
                     context.commit('editEvent', result)
                 }, error => {
-                    context.commit('addError', error);
+                    context.commit('addStatus', {
+                        type: 'error',
+                        note: error
+                    });
                     reject(error);
                 });
             })
@@ -217,7 +222,10 @@ const store = createStore({
                   ).then((result) => {
                     resolve(result);
                 }, error => {
-                    context.commit('addError', error);
+                    context.commit('addStatus', {
+                        type: 'error',
+                        note: error
+                    });
                     reject(error);
                 });
             })
@@ -227,7 +235,10 @@ const store = createStore({
                 axios.get(`https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/messaging/getThread/${thread.replaceAll('#', '%23')}`).then((result)=> {
                     resolve(result.data);
                 }, error => {
-                    context.commit('addError', error);
+                    context.commit('addStatus', {
+                        type: 'error',
+                        note: error
+                    });
                     reject(error);
                 })
             })
@@ -237,7 +248,10 @@ const store = createStore({
                 axios.get(`https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/messaging/getThreadParticipants/${thread.replaceAll('#', '%23')}`).then((result)=> {
                     resolve(result.data);
                 }, error => {
-                    context.commit('addError', error);
+                    context.commit('addStatus', {
+                        type: 'error',
+                        note: error
+                    });
                     reject(error);
                 })
             })
@@ -252,7 +266,7 @@ const store = createStore({
                       resolve(result)
                       context.commit('addEvent', result.data);
                 }, error => {
-                    context.commit('addError', `Error: ${error}`);
+                    context.commit('addStatus', `Error: ${error}`);
                     reject(error)
                 })
             })
@@ -267,7 +281,7 @@ const store = createStore({
                       resolve(result)
                       context.commit('addLocation', result.data);
                 }, error => {
-                    context.commit('addError', `Error: ${error}`);
+                    context.commit('addStatus', `Error: ${error}`);
                     reject(error)
                 })
             })
@@ -277,7 +291,10 @@ const store = createStore({
                 axios.get(`https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/admin/${context.state.user.tenantId}/locations/${location}`).then((result)=> {
                     resolve(result.data);
                 }, error => {
-                    context.commit('addError', error);
+                    context.commit('addStatus', {
+                        type: 'error',
+                        note: error
+                    });
                     reject(error);
                 })
             })
@@ -288,7 +305,10 @@ const store = createStore({
                     resolve(result.data);
                     context.commit('setLocations', result.data.Items)
                 }, error => {
-                    context.commit('addError', error);
+                    context.commit('addStatus', {
+                        type: 'error',
+                        note: error
+                    });
                     reject(error);
                 })
             })
@@ -305,7 +325,10 @@ const store = createStore({
                     // context.commit('editLocation', result)
                 }, error => {
                     // console.log(error)
-                    context.commit('addError', error);
+                    context.commit('addStatus', {
+                        type: 'error',
+                        note: error
+                    });
                     reject(error);
                 });
             })
@@ -320,7 +343,10 @@ const store = createStore({
                     console.log(result);
                     context.commit('editEvent', result)
                 }, error => {
-                    context.commit('addError', error);
+                    context.commit('addStatus', {
+                        type: 'error',
+                        note: error
+                    });
                     reject(error);
                 });
             })
@@ -330,18 +356,24 @@ const store = createStore({
         async deleteEvent(context, payload) {
             console.log(payload)
             await axios.delete(`https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/admin/${context.state.user.tenantId}/events/${payload}`).then(() => {
-                context.commit('addSuccess', "Successfully Deleted Event");
-            }).catch((e) => {
-                context.commit('addError', e)
+                context.commit('addStatus', {type: 'success', note: "Successfully Deleted Event"});
+            }).catch((error) => {
+                context.commit('addStatus', {
+                    type: 'error',
+                    note: error
+                })
             })
         },
         async deleteUser(context, payload) {
             console.log(payload)
             await axios.delete(`https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/admin/${context.state.user.tenantId}/users/${payload.id}`).then(() => {
-                context.commit('addSuccess', "Successfully Deleted User");
+                context.commit('addStatus', {type: 'success', note: "Successfully Deleted User"});
                 context.commit('deleteUser', payload);
-            }).catch((e) => {
-                context.commit('addError', e)
+            }).catch((error) => {
+                context.commit('addStatus', {
+                    type: 'error',
+                    note: error
+                })
             })
         },
         async getEvents(context) {
@@ -351,18 +383,25 @@ const store = createStore({
                     resolve(result);
                     context.commit('setEvents', result);
                 }, error => {
-                    context.commit('addError', error);
+                    context.commit('addStatus', {
+                        type: 'error',
+                        note: error
+                    });
                     reject(error);
                 })
             })
         },
         async nonAdminGetUser(context, payload) {
+
             return new Promise((resolve, reject) => {
                 axios.get(`https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/${context.state.user.role}/${context.state.user.tenantId}/${context.state.user.userId}/users/${payload}`).then((result)=> {
-                    resolve(result);
+                    resolve(result.data.Item);
                     // context.commit('setUser', result.data.Item);
                 }, error => {
-                    context.commit('addError', error);
+                    context.commit('addStatus', {
+                        type: 'error',
+                        note: error
+                    });
                     reject(error);
                 })
             })
@@ -379,7 +418,10 @@ const store = createStore({
                     console.log(result);
                     context.commit('setUser', result.data.Item);
                 }, error => {
-                    context.commit('addError', error);
+                    context.commit('addStatus', {
+                        type: 'error',
+                        note: error
+                    });
                     reject(error);
                 })
             })
@@ -389,7 +431,10 @@ const store = createStore({
                 axios.get(`https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/${context.state.user.role}/${context.state.user.tenantId}/${context.state.user.userId}/events/${payload}`).then((result)=> {
                     resolve(result);
                 }, error => {
-                    context.commit('addError', error);
+                    context.commit('addStatus', {
+                        type: 'error',
+                        note: error
+                    });
                     reject(error);
                 })
             })
@@ -399,7 +444,10 @@ const store = createStore({
                 axios.get(`https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/admin/${context.state.user.tenantId}/events/${payload}`).then((result)=> {
                     resolve(result);
                 }, error => {
-                    context.commit('addError', error);
+                    context.commit('addStatus', {
+                        type: 'error',
+                        note: error
+                    });
                     reject(error);
                 })
             })
@@ -409,7 +457,10 @@ const store = createStore({
                 axios.get(`https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/admin/${context.state.user.tenantId}/users/${payload}`).then((result) => {
                     resolve(result);
                 }, error => {
-                    context.commit('addError', error);
+                    context.commit('addStatus', {
+                        type: 'error',
+                        note: error
+                    });
                     reject(error);
                 })
             })
@@ -424,7 +475,10 @@ const store = createStore({
                     resolve(result);
                     context.commit('addToDo', result.data);
                 }, error => {
-                    context.commit('addError', error);
+                    context.commit('addStatus', {
+                        type: 'error',
+                        note: error
+                    });
                     reject(error);
                 });
             })
@@ -436,11 +490,13 @@ const store = createStore({
                 payload
               ).then((result) => {
                   console.log(result);
-                  context.commit('addSuccess', 'To-Do Added');
+                  context.commit('addStatus', {type: 'success', note: 'To-Do Added'});
                   context.commit('completeToDo', payload.id)
             }, error => {
-                context.commit('addError', `Error: ${error}`);
-            })
+                context.commit('addStatus', {
+                    type: 'error',
+                    note: error});
+                })
         },
         async getToDos(context, payload) {
             let category = payload.associatedContactId ? 'contact' : 'event';
@@ -449,7 +505,10 @@ const store = createStore({
                 axios.get(`https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/admin/${context.state.user.tenantId}/todo/${category}/${id}`).then((result)=> {
                     resolve(result.data);
                 }, error => {
-                    context.commit('addError', error);
+                    context.commit('addStatus', {
+                        type: 'error',
+                        note: error
+                    });
                     reject(error);
                 })
             })
@@ -475,18 +534,12 @@ const store = createStore({
         setPublicSettings(state, settings) {
             state.publicSettings = settings;
         },
-        addError(state, error) {
-            state.errors.push(error);
-            console.log(error)
+ 
+        clearStatus(state, index) {
+            state.statuses.splice(index, 1)
         },
-        clearErrors(state) {
-            state.errors.length = 0;
-        },
-        addSuccess(state, payload) {
-            state.successes.push(payload);
-        },
-        clearSuccesses(state) {
-            state.successes.length = 0;
+        addStatus(state, status) {
+            state.statuses.push(status);
         },
         setClients(state, payload) {
             state.contacts.clients = payload;

@@ -20,7 +20,10 @@ export default {
         await Auth.signOut();
         this.$router.push("/login");
       } catch (e) {
-        this.$store.disatch("addError", `Something went wrong: ${e}`);
+        this.$store.disatch("addStatus", {
+          type: "error",
+          note: `Something went wrong: ${e}`,
+        });
       }
     },
   },

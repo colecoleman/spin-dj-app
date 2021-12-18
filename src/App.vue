@@ -4,10 +4,7 @@
     <router-view name="main"></router-view>
   </div>
   <transition name="fade1">
-    <error-indicator :errors="errors" v-if="errors.length > 0" />
-  </transition>
-  <transition name="fade1">
-    <success-indicator :successes="successes" v-if="successes.length > 0" />
+    <status-indicator />
   </transition>
   <!-- </amplify-authenticator> -->
 </template>
@@ -19,8 +16,7 @@ import axios from "axios";
 // import { components } from "aws-amplify-vue";
 // import { Hub } from "aws-amplify";
 import EventManager from "./views/AdminViews/AdminViewDashboard/EventManager.vue";
-import ErrorIndicator from "./SharedComponents/SharedComponentsUI/ErrorIndicator.vue";
-import SuccessIndicator from "./SharedComponents/SharedComponentsUI/SuccessIndicator.vue";
+import StatusIndicator from "./SharedComponents/SharedComponentsUI/StatusIndicator.vue";
 import ButtonStandardWithIcon from "./SharedComponents/SharedComponentsUI/ButtonStandardWithIcon.vue";
 
 export default {
@@ -57,17 +53,10 @@ export default {
         "--textColor": this.branding.textColor,
       };
     },
-    errors() {
-      return this.$store.state.errors;
-    },
-    successes() {
-      return this.$store.state.successes;
-    },
   },
   components: {
     EventManager,
-    ErrorIndicator,
-    SuccessIndicator,
+    StatusIndicator,
     ButtonStandardWithIcon,
   },
 
@@ -83,9 +72,6 @@ export default {
       });
     if (user) {
       await this.$store.dispatch("setUser", user);
-      // await this.$store.dispatch("setBranding", user.username);
-      // await this.$store.dispatch("getEvents");
-      // await this.$store.dispatch("setBusinessSettings", user.username);
     }
     console.log(this.$store.state.businessSettings);
     if (this.$store.state.branding) {

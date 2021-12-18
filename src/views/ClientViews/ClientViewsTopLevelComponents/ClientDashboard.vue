@@ -19,7 +19,9 @@
         <event-calendar :events="events"></event-calendar>
       </div>
       <div id="box-five-wrapper">
-        <recent-messages></recent-messages>
+        <recent-messages
+          :conversationList="userConversations()"
+        ></recent-messages>
       </div>
     </div>
   </div>
@@ -50,6 +52,9 @@ export default {
         let eventDate = new Date(x.data.endTime).getTime();
         return eventDate < date;
       });
+    },
+    userConversations() {
+      return [...new Set(this.currentUser.conversations)];
     },
   },
   async created() {

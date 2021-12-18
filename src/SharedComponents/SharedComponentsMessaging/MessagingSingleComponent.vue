@@ -47,6 +47,7 @@ export default {
       return this.$store.state.user;
     },
     contact() {
+      console.log(this.conversation);
       return this.conversation.users[0];
     },
     messagesSortedByDate() {
@@ -101,7 +102,10 @@ export default {
         await this.createThread();
         this.sendMessage();
       } else if (!this.messageInput) {
-        this.$store.dispatch("addError", "Message Can't Be Empty");
+        this.$store.commit("addStatus", {
+          type: "error",
+          note: "Message Can't Be Empty",
+        });
       }
     },
     navigateToEventPage(id) {
