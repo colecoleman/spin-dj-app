@@ -46,8 +46,11 @@ export default {
     currentUser() {
       return this.$store.state.user;
     },
+    contact() {
+      return this.conversation.users[0];
+    },
     messagesSortedByDate() {
-      let tempArray = [...this.messages];
+      let tempArray = [...this.conversation.thread];
       console.log(tempArray);
       return tempArray.sort(function (a, b) {
         return a.data.sentDate < b.data.sentDate
@@ -76,14 +79,14 @@ export default {
     },
     async sendMessage() {
       let payload = {
-        conversationId: this.thread ? this.thread : this.contact.conversation,
+        conversationId: this.thread ? this.thread : this.conversation.pk,
         data: {
           author: this.$store.state.user.userId,
           body: this.messageInput,
           sentDate: new Date().getTime(),
         },
       };
-      console.log(payload);
+      console.log(this.conversation);
       await this.$store.dispatch("sendMessage", payload);
       this.messages.unshift(payload);
       this.messageInput = undefined;
@@ -91,14 +94,10 @@ export default {
     async clickHandler() {
       if (
         (this.thread && this.messageInput) ||
-        (this.contact.conversation && this.messageInput)
+        (this.conversation && this.messageInput)
       ) {
         await this.sendMessage();
-      } else if (
-        !this.thread &&
-        !this.contact.conversation &&
-        this.messageInput
-      ) {
+      } else if (!this.thread && !this.conversation && this.messageInput) {
         await this.createThread();
         this.sendMessage();
       } else if (!this.messageInput) {
@@ -109,42 +108,7 @@ export default {
       this.$router.push("/contacts/clients/" + id);
     },
   },
-  props: ["contact", "id", "icon"],
-  async created() {
-    // console.log(this.contact);
-    // if (this.contact.conversation) {
-    //   await this.$store
-    //     .dispatch("getMessageThread", this.contact.conversation)
-    //     .then((res) => {
-    //       console.log(res.Items);
-    //       this.messages = [...res.Items];
-    //     });
-    //   return;
-    // }
-    // let userConversations;
-    // let contactConversations;
-    // if (this.$store.state.user.conversations) {
-    //   userConversations = [...this.$store.state.user.conversations];
-    // }
-    // if (this.contact.conversations) {
-    //   contactConversations = [...this.contact.conversations];
-    // }
-    // console.log(contactConversations);
-    // console.log(userConversations);
-    // if (contactConversations && userConversations) {
-    //   this.thread = userConversations.find((x) => {
-    //     return contactConversations.includes(x);
-    //   });
-    //   await this.$store
-    //     .dispatch("getMessageThread", this.thread)
-    //     .then((res) => {
-    //       console.log(res.Items);
-    //       this.messages = [...res.Items];
-    //     });
-    //   console.log(this.messages);
-    //   console.log(this.currentUser);
-    // }
-  },
+  props: ["id", "icon", "conversation"],
 };
 </script>
 

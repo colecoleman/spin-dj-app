@@ -4,7 +4,7 @@
     :actionIcon="
       openView === 'single'
         ? SVGs.XIconSVG
-        : openView === 'default'
+        : openView === 'default' && useRole === 'admin'
         ? SVGs.PlusSignSVG
         : ''
     "
@@ -18,13 +18,11 @@
       <div id="container">
         <div class="conditional-wrapper" v-if="openView === 'single'">
           <messaging-single-component
-            :contact="singleMessagingContact"
-            :id="singleMessagingContact.userId"
+            :conversation="singleMessagingConversation"
           ></messaging-single-component>
         </div>
         <div class="conditional-wrapper" v-if="openView === 'default'">
           <messaging-thread-list
-            :contacts="[...contacts]"
             :conversations="conversations"
             :currentUser="currentUser"
             @open-single-messaging="openSingleMessaging"
@@ -49,9 +47,10 @@ export default {
   data() {
     return {
       SVGs,
-      singleMessagingContact: undefined,
+      loaded: false,
+      singleMessagingConversation: undefined,
       openView: "default",
-      // conversations: [],
+      conversations: [],
     };
   },
   components: {
@@ -63,6 +62,14 @@ export default {
     currentUser() {
       return this.$store.state.user;
     },
+    userRole() {
+      let user = this.$store.state.user;
+      if (user.tenantId === user.userId) {
+        return "admin";
+      } else {
+        return user.role;
+      }
+    },
     contacts() {
       let contactsArr = this.$store.state.contacts;
       let contacts = [
@@ -73,41 +80,10 @@ export default {
       ];
       return contacts;
     },
-    conversations() {
-      let contactsWithConversations = [...this.contacts].filter((x) => {
-        return x.conversations ? true : false;
-      });
-      console.log(contactsWithConversations);
-      let matchedItems = contactsWithConversations.filter((x) => {
-        return this.currentUser.conversations.filter((i) => {
-          return x.conversations.includes(i);
-        });
-      });
-
-      let temp = matchedItems.map((x) => {
-        let matchedConversation;
-        matchedConversation = x.conversations.find((x) => {
-          return this.currentUser.conversations.filter((i) => {
-            return i == x;
-          });
-        });
-        x.conversation = matchedConversation;
-        delete x.conversations;
-        return x;
-      });
-      console.log(temp);
-      // temp.map((x) => {
-      //   this.getMessageThread(x.conversation).then((res) => {
-      //     x.conversation = res;
-      //   });
-      // });
-
-      return temp;
-    },
   },
   methods: {
-    openSingleMessaging(contact) {
-      this.singleMessagingContact = contact;
+    openSingleMessaging(conversation) {
+      this.singleMessagingConversation = conversation;
       this.openView = "single";
     },
     addConversationClicked() {
@@ -116,45 +92,64 @@ export default {
     closeSingleMessaging() {
       this.openView = "default";
     },
-    getMessageThread(id) {
-      return new Promise((resolve, reject) => {
-        this.$store.dispatch("getMessageThread", id).then(
-          (result) => {
-            resolve(result.Items);
-          },
-          (error) => {
-            reject(error);
-          }
-        );
+    getConversations(conversations) {
+      return conversations.map((x) => {
+        x = this.$store.dispatch("getThreadParticipants", x).then((res) => {
+          return res.Items;
+        });
+        return x;
       });
     },
+    async getConversationUsers(conversation) {
+      var promises = conversation.users.map((x) => {
+        return this.$store
+          .dispatch("nonAdminGetUser", x)
+          .then((res) => {
+            return res.data.Item;
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      });
+      let users;
+      return Promise.all(promises).then((res) => {
+        users = res;
+        return users;
+      });
+    },
+    async getConversationMessages(conversation) {
+      let thread = await this.$store
+        .dispatch("getMessageThread", conversation.pk)
+        .then((res) => {
+          res.Items;
+          return res.Items;
+        });
+      return thread;
+    },
   },
-  // created() {
-  //   let contactsWithConversations = [...this.contacts].filter((x) => {
-  //     return x.conversations ? true : false;
-  //   });
-  //   let matchedItems = contactsWithConversations.filter((x) => {
-  //     return this.currentUser.conversations.filter((i) => {
-  //       return x.conversations.includes(i);
-  //     });
-  //   });
-
-  //   this.conversations = matchedItems.map((x) => {
-  //     let matchedConversation;
-  //     matchedConversation = x.conversations.find((e) => {
-  //       return this.currentUser.conversations.filter((i) => {
-  //         return i == e;
-  //       });
-  //     });
-  //     this.getMessageThread(matchedConversation).then((res) => {
-  //       x.conversation = res;
-  //     });
-  //     return x;
-  //   });
-
-  //   // this.conversations = [temp];
-  //   console.log(this.conversations);
-  // },
+  async created() {
+    let userConversations = [...new Set(this.currentUser.conversations)];
+    Promise.all(this.getConversations(userConversations)).then((res) => {
+      console.log(res);
+      let conversations = res[0];
+      for (let index = 0; index < conversations.length; index++) {
+        console.log(conversations[index]);
+        Promise.all([
+          this.getConversationUsers(conversations[index]),
+          this.getConversationMessages(conversations[index]),
+        ]).then((res) => {
+          let conversation = {
+            ...conversations[index],
+            thread: res[1],
+            users: res[0],
+          };
+          console.log(conversations);
+          this.conversations.push(conversation);
+          console.log(this.conversations);
+        });
+      }
+    });
+  },
 };
 </script>
 

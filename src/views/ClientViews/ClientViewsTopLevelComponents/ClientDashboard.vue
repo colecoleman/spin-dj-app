@@ -54,10 +54,11 @@ export default {
   },
   async created() {
     this.loading = true;
-    await this.$store.dispatch(
-      "nonAdminGetUser",
-      this.$store.state.user.userId
-    );
+    await this.$store
+      .dispatch("nonAdminGetUser", this.$store.state.user.userId)
+      .then((res) => {
+        this.$store.commit("setUser", res.data.Item);
+      });
 
     await this.$store.dispatch("getEvents");
     this.loading = false;

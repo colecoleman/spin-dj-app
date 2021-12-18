@@ -21,45 +21,23 @@ export default {
   data() {
     return {
       defaultProfilePicture,
-      conversation: [],
     };
   },
-  props: ["id", "conversationId", "person"],
+  props: ["id", "conversationId", "conversation"],
   computed: {
     fullName() {
       return `${this.person.given_name} ${this.person.family_name}`;
     },
-    sortedMessages() {
-      let tempArray = [...this.conversation];
-      return tempArray.sort((a, b) => {
-        return a.data.sentDate < b.data.sentDate
-          ? 1
-          : a.data.sentDate > b.data.sentDate
-          ? -1
-          : 0;
-      });
-    },
     textPreview() {
-      if (this.sortedMessages[0]) {
-        let mostRecentMessage = this.sortedMessages[0].data.body;
-        return mostRecentMessage.length >= 100
-          ? mostRecentMessage.substring(0, 100) + "..."
-          : mostRecentMessage;
-      } else {
-        return "...";
-      }
+      let mostRecentMessage =
+        this.conversation.thread[this.conversation.thread.length - 1].data.body;
+      return mostRecentMessage.length >= 100
+        ? mostRecentMessage.substring(0, 100) + "..."
+        : mostRecentMessage;
     },
-  },
-  methods: {},
-  async created() {
-    await this.$store
-      .dispatch("getMessageThread", this.conversationId)
-      .then((res) => {
-        this.conversation = [...res.Items];
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    person() {
+      return this.conversation.users[0];
+    },
   },
 };
 </script>

@@ -216,8 +216,6 @@ const store = createStore({
                     payload
                   ).then((result) => {
                     resolve(result);
-                    // console.log(result);
-                    // context.commit('addSuccess', "Message Sent")
                 }, error => {
                     context.commit('addError', error);
                     reject(error);
@@ -227,6 +225,16 @@ const store = createStore({
         async getMessageThread(context, thread) {
             return new Promise((resolve, reject) => {
                 axios.get(`https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/messaging/getThread/${thread.replaceAll('#', '%23')}`).then((result)=> {
+                    resolve(result.data);
+                }, error => {
+                    context.commit('addError', error);
+                    reject(error);
+                })
+            })
+        },
+        async getThreadParticipants(context, thread) {
+            return new Promise((resolve, reject) => {
+                axios.get(`https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/messaging/getThreadParticipants/${thread.replaceAll('#', '%23')}`).then((result)=> {
                     resolve(result.data);
                 }, error => {
                     context.commit('addError', error);
@@ -352,7 +360,7 @@ const store = createStore({
             return new Promise((resolve, reject) => {
                 axios.get(`https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/${context.state.user.role}/${context.state.user.tenantId}/${context.state.user.userId}/users/${payload}`).then((result)=> {
                     resolve(result);
-                    context.commit('setUser', result.data.Item);
+                    // context.commit('setUser', result.data.Item);
                 }, error => {
                     context.commit('addError', error);
                     reject(error);

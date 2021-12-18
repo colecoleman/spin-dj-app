@@ -4,10 +4,9 @@
       No message threads found! Start one!
     </h5>
     <recent-messages-person-object
-      v-for="conversation in conversations"
-      :key="conversation.conversation"
-      :conversationId="conversation.conversation"
-      :person="conversation"
+      v-for="conversation in sortedMessages"
+      :key="conversation.pk"
+      :conversation="conversation"
       @click="openSingleMessaging(conversation)"
     >
     </recent-messages-person-object>
@@ -17,18 +16,44 @@
 import RecentMessagesPersonObject from "./RecentMessagesPersonObject.vue";
 
 export default {
+  sortedConversations: [],
   computed: {
+    sortedMessages() {
+      if (this.conversations.length > 0) {
+        let conversations = [...this.conversations];
+        conversations.sort((a, b) => {
+          this.findMostRecentMessage(a) < this.findMostRecentMessage(b)
+            ? 1
+            : this.findMostRecentMessage(a) > this.findMostRecentMessage(b)
+            ? -1
+            : 0;
+        });
+        return conversations;
+      } else {
+        return [];
+      }
+    },
   },
   methods: {
     openSingleMessaging(conversation) {
       this.$emit("open-single-messaging", conversation);
     },
+    findMostRecentMessage(conversation) {
+      conversation.thread.sort((a, b) => {
+        return a.data.sentDate < b.data.sentDate
+          ? 1
+          : a.data.sentDate > b.data.sentDate
+          ? -1
+          : 0;
+      });
+      return conversation.thread[0].data.sentDate;
+    },
   },
-  created() {},
+
   components: {
     RecentMessagesPersonObject,
   },
-  props: ["contacts", "conversations", "currentUser"],
+  props: ["conversations", "currentUser"],
 };
 </script>
 <style scoped>
