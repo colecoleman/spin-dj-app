@@ -61,15 +61,15 @@ import {
   ContactPageAutomation,
   ContactPageToDoList,
   ContactPageNotes,
-} from "../ContactPageComponents/contactPageIndex.js";
+} from "./ContactPageComponents/contactPageIndex.js";
 
-import LocationPageUpcomingEvents from "../ContactPageComponents/LocationPageComponents/LocationUpcomingEvents.vue";
+import LocationPageUpcomingEvents from "./ContactPageComponents/LocationPageComponents/LocationUpcomingEvents.vue";
 // import LocationPreferredInformation from "../ContactPageComponents/LocationPageComponents/LocationPreferredInformation.vue";
-import ContactCardLocation from "../ContactPageComponents/LocationPageComponents/ContactCardLocation.vue";
-import LocationContactCardPerson from "../ContactPageComponents/LocationPageComponents/LocationContactCardPerson.vue";
-import PopupEmailComposition from "../../../../SharedComponents/SharedComponentsPopupUtilities/PopupEmailComposition.vue";
-import FourButtonBarWithDropDown from "../../../../SharedComponents/SharedComponentsUI/FourButtonBarWithDropDown.vue";
-import SVGs from "../../../../assets/SVGs/svgIndex.js";
+import ContactCardLocation from "./ContactPageComponents/LocationPageComponents/ContactCardLocation.vue";
+import LocationContactCardPerson from "./ContactPageComponents/LocationPageComponents/LocationContactCardPerson.vue";
+import PopupEmailComposition from "../../../SharedComponents/SharedComponentsPopupUtilities/PopupEmailComposition.vue";
+import FourButtonBarWithDropDown from "../../../SharedComponents/SharedComponentsUI/FourButtonBarWithDropDown.vue";
+import SVGs from "../../../assets/SVGs/svgIndex.js";
 
 export default {
   data() {

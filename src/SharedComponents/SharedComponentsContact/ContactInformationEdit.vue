@@ -1,38 +1,40 @@
 <template>
   <div class="edit-card-wrapper">
-    <base-card :actionIcon="XIconSVG" @action-one-clicked="closeEditCard()">
+    <base-card
+      :actionIcon="SVGs.XIconSVG"
+      @action-one-clicked="closeEditCard()"
+    >
       <template v-slot:title>Edit Contact</template>
       <template v-slot:action1></template>
       <template v-slot:content>
         <div class="edit-card-inner-wrapper">
           <select v-model="fieldToEdit">
-            <option value='{"value": "given_name", "inputType": "text"}'>
-              First
-            </option>
-            <option value='{"value": "family_name", "inputType": "text"}'>
-              Last Name
-            </option>
-            <option value='{"value": "profilePicture", "inputType": "file"}'>
-              Profile Picture
-            </option>
-            <option value='{"value": "pronoun", "inputType": "text"}'>
-              Pronoun
-            </option>
-            <option value='{"value": "phoneNumber", "inputType": "tel"}'>
-              Phone Number
-            </option>
-            <option value='{"value": "email", "inputType": "email"}'>
-              Email Address
+            <option v-for="(field, key) in fields" :key="key" :value="key">
+              {{ field.display }}
             </option>
           </select>
-          <div v-if="fieldToEdit != 'undefined'">
-            <!-- <h5>Current Value:</h5>
-            <p>{{ contact[JSON.parse(fieldToEdit).value] }}</p> -->
+          <div v-if="fieldToEdit != undefined">
             <input
-              :type="JSON.parse(fieldToEdit).inputType"
-              v-model="fields[JSON.parse(fieldToEdit).value]"
-              :placeholder="contact[JSON.parse(fieldToEdit).value]"
+              v-if="fieldToEdit != 'profilePicture'"
+              :type="fieldToEdit.inputType"
+              v-model="fields[fieldToEdit].value"
+              :placeholder="contact[fieldToEdit]"
             />
+            <input
+              v-if="fieldToEdit === 'profilePicture'"
+              type="file"
+              id="contact-card-edit-hidden-file-button"
+              @change="onFileChange"
+              style="display: none"
+            />
+            <div class="button-wrapper">
+              <button-standard-with-icon
+                v-if="fieldToEdit === 'profilePicture'"
+                :text="photoFile ? photoFile.name : 'Choose File'"
+                @click="chooseFile()"
+                class="form-button"
+              />
+            </div>
             <div class="button-wrapper">
               <button-standard-with-icon
                 text="Save"
@@ -47,21 +49,42 @@
 </template>
 
 <script>
-import XIconSVG from "../../assets/SVGs/x-icon.svg";
+import SVGs from "../../assets/SVGs/svgIndex.js";
 
 export default {
   data() {
     return {
+      SVGs,
+      photoFile: undefined,
       fieldToEdit: undefined,
       fields: {
-        given_name: undefined,
-        family_name: undefined,
-        pronoun: undefined,
-        phoneNumber: undefined,
-        email: undefined,
-        profilePicture: undefined,
+        given_name: {
+          display: "First Name",
+          inputType: "text",
+          value: undefined,
+        },
+        family_name: {
+          display: "Last Name",
+          inputType: "text",
+          value: undefined,
+        },
+        pronoun: { display: "Pronoun", inputType: "text", value: undefined },
+        phoneNumber: {
+          display: "Phone Number",
+          inputType: "tel",
+          value: undefined,
+        },
+        email: {
+          display: "Email Address",
+          inputType: "email",
+          value: undefined,
+        },
+        profilePicture: {
+          display: "Profile Picture",
+          inputType: "file",
+          value: undefined,
+        },
       },
-      XIconSVG,
     };
   },
   methods: {
@@ -69,17 +92,31 @@ export default {
       this.$emit("closeEditCard");
       console.log("closed");
     },
-    saveField() {
-      console.log(this.fields[JSON.parse(this.fieldToEdit).value]);
+    chooseFile() {
+      document.getElementById("contact-card-edit-hidden-file-button").click();
+    },
+    onFileChange(e) {
+      var files = e.target.files || e.dataTransfer.files;
+      if (!files.length) return;
+      this.photoFile = files[0];
+    },
+    async saveField() {
+      if (this.photoFile) {
+        await this.$store.dispatch("addPhoto", this.photoFile).then((res) => {
+          this.fields.profilePicture.value = res;
+          console.log(this.fields.profilePicture);
+        });
+      }
+
       let payload = {
         clientId: this.contact.userId,
-        variable: JSON.parse(this.fieldToEdit).value,
-        value: this.fields[JSON.parse(this.fieldToEdit).value],
+        variable: this.fieldToEdit,
+        value: this.fields[this.fieldToEdit].value,
       };
       console.log(payload);
-      // this.$store.dispatch("editContact", payload).then((res) => {
-      //   console.log(res);
-      // });
+      this.$store.dispatch("editContact", payload).then((res) => {
+        console.log(res);
+      });
     },
   },
   props: ["contact"],

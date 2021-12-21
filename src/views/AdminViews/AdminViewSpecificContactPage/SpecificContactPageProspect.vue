@@ -54,14 +54,14 @@ import {
   ContactPageAutomation,
   ContactPageToDoList,
   ContactPageNotes,
-} from "../ContactPageComponents/contactPageIndex.js";
+} from "./ContactPageComponents/contactPageIndex.js";
 
-import PopupEmailComposition from "../../../../SharedComponents/SharedComponentsPopupUtilities/PopupEmailComposition.vue";
-import FourButtonBarWithDropDown from "../../../../SharedComponents/SharedComponentsUI/FourButtonBarWithDropDown.vue";
-import ProspectPageEventDetails from "../ContactPageComponents/ProspectPageComponents/ProspectPageEventDetails.vue";
-import ProspectPageContactHealth from "../ContactPageComponents/ProspectPageComponents/ProspectPageContactHealth.vue";
-import ProspectPageCard from "../ContactPageComponents/ProspectPageComponents/ProspectPageCard.vue";
-import SVGs from "../../../../assets/SVGs/svgIndex.js";
+import PopupEmailComposition from "../../../SharedComponents/SharedComponentsPopupUtilities/PopupEmailComposition.vue";
+import FourButtonBarWithDropDown from "../../../SharedComponents/SharedComponentsUI/FourButtonBarWithDropDown.vue";
+import ProspectPageEventDetails from "./ContactPageComponents/ProspectPageComponents/ProspectPageEventDetails.vue";
+import ProspectPageContactHealth from "./ContactPageComponents/ProspectPageComponents/ProspectPageContactHealth.vue";
+import ProspectPageCard from "./ContactPageComponents/ProspectPageComponents/ProspectPageCard.vue";
+import SVGs from "../../../assets/SVGs/svgIndex.js";
 
 export default {
   data() {

@@ -44,7 +44,7 @@
 </template>
 
 <script>
-import ContactInformationEdit from "./ContactInformationEdit.vue";
+import ContactInformationEdit from "../SharedComponentsContact/ContactInformationEdit.vue";
 import defaultProfilePicture from "../../assets/default-profile-picture.svg";
 import editPen from "../../assets/SVGs/edit-pen.svg";
 import helpers from "../../helpers.js";

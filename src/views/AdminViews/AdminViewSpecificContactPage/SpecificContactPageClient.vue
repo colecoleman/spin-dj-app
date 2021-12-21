@@ -75,17 +75,17 @@
 import {
   ContactPageAutomation,
   ContactPageToDoList,
-} from "../ContactPageComponents/contactPageIndex.js";
+} from "./ContactPageComponents/contactPageIndex.js";
 
-import ContactCardClient from "../ContactPageComponents/ContactCardPerson.vue";
-import ClientPageUpcomingEvents from "../ContactPageComponents/ClientPageComponents/ClientPageUpcomingEvents.vue";
+import ContactCardClient from "./ContactPageComponents/ContactCardPerson.vue";
+import ClientPageUpcomingEvents from "./ContactPageComponents/ClientPageComponents/ClientPageUpcomingEvents.vue";
 // import ClientPageInformationCard from "../ContactPageComponents/ClientPageComponents/ClientPageInformationCard.vue";
-import PopupEmailComposition from "../../../../SharedComponents/SharedComponentsPopupUtilities/PopupEmailComposition.vue";
+import PopupEmailComposition from "../../../SharedComponents/SharedComponentsPopupUtilities/PopupEmailComposition.vue";
 
-import MessagingSingleComponent from "../../../../SharedComponents/SharedComponentsMessaging/MessagingSingleComponent.vue";
-import FourButtonBarWithDropDown from "../../../../SharedComponents/SharedComponentsUI/FourButtonBarWithDropDown.vue";
-import ContactPageNotes from "../ContactPageComponents/ContactPageNotes/ContactPageNotes.vue";
-import SVGs from "../../../../assets/SVGs/svgIndex.js";
+import MessagingSingleComponent from "../../../SharedComponents/SharedComponentsMessaging/MessagingSingleComponent.vue";
+import FourButtonBarWithDropDown from "../../../SharedComponents/SharedComponentsUI/FourButtonBarWithDropDown.vue";
+import ContactPageNotes from "./ContactPageComponents/ContactPageNotes/ContactPageNotes.vue";
+import SVGs from "../../../assets/SVGs/svgIndex.js";
 
 export default {
   data() {
