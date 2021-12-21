@@ -91,11 +91,9 @@ export default {
   watch: {
     contact: function () {
       this.events = [];
-      console.log(this.contact);
       this.contact.associatedEvents.forEach((event) => {
         this.$store.dispatch("adminGetEvent", event).then((res) => {
           this.events.push(res.data.Item);
-          console.log(res.data.Item);
         });
       });
     },

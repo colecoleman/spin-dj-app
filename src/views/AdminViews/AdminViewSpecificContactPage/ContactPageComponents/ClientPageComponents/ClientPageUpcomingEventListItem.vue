@@ -60,7 +60,6 @@ export default {
   },
   props: ["event"],
   created() {
-    console.log(this.event);
     this.$store.dispatch("getLocation", this.event.locations[0]).then((res) => {
       this.location = res.Item;
       this.loaded = true;

@@ -52,7 +52,8 @@
             <template v-slot:content>
               <messaging-single-component
                 v-if="contact"
-                :contact="contact"
+                :defaultUser="contact"
+                :conversation="conversation"
                 :id="contact.userId"
               ></messaging-single-component>
             </template>
@@ -84,6 +85,8 @@ export default {
       SVGs,
       contact: undefined,
       eventAssignmentOpen: false,
+      conversation: undefined,
+      eventConversation: [],
       buttons: [
         {
           title: "Send Email",
@@ -109,7 +112,11 @@ export default {
       notesPopupOpen: false,
     };
   },
-
+  computed: {
+    currentUser() {
+      return this.$store.state.user;
+    },
+  },
   methods: {
     toggleEventAssignment() {
       this.eventAssignmentOpen = !this.eventAssignmentOpen;
@@ -117,13 +124,84 @@ export default {
     toggleEmailComposition() {
       this.emailPopupOpen = !this.emailPopupOpen;
     },
+    getConversations(conversations) {
+      return conversations.map((x) => {
+        x = this.$store.dispatch("getThreadParticipants", x).then((res) => {
+          console.log(res.Items);
+          return res.Items;
+        });
+        return x;
+      });
+    },
+    async getConversationUsers(conversation) {
+      conversation.users = conversation.users.filter((x) => {
+        return x !== this.currentUser.userId;
+      });
+      var promises = conversation.users.map((x) => {
+        let correctCall = this.currentUser.role ? "nonAdminGetUser" : "getUser";
+        return this.$store
+          .dispatch(correctCall, x)
+          .then((res) => {
+            return res;
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      });
+      let users;
+      return Promise.all(promises).then((res) => {
+        users = res;
+        return users;
+      });
+    },
+    async getConversationMessages(conversation) {
+      let thread = await this.$store
+        .dispatch("getMessageThread", conversation.pk)
+        .then((res) => {
+          res.Items;
+          return res.Items;
+        });
+      return thread;
+    },
   },
+
   async created() {
     await this.$store
       .dispatch("adminGetContact", this.$route.params.id)
       .then((res) => {
         this.contact = res.data.Item;
+        if (this.contact.conversations) {
+          console.log("ey");
+          let matchedItem = this.contact.conversations.find((x) => {
+            return this.currentUser.conversations.includes(x);
+          });
+          if (matchedItem) {
+            console.log("ho!");
+            this.eventConversation.push(matchedItem);
+          }
+        }
+        console.log(this.contact);
       });
+    if (this.eventConversation) {
+      Promise.all(this.getConversations(this.eventConversation)).then((res) => {
+        let conversations = res;
+        console.log(conversations);
+        for (let index = 0; index < conversations.length; index++) {
+          Promise.all([
+            this.getConversationUsers(...conversations[index]),
+            this.getConversationMessages(...conversations[index]),
+          ]).then((res) => {
+            let conversation = {
+              ...conversations[index],
+              thread: res[1],
+              users: res[0],
+            };
+            this.conversation = conversation;
+            console.log(conversation);
+          });
+        }
+      });
+    }
   },
   components: {
     PopupEmailComposition,

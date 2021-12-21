@@ -2,26 +2,26 @@
   <popup-email-composition
     v-if="emailPopupOpen && !notesPopupOpen"
     :contact="contact"
-    @cancel-send-email="closePopups()"
+    @closeWindow="closePopups()"
   ></popup-email-composition>
-  <employee-page-availability-manager
-    v-if="availabilityManagerOpen"
-    :employee="contact"
-    @close-popup="closePopups()"
-  ></employee-page-availability-manager>
+  <vendor-page-referral-popup
+    v-if="referPopupOpen && !emailPopupOpen && !notesPopupOpen"
+    :vendor="contact"
+    @close-referral-window="closePopups()"
+  ></vendor-page-referral-popup>
   <div id="section-wrapper">
     <div id="left-column">
       <div id="box-one">
-        <contact-card-person
+        <contact-card-company
           :contact="contact"
           :icon="SVGs.PersonSVG"
-        ></contact-card-person>
+        ></contact-card-company>
       </div>
       <div id="box-two">
         <contact-page-to-do-list :contact="contact"></contact-page-to-do-list>
       </div>
       <div id="box-three">
-        <contact-page-notes :contact="contact"></contact-page-notes>
+        <contact-page-notes :contact="contact" />
       </div>
     </div>
     <div id="right-column">
@@ -33,11 +33,11 @@
       </div>
       <div id="box-five">
         <contact-page-upcoming-events
-          v-if="contact"
           :contact="contact"
           :icon="SVGs.CalendarSVG"
           @event-assignment-toggle="toggleEventAssignment()"
           :eventAssignmentOpen="eventAssignmentOpen"
+          v-if="contact"
         ></contact-page-upcoming-events>
       </div>
       <div id="box-six">
@@ -47,7 +47,7 @@
         <div id="box-six-half-two">
           <base-card :icon="SVGs.MessageBubbleSVG">
             <template v-slot:title>Messages</template>
-            <template v-slot:content>
+            <template v-slot:content v-if="contact">
               <messaging-single-component
                 v-if="contact"
                 :defaultUser="contact"
@@ -65,24 +65,24 @@
 <script>
 import {
   ContactPageAutomation,
-  ContactCardPerson,
   ContactPageToDoList,
   ContactPageUpcomingEvents,
-  ContactPageNotes,
 } from "./ContactPageComponents/contactPageIndex.js";
 
-import EmployeePageAvailabilityManager from "./ContactPageComponents/EmployeePageComponents/EmployeePageAvailabilityManager/EmployeePageAvailabilityManager.vue";
 import PopupEmailComposition from "../../../SharedComponents/SharedComponentsPopupUtilities/PopupEmailComposition.vue";
 import MessagingSingleComponent from "../../../SharedComponents/SharedComponentsMessaging/MessagingSingleComponent.vue";
 import FourButtonBarWithDropDown from "../../../SharedComponents/SharedComponentsUI/FourButtonBarWithDropDown.vue";
+import ContactCardCompany from "./ContactPageComponents/ContactCardCompany.vue";
+import VendorPageReferralPopup from "./ContactPageComponents/VendorPageComponents/VendorPageReferralPopup.vue";
+import ContactPageNotes from "./ContactPageComponents/ContactPageNotes/ContactPageNotes.vue";
 import SVGs from "../../../assets/SVGs/svgIndex.js";
 
 export default {
   data() {
     return {
       SVGs,
-      contact: undefined,
       eventAssignmentOpen: false,
+      contact: undefined,
       conversation: undefined,
       eventConversation: [],
       buttons: [
@@ -91,12 +91,12 @@ export default {
           action: this.openEmailComposition,
         },
         {
-          title: "Assign Events",
-          action: this.toggleEventAssignment,
+          title: "Refer Vendor",
+          action: this.toggleReferral,
         },
         {
-          title: "Availability",
-          action: this.openAvailabilityManager,
+          title: "Assign Event",
+          action: this.toggleEventAssignment,
         },
       ],
       dropdown: {
@@ -109,14 +109,13 @@ export default {
           },
           // {
           //   title: "Reset Password",
-          //   action: this.resetPassword,
+          //   action: this.resetUserPassword,
           //   icon: keysvg,
           // },
         ],
       },
       emailPopupOpen: false,
-      notesPopupOpen: false,
-      availabilityManagerOpen: false,
+      referPopupOpen: false,
     };
   },
   computed: {
@@ -125,22 +124,19 @@ export default {
     },
   },
   methods: {
-    addToDo() {
-      console.log("clicked!");
-    },
     openEmailComposition() {
       this.emailPopupOpen = true;
+    },
+    toggleReferral() {
+      this.referPopupOpen = !this.referPopupOpen;
     },
     toggleEventAssignment() {
       this.eventAssignmentOpen = !this.eventAssignmentOpen;
     },
-    openAvailabilityManager() {
-      this.availabilityManagerOpen = true;
-    },
     closePopups() {
       this.emailPopupOpen = false;
-      this.calendarUtilityOpen = false;
-      this.availabilityManagerOpen = false;
+      this.notesPopupOpen = false;
+      this.referPopupOpen = false;
     },
     getConversations(conversations) {
       return conversations.map((x) => {
@@ -182,6 +178,7 @@ export default {
       return thread;
     },
   },
+
   async created() {
     await this.$store
       .dispatch("adminGetContact", this.$route.params.id)
@@ -222,13 +219,13 @@ export default {
   },
   components: {
     PopupEmailComposition,
-    EmployeePageAvailabilityManager,
-    ContactCardPerson,
+    ContactCardCompany,
     ContactPageToDoList,
     ContactPageUpcomingEvents,
     ContactPageAutomation,
     ContactPageNotes,
     MessagingSingleComponent,
+    VendorPageReferralPopup,
     FourButtonBarWithDropDown,
   },
 };
@@ -237,10 +234,14 @@ export default {
 <style scoped>
 #section-wrapper {
   width: 100%;
-  height: 100%;
+  height: 95%;
   padding-top: 10px;
   display: flex;
   /* flex-direction: row; */
+}
+
+svg {
+  fill: white;
 }
 
 #left-column {
@@ -251,32 +252,36 @@ export default {
 }
 
 #box-one {
-  height: 30%;
+  height: 35%;
 }
 #box-two {
-  height: 35%;
+  height: 32.5%;
 }
-
 #box-three {
-  height: 35%;
+  height: 32.5%;
 }
 
 #right-column {
   width: 70%;
+  height: 100%;
   display: flex;
   flex-direction: column;
 }
 
 #box-four {
-  height: 18%;
+  height: 17%;
 }
 
 #box-five {
-  height: 40%;
+  height: 42%;
+  width: 100%;
+
+  display: flex;
+  flex-direction: row;
 }
 
 #box-six {
-  height: 42%;
+  height: 41%;
   display: flex;
   flex-direction: row;
 }

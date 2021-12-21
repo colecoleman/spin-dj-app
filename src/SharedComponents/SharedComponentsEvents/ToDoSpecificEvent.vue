@@ -139,7 +139,6 @@ export default {
         };
         this.$store.dispatch("getToDos", payload).then(
           (res) => {
-            console.log(res);
             this.toDos = [...res.Items];
           },
           (error) => {
@@ -150,13 +149,11 @@ export default {
     },
   },
   created() {
-    console.log(this.event);
     let payload = {
       associatedEventId: this.event.userId,
     };
     this.$store.dispatch("getToDos", payload).then(
       (res) => {
-        console.log(res);
         this.toDos = [...res.Items];
       },
       (error) => {

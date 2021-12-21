@@ -5,7 +5,7 @@
         {{ contact.given_name + " " + contact.family_name }}
       </p>
     </div>
-    <div class="messages-container">
+    <div class="messages-container" v-if="conversation">
       <div
         v-for="(message, index) in messagesSortedByDate"
         :key="index"
@@ -47,8 +47,11 @@ export default {
       return this.$store.state.user;
     },
     contact() {
-      console.log(this.conversation);
-      return this.conversation.users[0];
+      if (this.conversation) {
+        return this.conversation.users[0];
+      } else {
+        return this.defaultUser;
+      }
     },
     messagesSortedByDate() {
       let tempArray = [...this.conversation.thread];
@@ -112,7 +115,7 @@ export default {
       this.$router.push("/contacts/clients/" + id);
     },
   },
-  props: ["id", "icon", "conversation"],
+  props: ["id", "icon", "conversation", "defaultUser"],
 };
 </script>
 

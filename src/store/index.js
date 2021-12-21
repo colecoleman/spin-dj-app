@@ -1,6 +1,7 @@
 
 import { createStore } from "vuex";
 import axios from 'axios';
+import {Storage} from 'aws-amplify';
 import createPersistedState from 'vuex-persistedstate';
 
 const store = createStore({
@@ -146,6 +147,9 @@ const store = createStore({
         },
         adminConfigIdentitySetBusinessPhoneNumber(context, payload) {
             context.commit('adminConfigIdentitySetBusinessPhoneNumber', payload);
+        },
+        adminConfigIdentitySetBusinessLogo(context, payload) {
+            context.commit('adminConfigIdentitySetBusinessLogo', payload);
         },
         updateBusinessSettings({commit, state}) {
             let payload = {
@@ -513,6 +517,48 @@ const store = createStore({
                 })
             })
         },
+        async addPhoto(context, payload) {
+            
+            return new Promise((resolve, reject) => {
+                let name = store.state.user.userId + new Date().getTime();
+                Storage.put(name, payload).then((res) => {
+                    resolve("https://spindjappstorage140016-prod.s3.amazonaws.com/public/" + res.key);
+
+                }).catch((e) => {
+                    reject(e);
+                    console.log(e);
+                })
+                
+                // axios.put(
+                //     `https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/admin/${context.state.user.tenantId}/putfile`,
+                //     payload
+                //   ).then((result) => {
+                //     resolve(result);
+                //     console.log(result);
+                // }, error => {
+                //     context.commit('addStatus', {
+                //         type: 'error',
+                //         note: error
+                //     });
+                //     reject(error);
+                // });
+            })
+        },
+        async getPhoto(context, payload) {
+            return new Promise((resolve, reject) => {
+                axios.get(`https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/admin/${context.state.user.tenantId}/getFile/${payload}`).then((result)=> {
+                    resolve(result.data);
+                    // let base64 = result.data.Body.data;
+                    // const base64String = btoa(String.fromCharCode(...new Uint8Array(arrayBuffer)));
+                }, error => {
+                    context.commit('addStatus', {
+                        type: 'error',
+                        note: error
+                    });
+                    reject(error);
+                })
+            })
+        }
     },
     mutations: {
         setUser(state, user) {
@@ -637,6 +683,9 @@ const store = createStore({
         },
         adminConfigIdentitySetBusinessPhoneNumber(state, payload) {
             state.businessSettings.identity.phoneNumber = payload;
+        },
+        adminConfigIdentitySetBusinessLogo(state, payload) {
+            state.businessSettings.identity.businessLogo = payload;
         },
         addClient(state, payload) {
             state.contacts.clients.push(payload);

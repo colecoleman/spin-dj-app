@@ -11,7 +11,7 @@
         <contact-card-client
           :loading="contact ? false : true"
           :contact="contact"
-          :icon="personsvg"
+          :icon="SVGs.PersonSVG"
         ></contact-card-client>
       </div>
       <div id="box-two">
@@ -37,13 +37,13 @@
         <div id="box-five-half-one">
           <client-page-upcoming-events
             :contact="contact"
-            :icon="calendarsvg"
+            :icon="SVGs.CalendarSVG"
           ></client-page-upcoming-events>
         </div>
         <!-- <div id="box-five-half-two">
           <client-page-information-card
             :contact="contact"
-            :icon="informationicon"
+            :icon="SVGs.InformationIconSVG"
           ></client-page-information-card>
         </div> -->
       </div>
@@ -52,12 +52,16 @@
           <contact-page-automation></contact-page-automation>
         </div>
         <div id="box-six-half-two">
-          <base-card :icon="messageBubble" :loading="contact ? false : true">
+          <base-card
+            :icon="SVGs.MessageBubbleSVG"
+            :loading="contact ? false : true"
+          >
             <template v-slot:title>Messages</template>
             <template v-slot:content>
               <messaging-single-component
-                v-if="contact"
+                v-if="conversation"
                 :contact="contact"
+                :conversation="conversation"
               ></messaging-single-component>
             </template>
           </base-card>
@@ -81,33 +85,21 @@ import PopupEmailComposition from "../../../../SharedComponents/SharedComponents
 import MessagingSingleComponent from "../../../../SharedComponents/SharedComponentsMessaging/MessagingSingleComponent.vue";
 import FourButtonBarWithDropDown from "../../../../SharedComponents/SharedComponentsUI/FourButtonBarWithDropDown.vue";
 import ContactPageNotes from "../ContactPageComponents/ContactPageNotes/ContactPageNotes.vue";
-import {
-  personsvg,
-  messageBubble,
-  calendarsvg,
-  clipboardsvg,
-  automationsvg,
-  emailsvg,
-  informationicon,
-  keysvg,
-} from "../../../../assets/SVGs/person.svg";
+import SVGs from "../../../../assets/SVGs/svgIndex.js";
 
 export default {
   data() {
     return {
-      personsvg,
+      SVGs,
       contact: undefined,
-      messageBubble,
-      calendarsvg,
-      clipboardsvg,
-      automationsvg,
-      keysvg,
-      informationicon,
+      thread: undefined,
+      conversation: undefined,
+      eventConversation: [],
       buttons: [
         {
           title: "Send Email",
           action: this.openEmailComposition,
-          icon: emailsvg,
+          icon: SVGs.EmailSVG,
         },
       ],
       dropdown: {
@@ -116,18 +108,24 @@ export default {
           {
             title: "Email",
             action: this.openEmailComposition,
-            icon: emailsvg,
+            icon: SVGs.EmailSVG,
           },
           {
             title: "Reset Password",
             action: this.resetPassword,
-            icon: keysvg,
+            icon: SVGs.KeySVG,
           },
         ],
       },
       emailPopupOpen: false,
       notesPopupOpen: false,
     };
+  },
+  computed: {
+    currentUser() {
+      console.log(this.$store.state.user);
+      return this.$store.state.user;
+    },
   },
   methods: {
     addToDo() {
@@ -140,14 +138,83 @@ export default {
       this.emailPopupOpen = false;
       this.notesPopupOpen = false;
     },
+    getConversations(conversations) {
+      return conversations.map((x) => {
+        x = this.$store.dispatch("getThreadParticipants", x).then((res) => {
+          console.log(res.Items);
+          return res.Items;
+        });
+        return x;
+      });
+    },
+    async getConversationUsers(conversation) {
+      conversation.users = conversation.users.filter((x) => {
+        return x !== this.currentUser.userId;
+      });
+      var promises = conversation.users.map((x) => {
+        let correctCall = this.currentUser.role ? "nonAdminGetUser" : "getUser";
+        return this.$store
+          .dispatch(correctCall, x)
+          .then((res) => {
+            return res;
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      });
+      let users;
+      return Promise.all(promises).then((res) => {
+        users = res;
+        return users;
+      });
+    },
+    async getConversationMessages(conversation) {
+      let thread = await this.$store
+        .dispatch("getMessageThread", conversation.pk)
+        .then((res) => {
+          res.Items;
+          return res.Items;
+        });
+      return thread;
+    },
   },
   async created() {
     await this.$store
       .dispatch("adminGetContact", this.$route.params.id)
       .then((res) => {
-        console.log(res.data.Item);
         this.contact = res.data.Item;
+        if (this.contact.conversations) {
+          console.log("ey");
+          let matchedItem = this.contact.conversations.find((x) => {
+            return this.currentUser.conversations.includes(x);
+          });
+          if (matchedItem) {
+            console.log("ho!");
+            this.eventConversation.push(matchedItem);
+          }
+        }
+        console.log(this.contact);
       });
+    if (this.eventConversation) {
+      Promise.all(this.getConversations(this.eventConversation)).then((res) => {
+        let conversations = res;
+        console.log(conversations);
+        for (let index = 0; index < conversations.length; index++) {
+          Promise.all([
+            this.getConversationUsers(...conversations[index]),
+            this.getConversationMessages(...conversations[index]),
+          ]).then((res) => {
+            let conversation = {
+              ...conversations[index],
+              thread: res[1],
+              users: res[0],
+            };
+            this.conversation = conversation;
+            console.log(conversation);
+          });
+        }
+      });
+    }
   },
   components: {
     PopupEmailComposition,

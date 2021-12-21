@@ -1,35 +1,33 @@
 <template>
-  <base-card :icon="svg.messageBubble">
+  <base-card :icon="SVGs.MessageBubbleSVG">
     <template v-slot:title>Messages</template>
     <template v-slot:content
       ><div id="container">
-        <recent-messages-person-object
-          v-for="client in clients"
-          :key="client.id"
-          :given_name="client.given_name"
-          :family_name="client.family_name"
-          :profilePicture="client.profilePicture"
-          :recentMessage="client.recentMessage"
+        <message-thread-list
+          :conversations="conversations"
+          :currentUser="currentUser"
+          @open-single-messaging="openSingleMessaging"
         >
-        </recent-messages-person-object></div
+        </message-thread-list></div
     ></template>
   </base-card>
 </template>
 
 <script>
-import RecentMessagesPersonObject from "./RecentMessagesPersonObject.vue";
-import messageBubble from "../../assets/SVGs/message-bubble.svg";
+import MessageThreadList from "./MessagingThreadList.vue";
+import SVGs from "../../assets/SVGs/svgIndex.js";
 
 export default {
   data() {
     return {
-      svg: {
-        messageBubble,
-      },
+      SVGs,
+      singleMessagingConversation: undefined,
+      openView: "default",
+      conversations: [],
     };
   },
   components: {
-    RecentMessagesPersonObject,
+    MessageThreadList,
   },
   computed: {
     clients() {

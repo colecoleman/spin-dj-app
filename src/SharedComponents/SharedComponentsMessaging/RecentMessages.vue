@@ -4,7 +4,7 @@
     :actionIcon="
       openView === 'single'
         ? SVGs.XIconSVG
-        : openView === 'default' && useRole === 'admin'
+        : openView === 'default' && userRole === 'admin'
         ? SVGs.PlusSignSVG
         : ''
     "
@@ -95,17 +95,22 @@ export default {
     getConversations(conversations) {
       return conversations.map((x) => {
         x = this.$store.dispatch("getThreadParticipants", x).then((res) => {
+          console.log(res.Items);
           return res.Items;
         });
         return x;
       });
     },
     async getConversationUsers(conversation) {
+      conversation.users = conversation.users.filter((x) => {
+        return x !== this.currentUser.userId;
+      });
       var promises = conversation.users.map((x) => {
+        let correctCall = this.currentUser.role ? "nonAdminGetUser" : "getUser";
         return this.$store
-          .dispatch("nonAdminGetUser", x)
+          .dispatch(correctCall, x)
           .then((res) => {
-            return res.data.Item;
+            return res;
           })
           .catch((err) => {
             console.log(err);
@@ -127,25 +132,23 @@ export default {
       return thread;
     },
   },
+  props: ["conversationList"],
   async created() {
-    let userConversations = [...new Set(this.currentUser.conversations)];
-    Promise.all(this.getConversations(userConversations)).then((res) => {
-      console.log(res);
-      let conversations = res[0];
+    // make sure conversationList prop has unique values only.
+    console.log(this.conversationList);
+    Promise.all(this.getConversations(this.conversationList)).then((res) => {
+      let conversations = res;
       for (let index = 0; index < conversations.length; index++) {
-        console.log(conversations[index]);
         Promise.all([
-          this.getConversationUsers(conversations[index]),
-          this.getConversationMessages(conversations[index]),
+          this.getConversationUsers(...conversations[index]),
+          this.getConversationMessages(...conversations[index]),
         ]).then((res) => {
           let conversation = {
             ...conversations[index],
             thread: res[1],
             users: res[0],
           };
-          console.log(conversations);
           this.conversations.push(conversation);
-          console.log(this.conversations);
         });
       }
     });
