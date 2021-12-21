@@ -136,8 +136,14 @@ export default {
 
   methods: {
     formatPrice: helpers.formatPrice,
-    addAddOn() {
+    async addAddOn() {
       this.addOn.pricing.unitRate *= 100;
+      if (this.photoFile) {
+        await this.$store.dispatch("addPhoto", this.photoFile).then((res) => {
+          this.input.photo = res;
+          console.log(this.inputPhoto);
+        });
+      }
       if (this.editIndex != undefined) {
         let payload = {
           index: this.editIndex,
@@ -168,9 +174,7 @@ export default {
     onFileChange(e) {
       var files = e.target.files || e.dataTransfer.files;
       if (!files.length) return;
-      this.addOn.photo = files[0];
-      console.log(files);
-      console.log(this.addOn.photo);
+      this.photoFile = files[0];
     },
     editAddOn(addOn, index) {
       this.addOn = { ...this.addOn, ...addOn };

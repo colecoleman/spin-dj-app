@@ -81,6 +81,7 @@ export default {
 img {
   width: 55px;
   padding: 10px;
+  object-fit: cover;
 }
 
 #first-name {

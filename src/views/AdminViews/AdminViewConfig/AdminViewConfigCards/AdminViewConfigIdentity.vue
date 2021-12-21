@@ -96,6 +96,17 @@
                 <input type="text" :placeholder="address.address" />
               </div>
             </div>
+            <div class="business-information-item">
+              <p class="bold">Business Email Addresses:</p>
+              <div
+                class="business-information-item"
+                v-for="(address, index) in identity.businessEmailAddresses"
+                :key="index"
+              >
+                <p>Email Address ({{ index + 1 }}):</p>
+                <input type="text" :placeholder="address.address" />
+              </div>
+            </div>
           </div>
           <div class="business-information-section">
             <div class="business-information-item">

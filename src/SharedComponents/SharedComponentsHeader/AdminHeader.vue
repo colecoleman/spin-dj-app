@@ -1,6 +1,7 @@
 <template>
   <div class="site-header">
-    <img src="@/assets/company-logo.svg" alt="" />
+    <!-- <img src="@/assets/company-logo.svg" alt="" /> -->
+    <img :src="businessLogo" alt="" />
     <tab-switcher></tab-switcher>
     <search-bar></search-bar>
     <notification-button></notification-button>
@@ -21,6 +22,11 @@ export default {
     return {
       addButtonClicked: false,
     };
+  },
+  computed: {
+    businessLogo() {
+      return this.$store.state.businessSettings.identity.businessLogo;
+    },
   },
 
   components: {
@@ -43,8 +49,8 @@ export default {
 }
 
 .site-header img {
-  height: 100px;
-  width: 125px;
+  max-height: 45px;
+
   margin: 15px;
 }
 </style>

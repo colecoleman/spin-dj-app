@@ -176,9 +176,6 @@ export default {
     },
   },
   props: ["client", "event"],
-  created() {
-    console.log(this.event);
-  },
 };
 </script>
 

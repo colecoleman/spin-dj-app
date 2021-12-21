@@ -6,14 +6,14 @@
       <template v-slot:content>
         <div class="edit-card-inner-wrapper">
           <select v-model="fieldToEdit">
-            <!-- <option value="undefined" disabled="true">
-              Select Field To Edit
-            </option> -->
             <option value='{"value": "given_name", "inputType": "text"}'>
-              First Name
+              First
             </option>
             <option value='{"value": "family_name", "inputType": "text"}'>
               Last Name
+            </option>
+            <option value='{"value": "profilePicture", "inputType": "file"}'>
+              Profile Picture
             </option>
             <option value='{"value": "pronoun", "inputType": "text"}'>
               Pronoun
@@ -52,13 +52,14 @@ import XIconSVG from "../../assets/SVGs/x-icon.svg";
 export default {
   data() {
     return {
-      fieldToEdit: "undefined",
+      fieldToEdit: undefined,
       fields: {
         given_name: undefined,
         family_name: undefined,
         pronoun: undefined,
         phoneNumber: undefined,
         email: undefined,
+        profilePicture: undefined,
       },
       XIconSVG,
     };
@@ -76,9 +77,9 @@ export default {
         value: this.fields[JSON.parse(this.fieldToEdit).value],
       };
       console.log(payload);
-      this.$store.dispatch("editContact", payload).then((res) => {
-        console.log(res);
-      });
+      // this.$store.dispatch("editContact", payload).then((res) => {
+      //   console.log(res);
+      // });
     },
   },
   props: ["contact"],

@@ -225,6 +225,7 @@ export default {
     return {
       SVGs,
       editIndex: undefined,
+      photoFile: undefined,
       input: {
         packages: {
           id: "package" + new Date().getTime(),
@@ -257,9 +258,7 @@ export default {
     onFileChange(e) {
       var files = e.target.files || e.dataTransfer.files;
       if (!files.length) return;
-      this.input.services.photo = files[0];
-      console.log(files);
-      console.log(this.input.services.photo);
+      this.photoFile = files[0];
     },
     submitEventType() {
       this.businessSettings.product.eventTypes.push(this.input.eventTypesInput);
@@ -324,8 +323,14 @@ export default {
         return item.contractName;
       }
     },
-    addPackage() {
+    async addPackage() {
       let item = this.input.packages;
+      if (this.photoFile) {
+        await this.$store.dispatch("addPhoto", this.photoFile).then((res) => {
+          this.input.packages.photo = res;
+          console.log(this.inputPhoto);
+        });
+      }
       item.pricing.baseRate *= 100;
       if (item.pricing.addHourly) {
         item.pricing.addHourly *= 100;

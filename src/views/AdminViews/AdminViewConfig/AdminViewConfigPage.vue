@@ -108,6 +108,33 @@
                       <input type="text" :placeholder="address.address" />
                     </div> -->
                   </div>
+                  <div class="business-information-item">
+                    <p class="bold">Business Logo:</p>
+                    <input
+                      type="file"
+                      id="business-logo-hidden-file-button"
+                      @change="onFileChange"
+                      style="display: none"
+                    />
+                    <div class="button-wrapper">
+                      <button-standard-with-icon
+                        text="Choose File"
+                        @click="chooseFile()"
+                        class="form-button"
+                      />
+                    </div>
+
+                    <!-- <div
+                      class="business-information-item"
+                      v-for="(
+                        address, index
+                      ) in identity.businessEmailAddresses"
+                      :key="index"
+                    >
+                      <p>Email Address ({{ index + 1 }}):</p>
+                      <input type="text" :placeholder="address.address" />
+                    </div> -->
+                  </div>
                 </div>
                 <div class="business-information-section">
                   <div class="business-information-item">
@@ -186,12 +213,14 @@
     <button-standard-with-icon
       text="Save Changes"
       @click="saveChanges()"
+      class="floating-save-button"
     ></button-standard-with-icon>
   </section>
 </template>
 
 <script>
 import BaseNavigationCard from "../../../SharedComponents/SharedComponentsUI/BaseNavigationCard.vue";
+
 import AdminViewConfigNavigationItems from "./AdminViewConfigNavigationItems.vue";
 import AdminViewConfigPackages from "./AdminViewConfigCards/AdminViewConfigPackages.vue";
 import AdminViewConfigServices from "./AdminViewConfigCards/AdminViewConfigServices.vue";
@@ -205,6 +234,7 @@ export default {
   data() {
     return {
       loaded: false,
+      photoFile: undefined,
       fields: {
         identity: {
           businessName: undefined,
@@ -213,6 +243,7 @@ export default {
             streetAddress2: undefined,
             address2: undefined,
           },
+          businessLogo: undefined,
           businessPhoneNumber: undefined,
           branding: {
             backgroundColor: undefined,
@@ -226,6 +257,14 @@ export default {
     };
   },
   methods: {
+    chooseFile() {
+      document.getElementById("business-logo-hidden-file-button").click();
+    },
+    onFileChange(e) {
+      var files = e.target.files || e.dataTransfer.files;
+      if (!files.length) return;
+      this.photoFile = files[0];
+    },
     async saveChanges() {
       this.$store.dispatch(
         "adminConfigIdentitySetBusinessName",
@@ -239,6 +278,11 @@ export default {
         "adminConfigIdentitySetBusinessPhoneNumber",
         this.fields.identity.businessPhoneNumber
       );
+      if (this.photoFile) {
+        await this.$store.dispatch("addPhoto", this.photoFile).then((res) => {
+          this.$store.dispatch("adminConfigIdentitySetBusinessLogo", res);
+        });
+      }
       this.$store.dispatch("updateBusinessSettings");
     },
   },
@@ -352,7 +396,11 @@ export default {
   overflow: scroll;
 }
 
-.button-standard-with-icon {
+.button-wrapper {
+  width: 50%;
+}
+
+.floating-save-button {
   position: absolute;
   bottom: 20px;
   right: 20px;

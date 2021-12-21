@@ -41,7 +41,7 @@
                 @click="deleteContract(index)"
               />
               <img
-                :src="SVGS.EditPenSVG"
+                :src="SVGs.EditPenSVG"
                 class="x-icon"
                 @click="editContract(contract, index)"
               />

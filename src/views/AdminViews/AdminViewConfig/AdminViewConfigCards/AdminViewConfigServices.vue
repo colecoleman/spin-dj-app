@@ -7,6 +7,7 @@
           <h5 class="bold">Add New Service:</h5>
           <div class="service-item">
             <p>Service Name:</p>
+
             <input type="text" v-model.trim="input.name" />
           </div>
           <div class="service-item">
@@ -18,11 +19,12 @@
               style="display: none"
             />
             <button-standard-with-icon
-              text="Choose File"
+              :text="photoFile ? photoFile.name : 'Choose File'"
               @click="chooseFile()"
               class="form-button"
             />
           </div>
+
           <div class="service-item">
             <p>Employees Required</p>
             <input type="number" v-model.number="input.employeesRequired" />
@@ -136,6 +138,7 @@
 <script>
 import SVGs from "../../../../assets/SVGs/svgIndex";
 import helpers from "../../../../helpers.js";
+// import { Storage } from "aws-amplify";
 
 export default {
   data() {
@@ -143,6 +146,7 @@ export default {
       SVGs,
       // services: [],
       editIndex: undefined,
+      photoFile: undefined,
       input: {
         id: "service" + new Date().getTime(),
         name: undefined,
@@ -165,8 +169,14 @@ export default {
   },
   methods: {
     formatPrice: helpers.formatPrice,
-    addService() {
+    async addService() {
       let service = this.input;
+      if (this.photoFile) {
+        await this.$store.dispatch("addPhoto", this.photoFile).then((res) => {
+          this.input.photo = res;
+          console.log(this.inputPhoto);
+        });
+      }
       service.pricing.baseRate *= 100;
       service.pricing.addHourly *= 100;
       if (this.editIndex != undefined) {
@@ -211,12 +221,10 @@ export default {
     chooseFile() {
       document.getElementById("hidden-file-button").click();
     },
-    onFileChange(e) {
+    async onFileChange(e) {
       var files = e.target.files || e.dataTransfer.files;
       if (!files.length) return;
-      this.inputs.services.photo = files[0];
-      console.log(files);
-      console.log(this.inputs.services.photo);
+      this.photoFile = files[0];
     },
   },
 };

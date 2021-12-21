@@ -76,8 +76,11 @@ export default {
 }
 
 img {
-  width: 55px;
-  padding: 10px;
+  width: 65px;
+  height: 65px;
+  padding: 10px 10px 10px 0;
+  object-fit: cover;
+  border-radius: 50%;
 }
 
 #first-name {
