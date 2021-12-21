@@ -1,0 +1,14 @@
+{
+  "resourceName": "s3spindjappstorage",
+  "bucketName": "spindjappstorage",
+  "policyUUID": "70dae91f",
+  "storageAccess": "authAndGuest",
+  "guestAccess": [
+    "READ"
+  ],
+  "authAccess": [
+    "CREATE_AND_UPDATE",
+    "READ",
+    "DELETE"
+  ]
+}

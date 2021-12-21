@@ -72,7 +72,7 @@
           "nativeClientId": "3r81enf7o8f07c69bnlc6tf9lo",
           "identityPoolId": "us-east-1:61655840-a96e-4408-a05c-cb6fda6e8544",
           "identityPoolName": "Spin DJ Tenants",
-          "allowUnauthenticatedIdentities": false,
+          "allowUnauthenticatedIdentities": true,
           "authRoleArn": "arn:aws:iam::756709574884:role/Cognito_SpinDJTenantsAuth_Role",
           "authRoleName": "Cognito_SpinDJTenantsAuth_Role",
           "unauthRoleArn": "arn:aws:iam::756709574884:role/Cognito_SpinDJTenantsUnauth_Role",
@@ -80,10 +80,22 @@
         }
       },
       "function": {
-        "spin49492a15DefineAuthChallenge": {},
-        "spin49492a15CreateAuthChallenge": {},
-        "spin49492a15VerifyAuthChallengeResponse": {},
-        "spin49492a15CustomMessage": {}
+        "spin49492a15DefineAuthChallenge": {
+          "deploymentBucketName": "amplify-spin-prod-140016-deployment",
+          "s3Key": "amplify-builds/spin49492a15DefineAuthChallenge-4a41794a583968654337-build.zip"
+        },
+        "spin49492a15CreateAuthChallenge": {
+          "deploymentBucketName": "amplify-spin-prod-140016-deployment",
+          "s3Key": "amplify-builds/spin49492a15CreateAuthChallenge-2f6b662b5068385a4755-build.zip"
+        },
+        "spin49492a15VerifyAuthChallengeResponse": {
+          "deploymentBucketName": "amplify-spin-prod-140016-deployment",
+          "s3Key": "amplify-builds/spin49492a15VerifyAuthChallengeResponse-6263367967537a365156-build.zip"
+        },
+        "spin49492a15CustomMessage": {
+          "deploymentBucketName": "amplify-spin-prod-140016-deployment",
+          "s3Key": "amplify-builds/spin49492a15CustomMessage-7659796e774836426552-build.zip"
+        }
       },
       "hosting": {
         "amplifyhosting": {
