@@ -5,7 +5,9 @@
     :loading="loading"
     @action-one-clicked="toggleEditCard()"
   >
-    <template v-slot:title>Contact</template>
+    <template v-slot:title>{{
+      contact ? contact.given_name + " " + contact.family_name : "Contact"
+    }}</template>
     <template v-slot:dropdownContainer>
       <contact-information-edit
         v-if="editCardOpen"
@@ -25,11 +27,6 @@
             alt=""
           />
           <div id="contact-information">
-            <h5 id="business-name" v-if="contact.businessName">
-              {{ contact.businessName }}
-            </h5>
-            <h4 id="first-name">{{ contact.given_name }}</h4>
-            <h4 id="last-name">{{ contact.family_name }}</h4>
             <p class="contact-contact-information">
               {{ formatPhoneNumber(contact.phoneNumber) }}
             </p>
@@ -63,9 +60,6 @@ export default {
       this.editCardOpen = !this.editCardOpen;
     },
   },
-  created() {
-    console.log(this.contact);
-  },
   props: ["contact", "icon", "loading"],
   components: { ContactInformationEdit },
 };
@@ -79,17 +73,10 @@ export default {
 }
 
 img {
-  width: 55px;
-  padding: 10px;
+  width: 60px;
+  height: 60px;
+  padding: 10px 10px 10px 0;
   object-fit: cover;
-}
-
-#first-name {
-  font-weight: normal;
-}
-
-#last-name {
-  padding-bottom: 10px;
 }
 
 .contact-contact-information {
@@ -101,53 +88,13 @@ img {
   position: relative;
   display: flex;
   flex-direction: row;
-  padding: 10px;
 }
 
 #contact-information {
   text-align: left;
-}
-
-#contact-card-lower-div {
   display: flex;
-  flex-direction: row;
-  margin: 10px 0;
-}
-
-.contact-card-lower-div-half {
-  width: 50%;
+  flex-direction: column;
   justify-content: center;
-  justify-items: center;
   align-content: center;
-  align-items: center;
-}
-
-.indented-item {
-  text-align: left;
-  margin: 25px 4px;
-}
-
-.indented {
-  text-align: right;
-}
-
-h5 {
-  text-transform: uppercase;
-  /* margin: 5px; */
-  font-size: 8pt;
-}
-
-input {
-  background-color: black;
-  color: white;
-  border: none;
-  border-bottom: 1px solid white;
-  width: 80%;
-  margin: 0;
-  text-align: right;
-}
-
-input:focus {
-  outline: none;
 }
 </style>
