@@ -38,6 +38,7 @@ const store = createStore({
                     forms: [],
                 },
                 contracts: [],
+                
                 identity: {
                     businessName: undefined,
                     businessAddress: {
@@ -53,7 +54,25 @@ const store = createStore({
                         highlightColor: "#00F5FF",
                         textColor: "#000000",
                     },
-                }
+                },
+                payments: {
+                  creditCard: {
+                      enabled: false,
+                      Stripe: {},
+                      QuickBooks: {},
+                      Square: {}
+                  }, 
+                  p2p: {
+                      PayPal: {},
+                      Venmo: {},
+                  },
+                  check: {
+                      
+                  },
+                  custom: {
+
+                  }
+                },
             },
             publicSettings: {},
         };
@@ -105,7 +124,9 @@ const store = createStore({
         },
         async setBusinessSettings(context) {
             await axios.get(`https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/admin/${context.state.user.userId}/settings`).then(response => {
+                console.log(response)
                 if ('businessSettings' in response.data.Item) {
+                    console.log('hey')
                     context.commit('setBusinessSettings', response.data.Item.businessSettings);
                     if ('identity' in response.data.Item.businessSettings)
                         context.commit('setBranding', response.data.Item.businessSettings.identity);
@@ -431,8 +452,14 @@ const store = createStore({
             })
         },
         async getEvent(context, payload) {
+            let role;
+            if (context.state.user.userId === context.state.user.tenantId) {
+                role = 'admin'
+            } else {
+                role = context.state.user.role
+            }
             return new Promise((resolve, reject) => {
-                axios.get(`https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/${context.state.user.role}/${context.state.user.tenantId}/${context.state.user.userId}/events/${payload}`).then((result)=> {
+                axios.get(`https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/${role}/${context.state.user.tenantId}/${context.state.user.userId}/events/${payload}`).then((result)=> {
                     resolve(result);
                 }, error => {
                     context.commit('addStatus', {
@@ -466,6 +493,40 @@ const store = createStore({
                         note: error
                     });
                     reject(error);
+                })
+            })
+        },
+        async stripeCreateAccount(context, payload) {
+            return new Promise((resolve, reject) => {
+                axios.put(`https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/admin/${context.state.user.tenantId}/stripe/createAccount/${payload}`).then((res) => {
+                    resolve(res)
+                }).catch((e) => {
+                    reject(e)
+                })
+            })
+        },
+        async stripeCheckAccount(context) {
+            let stripeId = context.state.businessSettings.payments.creditCard.Stripe.id;
+            console.log(stripeId)
+            return new Promise((resolve, reject) => {
+                axios.get(`https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/admin/${context.state.user.tenantId}/stripe/checkAccount/${stripeId}`).then((result) => {
+                    resolve(result.data);
+                }, error => {
+                    // context.commit('addStatus', {
+                    //     type: 'error',
+                    //     note: error
+                    // });
+                    reject(error);
+                })
+            })
+        },
+        async stripeCreatePaymentIntent(context, payload) {
+            return new Promise((resolve, reject) => {
+                axios.put(`https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/admin/${context.state.user.tenantId}/stripe/pay/${payload.eventId}`,payload).then((res) => {
+                    resolve(res)
+                    console.log(res);
+                }).catch((e) => {
+                    reject(e)
                 })
             })
         },
@@ -528,28 +589,12 @@ const store = createStore({
                     reject(e);
                     console.log(e);
                 })
-                
-                // axios.put(
-                //     `https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/admin/${context.state.user.tenantId}/putfile`,
-                //     payload
-                //   ).then((result) => {
-                //     resolve(result);
-                //     console.log(result);
-                // }, error => {
-                //     context.commit('addStatus', {
-                //         type: 'error',
-                //         note: error
-                //     });
-                //     reject(error);
-                // });
             })
         },
         async getPhoto(context, payload) {
             return new Promise((resolve, reject) => {
                 axios.get(`https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/admin/${context.state.user.tenantId}/getFile/${payload}`).then((result)=> {
                     resolve(result.data);
-                    // let base64 = result.data.Body.data;
-                    // const base64String = btoa(String.fromCharCode(...new Uint8Array(arrayBuffer)));
                 }, error => {
                     context.commit('addStatus', {
                         type: 'error',

@@ -15,7 +15,7 @@
 export default {
   data() {
     return {
-      activeLink: "identity",
+      activeLink: "Identity",
       configItems: [
         "Identity",
         "Services",
@@ -25,6 +25,7 @@ export default {
         "Forms",
         "Contracts",
         "Automations",
+        "Payments",
       ],
     };
   },

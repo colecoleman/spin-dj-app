@@ -209,6 +209,10 @@
           :storeAutomations="businessSettings.automations"
         />
       </div>
+
+      <div class="config-section" id="payments">
+        <admin-view-config-payments />
+      </div>
     </div>
     <button-standard-with-icon
       text="Save Changes"
@@ -229,6 +233,7 @@ import AdminViewConfigAddOns from "./AdminViewConfigCards/AdminViewConfigAddOns.
 import AdminViewConfigAutomations from "./AdminViewConfigCards/AdminViewConfigAutomations.vue";
 import AdminViewConfigContracts from "./AdminViewConfigCards/AdminViewConfigContracts.vue";
 import AdminViewConfigDiscounts from "./AdminViewConfigCards/AdminViewConfigDiscounts.vue";
+import AdminViewConfigPayments from "./AdminViewConfigCards/AdminViewConfigPayments.vue";
 
 export default {
   data() {
@@ -342,6 +347,20 @@ export default {
           },
           contracts: [],
           automations: [],
+          payments: {
+            creditCard: {
+              enabled: false,
+              Stripe: {},
+              QuickBooks: {},
+              Square: {},
+            },
+            p2p: {
+              PayPal: {},
+              Venmo: {},
+            },
+            check: {},
+            custom: {},
+          },
         };
       }
     },
@@ -370,6 +389,7 @@ export default {
     AdminViewConfigDiscounts,
     AdminViewConfigContracts,
     AdminViewConfigAutomations,
+    AdminViewConfigPayments,
   },
 };
 </script>
