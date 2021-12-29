@@ -65,7 +65,7 @@ export default {
   position: relative;
   /* height: fit-content; */
   padding: 40px;
-  width: 50%;
+  width: fit-content;
   border-radius: 14px;
 }
 /* 

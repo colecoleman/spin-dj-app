@@ -24,8 +24,9 @@
             :first="event === sortedEvents[0]"
             @click="navigateToEventPage(event.userId)"
           ></upcoming-events-list-item>
+
           <upcoming-events-list-item
-            v-for="event in pastEvents"
+            v-for="event in pastEventsCopy"
             :key="event.userId"
             :event="event"
             :first="event === sortedEvents[0]"
@@ -42,7 +43,7 @@
             @click="navigateToEventPage(event.userId)"
           ></client-view-upcoming-event-list-item>
           <client-view-upcoming-event-list-item
-            v-for="event in pastEvents"
+            v-for="event in pastEventsCopy"
             :key="event.userId"
             :event="event"
             :first="event === sortedEvents[0]"
@@ -50,7 +51,9 @@
             class="past-event"
           ></client-view-upcoming-event-list-item>
         </div>
-        <h5 v-if="events.length <= 0">No events to display! Add some!</h5>
+        <h5 v-if="events.length <= 0 && pastEventsCopy.length <= 0">
+          No events to display! Add some!
+        </h5>
       </div>
     </template>
   </base-card>
@@ -66,6 +69,7 @@ export default {
     return {
       SVGs,
       mutableEvents: undefined,
+      pastEventsCopy: [],
       sortMenuOpened: false,
       sortItems: [
         {
@@ -106,7 +110,8 @@ export default {
   },
   computed: {
     sortedEvents() {
-      return [...this.events].sort(this.selectedSortLogic).filter((x) => {
+      let temp = this.events;
+      return temp.sort(this.selectedSortLogic).filter((x) => {
         let date = new Date().getTime();
         let eventDate = new Date(x.data.endTime).getTime();
         return eventDate > date;
@@ -120,6 +125,12 @@ export default {
         return user.role;
       }
     },
+  },
+  created() {
+    console.log(this.events);
+    if (this.pastEvents) {
+      this.pastEventsCopy = this.pastEvents;
+    }
   },
   methods: {
     toggleSortMenuOpened() {
