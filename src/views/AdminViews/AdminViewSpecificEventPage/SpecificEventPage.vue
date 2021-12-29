@@ -11,6 +11,18 @@
       v-if="invoiceOpen"
       @close-popup="closePopup()"
     ></invoice-popup>
+    <popup-modal
+      title="Make Payment"
+      v-if="paymentModalOpen"
+      @close-popup="closePopup()"
+    >
+      <template v-slot:window>
+        <event-make-payment
+          :eventId="event.userId"
+          :event="event"
+        ></event-make-payment>
+      </template>
+    </popup-modal>
     <forms-popup
       v-if="formsOpen"
       @close-popup="closePopup()"
@@ -22,6 +34,7 @@
       @close-popup="closePopup()"
       :contracts="event.contracts"
     ></contract-popup>
+
     <two-button-dialog-modal
       v-if="deleteEventOpen"
       @select-button-one="confirmDeleteEvent()"
@@ -89,6 +102,8 @@ import AutomationEventComponent from "../AdminViewsSharedComponents/Automation/A
 import Backdrop from "../../../SharedComponents/SharedComponentsUI/Backdrop.vue";
 import FormsPopup from "../../../SharedComponents/SharedComponentsEvents/FormsPopup.vue";
 import InvoicePopup from "../../../SharedComponents/SharedComponentsEvents/InvoicePopup.vue";
+import EventMakePayment from "../../../SharedComponents/SharedComponentsEvents/EventMakePayment/EventMakePayment.vue";
+import PopupModal from "../../../SharedComponents/SharedComponentsUI/PopupModal.vue";
 import ContractPopup from "../../../SharedComponents/SharedComponentsEvents/ContractPopup.vue";
 import FourButtonBarWithDropDown from "../../../SharedComponents/SharedComponentsUI/FourButtonBarWithDropDown.vue";
 import TwoButtonDialogModal from "../../../SharedComponents/SharedComponentsUI/TwoButtonDialogModal.vue";
@@ -129,11 +144,18 @@ export default {
             danger: true,
             icon: SVGs.TrashCanSVG,
           },
+          {
+            title: "Make Payment",
+            action: this.processPayment,
+            danger: false,
+            // icon: SVGs.TrashCanSVG,
+          },
         ],
       },
       deleteEventOpen: false,
       backdropOpen: false,
       contractOpen: false,
+      paymentModalOpen: false,
       invoiceOpen: false,
       formsOpen: false,
     };
@@ -176,6 +198,9 @@ export default {
     deleteEvent() {
       this.deleteEventOpen = true;
     },
+    processPayment() {
+      this.paymentModalOpen = true;
+    },
     async confirmDeleteEvent() {
       let contacts = [...this.contacts];
       await contacts.forEach((contact) => {
@@ -207,6 +232,7 @@ export default {
       this.formsOpen = false;
       this.backdropOpen = false;
       this.deleteEventOpen = false;
+      this.paymentModalOpen = false;
     },
     editEvent() {
       alert("edited!");
@@ -221,6 +247,7 @@ export default {
       .dispatch("adminGetEvent", this.$route.params.id)
       .then((res) => {
         this.event = res.data.Item;
+        console.log(this.event);
       })
       .catch((e) =>
         this.$store.commit("addStatus", { type: "error", note: e })
@@ -248,8 +275,10 @@ export default {
     EventPageContactCarousel,
     SpecificEventPageLocationScroller,
     AutomationEventComponent,
+    EventMakePayment,
     Backdrop,
     InvoicePopup,
+    PopupModal,
     FormsPopup,
     ContractPopup,
     FourButtonBarWithDropDown,
