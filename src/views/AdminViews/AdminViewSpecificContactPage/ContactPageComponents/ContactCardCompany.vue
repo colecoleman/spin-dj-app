@@ -5,7 +5,9 @@
     :loading="contact ? false : true"
     @action-one-clicked="toggleEditCard()"
   >
-    <template v-slot:title>Contact</template>
+    <template v-slot:title>{{
+      contact ? contact.businessName : "Contact"
+    }}</template>
     <template v-slot:dropdownContainer>
       <contact-information-edit-company
         v-if="editCardOpen"
@@ -15,37 +17,14 @@
     </template>
     <template v-slot:content>
       <div id="wrapper" v-if="contact">
-        <div id="contact-card-upper-div">
-          <img
-            :src="
-              contact.profilePicture
-                ? contact.profilePicture
-                : defaultProfilePicture
-            "
-            alt=""
-          />
-          <div id="contact-information">
-            <div id="business-name-and-category">
-              <h4 id="business-name">{{ contact.businessName }}</h4>
-
-              <h4 v-if="contact.businessCategory" id="vendor-category">
-                {{ contact.businessCategory }}
-              </h4>
-              <h4 v-if="!contact.businessCategory" id="vendor-category">
-                Uncategorized
-              </h4>
-            </div>
-            <h4 id="first-name">{{ contact.given_name }}</h4>
-            <h4 id="last-name">{{ contact.family_name }}</h4>
-            <p class="contact-contact-information">
-              {{ formatPhoneNumber(contact.phoneNumber) }}
-            </p>
-            <p class="contact-contact-information">
-              {{ contact.email }}
-            </p>
-          </div>
+        <div id="business-name-and-category">
+          <h5 v-if="contact.businessCategory" id="vendor-category">
+            {{ contact.businessCategory }}
+          </h5>
+          <h5 v-if="!contact.businessCategory" id="vendor-category">
+            Uncategorized
+          </h5>
         </div>
-        <div id="contact-card-lower-div"></div>
       </div>
     </template>
   </base-card>
@@ -82,70 +61,13 @@ export default {
   overflow: hidden;
 }
 
-img {
-  width: 55px;
-  padding: 10px;
-}
-
-#business-name-and-category {
-  margin: 10px 0;
-}
-
-#business-name {
-  margin-bottom: 5px;
-  border-bottom: 1px solid black;
-}
-
-#vendor-category {
-  font-size: 8pt;
-}
-
-#first-name,
-#last-name {
-  font-weight: normal;
-}
-
-#last-name {
-  padding-bottom: 10px;
-}
-
 .contact-contact-information {
-  font-size: 10pt;
-  margin: 2px;
-}
-
-#contact-card-upper-div {
   position: relative;
   display: flex;
   flex-direction: row;
-  align-items: center;
-}
-
-#contact-information {
-  text-align: left;
-}
-
-#contact-card-lower-div {
-  display: flex;
-  flex-direction: column;
-  margin: 10px 0;
-}
-
-.contact-card-lower-div-half {
-  width: 50%;
-  justify-content: center;
-  justify-items: center;
-  align-content: center;
-  align-items: center;
-}
-
-.indented-item {
-  text-align: left;
-  margin: 25px 4px;
-}
-
-.indented {
-  text-align: right;
+  align-items: left;
+  font-size: 10pt;
+  margin: 2px;
 }
 
 h5 {

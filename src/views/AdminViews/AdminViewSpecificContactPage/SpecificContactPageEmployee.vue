@@ -65,12 +65,11 @@
 <script>
 import {
   ContactPageAutomation,
-  ContactCardPerson,
   ContactPageToDoList,
   ContactPageUpcomingEvents,
   ContactPageNotes,
 } from "./ContactPageComponents/contactPageIndex.js";
-
+import ContactCardPerson from '../../../SharedComponents/SharedComponentsContact/ContactCardPerson.vue';
 import EmployeePageAvailabilityManager from "./ContactPageComponents/EmployeePageComponents/EmployeePageAvailabilityManager/EmployeePageAvailabilityManager.vue";
 import PopupEmailComposition from "../../../SharedComponents/SharedComponentsPopupUtilities/PopupEmailComposition.vue";
 import MessagingSingleComponent from "../../../SharedComponents/SharedComponentsMessaging/MessagingSingleComponent.vue";

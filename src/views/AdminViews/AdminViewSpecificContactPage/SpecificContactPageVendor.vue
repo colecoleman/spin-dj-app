@@ -12,16 +12,26 @@
   <div id="section-wrapper">
     <div id="left-column">
       <div id="box-one">
+        <contact-card-person :contact="contact"></contact-card-person>
+      </div>
+      <div id="box-two">
         <contact-card-company
           :contact="contact"
           :icon="SVGs.PersonSVG"
         ></contact-card-company>
       </div>
-      <div id="box-two">
-        <contact-page-to-do-list :contact="contact"></contact-page-to-do-list>
-      </div>
       <div id="box-three">
-        <contact-page-notes :contact="contact" />
+        <base-card :icon="SVGs.MessageBubbleSVG">
+          <template v-slot:title>Messages</template>
+          <template v-slot:content v-if="contact">
+            <messaging-single-component
+              v-if="contact"
+              :defaultUser="contact"
+              :conversation="conversation"
+              :id="contact.userId"
+            ></messaging-single-component>
+          </template>
+        </base-card>
       </div>
     </div>
     <div id="right-column">
@@ -32,30 +42,29 @@
         ></four-button-bar-with-drop-down>
       </div>
       <div id="box-five">
-        <contact-page-upcoming-events
-          :contact="contact"
-          :icon="SVGs.CalendarSVG"
-          @event-assignment-toggle="toggleEventAssignment()"
-          :eventAssignmentOpen="eventAssignmentOpen"
-          v-if="contact"
-        ></contact-page-upcoming-events>
+        <div id="box-five-half-one">
+          <upcoming-events
+            :events="events"
+            :pastEvents="pastEvents"
+            v-if="!eventAssignmentOpen && eventsLoaded"
+          ></upcoming-events>
+          <contact-page-events-assignment
+            v-if="eventAssignmentOpen"
+            :events="events"
+            :icon="SVGs.CalendarSVG"
+            @event-assignment-toggle="toggleEventAssignment()"
+          ></contact-page-events-assignment>
+        </div>
+        <div id="box-five-half-two">
+          <contact-page-to-do-list :contact="contact"></contact-page-to-do-list>
+        </div>
       </div>
       <div id="box-six">
         <div id="box-six-half">
           <contact-page-automation></contact-page-automation>
         </div>
         <div id="box-six-half-two">
-          <base-card :icon="SVGs.MessageBubbleSVG">
-            <template v-slot:title>Messages</template>
-            <template v-slot:content v-if="contact">
-              <messaging-single-component
-                v-if="contact"
-                :defaultUser="contact"
-                :conversation="conversation"
-                :id="contact.userId"
-              ></messaging-single-component>
-            </template>
-          </base-card>
+          <contact-page-notes :contact="contact" />
         </div>
       </div>
     </div>
@@ -66,16 +75,18 @@
 import {
   ContactPageAutomation,
   ContactPageToDoList,
-  ContactPageUpcomingEvents,
 } from "./ContactPageComponents/contactPageIndex.js";
 
+import ContactPageEventsAssignment from "../../../views/AdminViews/AdminViewSpecificContactPage/ContactPageComponents/ContactPageUpcomingEvents/ContactPageEventsAssignment.vue";
 import PopupEmailComposition from "../../../SharedComponents/SharedComponentsPopupUtilities/PopupEmailComposition.vue";
+import ContactCardPerson from "../../../SharedComponents/SharedComponentsContact/ContactCardPerson.vue";
 import MessagingSingleComponent from "../../../SharedComponents/SharedComponentsMessaging/MessagingSingleComponent.vue";
 import FourButtonBarWithDropDown from "../../../SharedComponents/SharedComponentsUI/FourButtonBarWithDropDown.vue";
 import ContactCardCompany from "./ContactPageComponents/ContactCardCompany.vue";
 import VendorPageReferralPopup from "./ContactPageComponents/VendorPageComponents/VendorPageReferralPopup.vue";
 import ContactPageNotes from "./ContactPageComponents/ContactPageNotes/ContactPageNotes.vue";
 import SVGs from "../../../assets/SVGs/svgIndex.js";
+import UpcomingEvents from "../../../SharedComponents/SharedComponentsUpcomingEvents/UpcomingEvents.vue";
 
 export default {
   data() {
@@ -83,6 +94,9 @@ export default {
       SVGs,
       eventAssignmentOpen: false,
       contact: undefined,
+      events: [],
+      eventsLoaded: false,
+      pastEvents: [],
       conversation: undefined,
       eventConversation: [],
       buttons: [
@@ -141,7 +155,6 @@ export default {
     getConversations(conversations) {
       return conversations.map((x) => {
         x = this.$store.dispatch("getThreadParticipants", x).then((res) => {
-          console.log(res.Items);
           return res.Items;
         });
         return x;
@@ -185,21 +198,34 @@ export default {
       .then((res) => {
         this.contact = res.data.Item;
         if (this.contact.conversations) {
-          console.log("ey");
           let matchedItem = this.contact.conversations.find((x) => {
             return this.currentUser.conversations.includes(x);
           });
           if (matchedItem) {
-            console.log("ho!");
             this.eventConversation.push(matchedItem);
           }
         }
-        console.log(this.contact);
       });
+    for (
+      let index = 0;
+      index < [...new Set(this.contact.associatedEvents)].length;
+      index++
+    ) {
+      const event = this.contact.associatedEvents[index];
+      await this.$store.dispatch("adminGetEvent", event).then((res) => {
+        let today = new Date();
+        if (new Date(res.data.Item.data.date) < today) {
+          this.pastEvents.push(res.data.Item);
+        } else {
+          this.events.push(res.data.Item);
+        }
+      });
+    }
+
+    this.eventsLoaded = true;
     if (this.eventConversation) {
       Promise.all(this.getConversations(this.eventConversation)).then((res) => {
         let conversations = res;
-        console.log(conversations);
         for (let index = 0; index < conversations.length; index++) {
           Promise.all([
             this.getConversationUsers(...conversations[index]),
@@ -211,7 +237,6 @@ export default {
               users: res[0],
             };
             this.conversation = conversation;
-            console.log(conversation);
           });
         }
       });
@@ -220,8 +245,10 @@ export default {
   components: {
     PopupEmailComposition,
     ContactCardCompany,
+    ContactCardPerson,
+    UpcomingEvents,
     ContactPageToDoList,
-    ContactPageUpcomingEvents,
+    ContactPageEventsAssignment,
     ContactPageAutomation,
     ContactPageNotes,
     MessagingSingleComponent,
@@ -252,13 +279,13 @@ svg {
 }
 
 #box-one {
-  height: 35%;
+  flex: 1;
 }
 #box-two {
-  height: 32.5%;
+  flex: 0.5;
 }
 #box-three {
-  height: 32.5%;
+  flex: 2;
 }
 
 #right-column {
@@ -278,6 +305,14 @@ svg {
 
   display: flex;
   flex-direction: row;
+}
+
+#box-five-half-one {
+  width: 65%;
+}
+
+#box-five-half-two {
+  width: 35%;
 }
 
 #box-six {

@@ -47,6 +47,7 @@ export default {
     currentUser() {
       return this.$store.state.user;
     },
+
     events() {
       return this.$store.state.events;
     },

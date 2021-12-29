@@ -55,7 +55,6 @@ export default {
     },
     messagesSortedByDate() {
       let tempArray = [...this.conversation.thread];
-      console.log(tempArray);
       return tempArray.sort(function (a, b) {
         return a.data.sentDate < b.data.sentDate
           ? 1

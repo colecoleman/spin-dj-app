@@ -77,7 +77,7 @@ import {
   ContactPageToDoList,
 } from "./ContactPageComponents/contactPageIndex.js";
 
-import ContactCardClient from "./ContactPageComponents/ContactCardPerson.vue";
+import ContactCardClient from "../../../SharedComponents/SharedComponentsContact/ContactCardPerson.vue";
 import ClientPageUpcomingEvents from "./ContactPageComponents/ClientPageComponents/ClientPageUpcomingEvents.vue";
 // import ClientPageInformationCard from "../ContactPageComponents/ClientPageComponents/ClientPageInformationCard.vue";
 import PopupEmailComposition from "../../../SharedComponents/SharedComponentsPopupUtilities/PopupEmailComposition.vue";

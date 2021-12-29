@@ -48,9 +48,11 @@ export default {
 }
 
 img {
-  height: 50px;
-  width: 50px;
-  margin: 5px;
+  width: 65px;
+  height: 65px;
+  padding: 10px;
+  object-fit: cover;
+  border-radius: 50%;
 }
 
 h5 {
