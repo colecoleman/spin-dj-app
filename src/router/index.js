@@ -3,19 +3,19 @@ import { Auth } from "aws-amplify";
 import SignUpPage from '../views/PublicViews/SignUpPage.vue';
 import LoginPage from '../views/PublicViews/LoginPage.vue';
 import ForgotPage from '../views/PublicViews/ForgotPage.vue';
-import AdminViewInitialSetup from '../views/AdminViews/AdminViewInitialSetup.vue'
+import AdminViewInitialSetup from '../views/AdminViews/AdminTopLevelViews/AdminViewInitialSetup.vue';
 import AdminView from '../views/AdminViews/AdminView.vue';
-import EventManager from '../views/AdminViews/AdminViewDashboard/EventManager.vue';
-import ContactsList from '../views/AdminViews/AdminViewContactList/ContactsList.vue';
-import AdminConfigurationPage from '../views/AdminViews/AdminViewConfig/AdminViewConfigPage.vue';
-import SpecificContactPageClient from '../views/AdminViews/AdminViewSpecificContactPage/SpecificContactPageClient.vue';
-import SpecificContactPageProspect from '../views/AdminViews/AdminViewSpecificContactPage/SpecificContactPageProspect.vue';
-import SpecificContactPageEmployee from '../views/AdminViews/AdminViewSpecificContactPage/SpecificContactPageEmployee.vue';
-import SpecificContactPageVendor from '../views/AdminViews/AdminViewSpecificContactPage/SpecificContactPageVendor.vue';
-import SpecificContactPageLocation from '../views/AdminViews/AdminViewSpecificContactPage/SpecificContactPageLocation.vue';
-import SpecificContactPageOrganizer from '../views/AdminViews/AdminViewSpecificContactPage/SpecificContactPageOrganizer.vue';
-import SpecificEventPage from "../views/AdminViews/AdminViewSpecificEventPage/SpecificEventPage.vue";
-import AdminViewCreateEvent from '../views/AdminViews/AdminViewCreate/AdminViewCreateEvent.vue';
+import AdminViewDashboard from '../views/AdminViews/AdminTopLevelViews/AdminViewDashboard';
+import ContactsList from '../views/AdminViews/AdminTopLevelViews/AdminViewContactList.vue';
+import AdminConfigurationPage from '../views/AdminViews/AdminTopLevelViews/AdminViewConfigPage.vue';
+import SpecificContactPageClient from '../views/AdminViews/AdminTopLevelViews/AdminViewSpecificContactPages/SpecificContactPageClient.vue';
+import SpecificContactPageProspect from '../views/AdminViews/AdminTopLevelViews/AdminViewSpecificContactPages/SpecificContactPageProspect.vue';
+import SpecificContactPageEmployee from '../views/AdminViews/AdminTopLevelViews/AdminViewSpecificContactPages/SpecificContactPageEmployee.vue';
+import SpecificContactPageVendor from '../views/AdminViews/AdminTopLevelViews/AdminViewSpecificContactPages/SpecificContactPageVendor.vue';
+import SpecificContactPageLocation from '../views/AdminViews/AdminTopLevelViews/AdminViewSpecificContactPages/SpecificContactPageLocation.vue';
+import SpecificContactPageOrganizer from '../views/AdminViews/AdminTopLevelViews/AdminViewSpecificContactPages/SpecificContactPageOrganizer.vue';
+import AdminViewEventPage from "../views/AdminViews/AdminTopLevelViews/AdminViewEventPage.vue";
+import AdminViewCreateEvent from '../views/AdminViews/AdminTopLevelViews/AdminViewCreateEvent.vue';
 
 import ClientView from '../views/ClientViews/ClientView.vue';
 import ClientDashboard from '../views/ClientViews/ClientViewsTopLevelComponents/ClientDashboard.vue';
@@ -30,14 +30,6 @@ import OrganizerDashboard from '../views/OrganizerViews/OrganizerViewsTopLevelCo
 import VendorView from '../views/VendorViews/VendorView.vue';
 import VendorDashboard from '../views/VendorViews/VendorViewsTopLevelComponents/VendorDashboard.vue';
 
-// async function ionViewCanEnter() {
-//   try {
-//       await Auth.currentAuthenticatedUser();
-//       return true;
-//   } catch {
-//       return false;
-//   }
-// }
 let user;
 let setAuthStatus = async function () {
   await Auth.currentAuthenticatedUser()
@@ -49,8 +41,6 @@ let setAuthStatus = async function () {
     });
     console.log(user)
 }
-
-// setAuthStatus();
 
 const routes = [
   
@@ -90,7 +80,7 @@ const routes = [
         name: "dashboard",
         meta: {requiresAdminAuth: true},
         components: {
-         content: EventManager
+         content: AdminViewDashboard
         },  
       },
       {
@@ -154,7 +144,7 @@ const routes = [
         name: 'specificEventPage',
         meta: {requiresAdminAuth: true},
         components: {
-          content: SpecificEventPage
+          content: AdminViewEventPage
         }
       },
       {
@@ -291,30 +281,5 @@ const router = createRouter({
     }
   }
 });
-
-// router.beforeEach(async (to, from, next) => {
-  // await setAuthStatus();
-  // if (user == undefined && to.name !== 'loginPage') {
-  //   next({path: '/login'})
-  // } else {
-  //   if (to.name === 'loginPage') {
-  //     user = undefined;
-  //     next();
-  //   }
-  //   console.log(to.meta.requiresAdminAuth)
-  //   console.log(user.signInUserSession.idToken.payload)
-  //   // if (to.meta.requiresAdminAuth && user.signInUserSession.idToken.payload["cognito:preferred_role"].includes('Admin')) {
-  //   //   console.log('admin, biatch')
-  //   //   next({path: 'admin/dashboard'})
-  //   // } else if (to.meta.requiresClientAuth && user.signInUserSession.idToken.payload['cognito:preferred_role'].includes("Client")) {
-  //   //   console.log('user is client');
-  //   // }
-  // } 
-  // if (to.matched.some(record => record.meta.requiresAdminAuth)) {
-  //   // let user = await Auth.currentAuthenticatedUser();
-  //   // console.log(user);
-  //   return true;
-  // }
-// })
 
 export default router;
