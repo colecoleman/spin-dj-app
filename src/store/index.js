@@ -507,15 +507,10 @@ const store = createStore({
         },
         async stripeCheckAccount(context) {
             let stripeId = context.state.businessSettings.payments.creditCard.Stripe.id;
-            console.log(stripeId)
             return new Promise((resolve, reject) => {
                 axios.get(`https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/admin/${context.state.user.tenantId}/stripe/checkAccount/${stripeId}`).then((result) => {
                     resolve(result.data);
                 }, error => {
-                    // context.commit('addStatus', {
-                    //     type: 'error',
-                    //     note: error
-                    // });
                     reject(error);
                 })
             })
@@ -524,7 +519,6 @@ const store = createStore({
             return new Promise((resolve, reject) => {
                 axios.put(`https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/admin/${context.state.user.tenantId}/stripe/pay/${payload.eventId}`,payload).then((res) => {
                     resolve(res)
-                    console.log(res);
                 }).catch((e) => {
                     reject(e)
                 })
@@ -622,6 +616,10 @@ const store = createStore({
         setBranding(state, settings) {
             state.branding = settings;
         },
+        setIdentity(state, identity) {
+            state.businessSettings.identity = identity;
+            console.log(identity);
+        },
         setPublicSettings(state, settings) {
             state.publicSettings = settings;
         },
@@ -713,9 +711,14 @@ const store = createStore({
         adminConfigEditForm(state, payload) {
             state.businessSettings.product.forms[payload.index] = payload.form;
         },
+        adminConfigSetIdentity(state, payload) {
+            if ("identity" in state.businessSettings) {
+                state.businessSettings.identity = payload;
+            } else {
+                Object.defineProperty(state.businessSettings, "identity", payload);
+            }
+        },
         adminConfigIdentitySetBusinessName(state, payload) {
-            console.log(payload)
-            console.log(state.businessSettings)
             if ("identity" in state.businessSettings) {
                 state.businessSettings.identity.businessName = payload;
             } else {
@@ -723,8 +726,29 @@ const store = createStore({
                 // state.businessSettings.identity.businessName = payload;
             }
         },
-        adminConfigIdentitySetBusinessAddress(state, payload) {
-            state.businessSettings.identity.businessAddress = payload;
+        adminConfigIdentitySetBackgroundColor(state, payload) {
+            state.businessSettings.identity.branding.backgroundColor = payload;
+        },
+        adminConfigIdentitySetForegroundColor(state, payload) {
+            state.businessSettings.identity.branding.foregroundColor = payload;
+        },
+        adminConfigIdentitySetCardOutline(state, payload) {
+            state.businessSettings.identity.branding.cardOutline = payload;
+        },
+        adminConfigIdentitySetHighlighColor(state, payload) {
+            state.businessSettings.identity.branding.highlightColor = payload;
+        },
+        adminConfigIdentitySetTextColor(state, payload) {
+            state.businessSettings.identity.branding.textColor = payload
+        },
+        adminConfigIdentitySetBusinessAddress1(state, payload) {
+            state.businessSettings.identity.businessAddress.streetAddress1 = payload;
+        },
+        adminConfigIdentitySetBusinessAddress2(state, payload) {
+            state.businessSettings.identity.businessAddress.streetAddress2 = payload;
+        },
+        adminConfigIdentitySetBusinessCityStateZip(state, payload) {
+            state.businessSettings.identity.businessAddress.cityStateZip = payload;
         },
         adminConfigIdentitySetBusinessPhoneNumber(state, payload) {
             state.businessSettings.identity.phoneNumber = payload;

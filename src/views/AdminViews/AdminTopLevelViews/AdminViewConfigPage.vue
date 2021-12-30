@@ -5,8 +5,14 @@
         <admin-view-config-navigation-items />
       </template>
     </base-navigation-card>
-
-    <div id="body" v-if="loaded">
+    <two-button-dialog-modal
+      v-if="dialogModal"
+      :modalBody="dialogModalData[dialogModal].body"
+      @select-button-one="dialogModalData[dialogModal].confirmButton"
+      @select-button-two="dialogModalData[dialogModal].cancelButton"
+      @close-modal="closeDialogModal"
+    ></two-button-dialog-modal>
+    <div id="body">
       <div class="config-section" id="identity">
         <base-card>
           <template v-slot:title>Identity</template>
@@ -17,63 +23,38 @@
                 <div class="branding-preferences-item">
                   <p class="bold">
                     Background Color:
-                    {{ branding.backgroundColor }}
+                    {{ backgroundColor }}
                   </p>
 
-                  <input
-                    type="color"
-                    v-model="branding.backgroundColor"
-                    name=""
-                    id=""
-                  />
+                  <input type="color" v-model="backgroundColor" />
                 </div>
                 <div class="branding-preferences-item">
                   <p class="bold">
                     Foreground Color:
-                    {{ branding.foregroundColor }}
+                    {{ foregroundColor }}
                   </p>
-                  <input
-                    type="color"
-                    v-model="branding.foregroundColor"
-                    name=""
-                    id=""
-                  />
+                  <input type="color" v-model="foregroundColor" />
                 </div>
                 <div class="branding-preferences-item">
                   <p class="bold">
                     Card Outline:
-                    {{ branding.cardOutline }}
+                    {{ cardOutline }}
                   </p>
-                  <input
-                    type="color"
-                    v-model="branding.cardOutline"
-                    name=""
-                    id=""
-                  />
+                  <input type="color" v-model="cardOutline" />
                 </div>
                 <div class="branding-preferences-item">
                   <p class="bold">
                     Highlight Color:
-                    {{ branding.highlightColor }}
+                    {{ highlightColor }}
                   </p>
-                  <input
-                    type="color"
-                    v-model="branding.highlightColor"
-                    name=""
-                    id=""
-                  />
+                  <input type="color" v-model="highlightColor" />
                 </div>
                 <div class="branding-preferences-item">
                   <p class="bold">
                     Text Color:
-                    {{ branding.textColor }}
+                    {{ textColor }}
                   </p>
-                  <input
-                    type="color"
-                    v-model="branding.textColor"
-                    name=""
-                    id=""
-                  />
+                  <input type="color" v-model="textColor" />
                 </div>
               </div>
 
@@ -83,30 +64,49 @@
                     <p class="bold">Business Name:</p>
                     <input
                       type="text"
-                      :placeholder="fields.identity.businessName"
-                      v-model="fields.identity.businessName"
+                      :placeholder="businessName"
+                      v-model="businessName"
                     />
                   </div>
                   <div class="business-information-item">
                     <p>Business Phone Number:</p>
                     <input
                       type="text"
-                      :placeholder="fields.identity.businessPhoneNumber"
-                      v-model="fields.identity.businessPhoneNumber"
+                      :placeholder="businessPhoneNumber"
+                      v-model="businessPhoneNumber"
                     />
                   </div>
                   <div class="business-information-item">
                     <p class="bold">Business Email Addresses:</p>
-                    <!-- <div
+                    <div
                       class="business-information-item"
-                      v-for="(
-                        address, index
-                      ) in identity.businessEmailAddresses"
+                      v-for="(address, index) in emailAddresses"
                       :key="index"
                     >
-                      <p>Email Address ({{ index + 1 }}):</p>
-                      <input type="text" :placeholder="address.address" />
-                    </div> -->
+                      <div class="row-flex">
+                        <p>{{ address }}</p>
+                        <img
+                          :src="SVGs.XIconSVG"
+                          alt=""
+                          @click="startDeleteEmail(index)"
+                        />
+                      </div>
+                    </div>
+                    <p class="bold">Add New Email Address:</p>
+                    <div class="row-flex">
+                      <input
+                        class="input-prefix"
+                        type="text"
+                        placeholder="Start Typing..."
+                        v-model="newEmailField"
+                      />
+                      <p class="input-suffix">@{{ subdomain }}.spindj.io</p>
+                      <img
+                        :src="SVGs.CircleCheckmarkSVG"
+                        alt=""
+                        @click="addEmail"
+                      />
+                    </div>
                   </div>
                   <div class="business-information-item">
                     <p class="bold">Business Logo:</p>
@@ -123,17 +123,6 @@
                         class="form-button"
                       />
                     </div>
-
-                    <!-- <div
-                      class="business-information-item"
-                      v-for="(
-                        address, index
-                      ) in identity.businessEmailAddresses"
-                      :key="index"
-                    >
-                      <p>Email Address ({{ index + 1 }}):</p>
-                      <input type="text" :placeholder="address.address" />
-                    </div> -->
                   </div>
                 </div>
                 <div class="business-information-section">
@@ -143,28 +132,24 @@
                       <p>Address 1:</p>
                       <input
                         type="text"
-                        :placeholder="
-                          fields.identity.businessAddress.address1one
-                        "
-                        v-model="fields.identity.businessAddress.streetAddress1"
+                        :placeholder="streetAddress1"
+                        v-model="streetAddress1"
                       />
                     </div>
                     <div class="business-information-item">
                       <p>Address 2:</p>
                       <input
                         type="text"
-                        :placeholder="
-                          fields.identity.businessAddress.address1two
-                        "
-                        v-model="fields.identity.businessAddress.streetAddress2"
+                        :placeholder="streetAddress2"
+                        v-model="streetAddress2"
                       />
                     </div>
                     <div class="business-information-item">
                       <p>City, State, Zip Code:</p>
                       <input
                         type="text"
-                        :placeholder="fields.identity.businessAddress.address2"
-                        v-model="fields.identity.businessAddress.address2"
+                        :placeholder="cityStateZip"
+                        v-model="cityStateZip"
                       />
                     </div>
                   </div>
@@ -223,7 +208,9 @@
 </template>
 
 <script>
+import SVGs from "../../../assets/SVGs/svgIndex.js";
 import BaseNavigationCard from "../../../SharedComponents/SharedComponentsUI/BaseNavigationCard.vue";
+import TwoButtonDialogModal from "../../../SharedComponents/SharedComponentsUI/TwoButtonDialogModal.vue";
 
 import AdminViewConfigNavigationItems from "../AdminComponents/AdminConfigComponents/AdminViewConfigNavigationItems.vue";
 import AdminViewConfigPackages from "../AdminComponents/AdminConfigComponents/AdminConfigCards/AdminViewConfigPackages.vue";
@@ -234,29 +221,26 @@ import AdminViewConfigAutomations from "../AdminComponents/AdminConfigComponents
 import AdminViewConfigContracts from "../AdminComponents/AdminConfigComponents/AdminConfigCards/AdminViewConfigContracts.vue";
 import AdminViewConfigDiscounts from "../AdminComponents/AdminConfigComponents/AdminConfigCards/AdminViewConfigDiscounts.vue";
 import AdminViewConfigPayments from "../AdminComponents/AdminConfigComponents/AdminConfigCards/AdminViewConfigPayments.vue";
+import ButtonStandardWithIcon from "../../../SharedComponents/SharedComponentsUI/ButtonStandardWithIcon.vue";
 
 export default {
   data() {
     return {
-      loaded: false,
+      SVGs,
+      dialogModal: null,
+      newEmailField: null,
+      emailDeleteindex: undefined,
       photoFile: undefined,
-      fields: {
-        identity: {
-          businessName: undefined,
-          businessAddress: {
-            streetAddress1: undefined,
-            streetAddress2: undefined,
-            address2: undefined,
-          },
-          businessLogo: undefined,
-          businessPhoneNumber: undefined,
-          branding: {
-            backgroundColor: undefined,
-            foregroundColor: undefined,
-            cardOutline: undefined,
-            highlightColor: undefined,
-            textColor: undefined,
-          },
+      dialogModalData: {
+        deleteEmail: {
+          body: "Are you sure you want to delete? Emails received from at address will no longer be deliverable.",
+          confirmButton: this.confirmDeleteEmail,
+          cancelButton: this.cancelDeleteEmail,
+        },
+        changeBusinessName: {
+          body: "Changing your business name will also change your subdomain. Are you sure you want to change your business name?",
+          confirmButton: this.confirmChangeBusinessName,
+          cancelButton: this.cancelChangeBusinessName,
         },
       },
     };
@@ -271,56 +255,156 @@ export default {
       this.photoFile = files[0];
     },
     async saveChanges() {
-      this.$store.dispatch(
-        "adminConfigIdentitySetBusinessName",
-        this.fields.identity.businessName
-      );
-      this.$store.dispatch(
-        "adminConfigIdentitySetBusinessAddress",
-        this.fields.identity.businessAddress
-      );
-      this.$store.dispatch(
-        "adminConfigIdentitySetBusinessPhoneNumber",
-        this.fields.identity.businessPhoneNumber
-      );
       if (this.photoFile) {
-        await this.$store.dispatch("addPhoto", this.photoFile).then((res) => {
-          this.$store.dispatch("adminConfigIdentitySetBusinessLogo", res);
+        await this.$store.dispatch("addPhoto").then((res) => {
+          this.$store.commit("adminConfigIdentitySetBusinessLogo", res);
         });
       }
       this.$store.dispatch("updateBusinessSettings");
     },
+    addEmail() {
+      this.emailAddresses.push(
+        `${this.newEmailField}@${this.subdomain}.spindj.io`
+      );
+      this.newEmailField = null;
+    },
+    closeDialogModal() {
+      this.dialogModal = null;
+    },
+    startDeleteEmail(index) {
+      this.dialogModal = "deleteEmail";
+      this.emailDeleteindex = index;
+    },
+    confirmDeleteEmail(index) {
+      this.identity.emailAddresses.splice(index, 1);
+      this.closeDialogModal();
+    },
+    cancelDeleteEmail() {
+      this.closeDialogModal();
+      this.emailDeleteindex = undefined;
+    },
   },
   computed: {
-    identity() {
-      if (this.$store.state.businessSettings.identity) {
-        return this.$store.state.businessSettings.identity;
-      } else {
-        return null;
-      }
+    subdomain() {
+      return this.$store.state.businessSettings.identity.businessName
+        .replaceAll(" ", "")
+        .toLowerCase();
     },
-    branding() {
-      if (this.$store.state.branding) {
-        return this.$store.state.businessSettings.identity.branding;
-      } else {
-        return {
-          branding: {
-            backgroundColor: "#F0F0F0",
-            foregroundColor: "#FFFFFF",
-            cardOutline: "#DDDDDD",
-            highlightColor: "#00F5FF",
-            textColor: "#000000",
-          },
-        };
-      }
+    backgroundColor: {
+      get() {
+        return this.$store.state.businessSettings.identity.branding
+          .backgroundColor;
+      },
+      set(value) {
+        return this.$store.commit(
+          "adminConfigIdentitySetBackgroundColor",
+          value
+        );
+      },
+    },
+    foregroundColor: {
+      get() {
+        return this.$store.state.businessSettings.identity.branding
+          .foregroundColor;
+      },
+      set(value) {
+        return this.$store.commit(
+          "adminConfigIdentitySetForegroundColor",
+          value
+        );
+      },
+    },
+    cardOutline: {
+      get() {
+        return this.$store.state.businessSettings.identity.branding.cardOutline;
+      },
+      set(value) {
+        return this.$store.commit("adminConfigIdentitySetCardOutline", value);
+      },
+    },
+    highlightColor: {
+      get() {
+        return this.$store.state.businessSettings.identity.branding
+          .highlightColor;
+      },
+      set(value) {
+        return this.$store.commit(
+          "adminConfigIdentitySetHightlightColor",
+          value
+        );
+      },
+    },
+    textColor: {
+      get() {
+        return this.$store.state.businessSettings.identity.branding.textColor;
+      },
+      set(value) {
+        return this.$store.commit("adminConfigIdentitySetTextColor", value);
+      },
+    },
+    businessName: {
+      get() {
+        return this.$store.state.businessSettings.identity.businessName;
+      },
+      set(value) {
+        return this.$store.commit("adminConfigIdentitySetBusinessName", value);
+      },
+    },
+    businessPhoneNumber: {
+      get() {
+        return this.$store.state.businessSettings.identity.businessPhoneNumber;
+      },
+      set(value) {
+        return this.$store.commit(
+          "adminConfigIdentitySetBusinessPhoneNumber",
+          value
+        );
+      },
+    },
+    streetAddress1: {
+      get() {
+        return this.$store.state.businessSettings.identity.businessAddress
+          .streetAddress1;
+      },
+      set(value) {
+        return this.$store.commit(
+          "adminConfigIdentitySetBusinessAddress1",
+          value
+        );
+      },
+    },
+    streetAddress2: {
+      get() {
+        return this.$store.state.businessSettings.identity.businessAddress
+          .streetAddress2;
+      },
+      set(value) {
+        return this.$store.commit(
+          "adminConfigIdentitySetBusinessAddress2",
+          value
+        );
+      },
+    },
+    cityStateZip: {
+      get() {
+        return this.$store.state.businessSettings.identity.businessAddress
+          .cityStateZip;
+      },
+      set(value) {
+        return this.$store.commit(
+          "adminConfigIdentitySetBusinessCityStateZip",
+          value
+        );
+      },
+    },
+    emailAddresses() {
+      return this.$store.state.businessSettings.identity.emailAddresses;
     },
     businessSettings() {
       if (Object.keys(this.$store.state.businessSettings).length > 0) {
-        console.log("there are settings here, line 270 admin config");
         console.log(this.$store.state.businessSettings);
         return this.$store.state.businessSettings;
       } else {
-        console.log("this is wrong, line 272 in admin config");
         return {
           identity: {
             branding: {
@@ -365,22 +449,9 @@ export default {
       }
     },
   },
-  async created() {
-    // await this.$store.dispatch("setBusinessSettings");
-    this.fields.identity.businessName = this.identity.businessName;
-    this.fields.identity.businessAddress.streetAddress1 =
-      this.identity.businessAddress.streetAddress1;
-    this.fields.identity.businessAddress.streetAddress2 =
-      this.identity.businessAddress.streetAddress2;
-    this.fields.identity.businessAddress.address2 =
-      this.identity.businessAddress.address2;
-    this.fields.identity.businessPhoneNumber =
-      this.identity.businessPhoneNumber;
-    console.log(this.fields);
-    this.loaded = true;
-  },
   components: {
     BaseNavigationCard,
+    TwoButtonDialogModal,
     AdminViewConfigNavigationItems,
     AdminViewConfigPackages,
     AdminViewConfigServices,
@@ -390,6 +461,7 @@ export default {
     AdminViewConfigContracts,
     AdminViewConfigAutomations,
     AdminViewConfigPayments,
+    ButtonStandardWithIcon,
   },
 };
 </script>
@@ -485,6 +557,34 @@ For Identity Card
 
 :disabled {
   opacity: 0.5;
+}
+.row-flex {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.input-prefix,
+.input-suffix {
+  height: 15px;
+  padding: 4px;
+  outline: none;
+  border: 1px solid var(--textColor);
+}
+
+.input-prefix {
+  border-right: none;
+  border-radius: 5px 0px 0px 5px;
+}
+.input-suffix {
+  background-color: var(--backgroundColor);
+  border-left: none;
+  border-radius: 0px 5px 5px 0px;
+}
+
+img {
+  margin: 5px;
+  height: 10px;
 }
 
 /* End Identity Card */
