@@ -247,7 +247,7 @@ svg {
 }
 
 #box-one {
-  height: 30%;
+  /* height: 30%; */
 }
 #box-two {
   height: 30%;

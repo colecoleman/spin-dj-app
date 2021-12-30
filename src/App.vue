@@ -15,7 +15,6 @@ import { Auth } from "aws-amplify";
 import axios from "axios";
 // import { components } from "aws-amplify-vue";
 // import { Hub } from "aws-amplify";
-import EventManager from "./views/AdminViews/AdminViewDashboard/EventManager.vue";
 import StatusIndicator from "./SharedComponents/SharedComponentsUI/StatusIndicator.vue";
 import ButtonStandardWithIcon from "./SharedComponents/SharedComponentsUI/ButtonStandardWithIcon.vue";
 
@@ -55,12 +54,11 @@ export default {
     },
   },
   components: {
-    EventManager,
     StatusIndicator,
     ButtonStandardWithIcon,
   },
 
-  async mounted() {
+  async created() {
     let user;
 
     await Auth.currentAuthenticatedUser()
@@ -73,8 +71,11 @@ export default {
     if (user) {
       await this.$store.dispatch("setUser", user);
     }
+    this.$store.dispatch("setBusinessSettings").then((res) => {
+      console.log(res);
+    });
     console.log(this.$store.state.businessSettings);
-    if (this.$store.state.branding) {
+    if (this.$store.state.businessSettings.identity.businessName) {
       document.title = this.$store.state.businessSettings.identity.businessName;
     } else {
       document.title = "Spin";

@@ -67,15 +67,22 @@ export default {
 
 <style scoped>
 #wrapper {
+  /* height: 100%; */
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  justify-content: center;
+  justify-items: center;
+  align-content: center;
+  align-items: center;
 }
 
 img {
   width: 60px;
   height: 60px;
-  padding: 10px 10px 10px 0;
+  border-radius: 50%;
+  /* padding: 10px 10px 10px 0px; */
+  margin-right: 10px;
   object-fit: cover;
 }
 
@@ -85,6 +92,7 @@ img {
 }
 
 #contact-card-upper-div {
+  margin: 10px;
   position: relative;
   display: flex;
   flex-direction: row;
