@@ -16,7 +16,6 @@
       <div class="config-section" id="identity">
         <base-card>
           <template v-slot:title>Identity</template>
-
           <template v-slot:content>
             <div id="wrapper">
               <div class="branding-colors">
@@ -153,6 +152,71 @@
                       />
                     </div>
                   </div>
+                  <div class="business-information-item">
+                    <p class="bold">Subdomain:</p>
+                    <div class="subdomain-list">
+                      <div
+                        class="row-flex"
+                        v-for="(subdomain, index) in this.$store.state
+                          .businessSettings.identity.subdomain"
+                        :key="index"
+                      >
+                        <img
+                          :src="SVGs.XIconSVG"
+                          alt=""
+                          @click="initiateDeleteSubdomain(index, subdomain)"
+                        />
+                        <p>
+                          {{ subdomain }}
+                        </p>
+                      </div>
+                    </div>
+                    <div
+                      class="row-flex"
+                      v-if="
+                        this.$store.state.businessSettings.identity.subdomain
+                          .length < 3
+                      "
+                    >
+                      <input
+                        class="input-prefix"
+                        type="text"
+                        placeholder="Start Typing..."
+                        v-model="subdomainField"
+                      />
+                      <p class="input-suffix">.spindj.io</p>
+                      <img
+                        :src="SVGs.CircleCheckmarkSVG"
+                        alt=""
+                        @click="
+                          subdomainAvailable ? addSubdomain() : checkSubdomain()
+                        "
+                      />
+                    </div>
+                    <p
+                      class="context"
+                      v-if="
+                        this.$store.state.businessSettings.identity.subdomain
+                          .length >= 3
+                      "
+                    >
+                      You've reached the maximum limit of 3 subdomains. Please
+                      delete one to add another.
+                    </p>
+                    <p class="context" v-if="checkingSubdomain">Checking...</p>
+                    <p class="context" v-if="subdomainUnavailable">
+                      Subdomain Unavailable. Try choosing another!
+                    </p>
+                    <p class="context" v-if="subdomainAvailable">
+                      Subdomain Available! Click again to confirm.
+                    </p>
+                    <p class="context" v-if="subdomainAvailable">
+                      Note: Changing your subdomain will change links to your
+                      portal and your email domains. Please be sure to alert
+                      clients, and change login links on your website to retain
+                      consistent branding.
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
@@ -196,7 +260,9 @@
       </div>
 
       <div class="config-section" id="payments">
-        <admin-view-config-payments />
+        <admin-view-config-payments
+          :DBpaymentInformation="businessSettings.payments"
+        />
       </div>
     </div>
     <button-standard-with-icon
@@ -231,18 +297,11 @@ export default {
       newEmailField: null,
       emailDeleteindex: undefined,
       photoFile: undefined,
-      dialogModalData: {
-        deleteEmail: {
-          body: "Are you sure you want to delete? Emails received from at address will no longer be deliverable.",
-          confirmButton: this.confirmDeleteEmail,
-          cancelButton: this.cancelDeleteEmail,
-        },
-        changeBusinessName: {
-          body: "Changing your business name will also change your subdomain. Are you sure you want to change your business name?",
-          confirmButton: this.confirmChangeBusinessName,
-          cancelButton: this.cancelChangeBusinessName,
-        },
-      },
+      subdomainField: undefined,
+      checkingSubdomain: false,
+      subdomainAvailable: false,
+      subdomainUnavailable: false,
+      subdomainToDelete: null,
     };
   },
   methods: {
@@ -283,8 +342,70 @@ export default {
       this.closeDialogModal();
       this.emailDeleteindex = undefined;
     },
+    cancelDeleteSubdomain() {
+      this.closeDialogModal();
+      this.subdomainToDelete = undefined;
+    },
+    checkSubdomain() {
+      this.checkingSubdomain = true;
+      this.$store
+        .dispatch("checkSubdomain", this.subdomainField)
+        .then((res) => {
+          this.checkingSubdomain = false;
+          if (res.data === "available") {
+            this.subdomainAvailable = true;
+            this.subdomainUnavailable = false;
+          } else {
+            this.subdomainAvailable = false;
+            this.subdomainUnavailable = true;
+          }
+        })
+        .catch((err) => {
+          this.checkingSubdomain = false;
+          console.log(err);
+        });
+    },
+    addSubdomain() {
+      if (this.subdomainAvailable === true) {
+        this.$store
+          .dispatch("addSubdomain", this.subdomainField)
+          .then(() => {
+            this.subdomainField = null;
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
+    },
+    initiateDeleteSubdomain(index, subdomain) {
+      this.subdomainToDelete = { index: index, subdomain: subdomain };
+      this.dialogModal = "deleteSubdomain";
+    },
+    confirmDeleteSubdomain() {
+      this.$store.dispatch("deleteSubdomain", this.subdomainToDelete.index);
+      this.closeDialogModal();
+    },
   },
   computed: {
+    dialogModalData() {
+      return {
+        deleteEmail: {
+          body: "Are you sure you want to delete? Emails received from at address will no longer be deliverable.",
+          confirmButton: this.confirmDeleteEmail,
+          cancelButton: this.cancelDeleteEmail,
+        },
+        changeBusinessName: {
+          body: "Changing your business name will also change your subdomain. Are you sure you want to change your business name?",
+          confirmButton: this.confirmChangeBusinessName,
+          cancelButton: this.cancelChangeBusinessName,
+        },
+        deleteSubdomain: {
+          body: `Are you sure you want to delete the "${this.subdomainToDelete.subdomain}" subdomain?`,
+          confirmButton: this.confirmDeleteSubdomain,
+          cancelButton: this.cancelDeleteSubdomain,
+        },
+      };
+    },
     subdomain() {
       return this.$store.state.businessSettings.identity.businessName
         .replaceAll(" ", "")
@@ -400,6 +521,16 @@ export default {
     emailAddresses() {
       return this.$store.state.businessSettings.identity.emailAddresses;
     },
+    subdomainNameToDelete() {
+      console.log(this.subdomainToDelete);
+      console.log("jeu");
+      // if (this.subdomainToDelete) {
+      //   return this.subdomainToDelete.subdomain;
+      // } else {
+      //   return "";
+      // }
+      return "o";
+    },
     businessSettings() {
       if (Object.keys(this.$store.state.businessSettings).length > 0) {
         console.log(this.$store.state.businessSettings);
@@ -462,6 +593,11 @@ export default {
     AdminViewConfigAutomations,
     AdminViewConfigPayments,
     ButtonStandardWithIcon,
+  },
+  watch: {
+    subdomainField() {
+      this.subdomainAvailable = false;
+    },
   },
 };
 </script>
@@ -555,6 +691,12 @@ For Identity Card
   margin-top: 20px;
 }
 
+.context {
+  margin: 2px;
+  text-align: right;
+  font-style: italic;
+}
+
 :disabled {
   opacity: 0.5;
 }
@@ -562,6 +704,10 @@ For Identity Card
   display: flex;
   flex-direction: row;
   align-items: center;
+}
+
+.subdomain-list p {
+  margin: 2px;
 }
 
 .input-prefix,
