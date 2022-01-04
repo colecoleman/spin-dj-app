@@ -46,7 +46,11 @@
         <div class="invoice-item">
           <h5>Final Payment Due:</h5>
           <p>
-            TODO
+            <span>{{
+              formattedDate(
+                finalDueDate(event.data, this.$store.state.businessSettings)
+              )
+            }}</span>
             <!-- <span>{{ formattedDate(invoice.data.finalPaymentDue) }}</span> -->
           </p>
         </div>
@@ -158,6 +162,7 @@ export default {
     subtotal: helpers.subtotal,
     total: helpers.total,
     balanceOutstanding: helpers.balanceOutstanding,
+    finalDueDate: helpers.finalPaymentDueDate,
   },
   created() {
     console.log(this.event);

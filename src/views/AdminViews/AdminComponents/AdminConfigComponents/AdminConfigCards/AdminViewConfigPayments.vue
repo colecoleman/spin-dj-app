@@ -1,10 +1,31 @@
 <template>
-  <base-card>
+  <base-card v-if="loaded">
     <template v-slot:title>Payments</template>
     <template v-slot:content>
       <div class="payments-wrapper">
         <div class="payments-item">
+          <h4>Deposit:</h4>
+          <p>Deposit required to reserve services:</p>
+          <input type="number" v-model="depositAmount" />
+        </div>
+        <div class="payments-item">
+          <h4>Final Payment Due:</h4>
+          <p>Increment:</p>
+          <input type="number" v-model="finalPaymentIncrement" />
+          <p>Increment Type: (prior to event date)</p>
+          <select v-model="finalPaymentType">
+            <option value="days">Days</option>
+            <option value="weeks">Weeks</option>
+            <option value="months">Months</option>
+          </select>
+        </div>
+        <div class="payments-item">
           <h4>Credit Card</h4>
+          <p>Enable Credit Card Payments?</p>
+          <select v-model="creditCardEnabled">
+            <option value="true">Yes</option>
+            <option value="false">No</option>
+          </select>
           <p>Select preferred credit card processor (Stripe is default):</p>
           <select name="creditcard" id="">
             <option value="stripe">Stripe</option>
@@ -28,7 +49,7 @@
         <div class="payments-item">
           <h4>Check</h4>
           <p>Allow clients to pay by check?</p>
-          <select name="check" id="" v-model="check.enabled">
+          <select name="check" id="" v-model="checkEnabled">
             <option value="true">Yes</option>
             <option value="false">No</option>
           </select>
@@ -38,20 +59,20 @@
             id=""
             cols="30"
             rows="10"
-            v-model="check.instructions"
+            v-model="checkInstructions"
           ></textarea>
         </div>
         <div class="payments-item">
           <h4>Give clients another way to pay:</h4>
           <p>Custom Payment Name:</p>
-          <input type="text" v-model="custom.name" />
+          <input type="text" v-model="customName" />
           <p>Custom Payment Description:</p>
           <textarea
             name=""
             id=""
             cols="30"
             rows="10"
-            v-model="custom.instructions"
+            v-model="customInstructions"
           ></textarea>
         </div>
       </div>
@@ -66,23 +87,16 @@ export default {
   data() {
     return {
       SVGs,
-      creditCard: {
-        enabled: false,
-        Stripe: {},
-        QuickBooks: {},
-        Square: {},
-      },
-      p2p: {
-        PayPal: {},
-        Venmo: {},
-      },
-      check: {},
-      custom: {},
+      loaded: false,
     };
   },
   computed: {
-    paymentSettings() {
-      return this.$store.state.businessSettings.payments;
+    paymentSettings: {
+      get(val) {
+        console.log(val);
+        console.log(this.$store.state.businessSettings.payments);
+        return this.$store.state.businessSettings.payments;
+      },
     },
     stripeHealthy() {
       if (!this.$store.state.businessSettings.payments.creditCard.Stripe.id) {
@@ -91,14 +105,126 @@ export default {
         return this.checkStripeAccountStatus();
       }
     },
-  },
-  created() {
-    console.log(this.$store.state.businessSettings.payments.creditCard);
+    depositAmount: {
+      get() {
+        if (this.paymentSettings.depositAmount) {
+          return this.paymentSettings.depositAmount;
+        } else {
+          return 0;
+        }
+      },
+      set(val) {
+        return this.$store.commit("adminConfigPaymentsSetDepositAmount", val);
+      },
+    },
+
+    finalPaymentIncrement: {
+      get() {
+        if (this.paymentSettings.finalPayment) {
+          return this.paymentSettings.finalPayment.increment;
+        } else {
+          return 0;
+        }
+      },
+      set(val) {
+        return this.$store.commit(
+          "adminConfigPaymentsSetFinalPaymentIncrement",
+          val
+        );
+      },
+    },
+
+    finalPaymentType: {
+      get() {
+        if (this.paymentSettings.finalPayment) {
+          return this.paymentSettings.finalPayment.type;
+        } else {
+          return "weeks";
+        }
+      },
+      set(val) {
+        return this.$store.commit(
+          "adminConfigPaymentsSetFinalPaymentType",
+          val
+        );
+      },
+    },
+
+    creditCardEnabled: {
+      get() {
+        if (this.paymentSettings.creditCard.enabled) {
+          return this.paymentSettings.creditCard.enabled;
+        } else {
+          return false;
+        }
+      },
+      set(val) {
+        return this.$store.commit(
+          "adminConfigPaymentsSetCreditCardEnabled",
+          val
+        );
+      },
+    },
+
+    checkEnabled: {
+      get() {
+        if (this.paymentSettings.check.enabled) {
+          return this.paymentSettings.check.enabled;
+        } else {
+          return false;
+        }
+      },
+      set(val) {
+        return this.$store.commit("adminConfigPaymentsSetCheckEnabled", val);
+      },
+    },
+
+    checkInstructions: {
+      get() {
+        if (this.paymentSettings.check.instructions) {
+          return this.paymentSettings.check.instructions;
+        } else {
+          return "";
+        }
+      },
+      set(val) {
+        return this.$store.commit(
+          "adminConfigPaymentsSetCheckInstructions",
+          val
+        );
+      },
+    },
+    customName: {
+      get() {
+        if (this.paymentSettings.custom.name) {
+          return this.paymentSettings.custom.name;
+        } else {
+          return "";
+        }
+      },
+      set(val) {
+        return this.$store.commit("adminConfigPaymentsSetCustomName", val);
+      },
+    },
+    customInstructions: {
+      get() {
+        if (this.paymentSettings.custom.instructions) {
+          return this.paymentSettings.custom.instructions;
+        } else {
+          return "";
+        }
+      },
+      set(val) {
+        return this.$store.commit(
+          "adminConfigPaymentsSetCustomInstructions",
+          val
+        );
+      },
+    },
   },
   methods: {
     async checkStripeAccountStatus() {
       this.$store.dispatch("stripeCheckAccount").then((res) => {
-        console.log(res);
         if (res.charges_enabled) {
           return true;
         } else {
@@ -108,24 +234,30 @@ export default {
     },
     async createStripeAccountLink() {
       let stripeId;
-      if (this.$store.state.businessSettings.payments.creditCard.Stripe.id) {
-        stripeId =
-          this.$store.state.businessSettings.payments.creditCard.Stripe.id;
+      if (this.paymentSettings.creditCard.Stripe.id) {
+        stripeId = this.paymentSettings.creditCard.Stripe.id;
       }
       this.$store
         .dispatch("stripeCreateAccount", stripeId)
         .then(async (res) => {
-          console.log(res);
-          this.$store.state.businessSettings.payments.creditCard.Stripe = {
+          this.paymentSettings.creditCard.Stripe = {
             id: res.data.id.id,
           };
-          console.log(this.$store.state.businessSettings);
           this.$store.dispatch("updateBusinessSettings").then(() => {
             window.location.href = res.data.url;
           });
-          // console.log(res);
         });
     },
+  },
+  created() {
+    if (!this.paymentSettings.finalPayment) {
+      this.$store.state.businessSettings.payments.finalPayment = {
+        increment: null,
+        type: null,
+      };
+      console.log(this.paymentSettings);
+    }
+    this.loaded = true;
   },
   props: ["DBpaymentInformation"],
 };

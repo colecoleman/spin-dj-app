@@ -29,7 +29,6 @@ export default {
     };
   },
   methods: {},
-  created() {},
   components: {},
   props: ["alerts"],
 };

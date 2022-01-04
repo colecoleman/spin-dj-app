@@ -1,11 +1,10 @@
 <template>
-  <popup-email-composition
-    v-if="emailPopupOpen"
-    :contact="contact"
-    @close-window="closePopups()"
-  ></popup-email-composition>
-
-  <div id="section-wrapper">
+  <div id="section-wrapper" v-if="contact">
+    <popup-email-composition
+      v-if="emailPopupOpen"
+      :contact="contact"
+      @close-window="closePopups()"
+    ></popup-email-composition>
     <div id="left-column">
       <div id="box-one">
         <contact-card-client
