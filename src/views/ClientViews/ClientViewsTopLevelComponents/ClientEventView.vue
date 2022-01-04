@@ -85,6 +85,7 @@ import FourButtonBarWithDropDown from "../../../SharedComponents/SharedComponent
 // import TwoButtonDialogModal from "../../../SharedComponents/SharedComponentsUI/TwoButtonDialogModal.vue";
 import EventPageAlerts from "../../../SharedComponents/SharedComponentsEvents/EventPageAlerts.vue";
 import SVGs from "../../../assets/SVGs/svgIndex.js";
+import helpers from "../../../helpers.js";
 
 export default {
   data() {
@@ -132,12 +133,28 @@ export default {
     client() {
       return this.clients[0];
     },
+    finalPaymentDueDate: helpers.finalPaymentDueDate,
+    balanceOutstanding: helpers.balanceOutstanding,
     eventAlerts() {
       let alerts = [];
-      if (this.event.contracts.some((e) => e.status === "signed")) {
+      if (this.event.contracts.some((e) => e.status !== "signed")) {
         alerts.push({
           urgency: "high",
           text: "Unsigned Contracts",
+        });
+      }
+      let today = new Date();
+      if (
+        today >
+          this.finalPaymentDueDate(
+            this.event.data,
+            this.$store.state.businessSettings
+          ) &&
+        this.balanceOutstanding(this.event.invoice, this.event.data) > 0
+      ) {
+        alerts.push({
+          urgency: "high",
+          text: "Remaining Balance Due",
         });
       }
       return alerts;
