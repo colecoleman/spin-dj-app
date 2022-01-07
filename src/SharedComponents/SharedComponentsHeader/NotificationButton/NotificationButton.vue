@@ -3,8 +3,11 @@
     <img :src="SVGs.NotificationBellSVG" alt="" @click="toggleClick()" />
     <transition name="fade1">
       <div id="notification-button-popup-container">
-        <base-card v-if="isClicked" :icon="SVGs.NotificationBellSVG">
-          <template v-slot:title>Notifications</template>
+        <base-card
+          v-if="isClicked"
+          :icon="SVGs.NotificationBellSVG"
+          title="Notifications"
+        >
           <template v-slot:action1>
             <img
               :src="SVGs.XIconSVG"

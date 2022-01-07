@@ -1,7 +1,5 @@
 <template>
   <div id="specific-event-page-location-scroll-item-wrapper">
-    <h4>{{ location.name }}</h4>
-
     <div
       :class="loading ? 'loading-background map-box' : 'map-box'"
       id="map"

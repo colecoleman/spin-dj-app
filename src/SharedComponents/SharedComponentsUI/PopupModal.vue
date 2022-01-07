@@ -18,8 +18,11 @@
 
   <div class="popup-modal">
     <div class="window">
-      <base-card :actionIcon="XIconSvg" @action-one-clicked="closePopup()">
-        <template v-slot:title>{{ title }}</template>
+      <base-card
+        :actionIcon="XIconSvg"
+        @action-one-clicked="closePopup()"
+        :title="title"
+      >
         <template v-slot:content><slot name="window"></slot></template>
       </base-card>
     </div>

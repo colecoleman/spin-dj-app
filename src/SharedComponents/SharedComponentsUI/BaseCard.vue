@@ -3,9 +3,15 @@
     <div id="heading">
       <img v-if="icon" :src="icon" alt="" />
       <slot name="icon"></slot>
-      <h3>
-        <slot name="title"></slot>
-      </h3>
+      <div class="title">
+        <h3>
+          <slot name="title"></slot>
+          {{ title }}
+        </h3>
+        <h5 v-if="subtitle">
+          {{ subtitle }}
+        </h5>
+      </div>
       <div class="right-top">
         <h4 @click="actionOneClicked()">
           <slot name="action1"></slot>
@@ -19,18 +25,16 @@
         />
       </div>
     </div>
+
     <div id="content">
       <slot name="content"></slot>
     </div>
   </div>
 </template>
 
-
-
-
 <script>
 export default {
-  props: ["icon", "actionIcon", "loading"],
+  props: ["icon", "actionIcon", "loading", "title", "subtitle"],
   methods: {
     actionOneClicked() {
       this.$emit("actionOneClicked");
@@ -68,11 +72,11 @@ export default {
   margin: 10px;
 }
 img {
-  width: 12px;
-  height: 12px;
+  margin-top: 2px;
+  width: 13px;
+  height: 13px;
 }
 #content {
-  /* padding: 0 10px 0 10px; */
   height: 90%;
   display: inherit;
 }
@@ -81,7 +85,7 @@ img {
   width: 100%;
   display: flex;
   flex-direction: row;
-  align-items: center;
+  align-items: flex-start;
   text-transform: uppercase;
   margin-bottom: 10px;
 }
@@ -90,6 +94,20 @@ h3,
 h4 {
   font-size: 11pt;
   margin: 0 0 0 10px;
+  text-align: left;
+}
+.heading {
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+}
+
+h5 {
+  border-top: 1px solid var(--textColor);
+  font-size: 9pt;
+  text-align: left;
+  margin: 0 0 0 10px;
+  font-weight: 400;
 }
 
 .right-top {

@@ -2,8 +2,8 @@
   <base-card
     :actionIcon="SVGs.XIconSVG"
     @action-one-clicked="eventAssignmentToggle()"
+    title="Assign To Events"
   >
-    <template v-slot:title>Assign To Events</template>
     <template v-slot:action1>Cancel</template>
     <template v-slot:content>
       <div class="events-content">

@@ -1,6 +1,9 @@
 <template>
-  <base-card :actionIcon="xIcon" @action-one-clicked="closeSingleDayView">
-    <template v-slot:title>{{ displayableDate }}</template>
+  <base-card
+    :actionIcon="xIcon"
+    @action-one-clicked="closeSingleDayView"
+    :title="displayableDate"
+  >
     <template v-slot:content>
       <div id="single-day-scroll-container">
         <single-day-view-item

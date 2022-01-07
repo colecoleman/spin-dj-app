@@ -1,6 +1,5 @@
 <template>
-  <base-card :icon="SVGs.GroupPeopleSVG">
-    <template v-slot:title>Event Contacts</template>
+  <base-card :icon="SVGs.GroupPeopleSVG" title="Event Contacts">
     <template v-slot:content>
       <div id="contact-carousel-top-wrapper">
         <img

@@ -1,7 +1,6 @@
 <template>
   <div id="sidebar-wrapper">
-    <base-card>
-      <template v-slot:title>Summary</template>
+    <base-card title="Summary">
       <template v-slot:content>
         <div class="summary-inner-wrapper" v-if="event">
           <div class="column-flex">

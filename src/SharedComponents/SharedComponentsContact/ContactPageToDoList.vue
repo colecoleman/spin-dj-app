@@ -1,6 +1,9 @@
 <template>
-  <base-card :icon="SVGs.ClipboardSVG" :loading="contact ? false : true">
-    <template v-slot:title>To-Do</template>
+  <base-card
+    :icon="SVGs.ClipboardSVG"
+    title="To-Do"
+    :loading="contact ? false : true"
+  >
     <template v-slot:content>
       <div id="wrapper" v-if="contact">
         <div class="to-do-item" v-if="newToDoOpened">

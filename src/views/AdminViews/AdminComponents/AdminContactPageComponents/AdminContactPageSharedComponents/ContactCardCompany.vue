@@ -3,11 +3,9 @@
     :icon="icon"
     :actionIcon="editPen"
     :loading="contact ? false : true"
+    :title="contact ? contact.businessName : 'Contact'"
     @action-one-clicked="toggleEditCard()"
   >
-    <template v-slot:title>{{
-      contact ? contact.businessName : "Contact"
-    }}</template>
     <template v-slot:dropdownContainer>
       <contact-information-edit-company
         v-if="editCardOpen"

@@ -1,6 +1,5 @@
 <template>
-  <base-card>
-    <template v-slot:title>Automations</template>
+  <base-card title="Automations">
     <template v-slot:content>
       <div class="discounts-wrapper">
         <div class="discounts-section">
@@ -449,8 +448,6 @@ section {
 .information-hover-container > img {
   width: 14px;
 }
-
-
 
 :disabled {
   opacity: 0.5;

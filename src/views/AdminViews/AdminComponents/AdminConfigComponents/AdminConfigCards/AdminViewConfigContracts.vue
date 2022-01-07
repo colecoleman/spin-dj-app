@@ -1,6 +1,5 @@
 <template>
-  <base-card>
-    <template v-slot:title>Contracts</template>
+  <base-card title="Contracts">
     <template v-slot:content>
       <div class="contracts-wrapper">
         <div class="contracts-section">
@@ -220,6 +219,4 @@ section {
   width: 10px;
   margin: 0px 5px;
 }
-
-
 </style>

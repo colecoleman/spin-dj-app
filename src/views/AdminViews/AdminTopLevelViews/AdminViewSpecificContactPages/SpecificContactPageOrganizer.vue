@@ -51,8 +51,7 @@
           ></automation-list>
         </div>
         <div id="box-six-half-two">
-          <base-card :icon="SVGs.MessageBubbleSVG">
-            <template v-slot:title>Messages</template>
+          <base-card :icon="SVGs.MessageBubbleSVG" title="Messages">
             <template v-slot:content>
               <messaging-single-component
                 v-if="contact"

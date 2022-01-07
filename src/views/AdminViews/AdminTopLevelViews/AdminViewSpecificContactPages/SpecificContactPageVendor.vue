@@ -21,8 +21,7 @@
         ></contact-card-company>
       </div>
       <div id="box-three">
-        <base-card :icon="SVGs.MessageBubbleSVG">
-          <template v-slot:title>Messages</template>
+        <base-card :icon="SVGs.MessageBubbleSVG" title="Messages">
           <template v-slot:content v-if="contact">
             <messaging-single-component
               v-if="contact"

@@ -4,8 +4,8 @@
     :actionIcon="SVGs.SortAlphaSVG"
     @action-one-clicked="sortMenuOpened = !sortMenuOpened"
     :loading="events ? false : true"
+    title="Events"
   >
-    <template v-slot:title>Events</template>
     <template v-slot:action1
       >Sort:
       <floating-menu-with-list-items

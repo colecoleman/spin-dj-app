@@ -14,8 +14,7 @@
     ></two-button-dialog-modal>
     <div id="body">
       <div class="config-section" id="identity">
-        <base-card>
-          <template v-slot:title>Identity</template>
+        <base-card title="Identity">
           <template v-slot:content>
             <div id="wrapper">
               <div class="branding-colors">

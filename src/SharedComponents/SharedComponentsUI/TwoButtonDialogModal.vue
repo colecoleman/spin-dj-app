@@ -2,8 +2,11 @@
   <div class="wrapper">
     <backdrop @click="closeModal()"></backdrop>
     <div class="modal">
-      <base-card :actionIcon="XIcon" @action-one-clicked="closeModal()">
-        <template v-slot:title>Are you sure?</template>
+      <base-card
+        :actionIcon="XIcon"
+        title="Are you sure?"
+        @action-one-clicked="closeModal()"
+      >
         <template v-slot:content>
           <h5>
             {{ modalBody }}

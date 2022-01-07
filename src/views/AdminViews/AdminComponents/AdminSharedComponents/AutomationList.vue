@@ -1,6 +1,5 @@
 <template>
-  <base-card :icon="SVGs.AutomationSVG">
-    <template v-slot:title>Automation</template>
+  <base-card :icon="SVGs.AutomationSVG" title="Automation">
     <template v-slot:content>
       <div id="list-wrapper">
         <automation-list-item

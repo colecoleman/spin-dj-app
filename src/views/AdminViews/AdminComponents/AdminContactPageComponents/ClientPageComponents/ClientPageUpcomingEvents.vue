@@ -1,7 +1,10 @@
 <template>
-  <base-card :icon="discsvg" :loading="events && contact ? false : true">
+  <base-card
+    :icon="discsvg"
+    :loading="events && contact ? false : true"
+    title="Events"
+  >
     <template v-slot:icon> </template>
-    <template v-slot:title>Events</template>
     <template v-slot:action1
       >Sort:
       <svg

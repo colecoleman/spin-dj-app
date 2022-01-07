@@ -2,11 +2,11 @@
   <base-card
     :icon="SVGs.DiscSVG"
     :actionIcon="eventAssignmentOpen ? SVGs.XIconSVG : SVGs.SortAlphaSVG"
+    :title="title"
     @action-one-clicked="
       eventAssignmentOpen ? eventAssignmentToggle() : toggleSortMenuOpened()
     "
   >
-    <template v-slot:title>{{ title }}</template>
     <template v-slot:action1
       >{{ eventAssignmentOpen ? "Cancel" : "Sort" }}
 

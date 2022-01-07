@@ -1,6 +1,5 @@
 <template>
-  <base-card>
-    <template v-slot:title>Identity</template>
+  <base-card title="Identity">
     <template v-slot:content>
       <div>
         <div class="branding-colors">
@@ -218,8 +217,6 @@ export default {
   align-self: left;
   justify-self: left;
 }
-
-
 
 :disabled {
   opacity: 0.5;

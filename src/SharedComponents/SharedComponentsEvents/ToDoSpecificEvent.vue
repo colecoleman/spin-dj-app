@@ -1,6 +1,5 @@
 <template>
-  <base-card :icon="SVGs.ClipboardSVG">
-    <template v-slot:title>To-Do</template>
+  <base-card :icon="SVGs.ClipboardSVG" title="To-Do">
     <template v-slot:content>
       <div id="wrapper">
         <div class="to-do-item" v-if="newToDoOpened">
@@ -131,21 +130,6 @@ export default {
     },
     completedToDos() {
       return this.toDos.filter((item) => item.completed);
-    },
-    watch: {
-      event: function () {
-        let payload = {
-          associatedEventId: this.event.userId,
-        };
-        this.$store.dispatch("getToDos", payload).then(
-          (res) => {
-            this.toDos = [...res.Items];
-          },
-          (error) => {
-            this.$store.commit("addStatus", { type: "error", note: error });
-          }
-        );
-      },
     },
   },
   created() {

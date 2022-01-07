@@ -1,6 +1,5 @@
 <template>
-  <base-card :icon="SVGs.InfoIconSvg">
-    <template v-slot:title>Event Details</template>
+  <base-card :icon="SVGs.InfoIconSvg" title="Event Details">
     <template v-slot:content>
       <h5 v-if="!prospect.eventDetails">No event found for this prospect.</h5>
       <div id="event-details-wrapper">

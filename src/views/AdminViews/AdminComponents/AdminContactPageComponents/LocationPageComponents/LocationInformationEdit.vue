@@ -1,7 +1,10 @@
 <template>
   <div class="edit-card-wrapper">
-    <base-card :actionIcon="XIconSVG" @action-one-clicked="closeEditCard()">
-      <template v-slot:title>Edit Contact</template>
+    <base-card
+      :actionIcon="XIconSVG"
+      @action-one-clicked="closeEditCard()"
+      title="Edit Contact"
+    >
       <template v-slot:action1></template>
       <template v-slot:content>
         <div class="edit-card-inner-wrapper">

@@ -164,11 +164,6 @@ export default {
     balanceOutstanding: helpers.balanceOutstanding,
     finalDueDate: helpers.finalPaymentDueDate,
   },
-  created() {
-    console.log(this.event);
-    console.log(this.client);
-    console.log(this.invoice);
-  },
   props: ["event", "client", "invoice"],
 };
 </script>

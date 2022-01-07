@@ -1,6 +1,5 @@
 <template>
-  <base-card>
-    <template v-slot:title>Services</template>
+  <base-card title="Services">
     <template v-slot:content>
       <div class="service-wrapper">
         <div class="service-section">
@@ -174,7 +173,6 @@ export default {
       if (this.photoFile) {
         await this.$store.dispatch("addPhoto", this.photoFile).then((res) => {
           this.input.photo = res;
-
         });
       }
       service.pricing.baseRate *= 100;
@@ -265,7 +263,6 @@ export default {
 .button-standard-with-icon {
   margin-top: 10px;
 }
-
 
 .x-icon {
   height: 10px;

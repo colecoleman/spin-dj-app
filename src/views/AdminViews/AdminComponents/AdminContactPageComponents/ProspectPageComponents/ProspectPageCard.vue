@@ -1,6 +1,5 @@
 <template>
-  <base-card :icon="icon" :actionIcon="SVGs.EditPenSVG">
-    <template v-slot:title>prospect</template>
+  <base-card :icon="icon" :actionIcon="SVGs.EditPenSVG" title="Prospect">
     <template v-slot:action1></template>
     <template v-slot:content>
       <div id="wrapper">

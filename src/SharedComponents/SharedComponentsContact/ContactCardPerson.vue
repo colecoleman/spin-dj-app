@@ -1,13 +1,13 @@
 <template>
   <base-card
     :icon="icon"
+    :title="
+      contact ? contact.given_name + ' ' + contact.family_name : 'Contact'
+    "
     :actionIcon="editPen"
     :loading="loading"
     @action-one-clicked="toggleEditCard"
   >
-    <template v-slot:title>{{
-      contact ? contact.given_name + " " + contact.family_name : "Contact"
-    }}</template>
     <template v-slot:dropdownContainer>
       <contact-information-edit
         v-if="editCardOpen"

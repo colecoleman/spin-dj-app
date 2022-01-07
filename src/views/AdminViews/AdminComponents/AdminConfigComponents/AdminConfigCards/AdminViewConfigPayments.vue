@@ -1,6 +1,5 @@
 <template>
-  <base-card v-if="loaded">
-    <template v-slot:title>Payments</template>
+  <base-card v-if="loaded" title="Payments">
     <template v-slot:content>
       <div class="payments-wrapper">
         <div class="payments-item">

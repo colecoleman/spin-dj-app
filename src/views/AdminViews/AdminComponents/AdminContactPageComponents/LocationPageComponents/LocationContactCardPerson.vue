@@ -1,6 +1,5 @@
 <template>
-  <base-card :icon="icon">
-    <template v-slot:title>Contact</template>
+  <base-card :icon="icon" title="Contact">
     <template v-slot:action1></template>
     <template v-slot:content>
       <div id="wrapper">
@@ -130,7 +129,6 @@ export default {
   created() {
     this.$store.dispatch("getAdminUsers");
   },
-
 };
 </script>
 

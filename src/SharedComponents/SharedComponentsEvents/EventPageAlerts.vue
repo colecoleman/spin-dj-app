@@ -1,6 +1,8 @@
 <template>
-  <base-card :icon="SVGs.NotificationBellSVG">
-    <template v-slot:title>Alerts</template>
+  <base-card
+    :icon="SVGs.NotificationBellSVG"
+    :title="`Alerts (${alerts.length})`"
+  >
     <template v-slot:content>
       <div class="scroll-container">
         <div v-for="(alert, index) in alerts" :key="index" class="alert-item">

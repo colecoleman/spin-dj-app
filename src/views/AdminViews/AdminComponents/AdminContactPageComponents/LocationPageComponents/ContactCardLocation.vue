@@ -3,8 +3,8 @@
     :icon="icon"
     :actionIcon="editPen"
     @action-one-clicked="toggleEditCard()"
+    title="Location"
   >
-    <template v-slot:title>Location</template>
     <template v-slot:dropdownContainer>
       <location-information-edit
         v-if="editCardOpen"

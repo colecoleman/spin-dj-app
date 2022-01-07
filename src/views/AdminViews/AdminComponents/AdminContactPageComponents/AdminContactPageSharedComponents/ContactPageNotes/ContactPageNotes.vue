@@ -1,6 +1,5 @@
 <template>
-  <base-card :icon="SVGs.FileOpenSVG">
-    <template v-slot:title>Notes</template>
+  <base-card :icon="SVGs.FileOpenSVG" title="Notes">
     <template v-slot:action1>
       <img
         :src="SVGs.PlusSignSVG"

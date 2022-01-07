@@ -1,6 +1,5 @@
 <template>
-  <base-card>
-    <template v-slot:title>Packages</template>
+  <base-card title="Packages">
     <template v-slot:content>
       <div class="package-wrapper" v-if="businessSettings">
         <div class="package-section">

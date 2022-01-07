@@ -1,6 +1,5 @@
 <template>
-  <base-card>
-    <template v-slot:title>Add-Ons</template>
+  <base-card title="Add-Ons">
     <template v-slot:content>
       <div class="add-on-wrapper">
         <div class="add-on-section">

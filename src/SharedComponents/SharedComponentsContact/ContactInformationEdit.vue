@@ -3,8 +3,8 @@
     <base-card
       :actionIcon="SVGs.XIconSVG"
       @action-one-clicked="closeEditCard()"
+      title="Edit Contact"
     >
-      <template v-slot:title>Edit Contact</template>
       <template v-slot:action1></template>
       <template v-slot:content>
         <div class="edit-card-inner-wrapper">

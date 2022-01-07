@@ -27,11 +27,16 @@
     <section>
       <div id="upper-div">
         <div id="upper-div-left-container">
-          <event-page-contact-card
-            v-if="client && event"
-            :client="client"
-            :event="event"
-          ></event-page-contact-card>
+          <div id="upper-div-left-container-1">
+            <event-page-contact-card
+              v-if="client && event"
+              :client="client"
+              :event="event"
+            ></event-page-contact-card>
+          </div>
+          <div id="upper-div-left-container-2">
+            <event-page-alerts :alerts="eventAlerts"></event-page-alerts>
+          </div>
         </div>
         <div id="upper-div-right-container">
           <div id="upper-div-right-upper-container">
@@ -43,12 +48,15 @@
           <div id="upper-div-right-lower-container">
             <div id="upper-div-right-lower-container-box-1">
               <specific-event-page-location-scroller
-                :locations="locations"
+                :event="event"
                 :loading="locations ? false : true"
               ></specific-event-page-location-scroller>
             </div>
             <div id="upper-div-right-lower-container-box-2">
-              <event-page-alerts :alerts="eventAlerts"></event-page-alerts>
+              <event-make-payment-card
+                :event="event"
+                :eventId="eventId"
+              ></event-make-payment-card>
             </div>
           </div>
         </div>
@@ -76,13 +84,12 @@ import RecentMessagesEvent from "../../../SharedComponents/SharedComponentsMessa
 import EventPageContactCard from "../../../SharedComponents/SharedComponentsEvents/EventPageContactCard.vue";
 import EventPageContactCarousel from "../../../SharedComponents/SharedComponentsEvents/eventPageContactCarousel/EventPageContactCarousel.vue";
 import SpecificEventPageLocationScroller from "../../../SharedComponents/SharedComponentsEvents/specificEventPageLocationScroller/SpecificEventPageLocationScroller.vue";
-// import AutomationEventComponent from "../AdminViewsSharedComponents/Automation/AutomationComponents/AutomationEventComponent.vue";
 import Backdrop from "../../../SharedComponents/SharedComponentsUI/Backdrop.vue";
+import EventMakePaymentCard from "../../../SharedComponents/SharedComponentsEvents/EventMakePayment/EventMakePaymentCard.vue";
 import FormsPopup from "../../../SharedComponents/SharedComponentsEvents/FormsPopup.vue";
 import InvoicePopup from "../../../SharedComponents/SharedComponentsEvents/InvoicePopup.vue";
 import ContractPopup from "../../../SharedComponents/SharedComponentsEvents/ContractPopup.vue";
 import FourButtonBarWithDropDown from "../../../SharedComponents/SharedComponentsUI/FourButtonBarWithDropDown.vue";
-// import TwoButtonDialogModal from "../../../SharedComponents/SharedComponentsUI/TwoButtonDialogModal.vue";
 import EventPageAlerts from "../../../SharedComponents/SharedComponentsEvents/EventPageAlerts.vue";
 import SVGs from "../../../assets/SVGs/svgIndex.js";
 import helpers from "../../../helpers.js";
@@ -95,6 +102,7 @@ export default {
       contacts: [],
       locations: [],
       clients: [],
+      eventConversations: [],
       automations: undefined,
       buttons: [
         {
@@ -122,6 +130,7 @@ export default {
           },
         ],
       },
+      popupOpen: null,
       deleteEventOpen: false,
       backdropOpen: false,
       contractOpen: false,
@@ -133,8 +142,7 @@ export default {
     client() {
       return this.clients[0];
     },
-    finalPaymentDueDate: helpers.finalPaymentDueDate,
-    balanceOutstanding: helpers.balanceOutstanding,
+
     eventAlerts() {
       let alerts = [];
       if (this.event.contracts.some((e) => e.status !== "signed")) {
@@ -161,6 +169,17 @@ export default {
     },
   },
   methods: {
+    finalPaymentDueDate: helpers.finalPaymentDueDate,
+    balanceOutstanding: helpers.balanceOutstanding,
+    togglePopup(popup) {
+      if (this.popupOpen !== null) {
+        this.popupOpen = null;
+        this.backdropOpen = true;
+      } else {
+        this.popupOpen = popup;
+        this.backdropOpen = true;
+      }
+    },
     openForms() {
       this.formsOpen = true;
       this.backdropOpen = true;
@@ -205,17 +224,12 @@ export default {
         }
         if (res.conversations) {
           let matchedItem = res.conversations.find((x) => {
-            return this.currentUser.conversations.includes(x);
+            return this.$store.state.user.conversations.includes(x);
           });
           if (matchedItem) {
             this.eventConversations.push(matchedItem);
           }
         }
-      });
-    });
-    await this.event.locations.forEach((location) => {
-      this.$store.dispatch("getLocation", location).then((res) => {
-        this.locations.push(res.Item);
       });
     });
     return this.event.contacts;
@@ -227,6 +241,7 @@ export default {
     EventPageContactCarousel,
     SpecificEventPageLocationScroller,
     EventPageAlerts,
+    EventMakePaymentCard,
     // AutomationEventComponent,
     Backdrop,
     InvoicePopup,
@@ -262,6 +277,7 @@ section {
   height: 100%;
   width: 30%;
   display: flex;
+  flex-direction: column;
 }
 
 #upper-div-right-container {

@@ -1,6 +1,5 @@
 <template>
-  <base-card :icon="SVGs.HealthSignSvg">
-    <template v-slot:title>Prospect Health</template>
+  <base-card :icon="SVGs.HealthSignSvg" title="Prospect Health">
     <template v-slot:content>
       <div id="prospect-health-wrapper">
         <div class="prospect-status-wrapper">

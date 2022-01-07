@@ -13,7 +13,7 @@
         :key="contact_category"
         :id="`${contact_category + `-card`}`"
       >
-        <base-card :icon="SVGs.PersonSVG">
+        <base-card :icon="SVGs.PersonSVG" :title="contact_category">
           <template v-slot:action1>
             Sort:
             <img
@@ -30,7 +30,6 @@
               />
             </div>
           </template>
-          <template v-slot:title>{{ contact_category }}</template>
           <template v-slot:content>
             <div class="personal-contact-list" v-if="value.length > 0">
               <div
@@ -54,8 +53,7 @@
       <div id="scroll-padding"></div>
     </div>
     <div id="right-container">
-      <base-card :icon="SVGs.AddPersonSVG">
-        <template v-slot:title>Add new</template>
+      <base-card :icon="SVGs.AddPersonSVG" title="Add New">
         <template v-slot:content>
           <add-contact-module></add-contact-module>
         </template>
@@ -123,8 +121,7 @@ export default {
     },
   },
 
-  mounted() {
-  },
+  mounted() {},
   components: {
     BaseNavigationCard,
     ContactListItem,

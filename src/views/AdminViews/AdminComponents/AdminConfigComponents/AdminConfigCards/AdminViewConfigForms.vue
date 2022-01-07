@@ -1,6 +1,5 @@
 <template>
-  <base-card>
-    <template v-slot:title>Forms</template>
+  <base-card title="Forms">
     <template v-slot:content>
       <div class="split-view">
         <div class="three-quarter-width">

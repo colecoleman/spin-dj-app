@@ -1,6 +1,10 @@
 <template>
-  <base-card :icon="SVGs.LocationMarkerSVG">
-    <template v-slot:title>Locations</template>
+  <base-card
+    :icon="SVGs.LocationMarkerSVG"
+    title="Locations"
+    :subtitle="venueName"
+  >
+    <template v-slot:subtitle>{{ venueName }}</template>
     <template v-slot:content>
       <div id="specific-event-page-location-scroller-wrapper">
         <img
@@ -10,7 +14,7 @@
         />
 
         <specific-event-page-location-scroller-item
-          :location="locations[counter]"
+          :location="location"
           v-if="locations.length > 0"
         ></specific-event-page-location-scroller-item>
 
@@ -33,6 +37,7 @@ export default {
     return {
       SVGs,
       counter: 0,
+      locations: [],
     };
   },
   methods: {
@@ -51,7 +56,24 @@ export default {
       }
     },
   },
-  props: ["locations"],
+  computed: {
+    location() {
+      return this.locations[this.counter] ? this.locations[this.counter] : {};
+    },
+    venueName() {
+      return this.locations[this.counter]
+        ? this.locations[this.counter].name
+        : "";
+    },
+  },
+  props: ["event"],
+  async created() {
+    await this.event.locations.forEach((location) => {
+      this.$store.dispatch("getLocation", location).then((res) => {
+        this.locations.push(res.Item);
+      });
+    });
+  },
   components: {
     SpecificEventPageLocationScrollerItem,
   },

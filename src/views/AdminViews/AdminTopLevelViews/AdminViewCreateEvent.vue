@@ -2,8 +2,7 @@
   <section id="event-creation-wrapper" v-if="loaded">
     <div id="form-wrapper">
       <div class="event-creation-card">
-        <base-card>
-          <template v-slot:title>Event Details</template>
+        <base-card title="Event Details">
           <template v-slot:content>
             <div class="row-flex section-inner-wrapper">
               <div class="event-date">
@@ -40,8 +39,7 @@
         </base-card>
       </div>
       <div class="event-creation-card">
-        <base-card>
-          <template v-slot:title>Product</template>
+        <base-card title="Product">
           <template v-slot:content>
             <div class="row-flex section-inner-wrapper">
               <div class="form-input">
@@ -111,8 +109,7 @@
         </base-card>
       </div>
       <div class="event-creation-card">
-        <base-card>
-          <template v-slot:title>Select Form(s):</template>
+        <base-card title="Select Form(s):">
           <template v-slot:content>
             <div class="row-flex section-inner-wrapper">
               <div class="form-input">
@@ -153,8 +150,7 @@
         </base-card>
       </div>
       <div class="event-creation-card">
-        <base-card>
-          <template v-slot:title>Location</template>
+        <base-card title="Location">
           <template v-slot:action1
             ><div class="options-container">
               <h4 @click="locationOptionsOpen = !locationOptionsOpen">
@@ -249,8 +245,7 @@
         </base-card>
       </div>
       <div class="event-creation-card">
-        <base-card>
-          <template v-slot:title>Client</template>
+        <base-card title="Client">
           <template v-slot:action1
             ><div class="options-container">
               <h4 @click="clientOptionsOpen = !clientOptionsOpen">Options</h4>

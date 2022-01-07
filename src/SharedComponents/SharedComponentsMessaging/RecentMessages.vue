@@ -1,6 +1,7 @@
 <template>
   <base-card
     :icon="SVGs.MessageBubbleSVG"
+    title="Messages"
     :actionIcon="
       openView === 'single'
         ? SVGs.XIconSVG
@@ -12,7 +13,6 @@
       openView === 'single' ? closeSingleMessaging() : addConversationClicked()
     "
   >
-    <template v-slot:title>Messages</template>
     <template v-slot:action1> </template>
     <template v-slot:content>
       <div id="container" v-if="loaded">

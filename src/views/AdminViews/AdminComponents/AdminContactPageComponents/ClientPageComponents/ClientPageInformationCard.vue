@@ -1,6 +1,5 @@
 <template>
-  <base-card :icon="icon" :loading="contact ? false : true">
-    <template v-slot:title>Information</template>
+  <base-card :icon="icon" :loading="contact ? false : true" title="Information">
     <template v-slot:content>
       <div id="contact-card-lower-div" v-if="contact">
         <div class="contact-card-lower-div-half">
@@ -14,8 +13,7 @@
           </div> -->
         </div>
         <div class="contact-card-lower-div-half">
-          <div class="indented-item">
-          </div>
+          <div class="indented-item"></div>
         </div>
       </div>
     </template>

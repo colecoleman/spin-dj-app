@@ -1,5 +1,5 @@
 <template>
-  <base-card :icon="referCircle">
+  <base-card :icon="referCircle" title="Preferred">
     <template v-slot:title>Preferred</template>
     <template v-slot:content>
       <div id="preferred-information">

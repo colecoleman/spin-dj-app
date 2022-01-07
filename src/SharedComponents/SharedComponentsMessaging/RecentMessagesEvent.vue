@@ -1,6 +1,5 @@
 <template>
-  <base-card :icon="SVGs.MessageBubbleSVG">
-    <template v-slot:title>Messages</template>
+  <base-card :icon="SVGs.MessageBubbleSVG" title="Messages">
     <template v-slot:content
       ><div id="container">
         <message-thread-list

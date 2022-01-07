@@ -60,8 +60,8 @@
           <base-card
             :icon="SVGs.MessageBubbleSVG"
             :loading="contact ? false : true"
+            title="Messages"
           >
-            <template v-slot:title>Messages</template>
             <template v-slot:content>
               <messaging-single-component
                 v-if="conversation"

@@ -1,7 +1,6 @@
 <template>
-  <div class="information-hover-wrapper">
+  <div class="information-hover-wrapper" :title="heading">
     <base-card>
-      <template v-slot:title>{{ heading }}</template>
       <template v-slot:content
         ><p>{{ body }}</p></template
       >

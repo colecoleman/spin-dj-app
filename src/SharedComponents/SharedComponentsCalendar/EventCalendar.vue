@@ -1,5 +1,9 @@
 <template>
-  <base-card :icon="SVGs.CalendarSVG" v-if="!singleDayViewOpen">
+  <base-card
+    :icon="SVGs.CalendarSVG"
+    v-if="!singleDayViewOpen"
+    title="calendar"
+  >
     <template v-slot:action1>
       <div class="right-title-parent">
         <h4 @click="floatingMenuOpen = !floatingMenuOpen">
@@ -14,7 +18,6 @@
         ></dual-side-floating-menu-with-list-items>
       </div>
     </template>
-    <template v-slot:title>Calendar</template>
     <template v-slot:content v-if="events">
       <div id="base-container">
         <div id="calendar-container" v-if="!singleDayViewOpen">
@@ -146,7 +149,6 @@ export default {
       return date.getDay();
     },
     monthChange(direction) {
-
       let count = this.masterMonth;
       let yearCount = this.yearChangeCount;
       const countGuards = function () {
