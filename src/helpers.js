@@ -11,6 +11,14 @@ export default class Helpers {
         year: "numeric",
         month: "long",
       });
+    } else if (typeof date === "number") {
+      return new Date(date).toLocaleString("lookup", {
+        day: "numeric",
+        year: "numeric",
+        month: "long",
+        hour: "2-digit",
+        minute: "2-digit",
+      });
     } else if (date.includes("T")) {
       return new Date(date).toLocaleDateString("lookup", {
         day: "numeric",
