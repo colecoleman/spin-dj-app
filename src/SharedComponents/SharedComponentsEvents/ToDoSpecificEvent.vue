@@ -51,7 +51,7 @@
           <to-do-item :toDo="toDo"></to-do-item>
         </div>
         <div v-if="uncompletedToDos.length < 1">
-          <h5>Looks like you're all done!</h5>
+          <p class="bold">Looks like you're all done!</p>
           <p>Add another or take a vacation.</p>
         </div>
         <div class="to-do-item" v-for="toDo in completedToDos" :key="toDo.id">
@@ -203,10 +203,6 @@ input {
 input:active,
 input:focus {
   outline: none;
-}
-
-p {
-  font-size: 10pt;
 }
 h5 {
   margin: 5px;

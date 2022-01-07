@@ -221,8 +221,5 @@ section {
   margin: 0px 5px;
 }
 
-.bold {
-  font-weight: 600;
-  margin-top: 20px;
-}
+
 </style>

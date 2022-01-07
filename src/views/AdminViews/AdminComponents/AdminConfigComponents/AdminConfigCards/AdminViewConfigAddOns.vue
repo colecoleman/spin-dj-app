@@ -237,10 +237,6 @@ export default {
   justify-self: left;
 }
 
-.bold {
-  font-weight: 600;
-  margin-top: 20px;
-}
 
 .button-standard-with-icon {
   margin-top: 10px;

@@ -219,10 +219,7 @@ export default {
   justify-self: left;
 }
 
-.bold {
-  font-weight: 600;
-  margin-top: 20px;
-}
+
 
 :disabled {
   opacity: 0.5;

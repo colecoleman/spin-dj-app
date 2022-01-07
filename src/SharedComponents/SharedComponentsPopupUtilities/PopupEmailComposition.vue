@@ -213,11 +213,6 @@ export default {
   justify-content: space-evenly;
 }
 
-.bold {
-  font-weight: 600;
-  text-decoration: underline;
-}
-
 .danger {
   color: red;
   text-align: left;

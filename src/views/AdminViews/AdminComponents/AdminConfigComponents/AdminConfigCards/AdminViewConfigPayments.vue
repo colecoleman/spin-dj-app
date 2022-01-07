@@ -302,11 +302,6 @@ export default {
   margin-top: 10px;
 }
 
-.bold {
-  font-weight: 600;
-  margin-top: 20px;
-}
-
 .x-icon {
   height: 10px;
   width: 10px;

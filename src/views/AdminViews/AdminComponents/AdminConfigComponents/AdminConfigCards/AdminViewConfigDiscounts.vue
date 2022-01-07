@@ -268,11 +268,6 @@ section {
   margin-right: 5px;
 }
 
-.bold {
-  font-weight: 600;
-  margin-top: 20px;
-}
-
 :disabled {
   opacity: 0.5;
 }

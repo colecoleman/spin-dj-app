@@ -147,6 +147,10 @@ a {
   text-decoration: none;
 }
 
+.bold {
+  font-weight: 600;
+}
+
 #application-wrapper {
   width: 100vw;
   height: 100vh;

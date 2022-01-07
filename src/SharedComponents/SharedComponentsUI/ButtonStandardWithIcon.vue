@@ -6,9 +6,13 @@
         : 'button-standard-with-icon'
     "
   >
-    <h5 v-if="!loading">{{ text }}</h5>
+    <h5 v-if="!loading && text">{{ text }}</h5>
     <h5 v-if="loading">Loading</h5>
-    <img v-if="icon" :src="icon" alt="" />
+    <img
+      v-if="icon"
+      :src="icon"
+      :class="text ? 'companion-icon' : 'sole-icon'"
+    />
   </div>
 </template>
 
@@ -20,6 +24,7 @@ export default {
 
 <style scoped>
 .button-standard-with-icon {
+  padding: 10px;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -44,12 +49,17 @@ export default {
 }
 
 img {
-  height: 15px;
-  width: 15px;
+  max-height: 13px;
+  min-height: 13px;
+  width: 13px;
+}
+
+.companion-icon {
+  padding-left: 10px;
 }
 
 h5 {
   color: inherit;
-  margin: 10px;
+  margin: -1px;
 }
 </style>

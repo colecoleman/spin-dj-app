@@ -1,8 +1,8 @@
 <template>
   <div>
-    <h5 v-if="conversations.length <= 0">
+    <p class="bold" v-if="conversations.length <= 0">
       No message threads found! Start one!
-    </h5>
+    </p>
     <recent-messages-person-object
       v-for="conversation in sortedMessages"
       :key="conversation.pk"

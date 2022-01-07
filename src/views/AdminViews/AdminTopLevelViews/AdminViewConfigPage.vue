@@ -686,11 +686,6 @@ For Identity Card
   justify-self: left;
 }
 
-.bold {
-  font-weight: 600;
-  margin-top: 20px;
-}
-
 .context {
   margin: 2px;
   text-align: right;
