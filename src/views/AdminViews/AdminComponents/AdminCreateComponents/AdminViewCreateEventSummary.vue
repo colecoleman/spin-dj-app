@@ -372,7 +372,7 @@ export default {
     async startCreate() {
       // this.eventId = undefined;
       this.locationId = this.locations.map((x) => x.userId);
-      this.clientId = this.clients.map((x) => x.userId);
+      this.clientId = this.clients.map((x) => ({ role: x.role, id: x.userId }));
       console.log(this.locationId);
       console.log(this.clientId);
       await this.createLocation();

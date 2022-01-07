@@ -40,7 +40,13 @@
       </div>
       <div id="box-six">
         <div id="box-six-half">
-          <contact-page-automation></contact-page-automation>
+          <automation-list
+            :automations="automations"
+            automationType="Contact"
+            :id="$route.params.id"
+            @automation-deleted="deleteAutomation"
+            @automation-approved="approveAutomation"
+          ></automation-list>
         </div>
         <div id="box-six-half-two">
           <base-card :icon="SVGs.MessageBubbleSVG">
@@ -63,7 +69,7 @@
 <script>
 import UpcomingEvents from "../../../../SharedComponents/SharedComponentsUpcomingEvents/UpcomingEvents.vue";
 import ContactPageToDoList from "../../AdminComponents/AdminContactPageComponents/AdminContactPageSharedComponents/ContactPageToDoList.vue";
-import ContactPageAutomation from "../../AdminComponents/AdminContactPageComponents/AdminContactPageSharedComponents/ContactPageAutomation.vue";
+import AutomationList from "../../AdminComponents/AdminSharedComponents/AutomationList.vue";
 import ContactPageNotes from "../../AdminComponents/AdminContactPageComponents/AdminContactPageSharedComponents/ContactPageNotes/ContactPageNotes.vue";
 import ContactCardPerson from "../../../../SharedComponents/SharedComponentsContact/ContactCardPerson.vue";
 import EmployeePageAvailabilityManager from "../../AdminComponents/AdminContactPageComponents/EmployeePageComponents/EmployeePageAvailabilityManager/EmployeePageAvailabilityManager.vue";
@@ -235,7 +241,7 @@ export default {
     ContactCardPerson,
     ContactPageToDoList,
     UpcomingEvents,
-    ContactPageAutomation,
+    AutomationList,
     ContactPageNotes,
     MessagingSingleComponent,
     FourButtonBarWithDropDown,

@@ -61,7 +61,13 @@
       </div>
       <div id="box-six">
         <div id="box-six-half">
-          <contact-page-automation></contact-page-automation>
+          <automation-list
+            :automations="automations"
+            automationType="Contact"
+            :id="$route.params.id"
+            @automation-deleted="deleteAutomation"
+            @automation-approved="approveAutomation"
+          ></automation-list>
         </div>
         <div id="box-six-half-two">
           <contact-page-notes :contact="contact" />
@@ -80,7 +86,7 @@ import UpcomingEvents from "../../../../SharedComponents/SharedComponentsUpcomin
 import ContactPageEventsAssignment from "../../AdminComponents/AdminContactPageComponents/AdminContactPageSharedComponents/ContactPageUpcomingEvents/ContactPageEventsAssignment.vue";
 import ContactCardCompany from "../../AdminComponents/AdminContactPageComponents/AdminContactPageSharedComponents/ContactCardCompany.vue";
 import ContactPageToDoList from "../../AdminComponents/AdminContactPageComponents/AdminContactPageSharedComponents/ContactPageToDoList.vue";
-import ContactPageAutomation from "../../AdminComponents/AdminContactPageComponents/AdminContactPageSharedComponents/ContactPageAutomation.vue";
+import AutomationList from "../../AdminComponents/AdminSharedComponents/AutomationList.vue";
 import VendorPageReferralPopup from "../../AdminComponents/AdminContactPageComponents/VendorPageComponents/VendorPageReferralPopup.vue";
 import ContactPageNotes from "../../AdminComponents/AdminContactPageComponents/AdminContactPageSharedComponents/ContactPageNotes/ContactPageNotes.vue";
 import SVGs from "../../../../assets/SVGs/svgIndex.js";
@@ -246,7 +252,7 @@ export default {
     UpcomingEvents,
     ContactPageToDoList,
     ContactPageEventsAssignment,
-    ContactPageAutomation,
+    AutomationList,
     ContactPageNotes,
     MessagingSingleComponent,
     VendorPageReferralPopup,

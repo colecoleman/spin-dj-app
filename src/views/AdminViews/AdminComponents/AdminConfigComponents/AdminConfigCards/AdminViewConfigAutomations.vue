@@ -7,31 +7,27 @@
           <h5 class="bold">Add New Automation:</h5>
           <div class="discounts-item">
             <p>Automation Name:</p>
-            <input type="text" v-model.trim="automation.automationName" />
+            <input type="text" v-model.trim="automation.title" />
           </div>
           <div class="discounts-item">
             <p>Applicable Contact Type:</p>
-            <select
-              name="price-option"
-              id=""
-              v-model="automation.applicableContactType"
-            >
-              <option disabled value="">Select a price option</option>
-              <option value="client">Client</option>
-              <option value="employee">Employee</option>
-              <option value="organizer">Organizer</option>
-              <option value="vendor">Vendor</option>
-              <option value="venue">Venue</option>
+            <select v-model="automation.contactType" class="capitalize">
+              <option
+                v-for="(type, index) in contactTypes"
+                :key="index"
+                :disabled="type === undefined"
+                :value="type"
+              >
+                {{ type === undefined ? "Choose Contact Type" : type }}
+              </option>
             </select>
           </div>
-          <div class="discounts-item" v-if="automation.applicableContactType">
+          <div class="discounts-item" v-if="automation.contactType">
             <div class="discounts-item">
               <p>
                 <input
                   type="checkbox"
-                  @click="
-                    automation.approvalRequired = !automation.approvalRequired
-                  "
+                  @click="automation.approved = !automation.approved"
                 />
                 Approval Required?:
               </p>
@@ -42,7 +38,7 @@
                 <input
                   type="checkbox"
                   @click="
-                    (automation.trigger.timeCategory = undefined),
+                    (automation.trigger.quantity = undefined),
                       (automation.trigger.distance = undefined),
                       (automation.direction = undefined),
                       (automation.trigger.immediate =
@@ -63,13 +59,16 @@
                   :disabled="automation.trigger.immediate"
                   name=""
                   id=""
-                  v-model="automation.trigger.timeCategory"
+                  v-model="automation.trigger.quantity"
                 >
-                  <option disabled value="">timeframe</option>
-
-                  <option value="days">days</option>
-                  <option value="weeks">weeks</option>
-                  <option value="months">months</option>
+                  <option
+                    v-for="(timeframe, index) in timeframes"
+                    :key="index"
+                    :disabled="timeframe === undefined"
+                    :value="timeframe"
+                  >
+                    {{ timeframe !== undefined ? timeframe : "timeframe" }}
+                  </option>
                 </select>
                 <select
                   name=""
@@ -77,15 +76,20 @@
                   v-model="automation.trigger.direction"
                   :disabled="automation.trigger.immediate"
                 >
-                  <option value="before">before</option>
-                  <option value="after">after</option>
+                  <option
+                    v-for="(direction, index) in directions"
+                    :key="index"
+                    :value="direction"
+                  >
+                    {{ direction !== undefined ? direction : "direction" }}
+                  </option>
                 </select>
                 <select
                   id=""
                   v-model="automation.trigger.trigger"
                   :disabled="automation.trigger.immediate"
                 >
-                  <option disabled value="">trigger</option>
+                  <option disabled value="undefined">trigger</option>
 
                   <option value="event-date">event date</option>
                   <option value="book-date">booked date</option>
@@ -94,40 +98,53 @@
             </div>
             <div class="discounts-item">
               <p>Action Type:</p>
-              <select name="" id="" v-model="automation.actionType.type">
+              <select name="" id="" v-model="automation.action.type">
                 <option value="email">Email</option>
                 <option value="to-do">To-Do</option>
               </select>
               <div
                 class="discounts-item"
-                v-if="automation.actionType.type === 'email'"
+                v-if="automation.action.type === 'email'"
               >
                 <p>From:</p>
-                <select
-                  v-model="automation.actionType.email.from"
-                  name=""
-                  id=""
-                >
+                <select v-model="automation.action.email.from" name="" id="">
                   <option
                     v-for="(email, index) in this.$store.state.businessSettings
-                      .identity.businessEmailAddresses"
+                      .identity.emailAddresses"
                     :key="index"
-                    :value="email.address"
+                    :value="email"
                   >
-                    {{ email.address }}
+                    {{ email }}
                   </option>
                 </select>
                 <p>Subject:</p>
-                <input
-                  type="text"
-                  v-model="automation.actionType.email.subject"
-                />
+                <input type="text" v-model="automation.action.email.subject" />
                 <p>Content:</p>
+                <div class="information-hover-container">
+                  <img
+                    :src="SVGs.InfoIconSVG"
+                    alt=""
+                    @click="toggleMergeTagInformation"
+                  />
+                  <information-hover
+                    heading="Templating"
+                    :body="mergeTagInformation"
+                    v-if="mergeTagInformationOpen"
+                  ></information-hover>
+                </div>
+
                 <textarea
                   type="text"
                   rows="10"
-                  v-model="automation.actionType.email.content"
+                  v-model="automation.action.email.content"
                 />
+                <p>
+                  <input
+                    type="checkbox"
+                    v-model="automation.applyToExistingEvents"
+                  />
+                  Apply to existing events?
+                </p>
                 <button-standard-with-icon
                   text="Add Automation"
                   @click="addAutomation()"
@@ -136,20 +153,12 @@
               </div>
               <div
                 class="discounts-item"
-                v-if="automation.actionType.type === 'to-do'"
+                v-if="automation.action.type === 'to-do'"
               >
                 <p>Content:</p>
-                <input
-                  type="text"
-                  v-model="automation.actionType.toDo.content"
-                />
+                <input type="text" v-model="automation.action.toDo.content" />
               </div>
             </div>
-            <button-standard-with-icon
-              text="Add Automation"
-              @click="addAutomation()"
-              class="form-button"
-            />
           </div>
         </div>
         <div class="discounts-section">
@@ -164,53 +173,53 @@
                 .automations"
               :key="automation.id"
             >
-              <h4>{{ automation.automationName }}</h4>
+              <h4>{{ automation.title }}</h4>
 
               <div class="discounts-display-section">
                 <div class="discounts-item">
                   <p>
                     <b>Contact Type:</b>
-                    {{ automation.automationName }}
+                    {{ automation.contactType }}
                   </p>
                   <p>
                     <b>Trigger: </b>
                     {{
-                      `${automation.trigger.distance} ${automation.trigger.timeCategory} ${automation.trigger.direction} ${automation.trigger.trigger}`
+                      `${automation.trigger.distance} ${automation.trigger.quantity} ${automation.trigger.direction} ${automation.trigger.trigger}`
                     }}
                   </p>
                   <p>
                     <b>Approval Required:</b>
-                    {{ automation.approvalRequired }}
+                    {{ automation.approved }}
                   </p>
                   <p>
                     <b>Automation Type:</b>
-                    {{ automation.actionType.type }}
+                    {{ automation.action.type }}
                   </p>
 
                   <div
                     class="discounts-item"
-                    v-if="automation.actionType.type === 'email'"
+                    v-if="automation.action.type === 'email'"
                   >
                     <p>
                       <b>From Email: </b>
-                      {{ automation.actionType.email.from }}
+                      {{ automation.action.email.from }}
                     </p>
                     <p>
                       <b>Subject: </b>
-                      {{ automation.actionType.email.subject }}
+                      {{ automation.action.email.subject }}
                     </p>
                     <p>
                       <b>Content: </b>
-                      {{ automation.actionType.email.content }}
+                      {{ automation.action.email.content }}
                     </p>
                   </div>
                   <div
                     class="discounts-item"
-                    v-if="automation.actionType.type === 'toDo'"
+                    v-if="automation.action.type === 'toDo'"
                   >
                     <p>
                       <b>Content: </b>
-                      {{ automation.actionType.toDo.content }}
+                      {{ automation.action.toDo.content }}
                     </p>
                   </div>
                 </div>
@@ -224,27 +233,46 @@
 </template>
 
 <script>
+import InformationHover from "../../../../../SharedComponents/SharedComponentsUI/InformationHover.vue";
+import SVGs from "../../../../../assets/SVGs/svgIndex.js";
 export default {
   data() {
     return {
+      SVGs,
+      mergeTagInformationOpen: false,
+      mergeTagInformation:
+        "Use the following merge tags to personalize your emails to your contacts: First Name: {given_name} || Last Name: {family_name}. Be sure to include the brackets {}. Otherwise, the tag will not be replaced.",
+      timeframes: [undefined, "days", "weeks", "months"],
+      directions: [undefined, "before", "after"],
+      contactTypes: [
+        undefined,
+        "client",
+        "employee",
+        "organizer",
+        "vendor",
+        "venue",
+      ],
+
       automation: {
-        automationName: undefined,
-        applicablePackages: [],
-        applicableContactType: undefined,
-        approvalRequired: false,
+        applyToExistingEvents: false,
+        title: undefined,
+        id: undefined,
+        contactType: undefined,
+        approved: true,
         trigger: {
-          timeCategory: undefined,
+          quantity: undefined,
           distance: undefined,
           trigger: undefined,
           direction: undefined,
           immediate: false,
         },
         // work within aws to determine allowable triggers
-        actionType: {
+        action: {
           type: undefined,
           email: {
             to: undefined,
             from: undefined,
+            replyTo: undefined,
             subject: undefined,
             content: undefined,
           },
@@ -256,21 +284,27 @@ export default {
     };
   },
   methods: {
+    toggleMergeTagInformation() {
+      this.mergeTagInformationOpen = !this.mergeTagInformationOpen;
+    },
     addAutomation() {
+      if (this.automation.action.type === "email") {
+        this.automation.action.email.replyTo === this.$store.state.user.email;
+        this.automation.id = "automation" + Date.now();
+      }
       this.$store.commit("adminConfigAddAutomation", this.automation);
       this.automation = {
-        automationName: undefined,
+        title: undefined,
         applicablePackages: [],
-        applicableContactType: undefined,
-        approvalRequired: false,
+        contactType: undefined,
+        approved: false,
         trigger: {
-          timeCategory: undefined,
+          quantity: undefined,
           distance: undefined,
           direction: undefined,
           trigger: undefined,
         },
-        // work within aws to determine allowable triggers
-        actionType: {
+        action: {
           type: undefined,
           email: {
             to: undefined,
@@ -295,6 +329,7 @@ export default {
       return false;
     },
   },
+  components: { InformationHover },
 };
 </script>
 
@@ -403,10 +438,19 @@ section {
   margin-right: 5px;
 }
 
-.bold {
-  font-weight: 600;
-  margin-top: 20px;
+.information-hover-container {
+  position: relative;
+  width: fit-content;
+  height: fit-content;
+  justify-self: right;
+  align-self: right;
 }
+
+.information-hover-container > img {
+  width: 14px;
+}
+
+
 
 :disabled {
   opacity: 0.5;

@@ -30,7 +30,7 @@ const store = createStore({
           forms: [],
         },
         contracts: [],
-
+        automations: [],
         identity: {
           businessName: undefined,
           businessAddress: {
@@ -169,6 +169,7 @@ const store = createStore({
         )
         .then((response) => {
           context.commit("setUser", response.data.Item);
+          console.log(response);
         })
         .catch((e) => {
           console.log(e);
@@ -369,8 +370,55 @@ const store = createStore({
           });
         });
     },
+    async adminApproveAutomation(context, payload) {
+      return new Promise((resolve, reject) => {
+        axios
+          .put(
+            `https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/admin/${context.state.user.tenantId}/automations/${payload.id}`,
+            payload.payload
+          )
+          .then(
+            (result) => {
+              console.log(result);
+              resolve(result);
+            },
+            (error) => {
+              context.commit("addStatus", {
+                type: "error",
+                note: error,
+              });
+              reject(error);
+            }
+          );
+      });
+    },
+    async adminDeleteAutomation(context, payload) {
+      return new Promise((resolve, reject) => {
+        axios
+          .delete(
+            `https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/admin/${context.state.user.tenantId}/automations/${payload}`
+          )
+          .then(
+            (result) => {
+              console.log(result);
+              resolve(result);
+              context.commit('addStatus', {
+                type: 'success',
+                note: 'Automation Deleted'
+              })
+            },
+            (error) => {
+              context.commit("addStatus", {
+                type: "error",
+                note: error,
+              });
+              reject(error);
+            }
+          );
+      });
+    },
     // contact-based-actions
-    getAdminUsers(context) {
+    async getAdminUsers(context) {
       axios
         .get(
           `https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/admin/${context.state.user.tenantId}/users`
@@ -574,6 +622,28 @@ const store = createStore({
           .catch((e) => {
             reject(e);
           });
+      });
+    },
+
+    async getContactAutomations(context, payload) {
+      return new Promise((resolve, reject) => {
+        axios
+          .get(
+            `https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/admin/${context.state.user.tenantId}/users/${payload}/automations`
+          )
+          .then(
+            (result) => {
+              resolve(result.data);
+            },
+            (error) => {
+              console.log(error);
+              context.commit("addStatus", {
+                type: "error",
+                note: error,
+              });
+              reject(error);
+            }
+          );
       });
     },
     // messaging actions
@@ -820,6 +890,27 @@ const store = createStore({
               context.commit("setUser", result.data.Item);
             },
             (error) => {
+              context.commit("addStatus", {
+                type: "error",
+                note: error,
+              });
+              reject(error);
+            }
+          );
+      });
+    },
+    async getEventAutomations(context, payload) {
+      return new Promise((resolve, reject) => {
+        axios
+          .get(
+            `https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/admin/${context.state.user.tenantId}/events/${payload}/automations`
+          )
+          .then(
+            (result) => {
+              resolve(result.data);
+            },
+            (error) => {
+              console.log(error);
               context.commit("addStatus", {
                 type: "error",
                 note: error,
@@ -1084,6 +1175,13 @@ const store = createStore({
     adminConfigPaymentsSetCustomInstructions(state, payload) {
       state.businessSettings.payments.custom.instructions = payload;
     },
+    adminConfigAddAutomation(state, payload) {
+      if (!state.businessSettings.automations) {
+        state.businessSettings.automations = [];
+      }
+      state.businessSettings.automations.push(payload);
+      console.log(state.businessSettings);
+    },
 
     approveAutomation(state, id) {
       let matchingIndex = state.automations.pending.findIndex(
@@ -1201,9 +1299,7 @@ const store = createStore({
   },
   plugins: [
     createPersistedState({
-      paths: ["user",
-        "businessSettings"
-      ],
+      paths: ["user", "businessSettings"],
     }),
   ],
 });

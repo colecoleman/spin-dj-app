@@ -65,10 +65,11 @@
               ></specific-event-page-location-scroller>
             </div>
             <div id="upper-div-right-lower-container-box-2">
-              <automation-event-component
+              <automation-list
                 :automations="automations"
-                :loading="automations ? 'false' : 'true'"
-              ></automation-event-component>
+                automationType="Event"
+                :id="$route.params.id"
+              ></automation-list>
             </div>
           </div>
         </div>
@@ -98,7 +99,7 @@ import RecentMessages from "../../../SharedComponents/SharedComponentsMessaging/
 import EventPageContactCard from "../../../SharedComponents/SharedComponentsEvents/EventPageContactCard.vue";
 import EventPageContactCarousel from "../../../SharedComponents/SharedComponentsEvents/eventPageContactCarousel/EventPageContactCarousel.vue";
 import SpecificEventPageLocationScroller from "../../../SharedComponents/SharedComponentsEvents/specificEventPageLocationScroller/SpecificEventPageLocationScroller.vue";
-import AutomationEventComponent from "../AdminComponents/AdminSharedComponents/AutomationEventComponent.vue";
+import AutomationList from "../AdminComponents/AdminSharedComponents/AutomationList.vue";
 import Backdrop from "../../../SharedComponents/SharedComponentsUI/Backdrop.vue";
 import FormsPopup from "../../../SharedComponents/SharedComponentsEvents/FormsPopup.vue";
 import InvoicePopup from "../../../SharedComponents/SharedComponentsEvents/InvoicePopup.vue";
@@ -118,8 +119,7 @@ export default {
       contacts: [],
       locations: [],
       clients: [],
-      // eventConversations: [],
-      automations: undefined,
+      automations: [],
       buttons: [
         {
           title: "View Forms",
@@ -274,7 +274,7 @@ export default {
     EventPageContactCard,
     EventPageContactCarousel,
     SpecificEventPageLocationScroller,
-    AutomationEventComponent,
+    AutomationList,
     EventMakePayment,
     Backdrop,
     InvoicePopup,

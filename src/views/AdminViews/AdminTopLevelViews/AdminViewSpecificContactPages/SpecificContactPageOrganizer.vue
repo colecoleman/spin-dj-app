@@ -42,7 +42,13 @@
       </div>
       <div id="box-six">
         <div id="box-six-half">
-          <contact-page-automation></contact-page-automation>
+          <automation-list
+            :automations="automations"
+            automationType="Contact"
+            :id="$route.params.id"
+            @automation-deleted="deleteAutomation"
+            @automation-approved="approveAutomation"
+          ></automation-list>
         </div>
         <div id="box-six-half-two">
           <base-card :icon="SVGs.MessageBubbleSVG">
@@ -64,14 +70,13 @@
 
 <script>
 import ContactPageToDoList from "../../AdminComponents/AdminContactPageComponents/AdminContactPageSharedComponents/ContactPageToDoList.vue";
-import ContactPageAutomation from "../../AdminComponents/AdminContactPageComponents/AdminContactPageSharedComponents/ContactPageAutomation.vue";
+import AutomationList from "../../AdminComponents/AdminSharedComponents/AutomationList.vue";
 import UpcomingEvents from "../../../../SharedComponents/SharedComponentsUpcomingEvents/UpcomingEvents.vue";
 import ContactPageNotes from "../../AdminComponents/AdminContactPageComponents/AdminContactPageSharedComponents/ContactPageNotes/ContactPageNotes.vue";
 import ContactCardPerson from "../../../../SharedComponents/SharedComponentsContact/ContactCardPerson.vue";
 import PopupEmailComposition from "../../../../SharedComponents/SharedComponentsPopupUtilities/PopupEmailComposition.vue";
 import MessagingSingleComponent from "../../../../SharedComponents/SharedComponentsMessaging/MessagingSingleComponent.vue";
 import FourButtonBarWithDropDown from "../../../../SharedComponents/SharedComponentsUI/FourButtonBarWithDropDown.vue";
-
 import SVGs from "../../../../assets/SVGs/svgIndex.js";
 
 export default {
@@ -219,10 +224,11 @@ export default {
     ContactPageNotes,
     ContactPageToDoList,
     UpcomingEvents,
-    ContactPageAutomation,
+
     MessagingSingleComponent,
 
     FourButtonBarWithDropDown,
+    AutomationList,
   },
 };
 </script>

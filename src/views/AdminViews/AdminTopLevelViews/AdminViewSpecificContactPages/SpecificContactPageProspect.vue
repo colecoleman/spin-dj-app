@@ -35,7 +35,13 @@
       </div>
       <div id="box-six">
         <div id="box-six-half">
-          <contact-page-automation></contact-page-automation>
+          <automation-list
+            :automations="automations"
+            automationType="Contact"
+            :id="$route.params.id"
+            @automation-deleted="deleteAutomation"
+            @automation-approved="approveAutomation"
+          ></automation-list>
         </div>
         <div id="box-six-half-two">
           <contact-page-notes
@@ -50,9 +56,8 @@
 </template>
 
 <script>
-
 import ContactPageToDoList from "../../AdminComponents/AdminContactPageComponents/AdminContactPageSharedComponents/ContactPageToDoList.vue";
-import ContactPageAutomation from "../../AdminComponents/AdminContactPageComponents/AdminContactPageSharedComponents/ContactPageAutomation.vue";
+import AutomationList from "../../AdminComponents/AdminSharedComponents/AutomationList.vue";
 import ContactPageNotes from "../../AdminComponents/AdminContactPageComponents/AdminContactPageSharedComponents/ContactPageNotes/ContactPageNotes.vue";
 import PopupEmailComposition from "../../../../SharedComponents/SharedComponentsPopupUtilities/PopupEmailComposition.vue";
 import FourButtonBarWithDropDown from "../../../../SharedComponents/SharedComponentsUI/FourButtonBarWithDropDown.vue";
@@ -144,7 +149,7 @@ export default {
     ContactPageNotes,
 
     ContactPageToDoList,
-    ContactPageAutomation,
+    AutomationList,
     ProspectPageEventDetails,
     ProspectPageContactHealth,
     ProspectPageCard,
