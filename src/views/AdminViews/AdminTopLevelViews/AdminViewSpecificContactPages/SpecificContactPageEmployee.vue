@@ -128,9 +128,6 @@ export default {
     },
   },
   methods: {
-    addToDo() {
-      console.log("clicked!");
-    },
     openEmailComposition() {
       this.emailPopupOpen = true;
     },
@@ -148,7 +145,6 @@ export default {
     getConversations(conversations) {
       return conversations.map((x) => {
         x = this.$store.dispatch("getThreadParticipants", x).then((res) => {
-          console.log(res.Items);
           return res.Items;
         });
         return x;
@@ -217,7 +213,6 @@ export default {
     if (this.eventConversation) {
       Promise.all(this.getConversations(this.eventConversation)).then((res) => {
         let conversations = res;
-        console.log(conversations);
         for (let index = 0; index < conversations.length; index++) {
           Promise.all([
             this.getConversationUsers(...conversations[index]),
@@ -229,7 +224,6 @@ export default {
               users: res[0],
             };
             this.conversation = conversation;
-            console.log(conversation);
           });
         }
       });

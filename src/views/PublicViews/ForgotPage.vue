@@ -131,7 +131,6 @@ export default {
       this.$router.push("/login");
     },
     userNameValidationBlock() {
-      console.log(Auth);
       if (!this.username) {
         this.usernameError = true;
       } else {

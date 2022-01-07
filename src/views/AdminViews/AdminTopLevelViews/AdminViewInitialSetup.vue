@@ -176,7 +176,6 @@ export default {
           .replaceAll(" ", "")
           .toLowerCase();
         this.addToDB();
-        console.log(this.data);
       }
     },
     addToDB() {
@@ -187,14 +186,10 @@ export default {
             variable: key,
             value: this.data[key],
           };
-          axios
-            .put(
-              `https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/admin/${this.user.tenantId}/users/${this.user.userId}`,
-              post
-            )
-            .then((result) => {
-              console.log(result);
-            });
+          axios.put(
+            `https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/admin/${this.user.tenantId}/users/${this.user.userId}`,
+            post
+          );
         }
       });
       this.loading = false;

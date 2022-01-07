@@ -232,7 +232,6 @@ export default {
     newInputQuantity(e) {
       this.newField.fields = [];
       for (let x = 0; x < parseInt(e.target.value); x++) {
-        console.log(x);
         this.newField.fields.push({
           inputTitle: undefined,
           inputType: undefined,
@@ -244,9 +243,6 @@ export default {
     setOptionQuantity(e, index) {
       this.newField.fields[index].options = [];
       for (let x = 0; x < this.newField.fields[index].optionQuantity; x++) {
-        console.log(x);
-        console.log(index);
-        console.log(this.newField);
         this.newField.fields[index].options.push({
           optionValue: undefined,
         });
@@ -254,13 +250,6 @@ export default {
     },
     saveField() {
       this.form.fields.push(this.newField);
-      console.log(this.newField);
-      console.log(this.form);
-      // this.form = {
-      //   name: undefined,
-      //   description: undefined,
-      //   fields: [],
-      // };
       this.newField = {
         name: undefined,
         inputQuantity: undefined,

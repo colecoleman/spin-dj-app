@@ -101,18 +101,14 @@ export default {
   methods: {
     closeEditCard() {
       this.$emit("closeEditCard");
-      console.log("closed");
     },
     saveField() {
-      console.log(this.fields[JSON.parse(this.fieldToEdit).value]);
       let payload = {
         clientId: this.contact.userId,
         variable: JSON.parse(this.fieldToEdit).value,
         value: this.fields[JSON.parse(this.fieldToEdit).value],
       };
-      console.log(payload);
-      this.$store.dispatch("editContact", payload).then((res) => {
-        console.log(res);
+      this.$store.dispatch("editContact", payload).then(() => {
         this.$emit("closeEditCard");
       });
     },

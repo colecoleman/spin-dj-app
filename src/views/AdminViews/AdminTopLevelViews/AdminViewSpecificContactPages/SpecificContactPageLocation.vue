@@ -108,14 +108,12 @@ export default {
     await this.$store
       .dispatch("adminGetContact", this.$route.params.id)
       .then((res) => {
-        console.log(res.data.Item);
         this.location = res.data.Item;
       });
     if (this.location.contacts.length > 0) {
       await this.$store
         .dispatch("adminGetContact", this.location.contacts[0])
         .then((res) => {
-          console.log(res.data.Item);
           this.contact = res.data.Item;
         });
     }

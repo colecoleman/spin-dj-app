@@ -90,7 +90,6 @@ export default {
       }
       if (Object.values(this.errors).every((item) => item === false)) {
         this.$store.dispatch("addContact", this.organizer);
-        console.log(this.organizer);
         this.organizer = {
           sendInvitation: true,
           businessName: null,

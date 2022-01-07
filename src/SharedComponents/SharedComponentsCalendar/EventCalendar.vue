@@ -146,7 +146,7 @@ export default {
       return date.getDay();
     },
     monthChange(direction) {
-      console.log(this.currentMonthDays);
+
       let count = this.masterMonth;
       let yearCount = this.yearChangeCount;
       const countGuards = function () {

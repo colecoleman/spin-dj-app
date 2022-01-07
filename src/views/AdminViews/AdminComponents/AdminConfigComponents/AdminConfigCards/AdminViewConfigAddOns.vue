@@ -141,7 +141,6 @@ export default {
       if (this.photoFile) {
         await this.$store.dispatch("addPhoto", this.photoFile).then((res) => {
           this.input.photo = res;
-          console.log(this.inputPhoto);
         });
       }
       if (this.editIndex != undefined) {
@@ -149,7 +148,6 @@ export default {
           index: this.editIndex,
           addOn: this.addOn,
         };
-        console.log(payload);
         this.$store.commit("adminConfigEditAddOn", payload);
       } else {
         this.$store.commit("adminConfigAddAddOn", this.addOn);
@@ -236,7 +234,6 @@ export default {
   align-self: left;
   justify-self: left;
 }
-
 
 .button-standard-with-icon {
   margin-top: 10px;

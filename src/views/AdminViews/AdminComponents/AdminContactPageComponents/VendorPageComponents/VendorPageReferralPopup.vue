@@ -92,7 +92,6 @@ export default {
       this.$emit("close-referral-window");
     },
     sendReferral() {
-      console.log("sent!");
       this.closeWindow();
     },
   },

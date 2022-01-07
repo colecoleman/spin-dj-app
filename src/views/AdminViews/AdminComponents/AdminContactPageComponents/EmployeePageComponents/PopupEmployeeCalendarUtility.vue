@@ -45,11 +45,8 @@ export default {
     },
     selectDate(date) {
       this.selectedDate = date;
-      console.log(date);
       this.events = this.$store.state.events.filter((event) => {
         return event;
-        // event.eventStartTime.getMonth() ===
-        // this.selectedDate.UTC.getUTCMonth()
       });
     },
     sendDate(date) {

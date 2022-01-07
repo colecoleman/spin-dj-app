@@ -47,6 +47,7 @@ export default {
           : 0;
       });
       return conversation.thread[0].data.sentDate;
+      // return conversation;
     },
   },
 

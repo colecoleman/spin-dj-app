@@ -117,12 +117,9 @@ export default {
     submitContact() {
       this.checkEmptyFields();
       if (!this.errors.contact.phoneNumber) {
-        console.log("lkkk");
         this.validatePhoneNumber(this.location.contact.phoneNumber);
       }
       if (!this.errors.contact.emailAddress) {
-        console.log("ljjj");
-
         this.validateEmailAddress(this.location.contact.emailAddress);
       }
       if (
@@ -130,7 +127,6 @@ export default {
         this.location.name === false
       ) {
         this.$store.dispatch("addLocation", this.location);
-        console.log(this.location);
         this.location = {
           name: undefined,
           address: {

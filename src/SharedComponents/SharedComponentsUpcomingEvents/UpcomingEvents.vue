@@ -127,7 +127,6 @@ export default {
     },
   },
   created() {
-    console.log(this.events);
     if (this.pastEvents) {
       this.pastEventsCopy = this.pastEvents;
     }

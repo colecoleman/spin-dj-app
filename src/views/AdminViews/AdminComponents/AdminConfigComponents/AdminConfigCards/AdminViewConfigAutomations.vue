@@ -100,7 +100,7 @@
               <p>Action Type:</p>
               <select name="" id="" v-model="automation.action.type">
                 <option value="email">Email</option>
-                <option value="to-do">To-Do</option>
+                <!-- <option value="to-do">To-Do</option> -->
               </select>
               <div
                 class="discounts-item"

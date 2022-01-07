@@ -26,7 +26,6 @@ export default {
   },
   methods: {
     submitCardPayment() {
-      console.log(this.paymentIntent.client_secret);
       this.stripe
         .confirmCardPayment(this.paymentIntent.client_secret, {
           payment_method: {
@@ -34,7 +33,6 @@ export default {
           },
         })
         .then((res) => {
-          console.log(res);
           if (res.paymentIntent.status === "succeeded") {
             this.$store.commit("addStatus", {
               type: "success",
@@ -64,7 +62,6 @@ export default {
   },
   async created() {
     this.payeeAccount = await this.$store.dispatch("stripeCheckAccount");
-    console.log(this.payeeAccount);
     this.stripe = await loadStripe(this.stripePk, {
       stripeAccount: this.payeeAccount.id,
     });

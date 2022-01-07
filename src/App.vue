@@ -59,22 +59,8 @@ export default {
   },
 
   async created() {
-    let user;
-
-    await Auth.currentAuthenticatedUser()
-      .then((res) => {
-        user = res;
-      })
-      .catch((e) => {
-        console.log(e);
-      });
-    if (user) {
-      await this.$store.dispatch("setUser", user);
-    }
-    this.$store.dispatch("setBusinessSettings").then((res) => {
-      console.log(res);
-    });
-    console.log(this.$store.state.businessSettings);
+    await this.$store.dispatch("setUser");
+    await this.$store.dispatch("setBusinessSettings");
     if (this.$store.state.businessSettings.identity.businessName) {
       document.title = this.$store.state.businessSettings.identity.businessName;
     } else {

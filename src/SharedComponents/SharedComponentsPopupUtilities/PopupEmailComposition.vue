@@ -130,7 +130,6 @@ export default {
     confirmSendEmail() {
       this.emailValidationBlock();
       this.email.Source = `${this.businessName} < ${this.email.Source} >`;
-      console.log(this.email);
       if (Object.values(this.errors).every((v) => v === false)) {
         this.$store.dispatch("sendEmail", this.email).then(() => {
           this.closeWindow();

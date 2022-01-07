@@ -124,14 +124,10 @@ export default {
   },
   computed: {
     currentUser() {
-      console.log(this.$store.state.user);
       return this.$store.state.user;
     },
   },
   methods: {
-    addToDo() {
-      console.log("clicked!");
-    },
     openEmailComposition() {
       this.emailPopupOpen = true;
     },
@@ -142,7 +138,6 @@ export default {
     getConversations(conversations) {
       return conversations.map((x) => {
         x = this.$store.dispatch("getThreadParticipants", x).then((res) => {
-          console.log(res.Items);
           return res.Items;
         });
         return x;
@@ -185,21 +180,17 @@ export default {
       .then((res) => {
         this.contact = res.data.Item;
         if (this.contact.conversations) {
-          console.log("ey");
           let matchedItem = this.contact.conversations.find((x) => {
             return this.currentUser.conversations.includes(x);
           });
           if (matchedItem) {
-            console.log("ho!");
             this.eventConversation.push(matchedItem);
           }
         }
-        console.log(this.contact);
       });
     if (this.eventConversation) {
       Promise.all(this.getConversations(this.eventConversation)).then((res) => {
         let conversations = res;
-        console.log(conversations);
         for (let index = 0; index < conversations.length; index++) {
           Promise.all([
             this.getConversationUsers(...conversations[index]),
@@ -211,12 +202,10 @@ export default {
               users: res[0],
             };
             this.conversation = conversation;
-            console.log(conversation);
           });
         }
       });
     }
-    
   },
   components: {
     PopupEmailComposition,

@@ -32,14 +32,12 @@ export default {
   },
   methods: {
     automationDeleted(id) {
-      console.log(id);
       let deleteIndex = this.automations.findIndex((x) => {
         return x.id === id;
       });
       this.automations.splice(deleteIndex, 1);
     },
     automationApproved(id) {
-      console.log(id);
       let editIndex = this.automations.findIndex((x) => {
         return x.id === id;
       });
@@ -53,12 +51,20 @@ export default {
     await this.$store
       .dispatch(`get${this.automationType}Automations`, this.$route.params.id)
       .then((res) => {
-        console.log(res);
-        this.automations.push(...res.Items);
+        if (this.contacts.length > 0) {
+          this.automations = [...res.Items].map((automation) => ({
+            contact: this.contacts.find((c) => {
+              return c.userId === automation.contactId;
+            }),
+            ...automation,
+          }));
+        } else {
+          this.automations = [...res.Items];
+        }
       });
   },
 
-  props: ["automationType", "id"],
+  props: ["automationType", "id", "contacts"],
 };
 </script>
 

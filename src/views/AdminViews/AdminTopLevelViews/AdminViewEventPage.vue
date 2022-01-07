@@ -67,6 +67,7 @@
             <div id="upper-div-right-lower-container-box-2">
               <automation-list
                 :automations="automations"
+                :contacts="contacts"
                 automationType="Event"
                 :id="$route.params.id"
               ></automation-list>
@@ -168,13 +169,6 @@ export default {
       return this.$store.state.user;
     },
     eventConversations() {
-      console.log(
-        this.contacts.map((x) => {
-          return x.conversations.find((x) => {
-            return this.currentUser.conversations.includes(x);
-          });
-        })
-      );
       return this.contacts.map((x) => {
         return x.conversations.find((x) => {
           return this.currentUser.conversations.includes(x);
@@ -247,13 +241,13 @@ export default {
       .dispatch("adminGetEvent", this.$route.params.id)
       .then((res) => {
         this.event = res.data.Item;
-        console.log(this.event);
       })
       .catch((e) =>
         this.$store.commit("addStatus", { type: "error", note: e })
       );
     await this.event.contacts.forEach((contact) => {
-      this.$store.dispatch("getUser", contact).then((res) => {
+      let id = contact.id ? contact.id : contact;
+      this.$store.dispatch("getUser", id).then((res) => {
         this.contacts.push(res);
         if (res.role === "client") {
           this.clients.push(res);
@@ -265,8 +259,6 @@ export default {
         this.locations.push(res.Item);
       });
     });
-    // console.log(this.eventConversations);
-    // return this.event.contacts;
   },
   components: {
     ToDoSpecificEvent,

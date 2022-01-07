@@ -190,8 +190,6 @@ export default {
             payload.eventEndTime = new Date(
               this.event.details.date + "T" + this.event.details.endingTime
             );
-            console.log("1" + payload);
-            console.log(payload);
             this.addDateTimeOpen = false;
             this.$store.dispatch("addProspectDateTime", payload);
             break;
@@ -206,7 +204,6 @@ export default {
               this.event.details.date + "T" + this.event.details.endingTime
             );
             payload.eventEndTime.setDate(payload.eventEndTime.getDate() + 1);
-            console.log(payload);
             this.addDateTimeOpen = false;
             this.$store.dispatch("addProspectDateTime", payload);
             break;

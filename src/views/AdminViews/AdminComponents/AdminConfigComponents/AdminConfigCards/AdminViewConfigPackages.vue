@@ -269,9 +269,7 @@ export default {
       let index = array.indexOf(service);
       if (index > -1) {
         array.splice(index, 1);
-        console.log("here");
       } else {
-        console.log("not here");
         array.push(service);
       }
     },
@@ -306,7 +304,6 @@ export default {
       }
     },
     findForm(form, packageIndex) {
-      // console.log(packageIndex);
       let item = this.businessSettings.product.forms.find((x) => x.id === form);
       if (!item) {
         this.toggleFormFromPackage(form, packageIndex);
@@ -328,7 +325,6 @@ export default {
       if (this.photoFile) {
         await this.$store.dispatch("addPhoto", this.photoFile).then((res) => {
           this.input.packages.photo = res;
-          console.log(this.inputPhoto);
         });
       }
       item.pricing.baseRate *= 100;
@@ -432,7 +428,6 @@ export default {
 .button-standard-with-icon {
   margin-top: 10px;
 }
-
 
 .x-icon {
   height: 10px;

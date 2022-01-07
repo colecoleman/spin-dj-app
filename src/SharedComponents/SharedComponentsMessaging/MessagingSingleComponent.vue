@@ -89,7 +89,6 @@ export default {
           sentDate: new Date().getTime(),
         },
       };
-      console.log(this.conversation);
       await this.$store.dispatch("sendMessage", payload);
       this.messages.unshift(payload);
       this.messageInput = undefined;

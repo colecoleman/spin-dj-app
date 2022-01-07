@@ -155,8 +155,6 @@ export default {
     this.masterMonth = this.INITIAL_MONTH + this.yearChangeCount;
     this.masterYear = this.INITIAL_YEAR;
     this.sendCurrentTimeUp();
-    console.log(this.daysWithEvents);
-    console.log(this.masterYear);
   },
   methods: {
     sendCurrentTimeUp() {
@@ -283,8 +281,6 @@ export default {
       this.sendCurrentTimeUp();
     },
     newMonthSelected(id) {
-      console.log(id);
-      console.log(this.masterMonth);
       this.monthChangeCount = 0;
       this.masterMonth = id + 1;
       this.toggleMonthSelector();

@@ -1,6 +1,6 @@
 import { createStore } from "vuex";
 import axios from "axios";
-import { Storage } from "aws-amplify";
+import { Storage, Auth } from "aws-amplify";
 import createPersistedState from "vuex-persistedstate";
 
 const store = createStore({
@@ -77,8 +77,7 @@ const store = createStore({
           .then(
             (result) => {
               resolve(result.data);
-              console.log(result.data);
-              context.commit("setPublicSettings", result.data);
+              context.commit("setBusinessSettings", result.data);
             },
             (error) => {
               context.commit("addStatus", {
@@ -152,24 +151,16 @@ const store = createStore({
           );
       });
     },
-    async setUser(context, user) {
-      let tenantId = function () {
-        if (user.challengeParam) {
-          return user.challengeParam.userAttributes["custom:tenantId"];
-        } else if (user.attributes["custom:tenantId"]) {
-          return user.attributes["custom:tenantId"];
-        } else {
-          return user.username;
-        }
-      };
+    async setUser(context) {
+      let user = await Auth.currentAuthenticatedUser();
+      let userId = user.username;
+      let tenantId = user.attributes['custom:tenantId'];
       await axios
         .get(
-          `https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/admin/${tenantId()}/users/${user.username
-          }`
+          `https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/admin/${tenantId}/users/${userId}`
         )
         .then((response) => {
           context.commit("setUser", response.data.Item);
-          console.log(response);
         })
         .catch((e) => {
           console.log(e);
@@ -204,9 +195,7 @@ const store = createStore({
           `https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/admin/${context.state.user.userId}/settings`
         )
         .then((response) => {
-          console.log(response);
           if ("businessSettings" in response.data.Item) {
-            console.log("hey");
             context.commit(
               "setBusinessSettings",
               response.data.Item.businessSettings
@@ -248,15 +237,14 @@ const store = createStore({
       });
     },
     async completeToDo(context, payload) {
-      console.log(payload);
+
       await axios
         .put(
           `https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/admin/${context.state.user.tenantId}/todo/${payload.id}`,
           payload
         )
         .then(
-          (result) => {
-            console.log(result);
+          () => {
             context.commit("addStatus", {
               type: "success",
               note: "To-Do Added",
@@ -300,16 +288,13 @@ const store = createStore({
         variable: "businessSettings",
         value: state.businessSettings,
       };
-      console.log(payload);
       axios
         .put(
           `https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/admin/${state.user.tenantId}/users/${state.user.userId}`,
           payload
         )
-        .then((res) => {
+        .then(() => {
           commit("setBusinessSettings", payload.value);
-          console.log(payload.value);
-          console.log(res);
         })
         .catch((e) => {
           console.log(e);
@@ -323,7 +308,6 @@ const store = createStore({
           )
           .then(
             (result) => {
-              console.log(result);
               resolve(result);
             },
             (error) => {
@@ -337,7 +321,6 @@ const store = createStore({
       });
     },
     async addSubdomain(context, payload) {
-      console.log(payload);
       axios
         .put(
           `https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/admin/${context.state.user.tenantId}/subdomain/add/${payload}`
@@ -354,8 +337,7 @@ const store = createStore({
         .put(
           `https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/admin/${context.state.user.tenantId}/subdomain/delete/${payload}`
         )
-        .then((res) => {
-          console.log(res);
+        .then(() => {
           context.commit("addStatus", {
             type: "success",
             note: "Subdomain successfully deleted",
@@ -379,7 +361,7 @@ const store = createStore({
           )
           .then(
             (result) => {
-              console.log(result);
+
               resolve(result);
             },
             (error) => {
@@ -400,7 +382,7 @@ const store = createStore({
           )
           .then(
             (result) => {
-              console.log(result);
+
               resolve(result);
               context.commit('addStatus', {
                 type: 'success',
@@ -475,7 +457,7 @@ const store = createStore({
           .then(
             (result) => {
               resolve(result);
-              console.log(result);
+
               context.commit("addStatus", {
                 type: "success",
                 note: "Contact Successfully Updated",
@@ -493,7 +475,7 @@ const store = createStore({
       });
     },
     async deleteUser(context, payload) {
-      console.log(payload);
+      ;
       await axios
         .delete(
           `https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/admin/${context.state.user.tenantId}/users/${payload.id}`
@@ -523,7 +505,7 @@ const store = createStore({
           .then(
             (result) => {
               resolve(result);
-              console.log(result);
+
               context.commit("addContact", {
                 role: "locations",
                 item: result.data,
@@ -581,7 +563,7 @@ const store = createStore({
       });
     },
     async editLocation(context, payload) {
-      console.log(payload);
+      ;
       return new Promise((resolve, reject) => {
         axios
           .put(
@@ -591,7 +573,7 @@ const store = createStore({
           .then(
             (result) => {
               resolve(result);
-              console.log(result);
+
               // context.commit('editLocation', result)
             },
             (error) => {
@@ -742,7 +724,6 @@ const store = createStore({
     },
     // event actions
     async addEvent(context, event) {
-      console.log(event);
       return new Promise((resolve, reject) => {
         axios
           .put(
@@ -808,6 +789,7 @@ const store = createStore({
       });
     },
     async editEvent(context, payload) {
+
       return new Promise((resolve, reject) => {
         axios
           .put(
@@ -817,7 +799,7 @@ const store = createStore({
           .then(
             (result) => {
               resolve(result);
-              console.log(result);
+
               context.commit("editEvent", result);
             },
             (error) => {
@@ -831,7 +813,7 @@ const store = createStore({
       });
     },
     async deleteEvent(context, payload) {
-      console.log(payload);
+      ;
       await axios
         .delete(
           `https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/admin/${context.state.user.tenantId}/events/${payload}`
@@ -850,7 +832,6 @@ const store = createStore({
         });
     },
     async getEvents(context) {
-      console.log(context.state.user.role);
       return new Promise((resolve, reject) => {
         axios
           .get(
@@ -876,7 +857,7 @@ const store = createStore({
         value: callerPayload.contracts,
         variable: "contracts",
       };
-      console.log(payload);
+      ;
       return new Promise((resolve, reject) => {
         axios
           .put(
@@ -886,7 +867,7 @@ const store = createStore({
           .then(
             (result) => {
               resolve(result);
-              console.log(result);
+
               context.commit("setUser", result.data.Item);
             },
             (error) => {
@@ -1012,21 +993,13 @@ const store = createStore({
       state.user = user;
     },
     setBusinessSettings(state, settings) {
-      console.log(settings);
       state.businessSettings = settings;
-      // if ("identity" in state.businessSettings) {
-      //   if ("businessName" in state.businessSettings.identity) {
-      //     document.title = state.businessSettings.identity.businessName;
-      //   }
-      // } else {
-      //   document.title = "SPIN";
-      // }
     },
     setBranding(state, settings) {
       state.branding = settings;
     },
     setPublicSettings(state, settings) {
-      state.publicSettings = settings;
+      state.businessSettings = settings;
     },
     addStatus(state, status) {
       state.statuses.push(status);
@@ -1180,7 +1153,6 @@ const store = createStore({
         state.businessSettings.automations = [];
       }
       state.businessSettings.automations.push(payload);
-      console.log(state.businessSettings);
     },
 
     approveAutomation(state, id) {
@@ -1216,7 +1188,6 @@ const store = createStore({
     editClient(state, { id, key, value }) {
       let subject = state.contacts.clients.find((c) => c.id === id);
       subject[key] = value;
-      console.log(subject);
     },
     deleteUser(state, payload) {
       let cat = state.contacts[payload.category];
@@ -1252,11 +1223,11 @@ const store = createStore({
     addEvent(state, payload) {
       state.events.push(payload);
     },
-    editEvent(state, payload) {
-      // let subject = state.events.find((e) => e.id === payload.eventId);
-      // subject[key] = value;
-      console.log(payload);
-    },
+    // editEvent(state, payload) {
+    //   // let subject = state.events.find((e) => e.id === payload.eventId);
+    //   // subject[key] = value;
+    //   ;
+    // },
     setEvents(state, payload) {
       state.events = [...payload.data.Items];
     },
@@ -1264,7 +1235,6 @@ const store = createStore({
       console.log(state, id);
     },
     addToDo(state, payload) {
-      console.log(payload);
       state.toDos.unshift(payload);
     },
 

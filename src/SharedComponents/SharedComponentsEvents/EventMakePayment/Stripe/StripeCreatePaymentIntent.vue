@@ -51,11 +51,9 @@ export default {
           currencyType: this.payeeAccount.default_currency,
           payeeId: this.payeeAccount.id,
         };
-        console.log(payload);
         this.$store
           .dispatch("stripeCreatePaymentIntent", payload)
           .then((res) => {
-            console.log(res.data.client_secret);
             this.clientSecret = res.data.client_secret;
             this.$emit("submitPaymentIntent", res.data);
           });

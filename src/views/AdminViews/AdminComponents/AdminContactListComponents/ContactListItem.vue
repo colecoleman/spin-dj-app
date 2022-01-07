@@ -140,7 +140,6 @@ export default {
 
     emailContact() {
       this.composeEmailOpen = true;
-      console.log(this.$store.state.businessSettings);
     },
     cancelSendEmail() {
       this.composeEmailOpen = false;
@@ -156,7 +155,7 @@ export default {
           this.$store.dispatch("adminGetEvent", event).then(
             (res) => {
               eventObject = res.data.Item;
-              console.log(eventObject);
+
               let index = eventObject.contacts.indexOf(this.contact.userId);
               let payload = {
                 eventId: eventObject.userId,
@@ -165,7 +164,6 @@ export default {
                 operation: "removeFromList",
               };
 
-              console.log(payload);
               this.$store.dispatch("editEvent", payload);
             },
             (error) => {
@@ -190,9 +188,6 @@ export default {
     ButtonWithDropDownSelections,
     PopupEmailComposition,
     PopupModal,
-  },
-  created() {
-    console.log(this.category);
   },
 };
 </script>

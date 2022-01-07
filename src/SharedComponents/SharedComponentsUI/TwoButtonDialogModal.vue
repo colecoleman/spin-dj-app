@@ -43,7 +43,6 @@ export default {
     },
     closeModal() {
       this.$emit("closeModal");
-      console.log("heyy");
     },
   },
   components: { Backdrop },

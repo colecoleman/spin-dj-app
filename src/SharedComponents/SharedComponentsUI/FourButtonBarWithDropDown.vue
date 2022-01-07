@@ -32,9 +32,6 @@ export default {
     ButtonWithDropDownSelections,
     ButtonStandardWithIcon,
   },
-  created() {
-    console.log(this.buttons);
-  },
   props: ["buttons", "dropdown"],
 };
 </script>

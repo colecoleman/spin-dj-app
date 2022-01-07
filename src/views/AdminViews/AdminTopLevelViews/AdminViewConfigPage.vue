@@ -521,19 +521,11 @@ export default {
     emailAddresses() {
       return this.$store.state.businessSettings.identity.emailAddresses;
     },
-    subdomainNameToDelete() {
-      console.log(this.subdomainToDelete);
-      console.log("jeu");
-      // if (this.subdomainToDelete) {
-      //   return this.subdomainToDelete.subdomain;
-      // } else {
-      //   return "";
-      // }
-      return "o";
-    },
+    // subdomainNameToDelete() {
+
+    // },
     businessSettings() {
       if (Object.keys(this.$store.state.businessSettings).length > 0) {
-        console.log(this.$store.state.businessSettings);
         return this.$store.state.businessSettings;
       } else {
         return {

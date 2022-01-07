@@ -53,7 +53,6 @@ export default {
         "Employees",
         ...contactsArr.employees,
       ];
-      console.log(contacts);
       if (this.searchTerm) {
         contacts = contacts.filter(
           (x) =>

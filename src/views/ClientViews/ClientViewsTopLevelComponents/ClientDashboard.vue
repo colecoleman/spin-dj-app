@@ -20,7 +20,7 @@
       </div>
       <div id="box-five-wrapper">
         <recent-messages
-          :conversationList="userConversations()"
+          :conversationList="userConversations"
         ></recent-messages>
       </div>
     </div>
@@ -40,6 +40,9 @@ export default {
   },
   methods: {},
   computed: {
+    currentUser() {
+      return this.$store.state.user;
+    },
     client() {
       return this.$store.state.user;
     },
@@ -59,12 +62,9 @@ export default {
   },
   async created() {
     this.loading = true;
-    await this.$store
-      .dispatch("nonAdminGetUser", this.$store.state.user.userId)
-      .then((res) => {
-        this.$store.commit("setUser", res.data.Item);
-      });
-
+    if (!this.$store.state.user) {
+      await this.$store.dispatch("setUser");
+    }
     await this.$store.dispatch("getEvents");
     this.loading = false;
   },

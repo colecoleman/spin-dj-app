@@ -3,7 +3,7 @@
     :icon="icon"
     :actionIcon="editPen"
     :loading="loading"
-    @action-one-clicked="toggleEditCard()"
+    @action-one-clicked="toggleEditCard"
   >
     <template v-slot:title>{{
       contact ? contact.given_name + " " + contact.family_name : "Contact"
@@ -12,7 +12,7 @@
       <contact-information-edit
         v-if="editCardOpen"
         :contact="contact"
-        @close-edit-card="toggleEditCard()"
+        @close-edit-card="toggleEditCard"
       ></contact-information-edit
     ></template>
     <template v-slot:content v-if="contact">
@@ -78,22 +78,18 @@ export default {
 }
 
 img {
-  width: 60px;
-  height: 60px;
+  width: 55px;
+  height: 55px;
   border-radius: 50%;
-  /* padding: 10px 10px 10px 0px; */
   margin-right: 10px;
   object-fit: cover;
 }
 
 .contact-contact-information {
-  font-size: 10pt;
   margin: 2px;
 }
 
 #contact-card-upper-div {
-  margin: 10px;
-  position: relative;
   display: flex;
   flex-direction: row;
 }

@@ -39,34 +39,33 @@ let setAuthStatus = async function () {
     .catch((e) => {
       console.log(e);
     });
-    console.log(user)
 }
 
 const routes = [
-  
+
   {
     path: '/',
-    name: 'index', 
+    name: 'index',
     beforeEnter: async (to, from, next) => {
-      await setAuthStatus(); 
+      await setAuthStatus();
       if (user == undefined) {
-        next({path: "/login"})
+        next({ path: "/login" })
       } else if (user.signInUserSession.idToken.payload["cognito:preferred_role"].includes('Admin')) {
         console.log('admin, biatch')
-        next({path: '/admin/dashboard'})
+        next({ path: '/admin/dashboard' })
       } else if (user.signInUserSession.idToken.payload['cognito:preferred_role'].includes("Client")) {
         console.log('client, biatch');
-        next({path: '/client/dashboard'})
+        next({ path: '/client/dashboard' })
       } else if (user.signInUserSession.idToken.payload['cognito:preferred_role'].includes("Employee")) {
         console.log('employee, biatch');
-        next({path: '/employee/dashboard'})
+        next({ path: '/employee/dashboard' })
       } else if (user.signInUserSession.idToken.payload['cognito:preferred_role'].includes("Organizer")) {
         console.log('client, biatch');
-        next({path: '/organizer/dashboard'})
+        next({ path: '/organizer/dashboard' })
       } else if (user.signInUserSession.idToken.payload['cognito:preferred_role'].includes("Vendor")) {
         console.log('client, biatch');
-        next({path: '/vendor/dashboard'})
-      } 
+        next({ path: '/vendor/dashboard' })
+      }
     }
   },
   {
@@ -75,26 +74,26 @@ const routes = [
       main: AdminView
     },
     children: [
-      { 
+      {
         path: 'dashboard',
         name: "dashboard",
-        meta: {requiresAdminAuth: true},
+        meta: { requiresAdminAuth: true },
         components: {
-         content: AdminViewDashboard
-        },  
+          content: AdminViewDashboard
+        },
       },
       {
-      path: 'contacts',
-      name: 'contacts',
-      meta: {requiresAdminAuth: true},
-      components: {
-        content: ContactsList
-      },
+        path: 'contacts',
+        name: 'contacts',
+        meta: { requiresAdminAuth: true },
+        components: {
+          content: ContactsList
+        },
       },
       {
         path: 'contacts/clients/:id',
         name: 'specificContactPageClient',
-        meta: {requiresAdminAuth: true},
+        meta: { requiresAdminAuth: true },
         components: {
           content: SpecificContactPageClient
         }
@@ -102,23 +101,23 @@ const routes = [
       {
         path: 'contacts/prospects/:id',
         name: 'specificContactPageProspect',
-        meta: {requiresAdminAuth: true},
-        components: { 
-          content:SpecificContactPageProspect
+        meta: { requiresAdminAuth: true },
+        components: {
+          content: SpecificContactPageProspect
         },
       },
       {
         path: 'contacts/vendors/:id',
         name: 'specificContactPageVendor',
-        meta: {requiresAdminAuth: true},
-        components: { 
+        meta: { requiresAdminAuth: true },
+        components: {
           content: SpecificContactPageVendor
         },
-      },  
+      },
       {
         path: 'contacts/employees/:id',
         name: 'specificContactPageEmployee',
-        meta: {requiresAdminAuth: true},
+        meta: { requiresAdminAuth: true },
         components: {
           content: SpecificContactPageEmployee
         },
@@ -126,7 +125,7 @@ const routes = [
       {
         path: 'contacts/locations/:id',
         name: 'specificContactPageLocation',
-        meta: {requiresAdminAuth: true},
+        meta: { requiresAdminAuth: true },
         components: {
           content: SpecificContactPageLocation
         }
@@ -134,15 +133,15 @@ const routes = [
       {
         path: 'contacts/organizers/:id',
         name: 'specificContactPageOrganizer',
-        meta: {requiresAdminAuth: true},
+        meta: { requiresAdminAuth: true },
         components: {
           content: SpecificContactPageOrganizer
         }
-      },      
+      },
       {
         path: 'events/:id',
         name: 'specificEventPage',
-        meta: {requiresAdminAuth: true},
+        meta: { requiresAdminAuth: true },
         components: {
           content: AdminViewEventPage
         }
@@ -150,7 +149,7 @@ const routes = [
       {
         path: 'createnewevent',
         name: 'admincreateevent',
-        meta: {requiresAdminAuth: true},
+        meta: { requiresAdminAuth: true },
         components: {
           content: AdminViewCreateEvent
         }
@@ -158,32 +157,32 @@ const routes = [
       {
         path: 'config/',
         name: 'adminConfigPage',
-        meta: {requiresAdminAuth: true},
+        meta: { requiresAdminAuth: true },
         components: {
           content: AdminConfigurationPage,
-          }
+        }
       },
-      
+
     ]
-  
+
   },
   {
     path: '/client',
     components: {
       main: ClientView
-    }, 
+    },
     children: [
       {
         path: 'dashboard',
         name: 'clientDashboard',
-        meta: {requiresClientAuth: true},
+        meta: { requiresClientAuth: true },
         components: {
           content: ClientDashboard
         }
       }, {
         path: 'events/:eventId',
         name: 'clientEventView',
-        meta: {requiresClientAuth: true},
+        meta: { requiresClientAuth: true },
         components: {
           content: ClientEventView
         }
@@ -194,12 +193,12 @@ const routes = [
     path: '/employee',
     components: {
       main: EmployeeView
-    }, 
+    },
     children: [
       {
         path: 'dashboard',
         name: 'employeeDashboard',
-        meta: {requiresEmployeeAuth: true},
+        meta: { requiresEmployeeAuth: true },
         components: {
           content: EmployeeDashboard
         }
@@ -210,12 +209,12 @@ const routes = [
     path: '/organizer',
     components: {
       main: OrganizerView
-    }, 
+    },
     children: [
       {
         path: 'dashboard',
         name: 'organizerDashboard',
-        meta: {requiresOrganizerAuth: true},
+        meta: { requiresOrganizerAuth: true },
         components: {
           content: OrganizerDashboard
         }
@@ -226,12 +225,12 @@ const routes = [
     path: '/vendor',
     components: {
       main: VendorView
-    }, 
+    },
     children: [
       {
         path: 'dashboard',
         name: 'vendorDashboard',
-        meta: {requiresVendorAuth: true},
+        meta: { requiresVendorAuth: true },
         components: {
           content: VendorDashboard
         }
@@ -243,13 +242,13 @@ const routes = [
     name: 'signUpPage',
     components: {
       main: SignUpPage
-    } 
+    }
   },
   {
     path: '/login',
     name: 'loginPage',
-    components: { 
-      main:LoginPage
+    components: {
+      main: LoginPage
     },
   },
   {
@@ -276,7 +275,7 @@ const router = createRouter({
     if (to.hash) {
       return {
         el: to.hash,
-      behavior: 'smooth'
+        behavior: 'smooth'
       }
     }
   }

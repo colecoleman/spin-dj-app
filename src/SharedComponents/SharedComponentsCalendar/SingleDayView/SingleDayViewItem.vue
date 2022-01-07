@@ -44,9 +44,7 @@ export default {
     formatTime: helpers.formatTime,
   },
   created() {
-    console.log(this.event);
     this.$store.dispatch("getUser", this.event.contacts[0]).then((res) => {
-      console.log(res.Item);
       this.matchedClient = res.Item;
       if (this.event.locations.length > 0) {
         this.$store

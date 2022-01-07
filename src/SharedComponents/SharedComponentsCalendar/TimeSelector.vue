@@ -86,7 +86,7 @@ export default {
       this.selectYear(year);
     },
     changeMonthData(month) {
-      console.log(month);
+
       this.selectedMonth = month;
       this.selectMonth(month);
     },

@@ -130,7 +130,6 @@ export default {
     getConversations(conversations) {
       return conversations.map((x) => {
         x = this.$store.dispatch("getThreadParticipants", x).then((res) => {
-          console.log(res.Items);
           return res.Items;
         });
         return x;

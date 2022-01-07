@@ -69,7 +69,6 @@ export default {
       let simpleDateFormat = event.eventStartTime.toISOString().split("T")[0];
       event.unavailable = unavailableDates.includes(simpleDateFormat);
     });
-    console.log(this.events);
   },
   methods: {
     formatDate: helpers.formatDate,

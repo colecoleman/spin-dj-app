@@ -92,9 +92,7 @@ export default {
   },
   computed: {
     paymentSettings: {
-      get(val) {
-        console.log(val);
-        console.log(this.$store.state.businessSettings.payments);
+      get() {
         return this.$store.state.businessSettings.payments;
       },
     },
@@ -255,7 +253,6 @@ export default {
         increment: null,
         type: null,
       };
-      console.log(this.paymentSettings);
     }
     this.loaded = true;
   },

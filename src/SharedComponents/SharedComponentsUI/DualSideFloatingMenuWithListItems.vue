@@ -43,17 +43,9 @@ export default {
     selectRight(action) {
       this.currentRightSelected = action;
       this.selections.right = action;
-      console.log(this.selections);
-      console.log(action);
       this.$emit("actionsClicked", this.selections);
     },
   },
-  created() {
-    console.log(this.actions);
-    console.log(this.currentLeftSelected);
-    console.log(this.currentRightSelected);
-  },
-
   props: [
     "actions",
     "identifier",

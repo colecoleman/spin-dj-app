@@ -82,7 +82,6 @@ export default {
       }
       if (Object.values(this.errors).every((item) => item === false)) {
         this.$store.dispatch("addContact", this.employee);
-        console.log(this.employee);
         this.employee = {
           sendInvitation: true,
           role: "employee",

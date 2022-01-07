@@ -2,8 +2,14 @@
   <div id="item-wrapper">
     <div class="left-div">
       <p class="bold">{{ automation.title }}</p>
+      <p class="bold" v-if="automation.contact">
+        {{
+          automation.contact.given_name + " " + automation.contact.family_name
+        }}
+      </p>
       <p>Type: {{ capitalizeFirstLetter(automation.action.type) }}</p>
       <p>{{ formatDate(automation.triggerDate) }}</p>
+      <p></p>
     </div>
     <div class="right-div">
       <button-standard-with-icon
@@ -36,7 +42,6 @@ export default {
       return str.charAt(0).toUpperCase() + str.slice(1);
     },
     approveAutomation() {
-      console.log("clicked");
       let payload = {
         id: this.automation.id,
         payload: {
@@ -45,14 +50,15 @@ export default {
         },
       };
       this.$store.dispatch("adminApproveAutomation", payload).then(() => {
-        this.$emit('automationApproved', this.automation.id);
+        this.$emit("automationApproved", this.automation.id);
       });
     },
     deleteAutomation() {
-      console.log("clicked");
-      this.$store.dispatch("adminDeleteAutomation", this.automation.id).then(() => {
-        this.$emit('automationDeleted', this.automation.id);
-      });
+      this.$store
+        .dispatch("adminDeleteAutomation", this.automation.id)
+        .then(() => {
+          this.$emit("automationDeleted", this.automation.id);
+        });
     },
   },
   props: ["automation"],

@@ -204,7 +204,6 @@ export default {
         this.fields.location.address.streetAddress2 ||
         this.fields.location.address.cityStateZip
       ) {
-        console.log("addingLocation");
         this.$store
           .dispatch("addLocation", this.fields.location)
           .then((res) => {
@@ -224,7 +223,6 @@ export default {
     },
     createUser() {
       if (Object.values(this.fields.client).every((v) => v !== null)) {
-        console.log("creatingClient");
         let client = this.fields.client;
         client.associatedEvents.push(this.eventId);
         this.$store
@@ -252,13 +250,11 @@ export default {
         signerUUID: null,
         status: "pending",
       }));
-      console.log(dbEvent);
+
       this.$store
         .dispatch("addEvent", dbEvent)
         .then((res) => {
-          console.log(res);
           this.eventId = res.data.userId;
-          console.log(this.eventId);
           this.$store.commit("addStatus", {
             type: "success",
             note: "Event Added Successfully",
@@ -273,30 +269,9 @@ export default {
       this.addEventToUser();
       this.addEventToLocation();
     },
-    // addUserToEvent() {
-    //   if (this.clientId.length > 0) {
-    //     let payload = {
-    //       eventId: this.eventId,
-    //       variable: "contacts",
-    //       value: this.clientId,
-    //       // operation: "addToList",
-    //     };
-    //     this.$store
-    //       .dispatch("editEvent", payload)
-    //       .then((res) => {
-    //         console.log(res);
-    //         this.$store.commit("addStatus", {type: 'success', note: "Client Added To Event"});
-    //       })
-    //       .catch((e) => {
-    //         this.$store.commit("addStatus", { type: 'error', note: e});
-    //       });
-    //     this.addEventToUser();
-    //   }
-    // },
     addEventToUser() {
       let eventId = this.eventId;
       if (this.clientId.length > 0) {
-        console.log(this.clientId);
         this.clientId.forEach((client) => {
           let payload = {
             clientId: client,
@@ -304,11 +279,9 @@ export default {
             value: eventId,
             operation: "addToList",
           };
-          console.log(payload);
           this.$store
             .dispatch("editContact", payload)
-            .then((res) => {
-              console.log(res);
+            .then(() => {
               this.$store.commit("addStatus", {
                 type: "success",
                 note: "Event Added To Contact",
@@ -320,32 +293,9 @@ export default {
         });
       }
     },
-    // addLocationToEvent() {
-    //   if (this.locationId.length > 0) {
-    //     this.locationId.forEach((location) => {
-    //       let payload = {
-    //         eventId: this.eventId,
-    //         variable: "locations",
-    //         value: location,
-    //         operation: "addToList",
-    //       };
-    //       this.$store
-    //         .dispatch("editEvent", payload)
-    //         .then(() => {
-    //           this.$store.commit("addStatus", {type: 'success', note: "Location Added To Event"});
-    //           this.$router.push("/admin/events/" + this.eventId);
-    //         })
-    //         .catch((e) => {
-    //           this.$store.commit("addStatus", { type: 'error', note: e});
-    //         });
-    //     });
-    //   }
-    // },
     addEventToLocation() {
       let eventId = this.eventId;
       if (this.locationId.length > 0) {
-        console.log(this.locationId);
-        console.log(eventId);
         this.locationId.forEach((location) => {
           let payload = {
             locationId: location,
@@ -353,11 +303,9 @@ export default {
             value: eventId,
             operation: "addToList",
           };
-          console.log(payload);
           this.$store
             .dispatch("editLocation", payload)
-            .then((res) => {
-              console.log(res);
+            .then(() => {
               this.$store.commit("addStatus", {
                 type: "success",
                 note: "Event Added To Contact",
@@ -373,18 +321,9 @@ export default {
       // this.eventId = undefined;
       this.locationId = this.locations.map((x) => x.userId);
       this.clientId = this.clients.map((x) => ({ role: x.role, id: x.userId }));
-      console.log(this.locationId);
-      console.log(this.clientId);
       await this.createLocation();
       await this.createUser();
       await this.createEvent();
-      // console.log(this.eventId);
-      // await this.addEventToUser();
-      // await this.addEventToLocation();
-      console.log(this.event);
-      console.log(this.locations);
-      console.log(this.clients);
-      console.log(this.fields);
     },
     //
   },

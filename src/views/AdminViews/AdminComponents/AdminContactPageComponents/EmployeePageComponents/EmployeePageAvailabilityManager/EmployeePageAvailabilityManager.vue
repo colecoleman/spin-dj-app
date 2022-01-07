@@ -168,7 +168,6 @@ export default {
       this.closePopup();
     },
     submitNewDateRange() {
-      console.log(this.dateRangeInput);
       if (this.dateRangeInput.start && this.dateRangeInput.end) {
         this.dateErrorMessage = false;
         let item = {

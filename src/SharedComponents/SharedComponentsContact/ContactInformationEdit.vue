@@ -90,7 +90,6 @@ export default {
   methods: {
     closeEditCard() {
       this.$emit("closeEditCard");
-      console.log("closed");
     },
     chooseFile() {
       document.getElementById("contact-card-edit-hidden-file-button").click();
@@ -104,7 +103,6 @@ export default {
       if (this.photoFile) {
         await this.$store.dispatch("addPhoto", this.photoFile).then((res) => {
           this.fields.profilePicture.value = res;
-          console.log(this.fields.profilePicture);
         });
       }
 
@@ -113,10 +111,7 @@ export default {
         variable: this.fieldToEdit,
         value: this.fields[this.fieldToEdit].value,
       };
-      console.log(payload);
-      this.$store.dispatch("editContact", payload).then((res) => {
-        console.log(res);
-      });
+      await this.$store.dispatch("editContact", payload);
     },
   },
   props: ["contact"],

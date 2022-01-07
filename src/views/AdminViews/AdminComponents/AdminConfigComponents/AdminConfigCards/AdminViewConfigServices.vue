@@ -174,7 +174,7 @@ export default {
       if (this.photoFile) {
         await this.$store.dispatch("addPhoto", this.photoFile).then((res) => {
           this.input.photo = res;
-          console.log(this.inputPhoto);
+
         });
       }
       service.pricing.baseRate *= 100;

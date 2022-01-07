@@ -504,8 +504,6 @@ export default {
       return array.indexOf(product);
     },
     changeAddOnQuantity(e, product) {
-      console.log(e.target.value);
-      console.log(product);
       let array = this.event.invoice.products;
       let index = array.indexOf(product);
       if (index > -1) {
@@ -524,18 +522,14 @@ export default {
       }
     },
     toggleAllDefaultForms() {
-      console.log(this.event.forms);
       if (this.event.forms.length === 0) {
         this.event.forms = [...this.suggestedForms];
-        console.log(this.event.forms);
-
         return;
       }
       if (this.event.forms.length > 0) {
         this.suggestedForms.forEach((form) => {
           this.toggleFormFromEvent(form);
         });
-        console.log(this.event.forms);
 
         return;
       }
@@ -635,7 +629,6 @@ export default {
       return item.map((x) => x.id);
     },
     businessProducts() {
-      // console.log(this.suggestedForms);
       let array = [];
       let packages = this.$store.state.businessSettings.product.packages.map(
         (x) => ({ ...x, type: "Package" })

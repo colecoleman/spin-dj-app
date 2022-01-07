@@ -15,7 +15,7 @@
     <template v-slot:title>Messages</template>
     <template v-slot:action1> </template>
     <template v-slot:content>
-      <div id="container">
+      <div id="container" v-if="loaded">
         <div class="conditional-wrapper" v-if="openView === 'single'">
           <messaging-single-component
             :conversation="singleMessagingConversation"
@@ -95,7 +95,6 @@ export default {
     getConversations(conversations) {
       return conversations.map((x) => {
         x = this.$store.dispatch("getThreadParticipants", x).then((res) => {
-          console.log(res.Items);
           return res.Items;
         });
         return x;
@@ -134,8 +133,6 @@ export default {
   },
   props: ["conversationList"],
   async created() {
-    // make sure conversationList prop has unique values only.
-    console.log(this.conversationList);
     Promise.all(this.getConversations(this.conversationList)).then((res) => {
       let conversations = res;
       for (let index = 0; index < conversations.length; index++) {
@@ -152,6 +149,7 @@ export default {
         });
       }
     });
+    this.loaded = true;
   },
 };
 </script>

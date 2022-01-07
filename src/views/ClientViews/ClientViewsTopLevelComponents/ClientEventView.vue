@@ -193,16 +193,15 @@ export default {
       .dispatch("getEvent", this.$route.params.eventId)
       .then((res) => {
         this.event = res.data.Item;
-        console.log(this.event);
       })
       .catch((e) =>
         this.$store.commit("addStatus", { type: "error", note: e })
       );
     await this.event.contacts.forEach((contact) => {
       this.$store.dispatch("nonAdminGetUser", contact).then((res) => {
-        this.contacts.push(res.data.Item);
-        if (res.data.Item.role === "client") {
-          this.clients.push(res.data.Item);
+        this.contacts.push(res);
+        if (res.role === "client") {
+          this.clients.push(res);
         }
         if (res.conversations) {
           let matchedItem = res.conversations.find((x) => {
@@ -211,14 +210,12 @@ export default {
           if (matchedItem) {
             this.eventConversations.push(matchedItem);
           }
-          console.log(this.eventConversations);
         }
       });
     });
     await this.event.locations.forEach((location) => {
       this.$store.dispatch("getLocation", location).then((res) => {
         this.locations.push(res.Item);
-        console.log(this.locations);
       });
     });
     return this.event.contacts;

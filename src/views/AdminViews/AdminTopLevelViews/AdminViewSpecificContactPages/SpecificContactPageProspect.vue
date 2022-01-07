@@ -115,20 +115,12 @@ export default {
       return this.$store.state.contacts.prospects.find((x) => x.userId == id);
     },
     contactStatus() {
-      console.log(this.contact.status);
       return this.contact.status ? this.contact.status : "Neutral";
     },
   },
   methods: {
-    addToDo() {
-      console.log("clicked!");
-    },
-    getStatus() {},
     openEmailComposition() {
       this.emailPopupOpen = true;
-    },
-    viewNotes() {
-      console.log("notes open");
     },
     changeProspectStatus(status) {
       let payload = {

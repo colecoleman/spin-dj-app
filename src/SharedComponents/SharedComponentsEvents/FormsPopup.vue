@@ -136,7 +136,6 @@ export default {
     },
     downloadForms: helpers.saveElement,
     saveForms() {
-      console.log(this.forms);
       let payload = {
         variable: "forms",
         value: this.forms,
@@ -150,10 +149,6 @@ export default {
   components: {
     FullPagePopup,
     ButtonStandardWithIcon,
-  },
-  created() {
-    console.log(this.forms);
-    console.log(this.eventId);
   },
 };
 </script>

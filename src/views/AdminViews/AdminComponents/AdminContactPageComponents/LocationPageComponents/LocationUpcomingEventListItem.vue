@@ -47,7 +47,6 @@ export default {
     this.loading = true;
 
     this.$store.dispatch("getUser", this.event.contacts[0]).then((res) => {
-      console.log(res.Item);
       this.matchedClient = res.Item;
     });
     this.loading = false;
@@ -89,10 +88,6 @@ export default {
   white-space: nowrap;
   text-overflow: ellipsis;
 }
-
-
-
-
 
 h5 {
   font-weight: 300;
