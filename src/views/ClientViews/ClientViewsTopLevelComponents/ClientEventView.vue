@@ -1,78 +1,68 @@
 <template>
   <div v-if="event" id="div-wrapper">
-    <backdrop
-      v-if="invoiceOpen || formsOpen || contractOpen"
-      @click="closePopup()"
-    ></backdrop>
+    <backdrop v-if="popupOpen" @click="togglePopup()"></backdrop>
     <invoice-popup
       :invoice="event.invoice"
       :event="event"
       :client="client"
-      v-if="invoiceOpen"
-      @close-popup="closePopup()"
+      v-if="popupOpen === 'invoice'"
+      @close-popup="togglePopup()"
     ></invoice-popup>
     <forms-popup
-      v-if="formsOpen"
-      @close-popup="closePopup()"
+      v-if="popupOpen === 'forms'"
+      @close-popup="togglePopup()"
       :forms="event.forms"
       :eventId="event.userId"
     ></forms-popup>
     <contract-popup
-      v-if="contractOpen"
-      @close-popup="closePopup()"
+      v-if="popupOpen === 'contract'"
+      @close-popup="togglePopup()"
       :contracts="event.contracts"
       :eventId="event.userId"
     ></contract-popup>
 
     <section>
-      <div id="upper-div">
-        <div id="upper-div-left-container">
-          <div id="upper-div-left-container-1">
-            <event-page-contact-card
-              v-if="client && event"
-              :client="client"
-              :event="event"
-            ></event-page-contact-card>
-          </div>
-          <div id="upper-div-left-container-2">
-            <event-page-alerts :alerts="eventAlerts"></event-page-alerts>
-          </div>
-        </div>
-        <div id="upper-div-right-container">
-          <div id="upper-div-right-upper-container">
-            <four-button-bar-with-drop-down
-              :buttons="buttons"
-              :dropdown="dropdown"
-            ></four-button-bar-with-drop-down>
-          </div>
-          <div id="upper-div-right-lower-container">
-            <div id="upper-div-right-lower-container-box-1">
-              <specific-event-page-location-scroller
-                :event="event"
-                :loading="locations ? false : true"
-              ></specific-event-page-location-scroller>
-            </div>
-            <div id="upper-div-right-lower-container-box-2">
-              <event-make-payment-card
-                :event="event"
-                :eventId="eventId"
-              ></event-make-payment-card>
-            </div>
-          </div>
-        </div>
+      <div id="contact-card">
+        <event-page-contact-card
+          v-if="client && event"
+          :client="client"
+          :event="event"
+        ></event-page-contact-card>
       </div>
-      <div id="lower-div">
-        <div id="lower-div-box-1">
-          <event-page-contact-carousel
-            :contacts="contacts"
-          ></event-page-contact-carousel>
-        </div>
-        <div id="lower-div-box-2">
-          <to-do-specific-event :event="event"></to-do-specific-event>
-        </div>
-        <div id="lower-div-box-3">
-          <recent-messages-event v-if="contacts"></recent-messages-event>
-        </div>
+      <div id="alerts">
+        <event-page-alerts :alerts="eventAlerts"></event-page-alerts>
+      </div>
+      <div id="button-bar">
+        <four-button-bar-with-drop-down
+          :buttons="buttons"
+        ></four-button-bar-with-drop-down>
+      </div>
+      <div id="location-scroller">
+        <specific-event-page-location-scroller
+          :event="event"
+          :loading="locations ? false : true"
+        ></specific-event-page-location-scroller>
+      </div>
+      <div id="make-payment">
+        <event-make-payment-card
+          :event="event"
+          :eventId="event.userId"
+        ></event-make-payment-card>
+      </div>
+      <div id="contact-carousel">
+        <event-page-contact-carousel
+          :contacts="contacts"
+        ></event-page-contact-carousel>
+      </div>
+      <div id="to-do">
+        <to-do-specific-event :event="event"></to-do-specific-event>
+      </div>
+      <div id="messages">
+        <!-- <recent-messages-event v-if="contacts"></recent-messages-event> -->
+        <recent-messages
+          v-if="contacts"
+          :conversationList="eventConversations"
+        ></recent-messages>
       </div>
     </section>
   </div>
@@ -80,7 +70,8 @@
 
 <script>
 import ToDoSpecificEvent from "../../../SharedComponents/SharedComponentsEvents/ToDoSpecificEvent.vue";
-import RecentMessagesEvent from "../../../SharedComponents/SharedComponentsMessaging/RecentMessagesEvent.vue";
+// import RecentMessagesEvent from "../../../SharedComponents/SharedComponentsMessaging/RecentMessagesEvent.vue";
+import RecentMessages from "../../../SharedComponents/SharedComponentsMessaging/RecentMessages.vue";
 import EventPageContactCard from "../../../SharedComponents/SharedComponentsEvents/EventPageContactCard.vue";
 import EventPageContactCarousel from "../../../SharedComponents/SharedComponentsEvents/eventPageContactCarousel/EventPageContactCarousel.vue";
 import SpecificEventPageLocationScroller from "../../../SharedComponents/SharedComponentsEvents/specificEventPageLocationScroller/SpecificEventPageLocationScroller.vue";
@@ -118,31 +109,13 @@ export default {
           action: this.openContract,
         },
       ],
-
-      dropdown: {
-        title: "Actions",
-        actionItems: [
-          {
-            title: "delete",
-            action: this.deleteEvent,
-            danger: true,
-            icon: SVGs.TrashCanSVG,
-          },
-        ],
-      },
       popupOpen: null,
-      deleteEventOpen: false,
-      backdropOpen: false,
-      contractOpen: false,
-      invoiceOpen: false,
-      formsOpen: false,
     };
   },
   computed: {
     client() {
       return this.clients[0];
     },
-
     eventAlerts() {
       let alerts = [];
       if (this.event.contracts.some((e) => e.status !== "signed")) {
@@ -171,7 +144,17 @@ export default {
   methods: {
     finalPaymentDueDate: helpers.finalPaymentDueDate,
     balanceOutstanding: helpers.balanceOutstanding,
+    openForms() {
+      this.togglePopup("forms");
+    },
+    openInvoice() {
+      this.togglePopup("invoice");
+    },
+    openContract() {
+      this.togglePopup("contract");
+    },
     togglePopup(popup) {
+      console.log(popup);
       if (this.popupOpen !== null) {
         this.popupOpen = null;
         this.backdropOpen = true;
@@ -179,31 +162,6 @@ export default {
         this.popupOpen = popup;
         this.backdropOpen = true;
       }
-    },
-    openForms() {
-      this.formsOpen = true;
-      this.backdropOpen = true;
-    },
-    openInvoice() {
-      this.invoiceOpen = true;
-      this.backdropOpen = true;
-    },
-    openContract() {
-      this.contractOpen = true;
-      this.backdropOpen = true;
-    },
-
-    closePopup() {
-      this.contractOpen = false;
-      this.invoiceOpen = false;
-      this.formsOpen = false;
-      this.backdropOpen = false;
-    },
-    editEvent() {
-      alert("edited!");
-    },
-    postponeEvent() {
-      alert("postponed");
     },
   },
 
@@ -216,6 +174,7 @@ export default {
       .catch((e) =>
         this.$store.commit("addStatus", { type: "error", note: e })
       );
+    // this.event.contacts.push(this.$store.state.user.tenantId);
     await this.event.contacts.forEach((contact) => {
       this.$store.dispatch("nonAdminGetUser", contact).then((res) => {
         this.contacts.push(res);
@@ -236,7 +195,8 @@ export default {
   },
   components: {
     ToDoSpecificEvent,
-    RecentMessagesEvent,
+    // RecentMessagesEvent,
+    RecentMessages,
     EventPageContactCard,
     EventPageContactCarousel,
     SpecificEventPageLocationScroller,
@@ -262,86 +222,47 @@ export default {
 section {
   width: 100%;
   height: 100%;
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: repeat(10, 10%);
+  grid-template-rows: 35px repeat(6, 10%);
 }
 
-#upper-div {
-  height: 55%;
-  width: 100%;
-  display: flex;
-  flex-direction: row;
+#contact-card {
+  grid-column: 1 / 4;
+  grid-row: 1 / 3;
 }
 
-#upper-div-left-container {
-  height: 100%;
-  width: 30%;
-  display: flex;
-  flex-direction: column;
+#alerts {
+  grid-column: 1/ 4;
+  grid-row: 3/ 7;
+}
+#button-bar {
+  grid-column: 4/ 11;
+  grid-row: 1/ 3;
 }
 
-#upper-div-right-container {
-  width: 70%;
-  height: 100%;
+#location-scroller {
+  grid-column: 4/ 7;
+  grid-row: 3/7;
 }
 
-#upper-div-right-upper-container {
-  width: 100%;
-  /* height: 30%; */
-  display: flex;
-  flex-direction: row;
+#make-payment {
+  grid-column: 7 / 11;
+  grid-row: 3/ 7;
 }
 
-#upper-div-right-lower-container {
-  width: 100%;
-  height: 70%;
-  display: flex;
+#contact-carousel {
+  grid-column: 1/ 5;
+  grid-row: 7/ 11;
 }
 
-#upper-div-right-lower-container-box-1 {
-  height: 100%;
-  width: 45%;
-  display: flex;
+#to-do {
+  grid-column: 5 / 8;
+  grid-row: 7 / 11;
 }
 
-#upper-div-right-lower-container-box-2 {
-  height: 100%;
-  width: 55%;
-  display: flex;
-}
-
-#lower-div {
-  height: 45%;
-  width: 100%;
-  min-width: 100%;
-  display: flex;
-  justify-content: stretch;
-  justify-items: stretch;
-}
-
-#lower-div-box-1 {
-  max-width: 40%;
-  min-width: 40%;
-  width: 40%;
-  height: 100%;
-  display: flex;
-}
-
-#lower-div-box-2 {
-  max-width: 30%;
-  min-width: 30%;
-  height: 100%;
-  display: flex;
-}
-
-#lower-div-box-3 {
-  width: 30%;
-  min-width: 30%;
-  height: 100%;
-  display: flex;
-}
-
-svg {
-  fill: white;
+#messages {
+  grid-column: 8 / 11;
+  grid-row: 7 / 11;
 }
 </style>

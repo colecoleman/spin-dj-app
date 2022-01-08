@@ -1,79 +1,73 @@
 <template>
-  <div id="section-wrapper" v-if="contact">
-    <popup-email-composition
-      v-if="emailPopupOpen"
-      :contact="contact"
-      @close-window="closePopups()"
-    ></popup-email-composition>
-    <div id="left-column">
-      <div id="box-one">
-        <contact-card-client
-          :loading="contact ? false : true"
-          :contact="contact"
-          :icon="SVGs.PersonSVG"
-        ></contact-card-client>
-      </div>
-      <div id="box-two">
-        <contact-page-to-do-list :contact="contact"></contact-page-to-do-list>
-      </div>
-      <div id="box-three">
-        <contact-page-notes
-          :contact="contact"
-          :notesPrivate="contact.notesPrivate"
-          :notesPublic="contact.notesPublic"
-          v-if="contact"
-        ></contact-page-notes>
-      </div>
+  <popup-email-composition
+    v-if="emailPopupOpen"
+    :contact="contact"
+    @close-window="closePopups()"
+  ></popup-email-composition>
+  <section>
+    <div id="contact-card">
+      <contact-card-client
+        :loading="contact ? false : true"
+        :contact="contact"
+        :icon="SVGs.PersonSVG"
+      ></contact-card-client>
     </div>
-    <div id="right-column">
-      <div id="box-four">
-        <four-button-bar-with-drop-down
-          :buttons="buttons"
-          :dropdown="dropdown"
-        ></four-button-bar-with-drop-down>
-      </div>
-      <div id="box-five">
-        <div id="box-five-half-one">
-          <client-page-upcoming-events
-            :contact="contact"
-            :icon="SVGs.CalendarSVG"
-          ></client-page-upcoming-events>
-        </div>
-        <!-- <div id="box-five-half-two">
+    <div id="to-do">
+      <contact-page-to-do-list :contact="contact"></contact-page-to-do-list>
+    </div>
+    <div id="notes">
+      <contact-page-notes
+        :contact="contact"
+        :notesPrivate="contact.notesPrivate"
+        :notesPublic="contact.notesPublic"
+        v-if="contact"
+      ></contact-page-notes>
+    </div>
+
+    <div id="button-bar">
+      <four-button-bar-with-drop-down
+        :buttons="buttons"
+        :dropdown="dropdown"
+      ></four-button-bar-with-drop-down>
+    </div>
+
+    <div id="upcoming-events">
+      <client-page-upcoming-events
+        :contact="contact"
+        :icon="SVGs.CalendarSVG"
+      ></client-page-upcoming-events>
+    </div>
+    <!-- <div id="box-five-half-two">
           <client-page-information-card
             :contact="contact"
             :icon="SVGs.InformationIconSVG"
           ></client-page-information-card>
         </div> -->
-      </div>
-      <div id="box-six">
-        <div id="box-six-half">
-          <automation-list
-            :automations="automations"
-            automationType="Contact"
-            :id="$route.params.id"
-            @automation-deleted="deleteAutomation"
-            @automation-approved="approveAutomation"
-          ></automation-list>
-        </div>
-        <div id="box-six-half-two">
-          <base-card
-            :icon="SVGs.MessageBubbleSVG"
-            :loading="contact ? false : true"
-            title="Messages"
-          >
-            <template v-slot:content>
-              <messaging-single-component
-                v-if="conversation"
-                :contact="contact"
-                :conversation="conversation"
-              ></messaging-single-component>
-            </template>
-          </base-card>
-        </div>
-      </div>
+    <div id="automation">
+      <automation-list
+        :automations="automations"
+        automationType="Contact"
+        :id="$route.params.id"
+        @automation-deleted="deleteAutomation"
+        @automation-approved="approveAutomation"
+      ></automation-list>
     </div>
-  </div>
+    <div id="messages">
+      <base-card
+        :icon="SVGs.MessageBubbleSVG"
+        :loading="contact ? false : true"
+        title="Messages"
+      >
+        <template v-slot:content>
+          <messaging-single-component
+            v-if="conversation"
+            :contact="contact"
+            :conversation="conversation"
+          ></messaging-single-component>
+        </template>
+      </base-card>
+    </div>
+  </section>
 </template>
 
 <script>
@@ -222,76 +216,44 @@ export default {
 </script>
 
 <style scoped>
-#section-wrapper {
+section {
   width: 100%;
-  height: 95%;
-  padding-top: 10px;
-  display: flex;
-  /* flex-direction: row; */
-}
-
-svg {
-  fill: white;
-}
-
-#left-column {
-  width: 30%;
   height: 100%;
-  max-height: 100%;
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: repeat(10, 10%);
+  grid-template-rows: repeat(20, 5%);
 }
 
-#box-one {
-  /* height: 30%; */
+#contact-card {
+  grid-column: 1 / 4;
+  grid-row: 1 / 5;
 }
-#box-two {
-  height: 30%;
-  flex-grow: 1;
-}
-
-#box-three {
-  height: 40%;
-  flex-grow: 1;
+#to-do {
+  grid-column: 1 / 4;
+  grid-row: 5 / 12;
 }
 
-#right-column {
-  width: 70%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
+#notes {
+  grid-column: 1 / 4;
+  grid-row: 12 / 21;
+}
+#messages {
+  grid-column: 8/11;
+  grid-row: 14/ 21;
 }
 
-#box-four {
-  height: 18%;
+#button-bar {
+  grid-column: 4/ 11;
+  grid-row: 1/ 4;
 }
 
-#box-five {
-  height: 40%;
-  display: flex;
-  flex-direction: row;
-  justify-content: stretch;
+#upcoming-events {
+  grid-column: 4/ 8;
+  grid-row: 4/21;
 }
 
-#box-five-half-one {
-  width: 100%;
-}
-
-/* #box-five-half-two {
-  width: 40%;
-} */
-
-#box-six {
-  height: 42%;
-  display: flex;
-  flex-direction: row;
-}
-
-#box-six-half {
-  width: 55%;
-}
-
-#box-six-half-two {
-  width: 45%;
+#automation {
+  grid-column: 8 / 11;
+  grid-row: 4/ 14;
 }
 </style>

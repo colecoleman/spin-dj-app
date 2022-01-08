@@ -1,30 +1,23 @@
 <template>
-  <section id="dashboard-wrapper">
-    <base-navigation-card>
-      <template v-slot:navigation>
-        <admin-dashboard-navigation></admin-dashboard-navigation>
-      </template>
-    </base-navigation-card>
-
-    <div id="wrapper">
-      <div id="left-content-div">
-        <div id="box-1" class="box">
-          <upcoming-events :events="events" v-if="events"></upcoming-events>
-        </div>
-        <div id="box-2" class="box">
-          <metrics-chart :events="events"></metrics-chart>
-        </div>
-      </div>
-      <div id="right-content-div">
-        <div id="box-3" class="box">
-          <event-calendar :events="events" v-if="events"></event-calendar>
-        </div>
-        <div id="box-4" class="box">
-          <recent-messages
-            :conversationList="userConversations"
-          ></recent-messages>
-        </div>
-      </div>
+  <section>
+    <div id="navigation">
+      <base-card>
+        <template v-slot:content>
+          <admin-dashboard-navigation></admin-dashboard-navigation>
+        </template>
+      </base-card>
+    </div>
+    <div id="upcoming-events">
+      <upcoming-events :events="events"></upcoming-events>
+    </div>
+    <div id="metrics-chart">
+      <metrics-chart :events="events"></metrics-chart>
+    </div>
+    <div id="calendar">
+      <event-calendar :events="events"></event-calendar>
+    </div>
+    <div id="messaging">
+      <recent-messages :conversationList="userConversations"></recent-messages>
     </div>
   </section>
 </template>
@@ -34,15 +27,10 @@ import UpcomingEvents from "../../../SharedComponents/SharedComponentsUpcomingEv
 import MetricsChart from "../AdminComponents/AdminDashboardComponents/AdminDashboardComponents/MetricsCharts/MetricsChart.vue";
 import EventCalendar from "../../../SharedComponents/SharedComponentsCalendar/EventCalendar.vue";
 import RecentMessages from "../../../SharedComponents/SharedComponentsMessaging/RecentMessages.vue";
-import BaseNavigationCard from "../../../SharedComponents/SharedComponentsUI/BaseNavigationCard.vue";
+
 import AdminDashboardNavigation from "../AdminComponents/AdminDashboardComponents/AdminDashboardNavigation.vue";
 
 export default {
-  data() {
-    return {
-      // events: [],
-    };
-  },
   computed: {
     currentUser() {
       return this.$store.state.user;
@@ -60,44 +48,40 @@ export default {
     EventCalendar,
     RecentMessages,
     MetricsChart,
-    BaseNavigationCard,
     AdminDashboardNavigation,
   },
 };
 </script>
 
 <style scoped>
-#wrapper {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  width: 80%;
-}
-#dashboard-wrapper {
+section {
   width: 100%;
-  display: flex;
-  flex-direction: row;
-}
-
-#left-content-div {
   height: 100%;
-  display: flex;
-  flex-direction: column;
-  width: 65%;
+  display: grid;
+  grid-template-columns: 20% 50% 30%;
+  grid-template-rows: 50% 50%;
 }
 
-#right-content-div {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  width: 35%;
+#navigation {
+  grid-column: 1 / 2;
+  grid-row: 1 / 3;
+}
+#upcoming-events {
+  grid-column: 2 / 3;
+  grid-row: 1 / 2;
 }
 
-#box-1,
-#box-2,
-#box-3,
-#box-4 {
-  height: 50%;
+#metrics-chart {
+  grid-column: 2 / 3;
+  grid-row: 2 / 3;
+}
+#calendar {
+  grid-column: 3 / 4;
+  grid-row: 1/ 2;
+}
+
+#messaging {
+  grid-column: 3/ 4;
+  grid-row: 2/ 3;
 }
 </style>

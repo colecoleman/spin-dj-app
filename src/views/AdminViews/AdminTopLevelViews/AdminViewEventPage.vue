@@ -34,7 +34,6 @@
       @close-popup="closePopup()"
       :contracts="event.contracts"
     ></contract-popup>
-
     <two-button-dialog-modal
       v-if="deleteEventOpen"
       @select-button-one="confirmDeleteEvent()"
@@ -42,53 +41,51 @@
       @close-modal="closePopup()"
     ></two-button-dialog-modal>
     <section>
-      <div id="upper-div">
-        <div id="upper-div-left-container">
-          <event-page-contact-card
-            v-if="client && event"
-            :client="client"
-            :event="event"
-          ></event-page-contact-card>
-        </div>
-        <div id="upper-div-right-container">
-          <div id="upper-div-right-upper-container">
-            <four-button-bar-with-drop-down
-              :buttons="buttons"
-              :dropdown="dropdown"
-            ></four-button-bar-with-drop-down>
-          </div>
-          <div id="upper-div-right-lower-container">
-            <div id="upper-div-right-lower-container-box-1">
-              <specific-event-page-location-scroller
-                :locations="locations"
-                :loading="locations ? false : true"
-              ></specific-event-page-location-scroller>
-            </div>
-            <div id="upper-div-right-lower-container-box-2">
-              <automation-list
-                :automations="automations"
-                :contacts="contacts"
-                automationType="Event"
-                :id="$route.params.id"
-              ></automation-list>
-            </div>
-          </div>
-        </div>
+      <div id="contact-card">
+        <event-page-contact-card
+          v-if="client && event"
+          :client="client"
+          :event="event"
+        ></event-page-contact-card>
       </div>
-      <div id="lower-div">
-        <div id="lower-div-box-1">
-          <event-page-contact-carousel
-            :contacts="contacts"
-          ></event-page-contact-carousel>
-        </div>
-        <div id="lower-div-box-2">
-          <to-do-specific-event :event="event"></to-do-specific-event>
-        </div>
-        <div id="lower-div-box-3">
-          <recent-messages
-            :conversationList="eventConversations"
-          ></recent-messages>
-        </div>
+      <div id="location-scroller">
+        <specific-event-page-location-scroller
+          :event="event"
+          :loading="locations ? false : true"
+        ></specific-event-page-location-scroller>
+      </div>
+      <div id="button-bar">
+        <four-button-bar-with-drop-down
+          :buttons="buttons"
+          :dropdown="dropdown"
+        ></four-button-bar-with-drop-down>
+      </div>
+      <div id="event-information">
+        <event-information
+          :event="event"
+          :eventId="event.userId"
+        ></event-information>
+      </div>
+      <div id="automation">
+        <automation-list
+          :automations="automations"
+          :contacts="contacts"
+          automationType="Event"
+          :id="$route.params.id"
+        ></automation-list>
+      </div>
+      <div id="contact-carousel">
+        <event-page-contact-carousel
+          :contacts="contacts"
+        ></event-page-contact-carousel>
+      </div>
+      <div id="to-do">
+        <to-do-specific-event :event="event"></to-do-specific-event>
+      </div>
+      <div id="recent-messages">
+        <recent-messages
+          :conversationList="eventConversations"
+        ></recent-messages>
       </div>
     </section>
   </div>
@@ -104,6 +101,7 @@ import AutomationList from "../AdminComponents/AdminSharedComponents/AutomationL
 import Backdrop from "../../../SharedComponents/SharedComponentsUI/Backdrop.vue";
 import FormsPopup from "../../../SharedComponents/SharedComponentsEvents/FormsPopup.vue";
 import InvoicePopup from "../../../SharedComponents/SharedComponentsEvents/InvoicePopup.vue";
+import EventInformation from "../AdminComponents/AdminEventPageComponents/EventInformation.vue";
 import EventMakePayment from "../../../SharedComponents/SharedComponentsEvents/EventMakePayment/EventMakePayment.vue";
 import PopupModal from "../../../SharedComponents/SharedComponentsUI/PopupModal.vue";
 import ContractPopup from "../../../SharedComponents/SharedComponentsEvents/ContractPopup.vue";
@@ -197,25 +195,29 @@ export default {
     },
     async confirmDeleteEvent() {
       let contacts = [...this.contacts];
-      await contacts.forEach((contact) => {
-        let index = contact.associatedEvents.indexOf(this.event.userId);
-        let payload = {
-          clientId: contact.userId,
-          variable: "associatedEvents",
-          value: index,
-          operation: "removeFromList",
-        };
-        this.$store
-          .dispatch("editContact", payload)
-          .then(() => {
-            this.$store.commit("addStatus", {
-              type: "success",
-              note: "Event Removed From Contact",
-            });
-          })
-          .catch((e) => {
-            this.$store.commit("addStatus", { type: "error", note: e });
-          });
+      contacts.forEach((contact) => {
+        if (contact) {
+          let index = contact.associatedEvents.indexOf(this.event.userId);
+          if (index > -1) {
+            let payload = {
+              clientId: contact.userId,
+              variable: "associatedEvents",
+              value: index,
+              operation: "removeFromList",
+            };
+            this.$store
+              .dispatch("editContact", payload)
+              .then(() => {
+                this.$store.commit("addStatus", {
+                  type: "success",
+                  note: "Event Removed From Contact",
+                });
+              })
+              .catch((e) => {
+                this.$store.commit("addStatus", { type: "error", note: e });
+              });
+          }
+        }
       });
       await this.$store.dispatch("deleteEvent", this.event.userId);
       this.$router.push("/admin/dashboard");
@@ -271,6 +273,7 @@ export default {
     Backdrop,
     InvoicePopup,
     PopupModal,
+    EventInformation,
     FormsPopup,
     ContractPopup,
     FourButtonBarWithDropDown,
@@ -288,85 +291,48 @@ export default {
 section {
   width: 100%;
   height: 100%;
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: repeat(10, 10%);
+  grid-template-rows: 35px repeat(6, 10%);
 }
 
-#upper-div {
-  height: 55%;
-  width: 100%;
-  display: flex;
-  flex-direction: row;
+#contact-card {
+  grid-column: 1 / 4;
+  grid-row: 1 / 3;
 }
 
-#upper-div-left-container {
-  height: 100%;
-  width: 30%;
-  display: flex;
+#location-scroller {
+  grid-column: 1/ 4;
+  grid-row: 3/ 7;
 }
 
-#upper-div-right-container {
-  width: 70%;
-  height: 100%;
+#button-bar {
+  grid-column: 4/ 11;
+  grid-row: 1/ 3;
 }
 
-#upper-div-right-upper-container {
-  width: 100%;
-  /* height: 30%; */
-  display: flex;
-  flex-direction: row;
+#event-information {
+  grid-column: 4/ 7;
+  grid-row: 3/7;
 }
 
-#upper-div-right-lower-container {
-  width: 100%;
-  height: 70%;
-  display: flex;
+#automation {
+  grid-column: 7 / 11;
+  grid-row: 3/ 7;
 }
 
-#upper-div-right-lower-container-box-1 {
-  height: 100%;
-  width: 45%;
-  display: flex;
+#contact-carousel {
+  grid-column: 1/ 5;
+  grid-row: 7/ 11;
 }
 
-#upper-div-right-lower-container-box-2 {
-  height: 100%;
-  width: 55%;
-  display: flex;
+#to-do {
+  grid-column: 5 / 8;
+  grid-row: 7 / 11;
 }
 
-#lower-div {
-  height: 45%;
-  width: 100%;
-  min-width: 100%;
-  display: flex;
-  justify-content: stretch;
-  justify-items: stretch;
-}
-
-#lower-div-box-1 {
-  max-width: 40%;
-  min-width: 40%;
-  width: 40%;
-  height: 100%;
-  display: flex;
-}
-
-#lower-div-box-2 {
-  max-width: 30%;
-  min-width: 30%;
-  height: 100%;
-  display: flex;
-}
-
-#lower-div-box-3 {
-  width: 30%;
-  min-width: 30%;
-  height: 100%;
-  display: flex;
-}
-
-svg {
-  fill: white;
+#recent-messages {
+  grid-column: 8 / 11;
+  grid-row: 7 / 11;
 }
 </style>

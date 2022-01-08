@@ -4,67 +4,63 @@
     :contact="contact"
     @closeWindow="toggleEmailComposition()"
   ></popup-email-composition>
-  <div id="section-wrapper">
-    <div id="left-column">
-      <div id="box-one">
-        <contact-card-person
-          v-if="contact"
-          :contact="contact"
-          :icon="SVGs.PersonSVG"
-        ></contact-card-person>
-      </div>
-      <div id="box-two">
-        <contact-page-notes
-          v-if="contact"
-          :contact="contact"
-        ></contact-page-notes>
-      </div>
-      <div id="box-three">
-        <contact-page-to-do-list
-          v-if="contact"
-          :contact="contact"
-        ></contact-page-to-do-list>
-      </div>
+  <section>
+    <div id="contact-card">
+      <contact-card-person
+        v-if="contact"
+        :contact="contact"
+        :icon="SVGs.PersonSVG"
+      ></contact-card-person>
     </div>
-    <div id="right-column">
-      <div id="box-four">
-        <four-button-bar-with-drop-down
-          :buttons="buttons"
-          :dropdown="dropdown"
-        ></four-button-bar-with-drop-down>
-      </div>
-      <div id="box-five">
-        <upcoming-events
-          :events="events"
-          :pastEvents="pastEvents"
-          v-if="!eventAssignmentOpen && eventsLoaded"
-        ></upcoming-events>
-      </div>
-      <div id="box-six">
-        <div id="box-six-half">
-          <automation-list
-            :automations="automations"
-            automationType="Contact"
-            :id="$route.params.id"
-            @automation-deleted="deleteAutomation"
-            @automation-approved="approveAutomation"
-          ></automation-list>
-        </div>
-        <div id="box-six-half-two">
-          <base-card :icon="SVGs.MessageBubbleSVG" title="Messages">
-            <template v-slot:content>
-              <messaging-single-component
-                v-if="contact"
-                :defaultUser="contact"
-                :conversation="conversation"
-                :id="contact.userId"
-              ></messaging-single-component>
-            </template>
-          </base-card>
-        </div>
-      </div>
+    <div id="notes">
+      <contact-page-notes
+        v-if="contact"
+        :contact="contact"
+      ></contact-page-notes>
     </div>
-  </div>
+    <div id="to-do">
+      <contact-page-to-do-list
+        v-if="contact"
+        :contact="contact"
+      ></contact-page-to-do-list>
+    </div>
+
+    <div id="button-bar">
+      <four-button-bar-with-drop-down
+        :buttons="buttons"
+        :dropdown="dropdown"
+      ></four-button-bar-with-drop-down>
+    </div>
+    <div id="upcoming-events">
+      <upcoming-events
+        :events="events"
+        :pastEvents="pastEvents"
+        v-if="!eventAssignmentOpen && eventsLoaded"
+      ></upcoming-events>
+    </div>
+
+    <div id="automation">
+      <automation-list
+        :automations="automations"
+        automationType="Contact"
+        :id="$route.params.id"
+        @automation-deleted="deleteAutomation"
+        @automation-approved="approveAutomation"
+      ></automation-list>
+    </div>
+    <div id="messages">
+      <base-card :icon="SVGs.MessageBubbleSVG" title="Messages">
+        <template v-slot:content>
+          <messaging-single-component
+            v-if="contact"
+            :defaultUser="contact"
+            :conversation="conversation"
+            :id="contact.userId"
+          ></messaging-single-component>
+        </template>
+      </base-card>
+    </div>
+  </section>
 </template>
 
 <script>
@@ -232,57 +228,44 @@ export default {
 </script>
 
 <style scoped>
-#section-wrapper {
+section {
   width: 100%;
-  /* height: 95%; */
-  padding-top: 10px;
-  display: flex;
-  /* flex-direction: row; */
-}
-
-svg {
-  fill: white;
-}
-
-#left-column {
-  width: 30%;
   height: 100%;
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: repeat(10, 10%);
+  grid-template-rows: repeat(20, 5%);
 }
 
-#box-one {
+#contact-card {
+  grid-column: 1 / 4;
+  grid-row: 1 / 5;
 }
-#box-two {
-  height: 40%;
-}
-
-#box-three {
-  flex-grow: 1;
-}
-
-#right-column {
-  width: 70%;
-  /* height: calc(100% - 5px); */
-}
-#box-four {
+#to-do {
+  grid-column: 1 / 4;
+  grid-row: 5 / 12;
 }
 
-#box-five {
-  height: 40%;
+#notes {
+  grid-column: 1 / 4;
+  grid-row: 12 / 21;
+}
+#messages {
+  grid-column: 8/11;
+  grid-row: 14/ 21;
 }
 
-#box-six {
-  height: 42%;
-  display: flex;
-  flex-direction: row;
+#button-bar {
+  grid-column: 4/ 11;
+  grid-row: 1/ 4;
 }
 
-#box-six-half {
-  width: 55%;
+#upcoming-events {
+  grid-column: 4/ 8;
+  grid-row: 4/21;
 }
 
-#box-six-half-two {
-  width: 45%;
+#automation {
+  grid-column: 8 / 11;
+  grid-row: 4/ 14;
 }
 </style>

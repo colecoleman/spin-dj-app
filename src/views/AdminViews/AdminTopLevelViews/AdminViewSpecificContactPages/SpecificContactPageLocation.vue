@@ -4,62 +4,49 @@
     :contact="contact"
     @closeWindow="closePopups()"
   ></popup-email-composition>
-  <div id="section-wrapper">
-    <div id="left-column">
-      <div id="box-one">
-        <contact-card-location
-          v-if="location"
-          :icon="SVGs.LocationMarkerSVG"
-          :location="location"
-        ></contact-card-location>
-      </div>
-      <div id="box-two"></div>
-      <div id="box-three">
-        <contact-page-to-do-list :contact="location"></contact-page-to-do-list>
-      </div>
+  <section>
+    <div id="location-card">
+      <contact-card-location
+        v-if="location"
+        :icon="SVGs.LocationMarkerSVG"
+        :location="location"
+      ></contact-card-location>
     </div>
-    <div id="right-column">
-      <div id="box-four">
-        <four-button-bar-with-drop-down
-          :buttons="buttons"
-          :dropdown="dropdown"
-        ></four-button-bar-with-drop-down>
-      </div>
-      <div id="box-five">
-        <div id="box-five-half-one">
-          <location-page-upcoming-events
-            v-if="location"
-            :location="location"
-            :icon="SVGs.CalendarSVG"
-            @event-assignment-toggle="toggleEventAssignment()"
-            :eventAssignmentOpen="eventAssignmentOpen"
-          ></location-page-upcoming-events>
-        </div>
-        <div id="box-five-half-two">
-          <!-- <location-preferred-information></location-preferred-information> -->
-          <location-contact-card-person
-            :contact="contact"
-            :location="location"
-            :icon="SVGs.PersonSVG"
-          ></location-contact-card-person>
-        </div>
-      </div>
-      <div id="box-six">
-        <div id="box-six-half">
-          <automation-list
-            :automations="automations"
-            automationType="Contact"
-            :id="$route.params.id"
-            @automation-deleted="deleteAutomation"
-            @automation-approved="approveAutomation"
-          ></automation-list>
-        </div>
-        <div id="box-six-half-two">
-          <contact-page-notes :contact="location"></contact-page-notes>
-        </div>
-      </div>
+    <div id="to-do">
+      <contact-page-to-do-list :contact="location"></contact-page-to-do-list>
     </div>
-  </div>
+    <div id="button-bar">
+      <four-button-bar-with-drop-down
+        :buttons="buttons"
+        :dropdown="dropdown"
+      ></four-button-bar-with-drop-down>
+    </div>
+    <div id="upcoming-events">
+      <location-page-upcoming-events
+        v-if="location"
+        :location="location"
+        :icon="SVGs.CalendarSVG"
+        @event-assignment-toggle="toggleEventAssignment()"
+        :eventAssignmentOpen="eventAssignmentOpen"
+      ></location-page-upcoming-events>
+    </div>
+    <div id="contact-card">
+      <!-- <location-preferred-information></location-preferred-information> -->
+      <contact-card-person :contact="contact"></contact-card-person>
+    </div>
+    <div id="automation">
+      <automation-list
+        :automations="automations"
+        automationType="Contact"
+        :id="$route.params.id"
+        @automation-deleted="deleteAutomation"
+        @automation-approved="approveAutomation"
+      ></automation-list>
+    </div>
+    <div id="notes">
+      <contact-page-notes :contact="location"></contact-page-notes>
+    </div>
+  </section>
 </template>
 
 <script>
@@ -69,7 +56,7 @@ import ContactPageNotes from "../../AdminComponents/AdminContactPageComponents/A
 import LocationPageUpcomingEvents from "../../AdminComponents/AdminContactPageComponents/LocationPageComponents/LocationUpcomingEvents.vue";
 // import LocationPreferredInformation from "../ContactPageComponents/LocationPageComponents/LocationPreferredInformation.vue";
 import ContactCardLocation from "../../AdminComponents/AdminContactPageComponents/LocationPageComponents/ContactCardLocation.vue";
-import LocationContactCardPerson from "../../AdminComponents/AdminContactPageComponents/LocationPageComponents/LocationContactCardPerson.vue";
+import ContactCardPerson from "../../../../SharedComponents/SharedComponentsContact/ContactCardPerson.vue";
 import PopupEmailComposition from "../../../../SharedComponents/SharedComponentsPopupUtilities/PopupEmailComposition.vue";
 import FourButtonBarWithDropDown from "../../../../SharedComponents/SharedComponentsUI/FourButtonBarWithDropDown.vue";
 import SVGs from "../../../../assets/SVGs/svgIndex.js";
@@ -133,10 +120,9 @@ export default {
 
   components: {
     PopupEmailComposition,
-    LocationContactCardPerson,
+    ContactCardPerson,
     ContactPageToDoList,
     LocationPageUpcomingEvents,
-    // LocationPreferredInformation,
     ContactPageNotes,
     AutomationList,
     ContactCardLocation,
@@ -146,70 +132,49 @@ export default {
 </script>
 
 <style scoped>
-#section-wrapper {
+section {
   width: 100%;
-  height: 95%;
-  padding-top: 10px;
-  display: flex;
-}
-
-svg {
-  fill: white;
-}
-
-#left-column {
-  width: 30%;
   height: 100%;
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: repeat(10, 10%);
+  grid-template-rows: repeat(20, 5%);
 }
 
-#box-one {
-  /* height: 25%; */
-}
-#box-two {
-  /* height: 70%; */
+#location-card {
+  grid-column: 1 / 4;
+  grid-row: 1 / 6;
 }
 
-#box-three {
-  flex-grow: 1;
+#contact-card {
+  grid-column: 1 / 4;
+  grid-row: 6 / 10;
+}
+#to-do {
+  grid-column: 1 / 4;
+  grid-row: 10 / 21;
 }
 
-#right-column {
-  width: 70%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
+#messages {
+  grid-column: 8 /11;
+  grid-row: 14 / 21;
 }
 
-#box-four {
+#button-bar {
+  grid-column: 4 / 11;
+  grid-row: 1 / 4;
 }
 
-#box-five {
-  /* max-height: 40%; */
-  height: 45%;
-  display: flex;
-  flex-direction: row;
+#upcoming-events {
+  grid-column: 4 / 8;
+  grid-row: 4 / 21;
 }
 
-#box-five-half-one {
-  width: 60%;
+#automation {
+  grid-column: 8 / 11;
+  grid-row: 4 / 12;
 }
-#box-five-half-two {
-  width: 40%;
-}
-
-#box-six {
-  height: 40%;
-  display: flex;
-  flex-direction: row;
-}
-
-#box-six-half {
-  width: 55%;
-}
-
-#box-six-half-two {
-  width: 45%;
+#notes {
+  grid-column: 8 / 11;
+  grid-row: 12 / 21;
 }
 </style>

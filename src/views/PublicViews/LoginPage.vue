@@ -30,6 +30,7 @@
 <script>
 import SpinLogoWithText from "../../assets/spin-logo-with-text.svg";
 import { Authenticator } from "@aws-amplify/ui-vue";
+import "@aws-amplify/ui-vue/styles.css";
 import { Hub } from "aws-amplify";
 
 export default {
@@ -61,6 +62,19 @@ export default {
   computed: {
     user() {
       return this.$store.state.user;
+    },
+    authTheme() {
+      return {
+        name: "auth-theme",
+        tokens: {
+          fonts: {
+            default: {
+              variable: { value: "Roboto, sans-serif" },
+              static: { value: "Roboto, sans-serif" },
+            },
+          },
+        },
+      };
     },
   },
   mounted() {
@@ -152,42 +166,12 @@ p {
   color: white;
 }
 
-.hero-right h1 {
-  text-align: center;
+.amplify-button {
+  background-color: black;
 }
 
-.login-form {
-  width: 50%;
-}
-
-.input-field {
-  text-align: left;
-}
-
-.healthy {
-  width: 100%;
-}
-.error {
-  border-bottom: 2px solid red;
-  width: 100%;
-}
-
-.error-text {
-  color: red;
-  text-align: center;
-}
-
-input:focus {
-  outline: none;
-  border-bottom: 3px solid white;
-}
-
-.button-standard-with-icon {
-  border: 1px solid white;
-  color: white;
-  border-radius: 3px;
-  margin: 40px 30%;
-  width: 40%;
+.amplify-tabs {
+  display: none;
 }
 
 .disclaimer {
@@ -202,8 +186,14 @@ input:focus {
   font-weight: 600;
 }
 
+
+
 .sign-in-text:hover {
   text-shadow: 1px 1px 10px white;
   cursor: pointer;
+}
+
+:root {
+  --form-color: cyan !important;
 }
 </style>

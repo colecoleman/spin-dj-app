@@ -1,14 +1,14 @@
 <template>
-  <client-header></client-header>
+  <non-admin-header></non-admin-header>
   <div class="content-container">
     <router-view name="content"></router-view>
   </div>
 </template>
 
 <script>
-import ClientHeader from "./ClientHeader.vue";
+import NonAdminHeader from "../../SharedComponents/SharedComponentsHeader/NonAdminHeader.vue";
 export default {
-  components: { ClientHeader },
+  components: { NonAdminHeader },
 };
 </script>
 

@@ -9,60 +9,56 @@
     :employee="contact"
     @close-popup="closePopups()"
   ></employee-page-availability-manager>
-  <div id="section-wrapper">
-    <div id="left-column">
-      <div id="box-one">
-        <contact-card-person
-          :contact="contact"
-          :icon="SVGs.PersonSVG"
-        ></contact-card-person>
-      </div>
-      <div id="box-two">
-        <contact-page-to-do-list :contact="contact"></contact-page-to-do-list>
-      </div>
-      <div id="box-three">
-        <contact-page-notes :contact="contact"></contact-page-notes>
-      </div>
+  <section>
+    <div id="contact-card">
+      <contact-card-person
+        :contact="contact"
+        :icon="SVGs.PersonSVG"
+      ></contact-card-person>
     </div>
-    <div id="right-column">
-      <div id="box-four">
-        <four-button-bar-with-drop-down
-          :buttons="buttons"
-          :dropdown="dropdown"
-        ></four-button-bar-with-drop-down>
-      </div>
-      <div id="box-five">
-        <upcoming-events
-          :events="events"
-          :pastEvents="pastEvents"
-          v-if="!eventAssignmentOpen && eventsLoaded"
-        ></upcoming-events>
-      </div>
-      <div id="box-six">
-        <div id="box-six-half">
-          <automation-list
-            :automations="automations"
-            automationType="Contact"
-            :id="$route.params.id"
-            @automation-deleted="deleteAutomation"
-            @automation-approved="approveAutomation"
-          ></automation-list>
-        </div>
-        <div id="box-six-half-two">
-          <base-card :icon="SVGs.MessageBubbleSVG" title="Messages">
-            <template v-slot:content>
-              <messaging-single-component
-                v-if="contact"
-                :defaultUser="contact"
-                :conversation="conversation"
-                :id="contact.userId"
-              ></messaging-single-component>
-            </template>
-          </base-card>
-        </div>
-      </div>
+    <div id="to-do">
+      <contact-page-to-do-list :contact="contact"></contact-page-to-do-list>
     </div>
-  </div>
+    <div id="notes">
+      <contact-page-notes :contact="contact"></contact-page-notes>
+    </div>
+
+    <div id="button-bar">
+      <four-button-bar-with-drop-down
+        :buttons="buttons"
+        :dropdown="dropdown"
+      ></four-button-bar-with-drop-down>
+    </div>
+    <div id="upcoming-events">
+      <upcoming-events
+        :events="events"
+        :pastEvents="pastEvents"
+        v-if="!eventAssignmentOpen"
+      ></upcoming-events>
+    </div>
+
+    <div id="automation">
+      <automation-list
+        :automations="automations"
+        automationType="Contact"
+        :id="$route.params.id"
+        @automation-deleted="deleteAutomation"
+        @automation-approved="approveAutomation"
+      ></automation-list>
+    </div>
+    <div id="messages">
+      <base-card :icon="SVGs.MessageBubbleSVG" title="Messages">
+        <template v-slot:content>
+          <messaging-single-component
+            v-if="contact"
+            :defaultUser="contact"
+            :conversation="conversation"
+            :id="contact.userId"
+          ></messaging-single-component>
+        </template>
+      </base-card>
+    </div>
+  </section>
 </template>
 
 <script>
@@ -243,57 +239,44 @@ export default {
 </script>
 
 <style scoped>
-#section-wrapper {
+section {
   width: 100%;
   height: 100%;
-  padding-top: 10px;
-  display: flex;
-  /* flex-direction: row; */
+  display: grid;
+  grid-template-columns: repeat(10, 10%);
+  grid-template-rows: repeat(20, 5%);
 }
 
-#left-column {
-  width: 30%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
+#contact-card {
+  grid-column: 1 / 4;
+  grid-row: 1 / 5;
+}
+#to-do {
+  grid-column: 1 / 4;
+  grid-row: 5 / 12;
 }
 
-#box-one {
-  height: 30%;
+#notes {
+  grid-column: 1 / 4;
+  grid-row: 12 / 21;
 }
-#box-two {
-  height: 35%;
-}
-
-#box-three {
-  height: 35%;
+#messages {
+  grid-column: 8/11;
+  grid-row: 14/ 21;
 }
 
-#right-column {
-  width: 70%;
-  display: flex;
-  flex-direction: column;
+#button-bar {
+  grid-column: 4/ 11;
+  grid-row: 1/ 4;
 }
 
-#box-four {
-  height: 18%;
+#upcoming-events {
+  grid-column: 4/ 8;
+  grid-row: 4/21;
 }
 
-#box-five {
-  height: 40%;
-}
-
-#box-six {
-  height: 42%;
-  display: flex;
-  flex-direction: row;
-}
-
-#box-six-half {
-  width: 55%;
-}
-
-#box-six-half-two {
-  width: 45%;
+#automation {
+  grid-column: 8 / 11;
+  grid-row: 4/ 14;
 }
 </style>

@@ -1,12 +1,13 @@
 <template>
-  <section id="contacts-wrapper">
-    <base-navigation-card>
-      <template v-slot:navigation>
-        <contact-navigation></contact-navigation>
-      </template>
-    </base-navigation-card>
-
-    <div id="left-container">
+  <section>
+    <div id="navigation">
+      <base-card>
+        <template v-slot:content>
+          <contact-navigation></contact-navigation>
+        </template>
+      </base-card>
+    </div>
+    <div id="scroll-container">
       <div
         class="contacts-container"
         v-for="(value, contact_category) in contacts"
@@ -14,7 +15,7 @@
         :id="`${contact_category + `-card`}`"
       >
         <base-card :icon="SVGs.PersonSVG" :title="contact_category">
-          <template v-slot:action1>
+          <!-- <template v-slot:action1>
             Sort:
             <img
               :src="SVGs.SortAlphaSVG"
@@ -29,14 +30,14 @@
                 @actionClicked="selectSort"
               />
             </div>
-          </template>
+          </template> -->
           <template v-slot:content>
             <div class="personal-contact-list" v-if="value.length > 0">
               <div
-                class="personal-contact-item"
                 v-for="contact in value"
                 :key="contact.userId"
                 :category="contact_category"
+                class="contact-list-item"
               >
                 <contact-list-item
                   :contact="contact"
@@ -50,9 +51,8 @@
           </template>
         </base-card>
       </div>
-      <div id="scroll-padding"></div>
     </div>
-    <div id="right-container">
+    <div id="add-contact">
       <base-card :icon="SVGs.AddPersonSVG" title="Add New">
         <template v-slot:content>
           <add-contact-module></add-contact-module>
@@ -65,10 +65,8 @@
 <script>
 import ContactListItem from "../AdminComponents/AdminContactListComponents/ContactListItem.vue";
 import AddContactModule from "../AdminComponents/AdminContactListComponents/AdminAddContactModules/AddContactModule.vue";
-
-import BaseNavigationCard from "../../../SharedComponents/SharedComponentsUI/BaseNavigationCard.vue";
 import ContactNavigation from "../AdminComponents/AdminContactListComponents/AdminViewContactListNavigation.vue";
-import FloatingMenuWithListItems from "../../../SharedComponents/SharedComponentsUI/FloatingMenuWithListItems.vue";
+// import FloatingMenuWithListItems from "../../../SharedComponents/SharedComponentsUI/FloatingMenuWithListItems.vue";
 import SVGs from "../../../assets/SVGs/svgIndex.js";
 
 export default {
@@ -123,38 +121,44 @@ export default {
 
   mounted() {},
   components: {
-    BaseNavigationCard,
     ContactListItem,
     AddContactModule,
     ContactNavigation,
-    FloatingMenuWithListItems,
+    // FloatingMenuWithListItems,
   },
 };
 </script>
 
 <style scoped>
-#contacts-wrapper {
-  display: flex;
-  flex-direction: row;
-  min-width: 100%;
+section {
+  width: 100%;
   height: 100%;
-  /* padding-top: 5px; */
-  /* overflow: hidden; */
+  display: grid;
+  grid-template-columns: 20% 55% 25%;
+  grid-template-rows: 50% 50% 20px;
 }
 
 #navigation {
-  /* width: 20%; */
+  grid-column: 1 / 2;
+  grid-row: 1 / 3;
 }
 
-#left-container {
-  width: 60%;
-  height: 108%;
+#scroll-container {
+  grid-column: 2 / 3;
+  grid-row: 1 / 4;
   overflow: scroll;
 }
 
-#scroll-padding {
-  min-height: calc(15% - 5px);
-  min-width: 100%;
+#scroll-container .contacts-container:last-child {
+  padding-bottom: 12px;
+}
+#scroll-container .contacts-container:first-child {
+  margin-top: 12px;
+}
+
+#add-contact {
+  grid-column: 3/4;
+  grid-row: 1/3;
 }
 
 .contacts-container {
@@ -162,22 +166,9 @@ export default {
   width: 100%;
 }
 
-.personal-contact-item {
-  z-index: 1;
-  width: 99%;
-}
-
 .personal-contact-list {
   overflow-y: scroll;
-
   height: 100%;
-}
-#right-container {
-  width: 20%;
-  margin-top: -5px;
-  /* height: fit-content; */
-  margin-bottom: 20px;
-  max-height: 100%;
 }
 
 .placeholder-text {

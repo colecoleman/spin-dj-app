@@ -4,76 +4,76 @@
     :contact="contact"
     @closeWindow="closePopups()"
   ></popup-email-composition>
-  <vendor-page-referral-popup
+  <!-- <vendor-page-referral-popup
     v-if="referPopupOpen && !emailPopupOpen && !notesPopupOpen"
     :vendor="contact"
     @close-referral-window="closePopups()"
-  ></vendor-page-referral-popup>
-  <div id="section-wrapper">
-    <div id="left-column">
-      <div id="box-one">
-        <contact-card-person :contact="contact"></contact-card-person>
-      </div>
-      <div id="box-two">
-        <contact-card-company
-          :contact="contact"
-          :icon="SVGs.PersonSVG"
-        ></contact-card-company>
-      </div>
-      <div id="box-three">
-        <base-card :icon="SVGs.MessageBubbleSVG" title="Messages">
-          <template v-slot:content v-if="contact">
-            <messaging-single-component
-              v-if="contact"
-              :defaultUser="contact"
-              :conversation="conversation"
-              :id="contact.userId"
-            ></messaging-single-component>
-          </template>
-        </base-card>
-      </div>
+  ></vendor-page-referral-popup> -->
+  <section>
+    <div id="contact-card">
+      <contact-card-person :contact="contact"></contact-card-person>
     </div>
-    <div id="right-column">
-      <div id="box-four">
-        <four-button-bar-with-drop-down
-          :buttons="buttons"
-          :dropdown="dropdown"
-        ></four-button-bar-with-drop-down>
-      </div>
-      <div id="box-five">
-        <div id="box-five-half-one">
-          <upcoming-events
-            :events="events"
-            :pastEvents="pastEvents"
-            v-if="!eventAssignmentOpen && eventsLoaded"
-          ></upcoming-events>
-          <contact-page-events-assignment
-            v-if="eventAssignmentOpen"
-            :events="events"
-            :icon="SVGs.CalendarSVG"
-            @event-assignment-toggle="toggleEventAssignment()"
-          ></contact-page-events-assignment>
-        </div>
-        <div id="box-five-half-two">
-          <contact-page-to-do-list :contact="contact"></contact-page-to-do-list>
-        </div>
-      </div>
-      <div id="box-six">
-        <div id="box-six-half">
-          <automation-list
-            :automations="automations"
-            automationType="Contact"
-            :id="$route.params.id"
-            @automation-deleted="deleteAutomation"
-            @automation-approved="approveAutomation"
-          ></automation-list>
-        </div>
-        <div id="box-six-half-two">
-          <contact-page-notes :contact="contact" />
-        </div>
-      </div>
+    <div id="company-card">
+      <contact-card-company
+        :contact="contact"
+        :icon="SVGs.PersonSVG"
+      ></contact-card-company>
     </div>
-  </div>
+    <div id="messages">
+      <base-card
+        :icon="SVGs.MessageBubbleSVG"
+        title="Messages"
+        v-if="contact"
+        :subtitle="`${contact.given_name}`"
+      >
+        <template v-slot:content v-if="contact">
+          <messaging-single-component
+            v-if="contact"
+            :defaultUser="contact"
+            :conversation="conversation"
+            :id="contact.userId"
+          ></messaging-single-component>
+        </template>
+      </base-card>
+    </div>
+
+    <div id="button-bar">
+      <four-button-bar-with-drop-down
+        :buttons="buttons"
+        :dropdown="dropdown"
+      ></four-button-bar-with-drop-down>
+    </div>
+
+    <div id="upcoming-events">
+      <upcoming-events
+        :events="events"
+        :pastEvents="pastEvents"
+        v-if="!eventAssignmentOpen && eventsLoaded"
+      ></upcoming-events>
+      <contact-page-events-assignment
+        v-if="eventAssignmentOpen"
+        :events="events"
+        :icon="SVGs.CalendarSVG"
+        @event-assignment-toggle="toggleEventAssignment()"
+      ></contact-page-events-assignment>
+    </div>
+    <div id="to-do">
+      <contact-page-to-do-list :contact="contact"></contact-page-to-do-list>
+    </div>
+    <div id="automation">
+      <automation-list
+        :automations="automations"
+        :contacts="[$route.params.id]"
+        automationType="Contact"
+        :id="$route.params.id"
+        @automation-deleted="deleteAutomation"
+        @automation-approved="approveAutomation"
+      ></automation-list>
+    </div>
+    <div id="notes">
+      <contact-page-notes :contact="contact" />
+    </div>
+  </section>
 </template>
 
 <script>
@@ -86,7 +86,7 @@ import ContactPageEventsAssignment from "../../AdminComponents/AdminContactPageC
 import ContactCardCompany from "../../AdminComponents/AdminContactPageComponents/AdminContactPageSharedComponents/ContactCardCompany.vue";
 import ContactPageToDoList from "../../AdminComponents/AdminContactPageComponents/AdminContactPageSharedComponents/ContactPageToDoList.vue";
 import AutomationList from "../../AdminComponents/AdminSharedComponents/AutomationList.vue";
-import VendorPageReferralPopup from "../../AdminComponents/AdminContactPageComponents/VendorPageComponents/VendorPageReferralPopup.vue";
+// import VendorPageReferralPopup from "../../AdminComponents/AdminContactPageComponents/VendorPageComponents/VendorPageReferralPopup.vue";
 import ContactPageNotes from "../../AdminComponents/AdminContactPageComponents/AdminContactPageSharedComponents/ContactPageNotes/ContactPageNotes.vue";
 import SVGs from "../../../../assets/SVGs/svgIndex.js";
 
@@ -106,10 +106,10 @@ export default {
           title: "Send Email",
           action: this.openEmailComposition,
         },
-        {
-          title: "Refer Vendor",
-          action: this.toggleReferral,
-        },
+        // {
+        //   title: "Refer Vendor",
+        //   action: this.toggleReferral,
+        // },
         {
           title: "Assign Event",
           action: this.toggleEventAssignment,
@@ -131,7 +131,7 @@ export default {
         ],
       },
       emailPopupOpen: false,
-      referPopupOpen: false,
+      // referPopupOpen: false,
     };
   },
   computed: {
@@ -254,80 +254,58 @@ export default {
     AutomationList,
     ContactPageNotes,
     MessagingSingleComponent,
-    VendorPageReferralPopup,
+    // VendorPageReferralPopup,
     FourButtonBarWithDropDown,
   },
 };
 </script>
 
 <style scoped>
-#section-wrapper {
+section {
   width: 100%;
-  height: 95%;
-  padding-top: 10px;
-  display: flex;
-  /* flex-direction: row; */
-}
-
-svg {
-  fill: white;
-}
-
-#left-column {
-  width: 30%;
   height: 100%;
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: repeat(10, 10%);
+  grid-template-rows: repeat(20, 5%);
 }
 
-#box-one {
-  flex: 1;
-}
-#box-two {
-  flex: 0.5;
-}
-#box-three {
-  flex: 2;
+#contact-card {
+  grid-column: 1 / 4;
+  grid-row: 1 / 5;
 }
 
-#right-column {
-  width: 70%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
+#company-card {
+  grid-column: 1/4;
+  grid-row: 5/8;
 }
 
-#box-four {
-  height: 17%;
+#messages {
+  grid-column: 1/ 4;
+  grid-row: 8/ 21;
 }
 
-#box-five {
-  height: 42%;
-  width: 100%;
-
-  display: flex;
-  flex-direction: row;
+#button-bar {
+  grid-column: 4/ 11;
+  grid-row: 1/ 4;
 }
 
-#box-five-half-one {
-  width: 65%;
+#upcoming-events {
+  grid-column: 4/ 8;
+  grid-row: 4/14;
 }
 
-#box-five-half-two {
-  width: 35%;
+#to-do {
+  grid-column: 8 / 11;
+  grid-row: 14 / 21;
 }
 
-#box-six {
-  height: 41%;
-  display: flex;
-  flex-direction: row;
+#automation {
+  grid-column: 4 / 8;
+  grid-row: 14/ 21;
 }
 
-#box-six-half {
-  width: 55%;
-}
-
-#box-six-half-two {
-  width: 45%;
+#notes {
+  grid-column: 8 / 11;
+  grid-row: 4 / 14;
 }
 </style>
