@@ -1,59 +1,25 @@
 <template>
   <div class="site-header">
-    <img src="@/assets/company-logo.svg" alt="" />
-    <div class="button-bar-wrapper">
-      <four-button-bar-with-drop-down
-        :buttons="buttons"
-        :dropdown="dropdown"
-      ></four-button-bar-with-drop-down>
+    <img :src="logo" alt="" />
+    <div class="button-wrapper">
+      <notification-button></notification-button>
+      <logout-button></logout-button>
     </div>
-    <notification-button></notification-button>
-
-    <logout-button></logout-button>
   </div>
 </template>
 <script>
-import FourButtonBarWithDropDown from "../../SharedComponents/SharedComponentsUI/FourButtonBarWithDropDown.vue";
 import LogoutButton from "./LogoutButton.vue";
 import NotificationButton from "./NotificationButton/NotificationButton.vue";
 
 export default {
-  data() {
-    return {
-      buttons: [
-        {
-          title: "Send Email",
-          action: this.openEmailComposition,
-        },
-        {
-          title: "Assign Events",
-          action: this.toggleEventAssignment,
-        },
-        {
-          title: "Availability",
-          action: this.openAvailabilityManager,
-        },
-      ],
-      dropdown: {
-        title: "Actions",
-        actionItems: [
-          {
-            title: "Email",
-            action: this.openEmailComposition,
-          },
-          // {
-          //   title: "Reset Password",
-          //   action: this.resetPassword,
-          //   icon: keysvg,
-          // },
-        ],
-      },
-    };
-  },
   methods: {},
+  computed: {
+    logo() {
+      return this.$store.state.businessSettings.identity.businessLogo;
+    },
+  },
   created() {},
   components: {
-    FourButtonBarWithDropDown,
     LogoutButton,
     NotificationButton,
   },
@@ -65,8 +31,15 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 20px 20px 10px 20px;
+  margin: 20px 20px 0px 20px;
   height: 60px;
+  position: relative;
+}
+
+.button-wrapper {
+  display: flex;
+  position: absolute;
+  right: 10px;
 }
 
 .button-bar-wrapper {
@@ -74,8 +47,8 @@ export default {
 }
 
 .site-header img {
-  height: 100px;
-  width: 125px;
-  margin: 15px;
+  height: 100%;
+  align-self: center;
+  justify-self: center;
 }
 </style>
