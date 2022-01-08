@@ -13,7 +13,7 @@ const store = createStore({
       automations: {},
       contacts: {
         clients: [],
-        prospects: [],
+        // prospects: [],
         vendors: [],
         employees: [],
         locations: [],
@@ -21,50 +21,6 @@ const store = createStore({
       },
       equipment: [],
       events: [],
-      businessSettings: {
-        product: {
-          discounts: [],
-          addOns: [],
-          services: [],
-          packages: [],
-          forms: [],
-        },
-        contracts: [],
-        automations: [],
-        identity: {
-          businessName: undefined,
-          businessAddress: {
-            streetAddress1: undefined,
-            streetAddress2: undefined,
-            address2: undefined,
-          },
-          businessPhoneNumber: undefined,
-          branding: {
-            backgroundColor: "#F0F0F0",
-            foregroundColor: "#FFFFFF",
-            cardOutline: "#DDDDDD",
-            highlightColor: "#00F5FF",
-            textColor: "#000000",
-          },
-        },
-        payments: {
-          finalPayment: {},
-          depositAmount: null,
-          creditCard: {
-            enabled: false,
-            Stripe: {},
-            QuickBooks: {},
-            Square: {},
-          },
-          p2p: {
-            PayPal: {},
-            Venmo: {},
-          },
-          check: {},
-          custom: {},
-        },
-      },
-      publicSettings: {},
     };
   },
   actions: {
@@ -154,7 +110,9 @@ const store = createStore({
     async setUser(context) {
       let user = await Auth.currentAuthenticatedUser();
       let userId = user.username;
-      let tenantId = user.attributes['custom:tenantId'];
+      let tenantId = user.attributes["custom:tenantId"]
+        ? user.attributes["custom:tenantId"]
+        : userId;
       await axios
         .get(
           `https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/admin/${tenantId}/users/${userId}`
@@ -434,6 +392,7 @@ const store = createStore({
           )
           .then(
             (result) => {
+              console.log(result);
               resolve(result.data);
               context.commit("addContact", {
                 role: result.data.role,
@@ -813,7 +772,7 @@ const store = createStore({
       });
     },
     async deleteEvent(context, payload) {
-      ;
+
       await axios
         .delete(
           `https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/admin/${context.state.user.tenantId}/events/${payload}`
@@ -952,7 +911,7 @@ const store = createStore({
     // utlity actions
     async addPhoto(context, payload) {
       return new Promise((resolve, reject) => {
-        let name = store.state.user.userId + new Date().getTime();
+        let name = context.state.user.userId + new Date().getTime();
         Storage.put(name, payload)
           .then((res) => {
             resolve(
@@ -1183,6 +1142,7 @@ const store = createStore({
       state.contacts[payload.category] = [...payload.items];
     },
     addContact(state, payload) {
+      console.log(payload);
       state.contacts[`${payload.role}s`].push(payload);
     },
     editClient(state, { id, key, value }) {

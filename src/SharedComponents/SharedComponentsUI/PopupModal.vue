@@ -1,21 +1,4 @@
 <template>
-  <!-- Global Stylings Can Be Made With the Following Markups When Made Inside the Template Tags: -->
-  <!-- importing global buttons: Parent: class="button-container" Child: class="black-outline" -->
-  <!-- Example: 
-      <div class="button-container">
-        <button-standard-with-icon
-          class="black-outline"
-          text="Cancel Email"
-          @click="cancelSendEmail()"
-        ></button-standard-with-icon>
-        <button-standard-with-icon
-          class="black-outline"
-          text="Send Email"
-          @click="confirmSendEmail()"
-        ></button-standard-with-icon>
-      </div>  
- -->
-
   <div class="popup-modal">
     <div class="window">
       <base-card

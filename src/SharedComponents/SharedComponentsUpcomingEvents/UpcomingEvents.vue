@@ -16,7 +16,10 @@
     </template>
     <template v-slot:content>
       <div class="wrapper">
-        <div id="events-content" v-if="userRole === 'admin'">
+        <div
+          id="events-content"
+          v-if="userRole === 'admin' && sortedEvents.length > 0"
+        >
           <upcoming-events-list-item
             v-for="event in sortedEvents"
             :key="event.userId"
@@ -34,7 +37,10 @@
             class="past-event"
           ></upcoming-events-list-item>
         </div>
-        <div id="events-content" v-if="userRole === 'client'">
+        <div
+          id="events-content"
+          v-if="userRole === 'client' && sortedEvents.length > 0"
+        >
           <client-view-upcoming-event-list-item
             v-for="event in sortedEvents"
             :key="event.userId"
