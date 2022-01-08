@@ -26,11 +26,12 @@ export default {
 <style scoped>
 #section {
   position: absolute;
-  top: 150%;
+  display: flex;
+  flex-direction: column;
   right: 0%;
   background-color: var(--foregroundColor);
-  /* width: fit-content; */
-  /* height: fit-content; */
+  width: fit-content;
+  height: fit-content;
   z-index: 4;
   box-shadow: 0px 8px 8px rgba(122, 122, 122, 0.4);
   border: 1px solid var(--cardOutline);

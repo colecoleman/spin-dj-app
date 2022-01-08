@@ -1,7 +1,12 @@
 <template>
   <section>
     <div id="messaging-profile-photo">
-      <img v-if="person" :src="person.profilePicture" />
+      <img
+        v-if="person"
+        :src="
+          person.profilePicture ? person.profilePicture : defaultProfilePicture
+        "
+      />
       <img v-if="!person" :src="defaultProfilePicture" />
     </div>
     <div id="messaging-content">

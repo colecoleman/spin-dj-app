@@ -14,23 +14,22 @@
         :key="contact_category"
         :id="`${contact_category + `-card`}`"
       >
-        <base-card :icon="SVGs.PersonSVG" :title="contact_category">
-          <!-- <template v-slot:action1>
+        <base-card
+          :icon="SVGs.PersonSVG"
+          :title="contact_category"
+          :actionIcon="SVGs.SortAlphaSVG"
+          @action-one-clicked="toggleSortMenuOpened(contact_category)"
+        >
+          <template v-slot:action1>
             Sort:
-            <img
-              :src="SVGs.SortAlphaSVG"
-              @click="toggleSortMenuOpened(contact_category)"
-              alt=""
+            <floating-menu-with-list-items
+              v-if="sortMenuOpened === contact_category"
+              :actions="sortItems"
+              :identifier="contact_category"
+              @actionClicked="selectSort"
             />
-            <div id="floating-menu-container">
-              <floating-menu-with-list-items
-                v-if="sortMenuOpened === contact_category"
-                :actions="sortItems"
-                :identifier="contact_category"
-                @actionClicked="selectSort"
-              />
-            </div>
-          </template> -->
+          </template>
+          <template v-slot:dropdownContainer> </template>
           <template v-slot:content>
             <div class="personal-contact-list" v-if="value.length > 0">
               <div
@@ -66,7 +65,7 @@
 import ContactListItem from "../AdminComponents/AdminContactListComponents/ContactListItem.vue";
 import AddContactModule from "../AdminComponents/AdminContactListComponents/AdminAddContactModules/AddContactModule.vue";
 import ContactNavigation from "../AdminComponents/AdminContactListComponents/AdminViewContactListNavigation.vue";
-// import FloatingMenuWithListItems from "../../../SharedComponents/SharedComponentsUI/FloatingMenuWithListItems.vue";
+import FloatingMenuWithListItems from "../../../SharedComponents/SharedComponentsUI/FloatingMenuWithListItems.vue";
 import SVGs from "../../../assets/SVGs/svgIndex.js";
 
 export default {
@@ -76,7 +75,7 @@ export default {
       sortMenuOpened: undefined,
       sortItems: [
         {
-          title: "Alphabetically Descending",
+          title: "Alpha Descending",
           icon: undefined,
           logic: function (a, b) {
             let textA = a.family_name.toUpperCase();
@@ -85,7 +84,7 @@ export default {
           },
         },
         {
-          title: "Alphabetically Ascending",
+          title: "Alpha Ascending",
           icon: undefined,
           logic: function (a, b) {
             let textA = a.family_name.toUpperCase();
@@ -124,7 +123,7 @@ export default {
     ContactListItem,
     AddContactModule,
     ContactNavigation,
-    // FloatingMenuWithListItems,
+    FloatingMenuWithListItems,
   },
 };
 </script>
@@ -164,6 +163,7 @@ section {
 .contacts-container {
   height: 85%;
   width: 100%;
+  display: flex;
 }
 
 .personal-contact-list {
