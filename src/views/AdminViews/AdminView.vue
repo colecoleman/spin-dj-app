@@ -9,15 +9,14 @@
 
 <script>
 import AdminHeader from "../../SharedComponents/SharedComponentsHeader/AdminHeader.vue";
-import { Auth } from "aws-amplify";
+
 export default {
   components: { AdminHeader },
   async created() {
-    let user;
-    await Auth.currentAuthenticatedUser().then((res) => {
-      user = res;
-    });
-    await this.$store.dispatch("setUser", user);
+    if (!this.$store.state.user) {
+      await this.$store.dispatch("setUser");
+    }
+
     await this.$store.dispatch("getAdminEvents");
     await this.$store.dispatch("setBusinessSettings");
     await this.$store.dispatch("getAdminUsers");
