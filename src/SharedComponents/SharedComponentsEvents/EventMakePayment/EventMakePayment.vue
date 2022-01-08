@@ -41,6 +41,8 @@ export default {
     },
   },
   async created() {
+    this.payeeAccount =
+      this.$store.state.businessSettings.payments.creditCard.Stripe;
     this.stripe = await loadStripe(this.stripeAPIToken, {
       stripeAccount: this.payeeAccount.id,
     });
@@ -58,10 +60,10 @@ export default {
   flex-direction: row;
   justify-content: space-evenly;
   text-align: left;
-  margin: 20px;
+  /* margin: 20px; */
 }
 
 .make-payment-step {
-  width: 100%;
+  max-width: 100%;
 }
 </style>
