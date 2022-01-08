@@ -29,6 +29,9 @@ export default {
     MessageThreadList,
   },
   computed: {
+    currentUser() {
+      return this.$store.state.user;
+    },
     clients() {
       return this.$store.state.contacts.clients;
     },

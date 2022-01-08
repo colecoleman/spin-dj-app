@@ -1,10 +1,5 @@
 <template>
   <div id="messaging-wrapper">
-    <div id="contact-identification">
-      <p @click="navigateToEventPage(contact.userId)">
-        {{ contact.given_name + " " + contact.family_name }}
-      </p>
-    </div>
     <div class="messages-container" v-if="conversation">
       <div
         v-for="(message, index) in messagesSortedByDate"

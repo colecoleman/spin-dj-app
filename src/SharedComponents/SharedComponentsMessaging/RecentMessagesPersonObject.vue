@@ -1,11 +1,8 @@
 <template>
   <section>
     <div id="messaging-profile-photo">
-      <img
-        :src="
-          person.profilePicture ? person.profilePicture : defaultProfilePicture
-        "
-      />
+      <img v-if="person" :src="person.profilePicture" />
+      <img v-if="!person" :src="defaultProfilePicture" />
     </div>
     <div id="messaging-content">
       <h5>{{ fullName }}</h5>
@@ -26,7 +23,11 @@ export default {
   props: ["id", "conversationId", "conversation"],
   computed: {
     fullName() {
-      return `${this.person.given_name} ${this.person.family_name}`;
+      if (this.person) {
+        return `${this.person.given_name} ${this.person.family_name}`;
+      } else {
+        return "Deleted Contact";
+      }
     },
     textPreview() {
       let mostRecentMessage =
@@ -36,6 +37,7 @@ export default {
         : mostRecentMessage;
     },
     person() {
+      console.log(this.conversation);
       return this.conversation.users[0];
     },
   },
