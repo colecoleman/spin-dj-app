@@ -1,12 +1,12 @@
 <template>
   <ul>
     <li
-      v-for="(name, index) in configItems"
+      v-for="(config, index) in items"
       :key="index"
-      @click="scroll(name.toLowerCase())"
-      :class="activeLink === name.toLowerCase() ? 'active-link' : ' '"
+      @click="scroll(config)"
+      :class="activeLink === config ? 'active-link' : ' '"
     >
-      {{ name }}
+      {{ config }}
     </li>
   </ul>
 </template>
@@ -16,17 +16,6 @@ export default {
   data() {
     return {
       activeLink: "Identity",
-      configItems: [
-        "Identity",
-        "Services",
-        "Packages",
-        "Add-Ons",
-        "Discounts",
-        "Forms",
-        "Contracts",
-        "Automations",
-        "Payments",
-      ],
     };
   },
   methods: {
@@ -37,6 +26,7 @@ export default {
       this.activeLink = id;
     },
   },
+  props: ["items"],
 };
 </script>
 
