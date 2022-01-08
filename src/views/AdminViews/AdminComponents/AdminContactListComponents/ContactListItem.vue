@@ -1,32 +1,19 @@
 <template>
-  <section>
-    <popup-modal v-if="deleteContactOpen">
-      <template v-slot:window>
-        <div class="container">
-          <h3 class="popup-heading">
-            Are you sure you want to delete
-            {{ contact.given_name + " " + contact.family_name }}?
-          </h3>
-          <div class="button-container">
-            <button-standard-with-icon
-              class="black-outline"
-              text="Yes, I'm Sure"
-              @click="confirmDeleteContact()"
-            ></button-standard-with-icon>
-            <button-standard-with-icon
-              class="black-outline"
-              text="No, go back."
-              @click="cancelDeleteContact()"
-            ></button-standard-with-icon>
-          </div>
-        </div>
-      </template>
-    </popup-modal>
+  <div>
+    <two-button-dialog-modal
+      v-if="modalOpen === 'delete'"
+      :modalBody="`Are you sure you want to delete
+            ${contact.given_name} ${contact.family_name}?`"
+      @select-button-one="confirmDeleteContact"
+      @select-button-two="toggleModal"
+      @close-modal="toggleModal"
+    ></two-button-dialog-modal>
     <popup-email-composition
-      v-if="composeEmailOpen"
+      v-if="modalOpen === 'email'"
       :contact="contact"
       :category="category"
       @cancel-send-email="composeEmailOpen = false"
+      @close-window="composeEmailOpen = false"
     ></popup-email-composition>
     <div class="contact-wrapper" v-if="category !== 'locations'">
       <div class="name-and-photo">
@@ -86,15 +73,14 @@
         ></button-with-drop-down-selections>
       </div>
     </div>
-  </section>
+  </div>
 </template>
 
 <script>
 import defaultProfilePicture from "../../../../assets/default-profile-picture.svg";
 import ButtonWithDropDownSelections from "../../../../SharedComponents/SharedComponentsUI/ButtonWithDropDownSelections.vue";
-
+import TwoButtonDialogModal from "../../../../SharedComponents/SharedComponentsUI/TwoButtonDialogModal.vue";
 import PopupEmailComposition from "../../../../SharedComponents/SharedComponentsPopupUtilities/PopupEmailComposition.vue";
-import PopupModal from "../../../../SharedComponents/SharedComponentsUI/PopupModal.vue";
 import SVGs from "../../../../assets/SVGs/svgIndex.js";
 import helpers from "../../../../helpers.js";
 
@@ -106,6 +92,7 @@ export default {
       actionsClicked: false,
       composeEmailOpen: false,
       deleteContactOpen: false,
+      modalOpen: null,
       actions: [
         {
           title: "View",
@@ -114,16 +101,16 @@ export default {
           icon: SVGs.EyeIconSVG,
         },
         {
-          title: "Email",
+          title: "email",
           danger: false,
-          action: this.emailContact,
+          action: this.toggleModal,
           icon: SVGs.EmailSVG,
         },
 
         {
-          title: "Delete",
+          title: "delete",
           danger: true,
-          action: this.deleteContact,
+          action: this.toggleModal,
           icon: SVGs.TrashCanSVG,
         },
       ],
@@ -137,16 +124,12 @@ export default {
       );
     },
     formatPhoneNumber: helpers.formatPhoneNumber,
-
-    emailContact() {
-      this.composeEmailOpen = true;
-    },
-    cancelSendEmail() {
-      this.composeEmailOpen = false;
-    },
-
-    deleteContact() {
-      this.deleteContactOpen = true;
+    toggleModal(str) {
+      if (this.modalOpen !== null) {
+        this.modalOpen = null;
+      } else {
+        this.modalOpen = str;
+      }
     },
     async confirmDeleteContact() {
       if (this.contact.associatedEvents) {
@@ -155,7 +138,6 @@ export default {
           this.$store.dispatch("adminGetEvent", event).then(
             (res) => {
               eventObject = res.data.Item;
-
               let index = eventObject.contacts.indexOf(this.contact.userId);
               let payload = {
                 eventId: eventObject.userId,
@@ -163,7 +145,6 @@ export default {
                 value: index,
                 operation: "removeFromList",
               };
-
               this.$store.dispatch("editEvent", payload);
             },
             (error) => {
@@ -177,39 +158,33 @@ export default {
         id: this.contact.userId,
       };
       this.$store.dispatch("deleteUser", deletePayload);
-      this.deleteContactOpen = false;
-    },
-    cancelDeleteContact() {
-      this.deleteContactOpen = false;
+      this.modalOpen = null;
     },
   },
   props: ["contact", "category"],
   components: {
     ButtonWithDropDownSelections,
     PopupEmailComposition,
-    PopupModal,
+    TwoButtonDialogModal,
   },
 };
 </script>
 
 <style scoped>
-section {
-}
-
 .contact-wrapper {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
   align-content: center;
-  height: 100px;
-  max-height: 100px;
+  width: 99%;
+  /* max-height: 100px; */
 }
 
 .name {
   display: flex;
   flex-direction: column;
-  width: calc(100% - 60px);
+  /* width: calc(100% - 60px); */
 }
 
 img {
@@ -231,7 +206,7 @@ img {
   position: relative;
   align-self: center;
   min-height: 60px;
-  margin-top: 20px;
+  /* margin-top: 20px; */
 }
 
 .name-and-photo {
@@ -250,33 +225,20 @@ img {
   text-overflow: ellipsis;
 }
 
+h5 {
+  margin: 2px;
+}
+
 .name-and-photo h5 span {
   font-weight: bold;
 }
 .email-and-phone p {
-  margin: 3px;
+  /* margin: 3px; */
   font-weight: normal;
   text-align: left;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
-}
-
-.popup-heading,
-.popup-text {
-  color: black;
-}
-
-.popup-text {
-  width: 80%;
-  margin: 10px;
-  text-align: left;
-}
-
-#from-email,
-#to-email,
-#email-message {
-  width: 80%;
 }
 
 #container {
@@ -292,10 +254,5 @@ img {
   flex-direction: row;
   justify-content: space-evenly;
   color: black;
-}
-
-.black-outline {
-  border-color: black;
-  border-radius: 5px;
 }
 </style>
