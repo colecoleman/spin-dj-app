@@ -27,9 +27,9 @@
       <add-contact-module-new-client-form
         v-if="currentlySelectedType === `Client`"
       />
-      <add-contact-module-new-prospect-form
+      <!-- <add-contact-module-new-prospect-form
         v-if="currentlySelectedType === `Prospect`"
-      />
+      /> -->
       <add-contact-module-new-vendor-form
         v-if="currentlySelectedType === `Vendor`"
       />
@@ -48,7 +48,7 @@
 
 <script>
 import AddContactModuleNewClientForm from "./AddContactModuleNewClientForm";
-import AddContactModuleNewProspectForm from "./AddContactModuleNewProspectForm";
+// import AddContactModuleNewProspectForm from "./AddContactModuleNewProspectForm";
 import AddContactModuleNewVendorForm from "./AddContactModuleNewVendorForm";
 import AddContactModuleNewEmployeeForm from "./AddContactModuleNewEmployeeForm";
 import AddContactModuleNewLocationForm from "./AddContactModuleNewLocationForm";
@@ -64,11 +64,11 @@ export default {
           action: this.selectContactType,
           danger: false,
         },
-        {
-          title: "Prospect",
-          action: this.selectContactType,
-          danger: false,
-        },
+        // {
+        //   title: "Prospect",
+        //   action: this.selectContactType,
+        //   danger: false,
+        // },
         {
           title: "Employee",
           action: this.selectContactType,
@@ -109,7 +109,7 @@ export default {
   },
   components: {
     AddContactModuleNewClientForm,
-    AddContactModuleNewProspectForm,
+    // AddContactModuleNewProspectForm,
     AddContactModuleNewEmployeeForm,
     AddContactModuleNewVendorForm,
     AddContactModuleNewLocationForm,
