@@ -26,7 +26,7 @@ export default {
   },
   computed: {
     businessName() {
-      return this.$store.state.publicSettings.identity.businessName;
+      return this.$store.state.businessSettings.identity.businessName;
     },
   },
   props: ["contract"],

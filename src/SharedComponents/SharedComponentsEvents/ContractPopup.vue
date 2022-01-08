@@ -181,7 +181,7 @@ export default {
   computed: {
     businessAddress() {
       let addressObject =
-        this.$store.state.publicSettings.identity.businessAddress;
+        this.$store.state.businessSettings.identity.businessAddress;
       return `${addressObject.streetAddress1}, ${
         addressObject.streetAddress2 ? addressObject.streetAddress2 + ", " : ""
       } ${addressObject.address2}`;
@@ -190,7 +190,7 @@ export default {
       return this.contracts.length - 1;
     },
     contract() {
-      let contract = this.$store.state.publicSettings.contracts.find(
+      let contract = this.$store.state.businessSettings.contracts.find(
         (x) => x.id === this.contracts[this.contractScroller].id
       );
       return { ...contract, ...this.contracts[this.contractScroller] };
