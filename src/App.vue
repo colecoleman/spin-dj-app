@@ -25,14 +25,18 @@ export default {
     };
   },
   computed: {
-    identity() {
-      if (this.$store.state.branding) {
-        return this.$store.state.branding;
-      }
-    },
+    // identity() {
+    //   if (!Auth.currentAuthenticatedUser()) {
+    //     if (this.$store.state.branding) {
+    //       return this.$store.state.branding;
+    //     }
+    //   }
+    // },
     branding() {
-      if (this.$store.state.businessSettings.identity.branding) {
-        return this.$store.state.businessSettings.identity.branding;
+      if (!Auth.currentAuthenticatedUser()) {
+        if (this.$store.state.businessSettings.identity.branding) {
+          return this.$store.state.businessSettings.identity.branding;
+        }
       } else {
         return {
           backgroundColor: "#F0F0F0",

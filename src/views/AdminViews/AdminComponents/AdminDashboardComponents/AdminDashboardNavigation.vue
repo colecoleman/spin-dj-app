@@ -1,11 +1,12 @@
 <template>
   <ul>
     <li>
-      <router-link to="admin/dashboard">Events</router-link>
+      <router-link to="/admin/dashboard">Dashboard</router-link>
     </li>
-    <li>
-      <router-link to="admin/sales">Sales</router-link>
-    </li>
+    <li>...Coming Soon</li>
+    <!-- <li>
+      <router-link to="/admin/sales">Sales</router-link>
+    </li> -->
   </ul>
 </template>
 

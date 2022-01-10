@@ -25,7 +25,11 @@ export default {
   },
   computed: {
     businessLogo() {
-      return this.$store.state.businessSettings.identity.businessLogo;
+      if (this.$store.state.businessSettings) {
+        return this.$store.state.businessSettings.identity.businessLogo;
+      } else {
+        return "../../spin-beta-logo.png";
+      }
     },
   },
 

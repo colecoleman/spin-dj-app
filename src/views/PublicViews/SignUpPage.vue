@@ -3,7 +3,10 @@
     <div id="hero">
       <div class="hero-left hero-half">
         <div class="image-container">
-          <img :src="SpinLogoWithText" alt="Spin DJ Software Logo" />
+          <img
+            src="../../assets/spin-beta-logo.png"
+            alt="Spin DJ Software Logo"
+          />
         </div>
         <div class="tagline-container">
           <h1>Software Built<br /><b>by</b> DJs<br /><b>for</b> DJs</h1>
@@ -223,6 +226,7 @@ export default {
       const code = this.confirmationCode;
       try {
         await Auth.confirmSignUp(user.username, code);
+        await this.$store.dispatch("setUser");
         this.$router.push("/setup");
       } catch (error) {
         this.$store.commit("addStatus", {
@@ -280,7 +284,7 @@ h1 {
 }
 
 .image-container > img {
-  height: 40%;
+  /* height: 40%; */
   width: 40%;
 }
 

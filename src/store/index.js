@@ -357,6 +357,7 @@ const store = createStore({
           );
       });
     },
+
     // contact-based-actions
     async getAdminUsers(context) {
       axios
@@ -908,6 +909,21 @@ const store = createStore({
           });
       });
     },
+    async stripeCreateSubscription(context, payload) {
+      return new Promise((resolve, reject) => {
+        axios
+          .put(
+            `https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/admin/${context.state.user.tenantId}/subscribe`,
+            payload
+          )
+          .then((res) => {
+            resolve(res);
+          })
+          .catch((e) => {
+            reject(e);
+          });
+      });
+    },
     // utlity actions
     async addPhoto(context, payload) {
       return new Promise((resolve, reject) => {
@@ -1229,7 +1245,7 @@ const store = createStore({
   },
   plugins: [
     createPersistedState({
-      paths: ["user", "businessSettings"],
+      paths: ["businessSettings"],
     }),
   ],
 });

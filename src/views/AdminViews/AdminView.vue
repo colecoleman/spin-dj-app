@@ -1,16 +1,19 @@
 <template>
-  <Amplify-Authenticator>
-    <admin-header></admin-header>
-    <div class="content-container">
-      <router-view name="content"></router-view>
-    </div>
-  </Amplify-Authenticator>
+  <admin-header></admin-header>
+  <div class="content-container" v-if="loaded">
+    <router-view name="content"></router-view>
+  </div>
 </template>
 
 <script>
 import AdminHeader from "../../SharedComponents/SharedComponentsHeader/AdminHeader.vue";
 
 export default {
+  data() {
+    return {
+      loaded: false,
+    };
+  },
   components: { AdminHeader },
   async created() {
     if (!this.$store.state.user) {
@@ -19,6 +22,7 @@ export default {
 
     await this.$store.dispatch("getAdminEvents");
     await this.$store.dispatch("setBusinessSettings");
+    this.loaded = true;
     await this.$store.dispatch("getAdminUsers");
     await this.$store.dispatch("getLocations");
   },
