@@ -3,7 +3,7 @@
     <div id="hero">
       <div class="hero-left hero-half">
         <div class="image-container">
-          <img src="../../assets/spin-beta-logo.png" alt="Spin DJ Software" />
+          <img src="../../assets/spin-beta-logo.png" alt="Spin DJ Software`" />
         </div>
         <div class="tagline-container">
           <h1>Software Built<br /><b>by</b> DJs<br /><b>for</b> DJs</h1>
