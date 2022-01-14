@@ -3,12 +3,10 @@
     :icon="SVGs.CalendarSVG"
     v-if="!singleDayViewOpen"
     title="calendar"
+    @action-one-clicked="floatingMenuOpen = !floatingMenuOpen"
   >
-    <template v-slot:action1>
+    <template v-slot:dropdownContainer>
       <div class="right-title-parent">
-        <h4 @click="floatingMenuOpen = !floatingMenuOpen">
-          {{ `${monthArray[masterMonth] + ", "}` }} {{ masterYear }}
-        </h4>
         <dual-side-floating-menu-with-list-items
           :actions="floatingIconActions"
           :currentLeftSelection="masterYear"
@@ -18,50 +16,44 @@
         ></dual-side-floating-menu-with-list-items>
       </div>
     </template>
+    <template v-slot:action1>
+      {{ `${monthArray[masterMonth] + ", "}` }} {{ masterYear }}
+    </template>
     <template v-slot:content v-if="events">
-      <div id="base-container">
-        <div id="calendar-container" v-if="!singleDayViewOpen">
-          <div class="month-heading" @click="toggleMonthSelector"></div>
-          <div id="body">
-            <div
-              class="side-arrows"
-              @click="monthChange(`backward`)"
-              @mousedown.prevent=""
-            >
-              <img :src="SVGs.LeftArrowSVG" alt="" />
-            </div>
-            <div id="main-calendar-content">
-              <div id="weekdays">
-                <div v-for="day in WEEKDAYS" :key="day.key">
-                  {{ day.identifier }}
-                </div>
+      <div id="calendar-container" v-if="!singleDayViewOpen">
+        <div id="body">
+          <div
+            class="left-side-arrow arrow"
+            @click="monthChange(`backward`)"
+            @mousedown.prevent=""
+          >
+            <img :src="SVGs.LeftArrowSVG" alt="" />
+          </div>
+          <div id="main-calendar-content">
+            <div id="days">
+              <div v-for="day in WEEKDAYS" class="weekday" :key="day.key">
+                {{ day.identifier }}
               </div>
-              <div id="days">
-                <div
-                  v-for="day in days"
-                  :key="day.date"
-                  :class="{
-                    day,
-                    isNotCurrentMonth: !day.isCurrentMonth,
-                    today: day.isCurrentDay,
-                  }"
-                >
-                  <div
-                    :class="day.hasEvents ? 'hasEvents' : ''"
-                    @click="day.hasEvents ? selectDay(day) : ''"
-                  >
-                    {{ day.dayOfMonth }}
-                  </div>
-                </div>
+              <div
+                v-for="day in days"
+                :key="day.date"
+                :class="{
+                  day,
+                  isNotCurrentMonth: !day.isCurrentMonth,
+                  today: day.isCurrentDay,
+                  hasEvents: day.hasEvents,
+                }"
+              >
+                <p>{{ day.dayOfMonth }}</p>
               </div>
             </div>
-            <div
-              class="side-arrows"
-              @click="monthChange(`forward`)"
-              @mousedown.prevent=""
-            >
-              <img :src="SVGs.RightArrowSVG" alt="" />
-            </div>
+          </div>
+          <div
+            class="right-side-arrow arrow"
+            @click="monthChange(`forward`)"
+            @mousedown.prevent=""
+          >
+            <img :src="SVGs.RightArrowSVG" alt="" />
           </div>
         </div>
       </div>
@@ -313,10 +305,9 @@ export default {
 };
 </script>
 
-
 <style scoped>
-h4 {
-  font-size: 10pt;
+#calendar-container {
+  height: 100%;
 }
 
 img {
@@ -324,57 +315,25 @@ img {
   width: 14px;
 }
 
-#base-container {
-  width: 100%;
-  height: 100%;
-  flex-direction: column;
-  position: relative;
-  justify-content: space-around;
-}
-
-.right-title-parent {
-  height: 100%;
-}
-
 #body {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-}
-
-#weekdays {
-  width: 100%;
   display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  margin-bottom: 10px;
-  align-items: center;
-  justify-content: center;
-}
-#weekdays div {
-  text-transform: uppercase;
-  font-size: 7pt;
-  font-weight: bold;
-  align-items: center;
-  justify-content: center;
+  grid-template-columns: repeat(9, 1fr);
+  height: 100%;
+  width: 100%;
 }
 
 #main-calendar-content {
-  padding: 10px;
-  width: 100%;
-  height: 220px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  grid-column: 2/9;
+  height: 100%;
 }
 
 #days {
   width: 100%;
   height: 100%;
   display: grid;
+  grid-row: 2/9;
   grid-template-columns: repeat(7, 1fr);
-  /* align-items: center; */
-  /* justify-content: center; */
+  grid-template-rows: repeat(auto-fill, 1fr);
   cursor: default;
 }
 
@@ -384,8 +343,8 @@ img {
   /* width: calc(250px / 7); */
   font-size: 12px;
   font-weight: 700;
-  height: 35px;
-  width: 35px;
+  /* height: 35px; */
+  /* width: 35px; */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -393,7 +352,7 @@ img {
 
 .hasEvents {
   background: radial-gradient(
-    ellipse at center,
+    circle at center,
     var(--highlightColor) 0%,
     var(--highlightColor) 50%,
     rgba(0, 0, 0, 0) 53%
@@ -409,16 +368,24 @@ img {
   cursor: pointer;
 }
 
-.side-arrows {
+.left-side-arrow {
+  grid-column: 1/2;
+}
+
+.right-side-arrow {
+  grid-column: 9 /10;
+}
+
+.arrow {
+  height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-  cursor: pointer;
 }
 
 .today {
   background: radial-gradient(
-    ellipse at center,
+    circle at center,
     var(--textColor) 0%,
     var(--textColor) 50%,
     rgba(0, 0, 0, 0) 53%
