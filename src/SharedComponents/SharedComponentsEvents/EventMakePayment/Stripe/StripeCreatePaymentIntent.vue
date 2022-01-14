@@ -24,7 +24,7 @@ export default {
   data() {
     return {
       stripeAPIToken:
-        "pk_test_51KB2fZJb4IVAatoGYdJekSis2i0uQilzUHqTvfE3P6x7OJkDhdahSWKMzCocECTUslikYgWZTAvr1npNMGUNaWm800To81qBha",
+        "pk_live_51KB2fZJb4IVAatoGPTcDxwy6Ktx8pcAYFBeYRE6JEUq4fKiyxXpiWPWuCeA5XNzmqNFUi9DwWiowngI594BjiXrY00BeFT0rTK",
       chargeAmount: null,
       chargeAmountError: false,
       clientSecret: null,

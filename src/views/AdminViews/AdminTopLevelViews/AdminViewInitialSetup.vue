@@ -247,7 +247,7 @@ export default {
     },
     async initiateSubscription() {
       await this.$store.dispatch("stripeCreateSubscription").then((res) => {
-        console.log(res);
+        window.location.href = res.data.url;
       });
     },
     navigateToDashboard() {

@@ -195,7 +195,6 @@ const store = createStore({
       });
     },
     async completeToDo(context, payload) {
-
       await axios
         .put(
           `https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/admin/${context.state.user.tenantId}/todo/${payload.id}`,
@@ -319,7 +318,6 @@ const store = createStore({
           )
           .then(
             (result) => {
-
               resolve(result);
             },
             (error) => {
@@ -340,12 +338,11 @@ const store = createStore({
           )
           .then(
             (result) => {
-
               resolve(result);
-              context.commit('addStatus', {
-                type: 'success',
-                note: 'Automation Deleted'
-              })
+              context.commit("addStatus", {
+                type: "success",
+                note: "Automation Deleted",
+              });
             },
             (error) => {
               context.commit("addStatus", {
@@ -435,7 +432,6 @@ const store = createStore({
       });
     },
     async deleteUser(context, payload) {
-      ;
       await axios
         .delete(
           `https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/admin/${context.state.user.tenantId}/users/${payload.id}`
@@ -523,7 +519,6 @@ const store = createStore({
       });
     },
     async editLocation(context, payload) {
-      ;
       return new Promise((resolve, reject) => {
         axios
           .put(
@@ -749,7 +744,6 @@ const store = createStore({
       });
     },
     async editEvent(context, payload) {
-
       return new Promise((resolve, reject) => {
         axios
           .put(
@@ -773,7 +767,6 @@ const store = createStore({
       });
     },
     async deleteEvent(context, payload) {
-
       await axios
         .delete(
           `https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/admin/${context.state.user.tenantId}/events/${payload}`
@@ -817,7 +810,6 @@ const store = createStore({
         value: callerPayload.contracts,
         variable: "contracts",
       };
-      ;
       return new Promise((resolve, reject) => {
         axios
           .put(
@@ -924,6 +916,21 @@ const store = createStore({
           });
       });
     },
+    async stripeCreatePortal(context) {
+      return new Promise((resolve, reject) => {
+        axios
+          .put(
+            `https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/stripe/portal/${context.state.user.stripeId}`
+          )
+          .then((res) => {
+            resolve(res);
+            console.log(res);
+          })
+          .catch((e) => {
+            reject(e);
+          });
+      });
+    },
     // utlity actions
     async addPhoto(context, payload) {
       return new Promise((resolve, reject) => {
@@ -932,7 +939,7 @@ const store = createStore({
           .then((res) => {
             resolve(
               "https://spindjappstorage140016-prod.s3.amazonaws.com/public/" +
-              res.key
+                res.key
             );
           })
           .catch((e) => {
