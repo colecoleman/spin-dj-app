@@ -1,5 +1,5 @@
 <template>
-  <section>
+  <section id="contact-section">
     <div id="navigation">
       <base-card>
         <template v-slot:content>
@@ -129,35 +129,26 @@ export default {
 </script>
 
 <style scoped>
-section {
+#contact-section {
   width: 100%;
   height: 100%;
   display: grid;
-  grid-template-columns: 20% 55% 25%;
-  grid-template-rows: 50% 50% 20px;
-}
-
-#navigation {
-  grid-column: 1 / 2;
-  grid-row: 1 / 3;
-}
-
-#scroll-container {
-  grid-column: 2 / 3;
-  grid-row: 1 / 4;
+  grid-template-columns: 100%;
+  grid-template-rows: fit-content() 2fr;
   overflow: scroll;
 }
 
-#scroll-container .contacts-container:last-child {
-  padding-bottom: 12px;
+#navigation {
+  display: none;
 }
-#scroll-container .contacts-container:first-child {
-  margin-top: 12px;
+
+#scroll-container {
+  grid-row: 2 / 3;
+  overflow: scroll;
 }
 
 #add-contact {
-  grid-column: 3/4;
-  grid-row: 1/3;
+  grid-row: 1 / 2;
 }
 
 .contacts-container {
@@ -173,5 +164,60 @@ section {
 
 .placeholder-text {
   margin-top: 45%;
+}
+
+@media screen and (min-width: 800px) {
+  #contact-section {
+    width: 100%;
+    height: 100%;
+    display: grid;
+    grid-template-columns: 65% 35%;
+    grid-template-rows: 50% 50% 20px;
+  }
+
+  #scroll-container {
+    grid-column: 1 / 2;
+    grid-row: 1 / 4;
+    overflow: scroll;
+  }
+
+  #scroll-container .contacts-container:last-child {
+    padding-bottom: 12px;
+  }
+
+  #add-contact {
+    grid-column: 2/3;
+    grid-row: 1/3;
+  }
+}
+@media screen and (min-width: 1200px) {
+  #contact-section {
+    grid-template-columns: 20% 55% 25%;
+    grid-template-rows: 50% 50% 20px;
+  }
+
+  #navigation {
+    display: unset;
+    grid-column: 1 / 2;
+    grid-row: 1 / 3;
+  }
+
+  #scroll-container {
+    grid-column: 2 / 3;
+    grid-row: 1 / 4;
+    overflow: scroll;
+  }
+
+  #scroll-container .contacts-container:last-child {
+    padding-bottom: 12px;
+  }
+  /* #scroll-container .contacts-container:first-child {
+    margin-top: 12px;
+  } */
+
+  #add-contact {
+    grid-column: 3/4;
+    grid-row: 1/3;
+  }
 }
 </style>

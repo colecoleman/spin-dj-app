@@ -243,7 +243,7 @@ export default {
   height: 100vh;
   width: 100vw;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
 }
 
 .hero-half {
@@ -362,5 +362,132 @@ input:focus {
 .sign-in-text:hover {
   text-shadow: 1px 1px 10px white;
   cursor: pointer;
+}
+
+@media screen and (min-width: 450px) and (max-width: 1450px) {
+  #hero {
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    flex-direction: row;
+  }
+
+  .hero-half {
+    width: 50%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+  }
+
+  .hero-left {
+    background-color: white;
+  }
+
+  h1 {
+    text-transform: uppercase;
+    text-align: right;
+    font-size: 2em;
+    line-height: 2em;
+    font-weight: 400;
+  }
+
+  .image-container,
+  .tagline-container {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    height: 50%;
+  }
+
+  .image-container {
+    align-items: center;
+  }
+
+  .image-container > img {
+    /* height: 40%; */
+    width: 40%;
+  }
+
+  .hero-right {
+    background-color: black;
+  }
+
+  .hero-right h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  p {
+    color: white;
+  }
+
+  .hero-right h1 {
+    color: white;
+    text-align: center;
+  }
+
+  .login-form {
+    width: 50%;
+  }
+
+  .input-field {
+    text-align: left;
+  }
+
+  .flex-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  .half-width {
+    width: 45%;
+  }
+
+  .healthy {
+    width: 100%;
+  }
+  .error {
+    border-bottom: 2px solid red;
+    width: 100%;
+  }
+
+  .error-text {
+    color: red;
+    text-align: center;
+  }
+
+  input:focus {
+    outline: none;
+    border-bottom: 3px solid white;
+  }
+
+  .button-standard-with-icon {
+    border: 1px solid white;
+    color: white;
+    border-radius: 3px;
+    margin: 40px 30%;
+    width: 40%;
+  }
+
+  .disclaimer {
+    position: absolute;
+    bottom: 10px;
+  }
+
+  .sign-in-text {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    font-weight: 600;
+  }
+
+  .sign-in-text:hover {
+    text-shadow: 1px 1px 10px white;
+    cursor: pointer;
+  }
 }
 </style>

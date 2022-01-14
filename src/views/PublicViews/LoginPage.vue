@@ -10,18 +10,11 @@
         </div>
       </div>
       <div class="hero-right hero-half">
-        <a href="/signup"
-          ><h5 class="sign-in-text">Don't Have an Account? Sign Up</h5></a
-        >
-        <authenticator>
-          <template> </template>
-        </authenticator>
-        <p class="disclaimer">
-          <i
-            >By clicking “Sign Up”, you agree to our terms of service, which can
-            be found here</i
-          >
-        </p>
+        <div id="authenticator-container">
+          <authenticator>
+            <template> </template>
+          </authenticator>
+        </div>
       </div>
     </div>
   </section>
@@ -111,21 +104,13 @@ export default {
   height: 100vh;
   width: 100vw;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
+  overflow: scroll;
 }
 
 .hero-half {
-  width: 50%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  position: relative;
-}
-
-.hero-left {
-  background-color: white;
+  width: 100%;
+  justify-content: space-evenly;
 }
 
 h1 {
@@ -134,14 +119,26 @@ h1 {
   font-size: 2em;
   line-height: 2em;
   font-weight: 400;
+  height: auto;
+  display: block;
 }
 
-.image-container,
 .tagline-container {
   display: flex;
   justify-content: center;
   width: 100%;
-  height: 50%;
+}
+
+.image-container {
+  display: flex;
+  justify-content: center;
+  /* height: 30%; */
+  align-items: center;
+  align-content: center;
+}
+
+#authenticator-container {
+  padding: 20px;
 }
 
 .image-container {
@@ -149,12 +146,32 @@ h1 {
 }
 
 .image-container > img {
-  height: 40%;
+  /* height: 40%; */
   width: 40%;
+  padding: 30px;
+}
+
+.sign-in-text {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  font-weight: 600;
+}
+.hero-left {
+  background-color: white;
+  height: auto;
+  display: flex;
+  flex-direction: column;
 }
 
 .hero-right {
   background-color: black;
+  min-height: 50vh;
+  display: flex;
+  flex-direction: column;
+  justify-items: space-around;
+  justify-content: space-around;
+  align-content: space-around;
 }
 
 .hero-right h1,
@@ -174,20 +191,6 @@ p {
   display: none;
 }
 
-.disclaimer {
-  position: absolute;
-  bottom: 10px;
-}
-
-.sign-in-text {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  font-weight: 600;
-}
-
-
-
 .sign-in-text:hover {
   text-shadow: 1px 1px 10px white;
   cursor: pointer;
@@ -195,5 +198,38 @@ p {
 
 :root {
   --form-color: cyan !important;
+}
+
+@media screen and (min-width: 350px) {
+  .image-container > img {
+    width: 150px;
+  }
+
+  .hero-left {
+    height: 50vh;
+  }
+}
+@media screen and (min-width: 960px) {
+  #hero {
+    flex-direction: row;
+  }
+
+  .hero-half {
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+  }
+
+  .image-container,
+  .tagline-container {
+    height: 50%;
+  }
+
+  .image-container > img {
+    height: 40%;
+  }
 }
 </style>
