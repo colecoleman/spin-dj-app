@@ -4,6 +4,8 @@ import SignUpPage from "../views/PublicViews/SignUpPage.vue";
 import LoginPage from "../views/PublicViews/LoginPage.vue";
 import ForgotPage from "../views/PublicViews/ForgotPage.vue";
 import AdminViewInitialSetup from "../views/AdminViews/AdminTopLevelViews/AdminViewInitialSetup.vue";
+import AdminViewInitialSetupSuccess from "../views/AdminViews/AdminTopLevelViews/AdminViewSetupSuccess.vue";
+import AdminViewUpdateSubscription from "../views/AdminViews/AdminTopLevelViews/AdminViewUpdateSubscription.vue";
 import AdminView from "../views/AdminViews/AdminView.vue";
 import AdminViewDashboard from "../views/AdminViews/AdminTopLevelViews/AdminViewDashboard";
 import ContactsList from "../views/AdminViews/AdminTopLevelViews/AdminViewContactList.vue";
@@ -30,11 +32,34 @@ import OrganizerDashboard from "../views/OrganizerViews/OrganizerViewsTopLevelCo
 import VendorView from "../views/VendorViews/VendorView.vue";
 import VendorDashboard from "../views/VendorViews/VendorViewsTopLevelComponents/VendorDashboard.vue";
 
+import store from "../store/index.js";
+import axios from "axios";
+
 let user;
 let setAuthStatus = async function () {
   await Auth.currentAuthenticatedUser()
     .then((res) => {
       user = res;
+    })
+    .catch((e) => {
+      console.log(e);
+    });
+};
+
+let dbUser;
+let setUser = async function () {
+  await setAuthStatus();
+  let userId = user.username;
+  let tenantId = user.attributes["custom:tenantId"]
+    ? user.attributes["custom:tenantId"]
+    : userId;
+  return await axios
+    .get(
+      `https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/admin/${tenantId}/users/${userId}`
+    )
+    .then((res) => {
+      dbUser = res.data.Item;
+      return res.data.Item;
     })
     .catch((e) => {
       console.log(e);
@@ -181,6 +206,14 @@ const routes = [
           content: AdminConfigurationPage,
         },
       },
+      {
+        path: "setup/success",
+        name: "adminConfigSuccess",
+        meta: { requiresAdminAuth: true },
+        components: {
+          content: AdminViewInitialSetupSuccess,
+        },
+      },
     ],
   },
   {
@@ -283,6 +316,13 @@ const routes = [
       main: AdminViewInitialSetup,
     },
   },
+  {
+    path: "/updatesubscription",
+    name: "updateSubscription",
+    components: {
+      main: AdminViewUpdateSubscription,
+    },
+  },
 ];
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
@@ -296,6 +336,33 @@ const router = createRouter({
       };
     }
   },
+});
+
+router.beforeEach(async (to, from, next) => {
+  if (!dbUser) {
+    dbUser = await setUser();
+  }
+
+  console.log(store.state.user);
+  if (to.matched.some((record) => record.meta.requiresAdminAuth)) {
+    if (
+      user.signInUserSession.idToken.payload["cognito:preferred_role"].includes(
+        "Admin"
+      )
+    ) {
+      if (new Date(dbUser.subscriptionExpirationDate) < new Date()) {
+        next("/updatesubscription");
+      } else {
+        next();
+      }
+    } else {
+      next();
+    }
+  } else {
+    next();
+  }
+  // }
+  // console.log(to, from, next)
 });
 
 export default router;

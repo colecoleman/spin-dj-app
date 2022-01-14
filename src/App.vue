@@ -25,13 +25,6 @@ export default {
     };
   },
   computed: {
-    // identity() {
-    //   if (!Auth.currentAuthenticatedUser()) {
-    //     if (this.$store.state.branding) {
-    //       return this.$store.state.branding;
-    //     }
-    //   }
-    // },
     branding() {
       if (!Auth.currentAuthenticatedUser()) {
         if (this.$store.state.businessSettings.identity.branding) {
