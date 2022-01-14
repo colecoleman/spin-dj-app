@@ -49,21 +49,23 @@ let setAuthStatus = async function () {
 let dbUser;
 let setUser = async function () {
   await setAuthStatus();
-  let userId = user.username;
-  let tenantId = user.attributes["custom:tenantId"]
-    ? user.attributes["custom:tenantId"]
-    : userId;
-  return await axios
-    .get(
-      `https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/admin/${tenantId}/users/${userId}`
-    )
-    .then((res) => {
-      dbUser = res.data.Item;
-      return res.data.Item;
-    })
-    .catch((e) => {
-      console.log(e);
-    });
+  if (user) {
+    let userId = user.username;
+    let tenantId = user.attributes["custom:tenantId"]
+      ? user.attributes["custom:tenantId"]
+      : userId;
+    return await axios
+      .get(
+        `https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/admin/${tenantId}/users/${userId}`
+      )
+      .then((res) => {
+        dbUser = res.data.Item;
+        return res.data.Item;
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  }
 };
 
 const routes = [

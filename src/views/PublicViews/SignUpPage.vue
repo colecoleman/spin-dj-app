@@ -364,7 +364,7 @@ input:focus {
   cursor: pointer;
 }
 
-@media screen and (min-width: 450px) and (max-width: 1450px) {
+@media screen and (min-width: 450px) {
   #hero {
     height: 100vh;
     width: 100vw;
