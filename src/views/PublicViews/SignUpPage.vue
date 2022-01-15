@@ -16,7 +16,7 @@
           <b> better?</b>
         </h1>
 
-        <h3>Grab your 30 day free trial below:</h3>
+        <!-- <h3>Grab your 30 day free trial below:</h3> -->
         <div class="login-form">
           <div class="input-field flex-row">
             <div class="half-width">
@@ -207,6 +207,7 @@ export default {
             email: username,
             family_name: familyName,
             given_name: given_name,
+            "custom:role": "admin",
           },
         });
         this.step++;

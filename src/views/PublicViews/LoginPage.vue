@@ -216,6 +216,7 @@ p {
 
   .hero-half {
     width: 50%;
+    height: 100%;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -225,7 +226,7 @@ p {
 
   .image-container,
   .tagline-container {
-    height: 50%;
+    height: 100%;
   }
 
   .image-container > img {

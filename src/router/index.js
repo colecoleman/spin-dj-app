@@ -74,6 +74,7 @@ const routes = [
     name: "index",
     beforeEnter: async (to, from, next) => {
       await setAuthStatus();
+      console.log(user);
       if (user == undefined) {
         next({ path: "/login" });
       } else if (
