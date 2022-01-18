@@ -42,6 +42,6 @@ li {
 }
 
 .active-link {
-  color: #00f5ff;
+  color: var(--highlightColor);
 }
 </style>

@@ -158,11 +158,6 @@ const store = createStore({
               "setBusinessSettings",
               response.data.Item.businessSettings
             );
-            if ("identity" in response.data.Item.businessSettings)
-              context.commit(
-                "setBranding",
-                response.data.Item.businessSettings.identity
-              );
           }
         })
         .catch((e) =>
@@ -245,17 +240,28 @@ const store = createStore({
         variable: "businessSettings",
         value: state.businessSettings,
       };
-      axios
-        .put(
-          `https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/admin/${state.user.tenantId}/users/${state.user.userId}`,
-          payload
-        )
-        .then(() => {
-          commit("setBusinessSettings", payload.value);
-        })
-        .catch((e) => {
-          console.log(e);
-        });
+      if (Array.isArray(payload.value.product.forms)) {
+        payload.value.product.forms = {
+          forms: [...payload.value.product.forms],
+          fieldTemplates: [],
+        };
+      }
+      return new Promise((resolve, reject) => {
+        axios
+          .put(
+            `https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/admin/${state.user.tenantId}/users/${state.user.userId}`,
+            payload
+          )
+          .then(() => {
+            commit("setBusinessSettings", payload.value);
+            resolve();
+          })
+          .catch((e) => {
+            reject(e);
+            console.log(e);
+          });
+
+      });
     },
     async checkSubdomain(context, payload) {
       return new Promise((resolve, reject) => {
@@ -933,20 +939,22 @@ const store = createStore({
     },
     // utlity actions
     async addPhoto(context, payload) {
-      return new Promise((resolve, reject) => {
-        let name = context.state.user.userId + new Date().getTime();
-        Storage.put(name, payload)
-          .then((res) => {
-            resolve(
-              "https://spindjappstorage140016-prod.s3.amazonaws.com/public/" +
-                res.key
-            );
-          })
-          .catch((e) => {
-            reject(e);
-            console.log(e);
-          });
-      });
+      let name = context.state.user.userId + Date.now();
+      console.log(payload);
+      return await Storage.put(name, payload)
+        .then((res) => {
+          console.log(res);
+          return (
+            "https://spindjappstorage140016-prod.s3.amazonaws.com/public/" +
+            res.key
+          );
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+      // console.log(context, payload);
+      // const result = await Storage.put("test.txt", "Hello");
+      // console.log(result);
     },
     async getPhoto(context, payload) {
       return new Promise((resolve, reject) => {
@@ -976,6 +984,9 @@ const store = createStore({
     },
     setBusinessSettings(state, settings) {
       state.businessSettings = settings;
+    },
+    setBusinessLogo(state, settings) {
+      state.businessLogo = settings;
     },
     setBranding(state, settings) {
       state.branding = settings;
@@ -1040,13 +1051,13 @@ const store = createStore({
       state.businessSettings.contracts[payload.index] = payload.contract;
     },
     adminConfigAddForm(state, payload) {
-      state.businessSettings.product.forms.push(payload);
+      state.businessSettings.product.forms.forms.push(payload);
     },
     adminConfigDeleteForm(state, payload) {
-      state.businessSettings.product.forms.splice(payload, 1);
+      state.businessSettings.product.forms.forms.splice(payload, 1);
     },
     adminConfigEditForm(state, payload) {
-      state.businessSettings.product.forms[payload.index] = payload.form;
+      state.businessSettings.product.forms.forms[payload.index] = payload.form;
     },
     adminConfigIdentitySetBusinessName(state, payload) {
       if ("identity" in state.businessSettings) {
@@ -1071,7 +1082,7 @@ const store = createStore({
     adminConfigIdentitySetCardOutline(state, payload) {
       state.businessSettings.identity.branding.cardOutline = payload;
     },
-    adminConfigIdentitySetHighlighColor(state, payload) {
+    adminConfigIdentitySetHighlightColor(state, payload) {
       state.businessSettings.identity.branding.highlightColor = payload;
     },
     adminConfigIdentitySetTextColor(state, payload) {
@@ -1166,7 +1177,7 @@ const store = createStore({
     },
     addContact(state, payload) {
       console.log(payload);
-      state.contacts[`${payload.role}s`].push(payload);
+      state.contacts[payload.item.role + 's'].push(payload.item);
     },
     editClient(state, { id, key, value }) {
       let subject = state.contacts.clients.find((c) => c.id === id);

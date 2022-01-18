@@ -33,7 +33,7 @@
           v-for="event in events"
           :key="event.userId"
           :event="event"
-          @click="navigateToEventPage(event.userId), sortByDateDescending()"
+          @click="navigateToEventPage(event.userId)"
         ></location-upcoming-events-list-item>
       </div>
       <h5 v-if="!events">No events found for this client.</h5>
@@ -56,10 +56,10 @@ export default {
         {
           title: "Date Ascending",
           icon: undefined,
-          logic: function (a, b) {
-            return a.eventStartTime < b.eventStartTime
+          logic(a, b) {
+            return a.data.startTime < b.data.startTime
               ? -1
-              : a.eventStartTime > b.eventStartTime
+              : a.data.startTime > b.data.startTime
               ? 1
               : 0;
           },
@@ -67,10 +67,10 @@ export default {
         {
           title: "Date Descending",
           icon: undefined,
-          logic: function (a, b) {
-            return a.eventStartTime > b.eventStartTime
+          logic(a, b) {
+            return a.data.startTime > b.data.startTime
               ? -1
-              : a.eventStartTime < b.eventStartTime
+              : a.data.startTime < b.data.startTime
               ? 1
               : 0;
           },
