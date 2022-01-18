@@ -1,6 +1,6 @@
 <template>
   <div :class="loading ? 'loading-background card' : 'card'">
-    <div id="heading">
+    <div id="heading" v-if="icon || title || subtitle || actionIcon">
       <img v-if="icon" :src="icon" alt="" />
       <slot name="icon"></slot>
       <div class="title">
