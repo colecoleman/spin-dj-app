@@ -1,34 +1,34 @@
 <template>
-  <base-card-no-heading>
-    <div class="button-parent">
-      <div class="button-div" v-for="(button, index) in buttons" :key="index">
-        <button-standard-with-icon
-          :text="button.title"
-          @click="button.action"
-        ></button-standard-with-icon>
-      </div>
+  <base-card>
+    <template v-slot:content>
+      <div class="button-parent">
+        <div class="button-div" v-for="(button, index) in buttons" :key="index">
+          <button-standard-with-icon
+            :text="button.title"
+            @click="button.action"
+          ></button-standard-with-icon>
+        </div>
 
-      <div class="button-div" v-if="dropdown">
-        <button-with-drop-down-selections
-          :text="dropdown.title"
-          :actions="dropdown.actionItems"
-          class="dropdown-button"
-        >
-        </button-with-drop-down-selections>
+        <div class="button-div" v-if="dropdown">
+          <button-with-drop-down-selections
+            :text="dropdown.title"
+            :actions="dropdown.actionItems"
+            class="dropdown-button"
+          >
+          </button-with-drop-down-selections>
+        </div>
       </div>
-    </div>
-  </base-card-no-heading>
+    </template>
+  </base-card>
 </template>
 
 <script>
-import BaseCardNoHeading from "./BaseCardNoHeading.vue";
 import ButtonStandardWithIcon from "./ButtonStandardWithIcon.vue";
 
 import ButtonWithDropDownSelections from "./ButtonWithDropDownSelections.vue";
 
 export default {
   components: {
-    BaseCardNoHeading,
     ButtonWithDropDownSelections,
     ButtonStandardWithIcon,
   },
@@ -46,7 +46,7 @@ export default {
 }
 .button-div {
   width: 23%;
-  height: 36px;
+  height: 100%;
   position: relative;
 }
 </style>

@@ -60,21 +60,20 @@
       <h5>Send Invitation?</h5>
     </div>
   </div>
-  <button-long-with-icon text="Submit" @click="submitContact">
-    <template v-slot:icon>
-      <img :src="circleCheckmark" alt="" />
-    </template>
-  </button-long-with-icon>
+  <button-standard-with-icon
+    text="Submit"
+    @click="submitContact"
+    :icon="SVGs.CircleCheckmarkSVG"
+  />
 </template>
 
 <script>
-import ButtonLongWithIcon from "../../../../../SharedComponents/SharedComponentsUI/ButtonLongWithIcon.vue";
-import circleCheckmark from "../../../../../assets/SVGs/circle-checkmark.svg";
+import SVGs from "../../../../../assets/SVGs/svgIndex.js";
 
 export default {
   data() {
     return {
-      circleCheckmark,
+      SVGs,
       vendor: {
         sendInvitation: false,
         role: "vendor",
@@ -159,7 +158,6 @@ export default {
       this.errors.username = !re.test(add);
     },
   },
-  components: { ButtonLongWithIcon },
 };
 </script>
 

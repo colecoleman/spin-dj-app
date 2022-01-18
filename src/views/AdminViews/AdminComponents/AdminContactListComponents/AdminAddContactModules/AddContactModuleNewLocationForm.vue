@@ -69,20 +69,19 @@
       v-model.trim.lazy="location.contact.emailAddress"
     /> -->
   </div>
-  <button-long-with-icon text="Submit and Invite" @click="submitContact">
-    <template v-slot:icon>
-      <img :src="circleCheckmark" alt="" />
-    </template>
-  </button-long-with-icon>
+  <button-standard-with-icon
+    text="Submit"
+    @click="submitContact"
+    :icon="SVGs.CircleCheckmarkSVG"
+  />
 </template>
 
 <script>
-import ButtonLongWithIcon from "../../../../../SharedComponents/SharedComponentsUI/ButtonLongWithIcon.vue";
-import circleCheckmark from "../../../../../assets/SVGs/circle-checkmark.svg";
+import SVGs from "../../../../../assets/SVGs/svgIndex.js";
 export default {
   data() {
     return {
-      circleCheckmark,
+      SVGs,
       location: {
         name: undefined,
         address: {
@@ -135,13 +134,13 @@ export default {
             state: undefined,
             zipCode: undefined,
           },
-          contact: {
-            pronoun: undefined,
-            given_name: undefined,
-            family_name: undefined,
-            phoneNumber: undefined,
-            emailAddress: undefined,
-          },
+          // contact: {
+          //   pronoun: undefined,
+          //   given_name: undefined,
+          //   family_name: undefined,
+          //   phoneNumber: undefined,
+          //   emailAddress: undefined,
+          // },
         };
       } else {
         return;
@@ -161,18 +160,18 @@ export default {
       if (!location.name) {
         this.errors.name = true;
       }
-      if (!location.contact.given_name) {
-        this.errors.contact.given_name = true;
-      }
-      if (!location.contact.family_name) {
-        this.errors.contact.family_name = true;
-      }
-      if (!location.contact.emailAddress) {
-        this.errors.contact.emailAddress = true;
-      }
-      if (!location.contact.phoneNumber) {
-        this.errors.contact.phoneNumber = true;
-      }
+      // if (!location.contact.given_name) {
+      //   this.errors.contact.given_name = true;
+      // }
+      // if (!location.contact.family_name) {
+      //   this.errors.contact.family_name = true;
+      // }
+      // if (!location.contact.emailAddress) {
+      //   this.errors.contact.emailAddress = true;
+      // }
+      // if (!location.contact.phoneNumber) {
+      //   this.errors.contact.phoneNumber = true;
+      // }
     },
     validatePhoneNumber(num) {
       return num.replace(/[^\d/+]/g, "");
@@ -182,7 +181,6 @@ export default {
       this.errors.emailAddress = !re.test(add);
     },
   },
-  components: { ButtonLongWithIcon },
 };
 </script>
 
