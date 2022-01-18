@@ -68,12 +68,34 @@
               </div>
             </div>
           </div>
+
           <div class="form-item">
             <p>New Field:</p>
             <div class="form-item input-creation">
               <div class="form-item">
                 <p>Input Title:</p>
                 <input type="text" v-model="newField.name" />
+              </div>
+              <div class="form-item">
+                <p>Allow user to duplicate field?</p>
+                <input
+                  type="checkbox"
+                  style="width: 10%"
+                  v-model="newField.duplicable"
+                />
+              </div>
+              <div class="form-item">
+                <p>Field Templates:</p>
+                <select name="" id="">
+                  <option
+                    v-for="(template, index) in fieldTemplates"
+                    :key="index"
+                    :value="template"
+                    @click="assignFieldTemplate(template)"
+                  >
+                    {{ template.title }}
+                  </option>
+                </select>
               </div>
               <div class="form-item">
                 <p>Number Of Inputs:</p>
@@ -166,8 +188,26 @@
                   </div>
                 </div>
               </div>
+              <div class="form-item">
+                <p>Template Name:</p>
+                <input
+                  type="text"
+                  placeholder="Template Name"
+                  v-model="fieldTemplateTitle"
+                  v-if="fieldTemplateTitleFieldOpen"
+                />
+              </div>
               <button-standard-with-icon
-                :text="'Add Field'"
+                style="margin: 30px; margin-top: 20px"
+                @click="
+                  fieldTemplateTitle
+                    ? saveAsFieldTemplate()
+                    : initiateSaveAsFieldTemplate()
+                "
+                text="Save As Field Template"
+              ></button-standard-with-icon>
+              <button-standard-with-icon
+                text="Add Field"
                 @click="saveField()"
                 style="margin: 30px; margin-top: 20px; width: 100px"
               />
@@ -182,11 +222,7 @@
         <div class="quarter-width">
           <h5 v-if="!hasForms">No forms added yet! Add One!</h5>
           <div v-if="hasForms">
-            <h5
-              v-for="(form, index) in businessSettings.product.forms"
-              :key="index"
-              class="bolds"
-            >
+            <h5 v-for="(form, index) in forms" :key="index" class="bolds">
               {{ form.name }}
               <img
                 :src="SVGs.XIconSVG"
@@ -208,8 +244,10 @@
 
 <script>
 import SVGs from "../../../../../assets/SVGs/svgIndex";
+import ButtonStandardWithIcon from "../../../../../SharedComponents/SharedComponentsUI/ButtonStandardWithIcon.vue";
 
 export default {
+  components: { ButtonStandardWithIcon },
   data() {
     return {
       SVGs,
@@ -223,8 +261,12 @@ export default {
         name: undefined,
         inputQuantity: undefined,
         fields: [],
+        duplicable: false,
       },
       editIndex: undefined,
+      fieldTemplateTitleFieldOpen: false,
+      fieldTemplateTitle: undefined,
+      // fieldTemplates: [],
     };
   },
   methods: {
@@ -248,12 +290,32 @@ export default {
       }
     },
     saveField() {
-      this.form.fields.push(this.newField);
+      this.form.fields.push(Object.assign({}, this.newField));
       this.newField = {
         name: undefined,
         inputQuantity: undefined,
         fields: [],
       };
+    },
+    initiateSaveAsFieldTemplate() {
+      this.fieldTemplateTitleFieldOpen = true;
+    },
+    saveAsFieldTemplate() {
+      let template = {
+        title: this.fieldTemplateTitle,
+        fields: [...this.newField.fields],
+      };
+      this.fieldTemplates.push(Object.assign({}, template));
+      this.newField = {
+        name: undefined,
+        inputQuantity: undefined,
+        fields: [],
+      };
+      this.fieldTemplateTitleFieldOpen = false;
+    },
+    assignFieldTemplate(template) {
+      console.log(template);
+      this.newField.fields = JSON.parse(JSON.stringify(template.fields));
     },
     saveForm() {
       if (this.editIndex != undefined) {
@@ -266,32 +328,48 @@ export default {
         this.$store.commit("adminConfigAddForm", this.form);
       }
       this.form = {
+        id: "form" + new Date().getTime(),
         name: undefined,
         description: undefined,
         fields: [],
+      };
+      this.newField = {
+        name: undefined,
+        inputQuantity: undefined,
+        fields: [],
+        duplicable: false,
       };
     },
     deleteForm(index) {
       this.$store.commit("adminConfigDeleteForm", index);
     },
     editForm(form, index) {
+      console.log(form);
       this.form = { ...this.form, ...form };
       this.editIndex = index;
     },
   },
   computed: {
-    businessSettings() {
-      return this.$store.state.businessSettings;
+    forms() {
+      if (this.$store.state.businessSettings.product.forms.forms) {
+        return this.$store.state.businessSettings.product.forms.forms;
+      } else {
+        return this.$store.state.businessSettings.product.forms;
+      }
+    },
+    fieldTemplates() {
+      if (this.$store.state.businessSettings.product.forms.fieldTemplates) {
+        return this.$store.state.businessSettings.product.forms.fieldTemplates;
+      } else {
+        return [];
+      }
     },
     hasForms() {
-      if ("product" in this.$store.state.businessSettings) {
-        if ("forms" in this.$store.state.businessSettings.product) {
-          if (this.$store.state.businessSettings.product.forms.length > 0) {
-            return true;
-          }
-        }
+      if (this.forms.length > 0) {
+        return true;
+      } else {
+        return false;
       }
-      return false;
     },
   },
 };
