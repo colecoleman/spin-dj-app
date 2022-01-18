@@ -13,7 +13,7 @@
             <p>Photo:</p>
             <input
               type="file"
-              id="hidden-file-button"
+              id="hidden-file-button-service"
               @change="onFileChange"
               style="display: none"
             />
@@ -23,7 +23,42 @@
               class="form-button"
             />
           </div>
-
+          <div class="service-item">
+            <p>Standard Forms Included:</p>
+            <div
+              class="service-item row-flex"
+              v-for="form in forms"
+              :key="form.id"
+            >
+              <p>
+                <input
+                  type="checkbox"
+                  :id="form.id"
+                  class="checkbox"
+                  @change="toggleFormFromService(form.id)"
+                  :name="form.name"
+                />{{ form.name }}
+              </p>
+            </div>
+          </div>
+          <div class="service-item">
+            <p>Standard Contract Included:</p>
+            <div
+              class="service-item row-flex"
+              v-for="contract in contracts"
+              :key="contract.id"
+            >
+              <p>
+                <input
+                  type="checkbox"
+                  :id="contract.id"
+                  class="checkbox"
+                  @change="toggleContractFromService(contract.id)"
+                  :name="contract.contractName"
+                />{{ contract.contractName }}
+              </p>
+            </div>
+          </div>
           <div class="service-item">
             <p>Employees Required</p>
             <input type="number" v-model.number="input.employeesRequired" />
@@ -137,6 +172,8 @@
 <script>
 import SVGs from "../../../../../assets/SVGs/svgIndex";
 import helpers from "../../../../../helpers.js";
+import _cloneDeep from "lodash/cloneDeep";
+
 // import { Storage } from "aws-amplify";
 
 export default {
@@ -154,6 +191,8 @@ export default {
           baseRate: undefined,
           addHourly: undefined,
         },
+        forms: [],
+        contracts: [],
         priceOption: undefined,
         photo: undefined,
         equipmentNeeded: [],
@@ -165,14 +204,22 @@ export default {
     services() {
       return this.$store.state.businessSettings.product.services;
     },
+    forms() {
+      console.log(this.$store.state.businessSettings.product.forms.forms);
+      return this.$store.state.businessSettings.product.forms.forms;
+    },
+    contracts() {
+      return this.$store.state.businessSettings.contracts;
+    },
   },
   methods: {
     formatPrice: helpers.formatPrice,
     async addService() {
-      let service = this.input;
+      let service = _cloneDeep(this.input);
       if (this.photoFile) {
         await this.$store.dispatch("addPhoto", this.photoFile).then((res) => {
-          this.input.photo = res;
+          service.photo = res;
+          this.photoFile = undefined;
         });
       }
       service.pricing.baseRate *= 100;
@@ -183,29 +230,67 @@ export default {
           service: service,
         };
         this.$store.commit("adminConfigEditService", payload);
-        // this.services[this.editIndex] = service;
       } else {
-        // this.services.push(service);
         this.$store.commit("adminConfigAddService", service);
       }
       this.input = {
+        id: "service" + new Date().getTime(),
         name: undefined,
         pricing: {
           baseTime: undefined,
           baseRate: undefined,
           addHourly: undefined,
         },
+        forms: [],
+        contracts: [],
         priceOption: undefined,
         photo: undefined,
         equipmentNeeded: [],
         employeesRequired: undefined,
       };
     },
+    toggleFormFromService(form, serviceIndex) {
+      let services = this.services;
+      let array;
+      if (serviceIndex) {
+        array = services[serviceIndex].forms;
+      } else {
+        array = this.input.forms;
+      }
+      let index = array.indexOf(form);
+      if (index > -1) {
+        array.splice(index, 1);
+      } else {
+        array.push(form);
+      }
+      console.log(this.input);
+    },
+    toggleContractFromService(contract, serviceIndex) {
+      let services = this.services;
+      let array;
+      if (serviceIndex) {
+        array = services[serviceIndex].contracts;
+      } else {
+        array = this.input.contracts;
+      }
+      let index = array.indexOf(contract);
+      if (index > -1) {
+        array.splice(index, 1);
+      } else {
+        array.push(contract);
+      }
+    },
     deleteService(index) {
       this.$store.commit("adminConfigDeleteService", index);
     },
     editService(service, index) {
       this.input = { ...this.input, ...service };
+      for (let x = 0; x < this.input.forms.length; x++) {
+        document.getElementById(this.input.forms[x]).checked = true;
+      }
+      for (let x = 0; x < this.input.contracts.length; x++) {
+        document.getElementById(this.input.contracts[x]).checked = true;
+      }
       this.editIndex = index;
       this.input.pricing = {
         baseTime: this.input.pricing.baseTime,
@@ -215,9 +300,10 @@ export default {
       // service.contracts.forEach((contracts) => {
       //   document.getElementById(contracts).checked = true;
       // });
+      console.log(this.input);
     },
     chooseFile() {
-      document.getElementById("hidden-file-button").click();
+      document.getElementById("hidden-file-button-service").click();
     },
     async onFileChange(e) {
       var files = e.target.files || e.dataTransfer.files;
