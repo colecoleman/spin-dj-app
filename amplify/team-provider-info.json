@@ -15,19 +15,19 @@
       "function": {
         "spin49492a15DefineAuthChallenge": {
           "deploymentBucketName": "amplify-spin-prod-140016-deployment",
-          "s3Key": "amplify-builds/spin49492a15DefineAuthChallenge-4a41794a583968654337-build.zip"
+          "s3Key": "amplify-builds/spin49492a15DefineAuthChallenge-72343076646a6f794b37-build.zip"
         },
         "spin49492a15CreateAuthChallenge": {
           "deploymentBucketName": "amplify-spin-prod-140016-deployment",
-          "s3Key": "amplify-builds/spin49492a15CreateAuthChallenge-2f6b662b5068385a4755-build.zip"
+          "s3Key": "amplify-builds/spin49492a15CreateAuthChallenge-4c596b747550556d7161-build.zip"
         },
         "spin49492a15VerifyAuthChallengeResponse": {
           "deploymentBucketName": "amplify-spin-prod-140016-deployment",
-          "s3Key": "amplify-builds/spin49492a15VerifyAuthChallengeResponse-365837596f415a776937-build.zip"
+          "s3Key": "amplify-builds/spin49492a15VerifyAuthChallengeResponse-444a4f4879756b4f3254-build.zip"
         },
         "spin49492a15CustomMessage": {
           "deploymentBucketName": "amplify-spin-prod-140016-deployment",
-          "s3Key": "amplify-builds/spin49492a15CustomMessage-7659796e774836426552-build.zip"
+          "s3Key": "amplify-builds/spin49492a15CustomMessage-43647248445161734847-build.zip"
         }
       },
       "hosting": {

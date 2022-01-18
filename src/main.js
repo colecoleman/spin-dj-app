@@ -7,7 +7,7 @@ import jsPDF from "jspdf";
 import maplibregl from "maplibre-gl";
 import BaseCard from "./SharedComponents/SharedComponentsUI/BaseCard.vue";
 import ButtonStandardWithIcon from "./SharedComponents/SharedComponentsUI/ButtonStandardWithIcon.vue";
-import { Amplify } from "aws-amplify";
+import { Amplify, Storage, Auth } from "aws-amplify";
 import AmplifyVue from "@aws-amplify/ui-vue";
 import awsconfig from "./aws-exports";
 import "maplibre-gl/dist/maplibre-gl.css";
@@ -35,6 +35,8 @@ createApp(App)
   .use(dayjs)
   .use(jsPDF)
   .use(maplibregl)
+  .use(Storage)
+  .use(Auth)
   .use(Amplify)
   .use(AmplifyVue)
   .mount("#app");
