@@ -12,7 +12,7 @@
             <p>Photo:</p>
             <input
               type="file"
-              id="hidden-file-button"
+              id="hidden-file-button-package"
               @change="onFileChange"
               style="display: none"
             />
@@ -218,6 +218,7 @@
 <script>
 import SVGs from "../../../../../assets/SVGs/svgIndex";
 import helpers from "../../../../../helpers.js";
+import _cloneDeep from "lodash/cloneDeep";
 
 export default {
   data() {
@@ -252,7 +253,7 @@ export default {
   methods: {
     formatPrice: helpers.formatPrice,
     chooseFile() {
-      document.getElementById("hidden-file-button").click();
+      document.getElementById("hidden-file-button-package").click();
     },
     onFileChange(e) {
       var files = e.target.files || e.dataTransfer.files;
@@ -320,10 +321,11 @@ export default {
       }
     },
     async addPackage() {
-      let item = this.input.packages;
+      let item = _cloneDeep(this.input.packages);
       if (this.photoFile) {
         await this.$store.dispatch("addPhoto", this.photoFile).then((res) => {
           this.input.packages.photo = res;
+          this.photoFile = undefined;
         });
       }
       item.pricing.baseRate *= 100;
