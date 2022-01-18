@@ -14,11 +14,11 @@
         v-for="(config, key, index) in configCategories"
         :key="index"
       >
-        <component :is="config.component"></component>
+        <component :is="config.component" @logo="newLogoSelected"></component>
       </div>
     </div>
     <button-standard-with-icon
-      text="Save Changes"
+      :text="saving ? 'Saving...' : 'Save Changes'"
       @click="saveChanges()"
       class="floating-save-button"
     ></button-standard-with-icon>
@@ -40,105 +40,87 @@ import AdminViewConfigPayments from "../AdminComponents/AdminConfigComponents/Ad
 export default {
   data() {
     return {
+      logo: undefined,
+      saving: false,
       configCategories: {
         Identity: {
           display: "Identity",
-          component: AdminViewConfigIdentity,
+          component: "AdminViewConfigIdentity",
         },
         Packages: {
           display: "Packages",
-          component: AdminViewConfigPackages,
+          component: "AdminViewConfigPackages",
         },
         Services: {
           display: "Services",
-          component: AdminViewConfigServices,
+          component: "AdminViewConfigServices",
         },
         Forms: {
           display: "Forms",
-          component: AdminViewConfigForms,
+          component: "AdminViewConfigForms",
         },
         AddOns: {
           display: "Add-Ons",
-          component: AdminViewConfigAddOns,
+          component: "AdminViewConfigAddOns",
         },
         Automations: {
           display: "Automations",
-          component: AdminViewConfigAutomations,
+          component: "AdminViewConfigAutomations",
         },
         Contracts: {
           display: "Contracts",
-          component: AdminViewConfigContracts,
+          component: "AdminViewConfigContracts",
         },
         Discounts: {
           display: "Discounts",
-          component: AdminViewConfigDiscounts,
+          component: "AdminViewConfigDiscounts",
         },
         Payments: {
           display: "Payments",
-          component: AdminViewConfigPayments,
+          component: "AdminViewConfigPayments",
         },
       },
     };
   },
   methods: {
+    async newLogoSelected(logo) {
+      this.logo = logo;
+      console.log(this.logo);
+    },
     async saveChanges() {
-      await this.$store.dispatch("updateBusinessSettings");
+      this.saving = true;
+      if (this.logo) {
+        await this.$store
+          .dispatch("addPhoto", this.logo)
+          .then((res) => {
+            console.log(res);
+            this.$store.commit("adminConfigIdentitySetBusinessLogo", res);
+          })
+          .catch((e) => {
+            console.log(e);
+          });
+      }
+      await this.$store.dispatch("updateBusinessSettings").then(() => {
+        this.saving = false;
+      });
     },
   },
   computed: {
     navigationItems() {
       return Object.keys(this.configCategories);
     },
-    businessSettings() {
-      if (Object.keys(this.$store.state.businessSettings).length > 0) {
-        return this.$store.state.businessSettings;
-      } else {
-        return {
-          identity: {
-            branding: {
-              backgroundColor: undefined,
-              foregroundColor: undefined,
-              textColor: undefined,
-              cardOutline: undefined,
-              highlightColor: undefined,
-            },
-            businessName: undefined,
-            businessPhoneNumber: undefined,
-            businessAddress: {
-              streetAddress1: undefined,
-              streetAddress2: undefined,
-              address2: undefined,
-            },
-          },
-          product: {
-            services: [],
-            addOns: [],
-            packages: [],
-            discounts: [],
-            form: [],
-          },
-          contracts: [],
-          automations: [],
-          payments: {
-            creditCard: {
-              enabled: false,
-              Stripe: {},
-              QuickBooks: {},
-              Square: {},
-            },
-            p2p: {
-              PayPal: {},
-              Venmo: {},
-            },
-            check: {},
-            custom: {},
-          },
-        };
-      }
-    },
   },
   components: {
     AdminViewConfigNavigationItems,
+    AdminViewConfigIdentity,
+    AdminViewConfigPackages,
+    AdminViewConfigServices,
+    AdminViewConfigAddOns,
+    AdminViewConfigForms,
+    AdminViewConfigAutomations,
+    AdminViewConfigContracts,
+    AdminViewConfigDiscounts,
+    AdminViewConfigPayments,
   },
 };
 </script>

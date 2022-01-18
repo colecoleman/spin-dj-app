@@ -293,7 +293,7 @@ export default {
       },
       set(value) {
         return this.$store.commit(
-          "adminConfigIdentitySetHightlightColor",
+          "adminConfigIdentitySetHighlightColor",
           value
         );
       },
@@ -365,6 +365,7 @@ export default {
       return this.$store.state.businessSettings.identity.emailAddresses;
     },
   },
+  emits: ["logo"],
   methods: {
     chooseFile() {
       document.getElementById("business-logo-hidden-file-button").click();
@@ -374,9 +375,9 @@ export default {
       if (!files.length) return;
       this.photoFile = files[0];
       console.log(this.photoFile);
-      let photo = await this.$store.dispatch("addPhoto", this.photoFile);
-      await this.$store.commit("adminConfigIdentitySetBusinessLogo", photo);
+      this.$emit("logo", this.photoFile);
     },
+
     addEmail() {
       this.emailAddresses.push(
         `${this.newEmailField}@${this.subdomain}.spindj.io`
