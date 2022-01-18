@@ -424,7 +424,7 @@ export default {
         client: {
           sendInvitation: true,
           associatedEvents: [],
-          pronoun: null,
+          pronoun: undefined,
           role: "client",
           given_name: null,
           family_name: null,
@@ -437,6 +437,8 @@ export default {
         eventId: "event" + new Date().getTime(),
         forms: [],
         contracts: [],
+        contacts: [],
+        locations: [],
         data: {
           date: null,
           startTime: null,
@@ -529,21 +531,21 @@ export default {
         return;
       }
     },
-    addLocation() {
-      this.location.push(this.fields.location);
-      this.fields.location = {
-        name: null,
-        streetAddress1: null,
-        streetAddress2: null,
-        cityStateZip: null,
-      };
-    },
+    // addLocation() {
+    //   this.location.push(this.fields.location);
+    //   this.fields.location = {
+    //     name: null,
+    //     streetAddress1: null,
+    //     streetAddress2: null,
+    //     cityStateZip: null,
+    //   };
+    // },
     removeLocation(index) {
       this.locations.splice(index, 1);
     },
-    addLocationToEvent(location) {
-      this.event.locations.push(location.id);
-    },
+    // addLocationToEvent(location) {
+    //   this.event.locations.push(location.id);
+    // },
 
     addClient() {
       this.clients.push(this.fields.client);
@@ -596,7 +598,7 @@ export default {
       }
     },
     forms() {
-      return this.$store.state.businessSettings.product.forms;
+      return this.$store.state.businessSettings.product.forms.forms;
     },
     suggestedForms() {
       return this.forms.filter((form) => {
