@@ -32,7 +32,7 @@ import OrganizerDashboard from "../views/OrganizerViews/OrganizerViewsTopLevelCo
 import VendorView from "../views/VendorViews/VendorView.vue";
 import VendorDashboard from "../views/VendorViews/VendorViewsTopLevelComponents/VendorDashboard.vue";
 
-import store from "../store/index.js";
+// import store from "../store/index.js";
 import axios from "axios";
 
 let user;
@@ -77,40 +77,15 @@ const routes = [
       console.log(user);
       if (user == undefined) {
         next({ path: "/login" });
-      } else if (
-        user.signInUserSession.idToken.payload[
-          "cognito:preferred_role"
-        ].includes("Admin")
-      ) {
-        console.log("admin, biatch");
+      } else if (user.attributes["custom:role"].includes("admin")) {
         next({ path: "/admin/dashboard" });
-      } else if (
-        user.signInUserSession.idToken.payload[
-          "cognito:preferred_role"
-        ].includes("Client")
-      ) {
-        console.log("client, biatch");
+      } else if (user.attributes["custom:role"].includes("client")) {
         next({ path: "/client/dashboard" });
-      } else if (
-        user.signInUserSession.idToken.payload[
-          "cognito:preferred_role"
-        ].includes("Employee")
-      ) {
-        console.log("employee, biatch");
+      } else if (user.attributes["custom:role"].includes("employee")) {
         next({ path: "/employee/dashboard" });
-      } else if (
-        user.signInUserSession.idToken.payload[
-          "cognito:preferred_role"
-        ].includes("Organizer")
-      ) {
-        console.log("client, biatch");
+      } else if (user.attributes["custom:role"].includes("organizer")) {
         next({ path: "/organizer/dashboard" });
-      } else if (
-        user.signInUserSession.idToken.payload[
-          "cognito:preferred_role"
-        ].includes("Vendor")
-      ) {
-        console.log("client, biatch");
+      } else if (user.attributes["custom:role"].includes("vendor")) {
         next({ path: "/vendor/dashboard" });
       }
     },
@@ -345,14 +320,8 @@ router.beforeEach(async (to, from, next) => {
   if (!dbUser) {
     dbUser = await setUser();
   }
-
-  console.log(store.state.user);
   if (to.matched.some((record) => record.meta.requiresAdminAuth)) {
-    if (
-      user.signInUserSession.idToken.payload["cognito:preferred_role"].includes(
-        "Admin"
-      )
-    ) {
+    if (user.attributes["custom:role"].includes("admin")) {
       if (new Date(dbUser.subscriptionExpirationDate) < new Date()) {
         next("/updatesubscription");
       } else {
@@ -364,8 +333,7 @@ router.beforeEach(async (to, from, next) => {
   } else {
     next();
   }
-  // }
-  // console.log(to, from, next)
+
 });
 
 export default router;

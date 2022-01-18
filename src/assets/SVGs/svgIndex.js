@@ -6,6 +6,7 @@ import CalendarSVG from "./calendar.svg";
 import CircleArrowUpSVG from "./circle-arrow-up.svg";
 import CircleCheckmarkSVG from "./circle-checkmark.svg";
 import ClipboardSVG from "./clipboard.svg";
+import CreditCardSVG from './credit-card.svg';
 import DiscSVG from "./disc.svg";
 import DownArrowSVG from "./down-arrow.svg";
 import DropdownArrowSVG from "./dropdown-arrow.svg";
@@ -36,6 +37,7 @@ import PlusSignSVG from "./plus-sign.svg";
 import RedXCircle from "./red-x-circle.svg";
 import ReferCircleSVG from "./refer-circle.svg";
 import RightArrowSVG from "./right-arrow.svg";
+import SmartphoneSVG from "./smartphone.svg";
 import SnowflakeColorSVG from "./snowflake-color.svg";
 import SnowflakeSVG from "./snowflake.svg";
 import SortAlphaSVG from "./sort-alpha.svg";
@@ -53,6 +55,7 @@ let SVGs = {
   CircleArrowUpSVG,
   CircleCheckmarkSVG,
   ClipboardSVG,
+  CreditCardSVG,
   DiscSVG,
   DownArrowSVG,
   DropdownArrowSVG,
@@ -83,6 +86,7 @@ let SVGs = {
   RedXCircle,
   ReferCircleSVG,
   RightArrowSVG,
+  SmartphoneSVG,
   SnowflakeColorSVG,
   SnowflakeSVG,
   SortAlphaSVG,

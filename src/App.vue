@@ -6,6 +6,16 @@
   <transition name="fade1">
     <status-indicator />
   </transition>
+  <div id="mobile-wall">
+    <img id="spin-logo" src="./assets/spin-beta-logo.png" alt="" />
+    <div class="heading-wrapper">
+      <h1>Our Mobile + Tablet Site is Under Contruction</h1>
+      <h5>
+        Please use a desktop to access this site. Sorry for the inconvenience
+      </h5>
+      <h4>Thank you for using Spin</h4>
+    </div>
+  </div>
   <!-- </amplify-authenticator> -->
 </template>
 
@@ -15,12 +25,14 @@ import { Auth } from "aws-amplify";
 import axios from "axios";
 // import { components } from "aws-amplify-vue";
 // import { Hub } from "aws-amplify";
+import SVGs from "./assets/SVGs/svgIndex.js";
 import StatusIndicator from "./SharedComponents/SharedComponentsUI/StatusIndicator.vue";
 import ButtonStandardWithIcon from "./SharedComponents/SharedComponentsUI/ButtonStandardWithIcon.vue";
 
 export default {
   data() {
     return {
+      SVGs,
       loaded: true,
     };
   },
@@ -56,7 +68,7 @@ export default {
   async created() {
     await this.$store.dispatch("setUser");
     console.log(this.$store.state.user);
-    await this.$store.dispatch("setBusinessSettings");
+    // await this.$store.dispatch("setBusinessSettings");
     console.log(this.$store.state);
     if (this.$store.state.businessSettings.identity.businessName) {
       document.title = this.$store.state.businessSettings.identity.businessName;
@@ -91,8 +103,8 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  max-height: 100vh;
-  max-width: 100vw;
+  height: 100vh;
+  width: 100vw;
   display: flex;
   justify-content: left;
   align-items: center;
@@ -160,5 +172,40 @@ textarea {
   --amplify-colors-background-secondary: var(--backgroundColor);
   --amplify-colors-background-tertiary: var(--textColor);
   --amplify-components-text-color: var(--textColor);
+}
+
+#mobile-wall {
+  display: none;
+}
+
+@media screen and (max-width: 900px) {
+  #application-wrapper {
+    display: none;
+  }
+  #mobile-wall {
+    width: 100vh;
+    height: 100vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    justify-items: center;
+    align-content: space-between;
+    align-items: center;
+    padding: 20px;
+    /* display: none; */
+  }
+
+  #mobile-wall h1,
+  h2,
+  h3,
+  h4,
+  h5 {
+    text-transform: uppercase;
+  }
+
+  #spin-logo {
+    margin-top: 40px;
+    width: 50%;
+  }
 }
 </style>

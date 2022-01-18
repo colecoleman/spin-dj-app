@@ -9,7 +9,7 @@
       <p>{{ contract.signerName }}</p>
       <h5>Date Signed:</h5>
       <p>{{ contract.signerDate }}</p>
-      <h5>IP Address:</h5>
+      <h5>Unique User ID:</h5>
       <p>{{ contract.signerUUID }}</p>
     </div>
     <h4>Thank you for choosing {{ businessName }}!</h4>
@@ -36,10 +36,8 @@ export default {
 <style scoped>
 #contract-popup-document-view {
   background-color: white;
-  width: 147mm;
-  min-height: 207.9mm;
+  aspect-ratio: 8.5/11;
   height: fit-content;
-  padding-bottom: 20px;
 }
 
 h1,
@@ -62,6 +60,6 @@ p {
 }
 
 #contract-copy {
-  margin: 10px 50px;
+  margin: 10px 60px;
 }
 </style>

@@ -143,7 +143,7 @@ export default class Helpers {
     ) {
       var imgData = canvas.toDataURL("image/png");
       var imgWidth = 210;
-      var pageHeight = 260;
+      var pageHeight = 272;
       var imgHeight = (canvas.height * imgWidth) / canvas.width;
       var heightLeft = imgHeight;
 
