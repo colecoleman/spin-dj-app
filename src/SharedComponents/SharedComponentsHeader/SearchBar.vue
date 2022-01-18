@@ -1,6 +1,6 @@
 <template>
   <div id="search-bar-container">
-    <input type="text" placeholder="Search..." />
+    <input type="text" placeholder="Search Coming Soon..." />
   </div>
 </template>
 
@@ -28,6 +28,6 @@ input {
 }
 
 input::placeholder {
-  opacity: 1;
+  opacity: 0.5;
 }
 </style>
