@@ -46,24 +46,23 @@
     <div id="automation">
       <automation-list
         :automations="automations"
+        :contacts="[contact]"
         automationType="Contact"
         :id="$route.params.id"
-        @automation-deleted="deleteAutomation"
-        @automation-approved="approveAutomation"
       ></automation-list>
     </div>
     <div id="messages">
       <base-card
         :icon="SVGs.MessageBubbleSVG"
         :loading="contact ? false : true"
-        title="Messages"
+        title="Coming Soon"
       >
         <template v-slot:content>
-          <messaging-single-component
+          <!-- <messaging-single-component
             v-if="conversation"
             :contact="contact"
             :conversation="conversation"
-          ></messaging-single-component>
+          ></messaging-single-component> -->
         </template>
       </base-card>
     </div>
@@ -75,7 +74,7 @@ import ContactPageToDoList from "../../AdminComponents/AdminContactPageComponent
 import AutomationList from "../../AdminComponents/AdminSharedComponents/AutomationList.vue";
 import ContactCardClient from "../../../../SharedComponents/SharedComponentsContact/ContactCardPerson.vue";
 import PopupEmailComposition from "../../../../SharedComponents/SharedComponentsPopupUtilities/PopupEmailComposition.vue";
-import MessagingSingleComponent from "../../../../SharedComponents/SharedComponentsMessaging/MessagingSingleComponent.vue";
+// import MessagingSingleComponent from "../../../../SharedComponents/SharedComponentsMessaging/MessagingSingleComponent.vue";
 import FourButtonBarWithDropDown from "../../../../SharedComponents/SharedComponentsUI/FourButtonBarWithDropDown.vue";
 import ClientPageUpcomingEvents from "../../AdminComponents/AdminContactPageComponents/ClientPageComponents/ClientPageUpcomingEvents.vue";
 import ContactPageNotes from "../../AdminComponents/AdminContactPageComponents/AdminContactPageSharedComponents/ContactPageNotes/ContactPageNotes.vue";
@@ -208,7 +207,7 @@ export default {
     ClientPageUpcomingEvents,
     // ClientPageInformationCard,
     AutomationList,
-    MessagingSingleComponent,
+    // MessagingSingleComponent,
     ContactPageNotes,
     FourButtonBarWithDropDown,
   },

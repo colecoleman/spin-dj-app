@@ -47,14 +47,14 @@
       ></automation-list>
     </div>
     <div id="messages">
-      <base-card :icon="SVGs.MessageBubbleSVG" title="Messages">
+      <base-card :icon="SVGs.MessageBubbleSVG" title="Coming Soon">
         <template v-slot:content>
-          <messaging-single-component
+          <!-- <messaging-single-component
             v-if="contact"
             :defaultUser="contact"
             :conversation="conversation"
             :id="contact.userId"
-          ></messaging-single-component>
+          ></messaging-single-component> -->
         </template>
       </base-card>
     </div>
@@ -69,7 +69,7 @@ import ContactPageNotes from "../../AdminComponents/AdminContactPageComponents/A
 import ContactCardPerson from "../../../../SharedComponents/SharedComponentsContact/ContactCardPerson.vue";
 import EmployeePageAvailabilityManager from "../../AdminComponents/AdminContactPageComponents/EmployeePageComponents/EmployeePageAvailabilityManager/EmployeePageAvailabilityManager.vue";
 import PopupEmailComposition from "../../../../SharedComponents/SharedComponentsPopupUtilities/PopupEmailComposition.vue";
-import MessagingSingleComponent from "../../../../SharedComponents/SharedComponentsMessaging/MessagingSingleComponent.vue";
+// import MessagingSingleComponent from "../../../../SharedComponents/SharedComponentsMessaging/MessagingSingleComponent.vue";
 import FourButtonBarWithDropDown from "../../../../SharedComponents/SharedComponentsUI/FourButtonBarWithDropDown.vue";
 import SVGs from "../../../../assets/SVGs/svgIndex.js";
 
@@ -232,7 +232,7 @@ export default {
     UpcomingEvents,
     AutomationList,
     ContactPageNotes,
-    MessagingSingleComponent,
+    // MessagingSingleComponent,
     FourButtonBarWithDropDown,
   },
 };

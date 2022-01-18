@@ -22,17 +22,17 @@
     <div id="messages">
       <base-card
         :icon="SVGs.MessageBubbleSVG"
-        title="Messages"
+        title="Coming Soon"
         v-if="contact"
         :subtitle="`${contact.given_name}`"
       >
         <template v-slot:content v-if="contact">
-          <messaging-single-component
+          <!-- <messaging-single-component
             v-if="contact"
             :defaultUser="contact"
             :conversation="conversation"
             :id="contact.userId"
-          ></messaging-single-component>
+          ></messaging-single-component> -->
         </template>
       </base-card>
     </div>
@@ -79,7 +79,7 @@
 <script>
 import PopupEmailComposition from "../../../../SharedComponents/SharedComponentsPopupUtilities/PopupEmailComposition.vue";
 import ContactCardPerson from "../../../../SharedComponents/SharedComponentsContact/ContactCardPerson.vue";
-import MessagingSingleComponent from "../../../../SharedComponents/SharedComponentsMessaging/MessagingSingleComponent.vue";
+// import MessagingSingleComponent from "../../../../SharedComponents/SharedComponentsMessaging/MessagingSingleComponent.vue";
 import FourButtonBarWithDropDown from "../../../../SharedComponents/SharedComponentsUI/FourButtonBarWithDropDown.vue";
 import UpcomingEvents from "../../../../SharedComponents/SharedComponentsUpcomingEvents/UpcomingEvents.vue";
 import ContactPageEventsAssignment from "../../AdminComponents/AdminContactPageComponents/AdminContactPageSharedComponents/ContactPageUpcomingEvents/ContactPageEventsAssignment.vue";
@@ -253,7 +253,7 @@ export default {
     ContactPageEventsAssignment,
     AutomationList,
     ContactPageNotes,
-    MessagingSingleComponent,
+    // MessagingSingleComponent,
     // VendorPageReferralPopup,
     FourButtonBarWithDropDown,
   },

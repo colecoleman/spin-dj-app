@@ -168,9 +168,11 @@ export default {
     },
     eventConversations() {
       return this.contacts.map((x) => {
-        return x.conversations.find((x) => {
-          return this.currentUser.conversations.includes(x);
-        });
+        if (x.conversations) {
+          return x.conversations.find((x) => {
+            return this.currentUser.conversations.includes(x);
+          });
+        }
       });
     },
   },
@@ -243,6 +245,7 @@ export default {
       .dispatch("adminGetEvent", this.$route.params.id)
       .then((res) => {
         this.event = res.data.Item;
+        console.log(this.event);
       })
       .catch((e) =>
         this.$store.commit("addStatus", { type: "error", note: e })
@@ -250,8 +253,9 @@ export default {
     await this.event.contacts.forEach((contact) => {
       let id = contact.id ? contact.id : contact;
       this.$store.dispatch("getUser", id).then((res) => {
+        console.log(res);
         this.contacts.push(res);
-        if (res.role === "client") {
+        if (contact.role === "client") {
           this.clients.push(res);
         }
       });
