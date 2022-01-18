@@ -49,14 +49,19 @@ export default {
       }
     },
     messagesSortedByDate() {
-      let tempArray = [...this.conversation.thread];
-      return tempArray.sort(function (a, b) {
-        return a.data.sentDate < b.data.sentDate
-          ? 1
-          : a.data.sentDate > b.data.sentDate
-          ? -1
-          : 0;
-      });
+      if (this.conversation) {
+        console.log(this.conversation);
+        let tempArray = [...this.conversation.thread];
+        return tempArray.sort(function (a, b) {
+          return a.data.sentDate < b.data.sentDate
+            ? 1
+            : a.data.sentDate > b.data.sentDate
+            ? -1
+            : 0;
+        });
+      } else {
+        return [];
+      }
     },
   },
   methods: {
