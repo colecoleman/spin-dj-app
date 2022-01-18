@@ -1,12 +1,13 @@
+
 <template>
-  <right-side-drawer
+  <!-- <right-side-drawer
     :items="items"
     :open="isClicked"
     @closeDrawer="closeDialog()"
-  ></right-side-drawer>
+  ></right-side-drawer> -->
   <div
     id="add-button"
-    @click="isClicked = !isClicked"
+    @click="newEvent()"
     @mousedown.prevent=""
     :class="isClicked ? `` : `pointer`"
   >
@@ -20,7 +21,7 @@
 
 <script>
 import plusButton from "../../assets/SVGs/plus-sign.svg";
-import RightSideDrawer from "../SharedComponentsUI/RightSideDrawer.vue";
+// import RightSideDrawer from "../SharedComponentsUI/RightSideDrawer.vue";
 
 export default {
   data() {
@@ -54,7 +55,7 @@ export default {
   },
   emits: ["closeDrawer"],
   components: {
-    RightSideDrawer,
+    // RightSideDrawer,
   },
 };
 </script>
@@ -71,6 +72,7 @@ img {
   min-width: 60px;
   height: 60px;
   border-radius: 50px;
+  margin-left: 10px;
   border: 1px solid var(--cardOutline);
   background-color: var(--foregroundColor);
 }
