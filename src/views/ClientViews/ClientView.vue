@@ -1,6 +1,6 @@
 <template>
   <non-admin-header></non-admin-header>
-  <div class="content-container">
+  <div class="content-container" v-if="loaded">
     <router-view name="content"></router-view>
   </div>
 </template>
@@ -8,9 +8,18 @@
 <script>
 import NonAdminHeader from "../../SharedComponents/SharedComponentsHeader/NonAdminHeader.vue";
 export default {
+  data() {
+    return {
+      loaded: false,
+    };
+  },
   components: { NonAdminHeader },
-  created() {
-    this.$store.dispatch("getPublicSettings");
+  async created() {
+    if (!this.$store.state.user) {
+      await this.$store.dispatch("setUser");
+    }
+    await this.$store.dispatch("getPublicSettings");
+    this.loaded = true;
   },
 };
 </script>

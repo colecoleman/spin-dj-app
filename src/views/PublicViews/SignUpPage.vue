@@ -79,6 +79,10 @@
               >
             </p>
           </div>
+          <div class="input-field">
+            <p>Beta Access Code:</p>
+            <input v-model="accessCode" type="text" class="healthy" />
+          </div>
           <button-standard-with-icon
             text="Sign Up"
             @click="validationBlock()"
@@ -142,6 +146,7 @@ export default {
       confirmPassword: undefined,
       confirmationCode: undefined,
       step: 1,
+      accessCode: undefined,
       user: undefined,
       given_nameError: false,
       familyNameError: false,
@@ -157,34 +162,34 @@ export default {
       this.$router.push("/login");
     },
     validationBlock() {
-      const re = new RegExp(
-        "^(?=.*d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$"
-      );
-      if (!this.given_name) {
-        this.given_nameError = true;
-      } else {
-        this.given_nameError = false;
-      }
-      if (!this.familyName) {
-        this.familyNameError = true;
-      } else {
-        this.familyNameError = false;
-      }
-      if (!this.username) {
-        this.usernameError = true;
-      } else {
-        this.usernameError = false;
-      }
-      if (this.password != this.confirmPassword) {
-        this.passwordError.match = true;
-      } else {
-        this.passwordError.match = false;
-      }
-      if (!re.test(this.password)) {
-        this.passwordError.strength = true;
-      } else {
-        this.passwordError.strength = false;
-      }
+      // const re = new RegExp(
+      //   "^(?=.*d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$"
+      // );
+      // if (!this.given_name) {
+      //   this.given_nameError = true;
+      // } else {
+      //   this.given_nameError = false;
+      // }
+      // if (!this.familyName) {
+      //   this.familyNameError = true;
+      // } else {
+      //   this.familyNameError = false;
+      // }
+      // if (!this.username) {
+      //   this.usernameError = true;
+      // } else {
+      //   this.usernameError = false;
+      // }
+      // if (this.password != this.confirmPassword) {
+      //   this.passwordError.match = true;
+      // } else {
+      //   this.passwordError.match = false;
+      // }
+      // if (!re.test(this.password)) {
+      //   this.passwordError.strength = true;
+      // } else {
+      //   this.passwordError.strength = false;
+      // }
       if (
         !this.passwordError.strength &&
         !this.passwordError.match &&
@@ -199,24 +204,35 @@ export default {
       }
     },
     async signUp(username, password, familyName, given_name) {
-      try {
-        const { user } = await Auth.signUp({
-          username,
-          password,
-          attributes: {
-            email: username,
-            family_name: familyName,
-            given_name: given_name,
-            "custom:role": "admin",
-          },
+      let access = await this.$store
+        .dispatch("submitBetaAccessCode", this.accessCode)
+        .catch(() => {
+          this.$store.commit("addStatus", {
+            type: "error",
+            note: "Incorrect Access Code",
+          });
         });
-        this.step++;
-        this.user = user;
-      } catch (error) {
-        this.$store.commit("addStatus", {
-          type: "error",
-          note: `Error signing up: ${error}`,
-        });
+      if (access) {
+        try {
+          const { user } = await Auth.signUp({
+            username,
+            password,
+            attributes: {
+              email: username,
+              family_name: familyName,
+              given_name: given_name,
+              "custom:role": "admin",
+            },
+          });
+          this.step++;
+          this.user = user;
+          console.log(this.user);
+        } catch (error) {
+          this.$store.commit("addStatus", {
+            type: "error",
+            note: `Error signing up: ${error}`,
+          });
+        }
       }
     },
     async submitConfirmationCode() {
@@ -224,6 +240,7 @@ export default {
       const code = this.confirmationCode;
       try {
         await Auth.confirmSignUp(user.username, code);
+        await Auth.signIn(user.username, this.password);
         await this.$store.dispatch("setUser");
         this.$router.push("/setup");
       } catch (error) {

@@ -11,9 +11,9 @@
       </div>
       <div class="hero-right hero-half">
         <div id="authenticator-container">
-          <authenticator>
-            <template> </template>
-          </authenticator>
+          <Authenticator id="auth">
+            <!-- <template> </template> -->
+          </Authenticator>
         </div>
       </div>
     </div>
@@ -23,7 +23,7 @@
 <script>
 import SpinLogoWithText from "../../assets/spin-logo-with-text.svg";
 import { Authenticator } from "@aws-amplify/ui-vue";
-import "@aws-amplify/ui-vue/styles.css";
+// import "@aws-amplify/ui-vue/styles.css";
 import { Hub } from "aws-amplify";
 
 export default {
@@ -52,6 +52,7 @@ export default {
   components: {
     Authenticator,
   },
+
   computed: {
     user() {
       return this.$store.state.user;
@@ -123,6 +124,9 @@ h1 {
   display: block;
 }
 
+amplify-authenticator {
+  display: none;
+}
 .tagline-container {
   display: flex;
   justify-content: center;
@@ -198,6 +202,47 @@ p {
 
 :root {
   --form-color: cyan !important;
+}
+
+#id {
+  display: none;
+}
+
+[data-amplify-authenticator] {
+  --amplify-colors-background-primary: blue;
+  --amplify-colors-background-secondary: blue;
+  --amplify-colors-background-tertiary: blue;
+  --amplify-colors-border-primary: blue;
+  --amplify-colors-border-secondary: blue;
+  --amplify-colors-border-tertiary: var(--amplify-colors-neutral-60);
+  --amplify-colors-brand-primary-10: blue;
+  --amplify-colors-brand-primary-20: blue;
+  --amplify-colors-brand-primary-40: var(--amplify-colors-teal-80);
+  --amplify-colors-brand-primary-60: var(--amplify-colors-teal-60);
+  --amplify-colors-brand-primary-80: var(--amplify-colors-teal-40);
+  --amplify-colors-brand-primary-90: var(--amplify-colors-teal-20);
+  --amplify-colors-brand-primary-100: var(--amplify-colors-teal-10);
+  --amplify-colors-font-interactive: var(--amplify-colors-white);
+  --amplify-components-heading-color: blue;
+  --amplify-components-tabs-item-active-border-color: var(
+    --amplify-colors-white
+  );
+  --amplify-components-tabs-item-active-color: var(--amplify-colors-white);
+  --amplify-components-tabs-item-color: var(--amplify-colors-white);
+  --amplify-components-tabs-item-focus-color: var(--amplify-colors-white);
+  --amplify-components-text-color: var(--amplify-colors-font-interactive);
+}
+
+.amplify-button[data-variation="primary"] {
+  background: linear-gradient(
+    to right,
+    var(--amplify-colors-green-80),
+    var(--amplify-colors-orange-40)
+  );
+}
+
+.amplify-tabs {
+  display: none !important;
 }
 
 @media screen and (min-width: 350px) {

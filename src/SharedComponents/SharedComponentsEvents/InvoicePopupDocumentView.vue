@@ -15,10 +15,12 @@
     </div>
     <div id="invoice-information">
       <div class="invoice-information-half">
-        <div class="invoice-item">
+        <div class="invoice-item" v-if="client">
           <h5>Prepared For:</h5>
           <p>
-            <span>{{ client.given_name }} {{ client.family_name }}</span>
+            <span v-if="client"
+              >{{ client.given_name }} {{ client.family_name }}</span
+            >
           </p>
           <p>{{ formatPhoneNumber(client.phoneNumber) }}</p>
           <p>{{ client.emailAddress }}</p>
@@ -171,19 +173,8 @@ export default {
 <style scoped>
 #invoice-popup-document-view {
   background-color: white;
-  width: 147mm;
-  min-height: 207.9mm;
+  aspect-ratio: 8.5/11;
   height: fit-content;
-  padding-bottom: 20px;
-}
-
-h1,
-h2,
-h3,
-h4,
-h5,
-p {
-  /* color: black; */
 }
 
 #heading {

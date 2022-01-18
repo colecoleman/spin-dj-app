@@ -38,9 +38,8 @@
       <automation-list
         :automations="automations"
         automationType="Contact"
+        :contacts="[contact]"
         :id="$route.params.id"
-        @automation-deleted="deleteAutomation"
-        @automation-approved="approveAutomation"
       ></automation-list>
     </div>
     <div id="notes">
@@ -95,6 +94,7 @@ export default {
     await this.$store
       .dispatch("adminGetContact", this.$route.params.id)
       .then((res) => {
+        console.log(res);
         this.location = res.data.Item;
       });
     if (this.location.contacts.length > 0) {

@@ -77,6 +77,7 @@ export default {
     // this.stripe = await loadStripe(this.stripeAPIToken);
   },
   components: {},
+  emits: ["submitPaymentIntent"],
   props: ["eventId", "event", "stripe"],
 };
 </script>

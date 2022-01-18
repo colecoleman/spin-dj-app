@@ -33,6 +33,7 @@ const store = createStore({
           .then(
             (result) => {
               resolve(result.data);
+              console.log(result.data);
               context.commit("setBusinessSettings", result.data);
             },
             (error) => {
@@ -126,6 +127,21 @@ const store = createStore({
     },
 
     // admin actions
+    async submitBetaAccessCode(context, payload) {
+      return new Promise((resolve, reject) => {
+        axios
+          .put(
+            `https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/beta/access/${payload}`
+          )
+          .then((res) => {
+            resolve(res);
+          })
+          .catch((e) => {
+            reject(e);
+          });
+
+      });
+    },
     async getAdminEvents(context) {
       return new Promise((resolve, reject) => {
         axios
@@ -825,8 +841,7 @@ const store = createStore({
           .then(
             (result) => {
               resolve(result);
-
-              context.commit("setUser", result.data.Item);
+              // context.commit("setUser", result.data.Item);
             },
             (error) => {
               context.commit("addStatus", {

@@ -65,7 +65,9 @@ export default {
     if (!this.$store.state.user) {
       await this.$store.dispatch("setUser");
     }
-    await this.$store.dispatch("getEvents");
+    await this.$store.dispatch("getEvents").then((res) => {
+      console.log(res);
+    });
     this.loading = false;
   },
   components: {

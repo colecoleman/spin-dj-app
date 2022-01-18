@@ -2,14 +2,14 @@
   <div class="site-header">
     <img :src="logo" alt="" />
     <div class="button-wrapper">
-      <notification-button></notification-button>
+      <!-- <notification-button></notification-button> -->
       <logout-button></logout-button>
     </div>
   </div>
 </template>
 <script>
 import LogoutButton from "./LogoutButton.vue";
-import NotificationButton from "./NotificationButton/NotificationButton.vue";
+// import NotificationButton from "./NotificationButton/NotificationButton.vue";
 
 export default {
   methods: {},
@@ -21,7 +21,7 @@ export default {
   created() {},
   components: {
     LogoutButton,
-    NotificationButton,
+    // NotificationButton,
   },
   props: [],
 };

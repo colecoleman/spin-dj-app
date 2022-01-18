@@ -138,12 +138,23 @@ export default {
           text: "Remaining Balance Due",
         });
       }
+      if (
+        this.total(this.event.invoice, this.event.data) -
+          this.balanceOutstanding(this.event.invoice, this.event.data) <
+        this.$store.state.businessSettings.payments.depositAmount * 100
+      ) {
+        alerts.push({
+          urgency: "high",
+          text: "Deposit Unpaid",
+        });
+      }
       return alerts;
     },
   },
   methods: {
     finalPaymentDueDate: helpers.finalPaymentDueDate,
     balanceOutstanding: helpers.balanceOutstanding,
+    total: helpers.total,
     openForms() {
       this.togglePopup("forms");
     },
@@ -174,9 +185,8 @@ export default {
       .catch((e) =>
         this.$store.commit("addStatus", { type: "error", note: e })
       );
-    // this.event.contacts.push(this.$store.state.user.tenantId);
     await this.event.contacts.forEach((contact) => {
-      this.$store.dispatch("nonAdminGetUser", contact).then((res) => {
+      this.$store.dispatch("nonAdminGetUser", contact.id).then((res) => {
         this.contacts.push(res);
         if (res.role === "client") {
           this.clients.push(res);
@@ -202,7 +212,6 @@ export default {
     SpecificEventPageLocationScroller,
     EventPageAlerts,
     EventMakePaymentCard,
-    // AutomationEventComponent,
     Backdrop,
     InvoicePopup,
     FormsPopup,

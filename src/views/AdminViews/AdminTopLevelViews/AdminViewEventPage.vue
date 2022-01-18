@@ -1,9 +1,9 @@
 <template>
   <div v-if="event" id="div-wrapper">
-    <backdrop
+    <!-- <backdrop
       v-if="invoiceOpen || formsOpen || contractOpen"
       @click="closePopup()"
-    ></backdrop>
+    ></backdrop> -->
     <invoice-popup
       :invoice="event.invoice"
       :event="event"
@@ -98,7 +98,7 @@ import EventPageContactCard from "../../../SharedComponents/SharedComponentsEven
 import EventPageContactCarousel from "../../../SharedComponents/SharedComponentsEvents/eventPageContactCarousel/EventPageContactCarousel.vue";
 import SpecificEventPageLocationScroller from "../../../SharedComponents/SharedComponentsEvents/specificEventPageLocationScroller/SpecificEventPageLocationScroller.vue";
 import AutomationList from "../AdminComponents/AdminSharedComponents/AutomationList.vue";
-import Backdrop from "../../../SharedComponents/SharedComponentsUI/Backdrop.vue";
+// import Backdrop from "../../../SharedComponents/SharedComponentsUI/Backdrop.vue";
 import FormsPopup from "../../../SharedComponents/SharedComponentsEvents/FormsPopup.vue";
 import InvoicePopup from "../../../SharedComponents/SharedComponentsEvents/InvoicePopup.vue";
 import EventInformation from "../AdminComponents/AdminEventPageComponents/EventInformation.vue";
@@ -274,7 +274,7 @@ export default {
     SpecificEventPageLocationScroller,
     AutomationList,
     EventMakePayment,
-    Backdrop,
+    // Backdrop,
     InvoicePopup,
     PopupModal,
     EventInformation,

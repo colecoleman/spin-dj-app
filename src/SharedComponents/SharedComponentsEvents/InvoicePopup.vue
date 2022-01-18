@@ -1,180 +1,101 @@
 <template>
-  <full-page-popup>
-    <template v-slot:icon
-      ><svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="16.75"
-        height="22"
-        viewBox="0 0 16.75 22"
-        class="no-print"
-      >
-        <path
-          d="M15.463,4.307,11.447.287A.984.984,0,0,0,10.75,0H10.5V5.25h5.25V5A.981.981,0,0,0,15.463,4.307ZM9.188,5.578V0H.984A.982.982,0,0,0,0,.984V20.016A.982.982,0,0,0,.984,21H14.766a.982.982,0,0,0,.984-.984V6.563H10.172A.987.987,0,0,1,9.188,5.578ZM2.625,2.953a.328.328,0,0,1,.328-.328H6.234a.328.328,0,0,1,.328.328v.656a.328.328,0,0,1-.328.328H2.953a.328.328,0,0,1-.328-.328Zm0,3.281V5.578a.328.328,0,0,1,.328-.328H6.234a.328.328,0,0,1,.328.328v.656a.328.328,0,0,1-.328.328H2.953A.328.328,0,0,1,2.625,6.234ZM8.531,17.058v.989a.328.328,0,0,1-.328.328H7.547a.328.328,0,0,1-.328-.328v-1a2.349,2.349,0,0,1-1.287-.466.329.329,0,0,1-.023-.5l.482-.46a.337.337,0,0,1,.415-.03.987.987,0,0,0,.526.153H8.485a.516.516,0,0,0,.484-.541.535.535,0,0,0-.36-.522l-1.846-.554a1.856,1.856,0,0,1-1.3-1.78A1.826,1.826,0,0,1,7.218,10.5V9.516a.328.328,0,0,1,.328-.328H8.2a.328.328,0,0,1,.328.328v1a2.345,2.345,0,0,1,1.287.466.329.329,0,0,1,.023.5l-.482.46a.337.337,0,0,1-.415.03.984.984,0,0,0-.526-.153H7.265a.516.516,0,0,0-.484.541.535.535,0,0,0,.36.522l1.846.554a1.856,1.856,0,0,1,1.3,1.78A1.826,1.826,0,0,1,8.531,17.058Z"
-          transform="translate(0.5 0.5)"
-          fill="currentColor"
-        />
-      </svg>
-    </template>
-    <template v-slot:title class="no-print">Invoice</template>
-    <template v-slot:action1>
-      <svg
-        width="17.995"
-        height="17.995"
-        viewBox="0 0 17.995 17.995"
-        @click="closePopup()"
-        class="no-print"
-      >
-        <path
-          d="M19.33,15.581h0l-5.459-5.459L19.33,4.663h0a.564.564,0,0,0,0-.8L16.751,1.289a.564.564,0,0,0-.8,0h0L10.5,6.748,5.038,1.289h0a.564.564,0,0,0-.8,0L1.664,3.868a.564.564,0,0,0,0,.8h0l5.459,5.459L1.664,15.581h0a.564.564,0,0,0,0,.8l2.579,2.579a.564.564,0,0,0,.8,0h0L10.5,13.5l5.459,5.459h0a.564.564,0,0,0,.8,0l2.579-2.579a.564.564,0,0,0,0-.8Z"
-          transform="translate(-1.5 -1.125)"
-          fill="currentColor"
-        />
-      </svg>
-    </template>
-    <template v-slot:content>
-      <div id="invoice-popup-content-wrapper">
-        <div id="invoice-popup-left-menu">
-          <h3>Document View</h3>
-
-          <button-standard-with-icon
-            text="Download"
-            @click="saveInvoice('invoice-popup-document-view')"
-          >
-            <template v-slot:icon
-              ><svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="19.25"
-                height="19.25"
-                viewBox="0 0 19.25 19.25"
+  <backdrop @click="closePopup()"></backdrop>
+  <section>
+    <div class="navigation-wrapper">
+      <base-card>
+        <template v-slot:content>
+          <div id="invoice-popup-right-column">
+            <div class="invoice-item">
+              <h5>Products:</h5>
+              <div
+                class="price-item"
+                v-for="item in invoice.products"
+                :key="item.name"
               >
-                <g
-                  id="Icon_feather-printer"
-                  data-name="Icon feather-printer"
-                  transform="translate(-0.875 -0.875)"
-                >
-                  <path
-                    id="Path_129"
-                    data-name="Path 129"
-                    d="M5.25,7.875V1.75h10.5V7.875"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="1.75"
-                  />
-                  <path
-                    id="Path_130"
-                    data-name="Path 130"
-                    d="M5.25,15.75H3.5A1.75,1.75,0,0,1,1.75,14V9.625A1.75,1.75,0,0,1,3.5,7.875h14a1.75,1.75,0,0,1,1.75,1.75V14a1.75,1.75,0,0,1-1.75,1.75H15.75"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="1.75"
-                  />
-                  <path
-                    id="Path_131"
-                    data-name="Path 131"
-                    d="M5.25,12.25h10.5v7H5.25Z"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="1.75"
-                  />
-                </g>
-              </svg>
-            </template>
-          </button-standard-with-icon>
-        </div>
-        <div id="invoice-document-view-wrapper">
-          <invoice-popup-document-view
-            :invoice="invoice"
-            :event="event"
-            :client="client"
-          ></invoice-popup-document-view>
-        </div>
-        <div id="invoice-popup-right-column">
-          <div class="invoice-item">
-            <h5>Packages:</h5>
-            <div
-              class="price-item"
-              v-for="item in invoice.products"
-              :key="item.name"
-            >
-              <p>
-                {{ item.name }} ({{
-                  calculateEventTime(event.data) / (60 * 60 * 1000)
-                }}
-                hours):
-              </p>
-              <h5>{{ formatPrice(productTotal(item, event.data)) }}</h5>
+                <p>
+                  {{ item.name }} ({{
+                    calculateEventTime(event.data) / (60 * 60 * 1000)
+                  }}
+                  hours):
+                </p>
+                <h5>{{ formatPrice(productTotal(item, event.data)) }}</h5>
+              </div>
             </div>
-          </div>
-          <div class="invoice-item">
-            <h5>Add-Ons:</h5>
-            <div
-              class="price-item"
-              v-for="item in invoice.addOns"
-              :key="item.id"
-            >
-              <p>{{ item.name }} ({{ item.eventUnits }}):</p>
-              <h5>{{ productTotal(item, event.date) }}</h5>
+            <div class="invoice-item">
+              <h5>Add-Ons:</h5>
+              <div
+                class="price-item"
+                v-for="item in invoice.addOns"
+                :key="item.id"
+              >
+                <p>{{ item.name }} ({{ item.eventUnits }}):</p>
+                <h5>{{ productTotal(item, event.date) }}</h5>
+              </div>
             </div>
-          </div>
-          <div class="summary-item">
-            <h4>Subtotal:</h4>
-            <h5>{{ formatPrice(subtotal(event.invoice, event.data)) }}</h5>
-          </div>
-          <div class="invoice-item">
-            <h5>Adjustments:</h5>
-            <div
-              class="price-item"
-              v-for="adjustment in invoice.adjustments"
-              :key="adjustment.id"
-            >
-              <p>{{ adjustment.name }}:</p>
-              <h5 v-if="adjustment.type === 'percentage'">
-                {{ adjustment.amount * 100 }}%
-              </h5>
-              <h5 v-if="adjustment.type === 'dollar'">
-                {{ formatPrice(adjustment.amount) }}
+            <div class="summary-item">
+              <h5>Subtotal:</h5>
+              <h5>{{ formatPrice(subtotal(event.invoice, event.data)) }}</h5>
+            </div>
+            <div class="invoice-item">
+              <h5>Adjustments:</h5>
+              <div
+                class="price-item"
+                v-for="adjustment in invoice.adjustments"
+                :key="adjustment.id"
+              >
+                <p>{{ adjustment.name }}:</p>
+                <h5 v-if="adjustment.type === 'percentage'">
+                  {{ adjustment.amount * 100 }}%
+                </h5>
+                <h5 v-if="adjustment.type === 'dollar'">
+                  {{ formatPrice(adjustment.amount) }}
+                </h5>
+              </div>
+            </div>
+            <div class="summary-item">
+              <h5>Invoice Total:</h5>
+              <h5>{{ formatPrice(total(event.invoice, event.data)) }}</h5>
+            </div>
+            <div class="invoice-item">
+              <h5>Payments Collected:</h5>
+              <div
+                class="price-item"
+                v-for="payment in invoice.payments"
+                :key="payment.referenceNumber"
+              >
+                <p>{{ payment.name }}</p>
+                <h5>{{ formatPrice(payment.amount) }}</h5>
+              </div>
+            </div>
+            <div class="summary-item">
+              <h5>Outstanding Balance</h5>
+              <h5>
+                {{ formatPrice(balanceOutstanding(event.invoice, event.data)) }}
               </h5>
             </div>
           </div>
-          <div class="summary-item">
-            <h4>Invoice Total:</h4>
-            <h5>{{ formatPrice(total(event.invoice, event.data)) }}</h5>
-          </div>
-          <div class="invoice-item">
-            <h5>Payments Collected:</h5>
-            <div
-              class="price-item"
-              v-for="payment in invoice.payments"
-              :key="payment.referenceNumber"
-            >
-              <p>{{ payment.name }}</p>
-              <h5>{{ formatPrice(payment.amount) }}</h5>
-            </div>
-          </div>
-          <div class="summary-item">
-            <h4>Outstanding Balance</h4>
-            <h5>
-              {{ formatPrice(balanceOutstanding(event.invoice, event.data)) }}
-            </h5>
-          </div>
-        </div>
-      </div>
-    </template>
-  </full-page-popup>
+          <button-standard-with-icon
+            text="Save"
+            @click="printInvoice('invoice-popup-document-view')"
+          ></button-standard-with-icon>
+        </template>
+      </base-card>
+    </div>
+    <div id="invoice-document-view-wrapper">
+      <invoice-popup-document-view
+        :invoice="invoice"
+        :event="event"
+        :client="client"
+      ></invoice-popup-document-view>
+    </div>
+  </section>
 </template>
 
 
 <script>
-import FullPagePopup from "../../SharedComponents/SharedComponentsUI/FullPagePopup.vue";
+import Backdrop from "../SharedComponentsUI/Backdrop.vue";
 import InvoicePopupDocumentView from "./InvoicePopupDocumentView.vue";
 import helpers from "../../helpers.js";
-import ButtonStandardWithIcon from "../../SharedComponents/SharedComponentsUI/ButtonStandardWithIcon.vue";
 
 export default {
   computed: {
@@ -206,40 +127,55 @@ export default {
       this.$emit("closePopup");
     },
   },
+  emits: ["closePopup"],
   props: ["invoice", "event", "client"],
 
   components: {
-    FullPagePopup,
     InvoicePopupDocumentView,
-    ButtonStandardWithIcon,
+    Backdrop,
   },
 };
 </script>
 
 <style scoped>
+section {
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: flex;
+  flex-direction: row;
+  height: 90%;
+  width: 90%;
+  margin: 5%;
+  z-index: 3;
+}
+
+.navigation-wrapper {
+  width: 350px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
 #invoice-popup-content-wrapper {
   display: flex;
   flex-direction: row;
-  min-height: 100%;
-  height: 100%;
+  /* min-height: 100%; */
 }
 
 #invoice-popup-left-menu,
 #invoice-popup-right-column {
-  width: 20%;
-  padding: 15px;
   overflow: scroll;
 }
 
 #invoice-document-view-wrapper {
   overflow: scroll;
-  height: 100%;
+  width: 100%;
 }
 
 .invoice-item,
 .summary-item {
   padding-top: 20px;
-  /* border-bottom: 1px solid white; */
 }
 
 .summary-item,
@@ -247,37 +183,19 @@ export default {
   display: flex;
   flex-direction: row;
   align-items: center;
+  justify-content: space-between;
 }
 
 .invoice-item > h5 {
-  width: 50%;
   font-weight: 600;
   text-align: left;
 }
 
-.price-item > p {
-  width: 50%;
-
-  text-align: left;
-  margin-left: 20px;
-}
-
-.price-item > h5 {
-  width: 50%;
-
-  text-align: right;
-  /* font-weight: 600; */
-}
-
 .summary-item > h4 {
-  width: 50%;
   text-align: left;
 }
 
 .summary-item h5 {
-  width: 50%;
-
-  text-align: right;
   font-weight: 600;
 }
 </style>

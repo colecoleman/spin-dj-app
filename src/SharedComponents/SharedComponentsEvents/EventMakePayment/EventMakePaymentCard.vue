@@ -1,6 +1,5 @@
 <template>
-  <base-card>
-    <template v-slot:title>Make Payment</template>
+  <base-card title="Make Payment" :icon="SVGs.CreditCardSVG">
     <template v-slot:content
       ><event-make-payment
         :event="event"
@@ -42,7 +41,14 @@
 <script>
 import EventMakePayment from "./EventMakePayment.vue";
 import helpers from "../../../helpers.js";
+import SVGs from "../../../assets/SVGs/svgIndex.js";
+
 export default {
+  data() {
+    return {
+      SVGs,
+    };
+  },
   components: { EventMakePayment },
   methods: {
     formatDate: helpers.formatDate,
