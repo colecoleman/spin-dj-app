@@ -4,7 +4,7 @@
     <img :src="businessLogo" alt="" />
     <tab-switcher></tab-switcher>
     <search-bar></search-bar>
-    <notification-button></notification-button>
+    <!-- <notification-button></notification-button> -->
     <add-button></add-button>
     <logout-button></logout-button>
   </div>
@@ -15,7 +15,7 @@ import TabSwitcher from "./TabSwitcher.vue";
 import SearchBar from "./SearchBar.vue";
 import AddButton from "./AddButton.vue";
 import LogoutButton from "./LogoutButton.vue";
-import NotificationButton from "./NotificationButton/NotificationButton.vue";
+// import NotificationButton from "./NotificationButton/NotificationButton.vue";
 
 export default {
   data() {
@@ -36,7 +36,7 @@ export default {
   components: {
     TabSwitcher,
     SearchBar,
-    NotificationButton,
+    // NotificationButton,
     AddButton,
     LogoutButton,
   },
