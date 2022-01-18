@@ -1,24 +1,31 @@
 <template>
   <div class="single-event-item" v-if="event" :class="loading ? loading : ''">
-    <div id="client-event-identifier" v-if="matchedClient">
+    <div class="client-event-identifier">
       <img :src="defaultProfilePicture" alt="" />
-      <h5 id="client-name">
+      <h5 class="client-name" v-if="matchedClient">
         {{ matchedClient.given_name }} <br />
         <span> {{ matchedClient.family_name }}</span>
+      </h5>
+      <h5 class="client-name" v-if="!matchedClient">
+        Unknown<br />
+        <span>User</span>
       </h5>
     </div>
     <div class="event-location-identifier" v-if="primaryLocation">
       <h4 class="venue-name">{{ primaryLocation.name }}</h4>
       <div class="event-address">
         <p>{{ primaryLocation.address.streetAddress1 }}</p>
-        <p v-if="primaryLocation.address.streetAddress2">
+        <!-- <p v-if="primaryLocation.address.streetAddress2">
           {{ primaryLocation.address.streetAddress2 }}
-        </p>
+        </p> -->
         <p>{{ primaryLocation.address.cityStateZip }}</p>
       </div>
     </div>
-    <div id="event-metadata-identifier">
-      <div id="date-and-time-identifier">
+    <div class="event-location-identifier" v-if="!primaryLocation">
+      <h4>Unknown Location</h4>
+    </div>
+    <div class="event-metadata-identifier">
+      <div class="date-and-time-identifier">
         <p>{{ formatDate(event.data.date) }}</p>
         <p>
           {{ formatTime(event.data.startTime) }} -
@@ -56,31 +63,40 @@ export default {
   },
   mounted() {
     this.loading = true;
-    this.$store.dispatch("getLocation", this.event.locations[0]).then((res) => {
-      if (res.Item) {
-        this.primaryLocation = res.Item;
-      }
-    });
-    this.$store.dispatch("getUser", this.event.contacts[0]).then((res) => {
-      this.matchedClient = res;
-
-    });
-    this.loading = false;
+    console.log(this.event);
+    if (this.event.locations) {
+      this.$store
+        .dispatch("getLocation", this.event.locations[0])
+        .then((res) => {
+          if (res.Item) {
+            this.primaryLocation = res.Item;
+          }
+        });
+    }
+    if (this.event.contacts) {
+      this.$store.dispatch("getUser", this.event.contacts[0].id).then((res) => {
+        console.log(res);
+        this.matchedClient = res;
+      });
+    }
+    // this.loading = false;
+    console.log(this.event);
   },
   props: ["event", "first"],
 };
 </script>
 
 <style scoped>
-#client-event-identifier,
-#event-location-identifier,
-#event-metadata-identifier {
+.client-event-identifier,
+.event-location-identifier,
+.event-metadata-identifier {
   display: flex;
   max-width: 33%;
   width: 33%;
 }
 .single-event-item {
   display: flex;
+  width: 100%;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
@@ -88,17 +104,17 @@ export default {
   cursor: pointer;
 }
 
-#client-event-identifier {
+.client-event-identifier {
   flex-direction: row;
   align-items: center;
 }
 
-#client-event-identifier img {
+.client-event-identifier img {
   height: 40px;
   width: 40px;
   margin: 10px;
 }
-#client-name {
+.client-name {
   font-size: 10pt;
   display: flex;
   flex-direction: column;
@@ -120,9 +136,13 @@ export default {
   font-size: 12px;
 }
 
-#event-metadata-identifier {
+.event-metadata-identifier {
   flex-direction: column;
   font-size: 10pt;
   text-align: right;
+}
+
+.client-name {
+  background-image: black;
 }
 </style>
