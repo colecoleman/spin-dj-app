@@ -14,6 +14,7 @@
 <script>
 export default {
   props: ["items", "open"],
+  emits: ["closeDrawer"],
 };
 </script>
 
