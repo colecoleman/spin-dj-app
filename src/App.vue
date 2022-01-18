@@ -26,10 +26,8 @@ export default {
   },
   computed: {
     branding() {
-      if (!Auth.currentAuthenticatedUser()) {
-        if (this.$store.state.businessSettings.identity.branding) {
-          return this.$store.state.businessSettings.identity.branding;
-        }
+      if (this.$store.state.businessSettings) {
+        return this.$store.state.businessSettings.identity.branding;
       } else {
         return {
           backgroundColor: "#F0F0F0",
