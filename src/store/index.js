@@ -775,8 +775,12 @@ const store = createStore({
           .then(
             (result) => {
               resolve(result);
-
-              context.commit("editEvent", result);
+              let mutationPayload = {
+                variable: payload.variable,
+                eventId: result.data.Attributes.userId,
+                data: result.data.Attributes,
+              };
+              context.commit("editEvent", mutationPayload);
             },
             (error) => {
               context.commit("addStatus", {
@@ -841,7 +845,12 @@ const store = createStore({
           .then(
             (result) => {
               resolve(result);
-              // context.commit("setUser", result.data.Item);
+              let mutationPayload = {
+                variable: payload.variable,
+                eventId: result.data.Attributes.userId,
+                data: result.data.Attributes,
+              };
+              context.commit("editEvent", mutationPayload);
             },
             (error) => {
               context.commit("addStatus", {
@@ -1232,11 +1241,17 @@ const store = createStore({
     addEvent(state, payload) {
       state.events.push(payload);
     },
-    // editEvent(state, payload) {
-    //   // let subject = state.events.find((e) => e.id === payload.eventId);
-    //   // subject[key] = value;
-    //   ;
-    // },
+    editEvent(state, payload) {
+      console.log(payload);
+      let index = state.events.findIndex((e) => e.userId === payload.eventId);
+      console.log(index);
+      if (index > -1) {
+        let event = state.events[index];
+        console.log(event);
+        event[payload.variable] = payload.data[payload.variable];
+        console.log(event);
+      }
+    },
     setEvents(state, payload) {
       state.events = [...payload.data.Items];
     },
