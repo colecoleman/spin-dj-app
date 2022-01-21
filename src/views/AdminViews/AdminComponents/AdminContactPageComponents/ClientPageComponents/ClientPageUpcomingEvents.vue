@@ -3,6 +3,7 @@
     :icon="discsvg"
     :loading="events && contact ? false : true"
     title="Events"
+    @action-one-clicked="toggleSortMenuOpened"
   >
     <template v-slot:icon> </template>
     <template v-slot:action1
@@ -20,13 +21,14 @@
           fill="currentColor"
         />
       </svg>
-      <div id="floating-menu-container">
-        <floating-menu-with-list-items
-          v-if="sortMenuOpened"
-          :actions="sortItems"
-          @actionClicked="selectSort"
-        /></div
-    ></template>
+    </template>
+    <template v-slot:dropdownContainer>
+      <floating-menu-with-list-items
+        v-if="sortMenuOpened"
+        :actions="sortItems"
+        @actionClicked="selectSort"
+      />
+    </template>
     <template v-slot:content>
       <div id="events-content" v-if="events">
         <location-upcoming-events-list-item
