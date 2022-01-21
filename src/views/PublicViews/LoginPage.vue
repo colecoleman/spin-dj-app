@@ -200,12 +200,12 @@ export default {
 }
 
 .spin-dj-sign-in-hero-right h1,
-h2,
-h3,
-h4,
-h5,
-p,
-a {
+.spin-dj-sign-in-hero-right h2,
+.spin-dj-sign-in-hero-right h3,
+.spin-dj-sign-in-hero-right h4,
+.spin-dj-sign-in-hero-right h5,
+.spin-dj-sign-in-hero-right p,
+.spin-dj-sign-in-hero-right a {
   color: white;
 }
 
@@ -245,7 +245,7 @@ a {
   --amplify-colors-brand-primary-90: var(--amplify-colors-teal-20);
   --amplify-colors-brand-primary-100: var(--amplify-colors-teal-10);
   --amplify-colors-font-interactive: var(--amplify-colors-white);
-  --amplify-components-heading-color: var(--amplify-colors-neutral-20);
+  --amplify-components-heading-color: black !important;
   --amplify-components-text-color: black !important;
 }
 
