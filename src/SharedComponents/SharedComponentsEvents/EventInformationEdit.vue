@@ -75,7 +75,7 @@ export default {
       let payload = {
         eventId: this.event.userId,
         variable: "data",
-        value: this.event.data,
+        value: Object.assign({}, this.event.data),
       };
       if (this.fieldToEdit === "date") {
         let array = this.fields[this.fieldToEdit].value.split("-");
@@ -99,11 +99,17 @@ export default {
         payload.value.endTime = eventDate;
       }
 
-      this.$store.dispatch("editEvent", payload).then(() => {
+      this.$store.dispatch("editEvent", payload).then((res) => {
+        this.$emit("editEvent", res.data.Attributes);
+        this.$store.commit("addStatus", {
+          type: "success",
+          note: "Event Successfully Edited",
+        });
         this.closeEditCard();
       });
     },
   },
+  emits: ["editEvent"],
   props: ["event"],
 };
 </script>
@@ -113,7 +119,7 @@ export default {
   position: absolute;
   right: -50px;
   top: -100%;
-  z-index: 2;
+  z-index: 3;
   width: 300px;
 }
 
