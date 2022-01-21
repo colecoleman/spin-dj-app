@@ -10,9 +10,14 @@
         </div>
       </div>
       <div class="hero-right hero-half">
+        <h5>SIGN IN with the temporary password in your email.</h5>
         <div id="authenticator-container">
           <Authenticator> </Authenticator>
         </div>
+        <h5>
+          DJs: looking to create an account?
+          <a href="https://spindj.io/signup"> Sign up!</a>
+        </h5>
       </div>
     </div>
   </section>
@@ -212,8 +217,13 @@ h2,
 h3,
 h4,
 h5,
-p {
+p,
+a {
   color: white;
+}
+
+a {
+  text-decoration: underline;
 }
 
 .amplify-button {
