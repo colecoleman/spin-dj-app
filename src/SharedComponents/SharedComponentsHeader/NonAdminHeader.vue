@@ -3,12 +3,14 @@
     <img :src="logo" alt="" />
     <div class="button-wrapper">
       <!-- <notification-button></notification-button> -->
+      <dashboard-button></dashboard-button>
       <logout-button></logout-button>
     </div>
   </div>
 </template>
 <script>
 import LogoutButton from "./LogoutButton.vue";
+import DashboardButton from "./DashboardButton.vue";
 // import NotificationButton from "./NotificationButton/NotificationButton.vue";
 
 export default {
@@ -20,6 +22,7 @@ export default {
   },
   created() {},
   components: {
+    DashboardButton,
     LogoutButton,
     // NotificationButton,
   },
@@ -31,9 +34,7 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 20px 20px 0px 20px;
   height: 60px;
-  position: relative;
 }
 
 .button-wrapper {
@@ -42,13 +43,8 @@ export default {
   right: 10px;
 }
 
-.button-bar-wrapper {
-  flex: 1;
-}
-
 .site-header img {
-  height: 100%;
-  align-self: center;
-  justify-self: center;
+  max-height: 45px;
+  margin: 15px;
 }
 </style>
