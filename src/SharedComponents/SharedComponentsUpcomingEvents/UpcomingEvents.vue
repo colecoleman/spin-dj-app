@@ -18,7 +18,12 @@
       <div class="wrapper">
         <div
           id="events-content"
-          v-if="userRole === 'admin' && sortedEvents.length > 0"
+          v-if="
+            (userRole === 'admin' ||
+              userRole === 'employee' ||
+              userRole === 'organizer') &&
+            sortedEvents.length > 0
+          "
         >
           <upcoming-events-list-item
             v-for="event in sortedEvents"
@@ -70,6 +75,7 @@ import UpcomingEventsListItem from "./UpcomingEventListItem.vue";
 import FloatingMenuWithListItems from "../SharedComponentsUI/FloatingMenuWithListItems.vue";
 import SVGs from "../../assets/SVGs/svgIndex.js";
 import ClientViewUpcomingEventListItem from "./ClientViewUpcomingEventListItem.vue";
+
 export default {
   data() {
     return {
@@ -136,6 +142,7 @@ export default {
     if (this.pastEvents) {
       this.pastEventsCopy = this.pastEvents;
     }
+    console.log(this.events[0]);
   },
   methods: {
     toggleSortMenuOpened() {
