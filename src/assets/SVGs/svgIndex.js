@@ -6,7 +6,7 @@ import CalendarSVG from "./calendar.svg";
 import CircleArrowUpSVG from "./circle-arrow-up.svg";
 import CircleCheckmarkSVG from "./circle-checkmark.svg";
 import ClipboardSVG from "./clipboard.svg";
-import CreditCardSVG from './credit-card.svg';
+import CreditCardSVG from "./credit-card.svg";
 import DiscSVG from "./disc.svg";
 import DownArrowSVG from "./down-arrow.svg";
 import DropdownArrowSVG from "./dropdown-arrow.svg";
@@ -21,6 +21,7 @@ import FireSVG from "./fire.svg";
 import GreenCheckmark from "./green-checkmark.svg";
 import GroupPeopleSVG from "./group-people.svg";
 import HealthSignSVG from "./health-sign.svg";
+import HomeSVG from "./home.svg";
 import InfoIconSVG from "./info-icon.svg";
 import KeySVG from "./key.svg";
 import LeftArrowSVG from "./left-arrow.svg";
@@ -70,6 +71,7 @@ let SVGs = {
   GreenCheckmark,
   GroupPeopleSVG,
   HealthSignSVG,
+  HomeSVG,
   InfoIconSVG,
   KeySVG,
   LeftArrowSVG,
