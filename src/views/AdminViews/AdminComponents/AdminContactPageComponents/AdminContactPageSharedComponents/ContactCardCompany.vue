@@ -16,10 +16,10 @@
     <template v-slot:content>
       <div id="wrapper" v-if="contact">
         <div id="business-name-and-category">
-          <h5 v-if="contact.businessCategory" id="vendor-category">
-            {{ contact.businessCategory }}
+          <h5 v-if="contact.vendorCategory" id="vendor-category">
+            {{ contact.vendorCategory }}
           </h5>
-          <h5 v-if="!contact.businessCategory" id="vendor-category">
+          <h5 v-if="!contact.vendorCategory" id="vendor-category">
             Uncategorized
           </h5>
         </div>
@@ -46,6 +46,9 @@ export default {
     toggleEditCard() {
       this.editCardOpen = !this.editCardOpen;
     },
+  },
+  created() {
+    console.log(this.contact);
   },
   components: { ContactInformationEditCompany },
   props: ["contact", "icon"],
