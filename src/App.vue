@@ -159,8 +159,8 @@ textarea {
     display: none;
   }
   #mobile-wall {
-    width: 100vh;
-    height: 100vw;
+    width: 100vw;
+    height: 100vh;
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
@@ -168,6 +168,7 @@ textarea {
     align-content: space-between;
     align-items: center;
     padding: 20px;
+    box-sizing: border-box;
     /* display: none; */
   }
 
