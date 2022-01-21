@@ -3,6 +3,8 @@ import { Auth } from "aws-amplify";
 import SignUpPage from "../views/PublicViews/SignUpPage.vue";
 import LoginPage from "../views/PublicViews/LoginPage.vue";
 import ForgotPage from "../views/PublicViews/ForgotPage.vue";
+import PrivacyPolicy from '../views/PublicViews/PrivacyPolicy.vue';
+import TermsOfService from '../views/PublicViews/TermsOfService.vue';
 import AdminViewInitialSetup from "../views/AdminViews/AdminTopLevelViews/AdminViewInitialSetup.vue";
 import AdminViewInitialSetupSuccess from "../views/AdminViews/AdminTopLevelViews/AdminViewSetupSuccess.vue";
 import AdminViewUpdateSubscription from "../views/AdminViews/AdminTopLevelViews/AdminViewUpdateSubscription.vue";
@@ -25,12 +27,15 @@ import ClientEventView from "../views/ClientViews/ClientViewsTopLevelComponents/
 
 import EmployeeView from "../views/EmployeeViews/EmployeeView.vue";
 import EmployeeDashboard from "../views/EmployeeViews/EmployeeViewsTopLevelComponents/EmployeeDashboard.vue";
+import EmployeeEventView from '../views/EmployeeViews/EmployeeViewsTopLevelComponents/EmployeeEventView.vue'
 
 import OrganizerView from "../views/OrganizerViews/OrganizerView.vue";
 import OrganizerDashboard from "../views/OrganizerViews/OrganizerViewsTopLevelComponents/OrganizerDashboard.vue";
+import OrganizerEventView from '../views/OrganizerViews/OrganizerViewsTopLevelComponents/OrganizerEventView.vue'
 
 import VendorView from "../views/VendorViews/VendorView.vue";
 import VendorDashboard from "../views/VendorViews/VendorViewsTopLevelComponents/VendorDashboard.vue";
+import VendorEventView from '../views/VendorViews/VendorViewsTopLevelComponents/VendorEventView.vue'
 
 // import store from "../store/index.js";
 import axios from "axios";
@@ -232,6 +237,14 @@ const routes = [
           content: EmployeeDashboard,
         },
       },
+      {
+        path: "events/:eventId",
+        name: "employeeEventView",
+        meta: { requiresEmployeeAuth: true },
+        components: {
+          content: EmployeeEventView,
+        },
+      },
     ],
   },
   {
@@ -248,6 +261,14 @@ const routes = [
           content: OrganizerDashboard,
         },
       },
+      {
+        path: "events/:eventId",
+        name: "organizerEventView",
+        meta: { requiresOrganizerAuth: true },
+        components: {
+          content: OrganizerEventView,
+        },
+      },
     ],
   },
   {
@@ -262,6 +283,14 @@ const routes = [
         meta: { requiresVendorAuth: true },
         components: {
           content: VendorDashboard,
+        },
+      },
+      {
+        path: "events/:eventId",
+        name: "vendorEventView",
+        meta: { requiresVendorAuth: true },
+        components: {
+          content: VendorEventView,
         },
       },
     ],
@@ -288,6 +317,20 @@ const routes = [
     },
   },
   {
+    path: "/privacy",
+    name: "privacy",
+    components: {
+      main: PrivacyPolicy,
+    },
+  },
+  {
+    path: "/tos",
+    name: "tos",
+    components: {
+      main: TermsOfService,
+    },
+  },
+  {
     path: "/setup",
     name: "initialSetupPage",
     components: {
@@ -305,7 +348,7 @@ const routes = [
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes,
-  linkActiveClass: "active",
+  linkActiveClass: "active-link",
   scrollBehavior(to) {
     if (to.hash) {
       return {
