@@ -26,6 +26,7 @@
 <script>
 import EventPageContactCarouselItem from "./EventPageContactCarouselItem.vue";
 import SVGs from "../../../assets/SVGs/svgIndex.js";
+import { Auth } from "aws-amplify";
 
 export default {
   data() {
@@ -71,10 +72,15 @@ export default {
         });
       }
     },
-    navigateToContactPage(contact) {
-      this.$router.push(
-        "/admin/contacts/" + contact.role + "s/" + contact.userId
-      );
+    async navigateToContactPage(contact) {
+      let user = await Auth.currentAuthenticatedUser();
+      console.log(user.attributes["custom:role"]);
+      let role = user.attributes["custom:role"];
+      if (role === "admin") {
+        this.$router.push(
+          `/${role}/contacts/${contact.role}s/${contact.userId}`
+        );
+      }
     },
   },
   components: { EventPageContactCarouselItem },
@@ -86,6 +92,7 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
+  max-width: 100%;
 }
 
 #contact-carousel-wrapper {
@@ -95,7 +102,7 @@ export default {
   max-width: 100%;
   height: 90%;
   overflow: scroll;
-  white-space: nowrap;
+  /* white-space: nowrap; */
 }
 
 img {
