@@ -43,7 +43,7 @@
       <p class="danger" v-if="errors.bodyNeedsText">
         Be sure to include some content for Plain Text also.
       </p>
-      <div class="row-flex">
+      <!-- <div class="row-flex">
         <p
           @click="changeEmailBodyType('Text')"
           :class="emailBodyType === 'Text' ? 'bold' : ''"
@@ -56,7 +56,7 @@
         >
           HTML
         </p>
-      </div>
+      </div> -->
       <p></p>
       <textarea
         name="email-message"
@@ -193,6 +193,7 @@ export default {
     // this.email.Destination.ToAddresses.push("admin@simplecitysoftware.com");
     this.email.Destination.ToAddresses.push(this.contact.email);
   },
+  emits: ["closeWindow"],
   props: ["contact"],
   components: { PopupModal },
 };
