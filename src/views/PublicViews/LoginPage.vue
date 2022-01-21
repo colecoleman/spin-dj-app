@@ -1,16 +1,18 @@
 <template>
   <section id="page-wrapper">
     <div id="hero">
-      <div class="hero-left hero-half">
-        <div class="image-container">
+      <div class="spin-dj-sign-in-hero-left hero-half">
+        <div class="spin-dj-sign-in-image-container">
           <img :src="SpinLogoWithText" alt="Spin DJ Software Logo" />
         </div>
         <div class="tagline-container">
-          <h1>Software Built<br /><b>by</b> DJs<br /><b>for</b> DJs</h1>
+          <h1 id="spin-dj-sign-in-tagline">
+            Software Built<br /><b>by</b> DJs<br /><b>for</b> DJs
+          </h1>
         </div>
       </div>
-      <div class="hero-right hero-half">
-        <h5>SIGN IN with the temporary password in your email.</h5>
+      <div class="spin-dj-sign-in-hero-right hero-half">
+        <h5>Sign in with the temporary password in your email.</h5>
         <div id="authenticator-container">
           <Authenticator> </Authenticator>
         </div>
@@ -115,24 +117,13 @@ export default {
 };
 </script>
 
-<style scoped>
-/* .sign-in-button.sc-amplify-sign-in-button .content.sc-amplify-sign-in-button {
-  text-align: center;
-  display: none;
-} */
-button {
-  padding: 10px;
-}
-/* button.sc-amplify-sign-in-button {
-  display: none !important;
-} */
-
-:root {
+<style>
+/* :root {
   --amplify-background-color: transparent;
   --amplify-secondary-color: white;
   --amplify-primary-contrast: white;
   --amplify-primary-color: #e00c1d;
-}
+} */
 
 #hero {
   height: 100vh;
@@ -142,16 +133,12 @@ button {
   overflow: scroll;
 }
 
-.sign-in-button {
-  display: none;
-}
-
 .hero-half {
   width: 100%;
   justify-content: space-evenly;
 }
 
-h1 {
+#spin-dj-sign-in-tagline {
   text-transform: uppercase;
   text-align: right;
   font-size: 2em;
@@ -167,7 +154,7 @@ h1 {
   width: 100%;
 }
 
-.image-container {
+.spin-dj-sign-in-image-container {
   display: flex;
   justify-content: center;
   /* height: 30%; */
@@ -179,11 +166,11 @@ h1 {
   padding: 20px;
 }
 
-.image-container {
+.spin-dj-sign-in-image-container {
   align-items: center;
 }
 
-.image-container > img {
+.spin-dj-sign-in-image-container > img {
   /* height: 40%; */
   width: 40%;
   padding: 30px;
@@ -195,14 +182,14 @@ h1 {
   right: 20px;
   font-weight: 600;
 }
-.hero-left {
+.spin-dj-sign-in-hero-left {
   background-color: white;
   height: auto;
   display: flex;
   flex-direction: column;
 }
 
-.hero-right {
+.spin-dj-sign-in-hero-right {
   background-color: black;
   min-height: 50vh;
   display: flex;
@@ -212,7 +199,7 @@ h1 {
   align-content: space-around;
 }
 
-.hero-right h1,
+.spin-dj-sign-in-hero-right h1,
 h2,
 h3,
 h4,
@@ -226,10 +213,6 @@ a {
   text-decoration: underline;
 }
 
-.amplify-button {
-  background-color: black;
-}
-
 .amplify-tabs {
   display: none;
 }
@@ -239,26 +222,18 @@ a {
   cursor: pointer;
 }
 
-:root {
-  --form-color: cyan !important;
-}
-
 #id {
   display: none;
 }
 
-.amplify-button[data-variation="primary"] {
-  background: linear-gradient(
-    to right,
-    var(--amplify-colors-green-80),
-    var(--amplify-colors-orange-40)
-  );
+.amplify-tabs {
+  display: none !important;
 }
 
 [data-amplify-authenticator] {
-  --amplify-colors-background-primary: var(--amplify-colors-neutral-90);
-  --amplify-colors-background-secondary: var(--amplify-colors-neutral-100);
-  --amplify-colors-background-tertiary: var(--amplify-colors-black);
+  --amplify-colors-background-primary: white;
+  --amplify-colors-background-secondary: white;
+  --amplify-colors-background-tertiary: white;
   --amplify-colors-border-primary: var(--amplify-colors-neutral-20);
   --amplify-colors-border-secondary: var(--amplify-colors-neutral-40);
   --amplify-colors-border-tertiary: var(--amplify-colors-neutral-60);
@@ -271,21 +246,23 @@ a {
   --amplify-colors-brand-primary-100: var(--amplify-colors-teal-10);
   --amplify-colors-font-interactive: var(--amplify-colors-white);
   --amplify-components-heading-color: var(--amplify-colors-neutral-20);
-  --amplify-components-tabs-item-active-border-color: var(
-    --amplify-colors-white
-  );
-  --amplify-components-tabs-item-active-color: var(--amplify-colors-white);
-  --amplify-components-tabs-item-color: var(--amplify-colors-white);
-  --amplify-components-tabs-item-focus-color: var(--amplify-colors-white);
-  --amplify-components-text-color: var(--amplify-colors-font-interactive);
+  --amplify-components-text-color: black !important;
+}
+
+.amplify-button[data-variation="primary"] {
+  background: black;
+}
+.amplify-button[data-variation="link"] {
+  color: black;
+  text-decoration: underline;
 }
 
 @media screen and (min-width: 350px) {
-  .image-container > img {
+  .spin-dj-sign-in-image-container > img {
     width: 150px;
   }
 
-  .hero-left {
+  .spin-dj-sign-in-hero-left {
     height: 50vh;
   }
 }
@@ -304,17 +281,13 @@ a {
     position: relative;
   }
 
-  .image-container,
+  .spin-dj-sign-in-image-container,
   .tagline-container {
     height: 100%;
   }
 
-  .image-container > img {
+  .spin-dj-sign-in-image-container > img {
     height: 40%;
   }
-}
-
-amplify-authenticator {
-  background: tomato;
 }
 </style>
