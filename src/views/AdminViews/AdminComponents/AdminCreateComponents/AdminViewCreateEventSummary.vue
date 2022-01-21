@@ -24,31 +24,7 @@
             </div>
             <div class="title-and-indented-text">
               <h5>Location(s):</h5>
-              <div class="row-flex" v-if="locations.length > 0">
-                <div
-                  class="row-flex"
-                  v-for="(location, index) in locations"
-                  :key="index"
-                >
-                  <div>
-                    <p class="indented-text">{{ location.name }},</p>
-                    <p class="indented-text">
-                      {{ location.address.streetAddress1 }},
-                    </p>
-                    <p class="indented-text" v-if="location.streetAddress2">
-                      {{ location.address.streetAddress2 }},
-                    </p>
-                    <p class="indented-text" v-if="location.streetAddress2">
-                      {{ location.address.cityStateZip }}
-                    </p>
-                  </div>
-                  <img
-                    :src="SVGs.XIconSVG"
-                    alt=""
-                    @click="removeLocation(index)"
-                  />
-                </div>
-              </div>
+
               <div class="row-flex">
                 <div v-if="fields.location.name">
                   <p class="indented-text">{{ fields.location.name }},</p>
@@ -72,23 +48,7 @@
             </div>
             <div class="title-and-indented-text">
               <h5>Client(s):</h5>
-              <div class="row-flex" v-if="clients.length > 0">
-                <p
-                  class="indented-text"
-                  v-for="(client, index) in clients"
-                  :key="index"
-                >
-                  {{ client.given_name }} {{ client.family_name }},<br />
-                  {{ client.email }},<br />
-                  {{ formatPhoneNumber(client.phoneNumber) }}
-                </p>
-                <img
-                  v-if="clients.length > 0"
-                  :src="SVGs.XIconSVG"
-                  alt=""
-                  @click="removeClient(index)"
-                />
-              </div>
+
               <p
                 class="indented-text"
                 v-if="
@@ -176,7 +136,6 @@
 <script>
 import helpers from "../../../../helpers.js";
 import SVGs from "../../../../assets/SVGs/svgIndex.js";
-// import _cloneDeep from "lodash";
 export default {
   data() {
     return {
@@ -202,18 +161,15 @@ export default {
         this.$store
           .dispatch("addLocation", this.fields.location)
           .then((res) => {
-            this.$store.commit("addStatus", {
-              type: "success",
-              note: "Location Added Successfully",
-            });
             this.eventLocations.push(res.data.userId);
-            console.log(this.eventLocations);
-            console.log("done adding event, should start creating user now");
             resolve(res);
           })
           .catch((e) => {
-            this.$store.commit("addStatus", { type: "error", note: e });
-            reject();
+            this.$store.commit("addStatus", {
+              type: "error",
+              note: "Error adding location. Try again on the contact page, and then assign to the event!",
+            });
+            reject(e);
           });
       });
     },
@@ -221,30 +177,23 @@ export default {
       this.$emit("removeLocation", index);
     },
     createUser() {
-      console.log("starting create user");
       return new Promise((resolve, reject) => {
         this.$store
           .dispatch("addContact", this.fields.client)
           .then((res) => {
             this.eventContacts.push({ role: res.role, id: res.userId });
-            console.log(this.eventContacts);
-            console.log(res);
-            console.log("done creating a user, should create the event now");
             resolve(res);
-            this.$store.commit("addStatus", {
-              type: "success",
-              note: "Client Added Successfully",
-            });
           })
           .catch((e) => {
-            this.$store.commit("addStatus", { type: "error", note: e });
-            reject();
+            this.$store.commit("addStatus", {
+              type: "error",
+              note: "Error adding client. Try adding on contact page, and assigning to event.",
+            });
+            reject(e);
           });
       });
     },
     createEvent() {
-      console.log("in create event now");
-      // let dbEvent = _cloneDeep(this.event);
       let dbEvent = Object.assign({}, this.event);
       dbEvent.contacts = [...this.eventContacts];
       dbEvent.locations = [...this.eventLocations];
@@ -255,28 +204,27 @@ export default {
         signerUUID: null,
         status: "pending",
       }));
-      console.log(dbEvent);
       return new Promise((resolve, reject) => {
         this.$store
           .dispatch("addEvent", dbEvent)
           .then((res) => {
-            console.log(res);
             this.eventId = res.data.userId;
             this.$store.commit("addStatus", {
               type: "success",
               note: "Event Added Successfully",
             });
-            console.log("created event, heading out to probably modify user");
             resolve(res);
           })
           .catch((e) => {
-            this.$store.commit("addStatus", { type: "error", note: e });
-            reject();
+            this.$store.commit("addStatus", {
+              type: "error",
+              note: "Problem adding event. Try again in a few, or reach out to support.",
+            });
+            reject(e);
           });
       });
     },
     addEventToUser() {
-      console.log("in adding event to user");
       if (this.eventContacts.length > 0) {
         let promises = this.eventContacts.map((x) => {
           let payload = {
@@ -285,24 +233,18 @@ export default {
             value: this.eventId,
             operation: "addToList",
           };
-          console.log(payload);
-          // console.log(JSON.stringify(payload));
+
           return new Promise((resolve, reject) => {
             this.$store
               .dispatch("editContact", payload)
               .then((res) => {
-                this.$store.commit("addStatus", {
-                  type: "success",
-                  note: "Event Added To Contact",
-                });
-                console.log(res);
-                console.log(
-                  "added event to user, should head out to add event to location"
-                );
                 resolve(res);
               })
               .catch((e) => {
-                this.$store.commit("addStatus", { type: "error", note: e });
+                this.$store.commit("addStatus", {
+                  type: "error",
+                  note: "Error in adding event to contact. Add on the event page.",
+                });
                 reject(e);
               });
           });
@@ -311,7 +253,6 @@ export default {
       }
     },
     addEventToLocation() {
-      console.log("in add event to location");
       let promises = this.eventLocations.map((x) => {
         let payload = {
           locationId: x,
@@ -319,76 +260,49 @@ export default {
           value: this.eventId,
           operation: "addToList",
         };
-        // console.log(JSON.stringify(payload));
         return new Promise((resolve, reject) => {
           this.$store
             .dispatch("editLocation", payload)
             .then((res) => {
-              console.log(res);
-              this.$store.commit("addStatus", {
-                type: "success",
-                note: "Event Added To Location",
-              });
-              console.log("done adding event to location");
               resolve(res);
             })
             .catch((e) => {
-              this.$store.commit("addStatus", { type: "error", note: e });
+              this.$store.commit("addStatus", {
+                type: "error",
+                note: "Error adding event to location. Add on the event page.",
+              });
               reject(e);
             });
         });
       });
-      console.log(promises);
       return Promise.all(promises);
     },
     async startCreate() {
-      this.eventLocations = this.locations.map((x) => x.userId);
-      this.eventContacts = this.clients.map((x) => ({
-        role: x.role,
-        id: x.userId,
-      }));
-      // console.log(JSON.stringify(this.eventContacts));
-      if (
-        this.fields.location.name ||
-        this.fields.location.address.streetAddress1 ||
-        this.fields.location.address.streetAddress2 ||
-        this.fields.location.address.cityStateZip
-      ) {
-        await this.createLocation().then((res) => {
-          console.log(res);
-        });
+      if (this.fields.date && this.fields.endTime && this.fields.startTime) {
+        if (
+          (this.fields.location.name ||
+            this.fields.location.address.streetAddress1 ||
+            this.fields.location.address.streetAddress2 ||
+            this.fields.location.address.cityStateZip) &&
+          !this.fields.location.userId
+        ) {
+          await this.createLocation();
+        }
+        if (
+          Object.values(this.fields.client).every((v) => v !== null) &&
+          !this.fields.client.userId
+        ) {
+          await this.createUser();
+        }
+        await this.createEvent();
+        await this.addEventToUser();
+        await this.addEventToLocation();
+        this.$router.push("/admin/events/" + this.eventId);
       }
-      if (Object.values(this.fields.client).every((v) => v !== null)) {
-        console.log("going into create user");
-        await this.createUser().then((res) => {
-          console.log(res);
-        });
-      }
-      console.log("heading into create event");
-      await this.createEvent().then((res) => {
-        console.log(res);
-      });
-      console.log("going into editing user");
-      await this.addEventToUser().then((res) => {
-        console.log(res);
-      });
-      console.log("heading into add event to location");
-      await this.addEventToLocation().then((res) => {
-        console.log(res);
-      });
-      console.log("done");
-      // Promise.all([
-      //   this.createLocation(),
-      //   this.createUser(),
-      //   this.createEvent(),
-      //   this.editContactAndLocation(),
-      // ]).then((res) => {
-      //   console.log(res);
-      // });
     },
     //
   },
-  props: ["event", "locations", "fields", "clients", "contracts"],
+  props: ["event", "fields", "contracts"],
 };
 </script>
 
@@ -410,7 +324,9 @@ export default {
 }
 
 #sidebar-wrapper {
-  width: 30%;
+  /* width: 100%; */
+  grid-row: 1;
+  grid-column: 2/3;
 }
 
 .summary-inner-wrapper {
