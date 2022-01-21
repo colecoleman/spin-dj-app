@@ -95,7 +95,7 @@ export default {
         eventId: this.addEventId,
         operation: "addToList",
         variable: "contacts",
-        value: this.contact.userId,
+        value: { id: this.contact.userId, role: this.contact.role },
       };
       await this.$store.dispatch("editContact", contactPayload);
       await this.$store.dispatch("editEvent", eventPayload);
