@@ -313,6 +313,11 @@ export default {
 img {
   height: 14px;
   width: 14px;
+  cursor: pointer;
+}
+
+img:hover {
+  filter: drop-shadow(0px 0px 0.5px var(--textColor));
 }
 
 #body {

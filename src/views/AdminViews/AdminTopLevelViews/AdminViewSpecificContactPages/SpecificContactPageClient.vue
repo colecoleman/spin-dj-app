@@ -10,6 +10,7 @@
         :loading="contact ? false : true"
         :contact="contact"
         :icon="SVGs.PersonSVG"
+        @email-contact="openEmailComposition"
       ></contact-card-client>
     </div>
     <div id="to-do">
@@ -187,7 +188,7 @@ export default {
         for (let index = 0; index < conversations.length; index++) {
           Promise.all([
             this.getConversationUsers(...conversations[index]),
-            this.getConversationMessages(...conversations[index]),
+             this.getConversationMessages(...conversations[index]),
           ]).then((res) => {
             let conversation = {
               ...conversations[index],
@@ -219,40 +220,41 @@ section {
   width: 100%;
   height: 100%;
   display: grid;
-  grid-template-columns: repeat(10, 10%);
-  grid-template-rows: repeat(20, 5%);
+  grid-template-columns: minmax(100px, 250px) repeat(8, 1fr);
+  grid-template-rows: 75px minmax(30px, 50px) repeat(7, 1fr);
+  gap: 10px;
 }
 
 #contact-card {
-  grid-column: 1 / 4;
-  grid-row: 1 / 5;
+  grid-column: 1 / 3;
+  grid-row: 1 / 3;
 }
 #to-do {
-  grid-column: 1 / 4;
-  grid-row: 5 / 12;
+  grid-column: 1 / 3;
+  grid-row: 3 / 6;
 }
 
 #notes {
-  grid-column: 1 / 4;
-  grid-row: 12 / 21;
+  grid-column: 1 / 3;
+  grid-row: 6 / 10;
 }
 #messages {
-  grid-column: 8/11;
-  grid-row: 14/ 21;
+  grid-column: 7/10;
+  grid-row: 6/ 10;
 }
 
 #button-bar {
-  grid-column: 4/ 11;
-  grid-row: 1/ 4;
+  grid-column: 3/ 10;
+  grid-row: 1/ 2;
 }
 
 #upcoming-events {
-  grid-column: 4/ 8;
-  grid-row: 4/21;
+  grid-column: 3/ 7;
+  grid-row: 2/10;
 }
 
 #automation {
-  grid-column: 8 / 11;
-  grid-row: 4/ 14;
+  grid-column: 7 / 10;
+  grid-row: 2/ 6;
 }
 </style>

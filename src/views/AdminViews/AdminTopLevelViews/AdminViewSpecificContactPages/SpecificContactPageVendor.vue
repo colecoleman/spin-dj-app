@@ -16,6 +16,7 @@
     <div id="company-card">
       <contact-card-company
         :contact="contact"
+        v-if="contact"
         :icon="SVGs.PersonSVG"
       ></contact-card-company>
     </div>
@@ -53,6 +54,7 @@
       <contact-page-events-assignment
         v-if="eventAssignmentOpen"
         :events="events"
+        :contact="contact"
         :icon="SVGs.CalendarSVG"
         @event-assignment-toggle="toggleEventAssignment()"
       ></contact-page-events-assignment>
@@ -95,7 +97,7 @@ export default {
     return {
       SVGs,
       eventAssignmentOpen: false,
-      contact: undefined,
+      contact: {},
       events: [],
       eventsLoaded: false,
       pastEvents: [],
@@ -199,6 +201,7 @@ export default {
       .dispatch("adminGetContact", this.$route.params.id)
       .then((res) => {
         this.contact = res.data.Item;
+        console.log(this.contact);
         if (this.contact.conversations) {
           let matchedItem = this.contact.conversations.find((x) => {
             return this.currentUser.conversations.includes(x);
@@ -265,47 +268,48 @@ section {
   width: 100%;
   height: 100%;
   display: grid;
-  grid-template-columns: repeat(10, 10%);
-  grid-template-rows: repeat(20, 5%);
+  grid-template-columns: minmax(100px, 250px) repeat(8, 1fr);
+  grid-template-rows: 75px minmax(30px, 50px) repeat(7, 1fr);
+  gap: 10px;
 }
 
 #contact-card {
-  grid-column: 1 / 4;
-  grid-row: 1 / 5;
+  grid-column: 1 / 3;
+  grid-row: 1 / 3;
 }
 
 #company-card {
-  grid-column: 1/4;
-  grid-row: 5/8;
+  grid-column: 1/3;
+  grid-row: 3/4;
 }
 
 #messages {
-  grid-column: 1/ 4;
-  grid-row: 8/ 21;
+  grid-column: 1/ 3;
+  grid-row: 4/ 10;
 }
 
 #button-bar {
-  grid-column: 4/ 11;
-  grid-row: 1/ 4;
+  grid-column: 3/ 10;
+  grid-row: 1/ 2;
 }
 
 #upcoming-events {
-  grid-column: 4/ 8;
-  grid-row: 4/14;
+  grid-column: 3/ 7;
+  grid-row: 2/6;
 }
 
 #to-do {
-  grid-column: 8 / 11;
-  grid-row: 14 / 21;
+  grid-column: 7 / 10;
+  grid-row: 2 / 7;
 }
 
 #automation {
-  grid-column: 4 / 8;
-  grid-row: 14/ 21;
+  grid-column: 3 / 7;
+  grid-row: 6/ 10;
 }
 
 #notes {
-  grid-column: 8 / 11;
-  grid-row: 4 / 14;
+  grid-column: 7 / 10;
+  grid-row: 7 / 10;
 }
 </style>

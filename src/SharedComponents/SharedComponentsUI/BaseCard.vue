@@ -16,7 +16,9 @@
         <h4 @click="actionOneClicked()">
           <slot name="action1"></slot>
         </h4>
-        <slot name="dropdownContainer"></slot>
+        <div class="dropdown-container">
+          <slot name="dropdownContainer"></slot>
+        </div>
         <img
           v-if="actionIcon"
           :src="actionIcon"
@@ -40,7 +42,6 @@ export default {
       this.$emit("actionOneClicked");
     },
   },
-  created() {},
 };
 </script>
 
@@ -64,12 +65,10 @@ export default {
   border: 1px solid var(--cardOutline);
   border-radius: 25px;
   background-color: var(--foregroundColor);
-  align-items: stretch;
-  width: calc(100% - 40px);
-  max-width: calc(100% - 80px);
-  height: calc(100% - 60px);
-  padding: 20px 30px;
-  margin: 10px;
+  box-sizing: border-box;
+  padding: 20px;
+  width: 100%;
+  height: 100%;
 }
 img {
   margin-top: 2px;
@@ -77,17 +76,15 @@ img {
   height: 13px;
 }
 #content {
-  height: 90%;
+  height: 87%;
   display: inherit;
 }
 
 #heading {
-  width: 100%;
   display: flex;
   flex-direction: row;
   align-items: flex-start;
   text-transform: uppercase;
-  margin-bottom: 10px;
 }
 
 h3,
@@ -95,11 +92,6 @@ h4 {
   font-size: 11pt;
   margin: 0 0 0 10px;
   text-align: left;
-}
-.heading {
-  text-align: left;
-  display: flex;
-  flex-direction: column;
 }
 
 h5 {
@@ -113,12 +105,13 @@ h5 {
 .right-top {
   margin-left: auto;
   display: flex;
-  align-items: center;
   position: relative;
+  cursor: pointer;
 }
-
-.right-top > img {
-  margin-left: 10px;
+.dropdown-container {
+  position: absolute;
+  right: 0;
+  top: 100%;
 }
 
 .loading-background {

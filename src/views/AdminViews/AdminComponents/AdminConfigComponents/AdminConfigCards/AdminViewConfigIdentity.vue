@@ -1,4 +1,4 @@
-<template>
+df<template>
   <two-button-dialog-modal
     v-if="dialogModal"
     :modalBody="dialogModalData[dialogModal].body"
@@ -453,9 +453,17 @@ export default {
 </script>
 
 <style scoped>
+p {
+  font-size: 9pt;
+}
+
 .branding-colors {
   display: flex;
   flex-direction: row;
+}
+
+.branding-colors input {
+  cursor: pointer;
 }
 
 .branding-preferences-item {
@@ -532,8 +540,10 @@ export default {
 }
 
 img {
-  margin: 5px;
   height: 10px;
+  width: 10px;
+  margin: 0px 5px;
+  cursor: pointer;
 }
 .button-wrapper {
   width: 50%;

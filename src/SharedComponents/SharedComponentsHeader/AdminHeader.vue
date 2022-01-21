@@ -48,13 +48,11 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 20px 20px 10px 20px;
   height: 60px;
 }
 
 .site-header img {
   max-height: 45px;
-
   margin: 15px;
 }
 </style>

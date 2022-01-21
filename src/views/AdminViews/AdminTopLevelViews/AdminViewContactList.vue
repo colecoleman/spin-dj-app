@@ -20,8 +20,8 @@
           :actionIcon="SVGs.SortAlphaSVG"
           @action-one-clicked="toggleSortMenuOpened(contact_category)"
         >
-          <template v-slot:action1>
-            Sort:
+          <template v-slot:action1> Sort: </template>
+          <template v-slot:dropdownContainer>
             <floating-menu-with-list-items
               v-if="sortMenuOpened === contact_category"
               :actions="sortItems"
@@ -29,7 +29,6 @@
               @actionClicked="selectSort"
             />
           </template>
-          <template v-slot:dropdownContainer> </template>
           <template v-slot:content>
             <div class="personal-contact-list" v-if="value.length > 0">
               <div
@@ -114,6 +113,7 @@ export default {
   },
   computed: {
     contacts() {
+
       return this.$store.state.contacts;
     },
   },
@@ -133,6 +133,7 @@ export default {
   width: 100%;
   height: 100%;
   display: grid;
+  gap: 10px;
   grid-template-columns: 100%;
   grid-template-rows: fit-content() 2fr;
   overflow: scroll;
@@ -154,6 +155,7 @@ export default {
 .contacts-container {
   height: 85%;
   width: 100%;
+  margin-bottom: 10px;
   display: flex;
 }
 
@@ -163,7 +165,10 @@ export default {
 }
 
 .placeholder-text {
-  margin-top: 45%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 @media screen and (min-width: 800px) {
@@ -171,29 +176,25 @@ export default {
     width: 100%;
     height: 100%;
     display: grid;
-    grid-template-columns: 65% 35%;
-    grid-template-rows: 50% 50% 20px;
+    grid-template-columns: 1fr 35%;
+    grid-template-rows: 1fr;
   }
 
   #scroll-container {
     grid-column: 1 / 2;
-    grid-row: 1 / 4;
+    grid-row: 1 / 2;
     overflow: scroll;
-  }
-
-  #scroll-container .contacts-container:last-child {
-    padding-bottom: 12px;
   }
 
   #add-contact {
     grid-column: 2/3;
-    grid-row: 1/3;
+    grid-row: 1/2;
   }
 }
 @media screen and (min-width: 1200px) {
   #contact-section {
-    grid-template-columns: 20% 55% 25%;
-    grid-template-rows: 50% 50% 20px;
+    grid-template-columns: 20% 1fr 25%;
+    grid-template-rows: 50% 1fr;
   }
 
   #navigation {

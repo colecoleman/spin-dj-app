@@ -9,6 +9,7 @@
 
     <div id="upcoming-events">
       <upcoming-events
+        v-if="events"
         :events="events"
         :pastEvents="pastEvents"
       ></upcoming-events>
@@ -31,6 +32,7 @@ export default {
   data() {
     return {
       loading: true,
+      // events: [],
     };
   },
   methods: {},
@@ -42,6 +44,7 @@ export default {
       return this.$store.state.user;
     },
     events() {
+      console.log(this.$store.state.events);
       return this.$store.state.events;
     },
     pastEvents() {
@@ -60,7 +63,9 @@ export default {
     if (!this.$store.state.user) {
       await this.$store.dispatch("setUser");
     }
-    await this.$store.dispatch("getEvents");
+    await this.$store.dispatch("getEvents").then((res) => {
+      console.log(res);
+    });
     this.loading = false;
   },
   components: {
@@ -78,8 +83,9 @@ export default {
   width: 100%;
   height: 100%;
   display: grid;
-  grid-template-rows: repeat(10, 10%);
-  grid-template-columns: 30% auto 30%;
+  grid-template-rows: repeat(10, 1fr);
+  grid-template-columns: 30% 1fr 30%;
+  gap: 10px;
 }
 
 #contact-card {

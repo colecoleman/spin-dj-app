@@ -32,11 +32,8 @@ export default {
 </script>
 
 <style scoped>
-.pointer {
-  cursor: pointer;
-}
-
 #notification-button {
+  cursor: pointer;
   max-width: 60px;
   min-width: 60px;
   height: 60px;
@@ -45,6 +42,11 @@ export default {
   border-radius: 50px;
   margin: 10px;
 }
+
+#notification-button:hover {
+  filter: drop-shadow(0px 0px 0.5px var(--textColor));
+}
+
 img {
   height: 35%;
   width: 35%;

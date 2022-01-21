@@ -315,6 +315,10 @@ export default {
 </script>
 
 <style scoped>
+p {
+  font-size: 9pt;
+}
+
 .service-wrapper {
   display: flex;
   flex-direction: row;
@@ -349,10 +353,10 @@ export default {
 .button-standard-with-icon {
   margin-top: 10px;
 }
-
-.x-icon {
+img {
   height: 10px;
   width: 10px;
   margin: 0px 5px;
+  cursor: pointer;
 }
 </style>

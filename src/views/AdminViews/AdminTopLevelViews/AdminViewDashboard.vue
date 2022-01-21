@@ -58,9 +58,9 @@ section {
   width: 100%;
   height: 100%;
   display: grid;
-  overflow-y: scroll;
   grid-template-columns: 100%;
-  grid-template-rows: repeat(4, 50%);
+  grid-template-rows: repeat(4, 1fr);
+  gap: 10px;
 }
 
 #navigation {
@@ -83,11 +83,8 @@ section {
 
 @media screen and (min-width: 800px) {
   section {
-    width: 100%;
-    height: 100%;
-    display: grid;
-    grid-template-columns: 50% 50%;
-    grid-template-rows: 50% 50%;
+    grid-template-columns: 1fr 350px;
+    grid-template-rows: 325px 1fr;
   }
 
   #navigation {
@@ -116,11 +113,8 @@ section {
 }
 @media screen and (min-width: 1200px) {
   section {
-    width: 100%;
-    height: 100%;
-    display: grid;
-    grid-template-columns: 20% 50% 30%;
-    grid-template-rows: 50% 50%;
+    grid-template-columns: 20% 1fr 30%;
+    grid-template-rows: 50% 1fr;
   }
 
   #navigation {

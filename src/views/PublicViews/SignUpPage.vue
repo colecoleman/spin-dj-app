@@ -90,8 +90,11 @@
         </div>
         <p class="disclaimer">
           <i
-            >By clicking “Sign Up”, you agree to our terms of service, which can
-            be found here</i
+            >By clicking “Sign Up”, you agree to our terms of service and
+            privacy policy, which can be found
+            <a target="_blank" href="https://spindj.io/tos"> here</a> and
+            <a target="_blank" href="https://spindj.io/privacy">here</a>,
+            respectively.</i
           >
         </p>
       </div>
@@ -121,7 +124,8 @@
         <p class="disclaimer">
           <i
             >By clicking “Sign Up”, you agree to our terms of service, which can
-            be found here</i
+            be found
+            <a target="_blank" href="https://spindj.io/tos"></a> here</i
           >
         </p>
       </div>
@@ -257,6 +261,11 @@ export default {
 </script>
 
 <style scoped>
+a {
+  color: white;
+  font-weight: bold;
+  text-decoration: underline;
+}
 #hero {
   height: 100vh;
   width: 100vw;

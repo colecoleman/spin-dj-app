@@ -41,6 +41,11 @@ li {
   font-weight: 600;
 }
 
+li:hover {
+  color: var(--highlightColor);
+  cursor: pointer;
+}
+
 .active-link {
   color: var(--highlightColor);
 }

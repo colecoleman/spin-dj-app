@@ -11,9 +11,7 @@
       </div>
       <div class="hero-right hero-half">
         <div id="authenticator-container">
-          <Authenticator id="auth">
-            <!-- <template> </template> -->
-          </Authenticator>
+          <Authenticator> </Authenticator>
         </div>
       </div>
     </div>
@@ -23,7 +21,13 @@
 <script>
 import SpinLogoWithText from "../../assets/spin-logo-with-text.svg";
 import { Authenticator } from "@aws-amplify/ui-vue";
-// import "@aws-amplify/ui-vue/styles.css";
+// import AmplifySignIn from "@aws-amplify/ui-components";
+import "@aws-amplify/ui-vue/styles.css";
+import Amplify from "aws-amplify";
+import awsconfig from "../../aws-exports";
+
+Amplify.configure(awsconfig);
+
 import { Hub } from "aws-amplify";
 
 export default {
@@ -46,11 +50,17 @@ export default {
         match: false,
         strength: false,
       },
+      authConfig: {
+        signInConfig: {
+          isSignUpDisplayed: false,
+        },
+      },
       confirmPasswordError: false,
     };
   },
   components: {
     Authenticator,
+    // AmplifySignIn,
   },
 
   computed: {
@@ -101,12 +111,34 @@ export default {
 </script>
 
 <style scoped>
+/* .sign-in-button.sc-amplify-sign-in-button .content.sc-amplify-sign-in-button {
+  text-align: center;
+  display: none;
+} */
+button {
+  padding: 10px;
+}
+/* button.sc-amplify-sign-in-button {
+  display: none !important;
+} */
+
+:root {
+  --amplify-background-color: transparent;
+  --amplify-secondary-color: white;
+  --amplify-primary-contrast: white;
+  --amplify-primary-color: #e00c1d;
+}
+
 #hero {
   height: 100vh;
   width: 100vw;
   display: flex;
   flex-direction: column;
   overflow: scroll;
+}
+
+.sign-in-button {
+  display: none;
 }
 
 .hero-half {
@@ -124,9 +156,6 @@ h1 {
   display: block;
 }
 
-amplify-authenticator {
-  display: none;
-}
 .tagline-container {
   display: flex;
   justify-content: center;
@@ -208,31 +237,6 @@ p {
   display: none;
 }
 
-[data-amplify-authenticator] {
-  --amplify-colors-background-primary: blue;
-  --amplify-colors-background-secondary: blue;
-  --amplify-colors-background-tertiary: blue;
-  --amplify-colors-border-primary: blue;
-  --amplify-colors-border-secondary: blue;
-  --amplify-colors-border-tertiary: var(--amplify-colors-neutral-60);
-  --amplify-colors-brand-primary-10: blue;
-  --amplify-colors-brand-primary-20: blue;
-  --amplify-colors-brand-primary-40: var(--amplify-colors-teal-80);
-  --amplify-colors-brand-primary-60: var(--amplify-colors-teal-60);
-  --amplify-colors-brand-primary-80: var(--amplify-colors-teal-40);
-  --amplify-colors-brand-primary-90: var(--amplify-colors-teal-20);
-  --amplify-colors-brand-primary-100: var(--amplify-colors-teal-10);
-  --amplify-colors-font-interactive: var(--amplify-colors-white);
-  --amplify-components-heading-color: blue;
-  --amplify-components-tabs-item-active-border-color: var(
-    --amplify-colors-white
-  );
-  --amplify-components-tabs-item-active-color: var(--amplify-colors-white);
-  --amplify-components-tabs-item-color: var(--amplify-colors-white);
-  --amplify-components-tabs-item-focus-color: var(--amplify-colors-white);
-  --amplify-components-text-color: var(--amplify-colors-font-interactive);
-}
-
 .amplify-button[data-variation="primary"] {
   background: linear-gradient(
     to right,
@@ -241,8 +245,29 @@ p {
   );
 }
 
-.amplify-tabs {
-  display: none !important;
+[data-amplify-authenticator] {
+  --amplify-colors-background-primary: var(--amplify-colors-neutral-90);
+  --amplify-colors-background-secondary: var(--amplify-colors-neutral-100);
+  --amplify-colors-background-tertiary: var(--amplify-colors-black);
+  --amplify-colors-border-primary: var(--amplify-colors-neutral-20);
+  --amplify-colors-border-secondary: var(--amplify-colors-neutral-40);
+  --amplify-colors-border-tertiary: var(--amplify-colors-neutral-60);
+  --amplify-colors-brand-primary-10: var(--amplify-colors-teal-100);
+  --amplify-colors-brand-primary-20: var(--amplify-colors-teal-90);
+  --amplify-colors-brand-primary-40: var(--amplify-colors-teal-80);
+  --amplify-colors-brand-primary-60: var(--amplify-colors-teal-60);
+  --amplify-colors-brand-primary-80: var(--amplify-colors-teal-40);
+  --amplify-colors-brand-primary-90: var(--amplify-colors-teal-20);
+  --amplify-colors-brand-primary-100: var(--amplify-colors-teal-10);
+  --amplify-colors-font-interactive: var(--amplify-colors-white);
+  --amplify-components-heading-color: var(--amplify-colors-neutral-20);
+  --amplify-components-tabs-item-active-border-color: var(
+    --amplify-colors-white
+  );
+  --amplify-components-tabs-item-active-color: var(--amplify-colors-white);
+  --amplify-components-tabs-item-color: var(--amplify-colors-white);
+  --amplify-components-tabs-item-focus-color: var(--amplify-colors-white);
+  --amplify-components-text-color: var(--amplify-colors-font-interactive);
 }
 
 @media screen and (min-width: 350px) {
@@ -277,5 +302,9 @@ p {
   .image-container > img {
     height: 40%;
   }
+}
+
+amplify-authenticator {
+  background: tomato;
 }
 </style>

@@ -30,7 +30,7 @@ export default {
   align-items: center;
   justify-content: center;
   text-transform: uppercase;
-  /* margin: 1%; */
+  color: var(--textColor);
   border: 1px solid var(--textColor);
   border-radius: 7px;
   cursor: pointer;

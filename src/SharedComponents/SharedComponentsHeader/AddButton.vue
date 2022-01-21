@@ -68,6 +68,7 @@ img {
 }
 
 #add-button {
+  cursor: pointer;
   width: 60px;
   min-width: 60px;
   height: 60px;
@@ -75,5 +76,9 @@ img {
   margin-left: 10px;
   border: 1px solid var(--cardOutline);
   background-color: var(--foregroundColor);
+}
+
+#add-button:hover {
+  filter: drop-shadow(0px 0px 0.5px var(--textColor));
 }
 </style>

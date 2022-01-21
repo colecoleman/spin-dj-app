@@ -130,8 +130,9 @@ section {
   width: 100%;
   height: 100%;
   display: grid;
-  grid-template-columns: 20% 80%;
-  grid-template-rows: 50% 50% 20px;
+  gap: 10px;
+  grid-template-columns: 20% 1fr;
+  grid-template-rows: 1fr 20px;
 }
 
 #navigation {
@@ -141,7 +142,7 @@ section {
 
 #scroll-container {
   grid-column: 2 / 3;
-  grid-row: 1 / 4;
+  grid-row: 1 / 3;
   overflow: scroll;
 }
 
@@ -151,6 +152,7 @@ section {
   overflow: scroll;
 }
 .config-section {
+  margin-bottom: 10px;
   height: auto;
 }
 

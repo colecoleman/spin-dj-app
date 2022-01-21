@@ -58,7 +58,7 @@ export default {
   position: fixed;
   width: 100%;
   height: 100%;
-  z-index: 3;
+  z-index: 5;
 }
 .modal {
   z-index: 3;
@@ -80,7 +80,8 @@ export default {
 }
 
 .button-standard-with-icon {
-  height: 35px;
-  width: 100px;
+  height: 15px;
+  width: 75px;
+  margin: 10px;
 }
 </style>

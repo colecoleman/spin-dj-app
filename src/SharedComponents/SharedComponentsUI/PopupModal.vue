@@ -1,22 +1,21 @@
 <template>
-  <div class="popup-modal">
-    <div class="window">
-      <base-card
-        :actionIcon="XIconSvg"
-        @action-one-clicked="closePopup()"
-        :title="title"
-      >
-        <template v-slot:content><slot name="window"></slot></template>
-      </base-card>
-    </div>
+  <backdrop @click="closePopup"></backdrop>
+  <div class="window">
+    <base-card
+      :actionIcon="XIconSvg"
+      @action-one-clicked="closePopup()"
+      :title="title"
+    >
+      <template v-slot:content><slot name="window"></slot></template>
+    </base-card>
   </div>
+  <!-- </div> -->
 </template>
 
 <script>
 import XIconSvg from "../../assets/SVGs/x-icon.svg";
-import BaseCard from "./BaseCard.vue";
+import Backdrop from "../SharedComponentsUI/Backdrop.vue";
 export default {
-  components: { BaseCard },
   data() {
     return {
       XIconSvg,
@@ -30,6 +29,7 @@ export default {
   },
   props: ["title"],
   emits: ["close-popup"],
+  components: { Backdrop },
 };
 </script>
 
@@ -39,19 +39,21 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
-  top: 0;
-  left: 0;
   width: 100vw;
   height: 100vh;
-  z-index: 10;
   background-color: rgba(0, 0, 0, 0.4);
 }
 
 .window {
-  position: relative;
+  position: fixed;
+  z-index: 10;
+  width: 40%;
+  height: 80%;
+  top: 10%;
+  left: 30%;
   /* height: fit-content; */
-  padding: 40px;
-  width: fit-content;
+  /* padding: 40px; */
+  /* width: fit-content; */
   border-radius: 14px;
 }
 /* 

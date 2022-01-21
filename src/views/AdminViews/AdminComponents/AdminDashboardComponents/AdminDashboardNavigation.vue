@@ -24,7 +24,7 @@ li {
   text-transform: uppercase;
   font-size: 12pt;
   list-style: none;
-
+  cursor: pointer;
   font-weight: 600;
 }
 

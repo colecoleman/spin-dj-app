@@ -122,14 +122,22 @@ export default {
 <style scoped>
 .add-contact-module-wrapper {
   height: 100%;
+  display: grid;
+  grid-template-rows: 60px 1fr;
+  grid-template-columns: 1fr;
 }
 
 .add-contact-button {
   position: relative;
+  width: 100%;
+  grid-column: 1;
+  grid-row: 1/2;
   min-height: 60px;
 }
 
 #form-container {
-  height: 100%;
+  grid-row: 2/ 3;
+  /* height: 100%; */
+  overflow: scroll;
 }
 </style>

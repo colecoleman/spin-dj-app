@@ -13,7 +13,7 @@
           v-for="(tab, name, index) in tabs"
           :key="index"
           :id="name + '-card'"
-          :class="name == activeTab ? '' : 'inactive'"
+          :class="name == activeTab ? 'config-card' : 'config-card inactive'"
           @click="assignActiveTab(name)"
         >
           <base-card :title="tab.title" :icon="tab.icon ? tab.icon : ''">
@@ -26,7 +26,11 @@
         </div>
       </div>
       <div class="scroll-wrapper half-width">
-        <div v-for="(card, name, index) in tabs[activeTab].cards" :key="index">
+        <div
+          v-for="(card, name, index) in tabs[activeTab].cards"
+          :key="index"
+          class="config-card"
+        >
           <base-card :title="card.title" :icon="card.icon ? card.icon : ''">
             <template v-slot:content>
               <p v-html="card.body"></p>
@@ -208,7 +212,9 @@ section {
 .inactive span {
   background-color: #6b6b6b;
 }
-
+.config-card {
+  margin: 10px;
+}
 .heading > h1 {
   width: 100%;
   text-transform: uppercase;
@@ -243,6 +249,7 @@ p {
 .heading {
   height: 15%;
 }
+
 h1 {
   text-transform: uppercase;
   text-align: right;

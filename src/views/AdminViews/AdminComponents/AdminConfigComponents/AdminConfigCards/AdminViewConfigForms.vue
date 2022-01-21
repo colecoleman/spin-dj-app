@@ -221,8 +221,8 @@
         </div>
         <div class="quarter-width">
           <h5 v-if="!hasForms">No forms added yet! Add One!</h5>
-          <div v-if="hasForms">
-            <h5 v-for="(form, index) in forms" :key="index" class="bolds">
+          <div v-if="hasForms" class="form-list">
+            <h5 v-for="(form, index) in forms" :key="index">
               {{ form.name }}
               <img
                 :src="SVGs.XIconSVG"
@@ -290,6 +290,7 @@ export default {
       }
     },
     saveField() {
+      this.newField.name = this.newField.name.replace(/:/g, "");
       this.form.fields.push(Object.assign({}, this.newField));
       this.newField = {
         name: undefined,
@@ -301,8 +302,11 @@ export default {
       this.fieldTemplateTitleFieldOpen = true;
     },
     saveAsFieldTemplate() {
+      this.newField.fields.forEach((x) => {
+        this.stripColonsFromFields(x);
+      });
       let template = {
-        title: this.fieldTemplateTitle,
+        title: this.fieldTemplateTitle.replace(/:/g, ""),
         fields: [...this.newField.fields],
       };
       this.fieldTemplates.push(Object.assign({}, template));
@@ -314,7 +318,6 @@ export default {
       this.fieldTemplateTitleFieldOpen = false;
     },
     assignFieldTemplate(template) {
-      console.log(template);
       this.newField.fields = JSON.parse(JSON.stringify(template.fields));
     },
     saveForm() {
@@ -342,6 +345,9 @@ export default {
     },
     deleteForm(index) {
       this.$store.commit("adminConfigDeleteForm", index);
+    },
+    stripColonsFromFields(field) {
+      return field.inputTitle.replace(/:/g, "");
     },
     editForm(form, index) {
       console.log(form);
@@ -376,6 +382,10 @@ export default {
 </script>
 
 <style scoped>
+p {
+  font-size: 9pt;
+}
+
 .split-view,
 .input-creation {
   display: flex;
@@ -439,9 +449,14 @@ export default {
   margin-top: 5px;
 }
 
-.x-icon {
+img {
   height: 10px;
   width: 10px;
   margin: 0px 5px;
+  cursor: pointer;
+}
+
+.form-list {
+  text-align: right;
 }
 </style>

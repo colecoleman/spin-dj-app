@@ -141,8 +141,9 @@ export default {
 <style scoped>
 .form-body {
   width: 100%;
-  height: calc(100% - 50px);
+  /* height: calc(100% - 50px); */
   overflow-y: scroll;
+  overflow-x: hidden;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -174,7 +175,7 @@ img {
 .row-flex {
   display: flex;
   flex-direction: row;
-  margin-top: 20px;
+  /* margin-top: 20px; */
 }
 
 .row-flex > input {

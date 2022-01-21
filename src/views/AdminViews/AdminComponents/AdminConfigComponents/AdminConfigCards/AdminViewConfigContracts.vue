@@ -111,6 +111,10 @@ section {
   flex-direction: row;
 }
 
+p {
+  font-size: 9pt;
+}
+
 .config-section {
   height: auto;
 }
@@ -214,9 +218,10 @@ section {
   margin-right: 5px;
 }
 
-.x-icon {
+img {
   height: 10px;
   width: 10px;
   margin: 0px 5px;
+  cursor: pointer;
 }
 </style>

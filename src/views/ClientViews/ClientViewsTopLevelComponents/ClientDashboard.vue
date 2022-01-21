@@ -1,30 +1,30 @@
 <template>
-  <div id="client-dashboard-wrapper" v-if="!loading">
-    <div class="column-one">
-      <div id="box-one-wrapper">
-        <contact-card-person :contact="client"></contact-card-person>
-      </div>
-      <div id="box-two-wrapper">
-        <contact-page-to-do-list :contact="client"></contact-page-to-do-list>
-      </div>
+  <section>
+    <!-- <div id="client-dashboard-wrapper" v-if="!loading">
+      <div class="column-one"> -->
+    <div id="contact-card">
+      <contact-card-person :contact="client"></contact-card-person>
     </div>
-    <div class="column-two">
+    <div id="to-do">
+      <contact-page-to-do-list :contact="client"></contact-page-to-do-list>
+    </div>
+    <!-- </div> -->
+    <div id="upcoming-events">
       <upcoming-events
         :events="events"
         :pastEvents="pastEvents"
       ></upcoming-events>
     </div>
-    <div class="column-three">
-      <div id="box-four-wrapper">
-        <event-calendar :events="events"></event-calendar>
-      </div>
-      <div id="box-five-wrapper">
-        <recent-messages
-          :conversationList="userConversations"
-        ></recent-messages>
-      </div>
+    <!-- <div class="column-three"> -->
+    <div id="calendar">
+      <event-calendar :events="events"></event-calendar>
     </div>
-  </div>
+    <div id="messaging">
+      <recent-messages :conversationList="userConversations"></recent-messages>
+    </div>
+    <!-- </div> -->
+    <!-- </div> -->
+  </section>
 </template>
 <script>
 import RecentMessages from "../../../SharedComponents/SharedComponentsMessaging/RecentMessages.vue";
@@ -81,38 +81,37 @@ export default {
 };
 </script>
 <style scoped>
-#client-dashboard-wrapper {
-  display: flex;
+section {
   width: 100%;
   height: 100%;
-  flex-direction: row;
-  justify-content: space-evenly;
+  display: grid;
+  gap: 10px;
+  grid-template-columns: 25% 1fr 30%;
+  grid-template-rows: 130px 200px 1fr;
 }
 
-.column-one,
-.column-two,
-.column-three {
-  display: flex;
-  flex-direction: column;
+#contact-card {
+  grid-row: 1/2;
+  grid-column: 1/2;
 }
 
-.column-one {
-  width: 25%;
+#to-do {
+  grid-row: 2/4;
+  grid-column: 1/2;
 }
 
-#box-two-wrapper {
-  flex: 1;
+#upcoming-events {
+  grid-column: 2/3;
+  grid-row: 1/4;
 }
 
-.column-two {
-  flex: 1;
+#calendar {
+  grid-row: 1/3;
+  grid-column: 3/4;
 }
 
-.column-three {
-  width: 30%;
-}
-
-#box-five-wrapper {
-  flex: 1;
+#messaging {
+  grid-row: 3/4;
+  grid-column: 3/4;
 }
 </style>

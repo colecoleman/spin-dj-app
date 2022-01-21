@@ -340,6 +340,10 @@ section {
   flex-direction: row;
 }
 
+p {
+  font-size: 9pt;
+}
+
 .config-section {
   height: auto;
 }
@@ -458,5 +462,12 @@ section {
   bottom: 25px;
   right: 25px;
   background-color: var();
+}
+
+img {
+  height: 10px;
+  width: 10px;
+  margin: 0px 5px;
+  cursor: pointer;
 }
 </style>

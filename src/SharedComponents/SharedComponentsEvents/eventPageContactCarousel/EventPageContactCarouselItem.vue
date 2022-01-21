@@ -45,6 +45,7 @@ export default {
   padding: 5%;
   flex-direction: column;
   justify-content: space-between;
+  cursor: pointer;
 }
 
 img {

@@ -178,6 +178,7 @@ export default {
   align-items: center;
   align-content: center;
   width: 99%;
+  cursor: pointer;
   /* max-height: 100px; */
 }
 

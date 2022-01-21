@@ -17,23 +17,21 @@
     ></template>
     <template v-slot:content v-if="contact">
       <div id="wrapper" v-if="!loading">
-        <div id="contact-card-upper-div">
-          <img
-            :src="
-              contact.profilePicture
-                ? contact.profilePicture
-                : defaultProfilePicture
-            "
-            alt=""
-          />
-          <div id="contact-information">
-            <p class="contact-contact-information">
-              {{ formatPhoneNumber(contact.phoneNumber) }}
-            </p>
-            <p class="contact-contact-information">
-              {{ contact.email }}
-            </p>
-          </div>
+        <img
+          :src="
+            contact.profilePicture
+              ? contact.profilePicture
+              : defaultProfilePicture
+          "
+          alt=""
+        />
+        <div id="contact-information">
+          <p class="contact-contact-information">
+            {{ formatPhoneNumber(contact.phoneNumber) }}
+          </p>
+          <p class="contact-contact-information email" @click="emailContact()">
+            {{ contact.email }}
+          </p>
         </div>
       </div>
     </template>
@@ -59,7 +57,11 @@ export default {
     toggleEditCard() {
       this.editCardOpen = !this.editCardOpen;
     },
+    emailContact() {
+      this.$emit("email-contact");
+    },
   },
+  emits: ["email-contact"],
   props: ["contact", "icon", "loading"],
   components: { ContactInformationEdit },
 };
@@ -67,13 +69,11 @@ export default {
 
 <style scoped>
 #wrapper {
-  /* height: 100%; */
+  height: 100%;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   overflow: hidden;
-  justify-content: center;
-  justify-items: center;
-  align-content: center;
+  justify-content: left;
   align-items: center;
 }
 
@@ -89,9 +89,9 @@ img {
   margin: 2px;
 }
 
-#contact-card-upper-div {
-  display: flex;
-  flex-direction: row;
+.email {
+  cursor: pointer;
+  text-decoration: underline;
 }
 
 #contact-information {
