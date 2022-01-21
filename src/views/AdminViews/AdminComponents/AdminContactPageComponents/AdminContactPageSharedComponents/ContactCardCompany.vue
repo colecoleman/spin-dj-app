@@ -47,9 +47,6 @@ export default {
       this.editCardOpen = !this.editCardOpen;
     },
   },
-  created() {
-    console.log(this.contact);
-  },
   components: { ContactInformationEditCompany },
   props: ["contact", "icon"],
 };
