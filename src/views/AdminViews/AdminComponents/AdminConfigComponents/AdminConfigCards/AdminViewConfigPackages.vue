@@ -17,7 +17,7 @@
               style="display: none"
             />
             <button-standard-with-icon
-              text="Choose File"
+              :text="photoFile ? photoFile.name : 'Choose File'"
               @click="chooseFile()"
               class="form-button"
             />
@@ -44,7 +44,7 @@
             <p>Standard Forms Included:</p>
             <div
               class="package-item row-flex"
-              v-for="form in businessSettings.product.forms"
+              v-for="form in forms"
               :key="form.id"
             >
               <p>
@@ -59,7 +59,7 @@
             </div>
           </div>
           <div class="package-item">
-            <p>Standard Contract Included:</p>
+            <p>Standard Contract(s) Included:</p>
             <div
               class="package-item row-flex"
               v-for="contract in businessSettings.contracts"
@@ -194,8 +194,8 @@
                   <p>
                     <b>Included Forms: </b
                     ><span v-for="form in packag.forms" :key="form">
-                      {{ findForm(form, index) }}</span
-                    >
+                      {{ findForm(form, index) }},
+                    </span>
                   </p>
                 </div>
                 <div class="package-item" v-if="packag.contracts">
@@ -248,6 +248,9 @@ export default {
   computed: {
     packages() {
       return this.businessSettings.product.packages;
+    },
+    forms() {
+      return this.businessSettings.product.forms.forms;
     },
   },
   methods: {
@@ -304,7 +307,9 @@ export default {
       }
     },
     findForm(form, packageIndex) {
-      let item = this.businessSettings.product.forms.find((x) => x.id === form);
+      let item = this.businessSettings.product.forms.forms.find(
+        (x) => x.id === form
+      );
       if (!item) {
         this.toggleFormFromPackage(form, packageIndex);
       } else {
@@ -393,6 +398,10 @@ export default {
 </script>
 
 <style scoped>
+p {
+  font-size: 9pt;
+}
+
 .package-wrapper {
   display: flex;
   flex-direction: row;
@@ -430,9 +439,10 @@ export default {
   margin-top: 10px;
 }
 
-.x-icon {
+img {
   height: 10px;
   width: 10px;
   margin: 0px 5px;
+  cursor: pointer;
 }
 </style>
