@@ -1,7 +1,8 @@
 <template>
-  <backdrop @click="closePopup()"></backdrop>
-  <section>
+  <backdrop @click="closePopup()" class="no-print"></backdrop>
+  <section class="no-print">
     <two-button-dialog-modal
+      class="no-print"
       @select-button-one="confirmConsent"
       @select-button-two="declineConsent"
       @close-modal="declineConsent"
@@ -9,6 +10,7 @@
       v-if="eSignStep === 1"
     ></two-button-dialog-modal>
     <popup-modal
+      class="no-print"
       @close-popup="closePaperSignInstructions"
       v-if="paperSignInstructionsOpen === true"
       title="Manual Contract Signing Instructions"
@@ -24,7 +26,7 @@
         <h5>Thank you!</h5>
       </template>
     </popup-modal>
-    <div class="navigation-wrapper">
+    <div class="navigation-wrapper no-print">
       <base-card title="Contracts" :subtitle="contract.contractName">
         <template v-slot:content>
           <div id="contract-popup-left-menu">
@@ -95,7 +97,7 @@
             </div>
             <div class="button-wrapper">
               <button-standard-with-icon
-                text="Save"
+                text="Save / Print"
                 @click="saveContract('contract-popup-document-view')"
               >
               </button-standard-with-icon>
@@ -113,6 +115,12 @@
         :contract="contract"
       ></contract-popup-document-view>
     </div>
+  </section>
+  <section id="print-format">
+    <contract-popup-document-view
+      :key="index"
+      :contract="contract"
+    ></contract-popup-document-view>
   </section>
 </template>
 
@@ -134,6 +142,7 @@
 // </full-page-popup>
 import SVGs from "../../assets/SVGs/svgIndex.js";
 import Backdrop from "../../SharedComponents/SharedComponentsUI/Backdrop.vue";
+import { Auth } from "aws-amplify";
 // import FullPagePopup from "../SharedComponentsUI/FullPagePopup.vue";
 import PopupModal from "../SharedComponentsUI/PopupModal.vue";
 import TwoButtonDialogModal from "../SharedComponentsUI/TwoButtonDialogModal.vue";
@@ -183,6 +192,9 @@ export default {
     previousContract() {
       this.contractScroller--;
     },
+    saveContract() {
+      window.print();
+    },
     checkScroll(el) {
       if (
         el.srcElement.offsetHeight + el.srcElement.scrollTop >=
@@ -217,12 +229,28 @@ export default {
       this.contract.status = "signed";
       let item = [...this.contracts];
       item[this.contractScroller] = this.contract;
-      let payload = {
-        eventId: this.eventId,
-        contracts: item,
-      };
-      await this.$store.dispatch("clientSignContract", payload);
+      let user = await Auth.currentAuthenticatedUser();
+      let role = user.attributes["custom:role"];
+      console.log(role);
+      if (role === ("client" || "organizer")) {
+        let payload = {
+          eventId: this.eventId,
+          contracts: item,
+        };
+        await this.$store.dispatch("clientSignContract", payload);
+      }
+      if (role === "admin") {
+        console.log("this bih is an admin");
+        let payload = {
+          variable: "contracts",
+          value: item,
+          eventId: this.eventId,
+        };
+        console.log(payload);
+        this.$store.dispatch("editEvent", payload);
+      }
       this.submittingSignature = false;
+      this.eSignStep = 0;
     },
     saveContact: helpers.saveElement,
     printContract: helpers.printElement,
@@ -244,93 +272,112 @@ export default {
 </script>
 
 <style scoped>
-section {
-  position: fixed;
-  top: 0;
-  left: 0;
-  display: flex;
-  flex-direction: row;
-  height: 90%;
-  width: 90%;
-  margin: 5%;
-  z-index: 3;
-}
-#contract-popup-content-wrapper {
-  display: flex;
-  flex-direction: row;
-  min-height: 100%;
-  height: 100%;
+@media screen {
+  #print-format {
+    display: none;
+  }
+  section {
+    filter: drop-shadow(0 0 20px rgba(0, 0, 0, 0.5));
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    flex-direction: row;
+    height: 90%;
+    width: 90%;
+    margin: 5%;
+    z-index: 3;
+  }
+  #contract-popup-content-wrapper {
+    display: flex;
+    flex-direction: row;
+    min-height: 100%;
+    height: 100%;
+  }
+  .navigation-wrapper {
+    margin-right: 10px;
+  }
+  #contract-popup-left-menu {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    height: 100%;
+  }
+
+  #right-column-sign-button-container {
+    /* height: 40%; */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+  }
+
+  .button-wrapper {
+    width: 100%;
+    height: fit-content;
+  }
+
+  .heading-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  #contract-document-view-wrapper {
+    position: relative;
+    overflow: scroll;
+    height: 100%;
+    outline: 1px solid var(--cardOutline);
+    width: fit-content;
+    margin: 10px;
+  }
+
+  #contract-document-scroll-container {
+    width: 100%;
+    overflow: scroll;
+  }
+
+  .contract-item {
+    flex-direction: row;
+  }
+
+  .contract-item > h5 {
+    font-weight: 600;
+    text-align: left;
+  }
+
+  .contract-item > p {
+    text-align: left;
+  }
+
+  .summary-item > h4 {
+    width: 50%;
+    text-align: left;
+  }
+
+  .row-flex {
+    display: flex;
+    flex-direction: row;
+    text-align: right;
+  }
+
+  .row-flex > input {
+    margin-left: 10px;
+  }
+
+  .disabled {
+    opacity: 0.5;
+  }
 }
 
-#contract-popup-left-menu {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-  height: 100%;
-}
+@media print {
+  .no-print {
+    display: none;
+  }
 
-#right-column-sign-button-container {
-  /* height: 40%; */
-  display: flex;
-  flex-direction: column;
-  justify-content: space-evenly;
-}
-
-.button-wrapper {
-  width: 100%;
-  height: fit-content;
-}
-
-.heading-container {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-}
-
-#contract-document-view-wrapper {
-  position: relative;
-  overflow: scroll;
-  height: 100%;
-  outline: 1px solid var(--cardOutline);
-  width: fit-content;
-  margin: 10px;
-}
-
-#contract-document-scroll-container {
-  width: 100%;
-  overflow: scroll;
-}
-
-.contract-item {
-  flex-direction: row;
-}
-
-.contract-item > h5 {
-  font-weight: 600;
-  text-align: left;
-}
-
-.contract-item > p {
-  text-align: left;
-}
-
-.summary-item > h4 {
-  width: 50%;
-  text-align: left;
-}
-
-.row-flex {
-  display: flex;
-  flex-direction: row;
-  text-align: right;
-}
-
-.row-flex > input {
-  margin-left: 10px;
-}
-
-.disabled {
-  opacity: 0.5;
+  #print-format {
+    display: block;
+    overflow: visible;
+  }
 }
 </style>

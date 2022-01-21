@@ -245,4 +245,15 @@ td {
   background-color: black;
   height: 2px;
 }
+
+@media print {
+  p,
+  h1,
+  h2,
+  h3,
+  h4,
+  h5 {
+    font-family: Georgia, "Times New Roman", Times, serif;
+  }
+}
 </style>

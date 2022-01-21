@@ -1,6 +1,11 @@
 <template>
-  <backdrop @click="closePopup()"></backdrop>
-  <section>
+  <backdrop class="no-print" @click="closePopup()"></backdrop>
+  <two-button-dialog-modal
+    @select-button-one="deleteForm"
+    @select-button-two="closeDeleteForm"
+    v-if="deleteFormOpen"
+  ></two-button-dialog-modal>
+  <section class="no-print">
     <div class="navigation-wrapper">
       <base-card>
         <template v-slot:content>
@@ -21,8 +26,15 @@
             <div class="button-container">
               <div class="navigation-button-wrapper">
                 <button-standard-with-icon
-                  text="Download"
-                  @click="downloadForms('form-wrapper-print')"
+                  :text="openView === 'eventForms' ? 'Add Forms' : 'View Forms'"
+                  v-if="userRole === 'admin'"
+                  @click="toggleAddForms()"
+                ></button-standard-with-icon>
+              </div>
+              <div class="navigation-button-wrapper">
+                <button-standard-with-icon
+                  text="Print / Download"
+                  @click="downloadForms()"
                 ></button-standard-with-icon>
               </div>
               <div class="navigation-button-wrapper">
@@ -36,14 +48,22 @@
         </template>
       </base-card>
     </div>
-    <div class="forms-wrapper">
+    <div class="forms-wrapper" v-if="openView === 'eventForms'">
       <div
         class="form-wrapper"
         v-for="(form, index) in forms"
         :key="index"
         :id="form.id"
       >
-        <base-card :title="form.name">
+        <base-card
+          :title="form.name"
+          :action-icon="
+            userRole === 'admin' || 'client' ? SVGs.TrashCanSVG : ''
+          "
+          @action-one-clicked="
+            userRole === 'admin' || 'client' ? initiateDeleteForm(index) : ''
+          "
+        >
           <template v-slot:content>
             <div
               class="form-field"
@@ -110,6 +130,65 @@
         </base-card>
       </div>
     </div>
+    <div v-if="openView === 'addForms'" class="add-form-wrapper">
+      <forms-popup-add-form
+        :eventForms="forms"
+        @add-form-to-event="addFormToEvent"
+      ></forms-popup-add-form>
+    </div>
+  </section>
+  <section id="print-format">
+    <img :src="logo" alt="Business Logo" />
+    <div
+      class="form-wrapper"
+      v-for="(form, index) in forms"
+      :key="index"
+      :id="form.id"
+    >
+      <h3 class="form-name">{{ form.name }}</h3>
+      <div
+        class="form-field"
+        v-for="(formItem, formItemIndex) in form.fields"
+        :key="formItemIndex"
+      >
+        <h4>{{ formItem.name }}</h4>
+        <div class="field-container">
+          <div
+            class="field-item"
+            v-for="(input, index) in formItem.fields"
+            :key="index"
+          >
+            <p>{{ input.inputTitle }}:</p>
+            <input
+              v-if="
+                input.inputType === 'text' ||
+                input.inputType === 'tel' ||
+                input.inputType === 'email'
+              "
+              :type="input.inputType"
+              :placeholder="input.placeholder"
+              v-model="input.value"
+            />
+
+            <div class="radio-container" v-if="input.inputType === 'radio'">
+              <input
+                v-for="(option, index) in input.options"
+                :key="index"
+                :type="input.inputType"
+                :name="input.name"
+                v-model="input.value"
+              />
+              <p>{{ option }}</p>
+            </div>
+            <select v-if="input.inputType === 'select'" v-model="input.value">
+              <option v-for="(option, index) in input.options" :key="index">
+                {{ option }}
+              </option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
   </section>
 </template>
 
@@ -117,11 +196,29 @@
 <script>
 // import FullPagePopup from "../SharedComponentsUI/FullPagePopup.vue";
 import Backdrop from "../SharedComponentsUI/Backdrop.vue";
-import helpers from "../../helpers.js";
+import FormsPopupAddForm from "./FormsPopupAddForm.vue";
+import TwoButtonDialogModal from "../SharedComponentsUI/TwoButtonDialogModal.vue";
+import SVGs from "../../assets/SVGs/svgIndex.js";
+import { Auth } from "aws-amplify";
+// import helpers from "../../helpers.js";
 import _ from "lodash";
 
 export default {
-  data() {},
+  data() {
+    return {
+      SVGs,
+      activeLink: undefined,
+      openView: "eventForms",
+      deleteFormOpen: false,
+      formDeleteIndex: undefined,
+      userRole: undefined,
+    };
+  },
+  computed: {
+    logo() {
+      return this.$store.state.businessSettings.identity.businessLogo;
+    },
+  },
   methods: {
     scroll(id) {
       document.getElementById(id).scrollIntoView({
@@ -130,9 +227,14 @@ export default {
       this.activeLink = id;
     },
     closePopup() {
+      if (this.openView === "addForm") {
+        this.saveForms();
+      }
       this.$emit("closePopup");
     },
-    downloadForms: helpers.saveElement,
+    downloadForms() {
+      window.print();
+    },
     saveForms() {
       let payload = {
         variable: "forms",
@@ -146,115 +248,243 @@ export default {
       console.log(fieldItem);
       console.log(this.forms);
     },
+    toggleAddForms() {
+      if (this.openView === "addForms") {
+        this.saveForms();
+        this.openView = "eventForms";
+      } else {
+        this.openView = "addForms";
+        console.log(this.openView);
+      }
+    },
+    addFormToEvent(form) {
+      console.log(form);
+      this.$emit("addFormToEvent", form);
+    },
+    initiateDeleteForm(index) {
+      this.formDeleteIndex = index;
+      this.deleteFormOpen = true;
+    },
+    closeDeleteForm() {
+      this.deleteFormOpen = false;
+    },
+    deleteForm(index) {
+      this.$emit("deleteForm", index);
+      this.closeDeleteForm();
+    },
   },
-  emits: ["closePopup"],
-  created() {
-    console.log(this.forms);
+  emits: ["closePopup", "addFormToEvent", "deleteForm"],
+  async created() {
+    let user = await Auth.currentAuthenticatedUser();
+    this.userRole = user.attributes["custom:role"];
   },
   props: ["forms", "eventId"],
 
   components: {
-    // FullPagePopup,
+    FormsPopupAddForm,
     Backdrop,
+    TwoButtonDialogModal,
   },
 };
 </script>
 
 <style scoped>
-section {
-  position: fixed;
-  top: 0;
-  left: 0;
-  /* margin: 5%; */
-  display: flex;
-  flex-direction: row;
-  height: 90%;
-  width: 90%;
-  margin: 5%;
-  z-index: 4;
+@media screen {
+  #print-format {
+    display: none;
+  }
+
+  section {
+    filter: drop-shadow(0 0 20px rgba(0, 0, 0, 0.5));
+    position: fixed;
+    top: 5%;
+    left: 5%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    height: 90%;
+    width: 90%;
+    z-index: 3;
+  }
+
+  .navigation-wrapper {
+    backdrop-filter: blur(2px);
+    width: fit-content;
+    height: 100%;
+    min-width: 250px;
+    margin-right: 10px;
+  }
+
+  .sidebar {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
+  ul {
+    text-align: right;
+    height: 90%;
+    padding: 0;
+  }
+
+  li {
+    width: 100%;
+    text-transform: uppercase;
+    font-size: 12pt;
+    list-style: none;
+    font-weight: 600;
+    margin: 20px 0px;
+    cursor: pointer;
+  }
+
+  li:hover {
+    color: var(--highlightColor);
+  }
+
+  a {
+    text-decoration: none;
+    font-weight: 700;
+  }
+
+  .navigation-button-wrapper {
+    margin-top: 10px;
+  }
+
+  .duplicate-button-wrapper {
+    width: 100px;
+    margin-top: 10px;
+    margin-left: 40px;
+  }
+
+  .active-link {
+    color: var(--highlightColor);
+  }
+
+  .button-container {
+    margin-top: auto;
+  }
+
+  .forms-wrapper,
+  .add-form-wrapper {
+    width: 100%;
+    height: 100%;
+    overflow-y: scroll;
+  }
+
+  .form-wrapper {
+    margin-bottom: 10px;
+  }
+
+  .form-field {
+    padding: 10px;
+    text-align: left;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .field-container {
+    display: flex;
+    flex-direction: row;
+  }
+
+  h5 {
+    margin-bottom: 0;
+  }
+
+  .field-item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    max-width: 200px;
+    margin-left: 20px;
+  }
+
+  input {
+    margin-left: 20px;
+  }
 }
 
-.navigation-wrapper {
-  width: fit-content;
-  height: 100%;
-}
+@media print {
+  #print-format {
+    display: block;
+    width: 100%;
+    height: auto;
+    min-height: auto;
+    margin: 0;
+    background-color: white;
+    overflow: visible !important;
+    box-sizing: border-box;
 
-.sidebar {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  margin: 10px;
-}
+    font-family: Georgia, "Times New Roman", Times, serif;
+  }
 
-ul {
-  text-align: right;
-  height: 90%;
-  padding: 0;
-}
+  section {
+    position: auto;
+    top: unset;
+    left: unset;
+    display: block;
+    height: auto;
+    width: auto;
+    margin: 0;
+  }
 
-li {
-  width: 100%;
-  text-transform: uppercase;
-  font-size: 12pt;
-  list-style: none;
-  font-weight: 600;
-  margin: 20px 0px;
-}
+  .forms-wrapper {
+    width: 100%;
+    overflow-y: visible;
+  }
+  .form-name {
+    text-align: center;
+    border-bottom: 1px solid black;
+  }
+  img {
+    height: 60px;
+    margin: 40px;
+  }
 
-a {
-  text-decoration: none;
-  font-weight: 700;
-}
+  .form-wrapper {
+    width: 100%;
+    page-break-after: always;
+  }
 
-.navigation-button-wrapper {
-  margin-top: 10px;
-}
+  p {
+    font-size: 12pt;
+  }
+  .form-field {
+    width: 100%;
+    margin: 0px;
+    text-align: left;
+    /* align-items: center; */
+    /* justify-content: center; */
+  }
 
-.duplicate-button-wrapper {
-  width: 100px;
-  margin-top: 10px;
-  margin-left: 40px;
-}
+  .field-container {
+    display: flex;
+    /* flex-direction: row; */
+    width: 100%;
+  }
 
-.active-link {
-  color: var(--highlightColor);
-}
+  .field-item {
+    flex: 1;
+    /* display: flex; */
+    flex-direction: column;
+    text-align: left;
+    width: 33%;
+    max-width: unset;
+    /* margin-left: 20px; */
+  }
 
-.button-container {
-  margin-top: auto;
-}
+  h4 {
+    margin-bottom: 0;
+  }
 
-.forms-wrapper {
-  width: 100%;
-  overflow-y: scroll;
-}
+  input {
+    margin-left: 20px;
+  }
 
-.form-field {
-  padding: 10px;
-  text-align: left;
-  align-items: center;
-  justify-content: center;
-}
-
-.field-container {
-  display: flex;
-  flex-direction: row;
-}
-
-h5 {
-  margin-bottom: 0;
-}
-
-.field-item {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  text-align: left;
-  max-width: 200px;
-  margin-left: 20px;
-}
-
-input {
-  margin-left: 20px;
+  .no-print {
+    display: none;
+  }
 }
 </style>

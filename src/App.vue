@@ -23,8 +23,6 @@
 /* eslint-disable */
 import { Auth } from "aws-amplify";
 import axios from "axios";
-// import { components } from "aws-amplify-vue";
-// import { Hub } from "aws-amplify";
 import SVGs from "./assets/SVGs/svgIndex.js";
 import StatusIndicator from "./SharedComponents/SharedComponentsUI/StatusIndicator.vue";
 import ButtonStandardWithIcon from "./SharedComponents/SharedComponentsUI/ButtonStandardWithIcon.vue";
@@ -83,75 +81,6 @@ export default {
 <style>
 @import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,300;1,400;1,500;1,700;1,900&display=swap");
 
-html,
-body {
-  width: 100%;
-  height: 100%;
-  max-height: 100%;
-  margin: 0px;
-  padding: 0px;
-  overflow: none;
-  position: fixed;
-}
-
-.signout {
-  display: none;
-}
-
-#app {
-  font-family: Roboto, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  height: 100vh;
-  width: 100vw;
-  display: flex;
-  justify-content: left;
-  align-items: center;
-}
-
-.router-link-exact-active > svg {
-  fill: var(--highlightColor);
-}
-
-ul {
-  list-style: none;
-}
-
-p,
-h1,
-h2,
-h3,
-h4,
-h5,
-a {
-  color: var(--textColor);
-}
-
-p {
-  font-size: 8pt;
-}
-
-h4 {
-  font-size: 15px;
-  text-transform: uppercase;
-  margin: 0;
-}
-
-a {
-  text-decoration: none;
-}
-
-.bold {
-  font-weight: 600;
-}
-
-#application-wrapper {
-  width: 100vw;
-  height: 100vh;
-  background-color: var(--backgroundColor);
-}
-
 input,
 select,
 textarea {
@@ -162,22 +91,69 @@ textarea {
   border-radius: 5px;
   padding: 3px;
 }
+@media screen {
+  html,
+  body {
+    width: 100%;
+    margin: 0px;
+    padding: 0px;
+    overflow: hidden;
+  }
 
-.router-link-exact-active {
-  color: var(--highlightColor);
+  #app {
+    font-family: Roboto, Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-align: center;
+    height: 100vh;
+    width: 100vw;
+  }
+
+  ul {
+    list-style: none;
+  }
+
+  p,
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  a {
+    color: var(--textColor);
+  }
+
+  p {
+    font-size: 8pt;
+  }
+
+  h4 {
+    font-size: 15px;
+    text-transform: uppercase;
+    margin: 0;
+  }
+
+  a {
+    text-decoration: none;
+  }
+
+  .bold {
+    font-weight: 600;
+  }
+
+  #application-wrapper {
+    height: 100%;
+    background-color: var(--backgroundColor);
+  }
+
+  .router-link-exact-active {
+    color: var(--highlightColor);
+  }
+
+  #mobile-wall {
+    display: none;
+  }
 }
-
-[data-amplify-authenticator] {
-  --amplify-colors-background-primary: var(--foregroundColor);
-  --amplify-colors-background-secondary: var(--backgroundColor);
-  --amplify-colors-background-tertiary: var(--textColor);
-  --amplify-components-text-color: var(--textColor);
-}
-
-#mobile-wall {
-  display: none;
-}
-
 @media screen and (max-width: 900px) {
   #application-wrapper {
     display: none;
@@ -206,6 +182,58 @@ textarea {
   #spin-logo {
     margin-top: 40px;
     width: 50%;
+  }
+}
+
+@media print {
+  @page {
+    margin: 20mm;
+  }
+  html,
+  body {
+    width: 100%;
+    /* height: 100%; */
+    /* max-height: 100%; */
+    height: auto;
+    margin: 0px;
+    padding: 0px;
+    overflow: visible !important;
+    overflow: none;
+    /* position: fixed; */
+  }
+
+  #app {
+    height: auto;
+    width: auto;
+    overflow: visible !important;
+    overflow: none;
+    display: block;
+  }
+
+  input,
+  select,
+  textarea {
+    color: black;
+    background-color: white;
+    border: 1px solid;
+    border-radius: 5px;
+    padding: 3px;
+  }
+
+  input::placeholder {
+    opacity: 0;
+  }
+
+  #application-wrapper {
+    overflow: visible !important;
+    overflow: none;
+    height: auto;
+    background-color: var(--backgroundColor);
+    display: block;
+  }
+
+  #mobile-wall {
+    display: none;
   }
 }
 </style>

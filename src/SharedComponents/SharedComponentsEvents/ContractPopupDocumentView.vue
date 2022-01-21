@@ -62,4 +62,15 @@ p {
 #contract-copy {
   margin: 10px 60px;
 }
+
+@media print {
+  p,
+  h1,
+  h2,
+  h3,
+  h4,
+  h5 {
+    font-family: Georgia, "Times New Roman", Times, serif;
+  }
+}
 </style>

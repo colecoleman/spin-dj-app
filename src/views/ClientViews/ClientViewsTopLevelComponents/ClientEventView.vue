@@ -1,6 +1,6 @@
 <template>
   <div v-if="event" id="div-wrapper">
-    <backdrop v-if="popupOpen" @click="togglePopup()"></backdrop>
+      <backdrop v-if="popupOpen" @click="togglePopup()"></backdrop>
     <invoice-popup
       :invoice="event.invoice"
       :event="event"
@@ -223,55 +223,72 @@ export default {
 </script>
 
 <style scoped>
-#div-wrapper {
-  width: 100%;
-  height: 100%;
+@media screen {
+  #div-wrapper {
+    width: 100%;
+    height: 100%;
+  }
+
+  section {
+    width: 100%;
+    height: 100%;
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    grid-template-rows: 75px 240px 1fr;
+    gap: 10px;
+  }
+
+  #contact-card {
+    grid-column: 1 / 4;
+    grid-row: 1 / 2;
+  }
+
+  #alerts {
+    grid-column: 1/ 4;
+    grid-row: 2/ 3;
+  }
+  #button-bar {
+    grid-column: 4/ 11;
+    grid-row: 1/ 2;
+  }
+
+  #location-scroller {
+    grid-column: 4/ 7;
+    grid-row: 2/3;
+  }
+
+  #make-payment {
+    grid-column: 7 / 11;
+    grid-row: 2/ 3;
+  }
+
+  #contact-carousel {
+    width: 100%;
+    grid-column: 1/ 5;
+    grid-row: 3/ 4;
+  }
+
+  #to-do {
+    grid-column: 5 / 8;
+    grid-row: 3 / 4;
+  }
+
+  #messages {
+    grid-column: 8 / 11;
+    grid-row: 3 / 4;
+  }
 }
 
-section {
-  width: 100%;
-  height: 100%;
-  display: grid;
-  grid-template-columns: repeat(10, 10%);
-  grid-template-rows: 35px repeat(6, 10%);
-}
+@media print {
+  #div-wrapper {
+    width: unset;
+    height: auto;
+    overflow: visible !important;
+    display: block;
+  }
 
-#contact-card {
-  grid-column: 1 / 4;
-  grid-row: 1 / 3;
-}
-
-#alerts {
-  grid-column: 1/ 4;
-  grid-row: 3/ 7;
-}
-#button-bar {
-  grid-column: 4/ 11;
-  grid-row: 1/ 3;
-}
-
-#location-scroller {
-  grid-column: 4/ 7;
-  grid-row: 3/7;
-}
-
-#make-payment {
-  grid-column: 7 / 11;
-  grid-row: 3/ 7;
-}
-
-#contact-carousel {
-  grid-column: 1/ 5;
-  grid-row: 7/ 11;
-}
-
-#to-do {
-  grid-column: 5 / 8;
-  grid-row: 7 / 11;
-}
-
-#messages {
-  grid-column: 8 / 11;
-  grid-row: 7 / 11;
+  section {
+    display: none;
+  }
 }
 </style>

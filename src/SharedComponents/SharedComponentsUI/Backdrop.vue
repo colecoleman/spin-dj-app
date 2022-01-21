@@ -15,5 +15,13 @@ export default {};
   left: 0;
   z-index: 3;
   background-color: rgba(0, 0, 0, 0.25);
+
+  filter: blur(0px);
+}
+
+@media print {
+  .backdrop {
+    display: none;
+  }
 }
 </style>

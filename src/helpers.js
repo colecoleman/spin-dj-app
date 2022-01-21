@@ -1,6 +1,3 @@
-import jsPDF from "jspdf";
-import html2canvas from "html2canvas";
-
 export default class Helpers {
   // format helpers
 
@@ -135,92 +132,6 @@ export default class Helpers {
     }
   }
 
-  // system helpers
-
-  static printElement(elementName) {
-    html2canvas(document.getElementById(elementName), {}).then(function (
-      canvas
-    ) {
-      var imgData = canvas.toDataURL("image/png");
-      var imgWidth = 210;
-      var pageHeight = 272;
-      var imgHeight = (canvas.height * imgWidth) / canvas.width;
-      var heightLeft = imgHeight;
-
-      var doc = new jsPDF("p", "mm", "a4", true);
-      var position = 0;
-
-      doc.addImage(
-        imgData,
-        "JPEG",
-        5,
-        position,
-        imgWidth,
-        imgHeight,
-        undefined,
-        "FAST"
-      );
-      heightLeft -= pageHeight;
-      while (heightLeft >= 0) {
-        position = heightLeft - imgHeight;
-        doc.addPage();
-        doc.addImage(
-          imgData,
-          "JPEG",
-          5,
-          position,
-          imgWidth,
-          imgHeight,
-          undefined,
-          "FAST"
-        );
-        heightLeft -= pageHeight;
-      }
-      doc.autoPrint();
-      doc.output("dataurlnewwindow");
-    });
-  }
-
-  static saveElement(elementName) {
-    html2canvas(document.getElementById(elementName), {}).then(function (
-      canvas
-    ) {
-      var imgData = canvas.toDataURL("image/png");
-      var imgWidth = 210;
-      var pageHeight = 260;
-      var imgHeight = (canvas.height * imgWidth) / canvas.width;
-      var heightLeft = imgHeight;
-      var doc = new jsPDF("p", "mm", "a4", true);
-      var position = 0;
-      doc.addImage(
-        imgData,
-        "JPEG",
-        5,
-        position,
-        imgWidth,
-        imgHeight,
-        undefined,
-        "FAST"
-      );
-      heightLeft -= pageHeight;
-      while (heightLeft >= 0) {
-        position = heightLeft - imgHeight;
-        doc.addPage();
-        doc.addImage(
-          imgData,
-          "JPEG",
-          5,
-          position,
-          imgWidth,
-          imgHeight,
-          undefined,
-          "FAST"
-        );
-        heightLeft -= pageHeight;
-      }
-      doc.save("file.pdf");
-    });
-  }
   // utility functions to help other helpers
 }
 

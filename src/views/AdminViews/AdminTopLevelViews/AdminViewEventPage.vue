@@ -26,6 +26,8 @@
     <forms-popup
       v-if="formsOpen"
       @close-popup="closePopup()"
+      @add-form-to-event="addFormToEvent"
+      @delete-form="deleteForm"
       :forms="event.forms"
       :eventId="event.userId"
     ></forms-popup>
@@ -46,6 +48,7 @@
           v-if="client && event"
           :client="client"
           :event="event"
+          @edit-event="editEvent"
         ></event-page-contact-card>
       </div>
       <div id="location-scroller">
@@ -107,6 +110,7 @@ import PopupModal from "../../../SharedComponents/SharedComponentsUI/PopupModal.
 import ContractPopup from "../../../SharedComponents/SharedComponentsEvents/ContractPopup.vue";
 import FourButtonBarWithDropDown from "../../../SharedComponents/SharedComponentsUI/FourButtonBarWithDropDown.vue";
 import TwoButtonDialogModal from "../../../SharedComponents/SharedComponentsUI/TwoButtonDialogModal.vue";
+import _ from "lodash";
 
 import SVGs from "../../../assets/SVGs/svgIndex.js";
 
@@ -232,11 +236,20 @@ export default {
       this.deleteEventOpen = false;
       this.paymentModalOpen = false;
     },
-    editEvent() {
-      alert("edited!");
+    addFormToEvent(form) {
+      this.event.forms.push(_.cloneDeep(form));
     },
-    postponeEvent() {
-      alert("postponed");
+    deleteForm(form) {
+      this.event.forms.splice(form, 1);
+      let payload = {
+        variable: "forms",
+        value: this.event.forms,
+        eventId: this.event.userId,
+      };
+      this.$store.dispatch("editEvent", payload);
+    },
+    editEvent(payload) {
+      this.event = payload;
     },
   },
 
@@ -253,7 +266,6 @@ export default {
     await this.event.contacts.forEach((contact) => {
       let id = contact.id ? contact.id : contact;
       this.$store.dispatch("getUser", id).then((res) => {
-        console.log(res);
         this.contacts.push(res);
         if (contact.role === "client") {
           this.clients.push(res);
@@ -287,56 +299,76 @@ export default {
 </script>
 
 <style scoped>
-#div-wrapper {
-  width: 100%;
-  height: 100%;
-}
+@media screen {
+  #div-wrapper {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+  }
 
-section {
-  width: 100%;
-  height: 100%;
-  display: grid;
-  grid-template-columns: repeat(10, 10%);
-  grid-template-rows: 35px repeat(6, 10%);
-}
+  section {
+    width: 100%;
+    height: 100%;
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    grid-template-rows: 75px 240px 1fr;
+    gap: 10px;
+  }
 
-#contact-card {
-  grid-column: 1 / 4;
-  grid-row: 1 / 3;
-}
+  #contact-card {
+    grid-column: 1 / 4;
+    grid-row: 1 / 2;
+  }
 
-#location-scroller {
-  grid-column: 1/ 4;
-  grid-row: 3/ 7;
-}
+  #location-scroller {
+    grid-column: 1/ 4;
+    grid-row: 2/ 3;
+  }
 
-#button-bar {
-  grid-column: 4/ 11;
-  grid-row: 1/ 3;
-}
+  #button-bar {
+    grid-column: 4/ 11;
+    grid-row: 1/ 2;
+  }
 
-#event-information {
-  grid-column: 4/ 7;
-  grid-row: 3/7;
-}
+  #event-information {
+    grid-column: 4/ 7;
+    grid-row: 2/3;
+  }
 
-#automation {
-  grid-column: 7 / 11;
-  grid-row: 3/ 7;
-}
+  #automation {
+    grid-column: 7 / 11;
+    grid-row: 2/ 3;
+  }
 
-#contact-carousel {
-  grid-column: 1/ 5;
-  grid-row: 7/ 11;
-}
+  #contact-carousel {
+    width: 100%;
+    grid-column: 1/ 5;
+    grid-row: 3/ 4;
+  }
 
-#to-do {
-  grid-column: 5 / 8;
-  grid-row: 7 / 11;
-}
+  #to-do {
+    grid-column: 5 / 8;
+    grid-row: 3 / 4;
+  }
 
-#recent-messages {
-  grid-column: 8 / 11;
-  grid-row: 7 / 11;
+  #recent-messages {
+    grid-column: 8 / 11;
+    grid-row: 3 / 4;
+  }
+}
+@media print {
+  #div-wrapper {
+    width: unset;
+    height: auto;
+    overflow: visible !important;
+    display: block;
+  }
+
+  section {
+    display: none;
+  }
 }
 </style>

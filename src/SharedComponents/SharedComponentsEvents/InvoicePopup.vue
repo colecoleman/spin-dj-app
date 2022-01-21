@@ -1,7 +1,7 @@
 <template>
-  <backdrop @click="closePopup()"></backdrop>
-  <section>
-    <div class="navigation-wrapper">
+  <backdrop @click="closePopup()" class="no-print"></backdrop>
+  <section class="no-print">
+    <div class="navigation-wrapper no-print">
       <base-card>
         <template v-slot:content>
           <div id="invoice-popup-right-column">
@@ -75,8 +75,8 @@
             </div>
           </div>
           <button-standard-with-icon
-            text="Save"
-            @click="printInvoice('invoice-popup-document-view')"
+            text="Save / Print"
+            @click="printInvoice()"
           ></button-standard-with-icon>
         </template>
       </base-card>
@@ -88,6 +88,13 @@
         :client="client"
       ></invoice-popup-document-view>
     </div>
+  </section>
+  <section id="print-format">
+    <invoice-popup-document-view
+      :invoice="invoice"
+      :event="event"
+      :client="client"
+    ></invoice-popup-document-view>
   </section>
 </template>
 
@@ -119,7 +126,9 @@ export default {
     calculateEventTime: helpers.calculateEventTime,
     formatPrice: helpers.formatPrice,
     saveInvoice: helpers.saveElement,
-    printInvoice: helpers.printElement,
+    printInvoice() {
+      window.print();
+    },
     subtotal: helpers.subtotal,
     total: helpers.total,
     balanceOutstanding: helpers.balanceOutstanding,
@@ -138,64 +147,77 @@ export default {
 </script>
 
 <style scoped>
-section {
-  position: fixed;
-  top: 0;
-  left: 0;
-  display: flex;
-  flex-direction: row;
-  height: 90%;
-  width: 90%;
-  margin: 5%;
-  z-index: 3;
-}
+@media screen {
+  #print-format {
+    display: none;
+  }
+  section {
+    filter: drop-shadow(0 0 20px rgba(0, 0, 0, 0.5));
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    flex-direction: row;
+    height: 90%;
+    width: 90%;
+    margin: 5%;
+    z-index: 3;
+  }
 
-.navigation-wrapper {
-  width: 350px;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-}
+  .navigation-wrapper {
+    width: 350px;
+    height: 100%;
+    margin-right: 10px;
+    display: flex;
+    flex-direction: column;
+  }
 
-#invoice-popup-content-wrapper {
-  display: flex;
-  flex-direction: row;
-  /* min-height: 100%; */
-}
+  #invoice-popup-content-wrapper {
+    display: flex;
+    flex-direction: row;
+    /* min-height: 100%; */
+  }
 
-#invoice-popup-left-menu,
-#invoice-popup-right-column {
-  overflow: scroll;
-}
+  #invoice-popup-left-menu,
+  #invoice-popup-right-column {
+    height: 100%;
+    overflow: scroll;
+  }
 
-#invoice-document-view-wrapper {
-  overflow: scroll;
-  width: 100%;
-}
+  #invoice-document-view-wrapper {
+    overflow: scroll;
+    width: 100%;
+  }
 
-.invoice-item,
-.summary-item {
-  padding-top: 20px;
-}
+  .invoice-item,
+  .summary-item {
+    padding-top: 20px;
+  }
 
-.summary-item,
-.price-item {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-}
+  .summary-item,
+  .price-item {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
 
-.invoice-item > h5 {
-  font-weight: 600;
-  text-align: left;
-}
+  .invoice-item > h5 {
+    font-weight: 600;
+    text-align: left;
+  }
 
-.summary-item > h4 {
-  text-align: left;
-}
+  .summary-item > h4 {
+    text-align: left;
+  }
 
-.summary-item h5 {
-  font-weight: 600;
+  .summary-item h5 {
+    font-weight: 600;
+  }
+}
+@media print {
+  .no-print {
+    display: none;
+  }
 }
 </style>
