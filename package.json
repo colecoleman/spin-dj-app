@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "@aws-amplify/ui-components": "^1.9.6",
-    "@aws-amplify/ui-vue": "^2.0.4",
+    "@aws-amplify/ui-vue": "^2.0.8",
     "@benchmark-urbanism/vue-mapbox-map": "^0.14.11",
     "@stripe/stripe-js": "^1.22.0",
     "@vue-stripe/vue-stripe": "^4.2.9",
