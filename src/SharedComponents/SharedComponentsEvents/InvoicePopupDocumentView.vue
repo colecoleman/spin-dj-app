@@ -94,6 +94,7 @@
         <td></td>
         <td></td>
         <td v-if="item.type === 'percentage'">- {{ item.amount * 100 }}%</td>
+        <td v-if="item.type === 'dollar'">- ${{ item.amount / 100 }}</td>
       </tr>
       <tr>
         <th>Invoice Total:</th>
