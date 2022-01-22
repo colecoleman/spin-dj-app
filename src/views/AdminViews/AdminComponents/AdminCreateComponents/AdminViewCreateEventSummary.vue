@@ -33,13 +33,13 @@
                   </p>
                   <p
                     class="indented-text"
-                    v-if="fields.location.streetAddress2"
+                    v-if="fields.location.address.streetAddress2"
                   >
                     {{ fields.location.address.streetAddress2 }}
                   </p>
                   <p
                     class="indented-text"
-                    v-if="fields.location.streetAddress2"
+                    v-if="fields.location.address.cityStateZip"
                   >
                     {{ fields.location.address.cityStateZip }}
                   </p>
@@ -195,6 +195,15 @@ export default {
     },
     createEvent() {
       let dbEvent = Object.assign({}, this.event);
+      if (this.fields.client.userId) {
+        this.eventContacts.push({
+          role: "client",
+          id: this.fields.client.userId,
+        });
+      }
+      if (this.fields.location.userId) {
+        this.eventLocations.push(this.fields.location.userId);
+      }
       dbEvent.contacts = [...this.eventContacts];
       dbEvent.locations = [...this.eventLocations];
       dbEvent.contracts = this.contracts.map((x) => ({
@@ -204,6 +213,7 @@ export default {
         signerUUID: null,
         status: "pending",
       }));
+      console.log(dbEvent);
       return new Promise((resolve, reject) => {
         this.$store
           .dispatch("addEvent", dbEvent)

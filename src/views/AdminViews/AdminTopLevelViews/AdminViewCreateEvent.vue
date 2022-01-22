@@ -366,6 +366,7 @@ export default {
       this.clientDropdownOpen = true;
     },
     selectLocation(location) {
+      console.log(location);
       this.locationDropdownOpen = false;
       Object.assign(this.fields.location, location);
       return;
