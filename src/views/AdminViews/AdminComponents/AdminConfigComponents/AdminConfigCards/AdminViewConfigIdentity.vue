@@ -1,4 +1,5 @@
-df<template>
+df
+<template>
   <two-button-dialog-modal
     v-if="dialogModal"
     :modalBody="dialogModalData[dialogModal].body"
@@ -220,7 +221,7 @@ export default {
       SVGs,
       dialogModal: null,
       newEmailField: null,
-      emailDeleteindex: undefined,
+      emailDeleteIndex: undefined,
       photoFile: undefined,
       subdomainField: undefined,
       checkingSubdomain: false,
@@ -243,7 +244,9 @@ export default {
           cancelButton: this.cancelChangeBusinessName,
         },
         deleteSubdomain: {
-          body: `Are you sure you want to delete the "${this.subdomainToDelete.subdomain}" subdomain?`,
+          body: `Are you sure you want to delete the "${
+            this.subdomainToDelete ? this.subdomainToDelete.subdomain : ""
+          }" subdomain?`,
           confirmButton: this.confirmDeleteSubdomain,
           cancelButton: this.cancelDeleteSubdomain,
         },
@@ -391,16 +394,17 @@ export default {
       this.dialogModal = null;
     },
     startDeleteEmail(index) {
+      console.log(index);
       this.dialogModal = "deleteEmail";
-      this.emailDeleteindex = index;
+      this.emailDeleteIndex = index;
     },
-    confirmDeleteEmail(index) {
-      this.identity.emailAddresses.splice(index, 1);
+    confirmDeleteEmail() {
+      this.emailAddresses.splice(this.emailDeleteIndex, 1);
       this.closeDialogModal();
     },
     cancelDeleteEmail() {
       this.closeDialogModal();
-      this.emailDeleteindex = undefined;
+      this.emailDeleteIndex = undefined;
     },
     cancelDeleteSubdomain() {
       this.closeDialogModal();
