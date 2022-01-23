@@ -192,7 +192,6 @@
   </section>
 </template>
 
-
 <script>
 // import FullPagePopup from "../SharedComponentsUI/FullPagePopup.vue";
 import Backdrop from "../SharedComponentsUI/Backdrop.vue";
@@ -268,8 +267,8 @@ export default {
     closeDeleteForm() {
       this.deleteFormOpen = false;
     },
-    deleteForm(index) {
-      this.$emit("deleteForm", index);
+    deleteForm() {
+      this.$emit("deleteForm", this.formDeleteIndex);
       this.closeDeleteForm();
     },
   },
