@@ -1,7 +1,10 @@
 <template>
   <div id="invoice-popup-document-view" class="page">
     <div id="heading">
-      <img :src="logo" alt="Logo" />
+      <img
+        :src="$store.state.businessSettings.identity.businessLogo"
+        alt="Logo"
+      />
       <div id="heading-copy">
         <h4>{{ businessInfo.businessName }}</h4>
         <p>{{ businessInfo.businessAddress.streetAddress1 }}</p>
@@ -134,14 +137,11 @@
 </template>
 
 <script>
-import logo from "../../assets/company-logo.svg";
 import helpers from "../../helpers.js";
 
 export default {
   data() {
-    return {
-      logo,
-    };
+    return {};
   },
   computed: {
     businessInfo() {
