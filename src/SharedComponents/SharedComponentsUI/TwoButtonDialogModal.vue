@@ -49,6 +49,7 @@ export default {
     },
   },
   components: { Backdrop },
+  emits: ["selectButtonOne", "selectButtonTwo", "closeModal"],
   props: ["modalBody"],
 };
 </script>
