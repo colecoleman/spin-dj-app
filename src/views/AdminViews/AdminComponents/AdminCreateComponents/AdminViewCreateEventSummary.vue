@@ -147,170 +147,170 @@ export default {
   },
   methods: {
     formatPrice: helpers.formatPrice,
-    formatTime: helpers.formatTime,
-    formatDate: helpers.formatDate,
-    formatPhoneNumber: helpers.formatPhoneNumber,
-    productTotal: helpers.productTotal,
-    subtotal: helpers.subtotal,
-    total: helpers.total,
-    balanceOutstanding: helpers.balanceOutstanding,
-    calculateEventTime: helpers.calculateEventTime,
+    // formatTime: helpers.formatTime,
+    // formatDate: helpers.formatDate,
+    // formatPhoneNumber: helpers.formatPhoneNumber,
+    // productTotal: helpers.productTotal,
+    // subtotal: helpers.subtotal,
+    // total: helpers.total,
+    // balanceOutstanding: helpers.balanceOutstanding,
+    // calculateEventTime: helpers.calculateEventTime,
 
-    createLocation() {
-      return new Promise((resolve, reject) => {
-        this.$store
-          .dispatch("addLocation", this.fields.location)
-          .then((res) => {
-            this.eventLocations.push(res.data.userId);
-            resolve(res);
-          })
-          .catch((e) => {
-            this.$store.commit("addStatus", {
-              type: "error",
-              note: "Error adding location. Try again on the contact page, and then assign to the event!",
-            });
-            reject(e);
-          });
-      });
-    },
-    removeLocation(index) {
-      this.$emit("removeLocation", index);
-    },
-    createUser() {
-      return new Promise((resolve, reject) => {
-        this.$store
-          .dispatch("addContact", this.fields.client)
-          .then((res) => {
-            this.eventContacts.push({ role: res.role, id: res.userId });
-            resolve(res);
-          })
-          .catch((e) => {
-            this.$store.commit("addStatus", {
-              type: "error",
-              note: "Error adding client. Try adding on contact page, and assigning to event.",
-            });
-            reject(e);
-          });
-      });
-    },
-    createEvent() {
-      let dbEvent = Object.assign({}, this.event);
-      if (this.fields.client.userId) {
-        this.eventContacts.push({
-          role: "client",
-          id: this.fields.client.userId,
-        });
-      }
-      if (this.fields.location.userId) {
-        this.eventLocations.push(this.fields.location.userId);
-      }
-      dbEvent.contacts = [...this.eventContacts];
-      dbEvent.locations = [...this.eventLocations];
-      dbEvent.contracts = this.contracts.map((x) => ({
-        id: x,
-        signerName: null,
-        signerDate: null,
-        signerUUID: null,
-        status: "pending",
-      }));
-      console.log(dbEvent);
-      return new Promise((resolve, reject) => {
-        this.$store
-          .dispatch("addEvent", dbEvent)
-          .then((res) => {
-            this.eventId = res.data.userId;
-            this.$store.commit("addStatus", {
-              type: "success",
-              note: "Event Added Successfully",
-            });
-            resolve(res);
-          })
-          .catch((e) => {
-            this.$store.commit("addStatus", {
-              type: "error",
-              note: "Problem adding event. Try again in a few, or reach out to support.",
-            });
-            reject(e);
-          });
-      });
-    },
-    addEventToUser() {
-      if (this.eventContacts.length > 0) {
-        let promises = this.eventContacts.map((x) => {
-          let payload = {
-            clientId: x.id,
-            variable: "associatedEvents",
-            value: this.eventId,
-            operation: "addToList",
-          };
+    // createLocation() {
+    //   return new Promise((resolve, reject) => {
+    //     this.$store
+    //       .dispatch("addLocation", this.fields.location)
+    //       .then((res) => {
+    //         this.eventLocations.push(res.data.userId);
+    //         resolve(res);
+    //       })
+    //       .catch((e) => {
+    //         this.$store.commit("addStatus", {
+    //           type: "error",
+    //           note: "Error adding location. Try again on the contact page, and then assign to the event!",
+    //         });
+    //         reject(e);
+    //       });
+    //   });
+    // },
+    // removeLocation(index) {
+    //   this.$emit("removeLocation", index);
+    // },
+    // createUser() {
+    //   return new Promise((resolve, reject) => {
+    //     this.$store
+    //       .dispatch("addContact", this.fields.client)
+    //       .then((res) => {
+    //         this.eventContacts.push({ role: res.role, id: res.userId });
+    //         resolve(res);
+    //       })
+    //       .catch((e) => {
+    //         this.$store.commit("addStatus", {
+    //           type: "error",
+    //           note: "Error adding client. Try adding on contact page, and assigning to event.",
+    //         });
+    //         reject(e);
+    //       });
+    //   });
+    // },
+    // createEvent() {
+    //   let dbEvent = Object.assign({}, this.event);
+    //   if (this.fields.client.userId) {
+    //     this.eventContacts.push({
+    //       role: "client",
+    //       id: this.fields.client.userId,
+    //     });
+    //   }
+    //   if (this.fields.location.userId) {
+    //     this.eventLocations.push(this.fields.location.userId);
+    //   }
+    //   dbEvent.contacts = [...this.eventContacts];
+    //   dbEvent.locations = [...this.eventLocations];
+    //   dbEvent.contracts = this.contracts.map((x) => ({
+    //     id: x,
+    //     signerName: null,
+    //     signerDate: null,
+    //     signerUUID: null,
+    //     status: "pending",
+    //   }));
+    //   console.log(dbEvent);
+    //   return new Promise((resolve, reject) => {
+    //     this.$store
+    //       .dispatch("addEvent", dbEvent)
+    //       .then((res) => {
+    //         this.eventId = res.data.userId;
+    //         this.$store.commit("addStatus", {
+    //           type: "success",
+    //           note: "Event Added Successfully",
+    //         });
+    //         resolve(res);
+    //       })
+    //       .catch((e) => {
+    //         this.$store.commit("addStatus", {
+    //           type: "error",
+    //           note: "Problem adding event. Try again in a few, or reach out to support.",
+    //         });
+    //         reject(e);
+    //       });
+    //   });
+    // },
+    // addEventToUser() {
+    //   if (this.eventContacts.length > 0) {
+    //     let promises = this.eventContacts.map((x) => {
+    //       let payload = {
+    //         clientId: x.id,
+    //         variable: "associatedEvents",
+    //         value: this.eventId,
+    //         operation: "addToList",
+    //       };
 
-          return new Promise((resolve, reject) => {
-            this.$store
-              .dispatch("editContact", payload)
-              .then((res) => {
-                resolve(res);
-              })
-              .catch((e) => {
-                this.$store.commit("addStatus", {
-                  type: "error",
-                  note: "Error in adding event to contact. Add on the event page.",
-                });
-                reject(e);
-              });
-          });
-        });
-        return Promise.all(promises);
-      }
-    },
-    addEventToLocation() {
-      let promises = this.eventLocations.map((x) => {
-        let payload = {
-          locationId: x,
-          variable: "associatedEvents",
-          value: this.eventId,
-          operation: "addToList",
-        };
-        return new Promise((resolve, reject) => {
-          this.$store
-            .dispatch("editLocation", payload)
-            .then((res) => {
-              resolve(res);
-            })
-            .catch((e) => {
-              this.$store.commit("addStatus", {
-                type: "error",
-                note: "Error adding event to location. Add on the event page.",
-              });
-              reject(e);
-            });
-        });
-      });
-      return Promise.all(promises);
-    },
-    async startCreate() {
-      if (this.fields.date && this.fields.endTime && this.fields.startTime) {
-        if (
-          (this.fields.location.name ||
-            this.fields.location.address.streetAddress1 ||
-            this.fields.location.address.streetAddress2 ||
-            this.fields.location.address.cityStateZip) &&
-          !this.fields.location.userId
-        ) {
-          await this.createLocation();
-        }
-        if (
-          Object.values(this.fields.client).every((v) => v !== null) &&
-          !this.fields.client.userId
-        ) {
-          await this.createUser();
-        }
-        await this.createEvent();
-        await this.addEventToUser();
-        await this.addEventToLocation();
-        this.$router.push("/admin/events/" + this.eventId);
-      }
-    },
-    //
+    //       return new Promise((resolve, reject) => {
+    //         this.$store
+    //           .dispatch("editContact", payload)
+    //           .then((res) => {
+    //             resolve(res);
+    //           })
+    //           .catch((e) => {
+    //             this.$store.commit("addStatus", {
+    //               type: "error",
+    //               note: "Error in adding event to contact. Add on the event page.",
+    //             });
+    //             reject(e);
+    //           });
+    //       });
+    //     });
+    //     return Promise.all(promises);
+    //   }
+    // },
+    // addEventToLocation() {
+    //   let promises = this.eventLocations.map((x) => {
+    //     let payload = {
+    //       locationId: x,
+    //       variable: "associatedEvents",
+    //       value: this.eventId,
+    //       operation: "addToList",
+    //     };
+    //     return new Promise((resolve, reject) => {
+    //       this.$store
+    //         .dispatch("editLocation", payload)
+    //         .then((res) => {
+    //           resolve(res);
+    //         })
+    //         .catch((e) => {
+    //           this.$store.commit("addStatus", {
+    //             type: "error",
+    //             note: "Error adding event to location. Add on the event page.",
+    //           });
+    //           reject(e);
+    //         });
+    //     });
+    //   });
+    //   return Promise.all(promises);
+    // },
+    // async startCreate() {
+    //   if (this.fields.date && this.fields.endTime && this.fields.startTime) {
+    //     if (
+    //       (this.fields.location.name ||
+    //         this.fields.location.address.streetAddress1 ||
+    //         this.fields.location.address.streetAddress2 ||
+    //         this.fields.location.address.cityStateZip) &&
+    //       !this.fields.location.userId
+    //     ) {
+    //       await this.createLocation();
+    //     }
+    //     if (
+    //       Object.values(this.fields.client).every((v) => v !== null) &&
+    //       !this.fields.client.userId
+    //     ) {
+    //       await this.createUser();
+    //     }
+    //     await this.createEvent();
+    //     await this.addEventToUser();
+    //     await this.addEventToLocation();
+    //     this.$router.push("/admin/events/" + this.eventId);
+    //   }
+    // },
+    // //
   },
   props: ["event", "fields", "contracts"],
 };

@@ -2,7 +2,6 @@ export default class Helpers {
   // format helpers
 
   static formatDate(date) {
-    console.log(date);
     if (typeof date === "object") {
       return date.toLocaleDateString("lookup", {
         day: "numeric",
@@ -33,7 +32,6 @@ export default class Helpers {
   }
 
   static formatTime(date) {
-    console.log(date)
     if (!date) {
       return "00:00";
     }
