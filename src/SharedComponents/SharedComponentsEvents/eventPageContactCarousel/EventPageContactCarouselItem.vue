@@ -9,9 +9,13 @@
             : defaultProfilePicture
         "
         alt="Profile Picture"
+        @click="navigateToContactPage(contact)"
       />
     </div>
-    <div id="contact-carousel-item-name">
+    <div
+      id="contact-carousel-item-name"
+      @click="navigateToContactPage(contact)"
+    >
       <h5>{{ contact.given_name }}</h5>
       <h5>
         <span>{{ contact.family_name }}</span>
@@ -22,29 +26,48 @@
       <p>{{ contact.phoneNumber }}</p>
       <p>{{ contact.email }}</p>
     </div>
+    <p class="delete" @click="initiateRemoveContact">REMOVE</p>
   </div>
 </template>
 
 <script>
 import defaultProfilePicture from "../../../assets/default-profile-picture.svg";
+import { Auth } from "aws-amplify";
 export default {
   data() {
     return {
       defaultProfilePicture,
     };
   },
+  methods: {
+    async navigateToContactPage(contact) {
+      let user = await Auth.currentAuthenticatedUser();
+      console.log(user.attributes["custom:role"]);
+      let role = user.attributes["custom:role"];
+      if (role === "admin") {
+        this.$router.push(
+          `/${role}/contacts/${contact.role}s/${contact.userId}`
+        );
+      }
+    },
+    initiateRemoveContact() {
+      this.$emit("initiateRemoveContact");
+    },
+  },
+  emits: ["initiateRemoveContact"],
   props: ["contact"],
 };
 </script>
 
 <style scoped>
 .contact-carousel-item-wrapper {
-  max-width: 40%;
-  min-width: 40%;
-  height: 95%;
+  width: 150px;
+  /* height: 95%; */
   padding: 5%;
+  display: flex;
   flex-direction: column;
   justify-content: space-between;
+  align-items: center;
   cursor: pointer;
 }
 
@@ -69,5 +92,11 @@ h5 span {
 p {
   font-size: 8pt;
   margin: 5px;
+}
+
+.delete {
+  font-weight: 600;
+  width: 100%;
+  cursor: pointer;
 }
 </style>

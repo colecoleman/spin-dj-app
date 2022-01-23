@@ -1,7 +1,18 @@
 <template>
-  <base-card :icon="SVGs.GroupPeopleSVG" title="Event Contacts">
+  <two-button-dialog-modal
+    v-if="removeContactOpen"
+    @select-button-one="removeContact"
+    @select-button-two="toggleRemoveContact"
+    @close-modal="toggleRemoveContact"
+  ></two-button-dialog-modal>
+  <base-card
+    :icon="SVGs.GroupPeopleSVG"
+    title="Event Contacts"
+    :actionIcon="SVGs.PlusSignSVG"
+    @actionOneClicked="toggleAddContactOpen"
+  >
     <template v-slot:content>
-      <div id="contact-carousel-top-wrapper">
+      <div id="contact-carousel-top-wrapper" v-if="!addContactOpen">
         <img
           @click="scrollToPreviousElement()"
           :src="SVGs.LeftArrowSVG"
@@ -14,10 +25,39 @@
             :key="contact.id"
             :contact="contact"
             :id="`${index + '-card'}`"
-            @click="navigateToContactPage(contact)"
+            @initiate-remove-contact="initiateRemoveContact(contact, index)"
           ></event-page-contact-carousel-item>
         </div>
         <img @click="scrollToNextElement()" :src="SVGs.RightArrowSVG" alt="" />
+      </div>
+      <div class="add-contact-wrapper" v-if="addContactOpen">
+        <div class="form-input">
+          <p>Name:</p>
+          <div id="contact-search-parent" class="dropdown-parent">
+            <input
+              type="text"
+              v-model="clientSearchField"
+              @keydown="toggleClientDropdown"
+              placeholder="Start typing to assign existing contact, or add a new one."
+            />
+            <div
+              class="dropdown"
+              v-if="clientDropdownOpen && contactSearchResults.length > 0"
+            >
+              <div
+                class="dropdown-item"
+                v-for="contact in contactSearchResults"
+                :key="contact.userId"
+                :value="contact.given_name + ' ' + contact.family_name"
+                @click="selectContact(contact)"
+              >
+                <p class="location-name">
+                  {{ contact.given_name + " " + contact.family_name }}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </template>
   </base-card>
@@ -26,16 +66,49 @@
 <script>
 import EventPageContactCarouselItem from "./EventPageContactCarouselItem.vue";
 import SVGs from "../../../assets/SVGs/svgIndex.js";
-import { Auth } from "aws-amplify";
+import TwoButtonDialogModal from "../../SharedComponentsUI/TwoButtonDialogModal.vue";
 
 export default {
   data() {
     return {
       SVGs,
+      addContactOpen: false,
+      clientDropdownOpen: false,
+      clientSearchField: undefined,
+      selectedClient: undefined,
+      removeContactOpen: false,
+      contactRemoveIndex: undefined,
+      contactToBeRemoved: undefined,
     };
   },
-  props: ["contacts"],
+  computed: {
+    contactSearchResults() {
+      if (this.clientSearchField) {
+        let term = this.clientSearchField;
+        let contacts = this.$store.state.contacts;
+        let contactsArray = [
+          ...contacts.clients,
+          ...contacts.vendors,
+          ...contacts.organizers,
+          ...contacts.vendors,
+        ];
+        return contactsArray.filter(
+          (x) =>
+            x.family_name.toLowerCase().includes(term.toLowerCase()) ||
+            x.given_name.toLowerCase().includes(term.toLowerCase())
+        );
+      } else {
+        return [];
+      }
+    },
+  },
   methods: {
+    toggleClientDropdown() {
+      this.clientDropdownOpen = !this.clientDropdownOpen;
+    },
+    toggleAddContactOpen() {
+      this.addContactOpen = !this.addContactOpen;
+    },
     scrollToNextElement() {
       let container = document.getElementById("contact-carousel-wrapper");
       let sLeft = container.scrollLeft;
@@ -72,18 +145,60 @@ export default {
         });
       }
     },
-    async navigateToContactPage(contact) {
-      let user = await Auth.currentAuthenticatedUser();
-      console.log(user.attributes["custom:role"]);
-      let role = user.attributes["custom:role"];
-      if (role === "admin") {
-        this.$router.push(
-          `/${role}/contacts/${contact.role}s/${contact.userId}`
-        );
-      }
+    toggleRemoveContact() {
+      this.removeContactOpen = !this.removeContactOpen;
+    },
+    initiateRemoveContact(contact, index) {
+      console.log(index);
+      this.contactRemoveIndex = index;
+      this.contactToBeRemoved = contact;
+      this.toggleRemoveContact();
+    },
+    async selectContact(contact) {
+      this.locationDropdownOpen = false;
+      let chosenContact = {
+        id: contact.userId,
+        role: contact.role,
+      };
+      let eventParameters = {
+        eventId: this.event.userId,
+        operation: "addToList",
+        variable: "contacts",
+        value: chosenContact,
+      };
+      let contactParameters = {
+        clientId: contact.userId,
+        variable: "associatedEvents",
+        value: this.event.userId,
+        operation: "addToList",
+      };
+      await this.$store.dispatch("editEvent", eventParameters);
+      await this.$store.dispatch("editContact", contactParameters);
+      this.toggleAddContactOpen();
+    },
+    async removeContact() {
+      let eventParameters = {
+        eventId: this.event.userId,
+        operation: "removeFromList",
+        variable: "contacts",
+        value: this.contactRemoveIndex,
+      };
+      let eventIndex = this.contactToBeRemoved.associatedEvents.indexOf(
+        this.event.userId
+      );
+      let contactParameters = {
+        clientId: this.contactToBeRemoved.userId,
+        operation: "removeFromList",
+        variable: "associatedEvents",
+        value: eventIndex,
+      };
+      await this.$store.dispatch("editEvent", eventParameters);
+      await this.$store.dispatch("editContact", contactParameters);
+      this.toggleRemoveContact();
     },
   },
-  components: { EventPageContactCarouselItem },
+  props: ["contacts", "event"],
+  components: { EventPageContactCarouselItem, TwoButtonDialogModal },
 };
 </script>
 
@@ -108,5 +223,17 @@ export default {
 img {
   height: 15px;
   width: 15px;
+}
+
+.form-input {
+  width: 100%;
+}
+
+.dropdown-parent {
+  width: 100%;
+}
+
+.dropdown-parent > input {
+  width: 80%;
 }
 </style>

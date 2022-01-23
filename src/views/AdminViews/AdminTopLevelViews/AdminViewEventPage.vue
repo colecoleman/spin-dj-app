@@ -80,6 +80,7 @@
       <div id="contact-carousel">
         <event-page-contact-carousel
           :contacts="contacts"
+          :event="event"
         ></event-page-contact-carousel>
       </div>
       <div id="to-do">

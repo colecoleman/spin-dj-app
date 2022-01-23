@@ -7,31 +7,90 @@
             <div class="row-flex section-inner-wrapper">
               <div class="event-date">
                 <div class="form-input">
+                  <p>Event Title (Optional):</p>
+                  <input type="text" v-model="event.title" />
+                </div>
+                <div class="form-input">
                   <p>Event Date:</p>
-                  <input
-                    type="date"
-                    v-model.lazy="fields.date"
-                    @blur="assignDateToEvent(fields.date)"
-                  />
+                  <input type="date" v-model.lazy="fields.data.date" />
+
+                  <p class="disclaimer">
+                    * if using Safari or IE without a date picker, enter date in
+                    'YYYY-MM-DD' format
+                  </p>
                 </div>
               </div>
               <div class="event-times row-flex">
                 <div class="form-input">
                   <p>Start Time:</p>
-                  <input
-                    type="time"
-                    v-model.lazy="fields.startTime"
-                    @blur="assignStartTimeToEvent(fields.startTime)"
-                  />
+
+                  <div class="time-inputs">
+                    <select v-model="fields.data.startTime.hours">
+                      <option
+                        v-for="(item, index) in 12"
+                        :key="item"
+                        :value="index + 1"
+                      >
+                        {{ index + 1 }}
+                      </option>
+                    </select>
+                    <select v-model="fields.data.startTime.minutes">
+                      <option
+                        v-for="(item, index) in ['00', '15', '30', '45']"
+                        :key="index"
+                        :value="item"
+                      >
+                        {{ item }}
+                      </option>
+                    </select>
+                    <select v-model="fields.data.startTime.period">
+                      <option
+                        v-for="(item, index) in ['PM', 'AM']"
+                        :key="index"
+                        :value="item"
+                      >
+                        {{ item }}
+                      </option>
+                    </select>
+                  </div>
                 </div>
                 <!-- <p>--</p> -->
                 <div class="form-input">
                   <p>End Time:</p>
-                  <input
+                  <!-- <input
                     type="time"
                     v-model.lazy="fields.endTime"
                     @blur="assignEndTimeToEvent(fields.endTime)"
-                  />
+                  /> -->
+                  <div class="time-inputs">
+                    <select v-model="fields.data.endTime.hours">
+                      <option
+                        v-for="(item, index) in 12"
+                        :key="item"
+                        :value="index + 1"
+                      >
+                        {{ index + 1 }}
+                      </option>
+                    </select>
+                    <select v-model="fields.data.endTime.minutes">
+                      <option
+                        v-for="(item, index) in ['00', '15', '30', '45']"
+                        :key="index"
+                        :value="item"
+                      >
+                        {{ item }}
+                      </option>
+                    </select>
+                    <select v-model="fields.data.endTime.period">
+                      <option
+                        v-for="(item, index) in ['PM', 'AM']"
+                        :key="index"
+                        :value="item"
+                      >
+                        {{ item }}
+                      </option>
+                    </select>
+                  </div>
                 </div>
               </div>
             </div>
@@ -74,18 +133,19 @@
               </div>
               <div class="form-input">
                 <p>Select Adjustment(s):</p>
-                <select name="" id="">
-                  <option value="">Select an adjustment</option>
-                  <option
-                    v-for="(adjustment, index) in adjustments"
-                    :key="index"
-                    :value="adjustment.name"
-                    @click="assignAdjustmentToEvent(adjustment)"
-                  >
-                    {{ adjustment.name }}: {{ adjustment.display }}
-                    {{ adjustment.style }}
-                  </option>
-                </select>
+                <div
+                  class="checkboxes"
+                  v-for="(adjustment, index) in adjustments"
+                  :key="index"
+                  :value="adjustment.name"
+                >
+                  <input
+                    type="checkbox"
+                    @change="toggleAdjustmentToEvent(adjustment)"
+                    :id="adjustment.id"
+                  />
+                  <p>{{ adjustment.name }}</p>
+                </div>
               </div>
               <div class="form-input">
                 <p>Enter Manual Payment:</p>
@@ -103,6 +163,39 @@
                     placeholder="Amount"
                   />
                 </div>
+                <!-- <p>Enter Manual Adjustment:</p>
+                <div class="row-flex">
+                  <input
+                    type="checkbox"
+                    id="input-checkbox"
+                    @change="toggleAdjustmentToEvent(fields.adjustment, true)"
+                  />
+                  <input
+                    type="text"
+                    v-model.lazy="fields.adjustment.name"
+                    placeholder="Name"
+                  />
+                  <div class="unified-field row-flex">
+                    <select v-model="fields.adjustment.type">
+                      <option
+                        v-for="(item, index) in [
+                          { sign: '%', type: 'percentage' },
+                          { sign: '$', type: 'dollar' },
+                        ]"
+                        :key="index"
+                        :value="item.type"
+                      >
+                        {{ item.sign }}
+                      </option>
+                    </select>
+                    <input
+                      type="number"
+                      class="less-width"
+                      v-model.lazy="fields.adjustment.amount"
+                      placeholder="Amount"
+                    />
+                  </div>
+                </div> -->
               </div>
             </div>
           </template>
@@ -283,29 +376,175 @@
         </base-card>
       </div>
     </div>
-    <admin-view-create-event-summary
-      @remove-location="removeLocation"
-      :event="event"
-      :fields="fields"
-      :contracts="contracts"
-    ></admin-view-create-event-summary>
+    <div id="sidebar-wrapper">
+      <base-card title="Summary">
+        <template v-slot:content>
+          <div class="summary-inner-wrapper" v-if="event">
+            <div class="column-flex">
+              <div class="row-flex">
+                <div class="title-and-indented-text">
+                  <h5>Date:</h5>
+                  <p class="indented-text">
+                    {{ fields.data.date ? formatDate(eventDate) : "" }}
+                  </p>
+                </div>
+                <div class="title-and-indented-text">
+                  <h5>Time:</h5>
+                  <p class="indented-text">
+                    <!-- {{
+                      event.data.startTime
+                        ? formatTime(event.data.startTime)
+                        : ""
+                    }} -->
+                    {{ formatTime(eventStartTime) }}
+                    -
+                    {{ eventEndTime ? formatTime(eventEndTime) : "" }}
+                  </p>
+                </div>
+              </div>
+              <div class="title-and-indented-text">
+                <h5>Location(s):</h5>
+
+                <div class="row-flex">
+                  <div v-if="fields.location.name">
+                    <p class="indented-text">{{ fields.location.name }},</p>
+                    <p class="indented-text">
+                      {{ fields.location.address.streetAddress1 }}
+                    </p>
+                    <p
+                      class="indented-text"
+                      v-if="fields.location.address.streetAddress2"
+                    >
+                      {{ fields.location.address.streetAddress2 }}
+                    </p>
+                    <p
+                      class="indented-text"
+                      v-if="fields.location.address.cityStateZip"
+                    >
+                      {{ fields.location.address.cityStateZip }}
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div class="title-and-indented-text">
+                <h5>Client(s):</h5>
+
+                <p
+                  class="indented-text"
+                  v-if="
+                    fields.client.given_name &&
+                    fields.client.family_name &&
+                    fields.client.username &&
+                    fields.client.phoneNumber
+                  "
+                >
+                  {{ fields.client.given_name }}
+                  {{ fields.client.family_name }},<br />
+                  {{ fields.client.username }},<br />
+                  {{ formatPhoneNumber(fields.client.phoneNumber) }}
+                </p>
+              </div>
+            </div>
+            <div class="title-and-right-aligned-text">
+              <h5>Invoice Details:</h5>
+              <div
+                class="indented-text row-flex product"
+                v-for="(product, index) in event.invoice.products"
+                :key="index"
+              >
+                <!-- <p>{{ event }}</p> -->
+                <p class="product">{{ product.name }}</p>
+                <p class="right-aligned-text">
+                  <b>{{ formatPrice(productTotal(product, event.data)) }}</b>
+                </p>
+              </div>
+              <div class="indented-text row-flex">
+                <p>Subtotal:</p>
+                <p class="right-aligned-text">
+                  <b>{{ formatPrice(subtotal(event.invoice, event.data)) }}</b>
+                </p>
+              </div>
+              <div
+                class="indented-text row-flex"
+                v-for="(adjustment, index) in event.invoice.adjustments"
+                :key="index"
+              >
+                <p>
+                  {{ adjustment.name }}
+                </p>
+                <p class="right-aligned-text">
+                  <b>{{ adjustment.display }}</b>
+                </p>
+              </div>
+              <div class="indented-text row-flex">
+                <p>Total:</p>
+                <p class="right-aligned-text">
+                  <b>{{ formatPrice(total(event.invoice, event.data)) }}</b>
+                </p>
+              </div>
+              <div class="indented-text row-flex">
+                <p>Payments Collected:</p>
+                <p class="right-aligned-text">
+                  <b>{{
+                    event.invoice.payments[0]
+                      ? formatPrice(event.invoice.payments[0].amount)
+                      : "$" + 0
+                  }}</b>
+                </p>
+              </div>
+              <div class="indented-text row-flex">
+                <p>Balance Outstanding:</p>
+                <p class="right-aligned-text">
+                  <b>{{
+                    event.invoice
+                      ? formatPrice(
+                          balanceOutstanding(event.invoice, event.data)
+                        )
+                      : formatPrice(0)
+                  }}</b>
+                </p>
+              </div>
+            </div>
+          </div>
+          <button-standard-with-icon
+            text="Create Event"
+            @click="startCreate()"
+          ></button-standard-with-icon>
+        </template>
+      </base-card>
+    </div>
   </section>
 </template>
 
 <script>
 import SVGs from "../../../assets/SVGs/svgIndex.js";
 import helpers from "../../../helpers.js";
-import AdminViewCreateEventSummary from "../AdminComponents/AdminCreateComponents/AdminViewCreateEventSummary.vue";
 
 export default {
   data() {
     return {
+      eventId: undefined,
+      eventContacts: [],
+      eventLocations: [],
+      // from event summary
       SVGs,
       loaded: false,
       locationDropdownOpen: false,
       clientDropdownOpen: false,
       fields: {
-        date: null,
+        data: {
+          date: undefined,
+          startTime: {
+            hours: "6",
+            minutes: "00",
+            period: "PM",
+          },
+          endTime: {
+            hours: "10",
+            minutes: "00",
+            period: "PM",
+          },
+        },
         startTime: null,
         endTime: null,
         locationSearch: null,
@@ -320,6 +559,7 @@ export default {
         adjustment: {
           name: null,
           amount: null,
+          type: null,
         },
         payment: {
           name: null,
@@ -340,6 +580,7 @@ export default {
 
       event: {
         eventId: "event" + new Date().getTime(),
+        title: undefined,
         forms: [],
         contracts: [],
         contacts: [],
@@ -385,10 +626,7 @@ export default {
       }
     },
     productAssigned(product) {
-      console.log(product);
-      console.log(this.event.invoice.products);
       let array = this.event.invoice.products;
-      console.log(array.indexOf(product));
       return array.indexOf(product);
     },
     changeAddOnQuantity(e, product) {
@@ -396,7 +634,6 @@ export default {
       let index = this.productAssigned(product);
       if (index > -1) {
         array[index].pricing.units = e.target.value;
-        console.log(array[index]);
       } else {
         return;
       }
@@ -430,8 +667,29 @@ export default {
       this.locations.splice(index, 1);
     },
 
-    assignAdjustmentToEvent(adj) {
-      this.event.invoice.adjustments.push(adj);
+    toggleAdjustmentToEvent(adj, custom) {
+      let adjustment;
+      console.log(custom);
+      if (custom) {
+        adjustment = {
+          amount:
+            adj.type === "percentage" ? adj.amount * 0.01 : adj.amount * 100,
+          name: adj.name,
+          type: adj.type,
+          display:
+            adj.type === "percentage" ? `${adj.amount}%` : `$${adj.amount}`,
+        };
+      } else {
+        adjustment = adj;
+      }
+      console.log(adjustment);
+      let array = this.event.invoice.adjustments;
+      let index = array.indexOf(adj);
+      if (index > -1) {
+        array.splice(index, 1);
+      } else {
+        array.push(adjustment);
+      }
     },
     assignPaymentToEvent() {
       let payment = {
@@ -440,21 +698,228 @@ export default {
       };
       this.event.invoice.payments[0] = payment;
     },
-    assignDateToEvent(date) {
-      let array = date.split("-");
-      this.event.data.date = new Date(array[0], array[1] - 1, array[2]);
+    // from create event summary
+
+    formatTime: helpers.formatTime,
+    formatDate: helpers.formatDate,
+    formatPhoneNumber: helpers.formatPhoneNumber,
+    productTotal: helpers.productTotal,
+    subtotal: helpers.subtotal,
+    total: helpers.total,
+    balanceOutstanding: helpers.balanceOutstanding,
+    calculateEventTime: helpers.calculateEventTime,
+
+    createLocation() {
+      return new Promise((resolve, reject) => {
+        this.$store
+          .dispatch("addLocation", this.fields.location)
+          .then((res) => {
+            this.eventLocations.push(res.data.userId);
+            resolve(res);
+          })
+          .catch((e) => {
+            this.$store.commit("addStatus", {
+              type: "error",
+              note: "Error adding location. Try again on the contact page, and then assign to the event!",
+            });
+            reject(e);
+          });
+      });
     },
-    assignStartTimeToEvent(time) {
-      this.event.data.startTime = new Date(this.fields.date + " " + time);
+    // removeLocation(index) {
+    //   this.$emit("removeLocation", index);
+    // },
+    createUser() {
+      return new Promise((resolve, reject) => {
+        this.$store
+          .dispatch("addContact", this.fields.client)
+          .then((res) => {
+            this.eventContacts.push({ role: res.role, id: res.userId });
+            resolve(res);
+          })
+          .catch((e) => {
+            this.$store.commit("addStatus", {
+              type: "error",
+              note: "Error adding client. Try adding on contact page, and assigning to event.",
+            });
+            reject(e);
+          });
+      });
     },
-    assignEndTimeToEvent(time) {
-      this.event.data.endTime = new Date(this.fields.date + " " + time);
-      if (this.event.data.startTime > this.event.data.endTime) {
-        this.event.data.endTime.setDate(this.event.data.endTime.getDate() + 1);
+    createEvent() {
+      let dbEvent = Object.assign({}, this.event);
+      if (this.fields.client.userId) {
+        this.eventContacts.push({
+          role: "client",
+          id: this.fields.client.userId,
+        });
+      }
+      if (this.fields.location.userId) {
+        this.eventLocations.push(this.fields.location.userId);
+      }
+      dbEvent.contacts = [...this.eventContacts];
+      dbEvent.locations = [...this.eventLocations];
+      dbEvent.contracts = this.contracts.map((x) => ({
+        id: x,
+        signerName: null,
+        signerDate: null,
+        signerUUID: null,
+        status: "pending",
+      }));
+      console.log(dbEvent);
+      return new Promise((resolve, reject) => {
+        this.$store
+          .dispatch("addEvent", dbEvent)
+          .then((res) => {
+            this.eventId = res.data.userId;
+            this.$store.commit("addStatus", {
+              type: "success",
+              note: "Event Added Successfully",
+            });
+            resolve(res);
+          })
+          .catch((e) => {
+            this.$store.commit("addStatus", {
+              type: "error",
+              note: "Problem adding event. Try again in a few, or reach out to support.",
+            });
+            reject(e);
+          });
+      });
+    },
+    addEventToUser() {
+      if (this.eventContacts.length > 0) {
+        let promises = this.eventContacts.map((x) => {
+          let payload = {
+            clientId: x.id,
+            variable: "associatedEvents",
+            value: this.eventId,
+            operation: "addToList",
+          };
+
+          return new Promise((resolve, reject) => {
+            this.$store
+              .dispatch("editContact", payload)
+              .then((res) => {
+                resolve(res);
+              })
+              .catch((e) => {
+                this.$store.commit("addStatus", {
+                  type: "error",
+                  note: "Error in adding event to contact. Add on the event page.",
+                });
+                reject(e);
+              });
+          });
+        });
+        return Promise.all(promises);
       }
     },
+    addEventToLocation() {
+      let promises = this.eventLocations.map((x) => {
+        let payload = {
+          locationId: x,
+          variable: "associatedEvents",
+          value: this.eventId,
+          operation: "addToList",
+        };
+        return new Promise((resolve, reject) => {
+          this.$store
+            .dispatch("editLocation", payload)
+            .then((res) => {
+              resolve(res);
+            })
+            .catch((e) => {
+              this.$store.commit("addStatus", {
+                type: "error",
+                note: "Error adding event to location. Add on the event page.",
+              });
+              reject(e);
+            });
+        });
+      });
+      return Promise.all(promises);
+    },
+    async startCreate() {
+      console.log(this.event);
+      if (
+        this.event.data.date &&
+        this.event.data.endTime &&
+        this.event.data.startTime
+      ) {
+        console.log("were in");
+        if (
+          (this.fields.location.name ||
+            this.fields.location.address.streetAddress1 ||
+            this.fields.location.address.streetAddress2 ||
+            this.fields.location.address.cityStateZip) &&
+          !this.fields.location.userId
+        ) {
+          await this.createLocation();
+        }
+        if (
+          Object.values(this.fields.client).every((v) => v !== null) &&
+          !this.fields.client.userId
+        ) {
+          await this.createUser();
+        }
+        await this.createEvent();
+        await this.addEventToUser();
+        await this.addEventToLocation();
+        this.$router.push("/admin/events/" + this.eventId);
+      }
+    },
+    convertThreeInputDropdownToDate(time, date, eventField) {
+      if (date && time) {
+        let newDate = new Date(date + " " + `${time.hours}:${time.minutes}`);
+        console.log(time);
+        if (time.period === "PM" && time.hours != "12") {
+          newDate.setHours(newDate.getHours() + 12);
+        } else if (time.hours == "12" && time.period === "AM") {
+          newDate.setHours(0);
+        }
+
+        if (eventField === "endTime") {
+          if (this.eventStartTime > newDate) {
+            newDate.setDate(newDate.getDate() + 1);
+            console.log(newDate);
+          }
+        }
+        this.event.data[eventField] = newDate;
+        return newDate;
+      }
+    },
+    assignDateToEvent(date) {
+      this.event.data.date = date;
+    },
+    //
   },
   computed: {
+    eventDate() {
+      if (this.fields.data.date) {
+        this.assignDateToEvent(
+          new Date(this.fields.data.date.replace(/-/g, "/").replace(/T.+/, ""))
+        );
+        return this.fields.data.date.replace(/-/g, "/").replace(/T.+/, "");
+      } else {
+        return new Date();
+      }
+    },
+
+    eventStartTime() {
+      return this.convertThreeInputDropdownToDate(
+        this.fields.data.startTime,
+        this.eventDate,
+        "startTime"
+      );
+    },
+    eventEndTime() {
+      return this.convertThreeInputDropdownToDate(
+        this.fields.data.endTime,
+        this.eventDate,
+        "endTime"
+      );
+    },
     clientSearchResults() {
       if (this.fields.client.given_name) {
         let term = this.fields.client.given_name;
@@ -534,9 +999,6 @@ export default {
       }
       return [];
     },
-  },
-  components: {
-    AdminViewCreateEventSummary,
   },
   async created() {
     await this.$store.dispatch("getLocations");
@@ -650,6 +1112,15 @@ export default {
   width: unset;
 }
 
+input[type="checkbox"] {
+  width: unset;
+}
+
+.unified-field > input,
+.unified-field > select {
+  margin: 0px;
+}
+
 .checkboxes > .checkbox-add-on-units {
   width: 40px;
   height: 10px;
@@ -668,6 +1139,70 @@ input {
 img {
   height: 10px;
   cursor: pointer;
+}
+
+:disabled {
+  opacity: 0.25;
+}
+
+.disclaimer {
+  font-style: italic;
+  font-size: 6pt;
+}
+
+.row-flex {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.row-flex div {
+  width: 80%;
+}
+
+.column-flex {
+  display: flex;
+  flex-direction: column;
+}
+
+#sidebar-wrapper {
+  /* width: 100%; */
+  grid-row: 1;
+  grid-column: 2/3;
+}
+
+.summary-inner-wrapper {
+  height: 100%;
+  overflow-y: scroll;
+}
+
+.title-and-right-aligned-text h5,
+.title-and-right-aligned-text p,
+.title-and-indented-text h5,
+.title-and-indented-text p {
+  text-align: left;
+}
+
+.product {
+  margin: 1px 0 1px 0;
+}
+
+#sidebar-wrapper p {
+  margin-left: 20px;
+  font-size: 8pt;
+}
+
+.indented-text {
+  margin-left: 40px;
+}
+
+.right-aligned-text {
+  text-align: right;
+}
+
+img {
+  height: 10px;
 }
 
 :disabled {
