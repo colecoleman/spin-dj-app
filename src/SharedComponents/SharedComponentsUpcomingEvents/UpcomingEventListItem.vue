@@ -73,7 +73,7 @@ export default {
           }
         });
     }
-    if (this.event.contacts) {
+    if (this.event.contacts.length > 0) {
       this.$store.dispatch("getUser", this.event.contacts[0].id).then((res) => {
         console.log(res);
         this.matchedClient = res;

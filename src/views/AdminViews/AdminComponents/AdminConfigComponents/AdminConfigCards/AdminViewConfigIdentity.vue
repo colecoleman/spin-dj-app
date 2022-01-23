@@ -316,6 +316,9 @@ export default {
     },
     businessPhoneNumber: {
       get() {
+        console.log(
+          this.$store.state.businessSettings.identity.businessPhoneNumber
+        );
         return this.$store.state.businessSettings.identity.businessPhoneNumber;
       },
       set(value) {

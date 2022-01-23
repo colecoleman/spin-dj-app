@@ -22,6 +22,12 @@ export default class Helpers {
         year: "numeric",
         month: "long",
       });
+    } else {
+      return new Date(date).toLocaleDateString("lookup", {
+        day: "numeric",
+        year: "numeric",
+        month: "long",
+      });
     }
   }
 
