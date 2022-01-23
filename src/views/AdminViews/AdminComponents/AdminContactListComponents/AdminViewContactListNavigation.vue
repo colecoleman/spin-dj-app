@@ -43,6 +43,7 @@ li {
   line-height: 3.25;
   text-transform: uppercase;
   font-weight: 600;
+  color: var(--secondaryTextColor);
 }
 
 li:hover {

@@ -139,7 +139,6 @@ const store = createStore({
           .catch((e) => {
             reject(e);
           });
-
       });
     },
     async getAdminEvents(context) {
@@ -276,7 +275,6 @@ const store = createStore({
             reject(e);
             console.log(e);
           });
-
       });
     },
     async checkSubdomain(context, payload) {
@@ -1112,6 +1110,9 @@ const store = createStore({
     adminConfigIdentitySetTextColor(state, payload) {
       state.businessSettings.identity.branding.textColor = payload;
     },
+    adminConfigIdentitySetSecondaryTextColor(state, payload) {
+      state.businessSettings.identity.branding.secondaryTextColor = payload;
+    },
     adminConfigIdentitySetBusinessAddress1(state, payload) {
       state.businessSettings.identity.businessAddress.streetAddress1 = payload;
     },
@@ -1122,7 +1123,7 @@ const store = createStore({
       state.businessSettings.identity.businessAddress.cityStateZip = payload;
     },
     adminConfigIdentitySetBusinessPhoneNumber(state, payload) {
-      state.businessSettings.identity.phoneNumber = payload;
+      state.businessSettings.identity.businessPhoneNumber = payload;
     },
     adminConfigIdentitySetBusinessLogo(state, payload) {
       state.businessSettings.identity.businessLogo = payload;
@@ -1201,7 +1202,7 @@ const store = createStore({
     },
     addContact(state, payload) {
       console.log(payload);
-      state.contacts[payload.item.role + 's'].push(payload.item);
+      state.contacts[payload.item.role + "s"].push(payload.item);
     },
     editClient(state, { id, key, value }) {
       let subject = state.contacts.clients.find((c) => c.id === id);

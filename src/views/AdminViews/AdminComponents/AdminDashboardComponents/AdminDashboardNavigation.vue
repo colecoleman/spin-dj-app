@@ -26,6 +26,7 @@ li {
   list-style: none;
   cursor: pointer;
   font-weight: 600;
+  color: var(--secondaryTextColor);
 }
 
 a {

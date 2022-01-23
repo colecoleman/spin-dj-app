@@ -55,6 +55,9 @@ export default {
         "--cardOutline": this.branding.cardOutline,
         "--highlightColor": this.branding.highlightColor,
         "--textColor": this.branding.textColor,
+        "--secondaryTextColor": this.branding.secondaryTextColor
+          ? this.branding.secondaryTextColor
+          : this.branding.textColor,
       };
     },
   },

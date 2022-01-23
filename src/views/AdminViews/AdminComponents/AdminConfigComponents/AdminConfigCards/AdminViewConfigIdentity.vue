@@ -48,7 +48,16 @@ df
             <input type="color" v-model="textColor" />
           </div>
         </div>
+        <div class="branding-colors">
+          <div class="branding-preferences-item">
+            <p class="bold">
+              Secondary Text Color:
+              {{ secondaryTextColor }}
+            </p>
 
+            <input type="color" v-model="secondaryTextColor" />
+          </div>
+        </div>
         <div class="business-information-wrapper">
           <div class="business-information-section">
             <div class="business-information-item">
@@ -307,6 +316,19 @@ export default {
       },
       set(value) {
         return this.$store.commit("adminConfigIdentitySetTextColor", value);
+      },
+    },
+    secondaryTextColor: {
+      get() {
+        return this.$store.state.businessSettings.identity.branding
+          .secondaryTextColor;
+      },
+      set(value) {
+        console.log(value);
+        return this.$store.commit(
+          "adminConfigIdentitySetSecondaryTextColor",
+          value
+        );
       },
     },
     businessName: {
