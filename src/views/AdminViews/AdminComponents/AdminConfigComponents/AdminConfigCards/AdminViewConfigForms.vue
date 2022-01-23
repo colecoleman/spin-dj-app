@@ -19,6 +19,11 @@
             >
               <p class="bold">{{ field.name }}</p>
               <div class="form-item row-flex">
+                <img
+                  :src="SVGs.EditPenSVG"
+                  class="x-icon"
+                  @click="editField(field, index)"
+                />
                 <div
                   class="form-item input-view"
                   v-for="(input, inputIndex) in field.fields"
@@ -264,6 +269,7 @@ export default {
         duplicable: false,
       },
       editIndex: undefined,
+      fieldEditIndex: undefined,
       fieldTemplateTitleFieldOpen: false,
       fieldTemplateTitle: undefined,
       // fieldTemplates: [],
@@ -290,8 +296,12 @@ export default {
       }
     },
     saveField() {
-      this.newField.name = this.newField.name.replace(/:/g, "");
-      this.form.fields.push(Object.assign({}, this.newField));
+      if (this.fieldEditIndex != undefined) {
+        this.form.fields[this.fieldEditIndex] = this.newField;
+      } else {
+        this.newField.name = this.newField.name.replace(/:/g, "");
+        this.form.fields.push(Object.assign({}, this.newField));
+      }
       this.newField = {
         name: undefined,
         inputQuantity: undefined,
@@ -353,6 +363,11 @@ export default {
       console.log(form);
       this.form = { ...this.form, ...form };
       this.editIndex = index;
+    },
+    editField(field, index) {
+      console.log(field);
+      this.newField = { ...this.newField, ...field };
+      this.fieldEditIndex = index;
     },
   },
   computed: {
