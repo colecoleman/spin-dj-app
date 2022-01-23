@@ -105,7 +105,18 @@ export default {
         variable: "locations",
         value: index,
       };
+      let locationPayloadIndex = this.locations[
+        this.counter
+      ].associatedEvents.indexOf(this.event.userId);
+      let locationPayload = {
+        locationId: this.locations[this.counter].userId,
+        operation: "removeFromList",
+        variable: "associatedEvents",
+        value: locationPayloadIndex,
+      };
+      console.log(locationPayload);
       await this.$store.dispatch("editEvent", payload);
+      await this.$store.dispatch("editLocation", payload);
       console.log(payload);
       this.counter = 0;
       this.locations.splice(index, 1);
@@ -119,7 +130,14 @@ export default {
         variable: "locations",
         value: location.userId,
       };
+      let locationPayload = {
+        locationId: location.userId,
+        variable: "associatedEvents",
+        value: this.event.userId,
+        operation: "addToList",
+      };
       await this.$store.dispatch("editEvent", eventEditPayload);
+      await this.$store.dispatch("editLocation", locationPayload);
       this.locations.push(location);
       this.toggleAddLocation();
     },

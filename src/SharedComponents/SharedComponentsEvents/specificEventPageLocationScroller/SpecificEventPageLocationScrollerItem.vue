@@ -124,6 +124,7 @@ export default {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  position: relative;
 }
 
 .map-box {
@@ -141,6 +142,9 @@ export default {
   text-align: right;
   width: 100%;
   cursor: pointer;
+  position: absolute;
+  bottom: 5px;
+  right: 5px;
 }
 
 p {
