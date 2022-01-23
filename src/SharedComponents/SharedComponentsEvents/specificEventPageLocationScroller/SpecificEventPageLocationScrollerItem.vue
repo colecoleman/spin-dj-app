@@ -4,6 +4,7 @@
       :class="loading ? 'loading-background map-box' : 'map-box'"
       id="map"
     ></div>
+
     <div class="address">
       <p>{{ location.address.streetAddress1 }}</p>
       <p v-if="location.address.streetAddress2">
@@ -11,6 +12,7 @@
       </p>
       <p>{{ location.address.cityStateZip }}</p>
     </div>
+    <p class="delete" @click="initiateDeleteLocation()">REMOVE</p>
   </div>
 </template>
 
@@ -73,7 +75,6 @@ export default {
       };
       this.client.searchPlaceIndexForText(params, (err, data) => {
         if (err) {
-          console.error(err);
           return;
         }
         if (data) {
@@ -96,8 +97,12 @@ export default {
       this.loading = false;
     },
     formatTime: helpers.formatTime,
+    initiateDeleteLocation() {
+      this.$emit("initiateDeleteLocation");
+    },
   },
-  props: ["location"],
+  props: ["location", "index"],
+  emits: ["initiateDeleteLocation"],
   beforeMount: async function () {
     this.client = await this.createClient();
     this.credentials = await Auth.currentCredentials();
@@ -129,6 +134,13 @@ export default {
   margin: 10px;
   min-height: 50%;
   z-index: 2;
+}
+
+.delete {
+  font-weight: 600;
+  text-align: right;
+  width: 100%;
+  cursor: pointer;
 }
 
 p {
