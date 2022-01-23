@@ -20,7 +20,9 @@
               :placeholder="
                 fieldToEdit === 'date'
                   ? formatDate(event.data[fieldToEdit])
-                  : formatTime(event.data[fieldToEdit])
+                  : fieldToEdit === ('startTime' || 'endTime')
+                  ? formatTime(event.data[fieldToEdit])
+                  : event[fieldToEdit]
               "
             />
             <div class="button-wrapper">
@@ -62,6 +64,11 @@ export default {
           inputType: "date",
           value: undefined,
         },
+        title: {
+          display: "Title",
+          inputType: "text",
+          value: undefined,
+        },
       },
     };
   },
@@ -74,19 +81,25 @@ export default {
     async saveField() {
       let payload = {
         eventId: this.event.userId,
-        variable: "data",
-        value: Object.assign({}, this.event.data),
+        variable: undefined,
+        value: undefined,
       };
       if (this.fieldToEdit === "date") {
         let array = this.fields[this.fieldToEdit].value.split("-");
-        payload.value.date = new Date(array[0], array[1] - 1, array[2]);
+        let data = Object.assign({}, this.event.data);
+        data.date = new Date(array[0], array[1] - 1, array[2]);
+        payload.value = data;
+        payload.variable = "data";
       }
       if (this.fieldToEdit === "startTime") {
         let timeArray = this.fields.startTime.value.split(":");
         let eventDate = new Date(payload.value.date);
         eventDate.setHours(eventDate.getHours() + timeArray[0]);
         eventDate.setMinutes(eventDate.getMinutes() + timeArray[1]);
-        payload.value.startTime = eventDate;
+        let data = Object.assign({}, this.event.data);
+        data.startTime = eventDate;
+        payload.value = data;
+        payload.variable = "data";
       }
       if (this.fieldToEdit === "endTime") {
         let timeArray = this.fields.endTime.value.split(":");
@@ -96,7 +109,14 @@ export default {
         if (new Date(payload.value.startTime) > eventDate) {
           eventDate.setDate(eventDate.getDate() + 1);
         }
-        payload.value.endTime = eventDate;
+        let data = Object.assign({}, this.event.data);
+        data.endTime = eventDate;
+        payload.value = data;
+        payload.variable = "data";
+      }
+      if (this.fieldToEdit === "title") {
+        payload.variable = "title";
+        payload.value = this.fields[this.fieldToEdit].value;
       }
 
       this.$store.dispatch("editEvent", payload).then((res) => {
