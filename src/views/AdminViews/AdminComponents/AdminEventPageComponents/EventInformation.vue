@@ -1,5 +1,8 @@
 <template>
-  <base-card title="Information" :icon="SVGs.InfoIconSVG">
+  <base-card
+    :title="event.title ? event.title : 'Information'"
+    :icon="SVGs.InfoIconSVG"
+  >
     <template v-slot:content>
       <div id="contact-card-lower-div">
         <div class="contact-card-lower-div-half">
