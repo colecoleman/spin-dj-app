@@ -59,7 +59,7 @@ export default {
 }
 
 .active {
-  z-index: 2;
+  z-index: 3;
 }
 
 .heading-container > img {
