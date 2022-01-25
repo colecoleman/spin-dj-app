@@ -23,6 +23,20 @@
         ></event-make-payment>
       </template>
     </popup-modal>
+    <popup-modal
+      title="Edit Products"
+      v-if="editProductsModalOpen"
+      @close-popup="closePopup()"
+    >
+      <template v-slot:window>
+        <event-edit-products
+          :products="event.invoice.products"
+          @add-product-to-event="addProductToEvent"
+          @remove-product-from-event="removeProductFromEvent"
+          @save-products="invoiceSaveProducts"
+        ></event-edit-products>
+      </template>
+    </popup-modal>
     <forms-popup
       v-if="formsOpen"
       @close-popup="closePopup()"
@@ -112,6 +126,7 @@ import PopupModal from "../../../SharedComponents/SharedComponentsUI/PopupModal.
 import ContractPopup from "../../../SharedComponents/SharedComponentsEvents/ContractPopup.vue";
 import FourButtonBarWithDropDown from "../../../SharedComponents/SharedComponentsUI/FourButtonBarWithDropDown.vue";
 import TwoButtonDialogModal from "../../../SharedComponents/SharedComponentsUI/TwoButtonDialogModal.vue";
+import EventEditProducts from "../AdminComponents/AdminEventPageComponents/EventEditProducts.vue";
 import _ from "lodash";
 
 import SVGs from "../../../assets/SVGs/svgIndex.js";
@@ -153,7 +168,11 @@ export default {
             title: "Make Payment",
             action: this.processPayment,
             danger: false,
-            // icon: SVGs.TrashCanSVG,
+          },
+          {
+            title: "Edit Products",
+            action: this.editProducts,
+            danger: false,
           },
         ],
       },
@@ -161,6 +180,7 @@ export default {
       backdropOpen: false,
       contractOpen: false,
       paymentModalOpen: false,
+      editProductsModalOpen: true,
       invoiceOpen: false,
       formsOpen: false,
     };
@@ -201,6 +221,9 @@ export default {
     processPayment() {
       this.paymentModalOpen = true;
     },
+    editProducts() {
+      this.editProductsModalOpen = true;
+    },
     async confirmDeleteEvent() {
       let contacts = [...this.contacts];
       contacts.forEach((contact) => {
@@ -237,15 +260,49 @@ export default {
       this.backdropOpen = false;
       this.deleteEventOpen = false;
       this.paymentModalOpen = false;
+      this.editProductsModalOpen = false;
     },
     addFormToEvent(form) {
       this.event.forms.push(_.cloneDeep(form));
+      let payload = {
+        variable: "forms",
+        value: this.event.forms,
+        eventId: this.event.userId,
+      };
+      this.$store.dispatch("editEvent", payload);
     },
     deleteForm(form) {
       this.event.forms.splice(form, 1);
       let payload = {
         variable: "forms",
         value: this.event.forms,
+        eventId: this.event.userId,
+      };
+      this.$store.dispatch("editEvent", payload);
+    },
+    addProductToEvent(product) {
+      console.log(product);
+      this.event.invoice.products.push(_.cloneDeep(product));
+      let payload = {
+        variable: "invoice",
+        value: this.event.invoice,
+        eventId: this.event.userId,
+      };
+      this.$store.dispatch("editEvent", payload);
+    },
+    removeProductFromEvent(product) {
+      this.event.invoice.products.splice(product, 1);
+      let payload = {
+        variable: "invoice",
+        value: this.event.invoice,
+        eventId: this.event.userId,
+      };
+      this.$store.dispatch("editEvent", payload);
+    },
+    invoiceSaveProducts() {
+      let payload = {
+        variable: "invoice",
+        value: this.event.invoice,
         eventId: this.event.userId,
       };
       this.$store.dispatch("editEvent", payload);
@@ -296,6 +353,7 @@ export default {
     ContractPopup,
     FourButtonBarWithDropDown,
     TwoButtonDialogModal,
+    EventEditProducts,
   },
 };
 </script>

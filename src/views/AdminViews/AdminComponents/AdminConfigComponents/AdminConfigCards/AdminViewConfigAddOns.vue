@@ -121,6 +121,7 @@ export default {
       SVGs,
       editIndex: undefined,
       addOn: {
+        id: "addOn" + Date.now(),
         name: undefined,
         priceOption: undefined,
         pricing: {
