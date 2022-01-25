@@ -35,6 +35,7 @@
       v-if="contractOpen"
       @close-popup="closePopup()"
       :contracts="event.contracts"
+      :eventId="event.userId"
     ></contract-popup>
     <two-button-dialog-modal
       v-if="deleteEventOpen"

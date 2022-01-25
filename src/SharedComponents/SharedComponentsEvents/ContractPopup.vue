@@ -56,9 +56,13 @@
               v-if="contract.status === 'pending' && eSignStep === 0"
               id="right-column-sign-button-container"
             >
-              <h4>This Contract Isn't Signed Yet</h4>
+              <h4 v-if="role !== 'admin'">This Contract Isn't Signed Yet</h4>
+              <h4 v-if="role === 'admin'">
+                The client hasn't signed the contract yet.
+              </h4>
               <button-standard-with-icon
-                :text="'Start Signing'"
+                v-if="contract.admin.status != 'signed'"
+                :text="role == 'admin' ? 'Sign as Admin' : 'Start Signing'"
                 @click="initiateESign"
               ></button-standard-with-icon>
             </div>
@@ -76,10 +80,6 @@
                 </p>
                 <input type="checkbox" v-model="consentCheckBoxConfirm" />
               </div>
-              <button-standard-with-icon
-                text="Submit and Sign"
-                @click="submitESignature"
-              ></button-standard-with-icon>
             </div>
             <div v-if="contract.status === 'signed'">
               <div class="contract-item">
@@ -93,6 +93,20 @@
               <div class="contract-item">
                 <p>UUID:</p>
                 <h5>{{ contract.signerUUID }}</h5>
+              </div>
+            </div>
+            <div v-if="contract.admin.status === 'signed'">
+              <div class="contract-item">
+                <p>Signed By Admin:</p>
+                <h5>{{ contract.admin.signerName }}</h5>
+              </div>
+              <div class="contract-item">
+                <p>Admin Signed On:</p>
+                <h5>{{ formatDate(contract.admin.signerDate) }}</h5>
+              </div>
+              <div class="contract-item">
+                <p>Admin UUID:</p>
+                <h5>{{ contract.admin.signerUUID }}</h5>
               </div>
             </div>
             <div class="button-wrapper">
@@ -124,7 +138,6 @@
   </section>
 </template>
 
-
 <script>
 // <full-page-popup v-if="!loading">
 //   <template v-slot:content>
@@ -155,6 +168,7 @@ export default {
     return {
       loading: true,
       SVGs,
+      role: undefined,
       contractScroller: 0,
       scrolledToBottom: false,
       eSignEnabled: false,
@@ -222,33 +236,41 @@ export default {
       this.paperSignInstructionsOpen = false;
     },
     async submitESignature() {
-      this.submittingSignature = true;
-      this.contract.signerName = this.eSignName;
-      this.contract.signerDate = new Date();
-      this.contract.signerUUID = this.$store.state.user.userId;
-      this.contract.status = "signed";
       let item = [...this.contracts];
       item[this.contractScroller] = this.contract;
-      let user = await Auth.currentAuthenticatedUser();
-      let role = user.attributes["custom:role"];
-      console.log(role);
-      if (role === ("client" || "organizer")) {
-        let payload = {
+      let payload;
+      if (this.role === "admin") {
+        this.submittingSignature = true;
+        let adminObject = {
+          signerName: this.eSignName,
+          signerDate: new Date(),
+          signerUUID: this.$store.state.user.userId,
+          status: "signed",
+        };
+        this.contract.admin = adminObject;
+        item[this.contractScroller] = this.contract;
+        payload = {
+          variable: "contracts",
+          value: item,
+          eventId: this.eventId,
+        };
+        this.$store.dispatch("editEvent", payload).then((res) => {
+          console.log(res);
+        });
+      } else {
+        this.submittingSignature = true;
+        this.contract.signerName = this.eSignName;
+        this.contract.signerDate = new Date();
+        this.contract.signerUUID = this.$store.state.user.userId;
+        this.contract.status = "signed";
+        item[this.contractScroller] = this.contract;
+        payload = {
           eventId: this.eventId,
           contracts: item,
         };
         await this.$store.dispatch("clientSignContract", payload);
       }
-      if (role === "admin") {
-        console.log("this bih is an admin");
-        let payload = {
-          variable: "contracts",
-          value: item,
-          eventId: this.eventId,
-        };
-        console.log(payload);
-        this.$store.dispatch("editEvent", payload);
-      }
+
       this.submittingSignature = false;
       this.eSignStep = 0;
     },
@@ -263,6 +285,11 @@ export default {
     PopupModal,
   },
   async created() {
+    await Auth.currentAuthenticatedUser().then((res) => {
+      this.role = res.attributes["custom:role"];
+    });
+    console.log(this.role);
+    console.log(this.contract);
     // this.loading = true;
 
     this.loading = false;

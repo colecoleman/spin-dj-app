@@ -4,25 +4,32 @@
     <div id="contract-copy">
       <p>{{ contract.contractBody }}</p>
     </div>
-    <div id="contract-data">
-      <h5>Signer Name:</h5>
-      <p>{{ contract.signerName }}</p>
-      <h5>Date Signed:</h5>
-      <p>{{ contract.signerDate }}</p>
-      <h5>Unique User ID:</h5>
-      <p>{{ contract.signerUUID }}</p>
+    <div class="signatures">
+      <div class="contract-data">
+        <h5>Signer Name:</h5>
+        <p>{{ contract.signerName }}</p>
+        <h5>Date Signed:</h5>
+        <p>{{ contract.signerDate }}</p>
+        <h5>Unique User ID:</h5>
+        <p>{{ contract.signerUUID }}</p>
+      </div>
+      <div class="contract-data" v-if="contract.admin">
+        <h5>Admin Signer Name:</h5>
+        <p>{{ contract.admin.signerName }}</p>
+        <h5>Admin Date Signed:</h5>
+        <p>{{ contract.admin.signerDate }}</p>
+        <h5>Admin Unique User ID:</h5>
+        <p>{{ contract.admin.signerUUID }}</p>
+      </div>
     </div>
     <h4>Thank you for choosing {{ businessName }}!</h4>
   </div>
 </template>
 
 <script>
-import logo from "../../assets/company-logo.svg";
 export default {
   data() {
-    return {
-      logo,
-    };
+    return {};
   },
   computed: {
     businessName() {
@@ -61,6 +68,16 @@ p {
 
 #contract-copy {
   margin: 10px 60px;
+}
+
+.signatures {
+  display: flex;
+  width: 100%;
+  justify-content: space-evenly;
+}
+
+.contract-data {
+  width: 50%;
 }
 
 @media print {
