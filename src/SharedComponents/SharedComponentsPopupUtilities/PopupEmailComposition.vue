@@ -101,7 +101,6 @@ export default {
           BccAddresses: [],
           CcAddresses: [],
           ToAddresses: [],
-          ReplyToAddresses: [this.$store.state.user.email],
         },
         Message: {
           Body: {
@@ -119,7 +118,7 @@ export default {
             Data: null,
           },
         },
-        ReplyToAddresses: [],
+        ReplyToAddresses: [this.$store.state.user.email],
         Source: null,
       },
     };

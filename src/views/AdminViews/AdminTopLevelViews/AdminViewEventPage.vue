@@ -180,7 +180,7 @@ export default {
       backdropOpen: false,
       contractOpen: false,
       paymentModalOpen: false,
-      editProductsModalOpen: true,
+      editProductsModalOpen: false,
       invoiceOpen: false,
       formsOpen: false,
     };
