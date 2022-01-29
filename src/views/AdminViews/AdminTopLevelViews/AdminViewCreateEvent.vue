@@ -858,7 +858,9 @@ export default {
           await this.createLocation();
         }
         if (
-          Object.values(this.fields.client).every((v) => v !== null) &&
+          this.fields.client.given_name &&
+          this.fields.client.family_name &&
+          this.fields.client.username &&
           !this.fields.client.userId
         ) {
           await this.createUser();

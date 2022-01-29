@@ -31,12 +31,12 @@
       placeholder="Email Address"
       v-model.trim.lazy="client.username"
     />
-    <h5>Associated Event:</h5>
+    <!-- <h5>Associated Event:</h5>
     <input
       type="text"
       placeholder="Search For Event"
       v-model.trim.lazy="associatedEventSearch"
-    />
+    /> -->
     <div class="row-flex">
       <input
         type="checkbox"
@@ -123,12 +123,14 @@ export default {
       if (!client.username) {
         this.errors.username = true;
       }
-      if (!client.phoneNumber) {
-        this.errors.phoneNumber = true;
-      }
+      // if (!client.phoneNumber) {
+      //   this.errors.phoneNumber = true;
+      // }
     },
     validatePhoneNumber(num) {
-      return num.replace(/[^\d/+]/g, "");
+      if (num) {
+        return num.replace(/[^\d/+]/g, "");
+      }
     },
     validateusername(add) {
       var re = /\S+@\S+\.\S+/;
