@@ -61,7 +61,7 @@
                 The client hasn't signed the contract yet.
               </h4>
               <button-standard-with-icon
-                v-if="contract.admin.status != 'signed'"
+                v-if="displaySignButton"
                 :text="role == 'admin' ? 'Sign as Admin' : 'Start Signing'"
                 @click="initiateESign"
               ></button-standard-with-icon>
@@ -95,18 +95,20 @@
                 <h5>{{ contract.signerUUID }}</h5>
               </div>
             </div>
-            <div v-if="contract.admin.status === 'signed'">
-              <div class="contract-item">
-                <p>Signed By Admin:</p>
-                <h5>{{ contract.admin.signerName }}</h5>
-              </div>
-              <div class="contract-item">
-                <p>Admin Signed On:</p>
-                <h5>{{ formatDate(contract.admin.signerDate) }}</h5>
-              </div>
-              <div class="contract-item">
-                <p>Admin UUID:</p>
-                <h5>{{ contract.admin.signerUUID }}</h5>
+            <div v-if="contract.admin">
+              <div v-if="contract.admin.status === 'signed'">
+                <div class="contract-item" v-if="contract.admin">
+                  <p>Signed By Admin:</p>
+                  <h5>{{ contract.admin.signerName }}</h5>
+                </div>
+                <div class="contract-item">
+                  <p>Admin Signed On:</p>
+                  <h5>{{ formatDate(contract.admin.signerDate) }}</h5>
+                </div>
+                <div class="contract-item">
+                  <p>Admin UUID:</p>
+                  <h5>{{ contract.admin.signerUUID }}</h5>
+                </div>
               </div>
             </div>
             <div class="button-wrapper">
@@ -188,6 +190,19 @@ export default {
     },
     contractQuantity() {
       return this.contracts.length - 1;
+    },
+    displaySignButton() {
+      if (this.role === "admin" && this.contract.admin) {
+        if (this.role === "admin" && this.contract.admin.status === "signed") {
+          return false;
+        } else {
+          return true;
+        }
+      } else if (this.role !== "admin" && this.contract.status === "signed") {
+        return false;
+      } else {
+        return true;
+      }
     },
     contract() {
       let contract = this.$store.state.businessSettings.contracts.find(
@@ -290,6 +305,14 @@ export default {
     });
     console.log(this.role);
     console.log(this.contract);
+    if (!this.contract.admin) {
+      this.contract.admin = {
+        status: undefined,
+        signerName: undefined,
+        signerDate: undefined,
+        signerUUID: undefined,
+      };
+    }
     // this.loading = true;
 
     this.loading = false;
