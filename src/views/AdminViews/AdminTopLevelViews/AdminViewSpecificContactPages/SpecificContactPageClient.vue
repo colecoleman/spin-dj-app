@@ -3,7 +3,40 @@
     v-if="emailPopupOpen"
     :contact="contact"
     @close-window="closePopups()"
-  ></popup-email-composition>
+  />
+  <popup-modal
+    title="Reset User Password"
+    @close-popup="closePopups()"
+    v-if="resetPasswordPopupOpen"
+  >
+    <template v-slot:window>
+      <div class="reset-user-password-wrapper">
+        <h5>Choose New Password:</h5>
+        <input type="text" placeholder="password" v-model="newUserPassword" />
+        <div class="button-wrapper">
+          <button-standard-with-icon
+            text="Submit New Password"
+            @click="resetPassword"
+          />
+        </div>
+        <p>Password must contain:</p>
+        <ul>
+          <li>
+            <p>At least one lowercase letter</p>
+          </li>
+          <li>
+            <p>At least one capital letter</p>
+          </li>
+          <li>
+            <p>At least one number</p>
+          </li>
+          <li>
+            <p>At least one symbol (e.g.: $, *, !, @, #)</p>
+          </li>
+        </ul>
+      </div>
+    </template>
+  </popup-modal>
   <section>
     <div id="contact-card">
       <contact-card-client
@@ -11,10 +44,10 @@
         :contact="contact"
         :icon="SVGs.PersonSVG"
         @email-contact="openEmailComposition"
-      ></contact-card-client>
+      />
     </div>
     <div id="to-do">
-      <contact-page-to-do-list :contact="contact"></contact-page-to-do-list>
+      <contact-page-to-do-list :contact="contact" />
     </div>
     <div id="notes">
       <contact-page-notes
@@ -22,21 +55,18 @@
         :notesPrivate="contact.notesPrivate"
         :notesPublic="contact.notesPublic"
         v-if="contact"
-      ></contact-page-notes>
+      />
     </div>
 
     <div id="button-bar">
-      <four-button-bar-with-drop-down
-        :buttons="buttons"
-        :dropdown="dropdown"
-      ></four-button-bar-with-drop-down>
+      <four-button-bar-with-drop-down :buttons="buttons" :dropdown="dropdown" />
     </div>
 
     <div id="upcoming-events">
       <client-page-upcoming-events
         :contact="contact"
         :icon="SVGs.CalendarSVG"
-      ></client-page-upcoming-events>
+      />
     </div>
     <!-- <div id="box-five-half-two">
           <client-page-information-card
@@ -50,7 +80,7 @@
         :contacts="[contact]"
         automationType="Contact"
         :id="$route.params.id"
-      ></automation-list>
+      />
     </div>
     <div id="messages">
       <base-card
@@ -75,6 +105,7 @@ import ContactPageToDoList from "../../AdminComponents/AdminContactPageComponent
 import AutomationList from "../../AdminComponents/AdminSharedComponents/AutomationList.vue";
 import ContactCardClient from "../../../../SharedComponents/SharedComponentsContact/ContactCardPerson.vue";
 import PopupEmailComposition from "../../../../SharedComponents/SharedComponentsPopupUtilities/PopupEmailComposition.vue";
+import PopupModal from "../../../../SharedComponents/SharedComponentsUI/PopupModal.vue";
 // import MessagingSingleComponent from "../../../../SharedComponents/SharedComponentsMessaging/MessagingSingleComponent.vue";
 import FourButtonBarWithDropDown from "../../../../SharedComponents/SharedComponentsUI/FourButtonBarWithDropDown.vue";
 import ClientPageUpcomingEvents from "../../AdminComponents/AdminContactPageComponents/ClientPageComponents/ClientPageUpcomingEvents.vue";
@@ -89,6 +120,7 @@ export default {
       contact: undefined,
       thread: undefined,
       conversation: undefined,
+      newUserPassword: undefined,
       eventConversation: [],
       buttons: [
         {
@@ -107,13 +139,14 @@ export default {
           },
           {
             title: "Reset Password",
-            action: this.resetPassword,
+            action: this.initiateResetPassword,
             icon: SVGs.KeySVG,
           },
         ],
       },
       emailPopupOpen: false,
       notesPopupOpen: false,
+      resetPasswordPopupOpen: false,
     };
   },
   computed: {
@@ -128,6 +161,25 @@ export default {
     closePopups() {
       this.emailPopupOpen = false;
       this.notesPopupOpen = false;
+      this.resetPasswordPopupOpen = false;
+    },
+    initiateResetPassword() {
+      this.resetPasswordPopupOpen = true;
+    },
+    async resetPassword() {
+      var re = /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
+      if (re.test(this.newUserPassword)) {
+        this.newUserPasswordError = false;
+        let payload = {
+          username: this.contact.username,
+          password: this.newUserPassword,
+          userId: this.contact.userId,
+        };
+        await this.$store.dispatch("resetUserPassword", payload);
+        this.closePopups();
+      } else {
+        this.newUserPasswordError = true;
+      }
     },
     getConversations(conversations) {
       return conversations.map((x) => {
@@ -188,7 +240,7 @@ export default {
         for (let index = 0; index < conversations.length; index++) {
           Promise.all([
             this.getConversationUsers(...conversations[index]),
-             this.getConversationMessages(...conversations[index]),
+            this.getConversationMessages(...conversations[index]),
           ]).then((res) => {
             let conversation = {
               ...conversations[index],
@@ -206,6 +258,7 @@ export default {
     ContactCardClient,
     ContactPageToDoList,
     ClientPageUpcomingEvents,
+    PopupModal,
     // ClientPageInformationCard,
     AutomationList,
     // MessagingSingleComponent,
@@ -256,5 +309,19 @@ section {
 #automation {
   grid-column: 7 / 10;
   grid-row: 2/ 6;
+}
+
+.button-wrapper {
+  /* width: 70%; */
+  margin: auto;
+  padding: 20px;
+}
+
+.reset-user-password-wrapper {
+  margin: 50px;
+}
+
+p {
+  text-align: left;
 }
 </style>

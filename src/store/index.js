@@ -374,6 +374,27 @@ const store = createStore({
           );
       });
     },
+    async resetUserPassword(context, payload) {
+      return new Promise((resolve, reject) => {
+        axios
+          .put(
+            `https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/admin/${context.state.user.tenantId}/users/${payload.userId}/resetPassword`,
+            payload
+          )
+          .then(
+            (result) => {
+              resolve(result);
+            },
+            (error) => {
+              context.commit("addStatus", {
+                type: "error",
+                note: error,
+              });
+              reject(error);
+            }
+          );
+      });
+    },
 
     // contact-based-actions
     async getAdminUsers(context) {
