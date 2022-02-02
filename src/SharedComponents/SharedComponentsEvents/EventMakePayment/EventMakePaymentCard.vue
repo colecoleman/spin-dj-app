@@ -1,10 +1,33 @@
 <template>
-  <base-card title="Make Payment" :icon="SVGs.CreditCardSVG">
-    <template v-slot:content
-      ><event-make-payment
-        :event="event"
-        :eventId="eventId"
-      ></event-make-payment>
+  <base-card
+    title="Make Payment"
+    :icon="SVGs.CreditCardSVG"
+    :actionIcon="SVGs.DownArrowSVG"
+    :subtitle="paymentMethod.title"
+    @action-one-clicked="togglePaymentMethodsOpen"
+  >
+    <template v-slot:dropdownContainer>
+      <floating-menu-with-list-items
+        v-if="paymentMethodsOpen"
+        :actions="paymentMethods"
+        @actionClicked="selectPaymentMethod"
+      ></floating-menu-with-list-items>
+    </template>
+    <template v-slot:content>
+      <div id="payment-method-wrapper">
+        <event-make-payment
+          :event="event"
+          :eventId="eventId"
+          v-if="paymentMethod.title === 'Card'"
+        />
+        <div
+          v-if="
+            paymentMethod.title === 'Check' || paymentMethod.title === 'Custom'
+          "
+        >
+          <p>{{ paymentMethod.info.instructions }}</p>
+        </div>
+      </div>
       <div id="contact-card-lower-div">
         <div class="contact-card-lower-div-half">
           <div class="indented-item">
@@ -40,6 +63,7 @@
 </template>
 <script>
 import EventMakePayment from "./EventMakePayment.vue";
+import FloatingMenuWithListItems from "../../../SharedComponents/SharedComponentsUI/FloatingMenuWithListItems.vue";
 import helpers from "../../../helpers.js";
 import SVGs from "../../../assets/SVGs/svgIndex.js";
 
@@ -47,9 +71,51 @@ export default {
   data() {
     return {
       SVGs,
+      paymentMethodsOpen: false,
+      selectedPaymentMethod: undefined,
+      paymentMethod: undefined,
     };
   },
-  components: { EventMakePayment },
+  computed: {
+    paymentMethods() {
+      let paymentSettings = this.$store.state.businessSettings.payments;
+      let paymentMethods = [];
+      if (paymentSettings.creditCard.enabled) {
+        paymentMethods.push({
+          title: "Card",
+          icon: undefined,
+          logic: {
+            title: "Card",
+            info: paymentSettings.creditCard,
+          },
+        });
+      }
+      if (paymentSettings.check.enabled) {
+        paymentMethods.push({
+          title: "Check",
+          icon: undefined,
+          logic: {
+            title: "Check",
+            info: paymentSettings.check,
+          },
+        });
+      }
+      if (paymentSettings.custom) {
+        if (paymentSettings.custom.instructions) {
+          paymentMethods.push({
+            title: paymentSettings.custom.name,
+            icon: undefined,
+            logic: {
+              title: "Custom",
+              info: paymentSettings.custom,
+            },
+          });
+        }
+      }
+      return paymentMethods;
+    },
+  },
+  components: { EventMakePayment, FloatingMenuWithListItems },
   methods: {
     formatDate: helpers.formatDate,
     formatTime: helpers.formatTime,
@@ -57,11 +123,21 @@ export default {
     total: helpers.total,
     balanceOutstanding: helpers.balanceOutstanding,
     formatPrice: helpers.formatPrice,
-    toggleEditCard() {
-      this.editCardOpen = !this.editCardOpen;
+    togglePaymentMethodsOpen() {
+      this.paymentMethodsOpen = !this.paymentMethodsOpen;
+    },
+    selectPaymentMethod(method) {
+      console.log(method);
+      this.paymentMethod = method;
+      console.log(this.paymentMethod);
+      this.togglePaymentMethodsOpen();
     },
   },
   props: ["event", "eventId"],
+  created() {
+    this.paymentMethod = this.paymentMethods[0];
+    console.log(this.$store.state.businessSettings);
+  },
 };
 </script>
 
