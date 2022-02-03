@@ -21,7 +21,7 @@
       :text="saving ? 'Saving...' : 'Save Changes'"
       @click="saveChanges()"
       class="floating-save-button"
-    ></button-standard-with-icon>
+    />
   </section>
 </template>
 

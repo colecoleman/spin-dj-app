@@ -1,12 +1,11 @@
 <template>
   <div v-if="event" id="div-wrapper">
-    <backdrop v-if="popupOpen" @click="togglePopup()"></backdrop>
     <forms-popup
       v-if="popupOpen === 'forms'"
       @close-popup="togglePopup()"
       :forms="event.forms"
       :eventId="event.userId"
-    ></forms-popup>
+    />
 
     <section>
       <div id="contact-card">
@@ -14,37 +13,36 @@
           v-if="client && event"
           :client="client"
           :event="event"
-        ></event-page-contact-card>
+        />
       </div>
       <div id="alerts">
-        <event-page-alerts :alerts="eventAlerts"></event-page-alerts>
+        <event-page-alerts :alerts="eventAlerts" />
       </div>
       <div id="button-bar">
         <four-button-bar-with-drop-down
           :buttons="buttons"
-        ></four-button-bar-with-drop-down>
+          @button-clicked="togglePopup"
+        />
       </div>
       <div id="location-scroller">
         <specific-event-page-location-scroller
           :event="event"
           :loading="locations ? false : true"
-        ></specific-event-page-location-scroller>
+        />
       </div>
 
       <div id="contact-carousel">
-        <event-page-contact-carousel
-          :contacts="contacts"
-        ></event-page-contact-carousel>
+        <event-page-contact-carousel :contacts="contacts" />
       </div>
       <div id="to-do">
-        <to-do-specific-event :event="event"></to-do-specific-event>
+        <to-do-specific-event :event="event" />
       </div>
       <div id="messages">
         <!-- <recent-messages-event v-if="contacts"></recent-messages-event> -->
         <recent-messages
           v-if="contacts"
           :conversationList="eventConversations"
-        ></recent-messages>
+        />
       </div>
     </section>
   </div>
@@ -57,12 +55,10 @@ import RecentMessages from "../../../SharedComponents/SharedComponentsMessaging/
 import EventPageContactCard from "../../../SharedComponents/SharedComponentsEvents/EventPageContactCard.vue";
 import EventPageContactCarousel from "../../../SharedComponents/SharedComponentsEvents/eventPageContactCarousel/EventPageContactCarousel.vue";
 import SpecificEventPageLocationScroller from "../../../SharedComponents/SharedComponentsEvents/specificEventPageLocationScroller/SpecificEventPageLocationScroller.vue";
-import Backdrop from "../../../SharedComponents/SharedComponentsUI/Backdrop.vue";
 import FormsPopup from "../../../SharedComponents/SharedComponentsEvents/FormsPopup.vue";
 import FourButtonBarWithDropDown from "../../../SharedComponents/SharedComponentsUI/FourButtonBarWithDropDown.vue";
 import EventPageAlerts from "../../../SharedComponents/SharedComponentsEvents/EventPageAlerts.vue";
 import SVGs from "../../../assets/SVGs/svgIndex.js";
-import helpers from "../../../helpers.js";
 
 export default {
   data() {
@@ -77,7 +73,7 @@ export default {
       buttons: [
         {
           title: "View Forms",
-          action: this.openForms,
+          parameter: "forms",
         },
       ],
       popupOpen: null,
@@ -94,26 +90,11 @@ export default {
     },
   },
   methods: {
-    finalPaymentDueDate: helpers.finalPaymentDueDate,
-    balanceOutstanding: helpers.balanceOutstanding,
-    total: helpers.total,
-    openForms() {
-      this.togglePopup("forms");
-    },
-    openInvoice() {
-      this.togglePopup("invoice");
-    },
-    openContract() {
-      this.togglePopup("contract");
-    },
     togglePopup(popup) {
-      console.log(popup);
       if (this.popupOpen !== null) {
         this.popupOpen = null;
-        this.backdropOpen = true;
       } else {
         this.popupOpen = popup;
-        this.backdropOpen = true;
       }
     },
   },
@@ -163,7 +144,6 @@ export default {
     EventPageContactCarousel,
     SpecificEventPageLocationScroller,
     EventPageAlerts,
-    Backdrop,
     FormsPopup,
     FourButtonBarWithDropDown,
     // TwoButtonDialogModal,

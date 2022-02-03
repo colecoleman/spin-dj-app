@@ -8,8 +8,7 @@
       :key="conversation.pk"
       :conversation="conversation"
       @click="openSingleMessaging(conversation)"
-    >
-    </recent-messages-person-object>
+    />
   </div>
 </template>
 <script>

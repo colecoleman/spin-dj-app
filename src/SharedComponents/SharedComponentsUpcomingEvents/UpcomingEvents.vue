@@ -31,7 +31,7 @@
             :event="event"
             :first="event === sortedEvents[0]"
             @click="navigateToEventPage(event.userId)"
-          ></upcoming-events-list-item>
+          />
 
           <upcoming-events-list-item
             v-for="event in pastEventsCopy"
@@ -40,7 +40,7 @@
             :first="event === sortedEvents[0]"
             @click="navigateToEventPage(event.userId)"
             class="past-event"
-          ></upcoming-events-list-item>
+          />
         </div>
         <div
           id="events-content"
@@ -52,7 +52,7 @@
             :event="event"
             :first="event === sortedEvents[0]"
             @click="navigateToEventPage(event.userId)"
-          ></client-view-upcoming-event-list-item>
+          />
           <client-view-upcoming-event-list-item
             v-for="event in pastEventsCopy"
             :key="event.userId"
@@ -60,7 +60,7 @@
             :first="event === sortedEvents[0]"
             @click="navigateToEventPage(event.userId)"
             class="past-event"
-          ></client-view-upcoming-event-list-item>
+          />
         </div>
         <h5 v-if="events.length <= 0 && pastEventsCopy.length <= 0">
           No events to display! Add some!

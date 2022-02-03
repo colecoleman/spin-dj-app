@@ -4,10 +4,7 @@
       <div id="card-element"></div>
       <div id="card-errors" role="alert"></div>
       <!-- <button id="submit">Pay</button> -->
-      <button-standard-with-icon
-        text="Pay"
-        @click="submitCardPayment"
-      ></button-standard-with-icon>
+      <button-standard-with-icon text="Pay" @click="submitCardPayment" />
     </form>
   </div>
 </template>

@@ -48,7 +48,7 @@
             : 'Click on Events To Assign'
         "
         @click="chosenEvents.length > 0 ? assignEmployeesToEvents() : ''"
-      ></button-standard-with-icon>
+      />
     </div>
   </div>
 </template>

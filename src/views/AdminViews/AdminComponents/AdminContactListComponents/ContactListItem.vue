@@ -1,20 +1,20 @@
 <template>
   <div>
     <two-button-dialog-modal
-      v-if="modalOpen === 'delete'"
+      v-if="popupOpen === 'delete'"
       :modalBody="`Are you sure you want to delete
             ${contact.given_name} ${contact.family_name}?`"
       @select-button-one="confirmDeleteContact"
-      @select-button-two="toggleModal"
-      @close-modal="toggleModal"
-    ></two-button-dialog-modal>
+      @select-button-two="togglePopup"
+      @close-modal="togglePopup"
+    />
     <popup-email-composition
-      v-if="modalOpen === 'email'"
+      v-if="popupOpen === 'email'"
       :contact="contact"
       :category="category"
-      @cancel-send-email="composeEmailOpen = false"
-      @close-window="composeEmailOpen = false"
-    ></popup-email-composition>
+      @cancel-send-email="togglePopup"
+      @close-window="togglePopup"
+    />
     <div class="contact-wrapper" v-if="category !== 'locations'">
       <div class="name-and-photo">
         <img
@@ -43,7 +43,8 @@
           text="Actions"
           :actions="actions"
           :clicked="actionsClicked"
-        ></button-with-drop-down-selections>
+          @button-clicked="togglePopup"
+        />
       </div>
     </div>
     <div class="contact-wrapper" v-if="category === 'locations'">
@@ -70,7 +71,8 @@
           text="Actions"
           :actions="actions"
           :clicked="actionsClicked"
-        ></button-with-drop-down-selections>
+          @button-clicked="togglePopup"
+        />
       </div>
     </div>
   </div>
@@ -90,9 +92,7 @@ export default {
       SVGs,
       defaultProfilePicture,
       actionsClicked: false,
-      composeEmailOpen: false,
-      deleteContactOpen: false,
-      modalOpen: null,
+      popupOpen: null,
       actions: [
         {
           title: "View",
@@ -124,11 +124,11 @@ export default {
       );
     },
     formatPhoneNumber: helpers.formatPhoneNumber,
-    toggleModal(str) {
-      if (this.modalOpen !== null) {
-        this.modalOpen = null;
+    togglePopup(str) {
+      if (this.popupOpen !== null) {
+        this.popupOpen = null;
       } else {
-        this.modalOpen = str;
+        this.popupOpen = str;
       }
     },
     async confirmDeleteContact() {
@@ -158,7 +158,7 @@ export default {
         id: this.contact.userId,
       };
       this.$store.dispatch("deleteUser", deletePayload);
-      this.modalOpen = null;
+      this.popupOpen = null;
     },
   },
   props: ["contact", "category"],

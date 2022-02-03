@@ -509,7 +509,7 @@
           <button-standard-with-icon
             text="Create Event"
             @click="startCreate()"
-          ></button-standard-with-icon>
+          />
         </template>
       </base-card>
     </div>

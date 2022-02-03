@@ -36,7 +36,7 @@
           :key="event.userId"
           :event="event"
           @click="navigateToEventPage(event.userId)"
-        ></location-upcoming-events-list-item>
+        />
       </div>
       <h5 v-if="!events">No events found for this client.</h5>
     </template>

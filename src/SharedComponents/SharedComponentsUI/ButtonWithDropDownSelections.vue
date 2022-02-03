@@ -17,7 +17,11 @@
         class="actions-item"
         v-for="action in actions"
         :key="action.title"
-        @click="action.action(action.title)"
+        @click="
+          action.action
+            ? action.action(action.title)
+            : buttonClicked(action.parameter)
+        "
       >
         <img v-if="action.icon" :src="action.icon" alt="" />
         <h5 :class="action.danger ? 'danger' : ''">
@@ -40,6 +44,9 @@ export default {
   methods: {
     actionsClicked() {
       this.actionsActive = !this.actionsActive;
+    },
+    buttonClicked(param) {
+      this.$emit("button-clicked", param);
     },
   },
 

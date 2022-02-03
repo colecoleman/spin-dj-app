@@ -37,7 +37,7 @@
                 <button-standard-with-icon
                   :text="selectedClient == client ? 'Confirm' : 'Refer'"
                   @click="selectClient(client)"
-                ></button-standard-with-icon>
+                />
               </div>
             </div>
           </div>

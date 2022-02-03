@@ -2,11 +2,11 @@
   <div class="site-header">
     <!-- <img src="@/assets/company-logo.svg" alt="" /> -->
     <img :src="businessLogo" alt="" />
-    <tab-switcher></tab-switcher>
-    <search-bar></search-bar>
+    <tab-switcher />
+    <search-bar />
     <!-- <notification-button></notification-button> -->
-    <add-button></add-button>
-    <logout-button></logout-button>
+    <add-button />
+    <logout-button />
   </div>
 </template>
 

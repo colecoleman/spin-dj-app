@@ -12,14 +12,8 @@
             {{ modalBody }}
           </h5>
           <div class="button-container">
-            <button-standard-with-icon
-              text="Yes"
-              @click="selectButtonOne()"
-            ></button-standard-with-icon>
-            <button-standard-with-icon
-              text="No"
-              @click="selectButtonTwo()"
-            ></button-standard-with-icon>
+            <button-standard-with-icon text="Yes" @click="selectButtonOne()" />
+            <button-standard-with-icon text="No" @click="selectButtonTwo()" />
           </div>
         </template>
       </base-card>

@@ -1,8 +1,8 @@
 <template>
   <popup-email-composition
-    v-if="emailPopupOpen"
+    v-if="popupOpen === 'send-email'"
     :contact="contact"
-    @close-window="closePopups()"
+    @close-window="togglePopup"
   />
   <contact-page-reset-password
     :contact="contact"
@@ -21,7 +21,7 @@
         :loading="contact ? false : true"
         :contact="contact"
         :icon="SVGs.PersonSVG"
-        @email-contact="openEmailComposition"
+        @email-contact="togglePopup('send-email')"
       />
     </div>
     <div id="to-do">
@@ -37,7 +37,12 @@
     </div>
 
     <div id="button-bar">
-      <four-button-bar-with-drop-down :buttons="buttons" :dropdown="dropdown" />
+      <four-button-bar-with-drop-down
+        :buttons="buttons"
+        :dropdown="dropdown"
+        @button-clicked="togglePopup"
+        @dropdown-button-clicked="togglePopup"
+      />
     </div>
 
     <div id="upcoming-events">
@@ -102,11 +107,11 @@ export default {
       conversation: undefined,
 
       eventConversation: [],
+      popupOpen: null,
       buttons: [
         {
           title: "Send Email",
-          action: this.openEmailComposition,
-          icon: SVGs.EmailSVG,
+          parameter: "send-email",
         },
       ],
       dropdown: {
@@ -114,12 +119,12 @@ export default {
         actionItems: [
           {
             title: "Email",
-            action: this.openEmailComposition,
+            parameter: "send-email",
             icon: SVGs.EmailSVG,
           },
           {
             title: "Reset Password",
-            action: this.initiateResetPassword,
+            parameter: "reset-password",
             icon: SVGs.KeySVG,
           },
           {
@@ -130,9 +135,6 @@ export default {
           },
         ],
       },
-      emailPopupOpen: false,
-      notesPopupOpen: false,
-      resetPasswordPopupOpen: false,
     };
   },
   computed: {
@@ -141,16 +143,12 @@ export default {
     },
   },
   methods: {
-    openEmailComposition() {
-      this.emailPopupOpen = true;
-    },
-    closePopups() {
-      this.emailPopupOpen = false;
-      this.notesPopupOpen = false;
-      this.resetPasswordPopupOpen = false;
-    },
-    initiateResetPassword() {
-      this.resetPasswordPopupOpen = true;
+    togglePopup(popup) {
+      if (this.popupOpen !== null) {
+        this.popupOpen = null;
+      } else {
+        this.popupOpen = popup;
+      }
     },
     async confirmDeleteContact() {
       if (this.contact.associatedEvents) {

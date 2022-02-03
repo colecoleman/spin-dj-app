@@ -1,6 +1,6 @@
 <template>
   <popup-email-composition
-    v-if="emailPopupOpen && !notesPopupOpen"
+    v-if="popupOpen === 'send-email'"
     :contact="contact"
     @closeWindow="togglePopup"
   />
@@ -21,14 +21,14 @@
   ></vendor-page-referral-popup> -->
   <section>
     <div id="contact-card">
-      <contact-card-person :contact="contact"></contact-card-person>
+      <contact-card-person :contact="contact" />
     </div>
     <div id="company-card">
       <contact-card-company
         :contact="contact"
         v-if="contact"
         :icon="SVGs.PersonSVG"
-      ></contact-card-company>
+      />
     </div>
     <div id="messages">
       <base-card
@@ -52,7 +52,9 @@
       <four-button-bar-with-drop-down
         :buttons="buttons"
         :dropdown="dropdown"
-      ></four-button-bar-with-drop-down>
+        @button-clicked="togglePopup"
+        @dropdown-button-clicked="togglePopup"
+      />
     </div>
 
     <div id="upcoming-events">
@@ -61,17 +63,17 @@
         :events="events"
         :pastEvents="pastEvents"
         v-if="!eventAssignmentOpen && eventsLoaded"
-      ></upcoming-events>
+      />
       <contact-page-events-assignment
         v-if="eventAssignmentOpen"
         :events="events"
         :contact="contact"
         :icon="SVGs.CalendarSVG"
         @event-assignment-toggle="toggleEventAssignment()"
-      ></contact-page-events-assignment>
+      />
     </div>
     <div id="to-do">
-      <contact-page-to-do-list :contact="contact"></contact-page-to-do-list>
+      <contact-page-to-do-list :contact="contact" />
     </div>
     <div id="automation">
       <automation-list
@@ -81,7 +83,7 @@
         :id="$route.params.id"
         @automation-deleted="deleteAutomation"
         @automation-approved="approveAutomation"
-      ></automation-list>
+      />
     </div>
     <div id="notes">
       <contact-page-notes :contact="contact" />
@@ -111,6 +113,7 @@ export default {
     return {
       SVGs,
       eventAssignmentOpen: false,
+      popupOpen: null,
       contact: {},
       events: [],
       eventsLoaded: false,
@@ -120,7 +123,7 @@ export default {
       buttons: [
         {
           title: "Send Email",
-          action: this.openEmailComposition,
+          parameter: "send-email",
         },
         // {
         //   title: "Refer Vendor",
@@ -152,8 +155,6 @@ export default {
           },
         ],
       },
-      emailPopupOpen: false,
-      // referPopupOpen: false,
     };
   },
   computed: {
@@ -162,19 +163,15 @@ export default {
     },
   },
   methods: {
-    openEmailComposition() {
-      this.emailPopupOpen = true;
-    },
-    toggleReferral() {
-      this.referPopupOpen = !this.referPopupOpen;
-    },
     toggleEventAssignment() {
       this.eventAssignmentOpen = !this.eventAssignmentOpen;
     },
-    closePopups() {
-      this.emailPopupOpen = false;
-      this.notesPopupOpen = false;
-      this.referPopupOpen = false;
+    togglePopup(popup) {
+      if (this.popupOpen !== null) {
+        this.popupOpen = null;
+      } else {
+        this.popupOpen = popup;
+      }
     },
     getConversations(conversations) {
       return conversations.map((x) => {

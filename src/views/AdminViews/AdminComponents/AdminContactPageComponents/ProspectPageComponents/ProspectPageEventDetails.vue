@@ -21,10 +21,7 @@
               <input type="text" v-model="event.location.address1" />
               <h5>Address 2:</h5>
               <input type="text" v-model="event.location.address2" />
-              <button-standard-with-icon
-                text="Submit"
-                @click="addLocation()"
-              ></button-standard-with-icon>
+              <button-standard-with-icon text="Submit" @click="addLocation()" />
             </div>
             <div class="location-information" v-if="prospect.eventDetails">
               <div class="map-box"></div>
@@ -69,7 +66,7 @@
               <button-standard-with-icon
                 text="Submit"
                 @click="addDateAndTime()"
-              ></button-standard-with-icon>
+              />
             </div>
             <div class="location-information" v-if="prospect.eventDetails">
               <h4>{{ formatDate(prospect.eventDetails.eventDate) }}</h4>

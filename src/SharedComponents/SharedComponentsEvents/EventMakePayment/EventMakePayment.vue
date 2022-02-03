@@ -6,14 +6,14 @@
         :eventId="eventId"
         :stripe="stripe"
         @submit-payment-intent="submitPaymentIntent"
-      ></stripe-create-payment-intent>
+      />
     </div>
     <div class="make-payment-step" v-if="step === 2">
       <stripe-enter-card-details
         :stripePk="stripeAPIToken"
         :paymentIntent="paymentIntent"
         :stripe="stripe"
-      ></stripe-enter-card-details>
+      />
     </div>
   </div>
 </template>

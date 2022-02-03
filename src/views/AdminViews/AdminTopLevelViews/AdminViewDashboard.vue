@@ -3,21 +3,21 @@
     <div id="navigation">
       <base-card>
         <template v-slot:content>
-          <admin-dashboard-navigation></admin-dashboard-navigation>
+          <admin-dashboard-navigation />
         </template>
       </base-card>
     </div>
     <div id="upcoming-events">
-      <upcoming-events :events="events"></upcoming-events>
+      <upcoming-events :events="events" />
     </div>
     <div id="metrics-chart">
-      <metrics-chart :events="events"></metrics-chart>
+      <metrics-chart :events="events" />
     </div>
     <div id="calendar">
-      <event-calendar :events="events"></event-calendar>
+      <event-calendar :events="events" />
     </div>
     <div id="messaging">
-      <recent-messages :conversationList="userConversations"></recent-messages>
+      <recent-messages :conversationList="userConversations" />
     </div>
   </section>
 </template>

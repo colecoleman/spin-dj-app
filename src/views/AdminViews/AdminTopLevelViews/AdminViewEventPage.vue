@@ -8,25 +8,22 @@
       :invoice="event.invoice"
       :event="event"
       :client="client"
-      v-if="invoiceOpen"
-      @close-popup="closePopup()"
-    ></invoice-popup>
+      v-if="popupOpen === 'invoice'"
+      @close-popup="togglePopup"
+    />
     <popup-modal
       title="Make Payment"
-      v-if="paymentModalOpen"
-      @close-popup="closePopup()"
+      v-if="popupOpen === 'payment'"
+      @close-popup="togglePopup"
     >
       <template v-slot:window>
-        <event-make-payment
-          :eventId="event.userId"
-          :event="event"
-        ></event-make-payment>
+        <event-make-payment :eventId="event.userId" :event="event" />
       </template>
     </popup-modal>
     <popup-modal
       title="Edit Products"
-      v-if="editProductsModalOpen"
-      @close-popup="closePopup()"
+      v-if="popupOpen === 'edit-products'"
+      @close-popup="togglePopup"
     >
       <template v-slot:window>
         <event-edit-products
@@ -34,29 +31,29 @@
           @add-product-to-event="addProductToEvent"
           @remove-product-from-event="removeProductFromEvent"
           @save-products="invoiceSaveProducts"
-        ></event-edit-products>
+        />
       </template>
     </popup-modal>
     <forms-popup
-      v-if="formsOpen"
-      @close-popup="closePopup()"
+      v-if="popupOpen === 'forms'"
+      @close-popup="togglePopup"
       @add-form-to-event="addFormToEvent"
       @delete-form="deleteForm"
       :forms="event.forms"
       :eventId="event.userId"
-    ></forms-popup>
+    />
     <contract-popup
-      v-if="contractOpen"
-      @close-popup="closePopup()"
+      v-if="popupOpen === 'contract'"
+      @close-popup="togglePopup"
       :contracts="event.contracts"
       :eventId="event.userId"
-    ></contract-popup>
+    />
     <two-button-dialog-modal
-      v-if="deleteEventOpen"
+      v-if="popupOpen === 'delete-event'"
       @select-button-one="confirmDeleteEvent()"
-      @select-button-two="closePopup()"
-      @close-modal="closePopup()"
-    ></two-button-dialog-modal>
+      @select-button-two="togglePopup"
+      @close-modal="togglePopup"
+    />
     <section>
       <div id="contact-card">
         <event-page-contact-card
@@ -64,25 +61,24 @@
           :client="client"
           :event="event"
           @edit-event="editEvent"
-        ></event-page-contact-card>
+        />
       </div>
       <div id="location-scroller">
         <specific-event-page-location-scroller
           :event="event"
           :loading="locations ? false : true"
-        ></specific-event-page-location-scroller>
+        />
       </div>
       <div id="button-bar">
         <four-button-bar-with-drop-down
           :buttons="buttons"
           :dropdown="dropdown"
-        ></four-button-bar-with-drop-down>
+          @button-clicked="togglePopup"
+          @dropdown-button-clicked="togglePopup"
+        />
       </div>
       <div id="event-information">
-        <event-information
-          :event="event"
-          :eventId="event.userId"
-        ></event-information>
+        <event-information :event="event" :eventId="event.userId" />
       </div>
       <div id="automation">
         <automation-list
@@ -90,21 +86,16 @@
           :contacts="contacts"
           automationType="Event"
           :id="$route.params.id"
-        ></automation-list>
+        />
       </div>
       <div id="contact-carousel">
-        <event-page-contact-carousel
-          :contacts="contacts"
-          :event="event"
-        ></event-page-contact-carousel>
+        <event-page-contact-carousel :contacts="contacts" :event="event" />
       </div>
       <div id="to-do">
-        <to-do-specific-event :event="event"></to-do-specific-event>
+        <to-do-specific-event :event="event" />
       </div>
       <div id="recent-messages">
-        <recent-messages
-          :conversationList="eventConversations"
-        ></recent-messages>
+        <recent-messages :conversationList="eventConversations" />
       </div>
     </section>
   </div>
@@ -143,15 +134,15 @@ export default {
       buttons: [
         {
           title: "View Forms",
-          action: this.openForms,
+          parameter: "forms",
         },
         {
           title: "View Invoice",
-          action: this.openInvoice,
+          parameter: "invoice",
         },
         {
           title: "View Contract",
-          action: this.openContract,
+          parameter: "contract",
         },
       ],
 
@@ -160,29 +151,26 @@ export default {
         actionItems: [
           {
             title: "delete",
-            action: this.deleteEvent,
+            // action: this.deleteEvent,
+            parameter: "delete-event",
             danger: true,
             icon: SVGs.TrashCanSVG,
           },
           {
             title: "Make Payment",
-            action: this.processPayment,
+            parameter: "payment",
+            // action: this.processPayment,
             danger: false,
           },
           {
             title: "Edit Products",
-            action: this.editProducts,
+            parameter: "edit-products",
+            // action: this.editProducts,
             danger: false,
           },
         ],
       },
-      deleteEventOpen: false,
-      backdropOpen: false,
-      contractOpen: false,
-      paymentModalOpen: false,
-      editProductsModalOpen: false,
-      invoiceOpen: false,
-      formsOpen: false,
+      popupOpen: null,
     };
   },
   computed: {
@@ -203,26 +191,12 @@ export default {
     },
   },
   methods: {
-    openForms() {
-      this.formsOpen = true;
-      this.backdropOpen = true;
-    },
-    openInvoice() {
-      this.invoiceOpen = true;
-      this.backdropOpen = true;
-    },
-    openContract() {
-      this.contractOpen = true;
-      this.backdropOpen = true;
-    },
-    deleteEvent() {
-      this.deleteEventOpen = true;
-    },
-    processPayment() {
-      this.paymentModalOpen = true;
-    },
-    editProducts() {
-      this.editProductsModalOpen = true;
+    togglePopup(popup) {
+      if (this.popupOpen !== null) {
+        this.popupOpen = null;
+      } else {
+        this.popupOpen = popup;
+      }
     },
     async confirmDeleteEvent() {
       let contacts = [...this.contacts];
@@ -253,15 +227,7 @@ export default {
       await this.$store.dispatch("deleteEvent", this.event.userId);
       this.$router.push("/admin/dashboard");
     },
-    closePopup() {
-      this.contractOpen = false;
-      this.invoiceOpen = false;
-      this.formsOpen = false;
-      this.backdropOpen = false;
-      this.deleteEventOpen = false;
-      this.paymentModalOpen = false;
-      this.editProductsModalOpen = false;
-    },
+
     addFormToEvent(form) {
       this.event.forms.push(_.cloneDeep(form));
       let payload = {
@@ -345,7 +311,6 @@ export default {
     SpecificEventPageLocationScroller,
     AutomationList,
     EventMakePayment,
-    // Backdrop,
     InvoicePopup,
     PopupModal,
     EventInformation,

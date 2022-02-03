@@ -3,7 +3,7 @@
     <base-card :icon="SVGs.MetricChartSVG" :loading="events ? false : true">
       <template v-slot:title>Metrics</template>
       <template v-slot:content>
-        <line-chart :events="events" v-if="events"></line-chart>
+        <line-chart :events="events" v-if="events" />
       </template>
     </base-card>
   </div>

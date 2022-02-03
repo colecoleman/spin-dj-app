@@ -26,10 +26,7 @@
               "
             />
             <div class="button-wrapper">
-              <button-standard-with-icon
-                text="Save"
-                @click="saveField()"
-              ></button-standard-with-icon>
+              <button-standard-with-icon text="Save" @click="saveField()" />
             </div>
           </div>
         </div>

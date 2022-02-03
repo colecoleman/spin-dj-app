@@ -1,6 +1,6 @@
 <template>
   <popup-email-composition
-    v-if="emailPopupOpen && !notesPopupOpen"
+    v-if="popupOpen === 'send-email'"
     :contact="contact"
     @closeWindow="togglePopup"
   />
@@ -15,16 +15,18 @@
         v-if="location"
         :icon="SVGs.LocationMarkerSVG"
         :location="location"
-      ></contact-card-location>
+      />
     </div>
     <div id="to-do">
-      <contact-page-to-do-list :contact="location"></contact-page-to-do-list>
+      <contact-page-to-do-list :contact="location" />
     </div>
     <div id="button-bar">
       <four-button-bar-with-drop-down
         :buttons="buttons"
         :dropdown="dropdown"
-      ></four-button-bar-with-drop-down>
+        @button-clicked="togglePopup"
+        @dropdown-button-clicked="togglePopup"
+      />
     </div>
     <div id="upcoming-events">
       <location-page-upcoming-events
@@ -33,11 +35,11 @@
         :icon="SVGs.CalendarSVG"
         @event-assignment-toggle="toggleEventAssignment()"
         :eventAssignmentOpen="eventAssignmentOpen"
-      ></location-page-upcoming-events>
+      />
     </div>
     <div id="contact-card">
       <!-- <location-preferred-information></location-preferred-information> -->
-      <contact-card-person :contact="contact"></contact-card-person>
+      <contact-card-person :contact="contact" />
     </div>
     <div id="automation">
       <automation-list
@@ -45,10 +47,10 @@
         automationType="Contact"
         :contacts="[contact]"
         :id="$route.params.id"
-      ></automation-list>
+      />
     </div>
     <div id="notes">
-      <contact-page-notes :contact="location"></contact-page-notes>
+      <contact-page-notes :contact="location" />
     </div>
   </section>
 </template>
@@ -72,10 +74,11 @@ export default {
       eventAssignmentOpen: false,
       location: undefined,
       contact: undefined,
+      popupOpen: null,
       buttons: [
         {
           title: "Send Email",
-          action: this.openEmailComposition,
+          parameter: "send-email",
         },
         // {
         //   title: "Assign Event",
@@ -87,12 +90,11 @@ export default {
         actionItems: [
           {
             title: "Email",
-            action: this.openEmailComposition,
+            parameter: "send-email",
             icon: SVGs.EmailSVG,
           },
         ],
       },
-      emailPopupOpen: false,
     };
   },
   async created() {
@@ -111,15 +113,15 @@ export default {
     }
   },
   methods: {
-    openEmailComposition() {
-      this.emailPopupOpen = true;
+    togglePopup(popup) {
+      if (this.popupOpen !== null) {
+        this.popupOpen = null;
+      } else {
+        this.popupOpen = popup;
+      }
     },
     toggleEventAssignment() {
       this.eventAssignmentOpen = !this.eventAssignmentOpen;
-    },
-    closePopups() {
-      this.emailPopupOpen = false;
-      this.notesPopupOpen = false;
     },
   },
 

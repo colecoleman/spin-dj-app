@@ -16,12 +16,11 @@
         :icon="SVGs.CircleCheckmarkSVG"
         @click="approveAutomation"
         v-if="!automation.approved"
-      >
-      </button-standard-with-icon>
+      />
       <button-standard-with-icon
         :icon="SVGs.TrashCanSVG"
         @click="deleteAutomation"
-      ></button-standard-with-icon>
+      />
     </div>
   </div>
 </template>

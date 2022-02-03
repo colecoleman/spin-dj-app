@@ -84,7 +84,7 @@
           <button-standard-with-icon
             text="Save Changes"
             @click="saveChanges()"
-          ></button-standard-with-icon>
+          />
         </div>
       </div>
     </template>

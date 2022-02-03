@@ -29,7 +29,7 @@
           <button-standard-with-icon
             text="Submit"
             @click="userNameValidationBlock()"
-          ></button-standard-with-icon>
+          />
         </div>
         <p class="disclaimer">
           <i
@@ -88,7 +88,7 @@
           <button-standard-with-icon
             text="Confirm"
             @click="passwordValidationBlock()"
-          ></button-standard-with-icon>
+          />
         </div>
         <p class="disclaimer">
           <i

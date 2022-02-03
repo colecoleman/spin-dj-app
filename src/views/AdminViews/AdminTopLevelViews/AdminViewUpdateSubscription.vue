@@ -5,8 +5,7 @@
     <button-standard-with-icon
       text="Manage Subscription In Stripe"
       @click="createPortal"
-    >
-    </button-standard-with-icon>
+    />
   </section>
 </template>
 <script>

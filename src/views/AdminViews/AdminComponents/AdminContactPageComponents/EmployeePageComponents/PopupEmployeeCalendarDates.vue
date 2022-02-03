@@ -21,7 +21,7 @@
       @toggle-month-selector="toggleMonthSelector"
       @select-month="newMonthSelected"
       @select-year="newYearSelected"
-    ></time-selector>
+    />
     <div id="calendar-container" v-if="!timeSelectorOpen">
       <div class="month-heading" @click="toggleMonthSelector">
         <div id="text">

@@ -77,7 +77,7 @@
           <button-standard-with-icon
             text="Save / Print"
             @click="printInvoice()"
-          ></button-standard-with-icon>
+          />
         </template>
       </base-card>
     </div>
@@ -86,7 +86,7 @@
         :invoice="invoice"
         :event="event"
         :client="client"
-      ></invoice-popup-document-view>
+      />
     </div>
   </section>
   <section id="print-format">
@@ -94,7 +94,7 @@
       :invoice="invoice"
       :event="event"
       :client="client"
-    ></invoice-popup-document-view>
+    />
   </section>
 </template>
 

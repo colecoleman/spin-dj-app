@@ -124,10 +124,7 @@
             </div>
           </div>
         </div>
-        <button-standard-with-icon
-          text="Create Event"
-          @click="startCreate()"
-        ></button-standard-with-icon>
+        <button-standard-with-icon text="Create Event" @click="startCreate()" />
       </template>
     </base-card>
   </div>

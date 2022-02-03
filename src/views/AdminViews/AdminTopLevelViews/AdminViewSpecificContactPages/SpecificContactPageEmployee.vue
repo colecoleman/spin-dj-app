@@ -1,6 +1,6 @@
 <template>
   <popup-email-composition
-    v-if="popupopen === 'send-email'"
+    v-if="popupOpen === 'send-email'"
     :contact="contact"
     @close-window="togglePopup"
   />
@@ -10,7 +10,7 @@
     v-if="popupOpen === 'delete'"
   />
   <employee-page-availability-manager
-    v-if="availabilityManagerOpen"
+    v-if="popupOpen === 'availability-manager'"
     :employee="contact"
     @close-popup="togglePopup"
   />
@@ -21,37 +21,36 @@
   />
   <section>
     <div id="contact-card">
-      <contact-card-person
-        :contact="contact"
-        :icon="SVGs.PersonSVG"
-      ></contact-card-person>
+      <contact-card-person :contact="contact" :icon="SVGs.PersonSVG" />
     </div>
     <div id="to-do">
-      <contact-page-to-do-list :contact="contact"></contact-page-to-do-list>
+      <contact-page-to-do-list :contact="contact" />
     </div>
     <div id="notes">
-      <contact-page-notes :contact="contact"></contact-page-notes>
+      <contact-page-notes :contact="contact" />
     </div>
 
     <div id="button-bar">
       <four-button-bar-with-drop-down
         :buttons="buttons"
         :dropdown="dropdown"
-      ></four-button-bar-with-drop-down>
+        @button-clicked="togglePopup"
+        @dropdown-button-clicked="togglePopup"
+      />
     </div>
     <div id="upcoming-events">
       <upcoming-events
         :events="events"
         :pastEvents="pastEvents"
         v-if="!eventAssignmentOpen"
-      ></upcoming-events>
+      />
       <contact-page-events-assignment
         v-if="eventAssignmentOpen"
         :events="events"
         :contact="contact"
         :icon="SVGs.CalendarSVG"
         @event-assignment-toggle="toggleEventAssignment()"
-      ></contact-page-events-assignment>
+      />
     </div>
 
     <div id="automation">
@@ -62,7 +61,7 @@
         :id="$route.params.id"
         @automation-deleted="deleteAutomation"
         @automation-approved="approveAutomation"
-      ></automation-list>
+      />
     </div>
     <div id="messages">
       <base-card :icon="SVGs.MessageBubbleSVG" title="Coming Soon">
@@ -104,10 +103,11 @@ export default {
       eventAssignmentOpen: false,
       conversation: undefined,
       eventConversation: [],
+      popupOpen: null,
       buttons: [
         {
           title: "Send Email",
-          action: this.openEmailComposition,
+          parameter: "send-email",
         },
         {
           title: "Assign Events",
@@ -115,7 +115,7 @@ export default {
         },
         {
           title: "Availability",
-          action: this.openAvailabilityManager,
+          parameter: "availability-manager",
         },
       ],
       dropdown: {
@@ -139,8 +139,6 @@ export default {
           },
         ],
       },
-      emailPopupOpen: false,
-      notesPopupOpen: false,
       availabilityManagerOpen: false,
     };
   },
@@ -150,20 +148,16 @@ export default {
     },
   },
   methods: {
-    openEmailComposition() {
-      this.emailPopupOpen = true;
+    togglePopup(popup) {
+      if (this.popupOpen !== null) {
+        this.popupOpen = null;
+      } else {
+        this.popupOpen = popup;
+      }
     },
+
     toggleEventAssignment() {
       this.eventAssignmentOpen = !this.eventAssignmentOpen;
-    },
-    openAvailabilityManager() {
-      this.availabilityManagerOpen = true;
-    },
-    closePopups() {
-      console.log("hi");
-      this.emailPopupOpen = false;
-      this.calendarUtilityOpen = false;
-      this.availabilityManagerOpen = false;
     },
     getConversations(conversations) {
       return conversations.map((x) => {

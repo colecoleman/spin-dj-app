@@ -22,7 +22,7 @@
                 v-for="notification in notificationItems"
                 :key="notification.id"
                 :notification="notification"
-              ></notification-button-item>
+              />
             </div>
           </template>
         </base-card>

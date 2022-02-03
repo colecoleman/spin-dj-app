@@ -1,5 +1,5 @@
 <template>
-  <backdrop @click="closePopup()" class="no-print"></backdrop>
+  <backdrop @click="closePopup()" class="no-print" />
   <section class="no-print">
     <two-button-dialog-modal
       class="no-print"
@@ -8,7 +8,7 @@
       @close-modal="declineConsent"
       modalBody="By clicking 'Yes', you're consenting to do business electronically. Alternatively, you can click 'No', print the contract, and mail it to us.`"
       v-if="eSignStep === 1"
-    ></two-button-dialog-modal>
+    />
     <popup-modal
       class="no-print"
       @close-popup="closePaperSignInstructions"
@@ -64,7 +64,7 @@
                 v-if="displaySignButton"
                 :text="role == 'admin' ? 'Sign as Admin' : 'Start Signing'"
                 @click="initiateESign"
-              ></button-standard-with-icon>
+              />
             </div>
             <div v-if="eSignStep === 2">
               <h5>Please Type Your Legal Name:</h5>
@@ -115,8 +115,7 @@
               <button-standard-with-icon
                 text="Save / Print"
                 @click="saveContract('contract-popup-document-view')"
-              >
-              </button-standard-with-icon>
+              />
             </div>
           </div>
         </template>
@@ -127,16 +126,11 @@
       id="contract-document-scroll-container"
       @scroll="checkScroll"
     >
-      <contract-popup-document-view
-        :contract="contract"
-      ></contract-popup-document-view>
+      <contract-popup-document-view :contract="contract" />
     </div>
   </section>
   <section id="print-format">
-    <contract-popup-document-view
-      :key="index"
-      :contract="contract"
-    ></contract-popup-document-view>
+    <contract-popup-document-view :key="index" :contract="contract" />
   </section>
 </template>
 
