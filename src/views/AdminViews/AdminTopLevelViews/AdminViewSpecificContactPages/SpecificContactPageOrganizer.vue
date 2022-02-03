@@ -2,8 +2,18 @@
   <popup-email-composition
     v-if="emailPopupOpen && !notesPopupOpen"
     :contact="contact"
-    @closeWindow="toggleEmailComposition()"
-  ></popup-email-composition>
+    @closeWindow="togglePopup"
+  />
+  <contact-page-reset-password
+    :contact="contact"
+    @togglePopup="togglePopup"
+    v-if="popupOpen === 'reset-password'"
+  />
+  <contact-page-delete-contact
+    :contact="contact"
+    @toggle-popup="togglePopup"
+    v-if="popupOpen === 'delete'"
+  />
   <section>
     <div id="contact-card">
       <contact-card-person
@@ -78,7 +88,8 @@ import ContactPageNotes from "../../AdminComponents/AdminContactPageComponents/A
 import ContactCardPerson from "../../../../SharedComponents/SharedComponentsContact/ContactCardPerson.vue";
 import PopupEmailComposition from "../../../../SharedComponents/SharedComponentsPopupUtilities/PopupEmailComposition.vue";
 import ContactPageEventsAssignment from "../../AdminComponents/AdminContactPageComponents/AdminContactPageSharedComponents/ContactPageUpcomingEvents/ContactPageEventsAssignment.vue";
-
+import ContactPageResetPassword from "../../AdminComponents/AdminContactPageComponents/AdminContactPageSharedComponents/ContactPageResetPassword.vue";
+import ContactPageDeleteContact from "../../AdminComponents/AdminContactPageComponents/AdminContactPageSharedComponents/ContactPageDeleteContact.vue";
 // import MessagingSingleComponent from "../../../../SharedComponents/SharedComponentsMessaging/MessagingSingleComponent.vue";
 import FourButtonBarWithDropDown from "../../../../SharedComponents/SharedComponentsUI/FourButtonBarWithDropDown.vue";
 import SVGs from "../../../../assets/SVGs/svgIndex.js";
@@ -112,6 +123,17 @@ export default {
             title: "Email",
             action: this.toggleEmailComposition,
             icon: SVGs.EmailSVG,
+          },
+          {
+            title: "Reset Password",
+            parameter: "reset-password",
+            icon: SVGs.KeySVG,
+          },
+          {
+            title: "delete",
+            danger: true,
+            parameter: "delete",
+            icon: SVGs.TrashCanSVG,
           },
         ],
       },
@@ -228,8 +250,9 @@ export default {
     ContactPageToDoList,
     UpcomingEvents,
     ContactPageEventsAssignment,
+    ContactPageDeleteContact,
     // MessagingSingleComponent,
-
+    ContactPageResetPassword,
     FourButtonBarWithDropDown,
     AutomationList,
   },

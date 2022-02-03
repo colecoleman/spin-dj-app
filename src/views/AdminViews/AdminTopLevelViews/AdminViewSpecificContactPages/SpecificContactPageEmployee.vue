@@ -1,14 +1,24 @@
 <template>
   <popup-email-composition
-    v-if="emailPopupOpen && !notesPopupOpen"
+    v-if="popupopen === 'send-email'"
     :contact="contact"
-    @close-window="closePopups"
-  ></popup-email-composition>
+    @close-window="togglePopup"
+  />
+  <contact-page-delete-contact
+    :contact="contact"
+    @toggle-popup="togglePopup"
+    v-if="popupOpen === 'delete'"
+  />
   <employee-page-availability-manager
     v-if="availabilityManagerOpen"
     :employee="contact"
-    @close-popup="closePopups()"
-  ></employee-page-availability-manager>
+    @close-popup="togglePopup"
+  />
+  <contact-page-reset-password
+    :contact="contact"
+    @togglePopup="togglePopup"
+    v-if="popupOpen === 'reset-password'"
+  />
   <section>
     <div id="contact-card">
       <contact-card-person
@@ -78,9 +88,11 @@ import ContactPageNotes from "../../AdminComponents/AdminContactPageComponents/A
 import ContactCardPerson from "../../../../SharedComponents/SharedComponentsContact/ContactCardPerson.vue";
 import EmployeePageAvailabilityManager from "../../AdminComponents/AdminContactPageComponents/EmployeePageComponents/EmployeePageAvailabilityManager/EmployeePageAvailabilityManager.vue";
 import PopupEmailComposition from "../../../../SharedComponents/SharedComponentsPopupUtilities/PopupEmailComposition.vue";
+import ContactPageResetPassword from "../../AdminComponents/AdminContactPageComponents/AdminContactPageSharedComponents/ContactPageResetPassword.vue";
 // import MessagingSingleComponent from "../../../../SharedComponents/SharedComponentsMessaging/MessagingSingleComponent.vue";
 import FourButtonBarWithDropDown from "../../../../SharedComponents/SharedComponentsUI/FourButtonBarWithDropDown.vue";
 import SVGs from "../../../../assets/SVGs/svgIndex.js";
+import ContactPageDeleteContact from "../../AdminComponents/AdminContactPageComponents/AdminContactPageSharedComponents/ContactPageDeleteContact.vue";
 
 export default {
   data() {
@@ -111,14 +123,20 @@ export default {
         actionItems: [
           {
             title: "Email",
-            action: this.openEmailComposition,
+            parameter: "send-email",
             icon: SVGs.EmailSVG,
           },
-          // {
-          //   title: "Reset Password",
-          //   action: this.resetPassword,
-          //   icon: keysvg,
-          // },
+          {
+            title: "Reset Password",
+            parameter: "reset-password",
+            icon: SVGs.KeySVG,
+          },
+          {
+            title: "delete",
+            danger: true,
+            parameter: "delete",
+            icon: SVGs.TrashCanSVG,
+          },
         ],
       },
       emailPopupOpen: false,
@@ -243,6 +261,8 @@ export default {
     UpcomingEvents,
     AutomationList,
     ContactPageNotes,
+    ContactPageResetPassword,
+    ContactPageDeleteContact,
     // MessagingSingleComponent,
     FourButtonBarWithDropDown,
   },

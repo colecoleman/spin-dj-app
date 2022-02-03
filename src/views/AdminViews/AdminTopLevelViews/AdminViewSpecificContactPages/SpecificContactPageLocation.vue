@@ -2,8 +2,13 @@
   <popup-email-composition
     v-if="emailPopupOpen && !notesPopupOpen"
     :contact="contact"
-    @closeWindow="closePopups()"
-  ></popup-email-composition>
+    @closeWindow="togglePopup"
+  />
+  <!-- <contact-page-delete-contact
+    :contact="contact"
+    @toggle-popup="togglePopup"
+    v-if="popupOpen === 'delete'"
+  /> -->
   <section>
     <div id="location-card">
       <contact-card-location

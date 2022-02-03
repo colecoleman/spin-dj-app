@@ -103,14 +103,14 @@ export default {
         {
           title: "email",
           danger: false,
-          action: this.toggleModal,
+          parameter: "email",
           icon: SVGs.EmailSVG,
         },
 
         {
           title: "delete",
           danger: true,
-          action: this.toggleModal,
+          parameter: "delete",
           icon: SVGs.TrashCanSVG,
         },
       ],

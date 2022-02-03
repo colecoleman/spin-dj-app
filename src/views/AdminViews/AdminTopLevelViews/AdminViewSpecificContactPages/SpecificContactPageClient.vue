@@ -4,39 +4,17 @@
     :contact="contact"
     @close-window="closePopups()"
   />
-  <popup-modal
-    title="Reset User Password"
-    @close-popup="closePopups()"
-    v-if="resetPasswordPopupOpen"
-  >
-    <template v-slot:window>
-      <div class="reset-user-password-wrapper">
-        <h5>Choose New Password:</h5>
-        <input type="text" placeholder="password" v-model="newUserPassword" />
-        <div class="button-wrapper">
-          <button-standard-with-icon
-            text="Submit New Password"
-            @click="resetPassword"
-          />
-        </div>
-        <p>Password must contain:</p>
-        <ul>
-          <li>
-            <p>At least one lowercase letter</p>
-          </li>
-          <li>
-            <p>At least one capital letter</p>
-          </li>
-          <li>
-            <p>At least one number</p>
-          </li>
-          <li>
-            <p>At least one symbol (e.g.: $, *, !, @, #)</p>
-          </li>
-        </ul>
-      </div>
-    </template>
-  </popup-modal>
+  <contact-page-reset-password
+    :contact="contact"
+    @toggle-popup="togglePopup"
+    v-if="popupOpen === 'reset-password'"
+  />
+  <contact-page-delete-contact
+    :contact="contact"
+    @toggle-popup="togglePopup"
+    v-if="popupOpen === 'delete'"
+  />
+
   <section>
     <div id="contact-card">
       <contact-card-client
@@ -105,12 +83,14 @@ import ContactPageToDoList from "../../AdminComponents/AdminContactPageComponent
 import AutomationList from "../../AdminComponents/AdminSharedComponents/AutomationList.vue";
 import ContactCardClient from "../../../../SharedComponents/SharedComponentsContact/ContactCardPerson.vue";
 import PopupEmailComposition from "../../../../SharedComponents/SharedComponentsPopupUtilities/PopupEmailComposition.vue";
-import PopupModal from "../../../../SharedComponents/SharedComponentsUI/PopupModal.vue";
+import ContactPageDeleteContact from "../../AdminComponents/AdminContactPageComponents/AdminContactPageSharedComponents/ContactPageDeleteContact.vue";
 // import MessagingSingleComponent from "../../../../SharedComponents/SharedComponentsMessaging/MessagingSingleComponent.vue";
 import FourButtonBarWithDropDown from "../../../../SharedComponents/SharedComponentsUI/FourButtonBarWithDropDown.vue";
 import ClientPageUpcomingEvents from "../../AdminComponents/AdminContactPageComponents/ClientPageComponents/ClientPageUpcomingEvents.vue";
+import ContactPageResetPassword from "../../AdminComponents/AdminContactPageComponents/AdminContactPageSharedComponents/ContactPageResetPassword.vue";
 import ContactPageNotes from "../../AdminComponents/AdminContactPageComponents/AdminContactPageSharedComponents/ContactPageNotes/ContactPageNotes.vue";
 import SVGs from "../../../../assets/SVGs/svgIndex.js";
+// import TwoButtonDialogModal from "../../../../SharedComponents/SharedComponentsUI/TwoButtonDialogModal.vue";
 
 export default {
   data() {
@@ -120,7 +100,7 @@ export default {
       contact: undefined,
       thread: undefined,
       conversation: undefined,
-      newUserPassword: undefined,
+
       eventConversation: [],
       buttons: [
         {
@@ -141,6 +121,12 @@ export default {
             title: "Reset Password",
             action: this.initiateResetPassword,
             icon: SVGs.KeySVG,
+          },
+          {
+            title: "delete",
+            danger: true,
+            parameter: "delete",
+            icon: SVGs.TrashCanSVG,
           },
         ],
       },
@@ -166,20 +152,34 @@ export default {
     initiateResetPassword() {
       this.resetPasswordPopupOpen = true;
     },
-    async resetPassword() {
-      var re = /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
-      if (re.test(this.newUserPassword)) {
-        this.newUserPasswordError = false;
-        let payload = {
-          username: this.contact.username,
-          password: this.newUserPassword,
-          userId: this.contact.userId,
-        };
-        await this.$store.dispatch("resetUserPassword", payload);
-        this.closePopups();
-      } else {
-        this.newUserPasswordError = true;
+    async confirmDeleteContact() {
+      if (this.contact.associatedEvents) {
+        this.contact.associatedEvents.forEach((event) => {
+          let eventObject;
+          this.$store.dispatch("adminGetEvent", event).then(
+            (res) => {
+              eventObject = res.data.Item;
+              let index = eventObject.contacts.indexOf(this.contact.userId);
+              let payload = {
+                eventId: eventObject.userId,
+                variable: "contacts",
+                value: index,
+                operation: "removeFromList",
+              };
+              this.$store.dispatch("editEvent", payload);
+            },
+            (error) => {
+              console.log(error);
+            }
+          );
+        });
       }
+      let deletePayload = {
+        category: this.category,
+        id: this.contact.userId,
+      };
+      this.$store.dispatch("deleteUser", deletePayload);
+      this.popupOpen = null;
     },
     getConversations(conversations) {
       return conversations.map((x) => {
@@ -258,7 +258,9 @@ export default {
     ContactCardClient,
     ContactPageToDoList,
     ClientPageUpcomingEvents,
-    PopupModal,
+    ContactPageResetPassword,
+    // TwoButtonDialogModal,
+    ContactPageDeleteContact,
     // ClientPageInformationCard,
     AutomationList,
     // MessagingSingleComponent,
@@ -309,19 +311,5 @@ section {
 #automation {
   grid-column: 7 / 10;
   grid-row: 2/ 6;
-}
-
-.button-wrapper {
-  /* width: 70%; */
-  margin: auto;
-  padding: 20px;
-}
-
-.reset-user-password-wrapper {
-  margin: 50px;
-}
-
-p {
-  text-align: left;
 }
 </style>

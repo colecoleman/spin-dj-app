@@ -65,7 +65,7 @@
                       v-for="(option, index) in input.options"
                       :key="index"
                     >
-                      {{ option }}
+                      {{ option.optionValue }}
                     </option>
                   </select>
                 </div>
