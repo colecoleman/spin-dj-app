@@ -4,6 +4,7 @@
       <button-with-drop-down-selections
         :text="currentlySelectedType ? currentlySelectedType : 'Click to add'"
         :actions="selectableContactTypes"
+        @button-clicked="selectContactType"
       >
         <template v-slot:icon
           ><svg
@@ -25,22 +26,22 @@
     </div>
     <div id="form-container">
       <add-contact-module-new-client-form
-        v-if="currentlySelectedType === `Client`"
+        v-if="currentlySelectedType === `client`"
       />
       <!-- <add-contact-module-new-prospect-form
         v-if="currentlySelectedType === `Prospect`"
       /> -->
       <add-contact-module-new-vendor-form
-        v-if="currentlySelectedType === `Vendor`"
+        v-if="currentlySelectedType === `vendor`"
       />
       <add-contact-module-new-employee-form
-        v-if="currentlySelectedType === `Employee`"
+        v-if="currentlySelectedType === `employee`"
       />
       <add-contact-module-new-location-form
-        v-if="currentlySelectedType === `Venue + Location`"
+        v-if="currentlySelectedType === `location`"
       />
       <add-contact-module-new-organizer-form
-        v-if="currentlySelectedType === `Organizer`"
+        v-if="currentlySelectedType === `organizer`"
       />
     </div>
   </div>
@@ -61,32 +62,32 @@ export default {
       contactTypes: [
         {
           title: "Client",
-          action: this.selectContactType,
+          parameter: "client",
           danger: false,
         },
         // {
         //   title: "Prospect",
-        //   action: this.selectContactType,
+        //   parameter: 'client',
         //   danger: false,
         // },
         {
           title: "Employee",
-          action: this.selectContactType,
+          parameter: "employee",
           danger: false,
         },
         {
           title: "Vendor",
-          action: this.selectContactType,
+          parameter: "vendor",
           danger: false,
         },
         {
           title: "Venue + Location",
-          action: this.selectContactType,
+          parameter: "location",
           danger: false,
         },
         {
           title: "Organizer",
-          action: this.selectContactType,
+          parameter: "organizer",
           danger: false,
         },
       ],

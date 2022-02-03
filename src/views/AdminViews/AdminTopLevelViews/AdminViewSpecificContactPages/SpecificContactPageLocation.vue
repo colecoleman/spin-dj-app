@@ -20,6 +20,7 @@
         :buttons="buttons"
         :dropdown="dropdown"
         @button-clicked="togglePopup"
+        @dropdown-button-clicked="togglePopup"
       ></four-button-bar-with-drop-down>
     </div>
     <div id="upcoming-events">
@@ -72,7 +73,6 @@ export default {
       buttons: [
         {
           title: "Send Email",
-          // action: this.openEmailComposition,
           parameter: "send-email",
         },
         // {
@@ -85,7 +85,7 @@ export default {
         actionItems: [
           {
             title: "Email",
-            action: this.openEmailComposition,
+            parameter: "send-email",
             icon: SVGs.EmailSVG,
           },
         ],
@@ -114,9 +114,6 @@ export default {
       } else {
         this.popupOpen = popup;
       }
-    },
-    openEmailComposition() {
-      this.emailPopupOpen = true;
     },
     toggleEventAssignment() {
       this.eventAssignmentOpen = !this.eventAssignmentOpen;

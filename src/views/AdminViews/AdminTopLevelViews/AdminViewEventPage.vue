@@ -77,6 +77,7 @@
           :buttons="buttons"
           :dropdown="dropdown"
           @button-clicked="togglePopup"
+          @dropdown-button-clicked="togglePopup"
         ></four-button-bar-with-drop-down>
       </div>
       <div id="event-information">
@@ -161,18 +162,21 @@ export default {
         actionItems: [
           {
             title: "delete",
-            action: this.deleteEvent,
+            // action: this.deleteEvent,
+            parameter: "delete-event",
             danger: true,
             icon: SVGs.TrashCanSVG,
           },
           {
             title: "Make Payment",
-            action: this.processPayment,
+            parameter: "payment",
+            // action: this.processPayment,
             danger: false,
           },
           {
             title: "Edit Products",
-            action: this.editProducts,
+            parameter: "edit-products",
+            // action: this.editProducts,
             danger: false,
           },
         ],
@@ -204,16 +208,6 @@ export default {
       } else {
         this.popupOpen = popup;
       }
-    },
-
-    deleteEvent() {
-      this.togglePopup("delete-event");
-    },
-    processPayment() {
-      this.togglePopup("payment");
-    },
-    editProducts() {
-      this.togglePopup("edit-products");
     },
     async confirmDeleteEvent() {
       let contacts = [...this.contacts];
@@ -328,7 +322,6 @@ export default {
     SpecificEventPageLocationScroller,
     AutomationList,
     EventMakePayment,
-    // Backdrop,
     InvoicePopup,
     PopupModal,
     EventInformation,

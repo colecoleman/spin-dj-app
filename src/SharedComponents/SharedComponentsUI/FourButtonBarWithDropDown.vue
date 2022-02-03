@@ -15,6 +15,7 @@
           <button-with-drop-down-selections
             :text="dropdown.title"
             :actions="dropdown.actionItems"
+            @button-clicked="dropdownButtonClicked"
             class="dropdown-button"
           >
           </button-with-drop-down-selections>
@@ -38,8 +39,11 @@ export default {
     buttonClicked(parameter) {
       this.$emit("button-clicked", parameter);
     },
+    dropdownButtonClicked(parameter) {
+      this.$emit("dropdown-button-clicked", parameter);
+    },
   },
-  emits: ["button-clicked"],
+  emits: ["button-clicked", "dropdown-button-clicked"],
   props: ["buttons", "dropdown"],
 };
 </script>

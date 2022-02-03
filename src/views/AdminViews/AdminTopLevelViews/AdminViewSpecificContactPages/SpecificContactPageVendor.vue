@@ -43,6 +43,7 @@
         :buttons="buttons"
         :dropdown="dropdown"
         @button-clicked="togglePopup"
+        @dropdown-button-clicked="togglePopup"
       ></four-button-bar-with-drop-down>
     </div>
 
@@ -124,7 +125,8 @@ export default {
         actionItems: [
           {
             title: "Email",
-            action: this.openEmailComposition,
+            // action: this.openEmailComposition,
+            parameter: "send-email",
             icon: SVGs.EmailSVG,
           },
           // {

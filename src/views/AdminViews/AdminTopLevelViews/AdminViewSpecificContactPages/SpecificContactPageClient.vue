@@ -2,11 +2,11 @@
   <popup-email-composition
     v-if="popupOpen === 'send-email'"
     :contact="contact"
-    @close-window="togglePopup()"
+    @close-window="togglePopup"
   />
   <popup-modal
     title="Reset User Password"
-    @close-popup="togglePopup()"
+    @close-popup="togglePopup"
     v-if="popupOpen === 'reset-password'"
   >
     <template v-slot:window>
@@ -43,7 +43,7 @@
         :loading="contact ? false : true"
         :contact="contact"
         :icon="SVGs.PersonSVG"
-        @email-contact="openEmailComposition"
+        @email-contact="togglePopup('send-email')"
       />
     </div>
     <div id="to-do">
@@ -63,6 +63,7 @@
         :buttons="buttons"
         :dropdown="dropdown"
         @button-clicked="togglePopup"
+        @dropdown-button-clicked="togglePopup"
       />
     </div>
 
@@ -138,19 +139,16 @@ export default {
         actionItems: [
           {
             title: "Email",
-            action: this.openEmailComposition,
+            parameter: "send-email",
             icon: SVGs.EmailSVG,
           },
           {
             title: "Reset Password",
-            action: this.initiateResetPassword,
+            parameter: "reset-password",
             icon: SVGs.KeySVG,
           },
         ],
       },
-      emailPopupOpen: false,
-      notesPopupOpen: false,
-      resetPasswordPopupOpen: false,
     };
   },
   computed: {
@@ -165,10 +163,6 @@ export default {
       } else {
         this.popupOpen = popup;
       }
-    },
-
-    initiateResetPassword() {
-      this.resetPasswordPopupOpen = true;
     },
     async resetPassword() {
       var re = /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
