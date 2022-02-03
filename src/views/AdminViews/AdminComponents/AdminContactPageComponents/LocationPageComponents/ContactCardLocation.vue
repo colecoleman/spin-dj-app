@@ -10,8 +10,7 @@
         v-if="editCardOpen"
         :location="location"
         @close-edit-card="toggleEditCard()"
-      ></location-information-edit
-    ></template>
+    /></template>
     <template v-slot:content v-if="location">
       <div class="address-container">
         <h4>{{ location.name }}</h4>

@@ -10,17 +10,14 @@
       :client="client"
       v-if="popupOpen === 'invoice'"
       @close-popup="togglePopup"
-    ></invoice-popup>
+    />
     <popup-modal
       title="Make Payment"
       v-if="popupOpen === 'payment'"
       @close-popup="togglePopup"
     >
       <template v-slot:window>
-        <event-make-payment
-          :eventId="event.userId"
-          :event="event"
-        ></event-make-payment>
+        <event-make-payment :eventId="event.userId" :event="event" />
       </template>
     </popup-modal>
     <popup-modal
@@ -34,7 +31,7 @@
           @add-product-to-event="addProductToEvent"
           @remove-product-from-event="removeProductFromEvent"
           @save-products="invoiceSaveProducts"
-        ></event-edit-products>
+        />
       </template>
     </popup-modal>
     <forms-popup
@@ -44,19 +41,19 @@
       @delete-form="deleteForm"
       :forms="event.forms"
       :eventId="event.userId"
-    ></forms-popup>
+    />
     <contract-popup
       v-if="popupOpen === 'contract'"
       @close-popup="togglePopup"
       :contracts="event.contracts"
       :eventId="event.userId"
-    ></contract-popup>
+    />
     <two-button-dialog-modal
       v-if="popupOpen === 'delete-event'"
       @select-button-one="confirmDeleteEvent()"
       @select-button-two="togglePopup"
       @close-modal="togglePopup"
-    ></two-button-dialog-modal>
+    />
     <section>
       <div id="contact-card">
         <event-page-contact-card
@@ -64,13 +61,13 @@
           :client="client"
           :event="event"
           @edit-event="editEvent"
-        ></event-page-contact-card>
+        />
       </div>
       <div id="location-scroller">
         <specific-event-page-location-scroller
           :event="event"
           :loading="locations ? false : true"
-        ></specific-event-page-location-scroller>
+        />
       </div>
       <div id="button-bar">
         <four-button-bar-with-drop-down
@@ -78,13 +75,10 @@
           :dropdown="dropdown"
           @button-clicked="togglePopup"
           @dropdown-button-clicked="togglePopup"
-        ></four-button-bar-with-drop-down>
+        />
       </div>
       <div id="event-information">
-        <event-information
-          :event="event"
-          :eventId="event.userId"
-        ></event-information>
+        <event-information :event="event" :eventId="event.userId" />
       </div>
       <div id="automation">
         <automation-list
@@ -92,21 +86,16 @@
           :contacts="contacts"
           automationType="Event"
           :id="$route.params.id"
-        ></automation-list>
+        />
       </div>
       <div id="contact-carousel">
-        <event-page-contact-carousel
-          :contacts="contacts"
-          :event="event"
-        ></event-page-contact-carousel>
+        <event-page-contact-carousel :contacts="contacts" :event="event" />
       </div>
       <div id="to-do">
-        <to-do-specific-event :event="event"></to-do-specific-event>
+        <to-do-specific-event :event="event" />
       </div>
       <div id="recent-messages">
-        <recent-messages
-          :conversationList="eventConversations"
-        ></recent-messages>
+        <recent-messages :conversationList="eventConversations" />
       </div>
     </section>
   </div>

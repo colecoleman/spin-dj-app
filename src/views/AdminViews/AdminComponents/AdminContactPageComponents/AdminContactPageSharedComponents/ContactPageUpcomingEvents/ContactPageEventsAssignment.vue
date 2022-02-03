@@ -15,14 +15,13 @@
           <location-upcoming-events-list-item
             @click="initializeAddToEvent(event.userId)"
             :event="event"
-          >
-          </location-upcoming-events-list-item>
+          />
           <two-button-dialog-modal
             v-if="addEventId"
             @close-modal="closeConfirmationDialog()"
             @select-button-one="addUserToEvent()"
             @select-button-two="closeConfirmationDialog()"
-          ></two-button-dialog-modal>
+          />
         </div>
       </div>
     </template>

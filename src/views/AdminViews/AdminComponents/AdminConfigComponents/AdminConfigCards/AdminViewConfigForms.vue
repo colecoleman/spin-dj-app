@@ -210,7 +210,7 @@
                     : initiateSaveAsFieldTemplate()
                 "
                 text="Save As Field Template"
-              ></button-standard-with-icon>
+              />
               <button-standard-with-icon
                 text="Add Field"
                 @click="saveField()"

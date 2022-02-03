@@ -13,7 +13,7 @@
         v-if="addNewNoteOpen"
         :contact="contact"
         @submit-note="addNewNote"
-      ></contact-page-notes-add-new>
+      />
       <h5
         v-if="!contact.notesPublic && !contact.notesPrivate && !addNewNoteOpen"
       >

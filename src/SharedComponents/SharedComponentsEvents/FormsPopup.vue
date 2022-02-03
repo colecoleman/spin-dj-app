@@ -4,7 +4,7 @@
     @select-button-one="deleteForm"
     @select-button-two="closeDeleteForm"
     v-if="deleteFormOpen"
-  ></two-button-dialog-modal>
+  />
   <section class="no-print">
     <div class="navigation-wrapper">
       <base-card>
@@ -29,19 +29,16 @@
                   :text="openView === 'eventForms' ? 'Add Forms' : 'View Forms'"
                   v-if="userRole === 'admin'"
                   @click="toggleAddForms()"
-                ></button-standard-with-icon>
+                />
               </div>
               <div class="navigation-button-wrapper">
                 <button-standard-with-icon
                   text="Print / Download"
                   @click="downloadForms()"
-                ></button-standard-with-icon>
+                />
               </div>
               <div class="navigation-button-wrapper">
-                <button-standard-with-icon
-                  text="Save"
-                  @click="saveForms()"
-                ></button-standard-with-icon>
+                <button-standard-with-icon text="Save" @click="saveForms()" />
               </div>
             </div>
           </div>
@@ -123,7 +120,7 @@
                   "
                   text="Duplicate"
                   @click="duplicateField(form, formItem)"
-                ></button-standard-with-icon>
+                />
               </div>
             </div>
           </template>
@@ -134,7 +131,7 @@
       <forms-popup-add-form
         :eventForms="forms"
         @add-form-to-event="addFormToEvent"
-      ></forms-popup-add-form>
+      />
     </div>
   </section>
   <section id="print-format">

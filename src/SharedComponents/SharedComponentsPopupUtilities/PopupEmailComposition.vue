@@ -71,12 +71,12 @@
           class="black-outline"
           text="Cancel Email"
           @click="closeWindow()"
-        ></button-standard-with-icon>
+        />
         <button-standard-with-icon
           class="black-outline"
           text="Send Email"
           @click="confirmSendEmail()"
-        ></button-standard-with-icon>
+        />
       </div>
     </template>
   </popup-modal>

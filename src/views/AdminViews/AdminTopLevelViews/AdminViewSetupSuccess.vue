@@ -5,7 +5,7 @@
       <button-standard-with-icon
         text="Jump in when you're ready"
         @click="navigateToDashboard"
-      ></button-standard-with-icon>
+      />
     </div>
     <div class="card-container">
       <div class="scroll-wrapper half-width">

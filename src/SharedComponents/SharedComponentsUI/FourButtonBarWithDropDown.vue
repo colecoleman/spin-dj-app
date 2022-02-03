@@ -8,7 +8,7 @@
             @click="
               button.action ? button.action : buttonClicked(button.parameter)
             "
-          ></button-standard-with-icon>
+          />
         </div>
 
         <div class="button-div" v-if="dropdown">
@@ -17,8 +17,7 @@
             :actions="dropdown.actionItems"
             @button-clicked="dropdownButtonClicked"
             class="dropdown-button"
-          >
-          </button-with-drop-down-selections>
+          />
         </div>
       </div>
     </template>

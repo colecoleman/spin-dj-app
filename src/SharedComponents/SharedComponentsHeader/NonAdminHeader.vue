@@ -3,8 +3,8 @@
     <img :src="logo" alt="" />
     <div class="button-wrapper">
       <!-- <notification-button></notification-button> -->
-      <dashboard-button></dashboard-button>
-      <logout-button></logout-button>
+      <dashboard-button />
+      <logout-button />
     </div>
   </div>
 </template>

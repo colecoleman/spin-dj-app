@@ -6,10 +6,7 @@
         v-model="chargeAmount"
         placeholder="Enter Payment Amount"
       />
-      <button-standard-with-icon
-        text="Confirm"
-        @click="createPaymentIntent"
-      ></button-standard-with-icon>
+      <button-standard-with-icon text="Confirm" @click="createPaymentIntent" />
     </div>
   </div>
   <p :class="chargeAmountError ? 'error' : 'hidden'">

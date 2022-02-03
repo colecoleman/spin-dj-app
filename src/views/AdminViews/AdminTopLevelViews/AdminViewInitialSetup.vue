@@ -72,7 +72,7 @@
           <button-standard-with-icon
             text="Next"
             @click="step1validationBlock()"
-          ></button-standard-with-icon>
+          />
         </div>
       </div>
       <div class="hero-right hero-half" v-if="step === 2">
@@ -102,7 +102,7 @@
               ? initiateSubscription()
               : ''
           "
-        ></button-standard-with-icon>
+        />
       </div>
     </div>
   </section>

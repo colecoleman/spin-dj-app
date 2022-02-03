@@ -1,7 +1,7 @@
 <template>
   <div class="employee-wrapper">
     <div class="header-wrapper">
-      <non-admin-header></non-admin-header>
+      <non-admin-header />
     </div>
     <div class="content-container">
       <router-view name="content"></router-view>

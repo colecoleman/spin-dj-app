@@ -8,7 +8,7 @@
           :automation="automation"
           @automation-deleted="automationDeleted"
           @automation-approved="automationApproved"
-        ></automation-list-item>
+        />
         <div id="empty-automations" v-if="automations.length <= 0">
           <p class="bold">There are no automations for this event!</p>
           <p>Add some in settings to make your life easier.</p>

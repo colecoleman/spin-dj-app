@@ -3,17 +3,17 @@
     v-if="popupOpen === 'send-email'"
     :contact="contact"
     @closeWindow="togglePopup"
-  ></popup-email-composition>
+  />
   <section>
     <div id="location-card">
       <contact-card-location
         v-if="location"
         :icon="SVGs.LocationMarkerSVG"
         :location="location"
-      ></contact-card-location>
+      />
     </div>
     <div id="to-do">
-      <contact-page-to-do-list :contact="location"></contact-page-to-do-list>
+      <contact-page-to-do-list :contact="location" />
     </div>
     <div id="button-bar">
       <four-button-bar-with-drop-down
@@ -21,7 +21,7 @@
         :dropdown="dropdown"
         @button-clicked="togglePopup"
         @dropdown-button-clicked="togglePopup"
-      ></four-button-bar-with-drop-down>
+      />
     </div>
     <div id="upcoming-events">
       <location-page-upcoming-events
@@ -30,11 +30,11 @@
         :icon="SVGs.CalendarSVG"
         @event-assignment-toggle="toggleEventAssignment()"
         :eventAssignmentOpen="eventAssignmentOpen"
-      ></location-page-upcoming-events>
+      />
     </div>
     <div id="contact-card">
       <!-- <location-preferred-information></location-preferred-information> -->
-      <contact-card-person :contact="contact"></contact-card-person>
+      <contact-card-person :contact="contact" />
     </div>
     <div id="automation">
       <automation-list
@@ -42,10 +42,10 @@
         automationType="Contact"
         :contacts="[contact]"
         :id="$route.params.id"
-      ></automation-list>
+      />
     </div>
     <div id="notes">
-      <contact-page-notes :contact="location"></contact-page-notes>
+      <contact-page-notes :contact="location" />
     </div>
   </section>
 </template>

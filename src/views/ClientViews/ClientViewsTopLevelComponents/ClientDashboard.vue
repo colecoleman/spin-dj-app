@@ -3,10 +3,10 @@
     <!-- <div id="client-dashboard-wrapper" v-if="!loading">
       <div class="column-one"> -->
     <div id="contact-card">
-      <contact-card-person :contact="client"></contact-card-person>
+      <contact-card-person :contact="client" />
     </div>
     <div id="to-do">
-      <contact-page-to-do-list :contact="client"></contact-page-to-do-list>
+      <contact-page-to-do-list :contact="client" />
     </div>
     <!-- </div> -->
     <div id="upcoming-events">
@@ -17,10 +17,10 @@
     </div>
     <!-- <div class="column-three"> -->
     <div id="calendar">
-      <event-calendar :events="events"></event-calendar>
+      <event-calendar :events="events"/>
     </div>
     <div id="messaging">
-      <recent-messages :conversationList="userConversations"></recent-messages>
+      <recent-messages :conversationList="userConversations"/>
     </div>
     <!-- </div> -->
     <!-- </div> -->

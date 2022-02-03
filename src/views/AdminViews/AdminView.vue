@@ -1,7 +1,7 @@
 <template>
   <div class="admin-wrapper">
     <div class="header-wrapper">
-      <admin-header></admin-header>
+      <admin-header />
     </div>
     <div class="content-wrapper" v-if="loaded">
       <router-view name="content"></router-view>

@@ -6,19 +6,19 @@
       :client="client"
       v-if="popupOpen === 'invoice'"
       @close-popup="togglePopup"
-    ></invoice-popup>
+    />
     <forms-popup
       v-if="popupOpen === 'forms'"
       @close-popup="togglePopup"
       :forms="event.forms"
       :eventId="event.userId"
-    ></forms-popup>
+    />
     <contract-popup
       v-if="popupOpen === 'contract'"
       @close-popup="togglePopup"
       :contracts="event.contracts"
       :eventId="event.userId"
-    ></contract-popup>
+    />
 
     <section>
       <div id="contact-card">
@@ -26,43 +26,38 @@
           v-if="client && event"
           :client="client"
           :event="event"
-        ></event-page-contact-card>
+        />
       </div>
       <div id="alerts">
-        <event-page-alerts :alerts="eventAlerts"></event-page-alerts>
+        <event-page-alerts :alerts="eventAlerts" />
       </div>
       <div id="button-bar">
         <four-button-bar-with-drop-down
           :buttons="buttons"
           @button-clicked="togglePopup"
-        ></four-button-bar-with-drop-down>
+        />
       </div>
       <div id="location-scroller">
         <specific-event-page-location-scroller
           :event="event"
           :loading="locations ? false : true"
-        ></specific-event-page-location-scroller>
+        />
       </div>
       <div id="make-payment">
-        <event-make-payment-card
-          :event="event"
-          :eventId="event.userId"
-        ></event-make-payment-card>
+        <event-make-payment-card :event="event" :eventId="event.userId" />
       </div>
       <div id="contact-carousel">
-        <event-page-contact-carousel
-          :contacts="contacts"
-        ></event-page-contact-carousel>
+        <event-page-contact-carousel :contacts="contacts" />
       </div>
       <div id="to-do">
-        <to-do-specific-event :event="event"></to-do-specific-event>
+        <to-do-specific-event :event="event" />
       </div>
       <div id="messages">
         <!-- <recent-messages-event v-if="contacts"></recent-messages-event> -->
         <recent-messages
           v-if="contacts"
           :conversationList="eventConversations"
-        ></recent-messages>
+        />
       </div>
     </section>
   </div>

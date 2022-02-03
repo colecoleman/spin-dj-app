@@ -6,7 +6,7 @@ df
     @select-button-one="dialogModalData[dialogModal].confirmButton"
     @select-button-two="dialogModalData[dialogModal].cancelButton"
     @close-modal="closeDialogModal"
-  ></two-button-dialog-modal>
+  />
   <base-card title="Identity">
     <template v-slot:content>
       <div id="wrapper">

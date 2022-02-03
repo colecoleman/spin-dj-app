@@ -6,8 +6,7 @@
           :conversations="conversations"
           :currentUser="currentUser"
           @open-single-messaging="openSingleMessaging"
-        >
-        </message-thread-list></div
+        /></div
     ></template>
   </base-card>
 </template>

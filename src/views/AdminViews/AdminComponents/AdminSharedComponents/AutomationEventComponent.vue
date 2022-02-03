@@ -7,7 +7,7 @@
           v-for="automation in automationsPending"
           :key="automation.id"
           :automation-item="automation"
-        ></automation-list-item>
+        />
         <div
           id="empty-automations"
           v-if="automationsApproved.length < 1 && automationsPending.length < 1"
@@ -15,8 +15,7 @@
           <h4>There are no automations for this event!</h4>
           <p>Click the button below to make life easier.</p>
           <div id="button-container">
-            <button-standard-with-icon text="Click here!">
-            </button-standard-with-icon>
+            <button-standard-with-icon text="Click here!" />
           </div>
         </div></div
     ></template>

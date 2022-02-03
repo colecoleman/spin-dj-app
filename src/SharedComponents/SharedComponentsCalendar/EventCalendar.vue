@@ -13,7 +13,7 @@
           :currentRightSelection="masterMonth"
           v-if="floatingMenuOpen"
           @actionsClicked="newTimeframeSelected"
-        ></dual-side-floating-menu-with-list-items>
+        />
       </div>
     </template>
     <template v-slot:action1>
@@ -64,7 +64,7 @@
     :date="singleDayChosen"
     :events="events"
     @close-single-day-view="singleDayViewOpen = false"
-  ></single-day-view>
+  />
 </template>
 
 <script>

@@ -7,14 +7,14 @@
       @select-button-one="confirmDeleteContact"
       @select-button-two="togglePopup"
       @close-modal="togglePopup"
-    ></two-button-dialog-modal>
+    />
     <popup-email-composition
       v-if="popupOpen === 'email'"
       :contact="contact"
       :category="category"
       @cancel-send-email="togglePopup"
       @close-window="togglePopup"
-    ></popup-email-composition>
+    />
     <div class="contact-wrapper" v-if="category !== 'locations'">
       <div class="name-and-photo">
         <img
@@ -44,7 +44,7 @@
           :actions="actions"
           :clicked="actionsClicked"
           @button-clicked="togglePopup"
-        ></button-with-drop-down-selections>
+        />
       </div>
     </div>
     <div class="contact-wrapper" v-if="category === 'locations'">
@@ -72,7 +72,7 @@
           :actions="actions"
           :clicked="actionsClicked"
           @button-clicked="togglePopup"
-        ></button-with-drop-down-selections>
+        />
       </div>
     </div>
   </div>

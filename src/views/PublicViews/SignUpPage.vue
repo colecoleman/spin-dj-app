@@ -86,7 +86,7 @@
           <button-standard-with-icon
             text="Sign Up"
             @click="validationBlock()"
-          ></button-standard-with-icon>
+          />
         </div>
         <p class="disclaimer">
           <i
@@ -119,7 +119,7 @@
           <button-standard-with-icon
             text="Confirm"
             @click="submitConfirmationCode()"
-          ></button-standard-with-icon>
+          />
         </div>
         <p class="disclaimer">
           <i

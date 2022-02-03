@@ -43,7 +43,7 @@
             <button-standard-with-icon
               @click="createStripeAccountLink"
               text="Create Account With Stripe"
-            ></button-standard-with-icon>
+            />
           </div>
 
           <div v-if="paymentSettings.creditCard.Stripe.id">
@@ -52,7 +52,7 @@
               :text="
                 stripeHealthy ? 'Status: Healthy' : 'Complete Stripe Setup'
               "
-            ></button-standard-with-icon>
+            />
           </div>
         </div>
         <div class="payments-item">

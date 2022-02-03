@@ -3,7 +3,7 @@
     <div id="navigation">
       <base-card>
         <template v-slot:content>
-          <contact-navigation></contact-navigation>
+          <contact-navigation />
         </template>
       </base-card>
     </div>
@@ -40,7 +40,7 @@
                 <contact-list-item
                   :contact="contact"
                   :category="contact_category"
-                ></contact-list-item>
+                />
               </div>
             </div>
             <h4 v-if="value.length <= 0" class="placeholder-text">
@@ -53,7 +53,7 @@
     <div id="add-contact">
       <base-card :icon="SVGs.AddPersonSVG" title="Add New">
         <template v-slot:content>
-          <add-contact-module></add-contact-module>
+          <add-contact-module />
         </template>
       </base-card>
     </div>
@@ -113,7 +113,6 @@ export default {
   },
   computed: {
     contacts() {
-
       return this.$store.state.contacts;
     },
   },

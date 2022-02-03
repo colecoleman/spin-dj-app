@@ -13,8 +13,7 @@
         v-if="editCardOpen"
         :contact="contact"
         @close-edit-card="toggleEditCard"
-      ></contact-information-edit
-    ></template>
+    /></template>
     <template v-slot:content v-if="contact">
       <div id="wrapper" v-if="!loading">
         <img

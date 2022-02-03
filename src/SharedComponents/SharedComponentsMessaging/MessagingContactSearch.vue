@@ -25,7 +25,7 @@
         <button-standard-with-icon
           text="Message"
           @click="selectContact(contact)"
-        ></button-standard-with-icon>
+        />
       </div>
     </div>
   </div>

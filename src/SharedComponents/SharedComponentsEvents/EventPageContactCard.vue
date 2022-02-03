@@ -15,7 +15,7 @@
         :event="event"
         @edit-event="editEvent"
         @close-edit-card="toggleEditCard"
-      ></event-information-edit>
+      />
     </template>
   </base-card>
 </template>
@@ -55,6 +55,3 @@ export default {
   components: { EventInformationEdit },
 };
 </script>
-
-<style scoped>
-</style>

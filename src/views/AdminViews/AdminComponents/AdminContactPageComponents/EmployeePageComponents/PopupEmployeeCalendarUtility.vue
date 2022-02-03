@@ -12,13 +12,13 @@
               @current-month="assignMonth"
               @send-date="sendDate"
               :employee="employee"
-            ></popup-employee-calendar-dates>
+            />
           </div>
           <div class="side-bar-container">
             <popup-employee-calendar-side-bar
               :events="events"
               :employee="employee"
-            ></popup-employee-calendar-side-bar>
+            />
           </div>
         </div></section
     ></template>

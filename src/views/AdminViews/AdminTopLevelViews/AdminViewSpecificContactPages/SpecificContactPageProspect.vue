@@ -3,22 +3,17 @@
     v-if="popupOpen === 'send-email'"
     :contact="contact"
     @cancel-send-email="togglePopup"
-  ></popup-email-composition>
+  />
   <div id="section-wrapper">
     <div id="left-column">
       <div id="box-one">
-        <prospect-page-card
-          :prospect="contact"
-          :icon="SVGs.PersonSVG"
-        ></prospect-page-card>
+        <prospect-page-card :prospect="contact" :icon="SVGs.PersonSVG" />
       </div>
       <div id="box-two">
-        <prospect-page-contact-health
-          :prospect="contact"
-        ></prospect-page-contact-health>
+        <prospect-page-contact-health :prospect="contact" />
       </div>
       <div id="box-three">
-        <contact-page-to-do-list :id="contact.userId"></contact-page-to-do-list>
+        <contact-page-to-do-list :id="contact.userId" />
       </div>
     </div>
     <div id="right-column">
@@ -27,12 +22,10 @@
           :buttons="buttons"
           :dropdown="dropdown"
           @button-clicked="togglePopup"
-        ></four-button-bar-with-drop-down>
+        />
       </div>
       <div id="box-five">
-        <prospect-page-event-details
-          :prospect="contact"
-        ></prospect-page-event-details>
+        <prospect-page-event-details :prospect="contact" />
       </div>
       <div id="box-six">
         <div id="box-six-half">
@@ -42,14 +35,14 @@
             :id="$route.params.id"
             @automation-deleted="deleteAutomation"
             @automation-approved="approveAutomation"
-          ></automation-list>
+          />
         </div>
         <div id="box-six-half-two">
           <contact-page-notes
             :notes="contact.notes"
             :contact="contact"
             contactCategory="prospects"
-          ></contact-page-notes>
+          />
         </div>
       </div>
     </div>

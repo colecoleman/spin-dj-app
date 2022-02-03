@@ -15,10 +15,7 @@
       v-model="note.note"
     ></textarea>
     <p v-if="error">Oops! Put something in here!</p>
-    <button-standard-with-icon
-      @click="submitNote"
-      text="Submit Note"
-    ></button-standard-with-icon>
+    <button-standard-with-icon @click="submitNote" text="Submit Note" />
   </div>
 </template>
 

@@ -11,7 +11,7 @@
         v-if="paymentMethodsOpen"
         :actions="paymentMethods"
         @actionClicked="selectPaymentMethod"
-      ></floating-menu-with-list-items>
+      />
     </template>
     <template v-slot:content>
       <div id="payment-method-wrapper">

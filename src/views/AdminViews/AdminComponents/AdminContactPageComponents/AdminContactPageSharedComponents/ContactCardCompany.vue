@@ -11,7 +11,7 @@
         v-if="editCardOpen"
         :contact="contact"
         @close-edit-card="toggleEditCard()"
-      ></contact-information-edit-company>
+      />
     </template>
     <template v-slot:content>
       <div id="wrapper" v-if="contact">

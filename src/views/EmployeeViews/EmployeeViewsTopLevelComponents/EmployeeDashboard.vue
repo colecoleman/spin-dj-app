@@ -1,10 +1,10 @@
 <template>
   <div id="wrapper" v-if="!loading">
     <div id="contact-card">
-      <contact-card-person :contact="client"></contact-card-person>
+      <contact-card-person :contact="client" />
     </div>
     <div id="to-do">
-      <contact-page-to-do-list :contact="client"></contact-page-to-do-list>
+      <contact-page-to-do-list :contact="client" />
     </div>
 
     <div id="upcoming-events">
@@ -15,10 +15,10 @@
       ></upcoming-events>
     </div>
     <div id="calendar">
-      <event-calendar :events="events"></event-calendar>
+      <event-calendar :events="events"/>
     </div>
     <div id="messages">
-      <recent-messages :conversationList="userConversations"></recent-messages>
+      <recent-messages :conversationList="userConversations"/>
     </div>
   </div>
 </template>

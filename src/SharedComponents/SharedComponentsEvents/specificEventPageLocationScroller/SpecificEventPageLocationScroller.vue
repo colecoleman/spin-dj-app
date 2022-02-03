@@ -4,7 +4,7 @@
     @select-button-one="confirmRemoveLocation"
     @select-button-two="toggleRemoveLocation"
     @close-modal="toggleRemoveLocation"
-  ></two-button-dialog-modal>
+  />
   <base-card
     :icon="SVGs.LocationMarkerSVG"
     title="Locations"

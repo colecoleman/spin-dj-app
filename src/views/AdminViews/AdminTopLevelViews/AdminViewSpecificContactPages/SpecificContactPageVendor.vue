@@ -3,7 +3,7 @@
     v-if="popupOpen === 'send-email'"
     :contact="contact"
     @closeWindow="togglePopup"
-  ></popup-email-composition>
+  />
   <!-- <vendor-page-referral-popup
     v-if="referPopupOpen && !emailPopupOpen && !notesPopupOpen"
     :vendor="contact"
@@ -11,14 +11,14 @@
   ></vendor-page-referral-popup> -->
   <section>
     <div id="contact-card">
-      <contact-card-person :contact="contact"></contact-card-person>
+      <contact-card-person :contact="contact" />
     </div>
     <div id="company-card">
       <contact-card-company
         :contact="contact"
         v-if="contact"
         :icon="SVGs.PersonSVG"
-      ></contact-card-company>
+      />
     </div>
     <div id="messages">
       <base-card
@@ -44,7 +44,7 @@
         :dropdown="dropdown"
         @button-clicked="togglePopup"
         @dropdown-button-clicked="togglePopup"
-      ></four-button-bar-with-drop-down>
+      />
     </div>
 
     <div id="upcoming-events">
@@ -52,17 +52,17 @@
         :events="events"
         :pastEvents="pastEvents"
         v-if="!eventAssignmentOpen && eventsLoaded"
-      ></upcoming-events>
+      />
       <contact-page-events-assignment
         v-if="eventAssignmentOpen"
         :events="events"
         :contact="contact"
         :icon="SVGs.CalendarSVG"
         @event-assignment-toggle="toggleEventAssignment()"
-      ></contact-page-events-assignment>
+      />
     </div>
     <div id="to-do">
-      <contact-page-to-do-list :contact="contact"></contact-page-to-do-list>
+      <contact-page-to-do-list :contact="contact" />
     </div>
     <div id="automation">
       <automation-list
@@ -72,7 +72,7 @@
         :id="$route.params.id"
         @automation-deleted="deleteAutomation"
         @automation-approved="approveAutomation"
-      ></automation-list>
+      />
     </div>
     <div id="notes">
       <contact-page-notes :contact="contact" />

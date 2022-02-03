@@ -4,7 +4,7 @@
     @select-button-one="removeContact"
     @select-button-two="toggleRemoveContact"
     @close-modal="toggleRemoveContact"
-  ></two-button-dialog-modal>
+  />
   <base-card
     :icon="SVGs.GroupPeopleSVG"
     title="Event Contacts"
@@ -26,7 +26,7 @@
             :contact="contact"
             :id="`${index + '-card'}`"
             @initiate-remove-contact="initiateRemoveContact(contact, index)"
-          ></event-page-contact-carousel-item>
+          />
         </div>
         <img @click="scrollToNextElement()" :src="SVGs.RightArrowSVG" alt="" />
       </div>
