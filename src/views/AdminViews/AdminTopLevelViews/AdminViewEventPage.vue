@@ -8,13 +8,13 @@
       :invoice="event.invoice"
       :event="event"
       :client="client"
-      v-if="invoiceOpen"
-      @close-popup="closePopup()"
+      v-if="popupOpen === 'invoice'"
+      @close-popup="togglePopup"
     ></invoice-popup>
     <popup-modal
       title="Make Payment"
-      v-if="paymentModalOpen"
-      @close-popup="closePopup()"
+      v-if="popupOpen === 'payment'"
+      @close-popup="togglePopup"
     >
       <template v-slot:window>
         <event-make-payment
@@ -25,8 +25,8 @@
     </popup-modal>
     <popup-modal
       title="Edit Products"
-      v-if="editProductsModalOpen"
-      @close-popup="closePopup()"
+      v-if="popupOpen === 'edit-products'"
+      @close-popup="togglePopup"
     >
       <template v-slot:window>
         <event-edit-products
@@ -38,24 +38,24 @@
       </template>
     </popup-modal>
     <forms-popup
-      v-if="formsOpen"
-      @close-popup="closePopup()"
+      v-if="popupOpen === 'forms'"
+      @close-popup="togglePopup"
       @add-form-to-event="addFormToEvent"
       @delete-form="deleteForm"
       :forms="event.forms"
       :eventId="event.userId"
     ></forms-popup>
     <contract-popup
-      v-if="contractOpen"
-      @close-popup="closePopup()"
+      v-if="popupOpen === 'contract'"
+      @close-popup="togglePopup"
       :contracts="event.contracts"
       :eventId="event.userId"
     ></contract-popup>
     <two-button-dialog-modal
-      v-if="deleteEventOpen"
+      v-if="popupOpen === 'delete-event'"
       @select-button-one="confirmDeleteEvent()"
-      @select-button-two="closePopup()"
-      @close-modal="closePopup()"
+      @select-button-two="togglePopup"
+      @close-modal="togglePopup"
     ></two-button-dialog-modal>
     <section>
       <div id="contact-card">
@@ -76,6 +76,7 @@
         <four-button-bar-with-drop-down
           :buttons="buttons"
           :dropdown="dropdown"
+          @button-clicked="togglePopup"
         ></four-button-bar-with-drop-down>
       </div>
       <div id="event-information">
@@ -143,15 +144,15 @@ export default {
       buttons: [
         {
           title: "View Forms",
-          action: this.openForms,
+          parameter: "forms",
         },
         {
           title: "View Invoice",
-          action: this.openInvoice,
+          parameter: "invoice",
         },
         {
           title: "View Contract",
-          action: this.openContract,
+          parameter: "contract",
         },
       ],
 
@@ -176,13 +177,7 @@ export default {
           },
         ],
       },
-      deleteEventOpen: false,
-      backdropOpen: false,
-      contractOpen: false,
-      paymentModalOpen: false,
-      editProductsModalOpen: false,
-      invoiceOpen: false,
-      formsOpen: false,
+      popupOpen: null,
     };
   },
   computed: {
@@ -203,26 +198,22 @@ export default {
     },
   },
   methods: {
-    openForms() {
-      this.formsOpen = true;
-      this.backdropOpen = true;
+    togglePopup(popup) {
+      if (this.popupOpen !== null) {
+        this.popupOpen = null;
+      } else {
+        this.popupOpen = popup;
+      }
     },
-    openInvoice() {
-      this.invoiceOpen = true;
-      this.backdropOpen = true;
-    },
-    openContract() {
-      this.contractOpen = true;
-      this.backdropOpen = true;
-    },
+
     deleteEvent() {
-      this.deleteEventOpen = true;
+      this.togglePopup("delete-event");
     },
     processPayment() {
-      this.paymentModalOpen = true;
+      this.togglePopup("payment");
     },
     editProducts() {
-      this.editProductsModalOpen = true;
+      this.togglePopup("edit-products");
     },
     async confirmDeleteEvent() {
       let contacts = [...this.contacts];
@@ -253,15 +244,7 @@ export default {
       await this.$store.dispatch("deleteEvent", this.event.userId);
       this.$router.push("/admin/dashboard");
     },
-    closePopup() {
-      this.contractOpen = false;
-      this.invoiceOpen = false;
-      this.formsOpen = false;
-      this.backdropOpen = false;
-      this.deleteEventOpen = false;
-      this.paymentModalOpen = false;
-      this.editProductsModalOpen = false;
-    },
+
     addFormToEvent(form) {
       this.event.forms.push(_.cloneDeep(form));
       let payload = {

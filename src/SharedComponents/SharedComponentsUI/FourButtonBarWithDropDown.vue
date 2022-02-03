@@ -5,7 +5,9 @@
         <div class="button-div" v-for="(button, index) in buttons" :key="index">
           <button-standard-with-icon
             :text="button.title"
-            @click="button.action"
+            @click="
+              button.action ? button.action : buttonClicked(button.parameter)
+            "
           ></button-standard-with-icon>
         </div>
 
@@ -32,6 +34,12 @@ export default {
     ButtonWithDropDownSelections,
     ButtonStandardWithIcon,
   },
+  methods: {
+    buttonClicked(parameter) {
+      this.$emit("button-clicked", parameter);
+    },
+  },
+  emits: ["button-clicked"],
   props: ["buttons", "dropdown"],
 };
 </script>

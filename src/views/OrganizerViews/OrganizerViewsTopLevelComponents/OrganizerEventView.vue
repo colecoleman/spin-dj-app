@@ -1,22 +1,21 @@
 <template>
   <div v-if="event" id="div-wrapper">
-    <backdrop v-if="popupOpen" @click="togglePopup()"></backdrop>
     <invoice-popup
       :invoice="event.invoice"
       :event="event"
       :client="client"
       v-if="popupOpen === 'invoice'"
-      @close-popup="togglePopup()"
+      @close-popup="togglePopup"
     ></invoice-popup>
     <forms-popup
       v-if="popupOpen === 'forms'"
-      @close-popup="togglePopup()"
+      @close-popup="togglePopup"
       :forms="event.forms"
       :eventId="event.userId"
     ></forms-popup>
     <contract-popup
       v-if="popupOpen === 'contract'"
-      @close-popup="togglePopup()"
+      @close-popup="togglePopup"
       :contracts="event.contracts"
       :eventId="event.userId"
     ></contract-popup>
@@ -35,6 +34,7 @@
       <div id="button-bar">
         <four-button-bar-with-drop-down
           :buttons="buttons"
+          @button-clicked="togglePopup"
         ></four-button-bar-with-drop-down>
       </div>
       <div id="location-scroller">
@@ -75,7 +75,6 @@ import RecentMessages from "../../../SharedComponents/SharedComponentsMessaging/
 import EventPageContactCard from "../../../SharedComponents/SharedComponentsEvents/EventPageContactCard.vue";
 import EventPageContactCarousel from "../../../SharedComponents/SharedComponentsEvents/eventPageContactCarousel/EventPageContactCarousel.vue";
 import SpecificEventPageLocationScroller from "../../../SharedComponents/SharedComponentsEvents/specificEventPageLocationScroller/SpecificEventPageLocationScroller.vue";
-import Backdrop from "../../../SharedComponents/SharedComponentsUI/Backdrop.vue";
 import EventMakePaymentCard from "../../../SharedComponents/SharedComponentsEvents/EventMakePayment/EventMakePaymentCard.vue";
 import FormsPopup from "../../../SharedComponents/SharedComponentsEvents/FormsPopup.vue";
 import InvoicePopup from "../../../SharedComponents/SharedComponentsEvents/InvoicePopup.vue";
@@ -98,15 +97,15 @@ export default {
       buttons: [
         {
           title: "View Forms",
-          action: this.openForms,
+          parameter: "forms",
         },
         {
           title: "View Invoice",
-          action: this.openInvoice,
+          parameter: "invoice",
         },
         {
           title: "View Contract",
-          action: this.openContract,
+          parameter: "contract",
         },
       ],
       popupOpen: null,
@@ -183,22 +182,11 @@ export default {
     finalPaymentDueDate: helpers.finalPaymentDueDate,
     balanceOutstanding: helpers.balanceOutstanding,
     total: helpers.total,
-    openForms() {
-      this.togglePopup("forms");
-    },
-    openInvoice() {
-      this.togglePopup("invoice");
-    },
-    openContract() {
-      this.togglePopup("contract");
-    },
     togglePopup(popup) {
       if (this.popupOpen !== null) {
         this.popupOpen = null;
-        this.backdropOpen = true;
       } else {
         this.popupOpen = popup;
-        this.backdropOpen = true;
       }
     },
   },
@@ -242,7 +230,6 @@ export default {
     SpecificEventPageLocationScroller,
     EventPageAlerts,
     EventMakePaymentCard,
-    Backdrop,
     InvoicePopup,
     FormsPopup,
     ContractPopup,

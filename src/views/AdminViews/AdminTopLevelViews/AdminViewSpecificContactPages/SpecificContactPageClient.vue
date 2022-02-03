@@ -1,13 +1,13 @@
 <template>
   <popup-email-composition
-    v-if="emailPopupOpen"
+    v-if="popupOpen === 'send-email'"
     :contact="contact"
-    @close-window="closePopups()"
+    @close-window="togglePopup()"
   />
   <popup-modal
     title="Reset User Password"
-    @close-popup="closePopups()"
-    v-if="resetPasswordPopupOpen"
+    @close-popup="togglePopup()"
+    v-if="popupOpen === 'reset-password'"
   >
     <template v-slot:window>
       <div class="reset-user-password-wrapper">
@@ -59,7 +59,11 @@
     </div>
 
     <div id="button-bar">
-      <four-button-bar-with-drop-down :buttons="buttons" :dropdown="dropdown" />
+      <four-button-bar-with-drop-down
+        :buttons="buttons"
+        :dropdown="dropdown"
+        @button-clicked="togglePopup"
+      />
     </div>
 
     <div id="upcoming-events">
@@ -122,11 +126,11 @@ export default {
       conversation: undefined,
       newUserPassword: undefined,
       eventConversation: [],
+      popupOpen: null,
       buttons: [
         {
           title: "Send Email",
-          action: this.openEmailComposition,
-          icon: SVGs.EmailSVG,
+          parameter: "send-email",
         },
       ],
       dropdown: {
@@ -155,14 +159,14 @@ export default {
     },
   },
   methods: {
-    openEmailComposition() {
-      this.emailPopupOpen = true;
+    togglePopup(popup) {
+      if (this.popupOpen !== null) {
+        this.popupOpen = null;
+      } else {
+        this.popupOpen = popup;
+      }
     },
-    closePopups() {
-      this.emailPopupOpen = false;
-      this.notesPopupOpen = false;
-      this.resetPasswordPopupOpen = false;
-    },
+
     initiateResetPassword() {
       this.resetPasswordPopupOpen = true;
     },
@@ -176,7 +180,7 @@ export default {
           userId: this.contact.userId,
         };
         await this.$store.dispatch("resetUserPassword", payload);
-        this.closePopups();
+        this.togglePopup();
       } else {
         this.newUserPasswordError = true;
       }

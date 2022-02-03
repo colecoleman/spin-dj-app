@@ -1,8 +1,8 @@
 <template>
   <popup-email-composition
-    v-if="emailPopupOpen && !notesPopupOpen"
+    v-if="popupOpen === 'send-email'"
     :contact="contact"
-    @cancel-send-email="closePopups()"
+    @cancel-send-email="togglePopup"
   ></popup-email-composition>
   <div id="section-wrapper">
     <div id="left-column">
@@ -26,6 +26,7 @@
         <four-button-bar-with-drop-down
           :buttons="buttons"
           :dropdown="dropdown"
+          @button-clicked="togglePopup"
         ></four-button-bar-with-drop-down>
       </div>
       <div id="box-five">

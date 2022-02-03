@@ -1,8 +1,8 @@
 <template>
   <popup-email-composition
-    v-if="emailPopupOpen && !notesPopupOpen"
+    v-if="popupOpen === 'send-email'"
     :contact="contact"
-    @closeWindow="closePopups()"
+    @closeWindow="togglePopup"
   ></popup-email-composition>
   <!-- <vendor-page-referral-popup
     v-if="referPopupOpen && !emailPopupOpen && !notesPopupOpen"
@@ -42,6 +42,7 @@
       <four-button-bar-with-drop-down
         :buttons="buttons"
         :dropdown="dropdown"
+        @button-clicked="togglePopup"
       ></four-button-bar-with-drop-down>
     </div>
 
@@ -97,6 +98,7 @@ export default {
     return {
       SVGs,
       eventAssignmentOpen: false,
+      popupOpen: null,
       contact: {},
       events: [],
       eventsLoaded: false,
@@ -106,7 +108,7 @@ export default {
       buttons: [
         {
           title: "Send Email",
-          action: this.openEmailComposition,
+          parameter: "send-email",
         },
         // {
         //   title: "Refer Vendor",
@@ -132,8 +134,6 @@ export default {
           // },
         ],
       },
-      emailPopupOpen: false,
-      // referPopupOpen: false,
     };
   },
   computed: {
@@ -142,19 +142,15 @@ export default {
     },
   },
   methods: {
-    openEmailComposition() {
-      this.emailPopupOpen = true;
-    },
-    toggleReferral() {
-      this.referPopupOpen = !this.referPopupOpen;
-    },
     toggleEventAssignment() {
       this.eventAssignmentOpen = !this.eventAssignmentOpen;
     },
-    closePopups() {
-      this.emailPopupOpen = false;
-      this.notesPopupOpen = false;
-      this.referPopupOpen = false;
+    togglePopup(popup) {
+      if (this.popupOpen !== null) {
+        this.popupOpen = null;
+      } else {
+        this.popupOpen = popup;
+      }
     },
     getConversations(conversations) {
       return conversations.map((x) => {

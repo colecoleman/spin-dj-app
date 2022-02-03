@@ -1,8 +1,8 @@
 <template>
   <popup-email-composition
-    v-if="emailPopupOpen && !notesPopupOpen"
+    v-if="popupOpen === 'send-email'"
     :contact="contact"
-    @closeWindow="closePopups()"
+    @closeWindow="togglePopup"
   ></popup-email-composition>
   <section>
     <div id="location-card">
@@ -19,6 +19,7 @@
       <four-button-bar-with-drop-down
         :buttons="buttons"
         :dropdown="dropdown"
+        @button-clicked="togglePopup"
       ></four-button-bar-with-drop-down>
     </div>
     <div id="upcoming-events">
@@ -67,10 +68,12 @@ export default {
       eventAssignmentOpen: false,
       location: undefined,
       contact: undefined,
+      popupOpen: null,
       buttons: [
         {
           title: "Send Email",
-          action: this.openEmailComposition,
+          // action: this.openEmailComposition,
+          parameter: "send-email",
         },
         // {
         //   title: "Assign Event",
@@ -87,7 +90,6 @@ export default {
           },
         ],
       },
-      emailPopupOpen: false,
     };
   },
   async created() {
@@ -106,15 +108,18 @@ export default {
     }
   },
   methods: {
+    togglePopup(popup) {
+      if (this.popupOpen !== null) {
+        this.popupOpen = null;
+      } else {
+        this.popupOpen = popup;
+      }
+    },
     openEmailComposition() {
       this.emailPopupOpen = true;
     },
     toggleEventAssignment() {
       this.eventAssignmentOpen = !this.eventAssignmentOpen;
-    },
-    closePopups() {
-      this.emailPopupOpen = false;
-      this.notesPopupOpen = false;
     },
   },
 

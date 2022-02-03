@@ -1,6 +1,5 @@
 <template>
   <div v-if="event" id="div-wrapper">
-    <backdrop v-if="popupOpen" @click="togglePopup()"></backdrop>
     <forms-popup
       v-if="popupOpen === 'forms'"
       @close-popup="togglePopup()"
@@ -22,6 +21,7 @@
       <div id="button-bar">
         <four-button-bar-with-drop-down
           :buttons="buttons"
+          @button-clicked="togglePopup"
         ></four-button-bar-with-drop-down>
       </div>
       <div id="location-scroller">
@@ -57,12 +57,10 @@ import RecentMessages from "../../../SharedComponents/SharedComponentsMessaging/
 import EventPageContactCard from "../../../SharedComponents/SharedComponentsEvents/EventPageContactCard.vue";
 import EventPageContactCarousel from "../../../SharedComponents/SharedComponentsEvents/eventPageContactCarousel/EventPageContactCarousel.vue";
 import SpecificEventPageLocationScroller from "../../../SharedComponents/SharedComponentsEvents/specificEventPageLocationScroller/SpecificEventPageLocationScroller.vue";
-import Backdrop from "../../../SharedComponents/SharedComponentsUI/Backdrop.vue";
 import FormsPopup from "../../../SharedComponents/SharedComponentsEvents/FormsPopup.vue";
 import FourButtonBarWithDropDown from "../../../SharedComponents/SharedComponentsUI/FourButtonBarWithDropDown.vue";
 import EventPageAlerts from "../../../SharedComponents/SharedComponentsEvents/EventPageAlerts.vue";
 import SVGs from "../../../assets/SVGs/svgIndex.js";
-import helpers from "../../../helpers.js";
 
 export default {
   data() {
@@ -77,7 +75,7 @@ export default {
       buttons: [
         {
           title: "View Forms",
-          action: this.openForms,
+          parameter: "forms",
         },
       ],
       popupOpen: null,
@@ -94,26 +92,11 @@ export default {
     },
   },
   methods: {
-    finalPaymentDueDate: helpers.finalPaymentDueDate,
-    balanceOutstanding: helpers.balanceOutstanding,
-    total: helpers.total,
-    openForms() {
-      this.togglePopup("forms");
-    },
-    openInvoice() {
-      this.togglePopup("invoice");
-    },
-    openContract() {
-      this.togglePopup("contract");
-    },
     togglePopup(popup) {
-      console.log(popup);
       if (this.popupOpen !== null) {
         this.popupOpen = null;
-        this.backdropOpen = true;
       } else {
         this.popupOpen = popup;
-        this.backdropOpen = true;
       }
     },
   },
@@ -163,7 +146,6 @@ export default {
     EventPageContactCarousel,
     SpecificEventPageLocationScroller,
     EventPageAlerts,
-    Backdrop,
     FormsPopup,
     FourButtonBarWithDropDown,
     // TwoButtonDialogModal,

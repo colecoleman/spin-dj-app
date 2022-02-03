@@ -1,9 +1,8 @@
 <template>
   <div v-if="event" id="div-wrapper">
-    <backdrop v-if="popupOpen" @click="togglePopup()"></backdrop>
     <forms-popup
       v-if="popupOpen === 'forms'"
-      @close-popup="togglePopup()"
+      @close-popup="togglePopup"
       :forms="event.forms"
       :eventId="event.userId"
     ></forms-popup>
@@ -21,6 +20,7 @@
       <div id="button-bar">
         <four-button-bar-with-drop-down
           :buttons="buttons"
+          @button-clicked="togglePopup"
         ></four-button-bar-with-drop-down>
       </div>
       <div id="location-scroller">
@@ -56,7 +56,6 @@ import RecentMessages from "../../../SharedComponents/SharedComponentsMessaging/
 import EventPageContactCard from "../../../SharedComponents/SharedComponentsEvents/EventPageContactCard.vue";
 import EventPageContactCarousel from "../../../SharedComponents/SharedComponentsEvents/eventPageContactCarousel/EventPageContactCarousel.vue";
 import SpecificEventPageLocationScroller from "../../../SharedComponents/SharedComponentsEvents/specificEventPageLocationScroller/SpecificEventPageLocationScroller.vue";
-import Backdrop from "../../../SharedComponents/SharedComponentsUI/Backdrop.vue";
 import FormsPopup from "../../../SharedComponents/SharedComponentsEvents/FormsPopup.vue";
 import FourButtonBarWithDropDown from "../../../SharedComponents/SharedComponentsUI/FourButtonBarWithDropDown.vue";
 import EventPageAlerts from "../../../SharedComponents/SharedComponentsEvents/EventPageAlerts.vue";
@@ -76,7 +75,8 @@ export default {
       buttons: [
         {
           title: "View Forms",
-          action: this.openForms,
+          // action: this.togglePopup,
+          parameter: "forms",
         },
       ],
       popupOpen: null,
@@ -96,27 +96,18 @@ export default {
     finalPaymentDueDate: helpers.finalPaymentDueDate,
     balanceOutstanding: helpers.balanceOutstanding,
     total: helpers.total,
-    openForms() {
-      this.togglePopup("forms");
-    },
     togglePopup(popup) {
-      console.log(popup);
       if (this.popupOpen !== null) {
         this.popupOpen = null;
-        this.backdropOpen = true;
       } else {
         this.popupOpen = popup;
-        this.backdropOpen = true;
       }
     },
   },
 
   async created() {
     if (!this.$store.state.user) {
-      await this.$store.dispatch("setUser").then((res) => {
-        console.log(this.$store.state.user);
-        console.log(res);
-      });
+      await this.$store.dispatch("setUser");
     }
     await this.$store
       .dispatch("getEvent", this.$route.params.eventId)
@@ -152,7 +143,6 @@ export default {
     EventPageContactCarousel,
     SpecificEventPageLocationScroller,
     EventPageAlerts,
-    Backdrop,
     FormsPopup,
     FourButtonBarWithDropDown,
     // TwoButtonDialogModal,

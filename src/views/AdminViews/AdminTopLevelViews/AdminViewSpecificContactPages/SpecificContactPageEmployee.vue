@@ -1,13 +1,13 @@
 <template>
   <popup-email-composition
-    v-if="emailPopupOpen && !notesPopupOpen"
+    v-if="popupOpen === 'send-email'"
     :contact="contact"
-    @close-window="closePopups"
+    @close-window="togglePopup"
   ></popup-email-composition>
   <employee-page-availability-manager
-    v-if="availabilityManagerOpen"
+    v-if="popupOpen === 'availability-manager'"
     :employee="contact"
-    @close-popup="closePopups()"
+    @close-popup="togglePopup"
   ></employee-page-availability-manager>
   <section>
     <div id="contact-card">
@@ -26,6 +26,7 @@
     <div id="button-bar">
       <four-button-bar-with-drop-down
         :buttons="buttons"
+        @button-clicked="togglePopup"
         :dropdown="dropdown"
       ></four-button-bar-with-drop-down>
     </div>
@@ -92,10 +93,11 @@ export default {
       eventAssignmentOpen: false,
       conversation: undefined,
       eventConversation: [],
+      popupOpen: null,
       buttons: [
         {
           title: "Send Email",
-          action: this.openEmailComposition,
+          parameter: "send-email",
         },
         {
           title: "Assign Events",
@@ -103,7 +105,7 @@ export default {
         },
         {
           title: "Availability",
-          action: this.openAvailabilityManager,
+          parameter: "availability-manager",
         },
       ],
       dropdown: {
@@ -121,8 +123,6 @@ export default {
           // },
         ],
       },
-      emailPopupOpen: false,
-      notesPopupOpen: false,
       availabilityManagerOpen: false,
     };
   },
@@ -132,20 +132,16 @@ export default {
     },
   },
   methods: {
-    openEmailComposition() {
-      this.emailPopupOpen = true;
+    togglePopup(popup) {
+      if (this.popupOpen !== null) {
+        this.popupOpen = null;
+      } else {
+        this.popupOpen = popup;
+      }
     },
+
     toggleEventAssignment() {
       this.eventAssignmentOpen = !this.eventAssignmentOpen;
-    },
-    openAvailabilityManager() {
-      this.availabilityManagerOpen = true;
-    },
-    closePopups() {
-      console.log("hi");
-      this.emailPopupOpen = false;
-      this.calendarUtilityOpen = false;
-      this.availabilityManagerOpen = false;
     },
     getConversations(conversations) {
       return conversations.map((x) => {

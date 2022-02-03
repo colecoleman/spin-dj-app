@@ -1,8 +1,8 @@
 <template>
   <popup-email-composition
-    v-if="emailPopupOpen && !notesPopupOpen"
+    v-if="popupOpen === 'send-email'"
     :contact="contact"
-    @closeWindow="toggleEmailComposition()"
+    @closeWindow="togglePopup"
   ></popup-email-composition>
   <section>
     <div id="contact-card">
@@ -29,6 +29,7 @@
       <four-button-bar-with-drop-down
         :buttons="buttons"
         :dropdown="dropdown"
+        @button-clicked="togglePopup"
       ></four-button-bar-with-drop-down>
     </div>
     <div id="upcoming-events">
@@ -94,10 +95,11 @@ export default {
       eventsLoaded: false,
       conversation: undefined,
       eventConversation: [],
+      popupOpen: null,
       buttons: [
         {
           title: "Send Email",
-          action: this.toggleEmailComposition,
+          parameter: "send-email",
         },
 
         {
@@ -115,8 +117,6 @@ export default {
           },
         ],
       },
-      emailPopupOpen: false,
-      notesPopupOpen: false,
     };
   },
   computed: {
@@ -125,11 +125,15 @@ export default {
     },
   },
   methods: {
+    togglePopup(popup) {
+      if (this.popupOpen !== null) {
+        this.popupOpen = null;
+      } else {
+        this.popupOpen = popup;
+      }
+    },
     toggleEventAssignment() {
       this.eventAssignmentOpen = !this.eventAssignmentOpen;
-    },
-    toggleEmailComposition() {
-      this.emailPopupOpen = !this.emailPopupOpen;
     },
     getConversations(conversations) {
       return conversations.map((x) => {
