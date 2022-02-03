@@ -1150,7 +1150,37 @@ const store = createStore({
       state.businessSettings.identity.businessLogo = payload;
     },
     adminConfigPaymentsSetDepositAmount(state, payload) {
-      state.businessSettings.payments.depositAmount = payload;
+      if (!state.businessSettings.payments.deposit) {
+        Object.defineProperty(state.businessSettings.payments, "deposit", {
+          enumerable: true,
+          writable: true,
+          value: { amount: payload },
+        });
+      } else {
+        state.businessSettings.payments.deposit.amount = payload;
+      }
+    },
+    adminConfigPaymentsSetDepositTerminology(state, payload) {
+      if (!state.businessSettings.payments.deposit) {
+        Object.defineProperty(state.businessSettings.payments, "deposit", {
+          enumerable: true,
+          writable: true,
+          value: { terminology: payload },
+        });
+      } else {
+        state.businessSettings.payments.deposit.terminology = payload;
+      }
+    },
+    adminConfigPaymentsSetDepositType(state, payload) {
+      if (!state.businessSettings.payments.deposit) {
+        Object.defineProperty(state.businessSettings.payments, "type", {
+          enumerable: true,
+          writable: true,
+          value: { type: payload },
+        });
+      } else {
+        state.businessSettings.payments.deposit.type = payload;
+      }
     },
     adminConfigPaymentsSetFinalPaymentIncrement(state, payload) {
       if (state.businessSettings.payments.finalPayment) {

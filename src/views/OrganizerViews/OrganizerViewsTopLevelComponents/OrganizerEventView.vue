@@ -116,6 +116,37 @@ export default {
     client() {
       return this.clients[0];
     },
+    businessSettings() {
+      return this.$store.state.businessSettings;
+    },
+    depositAmount() {
+      if (this.businessSettings.payments.deposit) {
+        if (this.businessSettings.payments.deposit.type === "percentage") {
+          return (
+            this.businessSettings.payments.deposit.amount *
+            0.01 *
+            this.total(this.event.invoice, this.event.data)
+          );
+        } else {
+          return this.businessSettings.payments.deposit.amount;
+        }
+      } else {
+        return this.businessSettings.payments.depositAmount;
+      }
+    },
+    depositTerminology() {
+      if (this.businessSettings.payments.deposit) {
+        console.log("we have deposit stuff");
+        if (this.businessSettings.payments.deposit.terminology) {
+          console.log("we have terminology");
+          return this.businessSettings.payments.deposit.terminology;
+        } else {
+          return "deposit";
+        }
+      } else {
+        return "deposit";
+      }
+    },
     eventAlerts() {
       let alerts = [];
       if (this.event.contracts.some((e) => e.status !== "signed")) {
@@ -127,10 +158,7 @@ export default {
       let today = new Date();
       if (
         today >
-          this.finalPaymentDueDate(
-            this.event.data,
-            this.$store.state.businessSettings
-          ) &&
+          this.finalPaymentDueDate(this.event.data, this.businessSettings) &&
         this.balanceOutstanding(this.event.invoice, this.event.data) > 0
       ) {
         alerts.push({
@@ -141,11 +169,11 @@ export default {
       if (
         this.total(this.event.invoice, this.event.data) -
           this.balanceOutstanding(this.event.invoice, this.event.data) <
-        this.$store.state.businessSettings.payments.depositAmount * 100
+        this.depositAmount * 100
       ) {
         alerts.push({
           urgency: "high",
-          text: "Deposit Unpaid",
+          text: `${this.depositTerminology} Unpaid`,
         });
       }
       return alerts;
@@ -165,7 +193,6 @@ export default {
       this.togglePopup("contract");
     },
     togglePopup(popup) {
-      console.log(popup);
       if (this.popupOpen !== null) {
         this.popupOpen = null;
         this.backdropOpen = true;
@@ -178,10 +205,7 @@ export default {
 
   async created() {
     if (!this.$store.state.user) {
-      await this.$store.dispatch("setUser").then((res) => {
-        console.log(this.$store.state.user);
-        console.log(res);
-      });
+      await this.$store.dispatch("setUser");
     }
     await this.$store
       .dispatch("getEvent", this.$route.params.eventId)

@@ -4,8 +4,18 @@
       <div class="payments-wrapper">
         <div class="payments-item">
           <h4>Deposit:</h4>
+          <p>Preferred Terminology:</p>
+          <select v-model="depositTerminology">
+            <option value="deposit">Deposit</option>
+            <option value="retainer">Retainer</option>
+          </select>
           <p>Deposit required to reserve services:</p>
           <input type="number" v-model="depositAmount" />
+          <p>Type:</p>
+          <select v-model="depositType">
+            <option value="percentage">Percentage</option>
+            <option value="dollar">Dollar</option>
+          </select>
         </div>
         <div class="payments-item">
           <h4>Final Payment Due:</h4>
@@ -104,7 +114,9 @@ export default {
     },
     depositAmount: {
       get() {
-        if (this.paymentSettings.depositAmount) {
+        if (this.paymentSettings.deposit) {
+          return this.paymentSettings.deposit.amount;
+        } else if (this.paymentSettings.depositAmount) {
           return this.paymentSettings.depositAmount;
         } else {
           return 0;
@@ -112,6 +124,33 @@ export default {
       },
       set(val) {
         return this.$store.commit("adminConfigPaymentsSetDepositAmount", val);
+      },
+    },
+    depositTerminology: {
+      get() {
+        if (this.paymentSettings.deposit) {
+          return this.paymentSettings.deposit.terminology;
+        } else {
+          return "deposit";
+        }
+      },
+      set(val) {
+        return this.$store.commit(
+          "adminConfigPaymentsSetDepositTerminology",
+          val
+        );
+      },
+    },
+    depositType: {
+      get() {
+        if (this.paymentSettings.deposit) {
+          return this.paymentSettings.deposit.type;
+        } else {
+          return "dollar";
+        }
+      },
+      set(val) {
+        return this.$store.commit("adminConfigPaymentsSetDepositType", val);
       },
     },
 
