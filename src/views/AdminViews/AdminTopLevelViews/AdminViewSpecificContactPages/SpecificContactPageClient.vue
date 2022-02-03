@@ -150,35 +150,6 @@ export default {
         this.popupOpen = popup;
       }
     },
-    async confirmDeleteContact() {
-      if (this.contact.associatedEvents) {
-        this.contact.associatedEvents.forEach((event) => {
-          let eventObject;
-          this.$store.dispatch("adminGetEvent", event).then(
-            (res) => {
-              eventObject = res.data.Item;
-              let index = eventObject.contacts.indexOf(this.contact.userId);
-              let payload = {
-                eventId: eventObject.userId,
-                variable: "contacts",
-                value: index,
-                operation: "removeFromList",
-              };
-              this.$store.dispatch("editEvent", payload);
-            },
-            (error) => {
-              console.log(error);
-            }
-          );
-        });
-      }
-      let deletePayload = {
-        category: this.category,
-        id: this.contact.userId,
-      };
-      this.$store.dispatch("deleteUser", deletePayload);
-      this.popupOpen = null;
-    },
     getConversations(conversations) {
       return conversations.map((x) => {
         x = this.$store.dispatch("getThreadParticipants", x).then((res) => {
