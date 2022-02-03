@@ -32,7 +32,10 @@
           {{ formatTime(event.data.endTime) }}
         </p>
       </div>
-      <div id="event-invoice-metadata">
+      <div
+        id="event-invoice-metadata"
+        v-if="userRole === 'admin' || userRole === 'client'"
+      >
         <p>
           {{ formatPrice(balanceOutstanding(event.invoice, event.data)) }}
           Outstanding
@@ -54,6 +57,17 @@ export default {
       primaryLocation: undefined,
       matchedClient: undefined,
     };
+  },
+  computed: {
+    userRole() {
+      let user = this.$store.state.user;
+      console.log(user);
+      if (user.tenantId === user.userId) {
+        return "admin";
+      } else {
+        return user.role;
+      }
+    },
   },
   methods: {
     formatDate: helpers.formatDate,

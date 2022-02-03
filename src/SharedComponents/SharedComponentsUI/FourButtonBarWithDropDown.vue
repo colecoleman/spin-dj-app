@@ -6,7 +6,7 @@
           <button-standard-with-icon
             :text="button.title"
             @click="
-              button.action ? button.action : buttonClicked(button.parameter)
+              button.action ? button.action() : buttonClicked(button.parameter)
             "
           />
         </div>
