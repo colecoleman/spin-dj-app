@@ -131,6 +131,7 @@ export default {
     },
     userRole() {
       let user = this.$store.state.user;
+      console.log(user);
       if (user.tenantId === user.userId) {
         return "admin";
       } else {
@@ -140,9 +141,11 @@ export default {
   },
   created() {
     if (this.pastEvents) {
-      this.pastEventsCopy = this.pastEvents;
+      this.pastEventsCopy = [...this.pastEvents];
     }
     console.log(this.events[0]);
+    console.log(this.events);
+    console.log(this.pastEvents);
   },
   methods: {
     toggleSortMenuOpened() {
