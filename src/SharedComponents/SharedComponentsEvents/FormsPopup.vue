@@ -147,7 +147,9 @@
         v-for="(formItem, formItemIndex) in form.fields"
         :key="formItemIndex"
       >
-        <h4>{{ formItem.name }}</h4>
+        <h4 v-if="firstDuplicatedForm(form, formItem) === formItemIndex">
+          {{ formItem.name }}
+        </h4>
         <div class="field-container">
           <div
             class="field-item"
