@@ -306,6 +306,7 @@ export default {
         name: undefined,
         inputQuantity: undefined,
         fields: [],
+        duplicable: false,
       };
     },
     initiateSaveAsFieldTemplate() {

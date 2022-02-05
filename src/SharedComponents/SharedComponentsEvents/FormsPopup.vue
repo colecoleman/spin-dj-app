@@ -67,7 +67,9 @@
               v-for="(formItem, formItemIndex) in form.fields"
               :key="formItemIndex"
             >
-              <h5>{{ formItem.name }}</h5>
+              <h5 v-if="firstDuplicatedForm(form, formItem) === formItemIndex">
+                {{ formItem.name }}
+              </h5>
               <div class="field-container">
                 <div
                   class="field-item"
@@ -114,12 +116,9 @@
               </div>
               <div class="duplicate-button-wrapper">
                 <button-standard-with-icon
-                  v-if="
-                    formItem.duplicable &&
-                    formItemIndex === form.fields.length - 1
-                  "
+                  v-if="formItem.duplicable"
                   text="Duplicate"
-                  @click="duplicateField(form, formItem)"
+                  @click="duplicateField(form, formItem, formItemIndex)"
                 />
               </div>
             </div>
@@ -239,8 +238,9 @@ export default {
       };
       this.$store.dispatch("editEvent", payload);
     },
-    duplicateField(form, fieldItem) {
-      form.fields.push(_.cloneDeep(fieldItem));
+    duplicateField(form, fieldItem, formItemIndex) {
+      form.fields.splice(formItemIndex, 0, _.cloneDeep(fieldItem));
+      form.fields[formItemIndex].duplicable = false;
       console.log(fieldItem);
       console.log(this.forms);
     },
@@ -267,6 +267,12 @@ export default {
     deleteForm() {
       this.$emit("deleteForm", this.formDeleteIndex);
       this.closeDeleteForm();
+    },
+    firstDuplicatedForm(form, field) {
+      console.log(form.fields[0].name);
+      console.log(field.name);
+      console.log(form.fields.findIndex((x) => x.name == field.name));
+      return form.fields.findIndex((x) => x.name == field.name);
     },
   },
   emits: ["closePopup", "addFormToEvent", "deleteForm"],
