@@ -80,6 +80,13 @@
                 </p>
                 <input type="checkbox" v-model="consentCheckBoxConfirm" />
               </div>
+              <p class="error" v-if="consentCheckBoxConfirmError">
+                Check that the checkbox above is checked!
+              </p>
+              <button-standard-with-icon
+                text="Submit and Sign"
+                @click="submitESignature"
+              ></button-standard-with-icon>
             </div>
             <div v-if="contract.status === 'signed'">
               <div class="contract-item">
@@ -172,6 +179,7 @@ export default {
       eSignName: undefined,
       paperSignInstructionsOpen: false,
       consentCheckBoxConfirm: false,
+      consentCheckBoxConfirmError: false,
     };
   },
   computed: {
@@ -267,21 +275,25 @@ export default {
           console.log(res);
         });
       } else {
-        this.submittingSignature = true;
-        this.contract.signerName = this.eSignName;
-        this.contract.signerDate = new Date();
-        this.contract.signerUUID = this.$store.state.user.userId;
-        this.contract.status = "signed";
-        item[this.contractScroller] = this.contract;
-        payload = {
-          eventId: this.eventId,
-          contracts: item,
-        };
-        await this.$store.dispatch("clientSignContract", payload);
+        if (this.consentCheckBoxConfirm) {
+          this.consentCheckBoxConfirmError = false;
+          this.submittingSignature = true;
+          this.contract.signerName = this.eSignName;
+          this.contract.signerDate = new Date();
+          this.contract.signerUUID = this.$store.state.user.userId;
+          this.contract.status = "signed";
+          item[this.contractScroller] = this.contract;
+          payload = {
+            eventId: this.eventId,
+            contracts: item,
+          };
+          await this.$store.dispatch("clientSignContract", payload);
+          this.submittingSignature = false;
+          this.eSignStep = 0;
+        } else {
+          this.consentCheckBoxConfirmError = true;
+        }
       }
-
-      this.submittingSignature = false;
-      this.eSignStep = 0;
     },
     saveContact: helpers.saveElement,
     printContract: helpers.printElement,
@@ -388,6 +400,11 @@ export default {
   .contract-item > h5 {
     font-weight: 600;
     text-align: left;
+  }
+
+  .error {
+    color: red;
+    font-style: italic;
   }
 
   .contract-item > p {
