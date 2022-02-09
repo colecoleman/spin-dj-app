@@ -50,28 +50,15 @@ export default {
       return `https://api.spindj.io/calendar/${this.$store.state.user.tenantId}`;
     },
   },
-  emits: ["logo"],
   methods: {
     async copy() {
       this.copied = false;
       this.copyError = false;
-      await navigator.clipboard
-        .writeText(this.apiCalendarLink)
-        .promise()
-        .then(() => {
-          this.copied = true;
-        })
-        .catch(() => {
-          this.copyError = true;
-        });
+      await navigator.clipboard.writeText(this.apiCalendarLink);
+      this.copied = true;
     },
   },
   components: { TwoButtonDialogModal },
-  watch: {
-    subdomainField() {
-      this.subdomainAvailable = false;
-    },
-  },
 };
 </script>
 
