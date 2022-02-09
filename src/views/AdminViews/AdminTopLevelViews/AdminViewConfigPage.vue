@@ -36,6 +36,7 @@ import AdminViewConfigAutomations from "../AdminComponents/AdminConfigComponents
 import AdminViewConfigContracts from "../AdminComponents/AdminConfigComponents/AdminConfigCards/AdminViewConfigContracts.vue";
 import AdminViewConfigDiscounts from "../AdminComponents/AdminConfigComponents/AdminConfigCards/AdminViewConfigDiscounts.vue";
 import AdminViewConfigPayments from "../AdminComponents/AdminConfigComponents/AdminConfigCards/AdminViewConfigPayments.vue";
+import AdminViewConfigCalendar from "../AdminComponents/AdminConfigComponents/AdminConfigCards/AdminViewConfigCalendar.vue";
 
 export default {
   data() {
@@ -79,6 +80,10 @@ export default {
           display: "Payments",
           component: "AdminViewConfigPayments",
         },
+        Calendar: {
+          display: "Calendar",
+          component: "AdminViewConfigCalendar",
+        },
       },
     };
   },
@@ -121,6 +126,7 @@ export default {
     AdminViewConfigContracts,
     AdminViewConfigDiscounts,
     AdminViewConfigPayments,
+    AdminViewConfigCalendar,
   },
 };
 </script>
