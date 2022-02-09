@@ -1,20 +1,20 @@
 <template>
   <div class="single-event-item" v-if="event" :class="loading ? loading : ''">
-    <!-- <div id="client-event-identifier" v-if="matchedClient"> -->
-    <!-- <img :src="defaultProfilePicture" alt="" /> -->
-    <!-- <h5 id="client-name">
-        {{ matchedClient.given_name }} <br />
-        <span> {{ matchedClient.family_name }}</span>
-      </h5> -->
-    <!-- </div> -->
     <div class="event-location-identifier" v-if="primaryLocation">
       <h4 class="venue-name">{{ primaryLocation.name }}</h4>
+      <h4 class="venue-name">{{ primaryLocation.name }}</h4>
       <div class="event-address">
-        <p>{{ primaryLocation.address.streetAddress1 }}</p>
+        <p v-if="primaryLocation.address">
+          {{ primaryLocation.address.streetAddress1 }}
+        </p>
+        <p v-if="!primaryLocation.address">Unknown Location</p>
         <p v-if="primaryLocation.address.streetAddress2">
           {{ primaryLocation.address.streetAddress2 }}
         </p>
-        <p>{{ primaryLocation.address.cityStateZip }}</p>
+        <p v-if="primaryLocation.address">
+          {{ primaryLocation.address.cityStateZip }}
+        </p>
+        <p v-if="!primaryLocation.address">Unknown Location</p>
       </div>
     </div>
     <div id="event-metadata-identifier">
@@ -36,16 +36,13 @@
 </template>
 
 <script>
-import defaultProfilePicture from "../../assets/default-profile-picture.svg";
 import helpers from "../../helpers.js";
 
 export default {
   data() {
     return {
-      defaultProfilePicture,
       loading: true,
       primaryLocation: undefined,
-      matchedClient: undefined,
     };
   },
   methods: {
@@ -56,14 +53,17 @@ export default {
   },
   mounted() {
     this.loading = true;
-    this.$store.dispatch("getLocation", this.event.locations[0]).then((res) => {
-      if (res.Item) {
-        this.primaryLocation = res.Item;
-      }
-    });
-    this.$store.dispatch("getUser", this.event.contacts[0]).then((res) => {
-      this.matchedClient = res;
-    });
+    if (this.event.locations.length > 0) {
+      this.$store
+        .dispatch("getLocation", this.event.locations[0])
+        .then((res) => {
+          console.log(res);
+          if (res.Item) {
+            this.primaryLocation = res.Item;
+          }
+        });
+    }
+
     this.loading = false;
   },
   props: ["event", "first"],

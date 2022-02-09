@@ -2,9 +2,21 @@
   <div id="single-event-item" @click="routeToEvent()" v-if="loaded">
     <div class="event-location-identifier">
       <h4 class="venue-name">{{ location.name }}</h4>
+      <h4 class="venue-name">{{ location.name }}</h4>
       <div class="event-address">
-        <p>{{ location.address.streetAddress1 }}</p>
-        <p>{{ location.address.cityStateZip }}</p>
+        <p v-if="location.address">
+          {{ location.address.streetAddress1 }}
+        </p>
+        <p v-if="!location.address">Unknown Location</p>
+        <div v-if="location.address">
+          <p v-if="location.address.streetAddress2">
+            {{ location.address.streetAddress2 }}
+          </p>
+        </div>
+        <p v-if="location.address">
+          {{ location.address.cityStateZip }}
+        </p>
+        <p v-if="!location.address">Unknown Location</p>
       </div>
     </div>
     <div id="event-metadata-identifier">
@@ -44,18 +56,6 @@ export default {
     balanceOutstanding: helpers.balanceOutstanding,
     routeToEvent() {
       this.$router.push("events/" + this.event.id);
-    },
-  },
-  computed: {
-    matchedClient() {
-      let firstClient = this.event.associatedContacts.find(
-        (x) => x.role === "client"
-      );
-      let item = this.$store.state.contacts[`${firstClient.role + "s"}`].find(
-        (x) => x.id === firstClient.id
-      );
-      item.role = firstClient.role;
-      return item;
     },
   },
   props: ["event"],
