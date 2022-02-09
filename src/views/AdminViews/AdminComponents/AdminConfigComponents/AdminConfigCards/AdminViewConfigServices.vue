@@ -33,7 +33,7 @@
               <p>
                 <input
                   type="checkbox"
-                  :id="form.id"
+                  :id="'service-form-' + form.id"
                   class="checkbox"
                   @change="toggleFormFromService(form.id)"
                   :name="form.name"
@@ -51,7 +51,7 @@
               <p>
                 <input
                   type="checkbox"
-                  :id="contract.id"
+                  :id="'service-contract-' + contract.id"
                   class="checkbox"
                   @change="toggleContractFromService(contract.id)"
                   :name="contract.contractName"
@@ -248,6 +248,9 @@ export default {
         equipmentNeeded: [],
         employeesRequired: undefined,
       };
+      document
+        .querySelectorAll("input[type=checkbox")
+        .forEach((el) => (el.checked = false));
     },
     toggleFormFromService(form, serviceIndex) {
       let services = this.services;
@@ -285,21 +288,18 @@ export default {
     },
     editService(service, index) {
       this.input = { ...this.input, ...service };
-      for (let x = 0; x < this.input.forms.length; x++) {
-        document.getElementById(this.input.forms[x]).checked = true;
-      }
-      for (let x = 0; x < this.input.contracts.length; x++) {
-        document.getElementById(this.input.contracts[x]).checked = true;
-      }
       this.editIndex = index;
       this.input.pricing = {
         baseTime: this.input.pricing.baseTime,
         baseRate: this.input.pricing.baseRate / 100,
         addHourly: this.input.pricing.addHourly / 100,
       };
-      // service.contracts.forEach((contracts) => {
-      //   document.getElementById(contracts).checked = true;
-      // });
+      service.forms.forEach((form) => {
+        document.getElementById("service-form-" + form).checked = true;
+      });
+      service.contracts.forEach((contracts) => {
+        document.getElementById("service-contract-" + contracts).checked = true;
+      });
       console.log(this.input);
     },
     chooseFile() {

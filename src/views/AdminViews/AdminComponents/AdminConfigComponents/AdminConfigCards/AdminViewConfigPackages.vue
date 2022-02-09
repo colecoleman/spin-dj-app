@@ -50,7 +50,7 @@
               <p>
                 <input
                   type="checkbox"
-                  :id="form.id"
+                  :id="'package-form-' + form.id"
                   class="checkbox"
                   @change="toggleFormFromPackage(form.id)"
                   :name="form.name"
@@ -68,7 +68,7 @@
               <p>
                 <input
                   type="checkbox"
-                  :id="contract.id"
+                  :id="'package-contract-' + contract.id"
                   class="checkbox"
                   @change="toggleContractFromPackage(contract.id)"
                   :name="contract.contractName"
@@ -379,10 +379,10 @@ export default {
         addHourly: this.input.packages.pricing.addHourly / 100,
       };
       packag.forms.forEach((form) => {
-        document.getElementById(form).checked = true;
+        document.getElementById("package-form-" + form).checked = true;
       });
       packag.contracts.forEach((contracts) => {
-        document.getElementById(contracts).checked = true;
+        document.getElementById("package-contract-" + contracts).checked = true;
       });
       packag.serviceIds.forEach((service) => {
         document.getElementById(service).checked = true;
