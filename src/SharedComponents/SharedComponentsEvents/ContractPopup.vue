@@ -133,29 +133,25 @@
       id="contract-document-scroll-container"
       @scroll="checkScroll"
     >
-      <contract-popup-document-view :contract="contract" />
+      <contract-popup-document-view
+        :contract="contract"
+        :contacts="contacts"
+        :event="event"
+        :locations="locations"
+      />
     </div>
   </section>
   <section id="print-format">
-    <contract-popup-document-view :key="index" :contract="contract" />
+    <contract-popup-document-view
+      :contract="contract"
+      :event="event"
+      :contacts="contacts"
+      :locations="locations"
+    />
   </section>
 </template>
 
 <script>
-// <full-page-popup v-if="!loading">
-//   <template v-slot:content>
-//
-//     <div id="contract-popup-content-wrapper">
-//       <div id="contract-document-view-wrapper">
-//
-//         <div v-if="contracts.length === 0"></div>
-//       </div>
-//       <div id="contract-popup-right-column">
-//
-//       </div>
-//     </div>
-//   </template>
-// </full-page-popup>
 import SVGs from "../../assets/SVGs/svgIndex.js";
 import Backdrop from "../../SharedComponents/SharedComponentsUI/Backdrop.vue";
 import { Auth } from "aws-amplify";
@@ -309,8 +305,6 @@ export default {
     await Auth.currentAuthenticatedUser().then((res) => {
       this.role = res.attributes["custom:role"];
     });
-    console.log(this.role);
-    console.log(this.contract);
     if (!this.contract.admin) {
       this.contract.admin = {
         status: undefined,
@@ -323,7 +317,8 @@ export default {
 
     this.loading = false;
   },
-  props: ["contracts", "eventId"],
+  emits: ["close-popup"],
+  props: ["contracts", "contacts", "eventId", "event", "locations"],
 };
 </script>
 

@@ -17,8 +17,11 @@
     <contract-popup
       v-if="popupOpen === 'contract'"
       @close-popup="togglePopup()"
+      :contacts="contacts"
       :contracts="event.contracts"
+      :event="event"
       :eventId="event.userId"
+      :locations="locations"
     />
 
     <section>

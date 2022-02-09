@@ -8,6 +8,19 @@
             <p>Contract Name:</p>
             <input type="text" v-model.trim="contract.contractName" />
             <p>Contract Body:</p>
+            <div class="information-hover-container">
+              <img
+                :src="SVGs.InfoIconSVG"
+                alt=""
+                @click="toggleMergeTagInformation"
+              />
+              <information-hover
+                heading="Templating"
+                :body="mergeTagInformation"
+                v-if="mergeTagInformationOpenl"
+              ></information-hover>
+            </div>
+            <p v-html="mergeTagInformation" v-if="mergeTagInformationOpen"></p>
             <textarea
               name=""
               id=""
@@ -46,7 +59,7 @@
               />
             </h4>
             <div class="window-box">
-              <p>{{ contract.contractBody }}</p>
+              <p v-html="contract.contractBody"></p>
             </div>
           </div>
         </div>
@@ -57,11 +70,15 @@
 
 <script>
 import SVGs from "../../../../../assets/SVGs/svgIndex.js";
+import InformationHover from "../../../../../SharedComponents/SharedComponentsUI/InformationHover.vue";
 
 export default {
   data() {
     return {
       SVGs,
+      mergeTagInformationOpen: false,
+      mergeTagInformation:
+        "Use the following merge tags to personalize your emails to your contacts: <br/><b><br/>Signer First Name: {given_name}<br/> Signer Last Name: {family_name}<br/> Event Start Time: {event-start-time}<br/> Event End Time: {event-end-time}<br/> Event Length: {event-length}<br/> Event Date: {event-date}<br/> Invoice Total: {invoice-total}<br/> Invoice Subtotal: {invoice-subtotal}<br/> Invoice Adjustments: {invoice-adjustments}<br/> Invoice Final Payment Due: {invoice-final-payment-due}<br/> Invoice Deposit Amount: {invoice-deposit-amount}<br/> Client List: {client-list}<br/> Location List: {location-list}<br/> Business Name: {business-name}<br/> </b><br/>Be sure to include the brackets {}. Otherwise, the tag will not be replaced.",
       contract: {
         contractName: undefined,
         contractBody: undefined,
@@ -76,6 +93,9 @@ export default {
     },
   },
   methods: {
+    toggleMergeTagInformation() {
+      this.mergeTagInformationOpen = !this.mergeTagInformationOpen;
+    },
     addContract() {
       if (this.editIndex != undefined) {
         let payload = {
@@ -100,6 +120,7 @@ export default {
       this.$store.commit("adminConfigDeleteContract", index);
     },
   },
+  components: { InformationHover },
 };
 </script>
 
@@ -216,6 +237,21 @@ p {
 
 .inline-input-with-button > input {
   margin-right: 5px;
+}
+.information-hover-container {
+  position: relative;
+  width: fit-content;
+  height: 20px;
+  justify-self: right;
+  align-self: right;
+  z-index: 8;
+}
+
+.information-hover-container > img {
+  position: absolute;
+  width: 14px;
+  top: 0;
+  z-index: 10;
 }
 
 img {
