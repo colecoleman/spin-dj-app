@@ -17,6 +17,11 @@ df
               <p class="bold calendar" id="calendar-link" @click="copy()">
                 {{ apiCalendarLink }}
               </p>
+              <p class="context" v-if="!copied">Click to copy!</p>
+              <p class="context" v-if="copied">Copied!</p>
+              <p class="error" v-if="copyError">
+                Failed to copy. Manually copy and paste!
+              </p>
               <p class="context">
                 Copy and paste the above link into the url field of your
                 calendar provider's "Add Subscribed Calendar".
@@ -36,15 +41,8 @@ export default {
   data() {
     return {
       SVGs,
-      dialogModal: null,
-      newEmailField: null,
-      emailDeleteIndex: undefined,
-      photoFile: undefined,
-      subdomainField: undefined,
-      checkingSubdomain: false,
-      subdomainAvailable: false,
-      subdomainUnavailable: false,
-      subdomainToDelete: null,
+      copied: false,
+      copyError: false,
     };
   },
   computed: {
@@ -55,8 +53,17 @@ export default {
   emits: ["logo"],
   methods: {
     async copy() {
-      await navigator.clipboard.writeText(this.apiCalendarLink);
-      console.log("copied");
+      this.copied = false;
+      this.copyError = false;
+      await navigator.clipboard
+        .writeText(this.apiCalendarLink)
+        .promise()
+        .then(() => {
+          this.copied = true;
+        })
+        .catch(() => {
+          this.copyError = true;
+        });
     },
   },
   components: { TwoButtonDialogModal },
