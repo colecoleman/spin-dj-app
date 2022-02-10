@@ -25,7 +25,7 @@
 
 <script>
 import SVGs from "../../../../../assets/SVGs/svgIndex.js";
-import helpers from "../../../../../helpers.js";
+import { formatDate, formatTime } from "../../../../../helpers.js";
 
 export default {
   data() {
@@ -34,8 +34,8 @@ export default {
     };
   },
   methods: {
-    formatDate: helpers.formatDate,
-    fotmatTime: helpers.formatTime,
+    formatDate,
+    formatTime,
   },
   props: ["prospect"],
 };

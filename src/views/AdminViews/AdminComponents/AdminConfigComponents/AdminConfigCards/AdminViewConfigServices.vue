@@ -171,7 +171,7 @@
 
 <script>
 import SVGs from "../../../../../assets/SVGs/svgIndex";
-import helpers from "../../../../../helpers.js";
+import { formatPrice } from "../../../../../helpers.js";
 import _cloneDeep from "lodash/cloneDeep";
 
 // import { Storage } from "aws-amplify";
@@ -205,7 +205,6 @@ export default {
       return this.$store.state.businessSettings.product.services;
     },
     forms() {
-      console.log(this.$store.state.businessSettings.product.forms.forms);
       return this.$store.state.businessSettings.product.forms.forms;
     },
     contracts() {
@@ -213,7 +212,7 @@ export default {
     },
   },
   methods: {
-    formatPrice: helpers.formatPrice,
+    formatPrice,
     async addService() {
       let service = _cloneDeep(this.input);
       if (this.photoFile) {

@@ -45,18 +45,18 @@
         <div class="invoice-item">
           <h5>Event Date:</h5>
           <p>
-            <span>{{ formattedDate(event.data.date) }}</span>
+            <span>{{ formatDate(event.data.date) }}</span>
           </p>
         </div>
         <div class="invoice-item">
           <h5>Final Payment Due:</h5>
           <p>
             <span>{{
-              formattedDate(
+              formatDate(
                 finalDueDate(event.data, this.$store.state.businessSettings)
               )
             }}</span>
-            <!-- <span>{{ formattedDate(invoice.data.finalPaymentDue) }}</span> -->
+            <!-- <span>{{ formatDate(invoice.data.finalPaymentDue) }}</span> -->
           </p>
         </div>
       </div>
@@ -137,7 +137,16 @@
 </template>
 
 <script>
-import helpers from "../../helpers.js";
+import {
+  productTotal,
+  formatPhoneNumber,
+  formatDate,
+  formatPrice,
+  subtotal,
+  total,
+  balanceOutstanding,
+  finalDueDate,
+} from "../../helpers.js";
 
 export default {
   data() {
@@ -158,14 +167,14 @@ export default {
     },
   },
   methods: {
-    productTotal: helpers.productTotal,
-    formatPhoneNumber: helpers.formatPhoneNumber,
-    formattedDate: helpers.formatDate,
-    formatPrice: helpers.formatPrice,
-    subtotal: helpers.subtotal,
-    total: helpers.total,
-    balanceOutstanding: helpers.balanceOutstanding,
-    finalDueDate: helpers.finalPaymentDueDate,
+    productTotal,
+    formatPhoneNumber,
+    formatDate,
+    formatPrice,
+    subtotal,
+    total,
+    balanceOutstanding,
+    finalDueDate,
   },
   props: ["event", "client", "invoice"],
 };

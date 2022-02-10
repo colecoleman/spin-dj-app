@@ -4,7 +4,7 @@
 
 <script>
 import ApexCharts from "apexcharts";
-import helpers from "../../../../../../helpers.js";
+import { total, formatPrice } from "../../../../../../helpers.js";
 
 export default {
   data() {
@@ -39,7 +39,7 @@ export default {
             new Date(x.data.date).getYear() === new Date().getYear()
         );
         monthEvents.forEach((event) => {
-          monthTotal += this.calculateTotal(event.invoice, event.data);
+          monthTotal += this.total(event.invoice, event.data);
         });
         totals.push(monthTotal);
       });
@@ -47,8 +47,8 @@ export default {
     },
   },
   methods: {
-    calculateTotal: helpers.total,
-    formatPrice: helpers.formatPrice,
+    total,
+    formatPrice,
   },
   props: ["events"],
   mounted() {

@@ -54,7 +54,7 @@
 </template>
 
 <script>
-import helpers from "../../../../../helpers.js";
+import { formatDate, formatTime } from "../../../../../helpers.js";
 import defaultProfilePicture from "../../../../../assets/default-profile-picture.svg";
 export default {
   data() {
@@ -71,8 +71,8 @@ export default {
     });
   },
   methods: {
-    formatDate: helpers.formatDate,
-    formatTime: helpers.formatTime,
+    formatDate,
+    formatTime,
     selectEvent(event) {
       if (this.chosenEvents.includes(event.id)) {
         let index = this.chosenEvents.indexOf(event.id);

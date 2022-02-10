@@ -113,7 +113,7 @@
 
 <script>
 import SVGs from "../../../../../assets/SVGs/svgIndex.js";
-import helpers from "../../../../../helpers.js";
+import { formatPrice } from "../../../../../helpers.js";
 
 export default {
   data() {
@@ -135,7 +135,7 @@ export default {
   },
 
   methods: {
-    formatPrice: helpers.formatPrice,
+    formatPrice,
     async addAddOn() {
       this.addOn.pricing.unitRate *= 100;
       if (this.photoFile) {

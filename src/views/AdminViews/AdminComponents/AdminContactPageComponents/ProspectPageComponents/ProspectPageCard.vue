@@ -33,7 +33,7 @@
 <script>
 import defaultProfilePicture from "../../../../../assets/default-profile-picture.svg";
 import SVGs from "../../../../../assets/SVGs/svgIndex.js";
-import helpers from "../../../../../helpers.js";
+import { formatPhoneNumber } from "../../../../../helpers.js";
 
 export default {
   data() {
@@ -43,7 +43,7 @@ export default {
     };
   },
   methods: {
-    formatPhoneNumber: helpers.formatPhoneNumber,
+    formatPhoneNumber,
   },
   props: ["prospect", "icon"],
 };

@@ -58,7 +58,7 @@
 
 <script>
 import SVGs from "../../../../../../assets/SVGs/svgIndex.js";
-import helpers from "../../../../../../helpers.js";
+import { formatDate } from "../../../../../../helpers.js";
 import ContactPageNotesAddNew from "./ContactPageNotesAddNew.vue";
 
 export default {
@@ -69,6 +69,7 @@ export default {
     };
   },
   methods: {
+    formatDate,
     toggleOpenNote() {
       this.addNewNoteOpen = !this.addNewNoteOpen;
     },
@@ -85,7 +86,6 @@ export default {
       };
       this.$store.dispatch("editContact", payload);
     },
-    formatDate: helpers.formatDate,
   },
   props: ["contact"],
   components: {

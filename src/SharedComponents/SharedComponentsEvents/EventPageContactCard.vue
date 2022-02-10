@@ -23,7 +23,7 @@
 <script>
 import infoIconSvg from "../../assets/SVGs/info-icon.svg";
 import SVGs from "../../assets/SVGs/svgIndex.js";
-import helpers from "../../helpers.js";
+import { formatDate, formatTime, subtotal } from "../../helpers.js";
 import EventInformationEdit from "./EventInformationEdit.vue";
 import { Auth } from "aws-amplify";
 
@@ -37,9 +37,9 @@ export default {
     };
   },
   methods: {
-    formatDate: helpers.formatDate,
-    formatTime: helpers.formatTime,
-    subtotal: helpers.subtotal,
+    formatDate,
+    formatTime,
+    subtotal,
     toggleEditCard() {
       this.editCardOpen = !this.editCardOpen;
     },

@@ -27,7 +27,7 @@
 
 <script>
 import SVGs from "../../../../assets/SVGs/svgIndex.js";
-import helpers from "../../../../helpers.js";
+import { formatDate } from "../../../../helpers.js";
 
 export default {
   data() {
@@ -36,7 +36,7 @@ export default {
     };
   },
   methods: {
-    formatDate: helpers.formatDate,
+    formatDate,
     capitalizeFirstLetter(str) {
       return str.charAt(0).toUpperCase() + str.slice(1);
     },

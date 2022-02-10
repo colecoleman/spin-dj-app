@@ -84,7 +84,7 @@ import ButtonWithDropDownSelections from "../../../../SharedComponents/SharedCom
 import TwoButtonDialogModal from "../../../../SharedComponents/SharedComponentsUI/TwoButtonDialogModal.vue";
 import PopupEmailComposition from "../../../../SharedComponents/SharedComponentsPopupUtilities/PopupEmailComposition.vue";
 import SVGs from "../../../../assets/SVGs/svgIndex.js";
-import helpers from "../../../../helpers.js";
+import { formatPhoneNumber } from "../../../../helpers.js";
 
 export default {
   data() {
@@ -123,7 +123,7 @@ export default {
         "contacts/" + this.category + "/" + this.contact.userId
       );
     },
-    formatPhoneNumber: helpers.formatPhoneNumber,
+    formatPhoneNumber,
     togglePopup(str) {
       if (this.popupOpen !== null) {
         this.popupOpen = null;

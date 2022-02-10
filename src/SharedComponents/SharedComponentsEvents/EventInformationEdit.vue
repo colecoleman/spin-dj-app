@@ -36,7 +36,7 @@
 </template>
 
 <script>
-import helpers from "../../helpers.js";
+import { formatDate, formatTime } from "../../helpers.js";
 import SVGs from "../../assets/SVGs/svgIndex.js";
 
 export default {
@@ -70,8 +70,8 @@ export default {
     };
   },
   methods: {
-    formatDate: helpers.formatDate,
-    formatTime: helpers.formatTime,
+    formatDate,
+    formatTime,
     closeEditCard() {
       this.$emit("closeEditCard");
     },

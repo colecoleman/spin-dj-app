@@ -36,7 +36,12 @@
 </template>
 
 <script>
-import helpers from "../../helpers.js";
+import {
+  formatDate,
+  formatTime,
+  formatPrice,
+  balanceOutstanding,
+} from "../../helpers.js";
 
 export default {
   data() {
@@ -46,10 +51,10 @@ export default {
     };
   },
   methods: {
-    formatDate: helpers.formatDate,
-    formatTime: helpers.formatTime,
-    formatPrice: helpers.formatPrice,
-    balanceOutstanding: helpers.balanceOutstanding,
+    formatDate,
+    formatTime,
+    formatPrice,
+    balanceOutstanding,
   },
   mounted() {
     this.loading = true;

@@ -39,7 +39,14 @@
   </base-card>
 </template>
 <script>
-import helpers from "../../../../helpers.js";
+import {
+  formatDate,
+  formatTime,
+  subtotal,
+  total,
+  balanceOutstanding,
+  formatPrice,
+} from "../../../../helpers.js";
 import SVGs from "../../../../assets/SVGs/svgIndex.js";
 export default {
   data() {
@@ -48,12 +55,12 @@ export default {
     };
   },
   methods: {
-    formatDate: helpers.formatDate,
-    formatTime: helpers.formatTime,
-    subtotal: helpers.subtotal,
-    total: helpers.total,
-    balanceOutstanding: helpers.balanceOutstanding,
-    formatPrice: helpers.formatPrice,
+    formatDate,
+    formatTime,
+    subtotal,
+    total,
+    balanceOutstanding,
+    formatPrice,
     toggleEditCard() {
       this.editCardOpen = !this.editCardOpen;
     },

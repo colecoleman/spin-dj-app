@@ -160,7 +160,7 @@ import PopupModal from "../SharedComponentsUI/PopupModal.vue";
 import TwoButtonDialogModal from "../SharedComponentsUI/TwoButtonDialogModal.vue";
 import ContractPopupDocumentView from "./ContractPopupDocumentView.vue";
 
-import helpers from "../../helpers.js";
+import { formatDate } from "../../helpers.js";
 
 export default {
   data() {
@@ -291,9 +291,7 @@ export default {
         }
       }
     },
-    saveContact: helpers.saveElement,
-    printContract: helpers.printElement,
-    formatDate: helpers.formatDate,
+    formatDate,
   },
   components: {
     Backdrop,

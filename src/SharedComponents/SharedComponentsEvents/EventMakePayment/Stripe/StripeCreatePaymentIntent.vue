@@ -14,7 +14,7 @@
   </p>
 </template>
 <script>
-import helpers from "../../../../helpers.js";
+import { balanceOutstanding } from "../../../../helpers.js";
 // import { loadStripe } from "@stripe/stripe-js";
 
 export default {
@@ -29,8 +29,6 @@ export default {
     };
   },
   methods: {
-    formatDate: helpers.formatDate,
-    balanceOutstanding: helpers.balanceOutstanding,
     createPaymentIntent() {
       if (!this.chargeAmount) {
         this.chargeAmountError = true;
@@ -62,7 +60,7 @@ export default {
       return (
         "$" +
         (
-          this.balanceOutstanding(this.event.invoice, this.event.data) / 100
+          balanceOutstanding(this.event.invoice, this.event.data) / 100
         ).toLocaleString()
       );
     },

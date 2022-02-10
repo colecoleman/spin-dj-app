@@ -217,7 +217,7 @@
 
 <script>
 import SVGs from "../../../../../assets/SVGs/svgIndex";
-import helpers from "../../../../../helpers.js";
+import { formatPrice } from "../../../../../helpers.js";
 import _cloneDeep from "lodash/cloneDeep";
 
 export default {
@@ -254,7 +254,7 @@ export default {
     },
   },
   methods: {
-    formatPrice: helpers.formatPrice,
+    formatPrice,
     chooseFile() {
       document.getElementById("hidden-file-button-package").click();
     },

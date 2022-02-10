@@ -54,10 +54,7 @@ export function formatPhoneNumber(num) {
   return num;
 }
 export function calculateEventTime(data) {
-  if (
-    typeof data.startTime === "object" &&
-    typeof data.endTime === "object"
-  ) {
+  if (typeof data.startTime === "object" && typeof data.endTime === "object") {
     return Math.abs(data.startTime - data.endTime);
   } else if (data.startTime.includes("T") && data.startTime.includes("T")) {
     return Math.abs(Date.parse(data.startTime) - Date.parse(data.endTime));

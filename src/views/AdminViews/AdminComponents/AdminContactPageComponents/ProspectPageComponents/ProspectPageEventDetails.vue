@@ -101,7 +101,7 @@
 
 <script>
 import SVGs from "../../../../../assets/SVGs/svgIndex.js";
-import helpers from "../../../../../helpers.js";
+import { formatTime, formatDate } from "../../../../../helpers.js";
 
 export default {
   data() {
@@ -131,8 +131,8 @@ export default {
   },
   computed: {},
   methods: {
-    formatTime: helpers.formatTime,
-    formatDate: helpers.formatDate,
+    formatTime,
+    formatDate,
     toggleAddLocation() {
       this.addLocationOpen = !this.addLocationOpen;
     },

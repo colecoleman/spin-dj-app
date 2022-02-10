@@ -32,7 +32,7 @@
 import defaultProfilePicture from "../../../../../assets/default-profile-picture.svg";
 import ContactInformationEditCompany from "./ContactInformationEditCompany.vue";
 import editPen from "../../../../../assets/SVGs/edit-pen.svg";
-import helpers from "../../../../../helpers.js";
+import { formatPhoneNumber } from "../../../../../helpers.js";
 export default {
   data() {
     return {
@@ -42,7 +42,7 @@ export default {
     };
   },
   methods: {
-    formatPhoneNumber: helpers.formatPhoneNumber,
+    formatPhoneNumber,
     toggleEditCard() {
       this.editCardOpen = !this.editCardOpen;
     },

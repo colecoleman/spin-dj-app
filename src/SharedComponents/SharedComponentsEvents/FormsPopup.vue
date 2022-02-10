@@ -197,7 +197,6 @@ import FormsPopupAddForm from "./FormsPopupAddForm.vue";
 import TwoButtonDialogModal from "../SharedComponentsUI/TwoButtonDialogModal.vue";
 import SVGs from "../../assets/SVGs/svgIndex.js";
 import { Auth } from "aws-amplify";
-// import helpers from "../../helpers.js";
 import _ from "lodash";
 
 export default {

@@ -58,7 +58,11 @@ import FormsPopup from "../../../SharedComponents/SharedComponentsEvents/FormsPo
 import FourButtonBarWithDropDown from "../../../SharedComponents/SharedComponentsUI/FourButtonBarWithDropDown.vue";
 import EventPageAlerts from "../../../SharedComponents/SharedComponentsEvents/EventPageAlerts.vue";
 import SVGs from "../../../assets/SVGs/svgIndex.js";
-import helpers from "../../../helpers.js";
+import {
+  finalPaymentDueDate,
+  balanceOutstanding,
+  total,
+} from "../../../helpers.js";
 
 export default {
   data() {
@@ -73,7 +77,6 @@ export default {
       buttons: [
         {
           title: "View Forms",
-          // action: this.togglePopup,
           parameter: "forms",
         },
       ],
@@ -91,9 +94,9 @@ export default {
     },
   },
   methods: {
-    finalPaymentDueDate: helpers.finalPaymentDueDate,
-    balanceOutstanding: helpers.balanceOutstanding,
-    total: helpers.total,
+    finalPaymentDueDate,
+    balanceOutstanding,
+    total,
     togglePopup(popup) {
       if (this.popupOpen !== null) {
         this.popupOpen = null;

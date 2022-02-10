@@ -29,7 +29,7 @@
 
 <script>
 import defaultProfilePicture from "../../../assets/default-profile-picture.svg";
-import helpers from "../../../helpers.js";
+import { formatTime } from "../../../helpers.js";
 
 export default {
   data() {
@@ -41,7 +41,7 @@ export default {
     };
   },
   methods: {
-    formatTime: helpers.formatTime,
+    formatTime,
   },
   created() {
     this.$store.dispatch("getUser", this.event.contacts[0]).then((res) => {

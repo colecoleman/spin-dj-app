@@ -102,7 +102,14 @@
 <script>
 import Backdrop from "../SharedComponentsUI/Backdrop.vue";
 import InvoicePopupDocumentView from "./InvoicePopupDocumentView.vue";
-import helpers from "../../helpers.js";
+import {
+  productTotal,
+  calculateEventTime,
+  formatPrice,
+  subtotal,
+  total,
+  balanceOutstanding,
+} from "../../helpers.js";
 
 export default {
   computed: {
@@ -122,16 +129,15 @@ export default {
     },
   },
   methods: {
-    productTotal: helpers.productTotal,
-    calculateEventTime: helpers.calculateEventTime,
-    formatPrice: helpers.formatPrice,
-    saveInvoice: helpers.saveElement,
+    productTotal,
+    calculateEventTime,
+    formatPrice,
     printInvoice() {
       window.print();
     },
-    subtotal: helpers.subtotal,
-    total: helpers.total,
-    balanceOutstanding: helpers.balanceOutstanding,
+    subtotal,
+    total,
+    balanceOutstanding,
     closePopup() {
       this.$emit("closePopup");
     },

@@ -41,7 +41,7 @@
 import ContactInformationEdit from "../SharedComponentsContact/ContactInformationEdit.vue";
 import defaultProfilePicture from "../../assets/default-profile-picture.svg";
 import editPen from "../../assets/SVGs/edit-pen.svg";
-import helpers from "../../helpers.js";
+import { formatPhoneNumber } from "../../helpers.js";
 
 export default {
   data() {
@@ -52,7 +52,7 @@ export default {
     };
   },
   methods: {
-    formatPhoneNumber: helpers.formatPhoneNumber,
+    formatPhoneNumber,
     toggleEditCard() {
       this.editCardOpen = !this.editCardOpen;
     },

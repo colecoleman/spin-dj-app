@@ -22,11 +22,11 @@
 
 <script>
 import BaseCard from "../../../../../SharedComponents/SharedComponentsUI/BaseCard.vue";
-import helpers from "../../../../../helpers.js";
+import { formatDate } from "../../../../../helpers.js";
 
 export default {
   methods: {
-    formatDate: helpers.formatDate,
+    formatDate,
   },
   components: { BaseCard },
   props: ["contact", "icon"],

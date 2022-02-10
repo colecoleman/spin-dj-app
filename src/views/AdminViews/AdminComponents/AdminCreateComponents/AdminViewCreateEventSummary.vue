@@ -131,7 +131,7 @@
 </template>
 
 <script>
-import helpers from "../../../../helpers.js";
+import { formatPrice } from "../../../../helpers.js";
 import SVGs from "../../../../assets/SVGs/svgIndex.js";
 export default {
   data() {
@@ -143,7 +143,7 @@ export default {
     };
   },
   methods: {
-    formatPrice: helpers.formatPrice,
+    formatPrice,
     // formatTime: helpers.formatTime,
     // formatDate: helpers.formatDate,
     // formatPhoneNumber: helpers.formatPhoneNumber,

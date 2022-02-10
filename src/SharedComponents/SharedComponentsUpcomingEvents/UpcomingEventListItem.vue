@@ -47,7 +47,12 @@
 
 <script>
 import defaultProfilePicture from "../../assets/default-profile-picture.svg";
-import helpers from "../../helpers.js";
+import {
+  formatDate,
+  formatTime,
+  formatPrice,
+  balanceOutstanding,
+} from "../../helpers.js";
 
 export default {
   data() {
@@ -61,7 +66,6 @@ export default {
   computed: {
     userRole() {
       let user = this.$store.state.user;
-      console.log(user);
       if (user.tenantId === user.userId) {
         return "admin";
       } else {
@@ -70,10 +74,10 @@ export default {
     },
   },
   methods: {
-    formatDate: helpers.formatDate,
-    formatTime: helpers.formatTime,
-    formatPrice: helpers.formatPrice,
-    balanceOutstanding: helpers.balanceOutstanding,
+    formatDate,
+    formatTime,
+    formatPrice,
+    balanceOutstanding,
   },
   mounted() {
     this.loading = true;
@@ -93,8 +97,6 @@ export default {
         this.matchedClient = res;
       });
     }
-    // this.loading = false;
-    console.log(this.event);
   },
   props: ["event", "first"],
 };

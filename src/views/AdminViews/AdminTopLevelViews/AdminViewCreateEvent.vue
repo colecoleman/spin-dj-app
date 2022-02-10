@@ -518,7 +518,17 @@
 
 <script>
 import SVGs from "../../../assets/SVGs/svgIndex.js";
-import helpers from "../../../helpers.js";
+import {
+  formatTime,
+  formatPrice,
+  formatDate,
+  formatPhoneNumber,
+  productTotal,
+  subtotal,
+  total,
+  balanceOutstanding,
+  calculateEventTime,
+} from "../../../helpers.js";
 
 export default {
   data() {
@@ -599,7 +609,7 @@ export default {
     };
   },
   methods: {
-    formatPrice: helpers.formatPrice,
+    formatPrice,
     openLocationDropdown() {
       this.locationDropdownOpen = true;
     },
@@ -700,14 +710,14 @@ export default {
     },
     // from create event summary
 
-    formatTime: helpers.formatTime,
-    formatDate: helpers.formatDate,
-    formatPhoneNumber: helpers.formatPhoneNumber,
-    productTotal: helpers.productTotal,
-    subtotal: helpers.subtotal,
-    total: helpers.total,
-    balanceOutstanding: helpers.balanceOutstanding,
-    calculateEventTime: helpers.calculateEventTime,
+    formatTime,
+    formatDate,
+    formatPhoneNumber,
+    productTotal,
+    subtotal,
+    total,
+    balanceOutstanding,
+    calculateEventTime,
 
     createLocation() {
       return new Promise((resolve, reject) => {

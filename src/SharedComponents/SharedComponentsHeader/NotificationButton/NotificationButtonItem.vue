@@ -17,7 +17,7 @@
 
 <script>
 import fillableCircle from "../../../assets/SVGs/fillable-circle.svg";
-import helpers from "../../../helpers.js";
+import { formatDate, formatTime } from "../../../helpers.js";
 
 export default {
   data() {
@@ -26,8 +26,8 @@ export default {
     };
   },
   methods: {
-    formatDate: helpers.formatDate,
-    formatTime: helpers.formatTime,
+    formatDate,
+    formatTime,
   },
   props: ["notification"],
 };
