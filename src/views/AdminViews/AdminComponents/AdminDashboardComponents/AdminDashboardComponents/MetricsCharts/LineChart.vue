@@ -34,7 +34,9 @@ export default {
       this.months.forEach((_, index) => {
         let monthTotal = 0;
         let monthEvents = this.events.filter(
-          (x) => new Date(x.data.date).getMonth() === index
+          (x) =>
+            new Date(x.data.date).getMonth() === index &&
+            new Date(x.data.date).getYear() === new Date().getYear()
         );
         monthEvents.forEach((event) => {
           monthTotal += this.calculateTotal(event.invoice, event.data);
