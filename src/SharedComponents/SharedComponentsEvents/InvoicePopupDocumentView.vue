@@ -53,7 +53,10 @@
           <p>
             <span>{{
               formatDate(
-                finalDueDate(event.data, this.$store.state.businessSettings)
+                finalPaymentDueDate(
+                  event.data,
+                  this.$store.state.businessSettings
+                )
               )
             }}</span>
             <!-- <span>{{ formatDate(invoice.data.finalPaymentDue) }}</span> -->
@@ -145,7 +148,7 @@ import {
   subtotal,
   total,
   balanceOutstanding,
-  finalDueDate,
+  finalPaymentDueDate,
 } from "../../helpers.js";
 
 export default {
@@ -174,7 +177,7 @@ export default {
     subtotal,
     total,
     balanceOutstanding,
-    finalDueDate,
+    finalPaymentDueDate,
   },
   props: ["event", "client", "invoice"],
 };
