@@ -1223,7 +1223,12 @@ const store = createStore({
       }
       state.businessSettings.automations.push(payload);
     },
-
+    adminConfigEditAutomation(state, payload) {
+      state.businessSettings.automations[payload.index] = payload.automation;
+    },
+    adminConfigDeleteAutomation(state, payload) {
+      state.businessSettings.automations.splice(payload, 1);
+    },
     approveAutomation(state, id) {
       let matchingIndex = state.automations.pending.findIndex(
         (element) => element.id === id

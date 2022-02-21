@@ -168,11 +168,23 @@
             <div
               class="automations-item"
               style="border-bottom: 1px solid gray; margin-bottom: 10px"
-              v-for="automation in this.$store.state.businessSettings
+              v-for="(automation, index) in this.$store.state.businessSettings
                 .automations"
               :key="automation.id"
             >
-              <h4>{{ automation.title }}</h4>
+              <h4>
+                {{ automation.title }}
+                <img
+                  :src="SVGs.XIconSVG"
+                  class="x-icon"
+                  @click="deleteAutomation(index)"
+                />
+                <img
+                  :src="SVGs.EditPenSVG"
+                  class="x-icon"
+                  @click="editAutomation(automation, index)"
+                />
+              </h4>
 
               <div class="automations-display-section">
                 <div class="automations-item">
@@ -238,6 +250,7 @@ export default {
   data() {
     return {
       SVGs,
+      editIndex: undefined,
       mergeTagInformationOpen: false,
       mergeTagInformation:
         "Use the following merge tags to personalize your emails to your contacts: First Name: {given_name} || Last Name: {family_name}. Be sure to include the brackets {}. Otherwise, the tag will not be replaced.",
@@ -287,11 +300,19 @@ export default {
       this.mergeTagInformationOpen = !this.mergeTagInformationOpen;
     },
     addAutomation() {
-      if (this.automation.action.type === "email") {
-        this.automation.action.email.replyTo === this.$store.state.user.email;
-        this.automation.id = "automation" + Date.now();
+      if (this.editIndex != undefined) {
+        let payload = {
+          index: this.editIndex,
+          automation: this.automation,
+        };
+        this.$store.commit("adminConfigEditAutomation", payload);
+      } else {
+        if (this.automation.action.type === "email") {
+          this.automation.action.email.replyTo === this.$store.state.user.email;
+          this.automation.id = "automation" + Date.now();
+        }
+        this.$store.commit("adminConfigAddAutomation", this.automation);
       }
-      this.$store.commit("adminConfigAddAutomation", this.automation);
       this.automation = {
         title: undefined,
         applicablePackages: [],
@@ -316,6 +337,14 @@ export default {
           },
         },
       };
+    },
+    editAutomation(automation, index) {
+      console.log(automation, index);
+      this.automation = { ...this.automation, ...automation };
+      this.editIndex = index;
+    },
+    deleteAutomation(index) {
+      this.$store.commit("adminConfigDeleteAutomation", index);
     },
   },
   computed: {
@@ -402,7 +431,6 @@ export default {
     opacity: 0.5;
   }
 
-
   img {
     height: 10px;
     width: 10px;
@@ -416,7 +444,6 @@ export default {
       overflow: scroll;
     }
 
-
     .automations-wrapper {
       flex-direction: row;
     }
@@ -424,7 +451,6 @@ export default {
     .automations-section {
       width: 50%;
     }
-
 
     .automations-item > select,
     .automations-item > label,
