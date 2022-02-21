@@ -175,6 +175,7 @@ export default {
     }
 
     #navigation {
+      display: unset;
       grid-column: 1 / 2;
       grid-row: 1 / 3;
     }

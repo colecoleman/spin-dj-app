@@ -413,6 +413,7 @@ section {
   }
 
   #contact-carousel {
+    width: 100%;
     grid-column: 3 / 5;
     grid-row: 2 / 4;
   }
