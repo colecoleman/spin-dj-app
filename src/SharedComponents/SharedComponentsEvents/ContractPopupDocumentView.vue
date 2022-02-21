@@ -103,8 +103,12 @@ export default {
           contactsArr = [...this.contacts].filter((x) => {
             return x.role === "client";
           });
-          contactsArr.forEach((contact) => {
-            string = string + `${contact.given_name} ${contact.family_name},`;
+          contactsArr.forEach((contact, index) => {
+            string =
+              string +
+              `${contact.given_name} ${contact.family_name}${
+                index === contactsArr.length - 1 ? "" : ","
+              }`;
           });
         }
       }
@@ -113,14 +117,16 @@ export default {
     locationStrings() {
       let string = "";
       if (this.locations.length > 0) {
-        this.locations.forEach((location) => {
+        this.locations.forEach((location, index) => {
           string =
             string +
-            `${location.name + ","} ${location.address.streetAddress1 + ","}, ${
+            `${location.name}, ${location.address.streetAddress1}, ${
               location.address.streetAddress2
                 ? location.address.streetAddress2 + ","
                 : ""
-            } ${location.address.cityStateZip + ","}`;
+            } ${location.address.cityStateZip}${
+              index === this.locations.length - 1 ? "" : ","
+            }`;
         });
       }
       return string;
@@ -190,6 +196,8 @@ export default {
 #contract-popup-document-view {
   background-color: white;
   aspect-ratio: 8.5/11;
+  width: 100%;
+  min-height: 100%;
   height: fit-content;
 }
 
@@ -214,6 +222,7 @@ p {
 
 #contract-copy {
   margin: 10px 60px;
+  height: fit-content;
 }
 
 .signatures {
@@ -224,6 +233,24 @@ p {
 
 .contract-data {
   width: 50%;
+}
+@media screen {
+  @media (min-width: 320px) {
+    #contract-popup-document-view {
+      min-height: unset;
+      min-width: unset;
+      padding-bottom: 40px;
+    }
+
+    #contract-copy {
+      margin: 10px 20px;
+    }
+  }
+  @media (min-width: 850px) {
+    #contract-popup-document-view {
+      min-width: 500px;
+    }
+  }
 }
 
 @media print {
