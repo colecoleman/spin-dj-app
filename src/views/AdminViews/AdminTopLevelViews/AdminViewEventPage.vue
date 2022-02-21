@@ -409,7 +409,7 @@ section {
   #automation {
     grid-column: 3 / 5;
     grid-row: 5/ 6;
-    margin: 0;
+    padding: 0;
   }
 
   #contact-carousel {

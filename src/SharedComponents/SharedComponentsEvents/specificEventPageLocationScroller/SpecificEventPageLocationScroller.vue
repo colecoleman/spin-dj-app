@@ -94,10 +94,12 @@ export default {
       this.removeLocationOpen = !this.removeLocationOpen;
     },
     async confirmRemoveLocation() {
-      console.log(this.locations[this.counter]);
-      let index = this.event.locations.indexOf(
-        this.locations[this.counter].userId
-      );
+      console.log(this.locations);
+      // console.log(this.locations[this.counter]);
+      // let index = this.event.locations.indexOf(
+      //   this.locations[this.counter].userId
+      // );
+      let index = this.counter;
       console.log(index);
       let payload = {
         eventId: this.event.userId,
@@ -105,21 +107,22 @@ export default {
         variable: "locations",
         value: index,
       };
-      let locationPayloadIndex = this.locations[
-        this.counter
-      ].associatedEvents.indexOf(this.event.userId);
-      let locationPayload = {
-        locationId: this.locations[this.counter].userId,
-        operation: "removeFromList",
-        variable: "associatedEvents",
-        value: locationPayloadIndex,
-      };
-      console.log(locationPayload);
       await this.$store.dispatch("editEvent", payload);
-      await this.$store.dispatch("editLocation", payload);
-      console.log(payload);
-      this.counter = 0;
+
+      if (this.locations[this.counter].associatedEvents) {
+        let locationPayloadIndex = this.locations[
+          this.counter
+        ].associatedEvents.indexOf(this.event.userId);
+        let locationPayload = {
+          locationId: this.locations[this.counter].userId,
+          operation: "removeFromList",
+          variable: "associatedEvents",
+          value: locationPayloadIndex,
+        };
+        await this.$store.dispatch("editLocation", locationPayload);
+      }
       this.locations.splice(index, 1);
+      this.counter = 0;
       this.toggleRemoveLocation();
     },
     async selectLocation(location) {
@@ -199,8 +202,10 @@ export default {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  position: relative;
   align-items: center;
   width: 100%;
+  height: 100%;
 }
 
 img {

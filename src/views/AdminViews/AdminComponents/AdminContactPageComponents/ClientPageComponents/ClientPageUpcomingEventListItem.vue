@@ -1,6 +1,6 @@
 <template>
   <div id="single-event-item" @click="routeToEvent()" v-if="loaded">
-    <div class="event-location-identifier">
+    <div class="event-location-identifier" v-if="location">
       <h4 class="venue-name">{{ location.name }}</h4>
       <div class="event-address">
         <p v-if="location.address">
@@ -15,9 +15,9 @@
         <p v-if="location.address">
           {{ location.address.cityStateZip }}
         </p>
-        <p v-if="!location.address">Unknown Location</p>
       </div>
     </div>
+    <p v-if="!location">Unknown Location</p>
     <div id="event-metadata-identifier">
       <div id="date-and-time-identifier">
         <p>{{ formatDate(event.data.date) }}</p>

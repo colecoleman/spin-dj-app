@@ -3,7 +3,13 @@
     <two-button-dialog-modal
       v-if="popupOpen === 'delete'"
       :modalBody="`Are you sure you want to delete
-            ${contact.given_name} ${contact.family_name}?`"
+            ${
+              contact.given_name
+                ? contact.given_name + ' ' + contact.family_name
+                : contact.address
+                ? contact.name
+                : ''
+            }`"
       @select-button-one="confirmDeleteContact"
       @select-button-two="togglePopup"
       @close-modal="togglePopup"

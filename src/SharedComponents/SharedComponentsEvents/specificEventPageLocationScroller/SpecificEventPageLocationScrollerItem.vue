@@ -5,7 +5,7 @@
       id="map"
     ></div>
 
-    <div class="address">
+    <div class="address" v-if="location.address">
       <p>{{ location.address.streetAddress1 }}</p>
       <p v-if="location.address.streetAddress2">
         {{ location.address.streetAddress2 }}
@@ -27,15 +27,20 @@ export default {
   data: function () {
     return {
       loading: true,
-      place:
-        this.location.address.address1 +
-        ", " +
-        this.location.address.cityStateZip,
       client: null,
       mapInstance: null,
       mapName: "SpinSampleDisplay",
       credentials: null,
     };
+  },
+  computed: {
+    place() {
+      if (this.location.address) {
+        return `${this.location.address.address1}, ${this.location.address.cityStateZip}`;
+      } else {
+        return "Unknown Location";
+      }
+    },
   },
   methods: {
     transformRequest(url, resourceType) {
@@ -124,7 +129,6 @@ export default {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  position: relative;
 }
 
 .map-box {
