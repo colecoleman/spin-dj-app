@@ -224,7 +224,7 @@
             style="margin: 30px; margin-top: 20px; width: 100px"
           />
         </div>
-        <div class="quarter-width">
+        <div class="quarter-width, .three-quarter-width">
           <h5 v-if="!hasForms">No forms added yet! Add One!</h5>
           <div v-if="hasForms" class="form-list">
             <h5 v-for="(form, index) in forms" :key="index">
@@ -398,81 +398,160 @@ export default {
 </script>
 
 <style scoped>
-p {
-  font-size: 9pt;
-}
+@media screen {
+  p {
+    font-size: 9pt;
+  }
 
-.split-view,
-.input-creation {
-  display: flex;
-  flex-direction: row;
-}
+  .split-view,
+  .input-creation {
+    display: flex;
+    flex-direction: column-reverse;
+  }
 
-.quarter-width {
-  width: 25%;
-}
+  .quarter-width,
+  .three-quarter-width {
+    width: 100%;
+  }
 
-.three-quarter-width {
-  width: 75%;
-}
-.form-item {
-  display: flex;
-  flex-direction: column;
-  justify-content: left;
-  margin-left: 15px;
-}
+  .form-item {
+    display: flex;
+    flex-direction: column;
+    justify-content: left;
+    margin-left: 15px;
+  }
 
-.row-flex {
-  display: flex;
-  flex-direction: row;
-  /* justify-content: space-evenly; */
-  align-items: center;
-}
+  .row-flex {
+    display: flex;
+    flex-direction: row;
+    /* justify-content: space-evenly; */
+    align-items: center;
+  }
 
-.row-flex div {
-  flex: 1;
-}
+  .row-flex div {
+    flex: 1;
+  }
 
-.input-view {
-  /* max-width: 100px; */
-  align-items: flex-start;
-}
+  .input-view {
+    /* max-width: 100px; */
+    align-items: flex-start;
+  }
 
-.input-view > p {
-  margin: 5px;
-}
+  .input-view > p {
+    margin: 5px;
+  }
 
-.radio {
-  display: flex;
-  align-items: center;
-  flex-direction: row;
-}
+  .radio {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+  }
 
-.form-item > p,
-.form-section > h5 {
-  text-align: left;
-}
-.form-item > input,
-.form-item > select,
-.form-item > textarea,
-.button-standard-with-icon {
-  width: 40%;
-  align-self: left;
-  justify-self: left;
-}
+  .form-item > p,
+  .form-section > h5 {
+    text-align: left;
+  }
+  .form-item > input,
+  .form-item > select,
+  .form-item > textarea,
+  .button-standard-with-icon {
+    width: 90%;
+    align-self: left;
+    justify-self: left;
+  }
 
-.field-creator {
-  margin-top: 5px;
-}
+  .field-creator {
+    margin-top: 5px;
+  }
 
-img {
-  height: 10px;
-  width: 10px;
-  margin: 0px 5px;
-  cursor: pointer;
-}
+  img {
+    height: 10px;
+    width: 10px;
+    margin: 0px 5px;
+    cursor: pointer;
+  }
 
-.form-list {
-  text-align: right;
+  .form-list {
+    text-align: right;
+  }
+  @media (min-width: 850px) {
+    p {
+      font-size: 9pt;
+    }
+
+    .split-view,
+    .input-creation {
+      display: flex;
+      flex-direction: row;
+    }
+
+    .quarter-width {
+      width: 25%;
+    }
+
+    .three-quarter-width {
+      width: 75%;
+    }
+    .form-item {
+      display: flex;
+      flex-direction: column;
+      justify-content: left;
+      margin-left: 15px;
+    }
+
+    .row-flex {
+      display: flex;
+      flex-direction: row;
+      /* justify-content: space-evenly; */
+      align-items: center;
+    }
+
+    .row-flex div {
+      flex: 1;
+    }
+
+    .input-view {
+      /* max-width: 100px; */
+      align-items: flex-start;
+    }
+
+    .input-view > p {
+      margin: 5px;
+    }
+
+    .radio {
+      display: flex;
+      align-items: center;
+      flex-direction: row;
+    }
+
+    .form-item > p,
+    .form-section > h5 {
+      text-align: left;
+    }
+    .form-item > input,
+    .form-item > select,
+    .form-item > textarea,
+    .button-standard-with-icon {
+      width: 40%;
+      align-self: left;
+      justify-self: left;
+    }
+
+    .field-creator {
+      margin-top: 5px;
+    }
+
+    img {
+      height: 10px;
+      width: 10px;
+      margin: 0px 5px;
+      cursor: pointer;
+    }
+
+    .form-list {
+      text-align: right;
+    }
+  }
 }
 </style>

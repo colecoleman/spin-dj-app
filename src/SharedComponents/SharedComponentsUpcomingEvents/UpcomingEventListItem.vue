@@ -33,7 +33,7 @@
         </p>
       </div>
       <div
-        id="event-invoice-metadata"
+        class="event-invoice-metadata"
         v-if="userRole === 'admin' || userRole === 'client'"
       >
         <p>
@@ -81,7 +81,6 @@ export default {
   },
   mounted() {
     this.loading = true;
-    console.log(this.event);
     if (this.event.locations) {
       this.$store
         .dispatch("getLocation", this.event.locations[0])
@@ -93,7 +92,6 @@ export default {
     }
     if (this.event.contacts.length > 0) {
       this.$store.dispatch("getUser", this.event.contacts[0].id).then((res) => {
-        console.log(res);
         this.matchedClient = res;
       });
     }
@@ -103,62 +101,182 @@ export default {
 </script>
 
 <style scoped>
-.client-event-identifier,
-.event-location-identifier,
-.event-metadata-identifier {
-  display: flex;
-  max-width: 33%;
-  width: 33%;
+@media screen and (min-width: 320px) {
+  .client-event-identifier,
+  .event-location-identifier,
+  .event-metadata-identifier {
+    display: flex;
+    height: 70px;
+    max-width: 33%;
+    width: 33%;
+  }
+  .single-event-item {
+    display: flex;
+    width: 100%;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--cardOutline);
+    cursor: pointer;
+  }
+
+  .client-event-identifier {
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .client-event-identifier img {
+    height: 30px;
+    width: 30px;
+    margin: 5px;
+  }
+  .client-name {
+    font-size: 10pt;
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    text-transform: uppercase;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  .event-location-identifier {
+    font-size: 10pt;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .venue-name,
+  h4 {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 12px;
+  }
+
+  .event-metadata-identifier {
+    display: flex;
+    flex-direction: column;
+    font-size: 10pt;
+    text-align: right;
+    justify-content: center;
+  }
+  h5 {
+    font-size: 10px;
+  }
+  .client-name {
+    background-image: black;
+    font-size: 10px;
+  }
+
+  .venue-name {
+    font-size: 9px;
+  }
+
+  .event-address * {
+    font-size: 8px;
+    margin: 3px;
+  }
+
+  .date-and-time-identifier *,
+  .event-invoice-metadata * {
+    font-size: 8px;
+    margin: 3px;
+  }
 }
-.single-event-item {
-  display: flex;
-  width: 100%;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  border-bottom: 1px solid var(--cardOutline);
-  cursor: pointer;
+@media screen and (min-width: 411px) {
+  .client-name {
+    font-size: 0.7em;
+  }
+
+  .venue-name {
+    font-size: 0.7em;
+  }
+
+  .event-address * {
+    font-size: 0.7em;
+  }
+
+  .date-and-time-identifier *,
+  .event-invoice-metadata * {
+    font-size: 0.7em;
+  }
+}
+@media screen and (min-width: 475px) {
+  .client-name {
+    font-size: 0.8em;
+  }
+
+  .venue-name {
+    font-size: 0.8em;
+  }
+
+  .event-address * {
+    font-size: 0.8em;
+    margin: 3px;
+  }
+
+  .date-and-time-identifier *,
+  .event-invoice-metadata * {
+    font-size: 0.8em;
+    margin: 3px;
+  }
+}
+@media screen and (min-width: 550px) {
+  .client-name {
+    font-size: 0.9em;
+  }
+
+  .venue-name {
+    font-size: 0.9em;
+  }
+
+  .event-address * {
+    font-size: 0.8em;
+    margin: 3px;
+  }
+
+  .date-and-time-identifier *,
+  .event-invoice-metadata * {
+    font-size: 0.8em;
+    margin: 3px;
+  }
 }
 
-.client-event-identifier {
-  flex-direction: row;
-  align-items: center;
+@media screen and (min-width: 650px) {
+  .client-name {
+    font-size: 1em;
+  }
+
+  .venue-name {
+    font-size: 1em;
+  }
+
+  .event-address * {
+    font-size: 0.9em;
+    margin: 3px;
+  }
+
+  .date-and-time-identifier *,
+  .event-invoice-metadata * {
+    font-size: 0.9em;
+    margin: 3px;
+  }
 }
 
-.client-event-identifier img {
-  height: 40px;
-  width: 40px;
-  margin: 10px;
-}
-.client-name {
-  font-size: 10pt;
-  display: flex;
-  flex-direction: column;
-  text-align: left;
-  text-transform: uppercase;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-}
+@media screen and (min-width: 800px) {
+  .client-name {
+    background-image: black;
+    font-size: 0.9em;
+  }
 
-.event-location-identifier {
-  font-size: 10pt;
-  flex-direction: column;
-  justify-content: center;
-}
-
-.venue-name {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  font-size: 12px;
-}
-
-.event-metadata-identifier {
-  flex-direction: column;
-  font-size: 10pt;
-  text-align: right;
-}
-
-.client-name {
-  background-image: black;
+  .venue-name {
+    font-size: 0.9em;
+  }
+  .date-and-time-identifier *,
+  .event-invoice-metadata *,
+  .event-address * {
+    font-size: 0.8em;
+    margin: 3px;
+  }
 }
 </style>

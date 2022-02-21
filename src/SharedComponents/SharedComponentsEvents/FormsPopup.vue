@@ -292,123 +292,6 @@ export default {
 </script>
 
 <style scoped>
-@media screen {
-  #print-format {
-    display: none;
-  }
-
-  section {
-    filter: drop-shadow(0 0 20px rgba(0, 0, 0, 0.5));
-    position: fixed;
-    top: 5%;
-    left: 5%;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    height: 90%;
-    width: 90%;
-    z-index: 3;
-  }
-
-  .navigation-wrapper {
-    backdrop-filter: blur(2px);
-    width: fit-content;
-    height: 100%;
-    min-width: 250px;
-    margin-right: 10px;
-  }
-
-  .sidebar {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-  }
-
-  ul {
-    text-align: right;
-    height: 90%;
-    padding: 0;
-  }
-
-  li {
-    width: 100%;
-    text-transform: uppercase;
-    font-size: 12pt;
-    list-style: none;
-    font-weight: 600;
-    margin: 20px 0px;
-    cursor: pointer;
-  }
-
-  li:hover {
-    color: var(--highlightColor);
-  }
-
-  a {
-    text-decoration: none;
-    font-weight: 700;
-  }
-
-  .navigation-button-wrapper {
-    margin-top: 10px;
-  }
-
-  .duplicate-button-wrapper {
-    width: 100px;
-    margin-top: 10px;
-    margin-left: 40px;
-  }
-
-  .active-link {
-    color: var(--highlightColor);
-  }
-
-  .button-container {
-    margin-top: auto;
-  }
-
-  .forms-wrapper,
-  .add-form-wrapper {
-    width: 100%;
-    height: 100%;
-    overflow-y: scroll;
-  }
-
-  .form-wrapper {
-    margin-bottom: 10px;
-  }
-
-  .form-field {
-    padding: 10px;
-    text-align: left;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .field-container {
-    display: flex;
-    flex-direction: row;
-  }
-
-  h5 {
-    margin-bottom: 0;
-  }
-
-  .field-item {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    text-align: left;
-    max-width: 200px;
-    margin-left: 20px;
-  }
-
-  input {
-    margin-left: 20px;
-  }
-}
-
 @media print {
   #print-format {
     display: block;
@@ -488,6 +371,158 @@ export default {
 
   .no-print {
     display: none;
+  }
+}
+
+#print-format {
+  display: none;
+}
+
+section {
+  filter: drop-shadow(0 0 20px rgba(0, 0, 0, 0.5));
+  position: fixed;
+  top: 5%;
+  left: 5%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 90%;
+  width: 90%;
+  z-index: 5;
+}
+
+.navigation-wrapper {
+  display: flex;
+  width: 100%;
+}
+
+.button-container > * {
+  margin-top: 10px;
+}
+
+.button-container {
+  max-width: 320px;
+  margin: auto;
+}
+
+.duplicate-button-wrapper {
+  width: 100px;
+  margin-top: 10px;
+  margin-left: 40px;
+}
+
+ul {
+  display: none;
+}
+
+.forms-wrapper,
+.add-form-wrapper {
+  width: 100%;
+  height: 100%;
+  overflow-y: scroll;
+}
+
+.form-wrapper,
+.navigation-wrapper {
+  margin-bottom: 10px;
+}
+
+.form-field {
+  padding: 10px;
+  text-align: left;
+  align-items: center;
+  justify-content: center;
+}
+
+.field-container {
+  display: flex;
+  flex-direction: column;
+}
+
+h5 {
+  margin-bottom: 0;
+}
+
+.field-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  max-width: 200px;
+  margin-left: 20px;
+}
+
+input {
+  margin-left: 20px;
+}
+
+@media screen and (min-width: 800px) {
+  .field-container {
+    flex-direction: row;
+  }
+}
+
+@media screen and (min-width: 1100px) {
+  section {
+    flex-direction: row;
+  }
+  .navigation-wrapper {
+    backdrop-filter: blur(2px);
+    width: fit-content;
+    height: 100%;
+    min-width: 250px;
+    margin-right: 10px;
+  }
+
+  .sidebar {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
+  ul {
+    display: unset;
+    text-align: right;
+    height: 90%;
+    padding: 0;
+  }
+
+  li {
+    width: 100%;
+    text-transform: uppercase;
+    font-size: 12pt;
+    list-style: none;
+    font-weight: 600;
+    margin: 20px 0px;
+    cursor: pointer;
+  }
+
+  li:hover {
+    color: var(--highlightColor);
+  }
+
+  a {
+    text-decoration: none;
+    font-weight: 700;
+  }
+
+  .navigation-button-wrapper {
+    margin-top: 10px;
+  }
+
+  .duplicate-button-wrapper {
+    width: 100px;
+    margin-top: 10px;
+    margin-left: 40px;
+  }
+
+  .active-link {
+    color: var(--highlightColor);
+  }
+
+  .button-container {
+    margin-top: auto;
   }
 }
 </style>

@@ -63,7 +63,7 @@
         </div>
         <div class="add-on-section">
           <h5 v-if="!hasAddOns">You don't have any add-ons yet. Add One!</h5>
-          <div v-if="hasAddOns">
+          <div v-if="hasAddOns" class="conditional-add-on-wrapper">
             <div
               class="add-on-item"
               style="border-bottom: 1px solid gray; margin-bottom: 10px"
@@ -202,50 +202,106 @@ export default {
 </script>
 
 <style scoped>
-p {
-  font-size: 9pt;
-}
+@media screen {
+  p {
+    font-size: 9pt;
+  }
 
-.add-on-wrapper {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  max-height: 100%;
-  overflow-y: scroll;
-  margin-top: 10px;
-}
-.add-on-section {
-  width: 50%;
-}
+  .conditional-add-on-wrapper {
+    max-height: 300px;
+    height: fit-content;
+    overflow: scroll;
+  }
+  .add-on-wrapper {
+    display: flex;
+    flex-direction: column-reverse;
+    flex-wrap: wrap;
+    max-height: 100%;
+    overflow-y: scroll;
+    margin-top: 10px;
+  }
+  .add-on-section {
+    width: 100%;
+  }
 
-.add-on-item {
-  display: flex;
-  flex-direction: column;
-  justify-content: left;
-  margin-left: 10px;
-}
+  .add-on-item {
+    display: flex;
+    flex-direction: column;
+    justify-content: left;
+    margin-left: 10px;
+  }
 
-.add-on-item > p,
-.add-on-section > h5 {
-  text-align: left;
-}
+  .add-on-item > p,
+  .add-on-section > h5 {
+    text-align: left;
+  }
 
-.add-on-item > select,
-.add-on-item > label,
-.add-on-item > input,
-.form-button {
-  width: 50%;
-  align-self: left;
-  justify-self: left;
-}
+  .add-on-item > select,
+  .add-on-item > label,
+  .add-on-item > input,
+  .form-button {
+    width: 90%;
+    align-self: left;
+    justify-self: left;
+  }
 
-.button-standard-with-icon {
-  margin-top: 10px;
-}
-img {
-  height: 10px;
-  width: 10px;
-  margin: 0px 5px;
-  cursor: pointer;
+  .button-standard-with-icon {
+    margin-top: 10px;
+  }
+  img {
+    height: 10px;
+    width: 10px;
+    margin: 0px 5px;
+    cursor: pointer;
+  }
+
+  @media (min-width: 850px) {
+    p {
+      font-size: 9pt;
+    }
+
+    .add-on-wrapper {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      max-height: 100%;
+      overflow-y: scroll;
+      margin-top: 10px;
+    }
+    .add-on-section {
+      width: 50%;
+    }
+
+    .add-on-item {
+      display: flex;
+      flex-direction: column;
+      justify-content: left;
+      margin-left: 10px;
+    }
+
+    .add-on-item > p,
+    .add-on-section > h5 {
+      text-align: left;
+    }
+
+    .add-on-item > select,
+    .add-on-item > label,
+    .add-on-item > input,
+    .form-button {
+      width: 50%;
+      align-self: left;
+      justify-self: left;
+    }
+
+    .button-standard-with-icon {
+      margin-top: 10px;
+    }
+    img {
+      height: 10px;
+      width: 10px;
+      margin: 0px 5px;
+      cursor: pointer;
+    }
+  }
 }
 </style>

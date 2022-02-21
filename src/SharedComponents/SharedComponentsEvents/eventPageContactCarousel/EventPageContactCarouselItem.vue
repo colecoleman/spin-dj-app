@@ -60,43 +60,57 @@ export default {
 </script>
 
 <style scoped>
-.contact-carousel-item-wrapper {
-  width: 150px;
-  /* height: 95%; */
-  padding: 5%;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-  cursor: pointer;
-}
+@media screen and (min-width: 320px) {
+  .contact-carousel-item-wrapper {
+    width: 150px;
+    /* height: 95%; */
+    padding: 5%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+  }
 
-img {
-  width: 65px;
-  height: 65px;
-  padding: 10px;
-  object-fit: cover;
-  border-radius: 50%;
-}
+  img {
+    width: 40px;
+    height: 40px;
+    padding: 10px;
+    object-fit: cover;
+    border-radius: 50%;
+  }
 
-h5 {
-  font-weight: 300;
-  margin: 2px;
-  text-transform: uppercase;
-}
+  h5 {
+    font-weight: 300;
+    margin: 2px;
+    text-transform: uppercase;
+  }
 
-h5 span {
-  font-weight: 600;
-}
+  h5 span {
+    font-weight: 600;
+  }
 
-p {
-  font-size: 8pt;
-  margin: 5px;
-}
+  p {
+    font-size: 8pt;
+    margin: 5px;
+  }
 
-.delete {
-  font-weight: 600;
-  width: 100%;
-  cursor: pointer;
+  .delete {
+    font-weight: 600;
+    width: 100%;
+    cursor: pointer;
+  }
+}
+@media screen and (min-width: 700px) {
+  img {
+    padding: 5px;
+  }
+}
+@media screen and (min-width: 800px) {
+  img {
+    width: 65px;
+    height: 65px;
+    padding: 10px;
+  }
 }
 </style>

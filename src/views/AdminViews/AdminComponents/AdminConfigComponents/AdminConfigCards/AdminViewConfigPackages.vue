@@ -398,51 +398,79 @@ export default {
 </script>
 
 <style scoped>
-p {
-  font-size: 9pt;
-}
+@media screen {
+  p {
+    font-size: 9pt;
+  }
 
-.package-wrapper {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  max-height: 100%;
-  overflow-y: scroll;
-  margin-top: 10px;
-}
+  .package-wrapper {
+    display: flex;
+    flex-direction: column-reverse;
+    flex-wrap: wrap;
+    max-height: 100%;
+    overflow-y: scroll;
+    margin-top: 10px;
+  }
 
-.package-section {
-  width: 50%;
-}
+  .package-conditional-wrapper {
+    max-height: 300px;
+    height: fit-content;
+    overflow: scroll;
+  }
 
-.package-item {
-  display: flex;
-  flex-direction: column;
-  justify-content: left;
-  margin-left: 10px;
-}
+  .package-section {
+    width: 100%;
+  }
 
-.package-item > p,
-.package-section > h5 {
-  text-align: left;
-}
-.package-item > input,
-.package-item > select,
-.package-item > label,
-.button-standard-with-icon {
-  width: 50%;
-  align-self: left;
-  justify-self: left;
-}
+  .package-item {
+    display: flex;
+    flex-direction: column;
+    justify-content: left;
+    margin-left: 10px;
+  }
 
-.button-standard-with-icon {
-  margin-top: 10px;
-}
+  .package-item > p,
+  .package-section > h5 {
+    text-align: left;
+  }
+  .package-item > input,
+  .package-item > select,
+  .package-item > label,
+  .button-standard-with-icon {
+    width: 90%;
+    align-self: left;
+    justify-self: left;
+  }
 
-img {
-  height: 10px;
-  width: 10px;
-  margin: 0px 5px;
-  cursor: pointer;
+  .button-standard-with-icon {
+    margin-top: 10px;
+  }
+
+  img {
+    height: 10px;
+    width: 10px;
+    margin: 0px 5px;
+    cursor: pointer;
+  }
+  @media (min-width: 850px) {
+    .package-wrapper {
+      flex-direction: row;
+    }
+    .package-conditional-wrapper {
+      max-height: 100%;
+      height: fit-content;
+      overflow: scroll;
+    }
+    .package-section {
+      width: 50%;
+    }
+
+    .package-item > input,
+    .package-item > select,
+    .package-item > label,
+    .button-standard-with-icon {
+      width: 50%;
+    }
+  }
 }
 </style>

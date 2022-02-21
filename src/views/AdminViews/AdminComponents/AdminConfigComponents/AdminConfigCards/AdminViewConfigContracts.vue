@@ -40,7 +40,7 @@
             No contracts have been added yet! Add some!
           </h5>
           <div
-            class="contracts-item"
+            class="contracts-item contracts-conditional-wrapper"
             style="border-bottom: 1px solid gray; margin-bottom: 10px"
             v-for="(contract, index) in contracts"
             :key="contract.id"
@@ -125,139 +125,106 @@ export default {
 </script>
 
 <style scoped>
-section {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: row;
-}
+@media screen {
+  p {
+    font-size: 9pt;
+  }
 
-p {
-  font-size: 9pt;
-}
+  .contracts-wrapper {
+    display: flex;
+    flex-direction: column-reverse;
+    flex-wrap: wrap;
+    max-height: 100%;
+    overflow-y: scroll;
+    margin-top: 10px;
+  }
 
-.config-section {
-  height: auto;
-}
+  .contracts-section {
+    width: 100%;
+  }
 
-#configuration-navigation {
-  width: 20%;
-  height: 100%;
-}
-#body {
-  width: 80%;
-  height: 100%;
-  overflow: scroll;
-}
+  .contracts-item {
+    display: flex;
+    flex-direction: column;
+    justify-content: left;
+    margin-left: 10px;
+  }
 
-#branding-preferences-wrapper {
-  display: flex;
-  flex-direction: row;
-}
+  .contracts-item > p,
+  .contracts-section > h5 {
+    text-align: left;
+  }
 
-.branding-preferences-item {
-  display: flex;
-  flex-direction: column;
-  width: 20%;
-}
+  .contracts-conditional-wrapper {
+    max-height: 300px;
+    height: fit-content;
+    overflow: scroll;
+  }
 
-.business-information-wrapper,
-.service-wrapper,
-.package-wrapper,
-.add-on-wrapper,
-.contracts-wrapper {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  max-height: 100%;
-  overflow-y: scroll;
-  margin-top: 10px;
-}
+  .contracts-item > select,
+  .contracts-item > label,
+  .contracts-item > input,
+  .form-button {
+    width: 90%;
+    align-self: left;
+    justify-self: left;
+  }
 
-.business-information-section,
-.service-section,
-.package-section,
-.add-on-section,
-.contracts-section {
-  width: 50%;
-}
+  .inline-input-with-button {
+    display: flex;
+    flex-direction: row;
+    height: 30px;
+  }
 
-.business-information-item,
-.service-item,
-.package-item,
-.add-on-item,
-.contracts-item {
-  display: flex;
-  flex-direction: column;
-  justify-content: left;
-  margin-left: 10px;
-}
+  .window-box {
+    max-height: 100px;
+    overflow: scroll;
+    margin: 5px;
+  }
 
-.business-information-item > p,
-.service-item > p,
-.service-section > h5,
-.package-item > p,
-.package-section > h5,
-.add-on-item > p,
-.add-on-section > h5,
-.contracts-item > p,
-.contracts-section > h5 {
-  text-align: left;
-}
+  .inline-input-with-button > input {
+    margin-right: 5px;
+  }
+  .information-hover-container {
+    position: relative;
+    width: fit-content;
+    height: 20px;
+    justify-self: right;
+    align-self: right;
+    z-index: 8;
+  }
 
-.business-information-item > input,
-.service-item > input,
-.service-item > select,
-.package-item > input,
-.package-item > select,
-.package-item > label,
-.add-on-item > select,
-.add-on-item > label,
-.add-on-item > input,
-.contracts-item > select,
-.contracts-item > label,
-.contracts-item > input,
-.form-button {
-  width: 50%;
-  align-self: left;
-  justify-self: left;
-}
+  .information-hover-container > img {
+    position: absolute;
+    width: 14px;
+    top: 0;
+    z-index: 10;
+  }
 
-.inline-input-with-button {
-  display: flex;
-  flex-direction: row;
-  height: 30px;
-}
+  img {
+    height: 10px;
+    width: 10px;
+    margin: 0px 5px;
+    cursor: pointer;
+  }
+  @media (min-width: 850px) {
+    .contracts-wrapper {
+      flex-direction: row;
+    }
 
-.window-box {
-  max-height: 100px;
-  overflow: scroll;
-  margin: 5px;
-}
+    .contracts-section {
+      width: 50%;
+    }
+    .contracts-conditional-wrapper {
+      max-height: 100%;
+    }
 
-.inline-input-with-button > input {
-  margin-right: 5px;
-}
-.information-hover-container {
-  position: relative;
-  width: fit-content;
-  height: 20px;
-  justify-self: right;
-  align-self: right;
-  z-index: 8;
-}
-
-.information-hover-container > img {
-  position: absolute;
-  width: 14px;
-  top: 0;
-  z-index: 10;
-}
-
-img {
-  height: 10px;
-  width: 10px;
-  margin: 0px 5px;
-  cursor: pointer;
+    .contracts-item > select,
+    .contracts-item > label,
+    .contracts-item > input,
+    .form-button {
+      width: 50%;
+    }
+  }
 }
 </style>

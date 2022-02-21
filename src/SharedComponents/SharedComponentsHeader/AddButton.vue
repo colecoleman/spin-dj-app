@@ -61,7 +61,72 @@ export default {
 </script>
 
 <style scoped>
-img {
+@media screen and (min-width: 320px) {
+  #add-button {
+    cursor: pointer;
+    width: 60px;
+    min-width: 60px;
+    height: 60px;
+    border-radius: 50px;
+    margin-left: 10px;
+    border: 1px solid var(--cardOutline);
+    background-color: var(--foregroundColor);
+    display: flex;
+  }
+
+  #add-button:hover {
+    filter: drop-shadow(0px 0px 0.5px var(--textColor));
+  }
+  img {
+    width: 15px;
+    height: 35%;
+    margin: 32.5%;
+  }
+
+  #add-button {
+    cursor: pointer;
+    border: 1px solid var(--cardOutline);
+    background-color: var(--foregroundColor);
+    display: flex;
+    width: 30px;
+    min-width: 30px;
+    height: 30px;
+    border-radius: 30px;
+    margin-left: 10px;
+  }
+}
+
+@media screen and (min-width: 800px) {
+  img {
+    width: 15px;
+    height: 35%;
+    margin: 32.5%;
+  }
+
+  #add-button {
+    width: 40px;
+    min-width: 40px;
+    height: 40px;
+    border-radius: 40px;
+    margin-left: 10px;
+  }
+}
+
+@media screen and (min-width: 1200px) {
+  img {
+    width: auto;
+  }
+
+  #add-button {
+    width: 60px;
+    min-width: 60px;
+    height: 60px;
+    border-radius: 40px;
+    margin-left: 10px;
+  }
+}
+
+/* img {
   width: 35%;
   height: 35%;
   margin: 32.5%;
@@ -80,5 +145,5 @@ img {
 
 #add-button:hover {
   filter: drop-shadow(0px 0px 0.5px var(--textColor));
-}
+} */
 </style>

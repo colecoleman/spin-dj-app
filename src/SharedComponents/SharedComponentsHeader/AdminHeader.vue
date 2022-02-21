@@ -44,15 +44,35 @@ export default {
 </script>
 
 <style scoped>
-.site-header {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 60px;
-}
+@media screen and (min-width: 320px) {
+  .site-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 30px;
+  }
 
-.site-header img {
-  max-height: 45px;
-  margin: 15px;
+  .site-header img {
+    max-height: 25px;
+    margin: 10px;
+  }
+}
+@media screen and (min-width: 800px) {
+  .site-header {
+    height: 40px;
+  }
+
+  .site-header img {
+    max-height: 40px;
+  }
+}
+@media screen and (min-width: 1200px) {
+  .site-header {
+    height: 60px;
+  }
+
+  .site-header img {
+    height: 40px;
+  }
 }
 </style>

@@ -1,136 +1,130 @@
 <template>
-  <section id="page-wrapper">
-    <div id="hero">
-      <div class="hero-left hero-half">
-        <div class="image-container">
-          <img src="../../assets/spin-beta-logo.png" alt="Spin DJ Software`" />
-        </div>
-        <div class="tagline-container">
-          <h1>Software Built<br /><b>by</b> DJs<br /><b>for</b> DJs</h1>
-        </div>
+  <div id="hero">
+    <div class="hero-left hero-half">
+      <div class="image-container">
+        <img src="../../assets/spin-beta-logo.png" alt="Spin DJ Software`" />
       </div>
-      <div class="hero-right hero-half" v-if="step === 1">
-        <h5 class="sign-in-text" @click="navigateToSignInPage()">Sign In</h5>
-        <h1>
-          Ready for something <br />
-          <b> better?</b>
-        </h1>
-
-        <!-- <h3>Grab your 30 day free trial below:</h3> -->
-        <div class="login-form">
-          <div class="input-field flex-row">
-            <div class="half-width">
-              <p>First Name</p>
-              <input
-                type="text"
-                v-model="given_name"
-                :class="given_nameError ? 'error' : 'healthy'"
-              />
-            </div>
-            <div class="half-width">
-              <p>Last Name:</p>
-              <input
-                type="text"
-                v-model="familyName"
-                :class="familyNameError ? 'error' : 'healthy'"
-              />
-            </div>
-          </div>
-          <p class="error-text" v-if="familyNameError || given_nameError">
-            <i> Oops! We're missing your name.</i>
-          </p>
-          <div class="input-field">
-            <p>Email Address:</p>
-            <input
-              type="text"
-              v-model="username"
-              :class="usernameError ? 'error' : 'healthy'"
-            />
-            <p class="error-text" v-if="usernameError">
-              <i> Oops! Username must be a valid email address.</i>
-            </p>
-          </div>
-          <div class="input-field">
-            <p>Password:</p>
-            <input
-              type="password"
-              v-model="password"
-              :class="
-                passwordError.strength || passwordError.match
-                  ? 'error'
-                  : 'healthy'
-              "
-            />
-          </div>
-          <div class="input-field">
-            <p>Confirm Password:</p>
-            <input
-              type="password"
-              v-model="confirmPassword"
-              :class="passwordError.match ? 'error' : 'healthy'"
-            />
-            <p class="error-text" v-if="passwordError.match">
-              <i>Oops! Passwords don't match! Try again.</i>
-            </p>
-            <p class="error-text" v-if="passwordError.strength">
-              <i
-                >Passwords must contain an uppercase letter, lowercase letter,
-                and a number.</i
-              >
-            </p>
-          </div>
-          <div class="input-field">
-            <p>Beta Access Code:</p>
-            <input v-model="accessCode" type="text" class="healthy" />
-          </div>
-          <button-standard-with-icon
-            text="Sign Up"
-            @click="validationBlock()"
-          />
-        </div>
-        <p class="disclaimer">
-          <i
-            >By clicking “Sign Up”, you agree to our terms of service and
-            privacy policy, which can be found
-            <a target="_blank" href="https://spindj.io/tos"> here</a> and
-            <a target="_blank" href="https://spindj.io/privacy">here</a>,
-            respectively.</i
-          >
-        </p>
-      </div>
-      <div class="hero-right hero-half" v-if="step === 2">
-        <h5 class="sign-in-text" @click="navigateToSignInPage()">Sign In</h5>
-        <h1>Check your inbox <br />for a code.</h1>
-
-        <h3>Just making sure we <br />have the right person.</h3>
-        <div class="login-form">
-          <div class="input-field">
-            <p>Code:</p>
-            <input
-              type="text"
-              v-model="confirmationCode"
-              :class="confirmationCodeError ? 'error' : 'healthy'"
-            />
-            <p class="error-text" v-if="confirmationCodeError">
-              <i> Oops! That doesn't seem right. Check it and try again! </i>
-            </p>
-          </div>
-
-          <button-standard-with-icon
-            text="Confirm"
-            @click="submitConfirmationCode()"
-          />
-        </div>
-        <p class="disclaimer">
-          <i
-            >By clicking “Sign Up”, you agree to our terms of service, which can
-            be found
-            <a target="_blank" href="https://spindj.io/tos"></a> here</i
-          >
-        </p>
+      <div class="tagline-container">
+        <h1>Software Built<br /><b>by</b> DJs<br /><b>for</b> DJs</h1>
       </div>
     </div>
-  </section>
+    <div class="hero-right hero-half" v-if="step === 1">
+      <h5 class="sign-in-text" @click="navigateToSignInPage()">Sign In</h5>
+      <h1>
+        Ready for something <br />
+        <b> better?</b>
+      </h1>
+
+      <!-- <h3>Grab your 30 day free trial below:</h3> -->
+      <div class="login-form">
+        <div class="input-field flex-row">
+          <div class="half-width">
+            <p>First Name</p>
+            <input
+              type="text"
+              v-model="given_name"
+              :class="given_nameError ? 'error' : 'healthy'"
+            />
+          </div>
+          <div class="half-width">
+            <p>Last Name:</p>
+            <input
+              type="text"
+              v-model="familyName"
+              :class="familyNameError ? 'error' : 'healthy'"
+            />
+          </div>
+        </div>
+        <p class="error-text" v-if="familyNameError || given_nameError">
+          <i> Oops! We're missing your name.</i>
+        </p>
+        <div class="input-field">
+          <p>Email Address:</p>
+          <input
+            type="text"
+            v-model="username"
+            :class="usernameError ? 'error' : 'healthy'"
+          />
+          <p class="error-text" v-if="usernameError">
+            <i> Oops! Username must be a valid email address.</i>
+          </p>
+        </div>
+        <div class="input-field">
+          <p>Password:</p>
+          <input
+            type="password"
+            v-model="password"
+            :class="
+              passwordError.strength || passwordError.match
+                ? 'error'
+                : 'healthy'
+            "
+          />
+        </div>
+        <div class="input-field">
+          <p>Confirm Password:</p>
+          <input
+            type="password"
+            v-model="confirmPassword"
+            :class="passwordError.match ? 'error' : 'healthy'"
+          />
+          <p class="error-text" v-if="passwordError.match">
+            <i>Oops! Passwords don't match! Try again.</i>
+          </p>
+          <p class="error-text" v-if="passwordError.strength">
+            <i
+              >Passwords must contain an uppercase letter, lowercase letter, and
+              a number.</i
+            >
+          </p>
+        </div>
+        <div class="input-field">
+          <p>Beta Access Code:</p>
+          <input v-model="accessCode" type="text" class="healthy" />
+        </div>
+        <button-standard-with-icon text="Sign Up" @click="validationBlock()" />
+      </div>
+      <p class="disclaimer">
+        <i
+          >By clicking “Sign Up”, you agree to our terms of service and privacy
+          policy, which can be found
+          <a target="_blank" href="https://spindj.io/tos"> here</a> and
+          <a target="_blank" href="https://spindj.io/privacy">here</a>,
+          respectively.</i
+        >
+      </p>
+    </div>
+    <div class="hero-right hero-half" v-if="step === 2">
+      <h5 class="sign-in-text" @click="navigateToSignInPage()">Sign In</h5>
+      <h1>Check your inbox <br />for a code.</h1>
+
+      <h3>Just making sure we <br />have the right person.</h3>
+      <div class="login-form">
+        <div class="input-field">
+          <p>Code:</p>
+          <input
+            type="text"
+            v-model="confirmationCode"
+            :class="confirmationCodeError ? 'error' : 'healthy'"
+          />
+          <p class="error-text" v-if="confirmationCodeError">
+            <i> Oops! That doesn't seem right. Check it and try again! </i>
+          </p>
+        </div>
+
+        <button-standard-with-icon
+          text="Confirm"
+          @click="submitConfirmationCode()"
+        />
+      </div>
+      <p class="disclaimer">
+        <i
+          >By clicking “Sign Up”, you agree to our terms of service, which can
+          be found <a target="_blank" href="https://spindj.io/tos"> here</a></i
+        >
+      </p>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -149,7 +143,7 @@ export default {
       password: undefined,
       confirmPassword: undefined,
       confirmationCode: undefined,
-      step: 1,
+      step: 2,
       accessCode: undefined,
       user: undefined,
       given_nameError: false,
@@ -166,34 +160,6 @@ export default {
       this.$router.push("/login");
     },
     validationBlock() {
-      // const re = new RegExp(
-      //   "^(?=.*d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$"
-      // );
-      // if (!this.given_name) {
-      //   this.given_nameError = true;
-      // } else {
-      //   this.given_nameError = false;
-      // }
-      // if (!this.familyName) {
-      //   this.familyNameError = true;
-      // } else {
-      //   this.familyNameError = false;
-      // }
-      // if (!this.username) {
-      //   this.usernameError = true;
-      // } else {
-      //   this.usernameError = false;
-      // }
-      // if (this.password != this.confirmPassword) {
-      //   this.passwordError.match = true;
-      // } else {
-      //   this.passwordError.match = false;
-      // }
-      // if (!re.test(this.password)) {
-      //   this.passwordError.strength = true;
-      // } else {
-      //   this.passwordError.strength = false;
-      // }
       if (
         !this.passwordError.strength &&
         !this.passwordError.match &&
@@ -261,156 +227,36 @@ export default {
 </script>
 
 <style scoped>
-a {
-  color: white;
-  font-weight: bold;
-  text-decoration: underline;
-}
-#hero {
-  height: 100vh;
-  width: 100vw;
-  display: flex;
-  flex-direction: column;
-}
-
-.hero-half {
-  width: 50%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  position: relative;
-}
-
-.hero-left {
-  background-color: white;
-}
-
-h1 {
-  text-transform: uppercase;
-  text-align: right;
-  font-size: 2em;
-  line-height: 2em;
-  font-weight: 400;
-}
-
-.image-container,
-.tagline-container {
-  display: flex;
-  justify-content: center;
-  width: 100%;
-  height: 50%;
-}
-
-.image-container {
-  align-items: center;
-}
-
-.image-container > img {
-  /* height: 40%; */
-  width: 40%;
-}
-
-.hero-right {
-  background-color: black;
-}
-
-.hero-right h1,
-h2,
-h3,
-h4,
-h5,
-p {
-  color: white;
-}
-
-.hero-right h1 {
-  color: white;
-  text-align: center;
-}
-
-.login-form {
-  width: 50%;
-}
-
-.input-field {
-  text-align: left;
-}
-
-.flex-row {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-}
-
-.half-width {
-  width: 45%;
-}
-
-.healthy {
-  width: 100%;
-}
-.error {
-  border-bottom: 2px solid red;
-  width: 100%;
-}
-
-.error-text {
-  color: red;
-  text-align: center;
-}
-
-input:focus {
-  outline: none;
-  border-bottom: 3px solid white;
-}
-
-.button-standard-with-icon {
-  border: 1px solid white;
-  color: white;
-  border-radius: 3px;
-  margin: 40px 30%;
-  width: 40%;
-}
-
-.disclaimer {
-  position: absolute;
-  bottom: 10px;
-}
-
-.sign-in-text {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  font-weight: 600;
-}
-
-.sign-in-text:hover {
-  text-shadow: 1px 1px 10px white;
-  cursor: pointer;
-}
-
-@media screen and (min-width: 450px) {
+@media screen {
+  a {
+    color: white;
+    font-weight: bold;
+    text-decoration: underline;
+  }
   #hero {
     height: 100vh;
     width: 100vw;
-    display: flex;
-    flex-direction: row;
+    /* display: flex; */
+    flex-direction: column;
+    overflow: scroll;
   }
 
   .hero-half {
-    width: 50%;
-    height: 100%;
+    width: 100%;
+    min-height: 55%;
+    justify-content: space-evenly;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: center;
     position: relative;
   }
 
   .hero-left {
     background-color: white;
+  }
+  .hero-right {
+    background-color: black;
+    align-items: center;
   }
 
   h1 {
@@ -426,7 +272,6 @@ input:focus {
     display: flex;
     justify-content: center;
     width: 100%;
-    height: 50%;
   }
 
   .image-container {
@@ -434,12 +279,8 @@ input:focus {
   }
 
   .image-container > img {
-    /* height: 40%; */
-    width: 40%;
-  }
-
-  .hero-right {
-    background-color: black;
+    width: 175px;
+    padding: 30px;
   }
 
   .hero-right h1,
@@ -457,7 +298,7 @@ input:focus {
   }
 
   .login-form {
-    width: 50%;
+    width: 80%;
   }
 
   .input-field {
@@ -501,20 +342,280 @@ input:focus {
   }
 
   .disclaimer {
-    position: absolute;
-    bottom: 10px;
+    width: 80%;
   }
 
   .sign-in-text {
-    position: absolute;
-    top: 20px;
-    right: 20px;
+    position: fixed;
+    color: black;
+    top: 10px;
+    right: 10px;
     font-weight: 600;
   }
 
   .sign-in-text:hover {
     text-shadow: 1px 1px 10px white;
     cursor: pointer;
+  }
+
+  @media (min-width: 800px) {
+    a {
+      color: white;
+      font-weight: bold;
+      text-decoration: underline;
+    }
+    #hero {
+      height: 100vh;
+      width: 100vw;
+      display: flex;
+      flex-direction: row;
+      overflow: visible;
+    }
+
+    .hero-half {
+      width: 50%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .hero-left {
+      background-color: white;
+    }
+
+    h1 {
+      text-transform: uppercase;
+      text-align: right;
+      font-size: 1.5em;
+      line-height: 2em;
+      font-weight: 400;
+    }
+
+    .image-container,
+    .tagline-container {
+      display: flex;
+      justify-content: center;
+      width: 100%;
+      height: 50%;
+    }
+
+    .image-container {
+      align-items: center;
+    }
+
+    .image-container > img {
+      width: 125px;
+      padding: 30px;
+    }
+
+    .hero-right {
+      background-color: black;
+      overflow: scroll;
+    }
+
+    .hero-right h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    p {
+      color: white;
+    }
+
+    .hero-right h1 {
+      margin-top: 200px;
+      color: white;
+      text-align: center;
+    }
+
+    .login-form {
+      width: 50%;
+    }
+
+    .input-field {
+      text-align: left;
+    }
+
+    .flex-row {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+    }
+
+    .half-width {
+      width: 45%;
+    }
+
+    .healthy {
+      width: 100%;
+    }
+    .error {
+      border-bottom: 2px solid red;
+      width: 100%;
+    }
+
+    .error-text {
+      color: red;
+      text-align: center;
+    }
+
+    input:focus {
+      outline: none;
+      border-bottom: 3px solid white;
+    }
+
+    .button-standard-with-icon {
+      border: 1px solid white;
+      color: white;
+      border-radius: 3px;
+      margin: 40px 30%;
+      width: 40%;
+    }
+
+    .disclaimer {
+      bottom: 10px;
+    }
+
+    .sign-in-text {
+      top: 20px;
+      right: 20px;
+      font-weight: 600;
+    }
+
+    .sign-in-text:hover {
+      text-shadow: 1px 1px 10px white;
+      cursor: pointer;
+    }
+  }
+  @media (min-width: 960px) {
+    a {
+      color: white;
+      font-weight: bold;
+      text-decoration: underline;
+    }
+    #hero {
+      height: 100vh;
+      width: 100vw;
+      display: flex;
+      flex-direction: row;
+      overflow: visible;
+    }
+
+    .hero-half {
+      width: 50%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-evenly;
+    }
+
+    .hero-left {
+      background-color: white;
+    }
+
+    h1 {
+      text-transform: uppercase;
+      text-align: right;
+      font-size: 1.5em;
+      line-height: 2em;
+      font-weight: 400;
+    }
+
+    .image-container,
+    .tagline-container {
+      display: flex;
+      justify-content: center;
+      width: 100%;
+      height: 50%;
+    }
+
+    .image-container {
+      align-items: center;
+    }
+
+    .image-container > img {
+      width: 125px;
+      padding: 30px;
+    }
+
+    .hero-right {
+      background-color: black;
+      overflow: unset;
+    }
+
+    .hero-right h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    p {
+      color: white;
+    }
+
+    .hero-right h1 {
+      margin: unset;
+      color: white;
+      text-align: center;
+    }
+
+    .login-form {
+      width: 50%;
+    }
+
+    .input-field {
+      text-align: left;
+    }
+
+    .flex-row {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+    }
+
+    .half-width {
+      width: 45%;
+    }
+
+    .healthy {
+      width: 100%;
+    }
+    .error {
+      border-bottom: 2px solid red;
+      width: 100%;
+    }
+
+    .error-text {
+      color: red;
+      text-align: center;
+    }
+
+    input:focus {
+      outline: none;
+      border-bottom: 3px solid white;
+    }
+
+    .button-standard-with-icon {
+      border: 1px solid white;
+      color: white;
+      border-radius: 3px;
+      margin: 40px 30%;
+      width: 40%;
+    }
+
+    .disclaimer {
+      bottom: 10px;
+    }
+
+    .sign-in-text {
+      top: 20px;
+      right: 20px;
+      font-weight: 600;
+    }
+
+    .sign-in-text:hover {
+      text-shadow: 1px 1px 10px white;
+      cursor: pointer;
+    }
   }
 }
 </style>

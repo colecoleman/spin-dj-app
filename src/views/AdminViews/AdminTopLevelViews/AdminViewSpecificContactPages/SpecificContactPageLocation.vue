@@ -139,50 +139,94 @@ export default {
 </script>
 
 <style scoped>
-section {
-  width: 100%;
-  height: 100%;
-  display: grid;
-  grid-template-columns: minmax(100px, 250px) repeat(8, 1fr);
-  grid-template-rows: 75px minmax(30px, 50px) repeat(7, 1fr);
-  gap: 10px;
-}
+@media screen {
+  section {
+    width: 100%;
+    height: 100%;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 150px 150px 300px 1fr repeat(3, 300px);
+    gap: 10px;
+  }
 
-#location-card {
-  grid-column: 1 / 3;
-  grid-row: 1 / 3;
-}
+  #location-card {
+    grid-row: 1 / 2;
+  }
 
-#contact-card {
-  grid-column: 1/3;
-  grid-row: 3/5;
-}
-#to-do {
-  grid-column: 1 / 3;
-  grid-row: 5 / 10;
-}
+  #contact-card {
+    grid-row: 2/3;
+  }
+  #upcoming-events {
+    grid-row: 3/4;
+  }
+  #button-bar {
+    grid-row: 4/ 5;
+  }
+  #to-do {
+    grid-row: 5 / 6;
+  }
+  #notes {
+    grid-row: 6/ 7;
+  }
 
-#messages {
-  grid-column: 8 /11;
-  grid-row: 5/10;
-}
+  #automation {
+    grid-row: 7/ 8;
+    padding-bottom: 100px;
+  }
+  #messages {
+    display: none;
+    /* grid-row: 5/10; */
+  }
 
-#button-bar {
-  grid-column: 3/ 10;
-  grid-row: 1/ 2;
-}
+  @media (min-width: 850px) {
+    section {
+      width: 100%;
+      height: 100%;
+      display: grid;
+      grid-template-columns: minmax(100px, 250px) repeat(8, 1fr);
+      grid-template-rows: 75px minmax(30px, 50px) repeat(7, 1fr);
+      gap: 10px;
+    }
 
-#upcoming-events {
-  grid-column: 3/ 7;
-  grid-row: 2/10;
-}
+    #location-card {
+      grid-column: 1 / 3;
+      grid-row: 1 / 3;
+    }
 
-#automation {
-  grid-column: 7 / 10;
-  grid-row: 2/ 6;
-}
-#notes {
-  grid-column: 7/10;
-  grid-row: 6/ 10;
+    #contact-card {
+      grid-column: 1/3;
+      grid-row: 3/5;
+    }
+    #to-do {
+      grid-column: 1 / 3;
+      grid-row: 5 / 10;
+    }
+
+    #messages {
+      display: unset;
+      grid-column: 8 /11;
+      grid-row: 5/10;
+    }
+
+    #button-bar {
+      grid-column: 3/ 10;
+      grid-row: 1/ 2;
+    }
+
+    #upcoming-events {
+      grid-column: 3/ 7;
+      grid-row: 2/10;
+    }
+
+    #automation {
+      grid-column: 7 / 10;
+      grid-row: 2/ 6;
+      padding: 0;
+    }
+    #notes {
+      grid-column: 7/10;
+      grid-row: 6/ 10;
+    }
+  }
 }
 </style>

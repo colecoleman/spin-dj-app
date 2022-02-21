@@ -1021,203 +1021,237 @@ export default {
 </script>
 
 <style scoped>
-#event-creation-wrapper {
-  display: grid;
-  height: 100%;
-  grid-template-columns: 1fr 250px;
-  grid-template-rows: 1fr;
-  gap: 10px;
-}
-#form-wrapper {
-  grid-row: 1;
-  grid-column: 1 / 2;
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  overflow-y: scroll;
-}
+@media screen {
+  #event-creation-wrapper {
+    display: grid;
+    padding-bottom: 60px;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 500px;
+    gap: 10px;
+  }
+  #form-wrapper {
+    grid-row: 1;
+    grid-column: 1;
+    display: flex;
+    flex-direction: column;
+    overflow-y: visible;
+  }
 
-.event-creation-card {
-  max-height: 300px;
-  margin-bottom: 10px;
-}
-.section-inner-wrapper {
-  height: 100%;
-  overflow-y: scroll;
-}
+  .event-creation-card {
+    margin-bottom: 10px;
+  }
 
-.row-flex {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-evenly;
-  align-items: flex-start;
-}
+  .row-flex {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: flex-start;
+  }
 
-.form-name > p {
-  margin-left: 20px;
-  text-align: left;
-}
+  .form-name > p {
+    margin-left: 20px;
+    text-align: left;
+  }
 
-.row-flex div {
-  width: 80%;
-}
+  .row-flex div {
+    width: 100%;
+  }
 
-.dropdown-parent {
-  width: 100%;
-  position: relative;
-}
+  .dropdown-parent {
+    width: 100%;
+    position: relative;
+  }
 
-#client-search-parent {
-  width: 100%;
-}
+  #client-search-parent {
+    width: 100%;
+  }
 
-.dropdown-parent > input {
-  z-index: 2;
-  position: relative;
-}
+  .dropdown-parent > input {
+    z-index: 2;
+    position: relative;
+  }
 
-.dropdown {
-  z-index: 1;
-  top: calc(100% - 10px);
-  left: 3px;
-  position: absolute;
-  margin-left: 9%;
-  border: 1px solid var(--textColor);
-  background-color: var(--foregroundColor);
-  max-height: 100px;
-  overflow-x: scroll;
-  width: 100%;
-}
+  .dropdown {
+    z-index: 1;
+    top: calc(100% - 10px);
+    left: 12px;
+    position: absolute;
+    margin-left: 0%;
+    border: 1px solid var(--textColor);
+    background-color: var(--foregroundColor);
+    max-height: 100px;
+    overflow-x: scroll;
+    max-width: 92%;
+  }
 
-.column-flex {
-  display: flex;
-  flex-direction: column;
-}
+  .column-flex {
+    display: flex;
+    flex-direction: column;
+  }
 
-.form-input > p {
-  text-align: left;
-  font-size: 8pt;
-}
+  .form-input > p {
+    text-align: left;
+    font-size: 8pt;
+  }
 
-.form-input > .row-flex {
-  margin-left: 20px;
-}
+  .form-input > .row-flex {
+    margin-left: 20px;
+  }
 
-.event-times {
-  align-content: center;
-  align-items: flex-end;
-}
+  .event-times {
+    align-content: center;
+    align-items: flex-end;
+  }
 
-.less-width {
-  width: 40%;
-}
+  .less-width {
+    width: 90%;
+  }
 
-.checkboxes {
-  display: flex;
-  flex-direction: row;
-  width: 100%;
-  justify-content: left;
-  align-items: center;
-}
+  .checkboxes {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: left;
+    align-items: center;
+  }
 
-.checkboxes > input {
-  width: unset;
-}
+  .checkboxes > input {
+    width: unset;
+  }
 
-input[type="checkbox"] {
-  width: unset;
-}
+  input[type="checkbox"] {
+    width: unset;
+  }
 
-.unified-field > input,
-.unified-field > select {
-  margin: 0px;
-}
+  .unified-field > input,
+  .unified-field > select {
+    margin: 0px;
+  }
 
-.checkboxes > .checkbox-add-on-units {
-  width: 40px;
-  height: 10px;
-  outline: none;
-  border: none;
-  border-radius: 0;
-  border-bottom: 1px solid var(--textColor);
-}
+  .checkboxes > .checkbox-add-on-units {
+    width: 40px;
+    height: 10px;
+    outline: none;
+    border: none;
+    border-radius: 0;
+    border-bottom: 1px solid var(--textColor);
+  }
 
-input {
-  font-family: Lato, sans-serif;
-  width: 80%;
-  margin: 5px;
-}
+  input {
+    font-family: Lato, sans-serif;
+    width: 90%;
+    margin: 5px;
+  }
 
-img {
-  height: 10px;
-  cursor: pointer;
-}
+  img {
+    height: 10px;
+    cursor: pointer;
+  }
 
-:disabled {
-  opacity: 0.25;
-}
+  :disabled {
+    opacity: 0.25;
+  }
 
-.disclaimer {
-  font-style: italic;
-  font-size: 6pt;
-}
+  .disclaimer {
+    font-style: italic;
+    font-size: 6pt;
+  }
 
-.row-flex {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-}
+  .column-flex {
+    display: flex;
+    flex-direction: column;
+  }
 
-.row-flex div {
-  width: 80%;
-}
+  #sidebar-wrapper {
+    /* width: 100%; */
+    grid-row: 2/3;
+    grid-column: 1;
+  }
 
-.column-flex {
-  display: flex;
-  flex-direction: column;
-}
+  .summary-inner-wrapper {
+    height: 100%;
+    overflow-y: scroll;
+  }
 
-#sidebar-wrapper {
-  /* width: 100%; */
-  grid-row: 1;
-  grid-column: 2/3;
-}
+  .title-and-right-aligned-text h5,
+  .title-and-right-aligned-text p,
+  .title-and-indented-text h5,
+  .title-and-indented-text p {
+    text-align: left;
+  }
 
-.summary-inner-wrapper {
-  height: 100%;
-  overflow-y: scroll;
-}
+  .product {
+    margin: 1px 0 1px 0;
+  }
 
-.title-and-right-aligned-text h5,
-.title-and-right-aligned-text p,
-.title-and-indented-text h5,
-.title-and-indented-text p {
-  text-align: left;
-}
+  #sidebar-wrapper p {
+    margin-left: 20px;
+    font-size: 8pt;
+  }
 
-.product {
-  margin: 1px 0 1px 0;
-}
+  .indented-text {
+    margin-left: 40px;
+  }
 
-#sidebar-wrapper p {
-  margin-left: 20px;
-  font-size: 8pt;
-}
+  .right-aligned-text {
+    text-align: right;
+  }
 
-.indented-text {
-  margin-left: 40px;
-}
+  @media (min-width: 850px) {
+    #event-creation-wrapper {
+      display: grid;
+      height: 100%;
+      padding: 0;
+      grid-template-columns: 1fr 250px;
+      grid-template-rows: 1fr;
+    }
+    #form-wrapper {
+      grid-column: 1 / 2;
+      height: 100%;
+      overflow-y: scroll;
+    }
 
-.right-aligned-text {
-  text-align: right;
-}
+    .event-creation-card {
+      max-height: 300px;
+    }
 
-img {
-  height: 10px;
-}
+    .section-inner-wrapper {
+      height: 100%;
+      overflow-y: scroll;
+    }
 
-:disabled {
-  opacity: 0.25;
+    .row-flex {
+      flex-direction: row;
+    }
+
+    .row-flex div {
+      width: 80%;
+    }
+
+    .dropdown {
+      left: 3px;
+      margin-left: 9%;
+      width: 100%;
+    }
+    .less-width {
+      width: 40%;
+    }
+
+    input {
+      width: 80%;
+    }
+
+    .row-flex {
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    #sidebar-wrapper {
+      /* width: 100%; */
+      grid-row: 1;
+      grid-column: 2/3;
+    }
+  }
 }
 </style>

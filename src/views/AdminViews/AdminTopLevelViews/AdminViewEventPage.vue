@@ -136,15 +136,15 @@ export default {
       automations: [],
       buttons: [
         {
-          title: "View Forms",
+          title: "Forms",
           parameter: "forms",
         },
         {
-          title: "View Invoice",
+          title: "Invoice",
           parameter: "invoice",
         },
         {
-          title: "View Contract",
+          title: "Contract",
           parameter: "contract",
         },
       ],
@@ -173,7 +173,7 @@ export default {
           },
         ],
       },
-      popupOpen: null,
+      popupOpen: undefined,
     };
   },
   computed: {
@@ -286,7 +286,6 @@ export default {
       .dispatch("adminGetEvent", this.$route.params.id)
       .then((res) => {
         this.event = res.data.Item;
-        console.log(this.event);
       })
       .catch((e) =>
         this.$store.commit("addStatus", { type: "error", note: e })
@@ -327,23 +326,101 @@ export default {
 </script>
 
 <style scoped>
-@media screen {
-  #div-wrapper {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-content: center;
-    justify-content: center;
-    align-items: center;
+#div-wrapper {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-content: center;
+  justify-content: center;
+  align-items: center;
+}
+
+section {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-template-columns: 100%;
+  grid-template-rows: 75px 150px repeat(4, 1fr);
+  gap: 10px;
+}
+
+#contact-card {
+  grid-row: 1 / 2;
+}
+#event-information {
+  grid-row: 2/3;
+}
+
+#location-scroller {
+  grid-row: 3/ 4;
+}
+
+#button-bar {
+  grid-row: 4/ 5;
+}
+
+#contact-carousel {
+  grid-row: 5/ 6;
+}
+
+#to-do {
+  grid-row: 6 / 7;
+}
+
+#automation {
+  grid-row: 7/ 8;
+  padding-bottom: 20px;
+}
+
+#recent-messages {
+  display: none;
+}
+
+@media screen and (min-width: 700px) {
+  section {
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: 75px 75px 150px repeat(2, 1fr);
   }
 
+  #contact-card {
+    grid-column: 1 / 3;
+    grid-row: 2 / 3;
+  }
+
+  #location-scroller {
+    grid-column: 1/ 5;
+    grid-row: 4/ 5;
+  }
+
+  #button-bar {
+    grid-column: 1/ 5;
+    grid-row: 1/ 2;
+  }
+
+  #event-information {
+    grid-column: 1/ 3;
+    grid-row: 3/4;
+  }
+
+  #to-do {
+    grid-column: 1/ 3;
+    grid-row: 5/ 6;
+  }
+  #automation {
+    grid-column: 3 / 5;
+    grid-row: 5/ 6;
+    margin: 0;
+  }
+
+  #contact-carousel {
+    grid-column: 3 / 5;
+    grid-row: 2 / 4;
+  }
+}
+@media screen and (min-width: 800px) {
   section {
-    width: 100%;
-    height: 100%;
-    display: grid;
     grid-template-columns: repeat(10, 1fr);
     grid-template-rows: 75px 240px 1fr;
-    gap: 10px;
   }
 
   #contact-card {
@@ -358,7 +435,6 @@ export default {
 
   #button-bar {
     grid-column: 4/ 11;
-    grid-row: 1/ 2;
   }
 
   #event-information {
@@ -372,7 +448,6 @@ export default {
   }
 
   #contact-carousel {
-    width: 100%;
     grid-column: 1/ 5;
     grid-row: 3/ 4;
   }
@@ -385,8 +460,10 @@ export default {
   #recent-messages {
     grid-column: 8 / 11;
     grid-row: 3 / 4;
+    display: flex;
   }
 }
+
 @media print {
   #div-wrapper {
     width: unset;

@@ -1,5 +1,5 @@
 <template>
-  <div id="notification-button" @mousedown.prevent="">
+  <div id="dashboard-button" @mousedown.prevent="">
     <img :src="SVGs.HomeSVG" alt="" @click="dashboard()" />
   </div>
 </template>
@@ -22,26 +22,50 @@ export default {
 </script>
 
 <style scoped>
-#notification-button {
-  cursor: pointer;
-  max-width: 60px;
-  min-width: 60px;
-  height: 60px;
-  background-color: var(--foregroundColor);
-  border: 1px solid var(--cardOutline);
-  border-radius: 50px;
-  margin: 10px;
+@media screen and (min-width: 320px) {
+  #dashboard-button {
+    cursor: pointer;
+    background-color: var(--foregroundColor);
+    border: 1px solid var(--cardOutline);
+    margin: 10px;
+    display: flex;
+    width: 30px;
+    min-width: 30px;
+    height: 30px;
+    border-radius: 30px;
+  }
+
+  #dashboard-button:hover {
+    filter: drop-shadow(0px 0px 0.5px var(--textColor));
+  }
+
+  img {
+    cursor: pointer;
+    width: 15px;
+    height: 35%;
+    margin: 32.5%;
+  }
 }
 
-#notification-button:hover {
-  filter: drop-shadow(0px 0px 0.5px var(--textColor));
+@media screen and (min-width: 800px) {
+  #dashboard-button {
+    width: 40px;
+    min-width: 40px;
+    height: 40px;
+    border-radius: 40px;
+  }
 }
 
-img {
-  height: 35%;
-  width: 35%;
-  margin: 32.5%;
-  cursor: pointer;
+@media screen and (min-width: 1200px) {
+  img {
+    width: auto;
+  }
+  #dashboard-button {
+    width: 60px;
+    min-width: 60px;
+    height: 60px;
+    border-radius: 60px;
+  }
 }
 </style>
 

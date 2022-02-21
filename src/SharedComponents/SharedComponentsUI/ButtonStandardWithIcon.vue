@@ -23,43 +23,51 @@ export default {
 </script>
 
 <style scoped>
-.button-standard-with-icon {
-  padding: 10px;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  text-transform: uppercase;
-  color: var(--textColor);
-  border: 1px solid var(--textColor);
-  border-radius: 7px;
-  cursor: pointer;
-}
+@media screen {
+  .button-standard-with-icon {
+    display: flex;
+    height: 35px;
+    width: 100%;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    text-transform: uppercase;
+    color: var(--textColor);
+    border: 1px solid var(--textColor);
+    border-radius: 7px;
+    cursor: pointer;
+    box-sizing: border-box;
+  }
 
-.loading {
-  animation: spin 0.5s linear infinite;
-}
+  .button-standard-with-icon:hover {
+    background-color: gray;
+  }
 
-.button-standard-with-icon:hover {
-  background-color: gray;
-}
+  .button-standard-with-icon:active {
+    filter: invert(100%);
+  }
 
-.button-standard-with-icon:active {
-  filter: invert(100%);
-}
+  img {
+    max-height: 13px;
+    min-height: 13px;
+    width: 13px;
+    margin: 0px 10px;
+  }
 
-img {
-  max-height: 13px;
-  min-height: 13px;
-  width: 13px;
-}
+  .companion-icon {
+    padding-left: 10px;
+  }
 
-.companion-icon {
-  padding-left: 10px;
-}
+  h5 {
+    padding: 5px;
+    color: inherit;
+    font-size: 0.75em;
+  }
 
-h5 {
-  color: inherit;
-  margin: -1px;
+  @media (min-width: 850px) {
+    .button-standard-with-icon {
+      padding: 10px;
+    }
+  }
 }
 </style>

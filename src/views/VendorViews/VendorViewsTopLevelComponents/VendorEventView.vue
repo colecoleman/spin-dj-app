@@ -162,49 +162,95 @@ export default {
     width: 100%;
     height: 100%;
     display: grid;
-    grid-template-columns: repeat(10, 1fr);
-    grid-template-rows: 75px 240px 1fr;
+    grid-template-columns: 100%;
+    grid-template-rows: 75px 240px 1fr repeat(3, 260px);
     gap: 10px;
   }
 
   #contact-card {
-    grid-column: 1 / 4;
     grid-row: 1 / 2;
   }
 
   #alerts {
-    grid-column: 1/ 4;
     grid-row: 2/ 3;
   }
   #button-bar {
-    grid-column: 4/ 11;
-    grid-row: 1/ 2;
-  }
-
-  #location-scroller {
-    grid-column: 4/ 8;
-    grid-row: 2/3;
-  }
-
-  #make-payment {
-    grid-column: 7 / 11;
-    grid-row: 2/ 3;
-  }
-
-  #contact-carousel {
-    width: 100%;
-    grid-column: 1/ 5;
     grid-row: 3/ 4;
   }
 
+  #location-scroller {
+    grid-row: 4/5;
+  }
+
+  #contact-carousel {
+    grid-row: 5/ 6;
+  }
+
   #to-do {
-    grid-column: 8 / 11;
-    grid-row: 2 / 4;
+    grid-row: 6 / 7;
+    padding-bottom: 60px;
   }
 
   #messages {
-    grid-column: 5 / 8;
-    grid-row: 3 / 4;
+    /* grid-row: 3 / 4; */
+    display: none;
+  }
+  @media (min-width: 800px) {
+    #div-wrapper {
+      width: 100%;
+      height: 100%;
+    }
+
+    section {
+      width: 100%;
+      height: 100%;
+      display: grid;
+      grid-template-columns: repeat(10, 1fr);
+      grid-template-rows: 75px 240px 1fr;
+      gap: 10px;
+    }
+
+    #contact-card {
+      grid-column: 1 / 4;
+      grid-row: 1 / 2;
+    }
+
+    #alerts {
+      grid-column: 1/ 4;
+      grid-row: 2/ 3;
+    }
+    #button-bar {
+      grid-column: 4/ 11;
+      grid-row: 1/ 2;
+    }
+
+    #location-scroller {
+      grid-column: 4/ 8;
+      grid-row: 2/3;
+    }
+
+    #make-payment {
+      grid-column: 7 / 11;
+      grid-row: 2/ 3;
+    }
+
+    #contact-carousel {
+      width: 100%;
+      grid-column: 1/ 5;
+      grid-row: 3/ 4;
+    }
+
+    #to-do {
+      grid-column: 8 / 11;
+      grid-row: 2 / 4;
+      padding: 0;
+    }
+
+    #messages {
+      display: unset;
+      grid-column: 5 / 8;
+      grid-row: 3 / 4;
+    }
   }
 }
 

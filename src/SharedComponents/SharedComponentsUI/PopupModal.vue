@@ -35,11 +35,23 @@ export default {
 .window {
   position: fixed;
   z-index: 10;
-  width: 40%;
-  left: 30%;
+  width: 80%;
+  left: 10%;
+  top: 15%;
   height: fit-content;
-  top: auto;
   border-radius: 14px;
+}
+
+@media screen and (min-width: 850px) {
+  .window {
+    position: fixed;
+    z-index: 10;
+    width: 40%;
+    left: 30%;
+    height: fit-content;
+    top: auto;
+    border-radius: 14px;
+  }
 }
 </style>
 

@@ -258,142 +258,160 @@ export default {
 </script>
 
 <style scoped>
-#hero {
-  height: 100vh;
-  width: 100vw;
-  display: flex;
-  flex-direction: row;
-}
+@media screen {
+  #hero {
+    height: 100vh;
+    width: 100vw;
+    /* display: flex; */
+    flex-direction: column;
+    overflow: scroll;
+  }
 
-.hero-half {
-  width: 50%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-evenly;
-  align-items: center;
-  position: relative;
-}
+  .hero-half {
+    width: 100%;
+    min-height: 55%;
+    justify-content: space-evenly;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+  }
 
-.hero-left {
-  background-color: white;
-}
+  .hero-left {
+    background-color: white;
+  }
 
-h1 {
-  text-transform: uppercase;
-  text-align: right;
-  font-size: 2em;
-  /* line-height: 2em; */
-  font-weight: 400;
-}
+  h1 {
+    text-transform: uppercase;
+    text-align: right;
+    font-size: 2em;
+    /* line-height: 2em; */
+    font-weight: 400;
+  }
 
-.image-container,
-.tagline-container {
-  display: flex;
-  justify-content: center;
-  width: 100%;
-  height: 50%;
-}
+  .image-container,
+  .tagline-container {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    height: 50%;
+  }
 
-.image-container {
-  align-items: center;
-}
+  .image-container {
+    align-items: center;
+  }
 
-.image-container > img {
-  width: 40%;
-}
+  .image-container > img {
+    width: 40%;
+  }
 
-.hero-right {
-  background-color: black;
-}
+  .hero-right {
+    background-color: black;
+  }
 
-.hero-right h1,
-h2,
-h3,
-h4,
-h5,
-p {
-  color: white;
-}
+  .hero-right h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  p {
+    color: white;
+  }
 
-.hero-right h1 {
-  /* color: white; */
-  text-align: center;
-}
+  .hero-right h1 {
+    /* color: white; */
+    text-align: center;
+  }
 
-.login-form {
-  width: 50%;
-  align-content: center;
-}
+  .login-form {
+    width: 50%;
+    align-content: center;
+  }
 
-.input-field {
-  text-align: left;
-}
+  .input-field {
+    text-align: left;
+  }
 
-.flex-row {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-}
+  .flex-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
 
-.half-width {
-  width: 45%;
-}
+  .half-width {
+    width: 45%;
+  }
 
-.healthy {
-  border: 1px solid white;
-  width: 100%;
-}
-.error {
-  border: 1px solid white;
-  border-bottom: 2px solid red;
-  width: 100%;
-}
+  .healthy {
+    border: 1px solid white;
+    width: 100%;
+  }
+  .error {
+    border: 1px solid white;
+    border-bottom: 2px solid red;
+    width: 100%;
+  }
 
-.error-text {
-  color: red;
-  text-align: center;
-}
+  .error-text {
+    color: red;
+    text-align: center;
+  }
 
-input:focus {
-  outline: none;
-  border-bottom: 3px solid white;
-}
+  input:focus {
+    outline: none;
+    border-bottom: 3px solid white;
+  }
 
-.button-standard-with-icon {
-  border: 1px solid white;
-  color: white;
-  border-radius: 3px;
-  margin: 0px 30% 40px;
-  width: 40%;
-}
+  .button-standard-with-icon {
+    border: 1px solid white;
+    color: white;
+    border-radius: 3px;
+    margin: 0px 30% 40px;
+    width: 40%;
+  }
 
-.price-section {
-  width: 150px;
-}
+  .price-section {
+    width: 150px;
+  }
 
-.price-item {
-  cursor: pointer;
-  border: 1px solid white;
-  width: 150px;
-  border-radius: 8px;
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 30px;
-}
+  .price-item {
+    cursor: pointer;
+    border: 1px solid white;
+    width: 150px;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 30px;
+  }
 
-.price-item-top {
-  background-color: white;
-  border-radius: 8px 8px 0 0;
-}
+  .price-item-top {
+    background-color: white;
+    border-radius: 8px 8px 0 0;
+  }
 
-.price-item-top > h1 {
-  color: black;
-  margin: 15px;
-}
+  .price-item-top > h1 {
+    color: black;
+    margin: 15px;
+  }
 
-.price-item-bottom > h2,
-h5 {
-  margin: 5px;
+  .price-item-bottom > h2,
+  h5 {
+    margin: 5px;
+  }
+
+  @media (min-width: 800px) {
+    #hero {
+      height: 100vh;
+      width: 100vw;
+      display: flex;
+      flex-direction: row;
+    }
+
+    .hero-half {
+      width: 50%;
+      height: 100%;
+    }
+  }
 }
 </style>

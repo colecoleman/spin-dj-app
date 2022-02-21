@@ -144,7 +144,7 @@ export default {
 
 #scroll-container {
   grid-row: 2 / 3;
-  overflow: scroll;
+  overflow: visible;
 }
 
 #add-contact {
@@ -152,9 +152,11 @@ export default {
 }
 
 .contacts-container {
-  height: 85%;
+  max-height: 85%;
+  height: 400px;
   width: 100%;
   margin-bottom: 10px;
+  overflow: scroll;
   display: flex;
 }
 
@@ -172,9 +174,6 @@ export default {
 
 @media screen and (min-width: 800px) {
   #contact-section {
-    width: 100%;
-    height: 100%;
-    display: grid;
     grid-template-columns: 1fr 35%;
     grid-template-rows: 1fr;
   }
@@ -187,7 +186,6 @@ export default {
 
   #add-contact {
     grid-column: 2/3;
-    grid-row: 1/2;
   }
 }
 @media screen and (min-width: 1200px) {
@@ -205,15 +203,11 @@ export default {
   #scroll-container {
     grid-column: 2 / 3;
     grid-row: 1 / 4;
-    overflow: scroll;
   }
 
   #scroll-container .contacts-container:last-child {
     padding-bottom: 12px;
   }
-  /* #scroll-container .contacts-container:first-child {
-    margin-top: 12px;
-  } */
 
   #add-contact {
     grid-column: 3/4;

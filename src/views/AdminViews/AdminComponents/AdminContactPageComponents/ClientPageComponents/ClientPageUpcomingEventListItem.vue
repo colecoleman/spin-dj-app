@@ -2,7 +2,6 @@
   <div id="single-event-item" @click="routeToEvent()" v-if="loaded">
     <div class="event-location-identifier">
       <h4 class="venue-name">{{ location.name }}</h4>
-      <h4 class="venue-name">{{ location.name }}</h4>
       <div class="event-address">
         <p v-if="location.address">
           {{ location.address.streetAddress1 }}
@@ -74,69 +73,65 @@ export default {
 </script>
 
 <style scoped>
-#event-location-identifier,
-#event-metadata-identifier {
-  display: flex;
-  /* max-width: 50%; */
-  width: 50%;
-}
+@media screen {
+  #event-location-identifier,
+  #event-metadata-identifier {
+    display: flex;
+    /* max-width: 50%; */
+    width: 50%;
+  }
 
-.event-address {
-  text-align: left;
-}
+  .event-address {
+    text-align: left;
+  }
 
-#single-event-item {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-evenly;
-  padding-bottom: 10px;
-  border-bottom: 1px solid var(--cardOutline);
-  cursor: pointer;
-}
+  #single-event-item {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-evenly;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--cardOutline);
+    cursor: pointer;
+  }
 
-#client-event-identifier img {
-  height: 40px;
-  width: 40px;
-  margin: 10px;
-}
-#client-name {
-  font-size: 10pt;
-  display: flex;
-  flex-direction: column;
-  text-align: left;
-  text-transform: uppercase;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-}
+  .event-location-identifier {
+    flex-direction: column;
+    justify-content: center;
+  }
 
-.event-location-identifier {
-  font-size: 10pt;
-  flex-direction: column;
-  justify-content: center;
-}
+  .venue-name {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: left;
+    font-size: 0.75em;
+  }
 
-.venue-name {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  font-size: 12px;
-}
+  p {
+    font-size: 0.65em;
+    margin: 5px 0px;
+  }
 
-h5 {
-  font-weight: 300;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  text-transform: capitalize;
-}
+  #event-metadata-identifier {
+    flex-direction: column;
+    text-align: right;
+  }
 
-h5 span {
-  font-weight: 600;
-}
-
-#event-metadata-identifier {
-  flex-direction: column;
-  font-size: 10pt;
-  text-align: right;
+  @media (min-width: 600px) {
+    p {
+      font-size: 0.75em;
+    }
+    .venue-name {
+      font-size: 0.9em;
+    }
+  }
+  @media (min-width: 850px) {
+    p {
+      font-size: 0.65em;
+    }
+    .venue-name {
+      font-size: 0.75em;
+    }
+  }
 }
 </style>

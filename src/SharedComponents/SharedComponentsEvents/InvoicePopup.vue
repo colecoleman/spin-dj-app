@@ -153,72 +153,102 @@ export default {
 </script>
 
 <style scoped>
+section {
+  position: fixed;
+  overflow: scroll;
+  top: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column-reverse;
+  height: 95%;
+  width: 90%;
+  margin: 5%;
+  z-index: 5;
+}
+
+.navigation-wrapper {
+  width: 100%;
+  height: 100%;
+  margin-bottom: 10px;
+  display: flex;
+  flex-direction: column;
+}
+
+#invoice-popup-content-wrapper {
+  display: flex;
+  flex-direction: row;
+  /* min-height: 100%; */
+}
+
+#invoice-popup-left-menu,
+#invoice-popup-right-column {
+  height: 100%;
+}
+
+#invoice-document-view-wrapper {
+  margin-bottom: 10px;
+  width: 100%;
+}
+
+.invoice-item,
+.summary-item {
+  padding-top: 0em;
+}
+
+.summary-item,
+.price-item {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.invoice-item > h5 {
+  font-weight: 600;
+  text-align: left;
+}
+
+.summary-item > h4 {
+  text-align: left;
+}
+
+.summary-item h5 {
+  font-weight: 600;
+}
 @media screen {
   #print-format {
     display: none;
   }
-  section {
-    filter: drop-shadow(0 0 20px rgba(0, 0, 0, 0.5));
-    position: fixed;
-    top: 0;
-    left: 0;
-    display: flex;
-    flex-direction: row;
-    height: 90%;
-    width: 90%;
-    margin: 5%;
-    z-index: 3;
+  @media (min-width: 320px) {
+    section {
+      filter: drop-shadow(0 0 20px rgba(0, 0, 0, 0.5));
+    }
   }
+  @media (min-width: 850px) {
+    section {
+      flex-direction: row;
+      height: 90%;
+    }
 
-  .navigation-wrapper {
-    width: 350px;
-    height: 100%;
-    margin-right: 10px;
-    display: flex;
-    flex-direction: column;
-  }
+    .navigation-wrapper {
+      width: 350px;
+      margin-right: 10px;
+    }
 
-  #invoice-popup-content-wrapper {
-    display: flex;
-    flex-direction: row;
-    /* min-height: 100%; */
-  }
+    #invoice-popup-left-menu,
+    #invoice-popup-right-column {
+      overflow: scroll;
+    }
 
-  #invoice-popup-left-menu,
-  #invoice-popup-right-column {
-    height: 100%;
-    overflow: scroll;
-  }
+    #invoice-document-view-wrapper {
+      overflow: scroll;
+      margin: 0px;
+    }
 
-  #invoice-document-view-wrapper {
-    overflow: scroll;
-    width: 100%;
-  }
-
-  .invoice-item,
-  .summary-item {
-    padding-top: 20px;
-  }
-
-  .summary-item,
-  .price-item {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-  }
-
-  .invoice-item > h5 {
-    font-weight: 600;
-    text-align: left;
-  }
-
-  .summary-item > h4 {
-    text-align: left;
-  }
-
-  .summary-item h5 {
-    font-weight: 600;
+    .invoice-item,
+    .summary-item {
+      padding-top: 20px;
+    }
   }
 }
 @media print {

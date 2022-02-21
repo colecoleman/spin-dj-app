@@ -6,7 +6,7 @@
   <transition name="fade1">
     <status-indicator />
   </transition>
-  <div id="mobile-wall">
+  <!-- <div id="mobile-wall">
     <img id="spin-logo" src="./assets/spin-beta-logo.png" alt="" />
     <div class="heading-wrapper">
       <h1>Our Mobile + Tablet Site is Under Contruction</h1>
@@ -15,7 +15,7 @@
       </h5>
       <h4>Thank you for using Spin</h4>
     </div>
-  </div>
+  </div> -->
   <!-- </amplify-authenticator> -->
 </template>
 
@@ -83,18 +83,17 @@ export default {
 
 <style>
 @import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,300;1,400;1,500;1,700;1,900&display=swap");
-
-input,
-select,
-textarea {
-  color: var(--textColor);
-  background-color: var(--foregroundColor);
-  font-family: Roboto, Helvetica, Arial, sans-serif;
-  border: 1px solid;
-  border-radius: 5px;
-  padding: 3px;
-}
 @media screen {
+  input,
+  select,
+  textarea {
+    color: var(--textColor);
+    background-color: var(--foregroundColor);
+    font-family: Roboto, Helvetica, Arial, sans-serif;
+    border: 1px solid;
+    border-radius: 5px;
+    padding: 3px;
+  }
   html,
   body {
     width: 100%;
@@ -147,48 +146,19 @@ textarea {
   #application-wrapper {
     height: 100%;
     background-color: var(--backgroundColor);
+    padding-bottom: 60px;
   }
 
   .router-link-exact-active {
     color: var(--highlightColor);
   }
 
-  #mobile-wall {
-    display: none;
+  @media (min-width: 800px) {
+    #application-wrapper {
+      padding: 0;
+    }
   }
 }
-@media screen and (max-width: 900px) {
-  #application-wrapper {
-    display: none;
-  }
-  #mobile-wall {
-    width: 100vw;
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-evenly;
-    justify-items: center;
-    align-content: space-between;
-    align-items: center;
-    padding: 20px;
-    box-sizing: border-box;
-    /* display: none; */
-  }
-
-  #mobile-wall h1,
-  h2,
-  h3,
-  h4,
-  h5 {
-    text-transform: uppercase;
-  }
-
-  #spin-logo {
-    margin-top: 40px;
-    width: 50%;
-  }
-}
-
 @media print {
   @page {
     margin: 20mm;
@@ -234,10 +204,6 @@ textarea {
     height: auto;
     background-color: var(--backgroundColor);
     display: block;
-  }
-
-  #mobile-wall {
-    display: none;
   }
 }
 </style>

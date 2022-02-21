@@ -110,7 +110,7 @@
         </div>
         <div class="service-section">
           <h5 v-if="!services">No services have been added yet! Add some!</h5>
-          <div class="service-empty-wrapper" v-if="services">
+          <div class="service-conditional-wrapper" v-if="services">
             <h5 v-if="!services.length">
               No services have been added yet! Add some!
             </h5>
@@ -314,48 +314,79 @@ export default {
 </script>
 
 <style scoped>
-p {
-  font-size: 9pt;
-}
+@media screen {
+  p {
+    font-size: 9pt;
+  }
 
-.service-wrapper {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  max-height: 100%;
-  overflow-y: scroll;
-  margin-top: 10px;
-}
+  .service-wrapper {
+    display: flex;
+    flex-direction: column-reverse;
+    flex-wrap: wrap;
+    max-height: 100%;
+    overflow-y: scroll;
+    margin-top: 10px;
+  }
 
-.service-section {
-  width: 50%;
-}
+  .service-conditional-wrapper {
+    max-height: 300px;
+    height: fit-content;
+    overflow: scroll;
+  }
 
-.service-item {
-  display: flex;
-  flex-direction: column;
-  justify-content: left;
-  margin-left: 10px;
-}
-.service-item > p,
-.service-section > h5 {
-  text-align: left;
-}
-.service-item > input,
-.service-item > select,
-.button-standard-with-icon {
-  width: 50%;
-  align-self: left;
-  justify-self: left;
-}
+  .service-section {
+    width: 100%;
+  }
 
-.button-standard-with-icon {
-  margin-top: 10px;
-}
-img {
-  height: 10px;
-  width: 10px;
-  margin: 0px 5px;
-  cursor: pointer;
+  .service-item {
+    display: flex;
+    flex-direction: column;
+    justify-content: left;
+    margin-left: 10px;
+  }
+
+  .service-item > p,
+  .service-section > h5 {
+    text-align: left;
+  }
+  .service-item > input,
+  .service-item > select,
+  .service-item > label,
+  .button-standard-with-icon {
+    width: 90%;
+    align-self: left;
+    justify-self: left;
+  }
+
+  .button-standard-with-icon {
+    margin-top: 10px;
+  }
+
+  img {
+    height: 10px;
+    width: 10px;
+    margin: 0px 5px;
+    cursor: pointer;
+  }
+  @media (min-width: 850px) {
+    .service-wrapper {
+      flex-direction: row;
+    }
+    .service-conditional-wrapper {
+      max-height: 100%;
+      height: fit-content;
+      overflow: scroll;
+    }
+    .service-section {
+      width: 50%;
+    }
+
+    .service-item > input,
+    .service-item > select,
+    .service-item > label,
+    .button-standard-with-icon {
+      width: 50%;
+    }
+  }
 }
 </style>

@@ -1,6 +1,5 @@
 <template>
   <div class="wrapper">
-    <backdrop @click="closeModal()"></backdrop>
     <div class="modal">
       <base-card
         :actionIcon="XIcon"
@@ -22,7 +21,6 @@
 </template>
 
 <script>
-import Backdrop from "./Backdrop.vue";
 import XIcon from "../../assets/SVGs/x-icon.svg";
 
 export default {
@@ -42,41 +40,75 @@ export default {
       this.$emit("closeModal");
     },
   },
-  components: { Backdrop },
   emits: ["selectButtonOne", "selectButtonTwo", "closeModal"],
   props: ["modalBody"],
 };
 </script>
 
 <style scoped>
-.wrapper {
-  position: fixed;
-  width: 100%;
-  height: 100%;
-  z-index: 5;
-}
-.modal {
-  z-index: 3;
-  position: fixed;
-  /* height: 160px; */
-  max-width: 50%;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-}
+@media screen and (min-width: 320px) {
+  .wrapper {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    z-index: 5;
+  }
+  .modal {
+    z-index: 3;
+    position: fixed;
+    /* top: 35%; */
+    /* left: 10%; */
+    /* height: 160px; */
+    /* max-width: unset; */
+    width: 80%;
+    transform: translate(13%, 100%);
+  }
 
-.button-container {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-evenly;
-  align-items: center;
-}
+  .button-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+  }
 
-.button-standard-with-icon {
-  height: 15px;
-  width: 75px;
-  margin: 10px;
+  .button-standard-with-icon {
+    height: 15px;
+    width: 75px;
+    margin: 10px;
+  }
+}
+@media screen and (min-width: 850px) {
+  .wrapper {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    z-index: 5;
+  }
+  .modal {
+    z-index: 3;
+    position: fixed;
+    /* height: 160px; */
+    max-width: 50%;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .button-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+  }
+
+  .button-standard-with-icon {
+    height: 15px;
+    width: 75px;
+    margin: 10px;
+  }
 }
 </style>

@@ -63,47 +63,58 @@ export default {
 </script>
 
 <style scoped>
-p {
-  font-size: 9pt;
-}
+@media screen {
+  p {
+    font-size: 9pt;
+  }
 
-.business-information-wrapper {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  max-height: 100%;
-  overflow-y: scroll;
-  margin-top: 10px;
-}
+  .business-information-wrapper {
+    display: flex;
+    flex-direction: column-reverse;
+    flex-wrap: wrap;
+    max-height: 100%;
+    overflow-y: scroll;
+    margin-top: 10px;
+  }
 
-.business-information-section {
-  width: 50%;
-}
+  .business-information-section {
+    width: 100%;
+  }
 
-.business-information-item {
-  display: flex;
-  flex-direction: column;
-  justify-content: left;
-  margin-left: 10px;
-}
+  .business-information-item {
+    display: flex;
+    flex-direction: column;
+    justify-content: left;
+    margin-left: 10px;
+  }
 
-.business-information-item > p {
-  text-align: left;
-}
+  .business-information-item > p {
+    text-align: left;
+  }
 
-.context {
-  margin: 2px;
-  text-align: right;
-  font-style: italic;
-}
+  .context {
+    margin: 2px;
+    text-align: right;
+    font-style: italic;
+  }
 
-.row-flex {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-}
+  .row-flex {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
 
-.calendar {
-  cursor: pointer;
+  .calendar {
+    cursor: pointer;
+  }
+  @media (min-width: 850px) {
+    .business-information-wrapper {
+      flex-direction: row;
+    }
+
+    .business-information-section {
+      width: 50%;
+    }
+  }
 }
 </style>

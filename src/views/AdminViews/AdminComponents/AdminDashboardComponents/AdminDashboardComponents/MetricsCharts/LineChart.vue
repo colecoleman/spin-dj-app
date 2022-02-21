@@ -1,5 +1,7 @@
 <template>
-  <div id="chart"></div>
+  <div id="chart-container">
+    <div id="chart"></div>
+  </div>
 </template>
 
 <script>
@@ -69,6 +71,7 @@ export default {
           style: {
             colors: [this.$root.branding.textColor],
             fontFamily: "Roboto, Sans-Serif",
+            fontSize: "16px",
             fontWeight: 700,
           },
         },
@@ -115,5 +118,18 @@ export default {
 <style scoped>
 #chart {
   cursor: pointer;
+}
+
+@media screen and (min-width: 320px) {
+  #chart {
+    cursor: pointer;
+    min-width: 600px;
+    height: 300px;
+  }
+
+  #chart-container {
+    overflow-x: scroll;
+    overflow-y: hidden;
+  }
 }
 </style>

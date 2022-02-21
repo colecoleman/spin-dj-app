@@ -17,10 +17,10 @@
     </div>
     <!-- <div class="column-three"> -->
     <div id="calendar">
-      <event-calendar :events="events"/>
+      <event-calendar :events="events" />
     </div>
     <div id="messaging">
-      <recent-messages :conversationList="userConversations"/>
+      <recent-messages :conversationList="userConversations" />
     </div>
     <!-- </div> -->
     <!-- </div> -->
@@ -81,37 +81,68 @@ export default {
 };
 </script>
 <style scoped>
-section {
-  width: 100%;
-  height: 100%;
-  display: grid;
-  gap: 10px;
-  grid-template-columns: 25% 1fr 30%;
-  grid-template-rows: 130px 200px 1fr;
-}
+@media screen {
+  section {
+    width: 100%;
+    height: 100%;
+    display: grid;
+    gap: 10px;
+    grid-template-columns: 1fr;
+    grid-template-rows: 130px repeat(3, 360px);
+  }
 
-#contact-card {
-  grid-row: 1/2;
-  grid-column: 1/2;
-}
+  #contact-card {
+    grid-row: 1/2;
+  }
 
-#to-do {
-  grid-row: 2/4;
-  grid-column: 1/2;
-}
+  #upcoming-events {
+    grid-row: 2/3;
+  }
 
-#upcoming-events {
-  grid-column: 2/3;
-  grid-row: 1/4;
-}
+  #calendar {
+    grid-row: 3/4;
+  }
+  #to-do {
+    grid-row: 4/5;
+    padding-bottom: 60px;
+  }
 
-#calendar {
-  grid-row: 1/3;
-  grid-column: 3/4;
-}
+  #messaging {
+    display: none;
+  }
 
-#messaging {
-  grid-row: 3/4;
-  grid-column: 3/4;
+  @media (min-width: 800px) {
+    section {
+      grid-template-columns: 25% 1fr 30%;
+      grid-template-rows: 130px 200px 1fr;
+    }
+
+    #contact-card {
+      grid-row: 1/2;
+      grid-column: 1/2;
+    }
+
+    #to-do {
+      grid-row: 2/4;
+      grid-column: 1/2;
+      padding: 0;
+    }
+
+    #upcoming-events {
+      grid-column: 2/3;
+      grid-row: 1/4;
+    }
+
+    #calendar {
+      grid-row: 1/3;
+      grid-column: 3/4;
+    }
+
+    #messaging {
+      grid-row: 3/4;
+      grid-column: 3/4;
+      display: unset;
+    }
+  }
 }
 </style>

@@ -1,14 +1,14 @@
 <template>
   <base-card title="Automations">
     <template v-slot:content>
-      <div class="discounts-wrapper">
-        <div class="discounts-section">
+      <div class="automations-wrapper">
+        <div class="automations-section">
           <h5 class="bold">Add New Automation:</h5>
-          <div class="discounts-item">
+          <div class="automations-item">
             <p>Automation Name:</p>
             <input type="text" v-model.trim="automation.title" />
           </div>
-          <div class="discounts-item">
+          <div class="automations-item">
             <p>Applicable Contact Type:</p>
             <select v-model="automation.contactType" class="capitalize">
               <option
@@ -21,8 +21,8 @@
               </option>
             </select>
           </div>
-          <div class="discounts-item" v-if="automation.contactType">
-            <div class="discounts-item">
+          <div class="automations-item" v-if="automation.contactType">
+            <div class="automations-item">
               <p>
                 <input
                   type="checkbox"
@@ -31,7 +31,7 @@
                 Approval Required?:
               </p>
             </div>
-            <div class="discounts-item">
+            <div class="automations-item">
               <p>Trigger:</p>
               <p>
                 <input
@@ -95,14 +95,14 @@
                 </select>
               </p>
             </div>
-            <div class="discounts-item">
+            <div class="automations-item">
               <p>Action Type:</p>
               <select name="" id="" v-model="automation.action.type">
                 <option value="email">Email</option>
                 <!-- <option value="to-do">To-Do</option> -->
               </select>
               <div
-                class="discounts-item"
+                class="automations-item"
                 v-if="automation.action.type === 'email'"
               >
                 <p>From:</p>
@@ -151,7 +151,7 @@
                 />
               </div>
               <div
-                class="discounts-item"
+                class="automations-item"
                 v-if="automation.action.type === 'to-do'"
               >
                 <p>Content:</p>
@@ -160,13 +160,13 @@
             </div>
           </div>
         </div>
-        <div class="discounts-section">
+        <div class="automations-section">
           <h5 v-if="!hasAutomations">
             No automations have been added yet! Add some!
           </h5>
-          <div v-if="hasAutomations">
+          <div v-if="hasAutomations" class="automation-conditional-wrapper">
             <div
-              class="discounts-item"
+              class="automations-item"
               style="border-bottom: 1px solid gray; margin-bottom: 10px"
               v-for="automation in this.$store.state.businessSettings
                 .automations"
@@ -174,8 +174,8 @@
             >
               <h4>{{ automation.title }}</h4>
 
-              <div class="discounts-display-section">
-                <div class="discounts-item">
+              <div class="automations-display-section">
+                <div class="automations-item">
                   <p>
                     <b>Contact Type:</b>
                     {{ automation.contactType }}
@@ -196,7 +196,7 @@
                   </p>
 
                   <div
-                    class="discounts-item"
+                    class="automations-item"
                     v-if="automation.action.type === 'email'"
                   >
                     <p>
@@ -213,7 +213,7 @@
                     </p>
                   </div>
                   <div
-                    class="discounts-item"
+                    class="automations-item"
                     v-if="automation.action.type === 'toDo'"
                   >
                     <p>
@@ -333,141 +333,105 @@ export default {
 </script>
 
 <style scoped>
-section {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: row;
-}
+@media screen {
+  p {
+    font-size: 9pt;
+  }
 
-p {
-  font-size: 9pt;
-}
+  .automations-wrapper {
+    display: flex;
+    flex-direction: column-reverse;
+    flex-wrap: wrap;
+    max-height: 100%;
+    overflow-y: scroll;
+    margin-top: 10px;
+  }
 
-.config-section {
-  height: auto;
-}
+  .automation-conditional-wrapper {
+    max-height: 300px;
+    overflow: scroll;
+  }
+  .automations-section {
+    width: 100%;
+  }
 
-#configuration-navigation {
-  width: 20%;
-  height: 100%;
-}
-#body {
-  width: 80%;
-  height: 100%;
-  overflow: scroll;
-}
+  .automations-item {
+    display: flex;
+    flex-direction: column;
+    justify-content: left;
+    margin-left: 10px;
+  }
 
-#branding-preferences-wrapper {
-  display: flex;
-  flex-direction: row;
-}
+  .automations-item > p,
+  .automations-section > h5 {
+    text-align: left;
+  }
 
-.branding-preferences-item {
-  display: flex;
-  flex-direction: column;
-  width: 20%;
-}
+  .automations-item > select,
+  .automations-item > label,
+  .automations-item > input,
+  .form-button {
+    width: 90%;
+    align-self: left;
+    justify-self: left;
+  }
 
-.business-information-wrapper,
-.service-wrapper,
-.package-wrapper,
-.add-on-wrapper,
-.discounts-wrapper {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  max-height: 100%;
-  overflow-y: scroll;
-  margin-top: 10px;
-}
+  .inline-input-with-button {
+    display: flex;
+    flex-direction: row;
+    height: 30px;
+  }
 
-.business-information-section,
-.service-section,
-.package-section,
-.add-on-section,
-.discounts-section {
-  width: 50%;
-}
+  .inline-input-with-button > input {
+    margin-right: 5px;
+  }
 
-.business-information-item,
-.service-item,
-.package-item,
-.add-on-item,
-.discounts-item {
-  display: flex;
-  flex-direction: column;
-  justify-content: left;
-  margin-left: 10px;
-}
+  .information-hover-container {
+    position: relative;
+    width: fit-content;
+    height: fit-content;
+    justify-self: right;
+    align-self: right;
+  }
 
-.business-information-item > p,
-.service-item > p,
-.service-section > h5,
-.package-item > p,
-.package-section > h5,
-.add-on-item > p,
-.add-on-section > h5,
-.discounts-item > p,
-.discounts-section > h5 {
-  text-align: left;
-}
+  .information-hover-container > img {
+    width: 14px;
+  }
 
-.business-information-item > input,
-.service-item > input,
-.service-item > select,
-.package-item > input,
-.package-item > select,
-.package-item > label,
-.add-on-item > select,
-.add-on-item > label,
-.add-on-item > input,
-.discounts-item > select,
-.discounts-item > label,
-.discounts-item > input,
-.form-button {
-  width: 50%;
-  align-self: left;
-  justify-self: left;
-}
+  :disabled {
+    opacity: 0.5;
+  }
 
-.inline-input-with-button {
-  display: flex;
-  flex-direction: row;
-  height: 30px;
-}
 
-.inline-input-with-button > input {
-  margin-right: 5px;
-}
+  img {
+    height: 10px;
+    width: 10px;
+    margin: 0px 5px;
+    cursor: pointer;
+  }
+  @media (min-width: 850px) {
+    .automation-conditional-wrapper {
+      height: fit-content;
+      max-height: 100%;
+      overflow: scroll;
+    }
 
-.information-hover-container {
-  position: relative;
-  width: fit-content;
-  height: fit-content;
-  justify-self: right;
-  align-self: right;
-}
 
-.information-hover-container > img {
-  width: 14px;
-}
+    .automations-wrapper {
+      flex-direction: row;
+    }
 
-:disabled {
-  opacity: 0.5;
-}
+    .automations-section {
+      width: 50%;
+    }
 
-.floating-button {
-  position: fixed;
-  bottom: 25px;
-  right: 25px;
-  background-color: var();
-}
 
-img {
-  height: 10px;
-  width: 10px;
-  margin: 0px 5px;
-  cursor: pointer;
+    .automations-item > select,
+    .automations-item > label,
+    .automations-item > input,
+    .form-button {
+      width: 50%;
+    }
+  }
 }
 </style>

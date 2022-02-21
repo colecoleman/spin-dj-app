@@ -7,6 +7,12 @@
     <template v-slot:action1>Cancel</template>
     <template v-slot:content>
       <div class="events-content">
+          <two-button-dialog-modal
+            v-if="addEventId"
+            @close-modal="closeConfirmationDialog()"
+            @select-button-one="addUserToEvent()"
+            @select-button-two="closeConfirmationDialog()"
+          />
         <div
           v-for="(event, index) in allEvents"
           :key="index"
@@ -15,12 +21,6 @@
           <location-upcoming-events-list-item
             @click="initializeAddToEvent(event.userId)"
             :event="event"
-          />
-          <two-button-dialog-modal
-            v-if="addEventId"
-            @close-modal="closeConfirmationDialog()"
-            @select-button-one="addUserToEvent()"
-            @select-button-two="closeConfirmationDialog()"
           />
         </div>
       </div>

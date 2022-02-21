@@ -49,4 +49,68 @@ img:hover {
 .active-link {
   color: var(--highlightColor);
 }
+
+@media screen and (min-width: 320px) {
+  #tabs {
+    background-color: var(--foregroundColor);
+    border: 1px solid var(--cardOutline);
+    border-radius: 25px;
+    height: 100%;
+    width: 400px;
+    padding-right: 10px;
+    padding-left: 10px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-evenly;
+  }
+  img {
+    flex: 1;
+    width: 15px;
+    height: 100%;
+  }
+
+  img:hover {
+    filter: drop-shadow(0px 0px 0.5px var(--textColor));
+  }
+
+  .active-link {
+    color: var(--highlightColor);
+  }
+}
+
+@media screen and (min-width: 575px) {
+  #tabs {
+    width: 200px;
+  }
+}
+
+@media screen and (min-width: 1200px) {
+  #tabs {
+    background-color: var(--foregroundColor);
+    border: 1px solid var(--cardOutline);
+    border-radius: 25px;
+    height: 100%;
+    width: 400px;
+    padding-right: 10px;
+    padding-left: 10px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-evenly;
+  }
+  img {
+    flex: 1;
+    width: 25px;
+    height: 100%;
+  }
+
+  img:hover {
+    filter: drop-shadow(0px 0px 0.5px var(--textColor));
+  }
+
+  .active-link {
+    color: var(--highlightColor);
+  }
+}
 </style>

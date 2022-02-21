@@ -12,8 +12,8 @@
     <popup-modal
       class="no-print"
       @close-popup="closePaperSignInstructions"
-      v-if="paperSignInstructionsOpen === true"
       title="Manual Contract Signing Instructions"
+      v-if="paperSignInstructionsOpen === true"
     >
       <template v-slot:window>
         <p>
@@ -184,7 +184,7 @@ export default {
         this.$store.state.businessSettings.identity.businessAddress;
       return `${addressObject.streetAddress1}, ${
         addressObject.streetAddress2 ? addressObject.streetAddress2 + ", " : ""
-      } ${addressObject.address2}`;
+      } ${addressObject.cityStateZip}`;
     },
     contractQuantity() {
       return this.contracts.length - 1;
@@ -322,29 +322,48 @@ export default {
 
 <style scoped>
 @media screen {
-  #print-format {
-    display: none;
-  }
   section {
+    position: fixed;
+    overflow: visible;
+    top: 0;
+    left: 0;
+    display: flex;
+    flex-direction: column-reverse;
+    height: fit-content;
+    width: 90%;
+    margin: 5%;
+    z-index: 8;
+
+    /*  */
+
     filter: drop-shadow(0 0 20px rgba(0, 0, 0, 0.5));
     position: fixed;
     top: 0;
     left: 0;
     display: flex;
-    flex-direction: row;
-    height: 90%;
+    flex-direction: column;
+    height: 95%;
+    overflow-y: scroll;
     width: 90%;
     margin: 5%;
-    z-index: 3;
+    z-index: 9;
   }
   #contract-popup-content-wrapper {
-    display: flex;
+    /* display: flex;
     flex-direction: row;
     min-height: 100%;
-    height: 100%;
+    height: 100%; */
+
+    /*  */
+
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+    height: unset;
   }
   .navigation-wrapper {
-    margin-right: 10px;
+    display: flex;
+    margin-bottom: 10px;
   }
   #contract-popup-left-menu {
     display: flex;
@@ -374,7 +393,7 @@ export default {
 
   #contract-document-view-wrapper {
     position: relative;
-    overflow: scroll;
+    overflow: visible;
     height: 100%;
     outline: 1px solid var(--cardOutline);
     width: fit-content;
@@ -422,6 +441,39 @@ export default {
   .disabled {
     opacity: 0.5;
   }
+  #print-format {
+    display: none;
+  }
+  @media (min-width: 850px) {
+    #print-format {
+      display: none;
+    }
+    section {
+      filter: drop-shadow(0 0 20px rgba(0, 0, 0, 0.5));
+      position: fixed;
+      top: 0;
+      left: 0;
+      display: flex;
+      flex-direction: row;
+      height: 90%;
+      width: 90%;
+      margin: 5%;
+    }
+    #contract-popup-content-wrapper {
+      display: flex;
+      flex-direction: row;
+      min-height: 100%;
+      height: 100%;
+    }
+    .navigation-wrapper {
+      display: unset;
+      margin-right: 10px;
+    }
+    #contract-document-scroll-container {
+      width: 100%;
+      overflow: scroll;
+    }
+  }
 }
 
 @media print {
@@ -430,8 +482,8 @@ export default {
   }
 
   #print-format {
-    display: block;
     overflow: visible;
+    z-index: 3;
   }
 }
 </style>

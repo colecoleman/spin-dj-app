@@ -171,89 +171,100 @@ export default {
 </script>
 
 <style scoped>
-.contact-wrapper {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  align-content: center;
-  width: 99%;
-  cursor: pointer;
-  /* max-height: 100px; */
-}
+@media screen {
+  .contact-wrapper {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    align-content: center;
+    width: 99%;
+    cursor: pointer;
+    /* max-height: 100px; */
+  }
 
-.name {
-  display: flex;
-  flex-direction: column;
-  /* width: calc(100% - 60px); */
-}
+  .name {
+    display: flex;
+    flex-direction: column;
+    /* width: calc(100% - 60px); */
+  }
 
-img {
-  width: 65px;
-  height: 65px;
-  padding: 10px;
-  object-fit: cover;
-  border-radius: 50%;
-}
+  img {
+    width: 25%;
+    width: 30px;
+    padding: 5px;
+    object-fit: cover;
+    border-radius: 50%;
+  }
 
-.name-and-photo,
-.email-and-phone {
-  width: 33%;
-  min-width: 33%;
-  max-width: 33%;
-}
-.button-wrapper {
-  width: 25%;
-  position: relative;
-  align-self: center;
-  min-height: 60px;
-  /* margin-top: 20px; */
-}
+  .name-and-photo,
+  .email-and-phone {
+    width: 30%;
+    min-width: 30%;
+    max-width: 30%;
+    text-align: left;
+    overflow: hidden;
+  }
+  .button-wrapper {
+    width: 30%;
+    position: relative;
+    display: flex;
+    /* justify-content: center; */
+    /* min-height: 50px; */
+    height: 45px;
+    /* align-items: center; */
+    box-sizing: border-box;
+    /* margin-top: 20px; */
+  }
 
-.name-and-photo {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
+  .name-and-photo {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+  .name-and-photo h5 {
+    font-size: 0.75em;
+    font-weight: normal;
+    text-transform: uppercase;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
 
-  text-align: left;
-}
+  h5 {
+    margin: 1px;
+  }
 
-.name-and-photo h5 {
-  font-weight: normal;
-  text-transform: uppercase;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-}
+  span {
+    font-weight: bold;
+  }
+  .email-and-phone p {
+    /* margin: 3px; */
+    font-size: 0.6em;
+    font-weight: normal;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    margin: 5px;
+  }
 
-h5 {
-  margin: 2px;
-}
+  @media (min-width: 700px) {
+    img {
+      width: 45px;
+      padding: 10px;
+    }
 
-.name-and-photo h5 span {
-  font-weight: bold;
-}
-.email-and-phone p {
-  /* margin: 3px; */
-  font-weight: normal;
-  text-align: left;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-}
+    .button-wrapper {
+      width: 25%;
+      position: relative;
+    }
 
-#container {
-  position: inherit;
-  height: 100%;
-  width: 100%;
-  color: black;
-}
+    .name-and-photo {
+      text-align: left;
+    }
 
-.button-container {
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-evenly;
-  color: black;
+    h5 {
+      margin: 2px;
+    }
+  }
 }
 </style>

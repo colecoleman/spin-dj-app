@@ -132,49 +132,75 @@ export default {
 </script>
 
 <style scoped>
-section {
-  width: 100%;
-  height: 100%;
-  display: grid;
-  gap: 10px;
-  grid-template-columns: 20% 1fr;
-  grid-template-rows: 1fr 20px;
-}
+@media screen {
+  section {
+    width: 100%;
+    height: 100%;
+    display: grid;
+    gap: 10px;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 65px;
+  }
 
-#navigation {
-  grid-column: 1 / 2;
-  grid-row: 1 / 3;
-}
+  #navigation {
+    display: none;
+  }
 
-#scroll-container {
-  grid-column: 2 / 3;
-  grid-row: 1 / 3;
-  overflow: scroll;
-}
+  #scroll-container {
+    overflow: scroll;
+  }
 
-#body {
-  width: 80%;
-  height: 100%;
-  overflow: scroll;
-}
-.config-section {
-  margin-bottom: 10px;
-  height: auto;
-}
+  .config-section {
+    margin-bottom: 10px;
+    height: auto;
+  }
 
-#configuration-navigation {
-  height: 100%;
-  width: 20%;
-}
+  .floating-save-button {
+    width: calc(100% - 20px);
+    position: absolute;
+    bottom: 40px;
+    right: 0px;
+    margin: 10px;
+    background-color: var(--foregroundColor);
+  }
+  @media (min-width: 1100px) {
+    section {
+      width: 100%;
+      height: 100%;
+      display: grid;
+      position: relative;
+      gap: 10px;
+      grid-template-columns: 20% 1fr;
+      grid-template-rows: 1fr 20px;
+    }
 
-.button-wrapper {
-  width: 50%;
-}
+    #navigation {
+      grid-column: 1 / 2;
+      grid-row: 1 / 3;
+    }
 
-.floating-save-button {
-  position: absolute;
-  bottom: 20px;
-  right: 20px;
-  background-color: var(--foregroundColor);
+    #scroll-container {
+      grid-column: 2 / 3;
+      grid-row: 1 / 3;
+      overflow: scroll;
+    }
+
+    .config-section {
+      margin-bottom: 10px;
+      height: auto;
+    }
+
+    .button-wrapper {
+      width: 50%;
+    }
+
+    .floating-save-button {
+      position: absolute;
+      width: 100px;
+      bottom: 20px;
+      right: 20px;
+      background-color: var(--foregroundColor);
+    }
+  }
 }
 </style>

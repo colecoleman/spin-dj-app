@@ -14,11 +14,7 @@
     @toggle-popup="togglePopup"
     v-if="popupOpen === 'delete'"
   />
-  <!-- <vendor-page-referral-popup
-    v-if="referPopupOpen && !emailPopupOpen && !notesPopupOpen"
-    :vendor="contact"
-    @close-referral-window="closePopups()"
-  ></vendor-page-referral-popup> -->
+
   <section>
     <div id="contact-card">
       <contact-card-person :contact="contact" />
@@ -283,52 +279,100 @@ export default {
 </script>
 
 <style scoped>
-section {
-  width: 100%;
-  height: 100%;
-  display: grid;
-  grid-template-columns: minmax(100px, 250px) repeat(8, 1fr);
-  grid-template-rows: 75px minmax(30px, 50px) repeat(7, 1fr);
-  gap: 10px;
-}
+@media screen {
+  section {
+    width: 100%;
+    height: 100%;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 150px 70px 300px 1fr repeat(3, 300px);
+    gap: 10px;
+  }
 
-#contact-card {
-  grid-column: 1 / 3;
-  grid-row: 1 / 3;
-}
+  #contact-card {
+    grid-row: 1 / 2;
+  }
 
-#company-card {
-  grid-column: 1/3;
-  grid-row: 3/4;
-}
+  #company-card {
+    grid-row: 2/3;
+  }
 
-#messages {
-  grid-column: 1/ 3;
-  grid-row: 4/ 10;
-}
+  #messages {
+    /* grid-row: 4/ 10; */
+    display: none;
+  }
 
-#button-bar {
-  grid-column: 3/ 10;
-  grid-row: 1/ 2;
-}
+  #button-bar {
+    grid-row: 4/ 5;
+  }
 
-#upcoming-events {
-  grid-column: 3/ 7;
-  grid-row: 2/6;
-}
+  #upcoming-events {
+    grid-row: 3/4;
+  }
 
-#to-do {
-  grid-column: 7 / 10;
-  grid-row: 2 / 7;
-}
+  #to-do {
+    grid-row: 5 / 6;
+  }
 
-#automation {
-  grid-column: 3 / 7;
-  grid-row: 6/ 10;
-}
+  #automation {
+    grid-row: 7/ 8;
+    padding-bottom: 100px;
+  }
 
-#notes {
-  grid-column: 7 / 10;
-  grid-row: 7 / 10;
+  #notes {
+    grid-row: 6 / 7;
+  }
+  @media (min-width: 850px) {
+    section {
+      width: 100%;
+      height: 100%;
+      display: grid;
+      grid-template-columns: minmax(100px, 250px) repeat(8, 1fr);
+      grid-template-rows: 75px minmax(30px, 50px) repeat(7, 1fr);
+      gap: 10px;
+    }
+
+    #contact-card {
+      grid-column: 1 / 3;
+      grid-row: 1 / 3;
+    }
+
+    #company-card {
+      grid-column: 1/3;
+      grid-row: 3/4;
+    }
+
+    #messages {
+      grid-column: 1/ 3;
+      grid-row: 4/ 10;
+      display: unset;
+    }
+
+    #button-bar {
+      grid-column: 3/ 10;
+      grid-row: 1/ 2;
+    }
+
+    #upcoming-events {
+      grid-column: 3/ 7;
+      grid-row: 2/6;
+    }
+
+    #to-do {
+      grid-column: 7 / 10;
+      grid-row: 2 / 7;
+    }
+
+    #automation {
+      grid-column: 3 / 7;
+      grid-row: 6/ 10;
+      padding: 0;
+    }
+
+    #notes {
+      grid-column: 7 / 10;
+      grid-row: 7 / 10;
+    }
+  }
 }
 </style>

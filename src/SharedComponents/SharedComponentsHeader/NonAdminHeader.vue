@@ -30,21 +30,62 @@ export default {
 };
 </script>
 <style scoped>
-.site-header {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 60px;
-}
+@media screen {
+  .site-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    height: 30px;
+  }
 
-.button-wrapper {
-  display: flex;
-  position: absolute;
-  right: 10px;
-}
+  .button-wrapper {
+    display: flex;
+    position: absolute;
+    right: 10px;
+  }
 
-.site-header img {
-  max-height: 45px;
-  margin: 15px;
+  .site-header img {
+    max-height: 25px;
+    margin: 10px;
+  }
+  @media (min-width: 800px) {
+    .site-header {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 60px;
+    }
+
+    .button-wrapper {
+      display: flex;
+      position: absolute;
+      right: 10px;
+    }
+
+    .site-header img {
+      max-height: 45px;
+      margin: 15px;
+    }
+  }
+  @media (min-width: 1200px) {
+    .site-header {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 60px;
+    }
+
+    .button-wrapper {
+      display: flex;
+      position: absolute;
+      right: 10px;
+    }
+
+    .site-header img {
+      max-height: 45px;
+      margin: 15px;
+    }
+  }
 }
 </style>

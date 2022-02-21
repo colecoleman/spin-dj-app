@@ -1,28 +1,26 @@
 <template>
-  <section id="page-wrapper">
-    <div id="hero">
-      <div class="spin-dj-sign-in-hero-left hero-half">
-        <div class="spin-dj-sign-in-image-container">
-          <img :src="SpinLogoWithText" alt="Spin DJ Software Logo" />
-        </div>
-        <div class="tagline-container">
-          <h1 id="spin-dj-sign-in-tagline">
-            Software Built<br /><b>by</b> DJs<br /><b>for</b> DJs
-          </h1>
-        </div>
+  <div id="login-hero">
+    <div class="spin-dj-sign-in-login-hero-left login-hero-half">
+      <div class="spin-dj-sign-in-image-container">
+        <img :src="SpinLogoWithText" alt="Spin DJ Software Logo" />
       </div>
-      <div class="spin-dj-sign-in-hero-right hero-half">
-        <h5>Sign in with the temporary password in your email.</h5>
-        <div id="authenticator-container">
-          <Authenticator> </Authenticator>
-        </div>
-        <h5>
-          DJs: looking to create an account?
-          <a href="https://spindj.io/signup"> Sign up!</a>
-        </h5>
+      <div class="login-tagline-container">
+        <h1 id="spin-dj-sign-in-login-tagline">
+          Software Built<br /><b>by</b> DJs<br /><b>for</b> DJs
+        </h1>
       </div>
     </div>
-  </section>
+    <div class="spin-dj-sign-in-login-hero-right login-hero-half">
+      <h5>Sign in with the temporary password in your email.</h5>
+      <div id="authenticator-container">
+        <Authenticator> </Authenticator>
+      </div>
+      <h5>
+        DJs: looking to create an account?
+        <a href="https://spindj.io/signup"> Sign up!</a>
+      </h5>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -118,176 +116,189 @@ export default {
 </script>
 
 <style>
-/* :root {
-  --amplify-background-color: transparent;
-  --amplify-secondary-color: white;
-  --amplify-primary-contrast: white;
-  --amplify-primary-color: #e00c1d;
-} */
-
-#hero {
-  height: 100vh;
-  width: 100vw;
-  display: flex;
-  flex-direction: column;
-  overflow: scroll;
-}
-
-.hero-half {
-  width: 100%;
-  justify-content: space-evenly;
-}
-
-#spin-dj-sign-in-tagline {
-  text-transform: uppercase;
-  text-align: right;
-  font-size: 2em;
-  line-height: 2em;
-  font-weight: 400;
-  height: auto;
-  display: block;
-}
-
-.tagline-container {
-  display: flex;
-  justify-content: center;
-  width: 100%;
-}
-
-.spin-dj-sign-in-image-container {
-  display: flex;
-  justify-content: center;
-  /* height: 30%; */
-  align-items: center;
-  align-content: center;
-}
-
-#authenticator-container {
-  padding: 20px;
-}
-
-.spin-dj-sign-in-image-container {
-  align-items: center;
-}
-
-.spin-dj-sign-in-image-container > img {
-  /* height: 40%; */
-  width: 40%;
-  padding: 30px;
-}
-
-.sign-in-text {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  font-weight: 600;
-}
-.spin-dj-sign-in-hero-left {
-  background-color: white;
-  height: auto;
-  display: flex;
-  flex-direction: column;
-}
-
-.spin-dj-sign-in-hero-right {
-  background-color: black;
-  min-height: 50vh;
-  display: flex;
-  flex-direction: column;
-  justify-items: space-around;
-  justify-content: space-around;
-  align-content: space-around;
-}
-
-.spin-dj-sign-in-hero-right h1,
-.spin-dj-sign-in-hero-right h2,
-.spin-dj-sign-in-hero-right h3,
-.spin-dj-sign-in-hero-right h4,
-.spin-dj-sign-in-hero-right h5,
-.spin-dj-sign-in-hero-right p,
-.spin-dj-sign-in-hero-right a {
-  color: white;
-}
-
-a {
-  text-decoration: underline;
-}
-
-.amplify-tabs {
-  display: none;
-}
-
-.sign-in-text:hover {
-  text-shadow: 1px 1px 10px white;
-  cursor: pointer;
-}
-
-#id {
-  display: none;
-}
-
-.amplify-tabs {
-  display: none !important;
-}
-
-[data-amplify-authenticator] {
-  --amplify-colors-background-primary: white;
-  --amplify-colors-background-secondary: white;
-  --amplify-colors-background-tertiary: white;
-  --amplify-colors-border-primary: var(--amplify-colors-neutral-20);
-  --amplify-colors-border-secondary: var(--amplify-colors-neutral-40);
-  --amplify-colors-border-tertiary: var(--amplify-colors-neutral-60);
-  --amplify-colors-brand-primary-10: var(--amplify-colors-teal-100);
-  --amplify-colors-brand-primary-20: var(--amplify-colors-teal-90);
-  --amplify-colors-brand-primary-40: var(--amplify-colors-teal-80);
-  --amplify-colors-brand-primary-60: var(--amplify-colors-teal-60);
-  --amplify-colors-brand-primary-80: var(--amplify-colors-teal-40);
-  --amplify-colors-brand-primary-90: var(--amplify-colors-teal-20);
-  --amplify-colors-brand-primary-100: var(--amplify-colors-teal-10);
-  --amplify-colors-font-interactive: var(--amplify-colors-white);
-  --amplify-components-heading-color: black !important;
-  --amplify-components-text-color: black !important;
-}
-
-.amplify-button[data-variation="primary"] {
-  background: black;
-}
-.amplify-button[data-variation="link"] {
-  color: black;
-  text-decoration: underline;
-}
-
-@media screen and (min-width: 350px) {
-  .spin-dj-sign-in-image-container > img {
-    width: 150px;
-  }
-
-  .spin-dj-sign-in-hero-left {
-    height: 50vh;
-  }
-}
-@media screen and (min-width: 960px) {
-  #hero {
-    flex-direction: row;
-  }
-
-  .hero-half {
-    width: 50%;
-    height: 100%;
+@media screen {
+  #login-hero {
+    height: 100vh;
+    width: 100vw;
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    position: relative;
+    overflow: scroll;
   }
 
-  .spin-dj-sign-in-image-container,
-  .tagline-container {
-    height: 100%;
+  .login-hero-half {
+    width: 100%;
+    min-height: 55%;
+    justify-content: space-evenly;
+    display: flex;
+    flex-direction: column;
+  }
+
+  #spin-dj-sign-in-login-tagline {
+    text-transform: uppercase;
+    text-align: right;
+    font-size: 1.5em;
+    line-height: 2em;
+    font-weight: 400;
+    height: auto;
+    display: block;
+  }
+
+  .login-tagline-container {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+  }
+
+  .spin-dj-sign-in-image-container {
+    display: flex;
+    justify-content: center;
+    /* height: 30%; */
+    align-items: center;
+    align-content: center;
+  }
+
+  #authenticator-container {
+    padding: 20px;
+  }
+
+  .spin-dj-sign-in-image-container {
+    align-items: center;
   }
 
   .spin-dj-sign-in-image-container > img {
-    height: 40%;
+    width: 175px;
+    padding: 30px;
+  }
+
+  .sign-in-text {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    font-weight: 600;
+  }
+  .spin-dj-sign-in-login-hero-left {
+    background-color: white;
+  }
+
+  .spin-dj-sign-in-login-hero-right {
+    background-color: black;
+    padding-bottom: 60px;
+  }
+
+  .spin-dj-sign-in-login-hero-right h1,
+  .spin-dj-sign-in-login-hero-right h2,
+  .spin-dj-sign-in-login-hero-right h3,
+  .spin-dj-sign-in-login-hero-right h4,
+  .spin-dj-sign-in-login-hero-right h5,
+  .spin-dj-sign-in-login-hero-right p,
+  .spin-dj-sign-in-login-hero-right a {
+    color: white;
+  }
+
+  a {
+    text-decoration: underline;
+  }
+
+  .amplify-tabs {
+    display: none;
+  }
+
+  .sign-in-text:hover {
+    text-shadow: 1px 1px 10px white;
+    cursor: pointer;
+  }
+
+  .amplify-tabs {
+    display: none !important;
+  }
+
+  [data-amplify-authenticator] {
+    --amplify-colors-background-primary: white;
+    --amplify-colors-background-secondary: white;
+    --amplify-colors-background-tertiary: white;
+    --amplify-colors-border-primary: var(--amplify-colors-neutral-20);
+    --amplify-colors-border-secondary: var(--amplify-colors-neutral-40);
+    --amplify-colors-border-tertiary: var(--amplify-colors-neutral-60);
+    --amplify-colors-brand-primary-10: var(--amplify-colors-teal-100);
+    --amplify-colors-brand-primary-20: var(--amplify-colors-teal-90);
+    --amplify-colors-brand-primary-40: var(--amplify-colors-teal-80);
+    --amplify-colors-brand-primary-60: var(--amplify-colors-teal-60);
+    --amplify-colors-brand-primary-80: var(--amplify-colors-teal-40);
+    --amplify-colors-brand-primary-90: var(--amplify-colors-teal-20);
+    --amplify-colors-brand-primary-100: var(--amplify-colors-teal-10);
+    --amplify-colors-font-interactive: var(--amplify-colors-white);
+    --amplify-components-heading-color: black !important;
+    --amplify-components-text-color: black !important;
+  }
+
+  .amplify-button[data-variation="primary"] {
+    background: black;
+  }
+  .amplify-button[data-variation="link"] {
+    color: black;
+    text-decoration: underline;
+  }
+  @media screen and (min-width: 800px) {
+    #login-hero {
+      flex-direction: column;
+    }
+
+    .login-hero-half {
+      width: 100%;
+      min-height: 100%;
+    }
+
+    .spin-dj-sign-in-image-container,
+    .login-tagline-container {
+      height: 100%;
+    }
+
+    .spin-dj-sign-in-login-hero-right {
+      padding: 0;
+    }
+
+    .spin-dj-sign-in-login-hero-right {
+      background-color: black;
+      padding-bottom: 60px;
+    }
+
+    .spin-dj-sign-in-image-container > img {
+      width: 150px;
+    }
+
+    #spin-dj-sign-in-login-tagline {
+      font-size: 2em;
+    }
+  }
+  @media screen and (min-width: 960px) {
+    #login-hero {
+      flex-direction: row;
+    }
+
+    .login-hero-half {
+      width: 50%;
+      height: 100%;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+    }
+
+    .spin-dj-sign-in-image-container,
+    .login-tagline-container {
+      height: 100%;
+    }
+
+    .spin-dj-sign-in-login-hero-right {
+      padding: 0;
+    }
+
+    .spin-dj-sign-in-image-container > img {
+      width: 250px;
+    }
+
+    #spin-dj-sign-in-login-tagline {
+      font-size: 2em;
+    }
   }
 }
 </style>

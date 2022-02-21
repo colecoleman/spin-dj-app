@@ -66,7 +66,7 @@ export default {
   border-radius: 25px;
   background-color: var(--foregroundColor);
   box-sizing: border-box;
-  padding: 20px;
+  padding: 20px 20px 10px 20px;
   width: 100%;
   height: 100%;
 }
@@ -114,44 +114,9 @@ h5 {
   top: 100%;
 }
 
-.loading-background {
-  background: var(--foregroundColor);
-  background: linear-gradient(
-    90deg,
-    var(--foregroundColor) -50%,
-    var(--foregroundColor) 45%,
-    var(--backgroundColor) 50%,
-    var(--foregroundColor) 55%,
-    var(--foregroundColor) 150%
-  );
-  background-size: 300%;
-  -webkit-animation-name: shimmer;
-  -moz-animation-name: shimmer;
-  animation-name: shimmer;
-  -webkit-animation-duration: 2.5s;
-  -moz-animation-duration: 2.5s;
-  animation-duration: 2.5s;
-  -webkit-animation-iteration-count: infinite;
-  -moz-animation-iteration-count: infinite;
-  animation-iteration-count: infinite;
-  animation-direction: normal;
-}
-
-@keyframes shimmer {
-  0% {
-    background-position: top right;
-  }
-  100% {
-    background-position: top left;
-  }
-}
-
-@-moz-keyframes shimmer {
-  0% {
-    background-position: top left;
-  }
-  100% {
-    background-position: top right;
+@media screen and (min-width: 320px) {
+  #content {
+    height: 90%;
   }
 }
 </style>

@@ -299,52 +299,71 @@ export default {
 </script>
 
 <style scoped>
-p {
-  font-size: 9pt;
-}
+@media screen {
+  p {
+    font-size: 9pt;
+  }
 
-.payments-wrapper {
-  display: flex;
-  flex-direction: column;
-  flex-wrap: wrap;
-  max-height: 100%;
-  overflow-y: scroll;
-  margin-top: 10px;
-}
+  .payments-wrapper {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    max-height: 100%;
+    width: 100%;
+    overflow-y: scroll;
+    margin-top: 10px;
+  }
 
-.payments-section {
-  width: 50%;
-}
+  .payments-section {
+    width: 90%;
+  }
 
-.payments-item {
-  display: flex;
-  flex-direction: column;
-  justify-content: left;
-  padding: 15px;
-  border-bottom: 1px solid var(--cardOutline);
-}
-.payments-item > p,
-.payments-section > h5,
-.payments-item > h5,
-.payments-item > h4 {
-  text-align: left;
-}
-.payments-item > input,
-.payments-item > select,
-.button-standard-with-icon {
-  width: 50%;
-  align-self: left;
-  justify-self: left;
-}
+  .payments-item {
+    display: flex;
+    flex-direction: column;
+    justify-content: left;
+    width: 90%;
+    padding: 15px;
+    border-bottom: 1px solid var(--cardOutline);
+  }
+  .payments-item > p,
+  .payments-section > h5,
+  .payments-item > h5,
+  .payments-item > h4 {
+    text-align: left;
+  }
+  .payments-item > input,
+  .payments-item > select,
+  .button-standard-with-icon {
+    width: 90%;
+    align-self: left;
+    justify-self: left;
+  }
 
-.button-standard-with-icon {
-  margin-top: 10px;
-}
+  .button-standard-with-icon {
+    margin-top: 10px;
+  }
 
-img {
-  height: 10px;
-  width: 10px;
-  margin: 0px 5px;
-  cursor: pointer;
+  img {
+    height: 10px;
+    width: 10px;
+    margin: 0px 5px;
+    cursor: pointer;
+  }
+  @media (min-width: 850px) {
+    .payments-wrapper {
+      flex-direction: column;
+    }
+
+    .payments-section {
+      width: 50%;
+    }
+
+    .payments-item > input,
+    .payments-item > select,
+    .button-standard-with-icon {
+      width: 50%;
+    }
+  }
 }
 </style>

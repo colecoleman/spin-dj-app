@@ -47,8 +47,6 @@ df
             </p>
             <input type="color" v-model="textColor" />
           </div>
-        </div>
-        <div class="branding-colors">
           <div class="branding-preferences-item">
             <p class="bold">
               Secondary Text Color:
@@ -482,99 +480,126 @@ export default {
 </script>
 
 <style scoped>
-p {
-  font-size: 9pt;
-}
+@media screen {
+  p {
+    font-size: 9pt;
+  }
 
-.branding-colors {
-  display: flex;
-  flex-direction: row;
-}
+  .branding-colors {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 100%;
+  }
 
-.branding-colors input {
-  cursor: pointer;
-}
+  .branding-colors input {
+    cursor: pointer;
+  }
 
-.branding-preferences-item {
-  display: flex;
-  flex-direction: column;
-  width: 20%;
-}
+  .branding-preferences-item {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    width: 33%;
+  }
 
-.business-information-wrapper {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  max-height: 100%;
-  overflow-y: scroll;
-  margin-top: 10px;
-}
+  .branding-preferences-item > p {
+    height: 40px;
+    text-align: left;
+  }
 
-.business-information-section {
-  width: 50%;
-}
+  .business-information-wrapper {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    max-height: 100%;
+    overflow-y: scroll;
+    margin-top: 10px;
+  }
 
-.business-information-item {
-  display: flex;
-  flex-direction: column;
-  justify-content: left;
-  margin-left: 10px;
-}
+  .business-information-section {
+    width: 100%;
+  }
 
-.business-information-item > p {
-  text-align: left;
-}
+  .business-information-item {
+    display: flex;
+    flex-direction: column;
+    justify-content: left;
+    margin-left: 10px;
+  }
 
-.business-information-item > input {
-  width: 50%;
-  align-self: left;
-  justify-self: left;
-}
+  .business-information-item > p {
+    text-align: left;
+  }
 
-.context {
-  margin: 2px;
-  text-align: right;
-  font-style: italic;
-}
+  input {
+    width: 90%;
+    align-self: left;
+    justify-self: left;
+  }
 
-:disabled {
-  opacity: 0.5;
-}
-.row-flex {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-}
+  .context {
+    margin: 2px;
+    text-align: right;
+    font-style: italic;
+  }
 
-.subdomain-list p {
-  margin: 2px;
-}
+  :disabled {
+    opacity: 0.5;
+  }
+  .row-flex {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
 
-.input-prefix,
-.input-suffix {
-  height: 15px;
-  padding: 4px;
-  outline: none;
-  border: 1px solid var(--textColor);
-}
+  .subdomain-list p {
+    margin: 2px;
+  }
 
-.input-prefix {
-  border-right: none;
-  border-radius: 5px 0px 0px 5px;
-}
-.input-suffix {
-  background-color: var(--backgroundColor);
-  border-left: none;
-  border-radius: 0px 5px 5px 0px;
-}
+  .input-prefix,
+  .input-suffix {
+    height: 15px;
+    padding: 4px;
+    outline: none;
+    border: 1px solid var(--textColor);
+  }
 
-img {
-  height: 10px;
-  width: 10px;
-  margin: 0px 5px;
-  cursor: pointer;
-}
-.button-wrapper {
-  width: 50%;
+  .input-prefix {
+    border-right: none;
+    border-radius: 5px 0px 0px 5px;
+  }
+  .input-suffix {
+    background-color: var(--backgroundColor);
+    border-left: none;
+    border-radius: 0px 5px 5px 0px;
+  }
+
+  img {
+    height: 10px;
+    width: 10px;
+    margin: 0px 5px;
+    cursor: pointer;
+  }
+  .button-wrapper {
+    width: 50%;
+  }
+  @media (min-width: 850px) {
+    .branding-preferences-item {
+      width: 20%;
+    }
+
+    .business-information-wrapper {
+      flex-direction: row;
+    }
+
+    .business-information-section {
+      width: 50%;
+    }
+
+    .business-information-item > input {
+      width: 50%;
+    }
+  }
 }
 </style>

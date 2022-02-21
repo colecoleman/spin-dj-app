@@ -259,45 +259,82 @@ export default {
 </script>
 
 <style scoped>
-section {
-  width: 100%;
-  height: 100%;
-  display: grid;
-  grid-template-columns: minmax(100px, 250px) repeat(8, 1fr);
-  grid-template-rows: 75px minmax(30px, 50px) repeat(7, 1fr);
-  gap: 10px;
-}
+@media screen {
+  section {
+    width: 100%;
+    height: 100%;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 150px 300px 125px repeat(3, 300px);
+    gap: 10px;
+  }
 
-#contact-card {
-  grid-column: 1 / 3;
-  grid-row: 1 / 3;
-}
-#to-do {
-  grid-column: 1 / 3;
-  grid-row: 3 / 6;
-}
+  #contact-card {
+    grid-row: 1 / 2;
+  }
 
-#notes {
-  grid-column: 1 / 3;
-  grid-row: 6 / 10;
-}
-#messages {
-  grid-column: 7/10;
-  grid-row: 6/ 10;
-}
+  #upcoming-events {
+    grid-row: 2/3;
+  }
+  #button-bar {
+    grid-row: 3/ 4;
+  }
+  #to-do {
+    grid-row: 4 / 5;
+  }
 
-#button-bar {
-  grid-column: 3/ 10;
-  grid-row: 1/ 2;
-}
+  #notes {
+    grid-row: 5 / 6;
+  }
+  #messages {
+    display: none;
+    grid-row: 6/ 10;
+  }
 
-#upcoming-events {
-  grid-column: 3/ 7;
-  grid-row: 2/10;
-}
+  #automation {
+    grid-row: 6/ 7;
+    padding-bottom: 100px;
+  }
+  @media (min-width: 850px) {
+    section {
+      grid-template-columns: minmax(100px, 250px) repeat(8, 1fr);
+      grid-template-rows: 75px minmax(30px, 50px) repeat(7, 1fr);
+    }
 
-#automation {
-  grid-column: 7 / 10;
-  grid-row: 2/ 6;
+    #contact-card {
+      grid-column: 1 / 3;
+      grid-row: 1 / 3;
+    }
+    #to-do {
+      grid-column: 1 / 3;
+      grid-row: 3 / 6;
+    }
+
+    #notes {
+      grid-column: 1 / 3;
+      grid-row: 6 / 10;
+    }
+    #messages {
+      grid-column: 7/10;
+      grid-row: 6/ 10;
+      display: unset;
+    }
+
+    #button-bar {
+      grid-column: 3/ 10;
+      grid-row: 1/ 2;
+    }
+
+    #upcoming-events {
+      grid-column: 3/ 7;
+      grid-row: 2/10;
+    }
+
+    #automation {
+      grid-column: 7 / 10;
+      grid-row: 2/ 6;
+      padding: 0;
+    }
+  }
 }
 </style>

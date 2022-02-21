@@ -49,65 +49,93 @@ export default {
       this.$emit("button-clicked", param);
     },
   },
-
+  emits: ["button-clicked"],
   props: ["text", "actions"],
 };
 </script>
 
 <style scoped>
-.button-standard-with-icon {
-  position: absolute;
-  z-index: 2;
-  width: 100%;
-  text-transform: uppercase;
-  border: 1px solid var(--textColor);
-  border-radius: 7px;
-  background-color: var(--foregroundColor);
-}
+@media screen {
+  .button-standard-with-icon {
+    position: absolute;
+    width: 100%;
+    height: fit-content;
+    z-index: 3;
+    box-sizing: border-box;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-transform: uppercase;
+    color: var(--textColor);
+    background-color: var(--foregroundColor);
+    border: 1px solid var(--textColor);
+    border-radius: 7px;
+    cursor: pointer;
+  }
+  .heading-container > img {
+    margin: 0 3px;
+  }
 
-.active {
-  z-index: 3;
-}
+  .actions-item {
+    margin: 10px;
+    display: flex;
+    flex-direction: row;
+  }
 
-.heading-container > img {
-  margin: 5px;
-}
+  .active {
+    z-index: 4;
+  }
 
-.actions-item {
-  display: flex;
-  flex-direction: row;
-}
+  .danger {
+    color: red;
+  }
 
-.danger {
-  color: red;
-}
+  .heading-container {
+    height: 33px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 
-.heading-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
-}
+  .button-standard-with-icon:hover {
+    cursor: pointer;
+  }
 
-.button-standard-with-icon:hover {
-  cursor: pointer;
-}
+  .actions-item {
+    justify-content: center;
+    align-items: center;
+  }
 
-.actions-item {
-  justify-content: center;
-  align-items: center;
-}
+  .actions-item > img {
+    height: 10px;
+    margin-right: 10px;
+  }
 
-.actions-item > img {
-  height: 12px;
-  margin-right: 10px;
-}
+  .inactive:hover {
+    background-color: gray;
+  }
 
-.inactive:hover {
-  background-color: gray;
-}
+  h5 {
+    margin: 0px;
+    font-size: 0.75em;
+  }
 
-h5 {
-  margin: 10px 0;
+  @media (min-width: 850px) {
+    .heading-container > img {
+      margin: 5px;
+    }
+
+    .heading-container {
+      height: 100%;
+    }
+
+    .actions-item > img {
+      height: 12px;
+    }
+
+    h5 {
+      margin: 10px 0;
+    }
+  }
 }
 </style>

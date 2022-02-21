@@ -48,16 +48,30 @@ export default {
 </script>
 
 <style scoped>
-.button-parent {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  height: 100%;
-}
-.button-div {
-  width: 23%;
-  height: 100%;
-  position: relative;
+@media screen {
+  .button-parent {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    height: 100%;
+  }
+  .button-div {
+    width: 45%;
+    height: 45px;
+    position: relative;
+    box-sizing: border-box;
+  }
+  @media (min-width: 700px) {
+    .button-parent {
+      flex-wrap: unset;
+    }
+    .button-div {
+      width: 23%;
+      height: 100%;
+      padding: unset;
+    }
+  }
 }
 </style>
