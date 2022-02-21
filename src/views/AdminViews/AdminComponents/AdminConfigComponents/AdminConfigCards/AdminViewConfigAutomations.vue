@@ -165,6 +165,10 @@
             No automations have been added yet! Add some!
           </h5>
           <div v-if="hasAutomations" class="automation-conditional-wrapper">
+            <p class="disclaimer">
+              Note: deleting or editing an automation will not affect
+              currently-booked events.
+            </p>
             <div
               class="automations-item"
               style="border-bottom: 1px solid gray; margin-bottom: 10px"
@@ -367,6 +371,11 @@ export default {
     font-size: 9pt;
   }
 
+  .disclaimer {
+    font-size: 8pt;
+    font-style: italic;
+    margin-top: 0;
+  }
   .automations-wrapper {
     display: flex;
     flex-direction: column-reverse;
