@@ -6,17 +6,6 @@
   <transition name="fade1">
     <status-indicator />
   </transition>
-  <!-- <div id="mobile-wall">
-    <img id="spin-logo" src="./assets/spin-beta-logo.png" alt="" />
-    <div class="heading-wrapper">
-      <h1>Our Mobile + Tablet Site is Under Contruction</h1>
-      <h5>
-        Please use a desktop to access this site. Sorry for the inconvenience
-      </h5>
-      <h4>Thank you for using Spin</h4>
-    </div>
-  </div> -->
-  <!-- </amplify-authenticator> -->
 </template>
 
 <script>
