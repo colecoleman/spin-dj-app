@@ -61,7 +61,10 @@ export default {
     /* height: 160px; */
     /* max-width: unset; */
     width: 80%;
-    transform: translate(13%, 100%);
+    top: 50%;
+    left: 50%;
+    /* bring your own prefixes */
+    transform: translate(-50%, -50%);
   }
 
   .button-container {
