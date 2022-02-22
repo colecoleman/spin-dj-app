@@ -1,5 +1,6 @@
 <template>
-  <backdrop @click="closePopup()" class="no-print" />
+  <backdrop @click="closePopup" class="no-print" />
+  <mobile-close-button @click="closePopup" />
   <section class="no-print">
     <two-button-dialog-modal
       class="no-print"
@@ -159,7 +160,7 @@ import { Auth } from "aws-amplify";
 import PopupModal from "../SharedComponentsUI/PopupModal.vue";
 import TwoButtonDialogModal from "../SharedComponentsUI/TwoButtonDialogModal.vue";
 import ContractPopupDocumentView from "./ContractPopupDocumentView.vue";
-
+import MobileCloseButton from "../SharedComponentsUI/MobileCloseButton.vue";
 import { formatDate } from "../../helpers.js";
 
 export default {
@@ -298,6 +299,7 @@ export default {
     ContractPopupDocumentView,
     TwoButtonDialogModal,
     PopupModal,
+    MobileCloseButton,
   },
   async created() {
     await Auth.currentAuthenticatedUser().then((res) => {
@@ -324,38 +326,17 @@ export default {
 @media screen {
   section {
     position: fixed;
-    overflow: visible;
-    top: 0;
-    left: 0;
-    display: flex;
-    flex-direction: column-reverse;
-    height: fit-content;
-    width: 90%;
-    margin: 5%;
+    top: 20px;
+    left: 20px;
+    height: calc(100% - 20px);
+    width: calc(100% - 40px);
     z-index: 8;
-
-    /*  */
-
     filter: drop-shadow(0 0 20px rgba(0, 0, 0, 0.5));
-    position: fixed;
-    top: 0;
-    left: 0;
     display: flex;
     flex-direction: column;
-    height: 95%;
     overflow-y: scroll;
-    width: 90%;
-    margin: 5%;
-    z-index: 9;
   }
   #contract-popup-content-wrapper {
-    /* display: flex;
-    flex-direction: row;
-    min-height: 100%;
-    height: 100%; */
-
-    /*  */
-
     display: flex;
     flex-direction: column;
     min-height: 100%;
@@ -370,7 +351,7 @@ export default {
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
-    height: 100%;
+    /* height: 100%; */
   }
 
   #right-column-sign-button-container {
@@ -445,33 +426,17 @@ export default {
     display: none;
   }
   @media (min-width: 850px) {
-    #print-format {
-      display: none;
-    }
     section {
-      filter: drop-shadow(0 0 20px rgba(0, 0, 0, 0.5));
-      position: fixed;
-      top: 0;
-      left: 0;
-      display: flex;
       flex-direction: row;
-      height: 90%;
-      width: 90%;
-      margin: 5%;
+      height: calc(100% - 40px);
     }
     #contract-popup-content-wrapper {
-      display: flex;
       flex-direction: row;
-      min-height: 100%;
       height: 100%;
     }
     .navigation-wrapper {
       display: unset;
-      margin-right: 10px;
-    }
-    #contract-document-scroll-container {
-      width: 100%;
-      overflow: scroll;
+      margin: 0 10px 0 0;
     }
   }
 }

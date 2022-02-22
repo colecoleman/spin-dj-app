@@ -1,5 +1,6 @@
 <template>
-  <backdrop @click="closePopup()" class="no-print"></backdrop>
+  <backdrop @click="closePopup()" class="no-print" />
+  <mobile-close-button @click="closePopup()" />
   <section class="no-print">
     <div class="navigation-wrapper no-print">
       <base-card>
@@ -102,6 +103,7 @@
 <script>
 import Backdrop from "../SharedComponentsUI/Backdrop.vue";
 import InvoicePopupDocumentView from "./InvoicePopupDocumentView.vue";
+import MobileCloseButton from "../SharedComponentsUI/MobileCloseButton.vue";
 import {
   productTotal,
   calculateEventTime,
@@ -148,86 +150,83 @@ export default {
   components: {
     InvoicePopupDocumentView,
     Backdrop,
+    MobileCloseButton,
   },
 };
 </script>
 
 <style scoped>
-section {
-  position: fixed;
-  overflow: scroll;
-  top: 0;
-  left: 0;
-  display: flex;
-  flex-direction: column-reverse;
-  height: 95%;
-  width: 90%;
-  margin: 5%;
-  z-index: 5;
-}
-
-.navigation-wrapper {
-  width: 100%;
-  height: 100%;
-  margin-bottom: 10px;
-  display: flex;
-  flex-direction: column;
-}
-
-#invoice-popup-content-wrapper {
-  display: flex;
-  flex-direction: row;
-  /* min-height: 100%; */
-}
-
-#invoice-popup-left-menu,
-#invoice-popup-right-column {
-  height: 100%;
-}
-
-#invoice-document-view-wrapper {
-  margin-bottom: 10px;
-  width: 100%;
-}
-
-.invoice-item,
-.summary-item {
-  padding-top: 0em;
-}
-
-.summary-item,
-.price-item {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.invoice-item > h5 {
-  font-weight: 600;
-  text-align: left;
-}
-
-.summary-item > h4 {
-  text-align: left;
-}
-
-.summary-item h5 {
-  font-weight: 600;
-}
 @media screen {
+  section {
+    position: fixed;
+    overflow: scroll;
+    top: 20px;
+    left: 20px;
+    display: flex;
+    flex-direction: column-reverse;
+    height: calc(100% - 20px);
+    width: calc(100% - 40px);
+    z-index: 5;
+    filter: drop-shadow(0 0 20px rgba(0, 0, 0, 0.5));
+  }
+
+  .navigation-wrapper {
+    width: 100%;
+    height: 100%;
+    margin-bottom: 10px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  #invoice-popup-content-wrapper {
+    display: flex;
+    flex-direction: row;
+    /* min-height: 100%; */
+  }
+
+  #invoice-popup-left-menu,
+  #invoice-popup-right-column {
+    height: 100%;
+  }
+
+  #invoice-document-view-wrapper {
+    margin-bottom: 10px;
+    width: 100%;
+  }
+
+  .invoice-item,
+  .summary-item {
+    padding-top: 0em;
+  }
+
+  .summary-item,
+  .price-item {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .invoice-item > h5 {
+    font-weight: 600;
+    text-align: left;
+  }
+
+  .summary-item > h4 {
+    text-align: left;
+  }
+
+  .summary-item h5 {
+    font-weight: 600;
+  }
   #print-format {
     display: none;
   }
-  @media (min-width: 320px) {
-    section {
-      filter: drop-shadow(0 0 20px rgba(0, 0, 0, 0.5));
-    }
-  }
+
   @media (min-width: 850px) {
     section {
       flex-direction: row;
-      height: 90%;
+      height: calc(100% - 40px);
     }
 
     .navigation-wrapper {

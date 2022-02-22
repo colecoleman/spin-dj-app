@@ -1,5 +1,6 @@
 <template>
-  <backdrop class="no-print" @click="closePopup()"></backdrop>
+  <backdrop class="no-print" @click="closePopup" />
+  <mobile-close-button @click="closePopup" />
   <two-button-dialog-modal
     @select-button-one="deleteForm"
     @select-button-two="closeDeleteForm"
@@ -192,6 +193,7 @@
 
 <script>
 // import FullPagePopup from "../SharedComponentsUI/FullPagePopup.vue";
+import MobileCloseButton from "../SharedComponentsUI/MobileCloseButton.vue";
 import Backdrop from "../SharedComponentsUI/Backdrop.vue";
 import FormsPopupAddForm from "./FormsPopupAddForm.vue";
 import TwoButtonDialogModal from "../SharedComponentsUI/TwoButtonDialogModal.vue";
@@ -287,6 +289,7 @@ export default {
     FormsPopupAddForm,
     Backdrop,
     TwoButtonDialogModal,
+    MobileCloseButton,
   },
 };
 </script>
@@ -381,14 +384,14 @@ export default {
 section {
   filter: drop-shadow(0 0 20px rgba(0, 0, 0, 0.5));
   position: fixed;
-  top: 5%;
-  left: 5%;
+  top: 20px;
+  left: 20px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 90%;
-  width: 90%;
+  height: calc(100% - 20px);
+  width: calc(100% - 40px);
   z-index: 5;
 }
 
@@ -466,6 +469,7 @@ input {
 @media screen and (min-width: 1100px) {
   section {
     flex-direction: row;
+    height: calc(100% - 40px);
   }
   .navigation-wrapper {
     backdrop-filter: blur(2px);
