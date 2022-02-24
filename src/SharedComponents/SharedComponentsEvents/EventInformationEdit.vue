@@ -90,7 +90,7 @@ export default {
       }
       if (this.fieldToEdit === "startTime") {
         let timeArray = this.fields.startTime.value.split(":");
-        let eventDate = new Date(payload.value.date);
+        let eventDate = new Date(this.event.data.date);
         eventDate.setHours(eventDate.getHours() + timeArray[0]);
         eventDate.setMinutes(eventDate.getMinutes() + timeArray[1]);
         let data = Object.assign({}, this.event.data);
@@ -100,7 +100,7 @@ export default {
       }
       if (this.fieldToEdit === "endTime") {
         let timeArray = this.fields.endTime.value.split(":");
-        let eventDate = new Date(payload.value.date);
+        let eventDate = new Date(this.event.data.date);
         eventDate.setHours(eventDate.getHours() + timeArray[0]);
         eventDate.setMinutes(eventDate.getMinutes() + timeArray[1]);
         if (new Date(payload.value.startTime) > eventDate) {
