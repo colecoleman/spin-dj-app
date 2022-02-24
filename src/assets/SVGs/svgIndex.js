@@ -30,6 +30,7 @@ import LocationCircleIconSVG from "./location-circle-icon.svg";
 import LocationMarkerSVG from "./location-marker.svg";
 import MessageBubbleSVG from "./message-bubble.svg";
 import MetricChartSVG from "./metricchart.svg";
+// import Moon from './moon.svg';
 import NeutralSVG from "./neutral.svg";
 import NotificationBellSVG from "./notification-bell.svg";
 import PassingTimeSVG from "./passing-time.svg";
@@ -42,6 +43,7 @@ import SmartphoneSVG from "./smartphone.svg";
 import SnowflakeColorSVG from "./snowflake-color.svg";
 import SnowflakeSVG from "./snowflake.svg";
 import SortAlphaSVG from "./sort-alpha.svg";
+// import Sun from './sun.svg'
 import TrashCanSVG from "./trash-can.svg";
 import ToolboxSVG from "./toolbox.svg";
 import WrenchGearSVG from "./wrench-gear.svg";
@@ -80,6 +82,7 @@ let SVGs = {
   LocationMarkerSVG,
   MessageBubbleSVG,
   MetricChartSVG,
+  // Moon,
   NeutralSVG,
   NotificationBellSVG,
   PassingTimeSVG,
@@ -92,6 +95,7 @@ let SVGs = {
   SnowflakeColorSVG,
   SnowflakeSVG,
   SortAlphaSVG,
+  // Sun,
   ToolboxSVG,
   TrashCanSVG,
   WrenchGearSVG,
@@ -99,3 +103,55 @@ let SVGs = {
 };
 
 export default SVGs;
+export {
+  AddPackageSVG,
+  AddPersonSVG,
+  AddTimeClockSVG,
+  AutomationSVG,
+  CalendarSVG,
+  CircleArrowUpSVG,
+  CircleCheckmarkSVG,
+  ClipboardSVG,
+  CreditCardSVG,
+  DiscSVG,
+  DownArrowSVG,
+  DropdownArrowSVG,
+  EditPenSVG,
+  EmailSVG,
+  ExclamationSVG,
+  EyeIconSVG,
+  FileOpenSVG,
+  FillableCircleSVG,
+  FireColorSVG,
+  FireSVG,
+  GreenCheckmark,
+  GroupPeopleSVG,
+  HealthSignSVG,
+  HomeSVG,
+  InfoIconSVG,
+  KeySVG,
+  LeftArrowSVG,
+  LocationAddSVG,
+  LocationCircleIconSVG,
+  LocationMarkerSVG,
+  MessageBubbleSVG,
+  MetricChartSVG,
+  // Moon,
+  NeutralSVG,
+  NotificationBellSVG,
+  PassingTimeSVG,
+  PersonSVG,
+  PlusSignSVG,
+  RedXCircle,
+  ReferCircleSVG,
+  RightArrowSVG,
+  SmartphoneSVG,
+  SnowflakeColorSVG,
+  SnowflakeSVG,
+  SortAlphaSVG,
+  // Sun,
+  ToolboxSVG,
+  TrashCanSVG,
+  WrenchGearSVG,
+  XIconSVG,
+}

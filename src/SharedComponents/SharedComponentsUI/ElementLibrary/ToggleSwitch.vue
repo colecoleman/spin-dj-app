@@ -22,20 +22,19 @@
 </template>
 
 <script>
-import { Sun, Moon } from "../../../assets/SVGs/svgIndex.js";
 export default {
   data() {
     return {
-      options: [
-        {
-          value: "AM",
-          icon: Sun,
-        },
-        {
-          value: "PM",
-          icon: Moon,
-        },
-      ],
+      // options: [
+      //   {
+      //     value: "AM",
+      //     icon: Sun,
+      //   },
+      //   {
+      //     value: "PM",
+      //     icon: Moon,
+      //   },
+      // ],
     };
   },
   computed: {
