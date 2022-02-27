@@ -59,6 +59,8 @@ export default {
   .button-standard-with-icon {
     position: absolute;
     width: 100%;
+    /* height: 100%; */
+    min-height: 35px;
     height: fit-content;
     z-index: 3;
     box-sizing: border-box;
@@ -91,7 +93,7 @@ export default {
   }
 
   .heading-container {
-    height: 33px;
+    height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;

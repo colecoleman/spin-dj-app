@@ -26,7 +26,8 @@ export default {
 @media screen {
   .button-standard-with-icon {
     display: flex;
-    height: 35px;
+    max-height: 35px;
+    height: 100%;
     width: 100%;
     flex-direction: row;
     align-items: center;
