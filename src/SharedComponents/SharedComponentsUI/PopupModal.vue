@@ -38,7 +38,7 @@ export default {
   width: 80%;
   left: 10%;
   top: 15%;
-  height: fit-content;
+  /* height: fit-content; */
   border-radius: 14px;
 }
 
@@ -48,7 +48,7 @@ export default {
     z-index: 10;
     width: 40%;
     left: 30%;
-    height: fit-content;
+    /* height: fit-content; */
     top: auto;
     border-radius: 14px;
   }
