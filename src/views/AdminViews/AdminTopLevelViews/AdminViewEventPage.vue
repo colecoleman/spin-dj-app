@@ -17,7 +17,11 @@
       @close-popup="togglePopup"
     >
       <template v-slot:window>
-        <event-make-payment :eventId="event.userId" :event="event" />
+        <event-make-payment
+          :eventId="event.userId"
+          :event="event"
+          @apply-manual-payment="applyManualPayment"
+        />
       </template>
     </popup-modal>
     <popup-modal
@@ -278,6 +282,18 @@ export default {
     },
     editEvent(payload) {
       this.event = payload;
+    },
+    applyManualPayment(payment) {
+      console.log(payment);
+      this.event.invoice.payments.push(payment);
+      console.log(this.event);
+      let payload = {
+        variable: "invoice",
+        value: this.event.invoice,
+        eventId: this.event.userId,
+      };
+      this.$store.dispatch("editEvent", payload);
+      this.togglePopup();
     },
   },
 
