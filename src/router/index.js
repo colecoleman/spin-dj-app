@@ -365,10 +365,7 @@ router.beforeEach(async (to, from, next) => {
   }
   if (to.matched.some((record) => record.meta.requiresAdminAuth)) {
     if (user.attributes["custom:role"].includes("admin")) {
-      console.log(dbUser);
-      console.log(Date.now())
-      if (dbUser.subscriptionExpirationDate < Date.now()) {
-        console.log('subscription issue')
+      if (new Date(dbUser.subscriptionExpirationDate) < new Date()) {
         next("/updatesubscription");
       } else {
         next();
