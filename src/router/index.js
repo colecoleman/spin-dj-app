@@ -367,12 +367,12 @@ router.beforeEach(async (to, from, next) => {
     if (user.attributes["custom:role"].includes("admin")) {
       console.log(dbUser);
       console.log(Date.now())
-      // if (dbUser.subscriptionExpirationDate < Date.now()) {
-      //   console.log('subscription issue')
-      //   next("/updatesubscription");
-      // } else {
-      //   next();
-      // }
+      if (dbUser.subscriptionExpirationDate < Date.now()) {
+        console.log('subscription issue')
+        next("/updatesubscription");
+      } else {
+        next();
+      }
     } else {
       next();
     }
