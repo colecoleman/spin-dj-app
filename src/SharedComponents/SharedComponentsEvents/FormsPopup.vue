@@ -88,7 +88,15 @@
                     :placeholder="input.placeholder"
                     v-model="input.value"
                   />
-
+                  <textarea
+                    v-if="input.inputType === 'textarea'"
+                    name=""
+                    id=""
+                    cols="15"
+                    rows="5"
+                    :placeholder="input.placeholder"
+                    v-model="input.value"
+                  ></textarea>
                   <div
                     class="radio-container"
                     v-if="input.inputType === 'radio'"

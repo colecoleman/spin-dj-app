@@ -69,6 +69,15 @@
                       </option>
                     </select>
                   </div>
+                  <div v-if="input.inputType === 'textarea'">
+                    <textarea
+                      name=""
+                      id=""
+                      cols="30"
+                      rows="5"
+                      :placeholder="input.placeholder"
+                    ></textarea>
+                  </div>
                 </div>
               </div>
             </div>
@@ -137,6 +146,7 @@
                     <option value="color">color</option>
                     <option value="radio">radio</option>
                     <option value="select">select</option>
+                    <option value="textarea">text area</option>
                   </select>
                 </div>
                 <div
@@ -144,6 +154,7 @@
                   v-if="
                     newField.fields[index].inputType === 'text' ||
                     newField.fields[index].inputType === 'tel' ||
+                    newField.fields[index].inputType === 'textarea' ||
                     newField.fields[index].inputType === 'email'
                   "
                 >
