@@ -12,6 +12,42 @@
       @close-popup="togglePopup"
     />
     <popup-modal
+      title="Edit Adjustments"
+      v-if="popupOpen === 'adjustments'"
+      @close-popup="togglePopup"
+    >
+      <template v-slot:window>
+        <h4>Event Adjustments:</h4>
+        <p v-if="!event.invoice.adjustments.length">
+          This event has no adjustments!
+        </p>
+
+        <div
+          v-for="(adjustment, index) in event.invoice.adjustments"
+          :key="index"
+          class="row-flex"
+        >
+          <img :src="SVGs.XIconSVG" alt="" @click="removeAdjustment(index)" />
+          <p>{{ adjustment.name }}: {{ adjustmentDisplay(adjustment) }}</p>
+        </div>
+        <h4>Add Adjustments:</h4>
+        <div
+          v-for="(adjustment, index) in this.$store.state.businessSettings
+            .product.discounts"
+          :key="index"
+          class="row-flex"
+        >
+          <img
+            :src="SVGs.PlusSignSVG"
+            alt=""
+            @click="addAdjustment(adjustment)"
+          />
+          <p>{{ adjustment.name }}: {{ adjustmentDisplay(adjustment) }}</p>
+        </div>
+        <button-standard-with-icon text="Save Event" @click="saveAdjustments" />
+      </template>
+    </popup-modal>
+    <popup-modal
       title="Make Payment"
       v-if="popupOpen === 'payment'"
       @close-popup="togglePopup"
@@ -164,9 +200,14 @@ export default {
             icon: SVGs.TrashCanSVG,
           },
           {
-            title: "Make Payment",
+            title: "Payments",
             parameter: "payment",
             // action: this.processPayment,
+            danger: false,
+          },
+          {
+            title: "Adjustments",
+            parameter: "adjustments",
             danger: false,
           },
           {
@@ -204,6 +245,29 @@ export default {
       } else {
         this.popupOpen = popup;
       }
+    },
+    adjustmentDisplay(adjustment) {
+      if (adjustment.type === "percentage") {
+        return `${adjustment.amount * 100}%`;
+      }
+      if (adjustment.type === "dollar") {
+        return `$${adjustment.amount / 100}`;
+      }
+    },
+    removeAdjustment(index) {
+      this.event.invoice.adjustments.splice(index, 1);
+    },
+    addAdjustment(adjustment) {
+      this.event.invoice.adjustments.push(adjustment);
+    },
+    saveAdjustments() {
+      let payload = {
+        variable: "invoice",
+        value: this.event.invoice,
+        eventId: this.event.userId,
+      };
+      this.$store.dispatch("editEvent", payload);
+      this.togglePopup();
     },
     async confirmDeleteEvent() {
       let contacts = [...this.contacts];
@@ -349,6 +413,16 @@ export default {
   align-content: center;
   justify-content: center;
   align-items: center;
+}
+
+.row-flex {
+  display: flex;
+  align-items: center;
+}
+
+img {
+  height: 14px;
+  margin: 10px;
 }
 
 section {
