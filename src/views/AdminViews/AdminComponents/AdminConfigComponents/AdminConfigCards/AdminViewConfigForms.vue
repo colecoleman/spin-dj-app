@@ -42,6 +42,9 @@
                       :placeholder="input.placeholder"
                     />
                   </div>
+                  <div v-if="input.inputType === 'textarea'">
+                    <textarea :placeholder="input.placeholder"></textarea>
+                  </div>
                   <div v-if="input.inputType === 'radio'">
                     <div
                       v-for="(option, index) in input.options"
