@@ -65,24 +65,13 @@
                     </div>
                   </div>
                   <div v-if="input.inputType === 'select'">
-                    <select :name="input.inputTitle">
-                      <option
-                        v-for="(option, index) in input.options"
-                        :key="index"
-                        :value="option.optionValue"
-                      >
-                        {{ option.optionValue }}
-                      </option>
-                    </select>
-                  </div>
-                  <div v-if="input.inputType === 'textarea'">
-                    <textarea
-                      name=""
-                      id=""
-                      cols="30"
-                      rows="5"
-                      :placeholder="input.placeholder"
-                    ></textarea>
+                    <input-with-title
+                      :options="input.options"
+                      type="select"
+                      optionDisplay="optionValue"
+                      :inputValue="input.options[0]"
+                      :title="input.inputTitle"
+                    />
                   </div>
                 </div>
               </div>

@@ -32,18 +32,14 @@
                   v-for="(input, index) in formItem.fields"
                   :key="index"
                 >
-                  <p>{{ input.inputTitle }}:</p>
-                  <input
-                    v-if="
-                      input.inputType === 'text' ||
-                      input.inputType === 'tel' ||
-                      input.inputType === 'email'
-                    "
+                  <input-with-title
+                    :title="input.inputTitle"
                     :type="input.inputType"
                     :placeholder="input.placeholder"
-                    v-model="input.value"
+                    :options="input.options ? input.options : []"
+                    optionDisplay="optionValue"
+                    :inputValue="input.options ? input.options[0] : ''"
                   />
-
                   <div
                     class="radio-container"
                     v-if="input.inputType === 'radio'"
@@ -57,17 +53,6 @@
                     />
                     <p>{{ option }}</p>
                   </div>
-                  <select
-                    v-if="input.inputType === 'select'"
-                    v-model="input.value"
-                  >
-                    <option
-                      v-for="(option, index) in input.options"
-                      :key="index"
-                    >
-                      {{ option.optionValue }}
-                    </option>
-                  </select>
                 </div>
               </div>
             </div>
@@ -79,6 +64,7 @@
 </template>
 <script>
 import BaseCard from "../SharedComponentsUI/BaseCard.vue";
+import InputWithTitle from "../SharedComponentsUI/ElementLibrary/InputWithTitle.vue";
 import SVGs from "../../assets/SVGs/svgIndex.js";
 export default {
   data() {
@@ -113,7 +99,7 @@ export default {
     },
   },
   created() {},
-  components: { BaseCard },
+  components: { BaseCard, InputWithTitle },
   emit: ["addFormToEvent"],
   props: ["eventForms"],
 };

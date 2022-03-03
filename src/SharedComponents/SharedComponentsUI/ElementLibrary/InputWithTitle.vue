@@ -73,6 +73,7 @@ export default {
 <style scoped>
 div {
   /* width: auto; */
+  min-width: 125px;
   max-width: 300px;
   border: 1px solid var(--textColor);
   border-radius: 4px;
