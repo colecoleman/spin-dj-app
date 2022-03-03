@@ -7,89 +7,81 @@
             <div class="row-flex section-inner-wrapper">
               <div class="event-date">
                 <div class="form-input">
-                  <p>Event Title (Optional):</p>
-                  <input type="text" v-model="event.title" />
+                  <input-with-title
+                    title="Event Title (Optional):"
+                    type="text"
+                    :inputValue="event.title"
+                    @input="fieldInput(event, 'title', $event)"
+                  />
                 </div>
                 <div class="form-input">
-                  <p>Event Date:</p>
-                  <input type="date" v-model.lazy="fields.data.date" />
-
+                  <!-- <p>Event Date:</p>
+                  <input type="date" v-model.lazy="fields.data.date" /> -->
+                  <input-with-title
+                    title="Event Date:"
+                    type="date"
+                    :inputValue="fields.data.date"
+                    @input="fieldInput(fields.data, 'date', $event)"
+                  />
                   <p class="disclaimer">
                     * if using Safari or IE without a date picker, enter date in
                     'YYYY-MM-DD' format
                   </p>
                 </div>
               </div>
-              <div class="event-times row-flex">
+              <div class="event-times">
                 <div class="form-input">
-                  <p>Start Time:</p>
-
-                  <div class="time-inputs">
-                    <select v-model="fields.data.startTime.hours">
-                      <option
-                        v-for="(item, index) in 12"
-                        :key="item"
-                        :value="index + 1"
-                      >
-                        {{ index + 1 }}
-                      </option>
-                    </select>
-                    <select v-model="fields.data.startTime.minutes">
-                      <option
-                        v-for="(item, index) in ['00', '15', '30', '45']"
-                        :key="index"
-                        :value="item"
-                      >
-                        {{ item }}
-                      </option>
-                    </select>
-                    <select v-model="fields.data.startTime.period">
-                      <option
-                        v-for="(item, index) in ['PM', 'AM']"
-                        :key="index"
-                        :value="item"
-                      >
-                        {{ item }}
-                      </option>
-                    </select>
+                  <div class="row-flex">
+                    <input-with-title
+                      title="Start"
+                      type="select"
+                      :inputValue="fields.data.startTime.hours"
+                      :options="hours"
+                      @input="
+                        fieldInput(fields.data.startTime, 'hours', $event)
+                      "
+                    />
+                    <input-with-title
+                      type="select"
+                      :inputValue="fields.data.startTime.minutes"
+                      :options="minutes"
+                      @input="
+                        fieldInput(fields.data.startTime, 'minutes', $event)
+                      "
+                    />
+                    <input-with-title
+                      type="select"
+                      :inputValue="fields.data.startTime.period"
+                      :options="periods"
+                      @input="
+                        fieldInput(fields.data.startTime, 'period', $event)
+                      "
+                    />
                   </div>
                 </div>
-                <!-- <p>--</p> -->
                 <div class="form-input">
-                  <p>End Time:</p>
-                  <!-- <input
-                    type="time"
-                    v-model.lazy="fields.endTime"
-                    @blur="assignEndTimeToEvent(fields.endTime)"
-                  /> -->
-                  <div class="time-inputs">
-                    <select v-model="fields.data.endTime.hours">
-                      <option
-                        v-for="(item, index) in 12"
-                        :key="item"
-                        :value="index + 1"
-                      >
-                        {{ index + 1 }}
-                      </option>
-                    </select>
-                    <select v-model="fields.data.endTime.minutes">
-                      <option
-                        v-for="(item, index) in ['00', '15', '30', '45']"
-                        :key="index"
-                        :value="item"
-                      >
-                        {{ item }}
-                      </option>
-                    </select>
-                    <select v-model="fields.data.endTime.period">
-                      <option
-                        v-for="(item, index) in ['PM', 'AM']"
-                        :key="index"
-                        :value="item"
-                      >
-                        {{ item }}
-                      </option>
-                    </select>
+                  <div class="row-flex">
+                    <input-with-title
+                      title="End"
+                      type="select"
+                      :inputValue="fields.data.endTime.hours"
+                      :options="hours"
+                      @input="fieldInput(fields.data.endTime, 'hours', $event)"
+                    />
+                    <input-with-title
+                      type="select"
+                      :inputValue="fields.data.endTime.minutes"
+                      :options="minutes"
+                      @input="
+                        fieldInput(fields.data.endTime, 'minutes', $event)
+                      "
+                    />
+                    <input-with-title
+                      type="select"
+                      :inputValue="fields.data.endTime.period"
+                      :options="periods"
+                      @input="fieldInput(fields.data.endTime, 'period', $event)"
+                    />
                   </div>
                 </div>
               </div>
@@ -150,17 +142,18 @@
               <div class="form-input">
                 <p>Enter Manual Payment:</p>
                 <div class="row-flex">
-                  <input
+                  <input-with-title
+                    title="Payment Name"
+                    :inputValue="fields.payment.name"
                     type="text"
-                    v-model.lazy="fields.payment.name"
-                    placeholder="Payment Name"
+                    @input="fieldInput(fields.payment, 'name', $event)"
                   />
-                  <input
+                  <input-with-title
+                    title="Amount"
                     type="number"
-                    class="less-width"
-                    v-model.lazy="fields.payment.amount"
+                    :inputValue="fields.payment.amount"
+                    @input="fieldInput(fields.payment, 'amount', $event)"
                     @blur="assignPaymentToEvent()"
-                    placeholder="Amount"
                   />
                 </div>
                 <!-- <p>Enter Manual Adjustment:</p>
@@ -247,18 +240,15 @@
           <template v-slot:content>
             <div class="row-flex section-inner-wrapper">
               <div class="form-input">
-                <p>Location Name:</p>
                 <div class="dropdown-parent">
-                  <input
+                  <input-with-title
                     type="text"
-                    v-model="fields.location.name"
-                    @keydown="openLocationDropdown"
+                    title="Location Name:"
                     placeholder="Start typing to find past location or add a new one."
+                    :inputValue="fields.location.name"
+                    @input="fieldInput(fields.location, 'name', $event)"
                   />
-                  <div
-                    class="dropdown"
-                    v-if="locationDropdownOpen && searchLocations.length > 0"
-                  >
+                  <div class="dropdown" v-if="searchLocations.length > 0">
                     <div
                       class="dropdown-item"
                       v-for="location in searchLocations"
@@ -272,27 +262,38 @@
                 </div>
               </div>
               <div class="column-flex">
-                <div class="form-input">
-                  <p>Street Address 1:</p>
-                  <input
-                    type="text"
-                    v-model.lazy="fields.location.address.streetAddress1"
-                  />
-                </div>
-                <div class="form-input">
-                  <p>Street Address 2:</p>
-                  <input
-                    type="text"
-                    v-model.lazy="fields.location.address.streetAddress2"
-                  />
-                </div>
-                <div class="form-input">
-                  <p>City, State/Province, Zip Code:</p>
-                  <input
-                    type="text"
-                    v-model.lazy="fields.location.address.cityStateZip"
-                  />
-                </div>
+                <input-with-title
+                  title="Street Address 1:"
+                  type="text"
+                  :inputValue="fields.location.address.streetAddress1"
+                  @input="
+                    fieldInput(
+                      fields.location.address,
+                      'streetAddress1',
+                      $event
+                    )
+                  "
+                />
+                <input-with-title
+                  title="Street Address 2:"
+                  type="text"
+                  :inputValue="fields.location.address.streetAddress2"
+                  @input="
+                    fieldInput(
+                      fields.location.address,
+                      'streetAddress2',
+                      $event
+                    )
+                  "
+                />
+                <input-with-title
+                  title="City, State/Province, Zip Code:"
+                  type="text"
+                  :inputValue="fields.location.address.cityStateZip"
+                  @input="
+                    fieldInput(fields.location.address, 'cityStateZip', $event)
+                  "
+                />
               </div>
             </div>
           </template>
@@ -304,34 +305,24 @@
             <div class="row-flex section-inner-wrapper">
               <div class="column-flex">
                 <div class="form-input">
-                  <p>Pronoun/ Prefix:</p>
-                  <select
-                    name="Preferred Pronoun"
-                    v-model.trim.lazy="fields.client.pronoun"
-                  >
-                    <option value="Mr.">Mr.</option>
-                    <option value="Mrs.">Mrs.</option>
-                    <option value="Ms.">Ms.</option>
-                    <option value="Other">
-                      Other (please prefix first name)
-                    </option>
-                  </select>
+                  <input-with-title
+                    title="Pronoun / Prefix"
+                    type="select"
+                    :options="pronouns"
+                    :inputValue="fields.client.pronoun"
+                    @input="fieldInput(fields.client, 'pronoun', $event)"
+                  />
                 </div>
                 <div class="form-input">
-                  <p>First Name:</p>
                   <div id="client-search-parent" class="dropdown-parent">
-                    <input
+                    <input-with-title
+                      title="First Name:"
                       type="text"
-                      v-model="fields.client.given_name"
-                      @keydown="openClientDropdown"
+                      :inputValue="fields.client.given_name"
+                      @input="fieldInput(fields.client, 'given_name', $event)"
                       placeholder="Start typing to assign existing client, or add a new one."
                     />
-                    <div
-                      class="dropdown"
-                      v-if="
-                        clientDropdownOpen && clientSearchResults.length > 0
-                      "
-                    >
+                    <div class="dropdown" v-if="clientSearchResults.length > 0">
                       <div
                         class="dropdown-item"
                         v-for="client in clientSearchResults"
@@ -346,20 +337,28 @@
                     </div>
                   </div>
                 </div>
-                <div class="form-input">
-                  <p>Last Name:</p>
-                  <input type="text" v-model.lazy="fields.client.family_name" />
-                </div>
+                <input-with-title
+                  title="Last Name:"
+                  type="text"
+                  :inputValue="fields.client.family_name"
+                  @input="fieldInput(fields.client, 'family_name', $event)"
+                />
               </div>
               <div class="column-flex">
-                <div class="form-input">
-                  <p>Email Address:</p>
-                  <input type="email" v-model.lazy="fields.client.username" />
-                </div>
-                <div class="form-input">
-                  <p>Phone Number:</p>
-                  <input type="text" v-model.lazy="fields.client.phoneNumber" />
-                </div>
+                <input-with-title
+                  title="Email Address:"
+                  type="text"
+                  :inputValue="fields.client.username"
+                  @input="fieldInput(fields.client, 'username', $event)"
+                />
+
+                <input-with-title
+                  title="Phone Number:"
+                  type="tel"
+                  :inputValue="fields.client.phoneNumber"
+                  @input="fieldInput(fields.client, 'phoneNumber', $event)"
+                />
+
                 <div class="form-input row-flex">
                   <p>
                     <input
@@ -518,6 +517,7 @@
 
 <script>
 import SVGs from "../../../assets/SVGs/svgIndex.js";
+import InputWithTitle from "../../../SharedComponents/SharedComponentsUI/ElementLibrary/InputWithTitle.vue";
 import {
   formatTime,
   formatPrice,
@@ -533,6 +533,10 @@ import {
 export default {
   data() {
     return {
+      hours: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+      minutes: ["00", "15", "30", "45"],
+      periods: ["AM", "PM"],
+      pronouns: ["Mr.", "Mrs.", "Ms.", "Other (please prefix first name)"],
       eventId: undefined,
       eventContacts: [],
       eventLocations: [],
@@ -609,6 +613,13 @@ export default {
     };
   },
   methods: {
+    fieldInput(object, property, value) {
+      if (object) {
+        object[property] = value;
+      } else {
+        this[property] = value;
+      }
+    },
     formatPrice,
     openLocationDropdown() {
       this.locationDropdownOpen = true;
@@ -1017,6 +1028,7 @@ export default {
     await this.$store.dispatch("getAdminUsers");
     this.loaded = true;
   },
+  components: { InputWithTitle },
 };
 </script>
 
@@ -1073,8 +1085,7 @@ export default {
 
   .dropdown {
     z-index: 1;
-    top: calc(100% - 10px);
-    left: 12px;
+    top: 100%;
     position: absolute;
     margin-left: 0%;
     border: 1px solid var(--textColor);
@@ -1230,7 +1241,6 @@ export default {
 
     .dropdown {
       left: 3px;
-      margin-left: 9%;
       width: 100%;
     }
     .less-width {

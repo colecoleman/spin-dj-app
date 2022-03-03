@@ -5,9 +5,12 @@
         <div class="contracts-section">
           <h5 class="bold">Add New Contract:</h5>
           <div class="contracts-item">
-            <p>Contract Name:</p>
-            <input type="text" v-model.trim="contract.contractName" />
-            <p>Contract Body:</p>
+            <input-with-title
+              type="text"
+              title="Contract Name:"
+              :inputValue="contract.contractName"
+              @input="fieldInput(contract, 'contractName', $event)"
+            />
             <div class="information-hover-container">
               <img
                 :src="SVGs.InfoIconSVG"
@@ -21,13 +24,12 @@
               ></information-hover>
             </div>
             <p v-html="mergeTagInformation" v-if="mergeTagInformationOpen"></p>
-            <textarea
-              name=""
-              id=""
-              cols="30"
-              rows="10"
-              v-model="contract.contractBody"
-            ></textarea>
+            <input-with-title
+              type="textarea"
+              title="Contract Body"
+              :inputValue="contract.contractBody"
+              @input="fieldInput(contract, 'contractBody', $event)"
+            />
           </div>
           <button-standard-with-icon
             text="Add Contract"
@@ -71,6 +73,7 @@
 <script>
 import SVGs from "../../../../../assets/SVGs/svgIndex.js";
 import InformationHover from "../../../../../SharedComponents/SharedComponentsUI/InformationHover.vue";
+import InputWithTitle from "../../../../../SharedComponents/SharedComponentsUI/ElementLibrary/InputWithTitle.vue";
 
 export default {
   data() {
@@ -93,6 +96,13 @@ export default {
     },
   },
   methods: {
+    fieldInput(object, property, value) {
+      if (object) {
+        object[property] = value;
+      } else {
+        this[property] = value;
+      }
+    },
     toggleMergeTagInformation() {
       this.mergeTagInformationOpen = !this.mergeTagInformationOpen;
     },
@@ -120,7 +130,7 @@ export default {
       this.$store.commit("adminConfigDeleteContract", index);
     },
   },
-  components: { InformationHover },
+  components: { InformationHover, InputWithTitle },
 };
 </script>
 

@@ -1,56 +1,61 @@
 <template>
   <div class="form-body">
-    <h5>Company Name:</h5>
-    <input
+    <input-with-title
       type="text"
+      title="Company Name:"
       placeholder="Company Name"
-      v-model.trim.lazy="vendor.companyName"
+      :error="errors.companyName"
+      :inputValue="vendor.companyName"
+      @input="fieldInput(vendor, 'companyName', $event)"
     />
-    <h5>Pronoun/ Prefix:</h5>
-    <select name="Preferred Pronoun" v-model.trim.lazy="vendor.pronoun">
-      <option value="Mr.">Mr.</option>
-      <option value="Mrs.">Mrs.</option>
-      <option value="Ms.">Ms.</option>
-      <option value="Other">Other (please prefix first name)</option>
-    </select>
-    <h5 :class="errors.given_name ? 'danger' : ''">First Name:</h5>
-    <input
+    <input-with-title
+      title="Pronoun/Prefix"
+      type="select"
+      :options="pronouns"
+      :inputValue="vendor.pronoun"
+      @input="fieldInput(vendor, 'pronoun', $event)"
+    />
+    <input-with-title
       type="text"
+      title="First Name:"
       placeholder="First Name"
-      v-model.trim.lazy="vendor.given_name"
+      :error="errors.given_name"
+      :inputValue="vendor.given_name"
+      @input="fieldInput(vendor, 'given_name', $event)"
     />
-    <h5 :class="errors.family_name ? 'danger' : ''">Last Name:</h5>
-    <input
+    <input-with-title
       type="text"
+      title="Last Name:"
       placeholder="Last Name"
-      v-model.trim.lazy="vendor.family_name"
+      :error="errors.family_name"
+      :inputValue="vendor.family_name"
+      @input="fieldInput(vendor, 'family_name', $event)"
     />
-    <h5 :class="errors.phoneNumber ? 'danger' : ''">Phone Number:</h5>
-    <input
+    <input-with-title
       type="tel"
-      placeholder="(123)456-7890"
-      v-model.trim.lazy="vendor.phoneNumber"
+      title="Phone Number:"
+      placeholder="Phone Number"
+      :error="errors.phoneNumber"
+      :inputValue="vendor.phoneNumber"
+      @input="fieldInput(vendor, 'phoneNumber', $event)"
     />
-    <h5 :class="errors.username ? 'danger' : ''">Email Address:</h5>
-    <input
+    <input-with-title
       type="email"
+      title="Email Address:"
       placeholder="Email Address"
-      v-model.trim.lazy="vendor.username"
+      :error="errors.username"
+      :inputValue="vendor.username"
+      @input="fieldInput(vendor, 'username', $event)"
     />
-    <h5 :class="errors.vendorCategory ? 'danger' : ''">Vendor Category:</h5>
-    <select v-model="vendor.vendorCategory">
-      <option value="Photographer">Photographer</option>
-      <option value="Videographer">Videographer</option>
-      <option value="Planner">Planner</option>
-      <option value="HMUA">HMUA</option>
-      <option value="Officiant">Officiant</option>
-      <option value="Caterer">Caterer</option>
-      <option value="Baker">Baker</option>
-      <option value="Decor/Florist">Decor/Florist</option>
-      <option value="Photo Booth">Photo Booth</option>
-      <option value="Bar Services">Bar Services</option>
-      <option value="DJ">DJ</option>
-    </select>
+
+    <input-with-title
+      title="Vendor Category"
+      type="select"
+      :error="errors.vendorCategory"
+      :options="categories"
+      :inputValue="vendor.vendorCategory"
+      @input="fieldInput(vendor, 'vendorCategory', $event)"
+    />
     <div class="row-flex">
       <input
         type="checkbox"
@@ -69,11 +74,25 @@
 
 <script>
 import SVGs from "../../../../../assets/SVGs/svgIndex.js";
-
+import InputWithTitle from "../../../../../SharedComponents/SharedComponentsUI/ElementLibrary/InputWithTitle.vue";
 export default {
   data() {
     return {
       SVGs,
+      pronouns: ["Mr.", "Mrs.", "Ms.", "Other (please prefix first name)"],
+      categories: [
+        "Photographer",
+        "Videographer",
+        "Planner",
+        "HMUA",
+        "Officiant",
+        "Caterer",
+        "Baker",
+        "Decor/Florist",
+        "Photo Booth",
+        "Bar Services",
+        "DJ",
+      ],
       vendor: {
         sendInvitation: false,
         role: "vendor",
@@ -98,6 +117,13 @@ export default {
     };
   },
   methods: {
+    fieldInput(object, property, value) {
+      if (object) {
+        object[property] = value;
+      } else {
+        this[property] = value;
+      }
+    },
     submitContact() {
       this.checkEmptyFields();
       if (!this.errors.phoneNumber) {
@@ -158,6 +184,7 @@ export default {
       this.errors.username = !re.test(add);
     },
   },
+  components: { InputWithTitle },
 };
 </script>
 
@@ -187,7 +214,6 @@ select {
 h5 {
   text-align: left;
   text-transform: uppercase;
-  margin-bottom: 10px;
 }
 
 img {

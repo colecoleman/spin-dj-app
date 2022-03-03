@@ -5,8 +5,14 @@
         <div class="package-section">
           <h5 class="bold">Add New Package:</h5>
           <div class="package-item">
-            <p>Package Name:</p>
-            <input type="text" v-model.trim="input.packages.name" />
+            <!-- <p>Package Name:</p>
+            <input type="text" v-model.trim="input.packages.name" /> -->
+            <input-with-title
+              title="Package Name:"
+              type="text"
+              :inputValue="input.packages.name"
+              @input="fieldInput(input.packages, 'name', $event)"
+            />
           </div>
           <div class="package-item">
             <p>Photo:</p>
@@ -78,38 +84,46 @@
           </div>
 
           <div class="package-item">
-            <p>Price Option:</p>
-            <select
-              name="price-option"
-              id=""
-              v-model="input.packages.priceOption"
-            >
-              <option disabled value="">Select a price option:</option>
-              <option>Hourly</option>
-              <option>Flat</option>
-            </select>
+            <input-with-title
+              title="Price Option:"
+              type="select"
+              :inputValue="input.packages.priceOption"
+              :options="priceOptions"
+              @input="fieldInput(input.packages, 'priceOption', $event)"
+            />
           </div>
           <div
             class="package-item"
             v-if="input.packages.priceOption === 'Hourly'"
           >
             <div class="package-item">
-              <p>Minimum # Hours:</p>
+              <!-- <p>Minimum # Hours:</p>
               <input
                 type="number"
                 v-model.number="input.packages.pricing.baseTime"
+              /> -->
+              <input-with-title
+                type="number"
+                title="Minimum # Hours:"
+                :inputValue="input.packages.pricing.baseTime"
+                @input="fieldInput(input.packages.pricing, 'baseTime', $event)"
               />
             </div>
             <div class="package-item">
-              <p>
-                Base Rate ({{ input.packages.pricing.baseTime }}
-                Hours)
-              </p>
-              <input v-model.number="input.packages.pricing.baseRate" />
+              <input-with-title
+                type="number"
+                :title="`Base Rate (${input.packages.pricing.baseTime}) Hours:`"
+                :inputValue="input.packages.pricing.baseRate"
+                @input="fieldInput(input.packages.pricing, 'baseRate', $event)"
+              />
             </div>
             <div class="package-item">
-              <p>Additional Hourly:</p>
-              <input v-model.number="input.packages.pricing.addHourly" />
+              <input-with-title
+                type="number"
+                title="Additional Hourly:"
+                :inputValue="input.packages.pricing.addHourly"
+                @input="fieldInput(input.packages.pricing, 'addHourly', $event)"
+              />
             </div>
             <button-standard-with-icon
               text="Add Package"
@@ -119,10 +133,11 @@
           </div>
           <div class="package-item" v-if="input.packages.priceOption == 'Flat'">
             <div class="package-item">
-              <p>Flat Rate:</p>
-              <input
+              <input-with-title
                 type="number"
-                v-model.number="input.packages.pricing.baseRate"
+                title="Flat Rate"
+                :inputValue="input.packages.pricing.baseRate"
+                @input="fieldInput(input.packages.pricing, 'baseRate', $event)"
               />
             </div>
             <div class="package-item">
@@ -218,6 +233,7 @@
 <script>
 import SVGs from "../../../../../assets/SVGs/svgIndex";
 import { formatPrice } from "../../../../../helpers.js";
+import InputWithTitle from "../../../../../SharedComponents/SharedComponentsUI/ElementLibrary/InputWithTitle.vue";
 import _cloneDeep from "lodash/cloneDeep";
 
 export default {
@@ -226,6 +242,7 @@ export default {
       SVGs,
       editIndex: undefined,
       photoFile: undefined,
+      priceOptions: ["Hourly", "Flat"],
       input: {
         packages: {
           id: "package" + new Date().getTime(),
@@ -255,6 +272,13 @@ export default {
   },
   methods: {
     formatPrice,
+    fieldInput(object, property, value) {
+      if (object) {
+        object[property] = value;
+      } else {
+        this[property] = value;
+      }
+    },
     chooseFile() {
       document.getElementById("hidden-file-button-package").click();
     },
@@ -389,6 +413,7 @@ export default {
       });
     },
   },
+  components: { InputWithTitle },
   created() {
     if ("product" in this.$store.state.businessSettings) {
       this.businessSettings = this.$store.state.businessSettings;

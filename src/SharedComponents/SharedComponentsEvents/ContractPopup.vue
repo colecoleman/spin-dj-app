@@ -67,12 +67,14 @@
                 @click="initiateESign"
               />
             </div>
+
             <div v-if="eSignStep === 2">
-              <h5>Please Type Your Legal Name:</h5>
-              <input
+              <input-with-title
                 type="text"
-                v-model="eSignName"
+                title="Please Type Your Legal Name"
                 placeholder="Your Legal Name"
+                :inputValue="eSignName"
+                @input="fieldInput(undefined, 'eSignName', $event)"
               />
               <div class="row-flex">
                 <p>
@@ -161,6 +163,7 @@ import PopupModal from "../SharedComponentsUI/PopupModal.vue";
 import TwoButtonDialogModal from "../SharedComponentsUI/TwoButtonDialogModal.vue";
 import ContractPopupDocumentView from "./ContractPopupDocumentView.vue";
 import MobileCloseButton from "../SharedComponentsUI/MobileCloseButton.vue";
+import InputWithTitle from "../SharedComponentsUI/ElementLibrary/InputWithTitle.vue";
 import { formatDate } from "../../helpers.js";
 
 export default {
@@ -211,6 +214,13 @@ export default {
     },
   },
   methods: {
+    fieldInput(object, property, value) {
+      if (object) {
+        object[property] = value;
+      } else {
+        this[property] = value;
+      }
+    },
     closePopup() {
       this.$emit("closePopup");
     },
@@ -300,6 +310,7 @@ export default {
     TwoButtonDialogModal,
     PopupModal,
     MobileCloseButton,
+    InputWithTitle,
   },
   async created() {
     await Auth.currentAuthenticatedUser().then((res) => {

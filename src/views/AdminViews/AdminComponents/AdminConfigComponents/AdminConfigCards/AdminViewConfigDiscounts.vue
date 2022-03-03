@@ -1,46 +1,42 @@
 <template>
-  <base-card>
-    <template v-slot:title>Discounts</template>
+  <base-card title="Discounts">
     <template v-slot:content>
       <div class="discounts-wrapper">
         <div class="discounts-section">
-          <h5 class="bold">Add New Discounts:</h5>
-          <div class="discounts-item">
-            <p>Discount Name:</p>
-            <input type="text" v-model.trim="discount.name" />
-          </div>
-          <div class="discounts-item">
-            <p>Discount Type:</p>
-            <select name="price-option" id="" v-model="discount.type">
-              <option disabled value="">Select a price option</option>
-              <option value="percentage">Percentage</option>
-              <option value="dollar">Dollar</option>
-            </select>
-          </div>
-          <div class="discounts-item" v-if="discount.type === 'percentage'">
-            <div class="discounts-item">
-              <p>Discount Percentage <i>(example: '10' = 10%)</i></p>
-              <input type="number" v-model.number="discount.amount" />
-            </div>
-
-            <button-standard-with-icon
-              text="Add Discount"
-              @click="addDiscount()"
-              class="form-button"
-            />
-          </div>
-          <div class="discounts-item" v-if="discount.type == 'dollar'">
-            <div class="discounts-item">
-              <p>Dollar Discount:</p>
-              <input type="number" v-model.number="discount.amount" />
-            </div>
-
-            <button-standard-with-icon
-              text="Add Discount"
-              @click="addDiscount()"
-              class="form-button"
-            />
-          </div>
+          <h5 class="bold">Add New Discount:</h5>
+          <input-with-title
+            type="text"
+            title="Discount Name:"
+            :inputValue="discount.name"
+            @input="fieldInput(discount, 'name', $event)"
+          />
+          <input-with-title
+            title="Discount Type:"
+            type="select"
+            :options="discountTypes"
+            :inputValue="discount.type"
+            @input="fieldInput(discount, 'type', $event)"
+          />
+          <input-with-title
+            v-if="discount.type === 'percentage'"
+            type="number"
+            title="Discount Percentage (example : '10' = 10%)"
+            :inputValue="discount.amount"
+            @input="fieldInput(discount, 'amount', $event)"
+          />
+          <input-with-title
+            v-if="discount.type === 'dollar'"
+            type="number"
+            title="Dollar Discount:"
+            :inputValue="discount.amount"
+            @input="fieldInput(discount, 'amount', $event)"
+          />
+          <button-standard-with-icon
+            v-if="discount.type"
+            text="Add Discount"
+            @click="addDiscount()"
+            class="form-button"
+          />
         </div>
         <div class="discounts-section">
           <h5 v-if="!hasDiscounts">
@@ -94,12 +90,14 @@
 
 <script>
 import SVGs from "../../../../../assets/SVGs/svgIndex.js";
+import InputWithTitle from "../../../../../SharedComponents/SharedComponentsUI/ElementLibrary/InputWithTitle.vue";
 import { formatPrice } from "../../../../../helpers.js";
 export default {
   data() {
     return {
       SVGs,
       editIndex: undefined,
+      discountTypes: ["percentage", "dollar"],
       discount: {
         name: undefined,
         type: undefined,
@@ -109,6 +107,13 @@ export default {
   },
   methods: {
     formatPrice,
+    fieldInput(object, property, value) {
+      if (object) {
+        object[property] = value;
+      } else {
+        this[property] = value;
+      }
+    },
     addDiscount() {
       if (this.discount.type === "dollar") {
         this.discount.amount *= 100;
@@ -160,6 +165,7 @@ export default {
       return this.$store.state.businessSettings.product.discounts;
     },
   },
+  components: { InputWithTitle },
 };
 </script>
 

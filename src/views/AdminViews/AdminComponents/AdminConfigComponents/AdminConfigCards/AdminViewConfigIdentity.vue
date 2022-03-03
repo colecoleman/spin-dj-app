@@ -12,66 +12,94 @@ df
       <div id="wrapper">
         <div class="branding-colors">
           <div class="branding-preferences-item">
-            <p class="bold">
+            <input-with-title
+              :title="`
               Background Color:
-              {{ backgroundColor }}
-            </p>
-
-            <input type="color" v-model="backgroundColor" />
+              ${backgroundColor}`"
+              type="color"
+              :inputValue="backgroundColor"
+              @input="fieldInput(undefined, 'backgroundColor', $event)"
+            />
           </div>
           <div class="branding-preferences-item">
-            <p class="bold">
+            <input-with-title
+              :title="`
               Foreground Color:
-              {{ foregroundColor }}
-            </p>
-            <input type="color" v-model="foregroundColor" />
+              ${foregroundColor}`"
+              type="color"
+              :inputValue="foregroundColor"
+              @input="fieldInput(undefined, 'foregroundColor', $event)"
+            />
           </div>
           <div class="branding-preferences-item">
-            <p class="bold">
+            <input-with-title
+              :title="`
               Card Outline:
-              {{ cardOutline }}
-            </p>
-            <input type="color" v-model="cardOutline" />
+              ${cardOutline}`"
+              type="color"
+              :inputValue="cardOutline"
+              @input="fieldInput(undefined, 'cardOutline', $event)"
+            />
           </div>
           <div class="branding-preferences-item">
-            <p class="bold">
+            <input-with-title
+              :title="`
               Highlight Color:
-              {{ highlightColor }}
-            </p>
-            <input type="color" v-model="highlightColor" />
+              ${highlightColor}`"
+              type="color"
+              :inputValue="highlightColor"
+              @input="fieldInput(undefined, 'highlightColor', $event)"
+            />
           </div>
           <div class="branding-preferences-item">
-            <p class="bold">
+            <input-with-title
+              :title="`
               Text Color:
-              {{ textColor }}
-            </p>
-            <input type="color" v-model="textColor" />
+              ${textColor}`"
+              type="color"
+              :inputValue="textColor"
+              @input="fieldInput(undefined, 'textColor', $event)"
+            />
           </div>
           <div class="branding-preferences-item">
-            <p class="bold">
+            <input-with-title
+              :title="`
               Secondary Text Color:
-              {{ secondaryTextColor }}
-            </p>
-
-            <input type="color" v-model="secondaryTextColor" />
+              ${secondaryTextColor}`"
+              type="color"
+              :inputValue="secondaryTextColor"
+              @input="fieldInput(undefined, 'secondaryTextColor', $event)"
+            />
           </div>
         </div>
         <div class="business-information-wrapper">
           <div class="business-information-section">
             <div class="business-information-item">
-              <p class="bold">Business Name:</p>
+              <!-- <p class="bold">Business Name:</p>
               <input
                 type="text"
                 :placeholder="businessName"
                 v-model="businessName"
+              /> -->
+              <input-with-title
+                title="Business Name:"
+                type="text"
+                :inputValue="businessName"
+                @input="fieldInput(undefined, 'businessName', $event)"
               />
             </div>
             <div class="business-information-item">
-              <p>Business Phone Number:</p>
+              <!-- <p>Business Phone Number:</p>
               <input
                 type="text"
                 :placeholder="businessPhoneNumber"
                 v-model="businessPhoneNumber"
+              /> -->
+              <input-with-title
+                title="Business Phone:"
+                type="text"
+                :inputValue="businessPhoneNumber"
+                @input="fieldInput(undefined, 'businessPhoneNumber', $event)"
               />
             </div>
             <div class="business-information-item">
@@ -123,27 +151,27 @@ df
             <div class="business-information-item">
               <p class="bold">Business Address:</p>
               <div class="business-information-item">
-                <p>Address 1:</p>
-                <input
+                <input-with-title
+                  title="Address 1:"
                   type="text"
-                  :placeholder="streetAddress1"
-                  v-model="streetAddress1"
+                  :inputValue="streetAddress1"
+                  @input="fieldInput(undefined, 'streetAddress1', $event)"
                 />
               </div>
               <div class="business-information-item">
-                <p>Address 2:</p>
-                <input
+                <input-with-title
+                  title="Address 2:"
                   type="text"
-                  :placeholder="streetAddress2"
-                  v-model="streetAddress2"
+                  :inputValue="streetAddress2"
+                  @input="fieldInput(undefined, 'streetAddress2', $event)"
                 />
               </div>
               <div class="business-information-item">
-                <p>City, State, Zip Code:</p>
-                <input
+                <input-with-title
+                  title="City, State, Zip Code:"
                   type="text"
-                  :placeholder="cityStateZip"
-                  v-model="cityStateZip"
+                  :inputValue="cityStateZip"
+                  @input="fieldInput(undefined, 'cityStateZip', $event)"
                 />
               </div>
             </div>
@@ -221,6 +249,7 @@ df
 
 <script>
 import TwoButtonDialogModal from "../../../../../SharedComponents/SharedComponentsUI/TwoButtonDialogModal.vue";
+import InputWithTitle from "../../../../../SharedComponents/SharedComponentsUI/ElementLibrary/InputWithTitle.vue";
 import SVGs from "../../../../../assets/SVGs/svgIndex.js";
 export default {
   data() {
@@ -396,6 +425,13 @@ export default {
     chooseFile() {
       document.getElementById("business-logo-hidden-file-button").click();
     },
+    fieldInput(object, property, value) {
+      if (object) {
+        object[property] = value;
+      } else {
+        this[property] = value;
+      }
+    },
     async onFileChange(e) {
       var files = e.target.files || e.dataTransfer.files;
       if (!files.length) return;
@@ -470,7 +506,7 @@ export default {
       this.closeDialogModal();
     },
   },
-  components: { TwoButtonDialogModal },
+  components: { TwoButtonDialogModal, InputWithTitle },
   watch: {
     subdomainField() {
       this.subdomainAvailable = false;

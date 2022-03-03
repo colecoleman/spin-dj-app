@@ -4,12 +4,20 @@
       <div class="split-view">
         <div class="three-quarter-width">
           <div class="form-item">
-            <p>Form Name:</p>
-            <input type="text" v-model="form.name" />
+            <input-with-title
+              title="Form Name:"
+              type="text"
+              :inputValue="form.name"
+              @input="fieldInput(form, 'name', $event)"
+            />
           </div>
           <div class="form-item">
-            <p>Form Description:</p>
-            <textarea v-model="form.description" />
+            <input-with-title
+              title="Form Description:"
+              type="textarea"
+              :inputValue="form.description"
+              @input="fieldInput(form, 'description', $event)"
+            />
           </div>
           <div class="form-item" v-if="form.fields.length > 0">
             <div
@@ -29,19 +37,17 @@
                   v-for="(input, inputIndex) in field.fields"
                   :key="inputIndex"
                 >
-                  <p class="bold">{{ input.inputTitle }}</p>
-                  <div
+                  <input-with-title
                     v-if="
                       input.inputType === 'text' ||
                       input.inputType === 'tel' ||
+                      input.inputType === 'textarea' ||
                       input.inputType === 'email'
                     "
-                  >
-                    <input
-                      :type="input.inputType"
-                      :placeholder="input.placeholder"
-                    />
-                  </div>
+                    :title="input.inputTitle"
+                    :type="input.inputType"
+                    :placeholder="input.placeholder"
+                  />
                   <div v-if="input.inputType === 'radio'">
                     <div
                       v-for="(option, index) in input.options"
@@ -87,8 +93,12 @@
             <p>New Field:</p>
             <div class="form-item input-creation">
               <div class="form-item">
-                <p>Input Title:</p>
-                <input type="text" v-model="newField.name" />
+                <input-with-title
+                  title="Input Title:"
+                  type="text"
+                  :inputValue="newField.name"
+                  @input="fieldInput(newField, 'name', $event)"
+                />
               </div>
               <div class="form-item">
                 <p>Allow user to duplicate field?</p>
@@ -99,30 +109,24 @@
                 />
               </div>
               <div class="form-item">
-                <p>Field Templates:</p>
-                <select name="" id="">
-                  <option
-                    v-for="(template, index) in fieldTemplates"
-                    :key="index"
-                    :value="template"
-                    @click="assignFieldTemplate(template)"
-                  >
-                    {{ template.title }}
-                  </option>
-                </select>
+                <input-with-title
+                  title="Field Templates:"
+                  type="select"
+                  :options="fieldTemplates"
+                  optionDisplay="title"
+                  @input="assignFieldTemplate($event)"
+                />
               </div>
               <div class="form-item">
-                <p>Number Of Inputs:</p>
-                <select
-                  v-model="newField.inputQuantity"
-                  @change="
+                <input-with-title
+                  title="Number Of Inputs:"
+                  type="select"
+                  :options="[1, 2, 3]"
+                  :inputValue="newField.inputQuantity"
+                  @input="
                     newInputQuantity($event, { 1: 'newField', 2: 'fields' })
                   "
-                >
-                  <option value="1">1</option>
-                  <option value="2">2</option>
-                  <option value="3">3</option>
-                </select>
+                />
               </div>
               <div
                 class="form-item field-creator"
@@ -131,23 +135,25 @@
               >
                 <p>Input {{ index + 1 }}:</p>
                 <div class="form-item">
-                  <p>Input Title:</p>
-                  <input v-model="newField.fields[index].inputTitle" />
+                  <input-with-title
+                    title="Input Title"
+                    type="text"
+                    :inputValue="newField.fields[index].inputTitle"
+                    @input="
+                      fieldInput(newField.fields[index], 'inputTitle', $event)
+                    "
+                  />
                 </div>
                 <div class="form-item">
-                  <p>Input Type:</p>
-                  <select
-                    v-model="newField.fields[index].inputType"
-                    :key="newField.fields[index]"
-                  >
-                    <option value="text">text</option>
-                    <option value="tel">tel</option>
-                    <option value="email">email</option>
-                    <option value="color">color</option>
-                    <option value="radio">radio</option>
-                    <option value="select">select</option>
-                    <option value="textarea">text area</option>
-                  </select>
+                  <input-with-title
+                    title="Input Type:"
+                    type="select"
+                    :options="inputTypes"
+                    :inputValue="newField.fields[index].inputType"
+                    @input="
+                      fieldInput(newField.fields[index], 'inputType', $event)
+                    "
+                  />
                 </div>
                 <div
                   class="form-item"
@@ -158,10 +164,13 @@
                     newField.fields[index].inputType === 'email'
                   "
                 >
-                  <p>Placeholder:</p>
-                  <input
+                  <input-with-title
+                    title="Placeholder"
                     type="text"
-                    v-model="newField.fields[index].placeholder"
+                    :inputValue="newField.fields[index].placeholder"
+                    @input="
+                      fieldInput(newField.fields[index], 'placeholder', $event)
+                    "
                   />
                 </div>
                 <div class="button-wrapper">
@@ -172,31 +181,34 @@
                       newField.fields[index].inputType === 'select'
                     "
                   >
-                    <p>Options:</p>
                     <div class="form-item">
-                      <p>Number of Options:</p>
-                      <select
-                        v-model="newField.fields[index].optionQuantity"
-                        @change="setOptionQuantity($event, index)"
-                      >
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                        <option value="5">5</option>
-                      </select>
+                      <input-with-title
+                        title="Number of Options:"
+                        type="select"
+                        :options="[1, 2, 3, 4, 5]"
+                        :inputValue="newField.fields[index].optionQuantity"
+                        @input="setOptionQuantity($event, index)"
+                      />
+
                       <div
                         class="form-item"
                         v-for="(options, optionsIndex) in newField.fields[index]
                           .options"
                         :key="optionsIndex"
                       >
-                        <p>Option {{ optionsIndex + 1 }}:</p>
-                        <input
+                        <input-with-title
                           type="text"
-                          v-model="
+                          :title="`Option ${optionsIndex + 1}`"
+                          :inputValue="
                             newField.fields[index].options[optionsIndex]
                               .optionValue
+                          "
+                          @input="
+                            fieldInput(
+                              newField.fields[index].options[optionsIndex],
+                              'optionValue',
+                              $event
+                            )
                           "
                         />
                       </div>
@@ -205,12 +217,12 @@
                 </div>
               </div>
               <div class="form-item">
-                <p>Template Name:</p>
-                <input
+                <input-with-title
                   type="text"
+                  title="Template Name:"
                   placeholder="Template Name"
-                  v-model="fieldTemplateTitle"
-                  v-if="fieldTemplateTitleFieldOpen"
+                  :inputValue="fieldTemplateTitle"
+                  @input="fieldInput(undefined, 'fieldTemplateTitle', $event)"
                 />
               </div>
               <button-standard-with-icon
@@ -260,13 +272,23 @@
 
 <script>
 import SVGs from "../../../../../assets/SVGs/svgIndex";
+import InputWithTitle from "../../../../../SharedComponents/SharedComponentsUI/ElementLibrary/InputWithTitle.vue";
 import ButtonStandardWithIcon from "../../../../../SharedComponents/SharedComponentsUI/ButtonStandardWithIcon.vue";
 
 export default {
-  components: { ButtonStandardWithIcon },
+  components: { ButtonStandardWithIcon, InputWithTitle },
   data() {
     return {
       SVGs,
+      inputTypes: [
+        "text",
+        "tel",
+        "email",
+        "color",
+        "radio",
+        "select",
+        "textarea",
+      ],
       form: {
         id: "form" + new Date().getTime(),
         name: undefined,
@@ -282,14 +304,22 @@ export default {
       editIndex: undefined,
       fieldEditIndex: undefined,
       fieldTemplateTitleFieldOpen: false,
-      fieldTemplateTitle: undefined,
+      fieldTemplateTitle: "dur",
       // fieldTemplates: [],
     };
   },
   methods: {
+    fieldInput(object, property, value) {
+      if (object) {
+        object[property] = value;
+      } else {
+        this[property] = value;
+      }
+    },
     newInputQuantity(e) {
       this.newField.fields = [];
-      for (let x = 0; x < parseInt(e.target.value); x++) {
+      this.newField.inputQuantity = e;
+      for (let x = 0; x < parseInt(e); x++) {
         this.newField.fields.push({
           inputTitle: undefined,
           inputType: undefined,
@@ -299,8 +329,9 @@ export default {
       }
     },
     setOptionQuantity(e, index) {
+      this.newField.fields[index].optionQuantity = e;
       this.newField.fields[index].options = [];
-      for (let x = 0; x < this.newField.fields[index].optionQuantity; x++) {
+      for (let x = 0; x < e; x++) {
         this.newField.fields[index].options.push({
           optionValue: undefined,
         });
@@ -427,6 +458,7 @@ export default {
 
   .form-item {
     display: flex;
+    width: 90%;
     flex-direction: column;
     justify-content: left;
     margin-left: 15px;

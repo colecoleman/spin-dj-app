@@ -4,41 +4,61 @@
       <div class="payments-wrapper">
         <div class="payments-item">
           <h4>Deposit:</h4>
-          <p>Preferred Terminology:</p>
-          <select v-model="depositTerminology">
-            <option value="deposit">Deposit</option>
-            <option value="retainer">Retainer</option>
-          </select>
-          <p>Deposit required to reserve services:</p>
-          <input type="number" v-model="depositAmount" />
-          <p>Type:</p>
-          <select v-model="depositType">
-            <option value="percentage">Percentage</option>
-            <option value="dollar">Dollar</option>
-          </select>
+          <input-with-title
+            title="Preferred Terminology:"
+            type="select"
+            :options="depositTerminologies"
+            :inputValue="depositTerminology"
+            @input="fieldInput(undefined, 'depositTerminology', $event)"
+          />
+
+          <input-with-title
+            title="Deposit Required To Reserve Services:"
+            type="number"
+            :inputValue="depositAmount"
+            @input="fieldInput(undefined, 'depositAmount', $event)"
+          />
+          <input-with-title
+            title="Type:"
+            type="select"
+            :options="depositTypes"
+            :inputValue="depositType"
+            @input="fieldInput(undefined, 'depositType', $event)"
+          />
         </div>
         <div class="payments-item">
           <h4>Final Payment Due:</h4>
-          <p>Increment:</p>
-          <input type="number" v-model="finalPaymentIncrement" />
-          <p>Increment Type: (prior to event date)</p>
-          <select v-model="finalPaymentType">
-            <option value="days">Days</option>
-            <option value="weeks">Weeks</option>
-            <option value="months">Months</option>
-          </select>
+
+          <input-with-title
+            title="Increment:"
+            type="number"
+            :inputValue="finalPaymentIncrement"
+            @input="fieldInput(undefined, 'finalPaymentIncrement', $event)"
+          />
+          <input-with-title
+            title="Increment Type: (prior to event date)"
+            type="select"
+            :inputValue="finalPaymentType"
+            :options="paymentIncrementTypes"
+            @input="fieldInput(undefined, 'finalPaymentType', $event)"
+          />
         </div>
         <div class="payments-item">
           <h4>Credit Card</h4>
           <p>Enable Credit Card Payments?</p>
-          <select v-model="creditCardEnabled">
-            <option value="true">Yes</option>
-            <option value="false">No</option>
-          </select>
-          <p>Select preferred credit card processor (Stripe is default):</p>
-          <select name="creditcard" id="">
-            <option value="stripe">Stripe</option>
-          </select>
+          <input-with-title
+            title="Enable Credit Card Payments?"
+            type="select"
+            :options="trueFalse"
+            :inputValue="creditCardEnabled"
+            @input="fieldInput(undefined, 'creditCardEnabled', $event)"
+          />
+
+          <input-with-title
+            title="Select preferred credit card processor (Stripe is default):"
+            type="select"
+            :options="['stripe']"
+          />
           <div v-if="!paymentSettings.creditCard.Stripe.id">
             <button-standard-with-icon
               @click="createStripeAccountLink"
@@ -58,31 +78,35 @@
         <div class="payments-item">
           <h4>Check</h4>
           <p>Allow clients to pay by check?</p>
-          <select name="check" id="" v-model="checkEnabled">
-            <option value="true">Yes</option>
-            <option value="false">No</option>
-          </select>
-          <p>Instructions for mailing a check:</p>
-          <textarea
-            name=""
-            id=""
-            cols="30"
-            rows="10"
-            v-model="checkInstructions"
-          ></textarea>
+          <input-with-title
+            title="Allow clients to pay by check?"
+            type="select"
+            :options="trueFalse"
+            :inputValue="checkEnabled"
+            @input="fieldInput(undefined, 'checkEnabled', $event)"
+          />
+
+          <input-with-title
+            title="Instructions for paying by check:"
+            type="textarea"
+            :inputValue="checkInstructions"
+            @input="fieldInput(undefined, 'checkInstructions', $event)"
+          />
         </div>
         <div class="payments-item">
           <h4>Give clients another way to pay:</h4>
-          <p>Custom Payment Name:</p>
-          <input type="text" v-model="customName" />
-          <p>Custom Payment Description:</p>
-          <textarea
-            name=""
-            id=""
-            cols="30"
-            rows="10"
-            v-model="customInstructions"
-          ></textarea>
+
+          <input-with-title
+            title="Custom Payment Name:"
+            :inputValue="customName"
+            @input="fieldInput(undefined, 'customName', $event)"
+          />
+          <input-with-title
+            title="Custom Payment Description:"
+            type="textarea"
+            :inputValue="customInstructions"
+            @input="fieldInput(undefined, 'customInstructions', $event)"
+          />
         </div>
       </div>
     </template>
@@ -91,12 +115,17 @@
 
 <script>
 import SVGs from "../../../../../assets/SVGs/svgIndex";
+import InputWithTitle from "../../../../../SharedComponents/SharedComponentsUI/ElementLibrary/InputWithTitle.vue";
 
 export default {
   data() {
     return {
       SVGs,
       loaded: false,
+      depositTerminologies: ["deposit", "retainer"],
+      depositTypes: ["percentage", "dollar"],
+      paymentIncrementTypes: ["days", "weeks", "months"],
+      trueFalse: [true, false],
     };
   },
   computed: {
@@ -259,6 +288,13 @@ export default {
     },
   },
   methods: {
+    fieldInput(object, property, value) {
+      if (object) {
+        object[property] = value;
+      } else {
+        this[property] = value;
+      }
+    },
     async checkStripeAccountStatus() {
       this.$store.dispatch("stripeCheckAccount").then((res) => {
         if (res.charges_enabled) {
@@ -294,6 +330,7 @@ export default {
     }
     this.loaded = true;
   },
+  components: { InputWithTitle },
   props: ["DBpaymentInformation"],
 };
 </script>
@@ -326,6 +363,7 @@ export default {
     padding: 15px;
     border-bottom: 1px solid var(--cardOutline);
   }
+
   .payments-item > p,
   .payments-section > h5,
   .payments-item > h5,
