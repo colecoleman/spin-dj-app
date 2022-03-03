@@ -5,21 +5,23 @@
         <div class="automations-section">
           <h5 class="bold">Add New Automation:</h5>
           <div class="automations-item">
-            <p>Automation Name:</p>
-            <input type="text" v-model.trim="automation.title" />
+            <!-- <p>Automation Name:</p>
+            <input type="text" v-model.trim="automation.title" /> -->
+            <input-with-title
+              type="text"
+              title="Automation Name:"
+              :inputValue="automation.title"
+              @input="fieldInput(automation, 'title', $event)"
+            />
           </div>
           <div class="automations-item">
-            <p>Applicable Contact Type:</p>
-            <select v-model="automation.contactType" class="capitalize">
-              <option
-                v-for="(type, index) in contactTypes"
-                :key="index"
-                :disabled="type === undefined"
-                :value="type"
-              >
-                {{ type === undefined ? "Choose Contact Type" : type }}
-              </option>
-            </select>
+            <input-with-title
+              title="Applicable Contact Type:"
+              type="select"
+              :options="contactTypes"
+              :inputValue="automation.contactType"
+              @input="fieldInput(automation, 'contactType', $event)"
+            />
           </div>
           <div class="automations-item" v-if="automation.contactType">
             <div class="automations-item">
@@ -46,79 +48,67 @@
                 />
                 Immediate? (will invalidate time-related selections)
               </p>
-              <p>
-                <input
-                  type="number"
-                  placeholder="3"
-                  v-model="automation.trigger.distance"
-                  :disabled="automation.trigger.immediate"
-                  style="width: 40px; padding: 4px; margin-right: 10px"
-                />
-                <select
-                  :disabled="automation.trigger.immediate"
-                  name=""
-                  id=""
-                  v-model="automation.trigger.quantity"
-                >
-                  <option
-                    v-for="(timeframe, index) in timeframes"
-                    :key="index"
-                    :disabled="timeframe === undefined"
-                    :value="timeframe"
-                  >
-                    {{ timeframe !== undefined ? timeframe : "timeframe" }}
-                  </option>
-                </select>
-                <select
-                  name=""
-                  id=""
-                  v-model="automation.trigger.direction"
-                  :disabled="automation.trigger.immediate"
-                >
-                  <option
-                    v-for="(direction, index) in directions"
-                    :key="index"
-                    :value="direction"
-                  >
-                    {{ direction !== undefined ? direction : "direction" }}
-                  </option>
-                </select>
-                <select
-                  id=""
-                  v-model="automation.trigger.trigger"
-                  :disabled="automation.trigger.immediate"
-                >
-                  <option disabled value="undefined">trigger</option>
 
-                  <option value="event-date">event date</option>
-                  <option value="book-date">booked date</option>
-                </select>
-              </p>
+              <div class="row-flex">
+                <div class="distance-number">
+                  <input-with-title
+                    type="number"
+                    title="Distance"
+                    placeholder="3"
+                    :inputValue="automation.trigger.distance"
+                    @input="fieldInput(automation.trigger, 'distance', $event)"
+                  />
+                </div>
+                <input-with-title
+                  type="select"
+                  title="Timeframe"
+                  :options="timeframes"
+                  :inputValue="automation.trigger.quantity"
+                  @input="fieldInput(automation.trigger, 'quantity', $event)"
+                />
+                <input-with-title
+                  type="select"
+                  title="Direction"
+                  :options="directions"
+                  :inputValue="automation.trigger.direction"
+                  @input="fieldInput(automation.trigger, 'direction', $event)"
+                />
+
+                <input-with-title
+                  type="select"
+                  title="Trigger"
+                  :options="triggers"
+                  :inputValue="automation.trigger.trigger"
+                  @input="fieldInput(automation.trigger, 'trigger', $event)"
+                />
+              </div>
             </div>
             <div class="automations-item">
-              <p>Action Type:</p>
-              <select name="" id="" v-model="automation.action.type">
-                <option value="email">Email</option>
-                <!-- <option value="to-do">To-Do</option> -->
-              </select>
-              <div
-                class="automations-item"
-                v-if="automation.action.type === 'email'"
-              >
-                <p>From:</p>
-                <select v-model="automation.action.email.from" name="" id="">
-                  <option
-                    v-for="(email, index) in this.$store.state.businessSettings
-                      .identity.emailAddresses"
-                    :key="index"
-                    :value="email"
-                  >
-                    {{ email }}
-                  </option>
-                </select>
-                <p>Subject:</p>
-                <input type="text" v-model="automation.action.email.subject" />
-                <p>Content:</p>
+              <input-with-title
+                title="Action Type:"
+                type="select"
+                :options="['email']"
+                :inputValue="automation.action.type"
+                @input="fieldInput(automation.action, 'type', $event)"
+              />
+              <div v-if="automation.action.type === 'email'">
+                <input-with-title
+                  title="From:"
+                  type="select"
+                  :options="
+                    this.$store.state.businessSettings.identity.emailAddresses
+                  "
+                  :inputValue="automation.action.email.from"
+                  @input="fieldInput(automation.action.email, 'from', $event)"
+                />
+                <input-with-title
+                  title="Subject:"
+                  type="text"
+                  :inputValue="automation.action.email.subject"
+                  @input="
+                    fieldInput(automation.action.email, 'subject', $event)
+                  "
+                />
                 <div class="information-hover-container">
                   <img
                     :src="SVGs.InfoIconSVG"
@@ -131,12 +121,15 @@
                     v-if="mergeTagInformationOpen"
                   ></information-hover>
                 </div>
-
-                <textarea
-                  type="text"
-                  rows="10"
-                  v-model="automation.action.email.content"
+                <input-with-title
+                  title="Content:"
+                  type="textarea"
+                  :inputValue="automation.action.email.content"
+                  @input="
+                    fieldInput(automation.action.email, 'content', $event)
+                  "
                 />
+
                 <p>
                   <input
                     type="checkbox"
@@ -249,6 +242,7 @@
 
 <script>
 import InformationHover from "../../../../../SharedComponents/SharedComponentsUI/InformationHover.vue";
+import InputWithTitle from "../../../../../SharedComponents/SharedComponentsUI/ElementLibrary/InputWithTitle.vue";
 import SVGs from "../../../../../assets/SVGs/svgIndex.js";
 export default {
   data() {
@@ -258,16 +252,10 @@ export default {
       mergeTagInformationOpen: false,
       mergeTagInformation:
         "Use the following merge tags to personalize your emails to your contacts: First Name: {given_name} || Last Name: {family_name}. Be sure to include the brackets {}. Otherwise, the tag will not be replaced.",
-      timeframes: [undefined, "days", "weeks", "months"],
-      directions: [undefined, "before", "after"],
-      contactTypes: [
-        undefined,
-        "client",
-        "employee",
-        "organizer",
-        "vendor",
-        "venue",
-      ],
+      timeframes: ["days", "weeks", "months"],
+      directions: ["before", "after"],
+      triggers: ["book-date", "event-date"],
+      contactTypes: ["client", "employee", "organizer", "vendor", "venue"],
 
       automation: {
         applyToExistingEvents: false,
@@ -300,6 +288,14 @@ export default {
     };
   },
   methods: {
+    fieldInput(object, property, value) {
+      console.log(value);
+      if (object) {
+        object[property] = value;
+      } else {
+        this[property] = value;
+      }
+    },
     toggleMergeTagInformation() {
       this.mergeTagInformationOpen = !this.mergeTagInformationOpen;
     },
@@ -361,7 +357,7 @@ export default {
       return false;
     },
   },
-  components: { InformationHover },
+  components: { InformationHover, InputWithTitle },
 };
 </script>
 
@@ -445,6 +441,14 @@ export default {
     width: 10px;
     margin: 0px 5px;
     cursor: pointer;
+  }
+
+  .distance-number {
+    width: 100px;
+  }
+
+  .row-flex {
+    display: flex;
   }
   @media (min-width: 850px) {
     .automation-conditional-wrapper {

@@ -143,7 +143,7 @@ export default {
       password: undefined,
       confirmPassword: undefined,
       confirmationCode: undefined,
-      step: 2,
+      step: 1,
       accessCode: undefined,
       user: undefined,
       given_nameError: false,

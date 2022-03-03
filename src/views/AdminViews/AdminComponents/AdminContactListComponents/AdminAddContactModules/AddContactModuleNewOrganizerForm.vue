@@ -1,41 +1,51 @@
 <template>
   <div class="form-body">
-    <h5>Business Name:</h5>
-    <input
+    <input-with-title
+      title="Business Name:"
       type="text"
       placeholder="Business Name"
-      v-model.trim.lazy="organizer.businessName"
+      :inputValue="organizer.businessName"
+      @input="fieldInput(organizer, 'businessName', $event)"
     />
-    <h5>Pronoun/ Prefix:</h5>
-    <select name="Preferred Pronoun" v-model.trim.lazy="organizer.pronoun">
-      <option value="Mr.">Mr.</option>
-      <option value="Mrs.">Mrs.</option>
-      <option value="Ms.">Ms.</option>
-      <option value="Other">Other (please prefix first name)</option>
-    </select>
-    <h5 :class="errors.given_name ? 'danger' : ''">First Name:</h5>
-    <input
+    <input-with-title
+      title="Pronoun / Prefix"
+      type="select"
+      :options="pronouns"
+      :inputValue="organizer.pronoun"
+      @input="fieldInput(organizer, 'pronoun', $event)"
+    />
+
+    <input-with-title
+      title="First Name:"
       type="text"
       placeholder="First Name"
-      v-model.trim.lazy="organizer.given_name"
+      :error="errors.given_name"
+      :inputValue="organizer.given_name"
+      @input="fieldInput(organizer, 'given_name', $event)"
     />
-    <h5 :class="errors.family_name ? 'danger' : ''">Last Name:</h5>
-    <input
+    <input-with-title
+      title="Last Name:"
       type="text"
       placeholder="Last Name"
-      v-model.trim.lazy="organizer.family_name"
+      :error="errors.family_name"
+      :inputValue="organizer.family_name"
+      @input="fieldInput(organizer, 'family_name', $event)"
     />
-    <h5 :class="errors.phoneNumber ? 'danger' : ''">Phone Number:</h5>
-    <input
+    <input-with-title
+      title="Phone Number:"
       type="tel"
-      placeholder="(123)456-7890"
-      v-model.trim.lazy="organizer.phoneNumber"
+      :error="errors.phoneNumber"
+      placeholder="Phone Number"
+      :inputValue="organizer.phoneNumber"
+      @input="fieldInput(organizer, 'phoneNumber', $event)"
     />
-    <h5 :class="errors.username ? 'danger' : ''">Email Address:</h5>
-    <input
+    <input-with-title
+      title="Email Address:"
       type="email"
       placeholder="Email Address"
-      v-model.trim.lazy="organizer.username"
+      :error="errors.username"
+      :inputValue="organizer.username"
+      @input="fieldInput(organizer, 'username', $event)"
     />
     <div class="row-flex">
       <input
@@ -55,10 +65,12 @@
 
 <script>
 import SVGs from "../../../../../assets/SVGs/svgIndex.js";
+import InputWithTitle from "../../../../../SharedComponents/SharedComponentsUI/ElementLibrary/InputWithTitle.vue";
 export default {
   data() {
     return {
       SVGs,
+      pronouns: ["Mr.", "Mrs.", "Ms.", "Other (please prefix first name)"],
       organizer: {
         sendInvitation: true,
         role: "organizer",
@@ -79,6 +91,13 @@ export default {
     };
   },
   methods: {
+    fieldInput(object, property, value) {
+      if (object) {
+        object[property] = value;
+      } else {
+        this[property] = value;
+      }
+    },
     submitContact() {
       this.checkEmptyFields();
       if (!this.errors.phoneNumber) {
@@ -131,6 +150,9 @@ export default {
       var re = /\S+@\S+\.\S+/;
       this.errors.username = !re.test(add);
     },
+  },
+  components: {
+    InputWithTitle,
   },
 };
 </script>

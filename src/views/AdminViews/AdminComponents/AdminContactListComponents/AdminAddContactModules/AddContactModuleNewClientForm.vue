@@ -1,35 +1,43 @@
 <template>
   <div class="form-body">
-    <h5>Pronoun/ Prefix:</h5>
-    <select name="Preferred Pronoun" v-model.trim.lazy="client.pronoun">
-      <option value="Mr.">Mr.</option>
-      <option value="Mrs.">Mrs.</option>
-      <option value="Ms.">Ms.</option>
-      <option value="Other">Other (please prefix first name)</option>
-    </select>
-    <h5 :class="errors.given_name ? 'danger' : ''">First Name:</h5>
-    <input
+    <input-with-title
+      title="Pronoun / Prefix"
+      type="select"
+      :options="pronouns"
+      :inputValue="client.pronoun"
+      @input="fieldInput(client, 'pronoun', $event)"
+    />
+    <input-with-title
       type="text"
+      title="First Name:"
       placeholder="First Name"
-      v-model.trim.lazy="client.given_name"
+      :error="errors.given_name"
+      :inputValue="client.given_name"
+      @input="fieldInput(client, 'given_name', $event)"
     />
-    <h5 :class="errors.family_name ? 'danger' : ''">Last Name:</h5>
-    <input
+    <input-with-title
       type="text"
+      title="Last Name:"
       placeholder="Last Name"
-      v-model.trim.lazy="client.family_name"
+      :error="errors.family_name"
+      :inputValue="client.family_name"
+      @input="fieldInput(client, 'family_name', $event)"
     />
-    <h5 :class="errors.phoneNumber ? 'danger' : ''">Phone Number:</h5>
-    <input
+    <input-with-title
       type="tel"
+      title="Phone Number:"
       placeholder="(123)456-7890"
-      v-model.trim.lazy="client.phoneNumber"
+      :error="errors.phoneNumber"
+      :inputValue="client.phoneNumber"
+      @input="fieldInput(client, 'phoneNumber', $event)"
     />
-    <h5 :class="errors.username ? 'danger' : ''">Email Address:</h5>
-    <input
+    <input-with-title
       type="email"
+      title="Email Address:"
       placeholder="Email Address"
-      v-model.trim.lazy="client.username"
+      :error="errors.username"
+      :inputValue="client.username"
+      @input="fieldInput(client, 'username', $event)"
     />
     <!-- <h5>Associated Event:</h5>
     <input
@@ -56,11 +64,12 @@
 
 <script>
 import SVGs from "../../../../../assets/SVGs/svgIndex.js";
-
+import InputWithTitle from "../../../../../SharedComponents/SharedComponentsUI/ElementLibrary/InputWithTitle.vue";
 export default {
   data() {
     return {
       SVGs,
+      pronouns: ["Mr.", "Mrs.", "Ms.", "Other (please prefix first name)"],
       client: {
         sendInvitation: true,
         role: "client",
@@ -80,6 +89,13 @@ export default {
     };
   },
   methods: {
+    fieldInput(object, property, value) {
+      if (object) {
+        object[property] = value;
+      } else {
+        this[property] = value;
+      }
+    },
     submitContact() {
       this.checkEmptyFields();
       if (!this.errors.phoneNumber) {
@@ -136,6 +152,9 @@ export default {
       var re = /\S+@\S+\.\S+/;
       this.errors.username = !re.test(add);
     },
+  },
+  components: {
+    InputWithTitle,
   },
 };
 </script>

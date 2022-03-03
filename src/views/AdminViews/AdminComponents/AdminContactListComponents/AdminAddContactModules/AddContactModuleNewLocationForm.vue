@@ -1,29 +1,34 @@
 <template>
   <div class="form-body">
-    <h5 :class="errors.name ? 'danger' : ''">Venue Name:</h5>
-    <input
+    <input-with-title
+      :error="errors.name"
       type="text"
+      title="Venue Name"
       placeholder="The Venue"
-      v-model.trim.lazy="location.name"
+      :inputValue="location.name"
+      @input="fieldInput(location, 'name', $event)"
     />
     <div class="indention">
-      <h5>Street Address 1:</h5>
-      <input
+      <input-with-title
         type="text"
+        title="Street Address 1:"
         placeholder="12345 Address St"
-        v-model.trim.lazy="location.address.streetAddress1"
+        :inputValue="location.address.streetAddress1"
+        @input="fieldInput(location.address, 'streetAddress1', $event)"
       />
-      <h5>Street Address 2: (optional)</h5>
-      <input
+      <input-with-title
         type="text"
+        title="Street Address 2 (optional):"
         placeholder="Apt 1234"
-        v-model.trim.lazy="location.address.streetAddress2"
+        :inputValue="location.address.streetAddress2"
+        @input="fieldInput(location.address, 'streetAddress2', $event)"
       />
-      <h5>City, State/Province, Zip Code:</h5>
-      <input
+      <input-with-title
         type="text"
+        title="City, State/Province, Zip Code:"
         placeholder="Anywhere, AZ, 12345"
-        v-model.trim.lazy="location.address.cityStateZip"
+        :inputValue="location.address.cityStateZip"
+        @input="fieldInput(location.address, 'cityStateZip', $event)"
       />
     </div>
   </div>
@@ -36,6 +41,7 @@
 
 <script>
 import SVGs from "../../../../../assets/SVGs/svgIndex.js";
+import InputWithTitle from "../../../../../SharedComponents/SharedComponentsUI/ElementLibrary/InputWithTitle.vue";
 export default {
   data() {
     return {
@@ -60,6 +66,13 @@ export default {
     };
   },
   methods: {
+    fieldInput(object, property, value) {
+      if (object) {
+        object[property] = value;
+      } else {
+        this[property] = value;
+      }
+    },
     submitContact() {
       this.checkEmptyFields();
       // if (!this.errors.contact.phoneNumber) {
@@ -110,13 +123,14 @@ export default {
       this.errors.emailAddress = !re.test(add);
     },
   },
+  components: { InputWithTitle },
 };
 </script>
 
 <style scoped>
 .form-body {
   width: 100%;
-  height: 100%;
+  height: 90%;
   overflow-y: scroll;
   display: flex;
   flex-direction: column;

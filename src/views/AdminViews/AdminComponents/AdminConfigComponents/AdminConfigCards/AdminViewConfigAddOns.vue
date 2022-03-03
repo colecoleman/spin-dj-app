@@ -5,8 +5,14 @@
         <div class="add-on-section">
           <h5 class="bold">Add New Add-On:</h5>
           <div class="add-on-item">
-            <p>Add-On Name:</p>
-            <input type="text" v-model.trim="addOn.name" />
+            <!-- <p>Add-On Name:</p>
+            <input type="text" v-model.trim="addOn.name" /> -->
+            <input-with-title
+              type="text"
+              title="Add-On Name:"
+              :inputValue="addOn.name"
+              @input="fieldInput(addOn, 'name', $event)"
+            />
           </div>
           <div class="add-on-item">
             <p>Photo:</p>
@@ -25,22 +31,27 @@
           <div class="add-on-item"></div>
 
           <div class="add-on-item">
-            <p>Price Option:</p>
-            <select name="price-option" id="" v-model="addOn.priceOption">
-              <option disabled value="">Select a price option</option>
-              <option>Unit</option>
-              <option>Flat</option>
-            </select>
+            <input-with-title
+              title="Price Option:"
+              type="select"
+              :options="['Unit', 'Flat']"
+              :inputValue="addOn.priceOption"
+              @input="fieldInput(addOn, 'priceOption', $event)"
+            />
           </div>
           <div class="add-on-item" v-if="addOn.priceOption === 'Unit'">
-            <div class="add-on-item">
-              <p>Minimum # Units:</p>
-              <input type="number" v-model.number="addOn.pricing.minUnits" />
-            </div>
-            <div class="add-on-item">
-              <p>Unit Rate:</p>
-              <input v-model.number="addOn.pricing.unitRate" />
-            </div>
+            <input-with-title
+              title="Minimum # Units:"
+              type="number"
+              :inputValue="addOn.pricing.minUnits"
+              @input="fieldInput(addOn.pricing, 'minUnits', $event)"
+            />
+            <input-with-title
+              title="Unit Rate:"
+              type="number"
+              :inputValue="addOn.pricing.unitRate"
+              @input="fieldInput(addOn.pricing, 'unitRate', $event)"
+            />
             <button-standard-with-icon
               text="Add Add-On"
               @click="addAddOn()"
@@ -48,17 +59,18 @@
             />
           </div>
           <div class="add-on-item" v-if="addOn.priceOption == 'Flat'">
-            <div class="add-on-item">
-              <p>Flat Rate:</p>
-              <input type="number" v-model.number="addOn.pricing.unitRate" />
-            </div>
-            <div class="add-on-item">
-              <button-standard-with-icon
-                text="Add Add-On"
-                @click="addAddOn()"
-                class="form-button"
-              />
-            </div>
+            <input-with-title
+              title="Flat Rate:"
+              type="number"
+              :inputValue="addOn.pricing.unitRate"
+              @input="fieldInput(addOn.pricing, 'unitRate', $event)"
+            />
+
+            <button-standard-with-icon
+              text="Add Add-On"
+              @click="addAddOn()"
+              class="form-button"
+            />
           </div>
         </div>
         <div class="add-on-section">
@@ -113,6 +125,7 @@
 
 <script>
 import SVGs from "../../../../../assets/SVGs/svgIndex.js";
+import InputWithTitle from "../../../../../SharedComponents/SharedComponentsUI/ElementLibrary/InputWithTitle.vue";
 import { formatPrice } from "../../../../../helpers.js";
 
 export default {
@@ -136,6 +149,13 @@ export default {
 
   methods: {
     formatPrice,
+    fieldInput(object, property, value) {
+      if (object) {
+        object[property] = value;
+      } else {
+        this[property] = value;
+      }
+    },
     async addAddOn() {
       this.addOn.pricing.unitRate *= 100;
       if (this.photoFile) {
@@ -197,6 +217,9 @@ export default {
     addOns() {
       return this.$store.state.businessSettings.product.addOns;
     },
+  },
+  components: {
+    InputWithTitle,
   },
 };
 </script>

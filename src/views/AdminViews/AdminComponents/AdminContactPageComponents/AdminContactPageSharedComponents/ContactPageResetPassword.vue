@@ -2,8 +2,13 @@
   <popup-modal title="Reset User Password" @close-popup="togglePopup">
     <template v-slot:window>
       <div class="reset-user-password-wrapper">
-        <h5>Choose New Password:</h5>
-        <input type="text" placeholder="password" v-model="newUserPassword" />
+        <input-with-title
+          type="text"
+          title="Choose New Password"
+          placeholder="password"
+          :inputValue="newUserPassword"
+          @input="fieldInput(undefined, 'newUserPassword', $event)"
+        />
         <div class="button-wrapper">
           <button-standard-with-icon
             text="Submit New Password"
@@ -31,6 +36,7 @@
 </template>
 <script>
 import PopupModal from "../../../../../SharedComponents/SharedComponentsUI/PopupModal.vue";
+import InputWithTitle from "../../../../../SharedComponents/SharedComponentsUI/ElementLibrary/InputWithTitle.vue";
 export default {
   data() {
     return {
@@ -38,6 +44,13 @@ export default {
     };
   },
   methods: {
+    fieldInput(object, property, value) {
+      if (object) {
+        object[property] = value;
+      } else {
+        this[property] = value;
+      }
+    },
     async resetPassword() {
       var re = /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
       if (re.test(this.newUserPassword)) {
@@ -60,20 +73,19 @@ export default {
   created() {},
   components: {
     PopupModal,
+    InputWithTitle,
   },
   emits: ["togglePopup"],
   props: ["contact"],
 };
 </script>
 <style scoped>
-.button-wrapper {
-  /* width: 70%; */
-  margin: auto;
-  padding: 20px;
-}
-
 .reset-user-password-wrapper {
-  margin: 50px;
+  padding: 50px;
+  width: calc(100% - 100px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 p {

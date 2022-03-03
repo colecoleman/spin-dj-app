@@ -5,9 +5,12 @@
         <div class="service-section">
           <h5 class="bold">Add New Service:</h5>
           <div class="service-item">
-            <p>Service Name:</p>
-
-            <input type="text" v-model.trim="input.name" />
+            <input-with-title
+              type="text"
+              title="Service Name"
+              :inputValue="input.name"
+              @input="fieldInput(input, 'name', $event)"
+            />
           </div>
           <div class="service-item">
             <p>Photo:</p>
@@ -60,33 +63,50 @@
             </div>
           </div>
           <div class="service-item">
-            <p>Employees Required</p>
-            <input type="number" v-model.number="input.employeesRequired" />
+            <!-- <p>Employees Required</p>
+            <input type="number" v-model.number="input.employeesRequired" /> -->
+            <input-with-title
+              type="number"
+              title="Employees Required:"
+              :inputValue="input.employeesRequired"
+              @input="fieldInput(input, 'employeesRequired', $event)"
+            />
           </div>
 
           <div class="service-item">
-            <p>Price Option:</p>
-            <select name="price-option" id="" v-model="input.priceOption">
-              <option disabled value="">Select a price option:</option>
-              <option>Hourly</option>
-              <option>Flat</option>
-            </select>
+            <input-with-title
+              title="Price Option:"
+              type="select"
+              :options="priceOptions"
+              :inputValue="input.priceOption"
+              @input="fieldInput(input, 'priceOption', $event)"
+            />
           </div>
           <div class="service-item" v-if="input.priceOption === 'Hourly'">
             <div class="service-item">
-              <p>Minimum # Hours:</p>
-              <input type="number" v-model.number="input.pricing.baseTime" />
+              <input-with-title
+                type="number"
+                title="Minimum # Hours:"
+                :inputValue="input.pricing.baseTime"
+                @input="fieldInput(input.pricing, 'baseTime', $event)"
+              />
             </div>
             <div class="service-item">
-              <p>
-                Base Rate ({{ input.pricing.baseTime }}
-                Hours)
-              </p>
-              <input v-model.number="input.pricing.baseRate" />
+              <input-with-title
+                type="number"
+                :title="`Base Rate (${input.pricing.baseTime}
+                Hours)`"
+                :inputValue="input.pricing.baseRate"
+                @input="fieldInput(input.pricing, 'baseRate', $event)"
+              />
             </div>
             <div class="service-item">
-              <p>Additional Hourly:</p>
-              <input v-model.number="input.pricing.addHourly" />
+              <input-with-title
+                type="number"
+                title="Additional Hourly:"
+                :inputValue="input.pricing.addHourly"
+                @input="fieldInput(input.pricing, 'addHourly', $event)"
+              />
             </div>
             <button-standard-with-icon
               text="Add Service"
@@ -96,8 +116,12 @@
           </div>
           <div class="service-item" v-if="input.priceOption == 'Flat'">
             <div class="service-item">
-              <p>Flat Rate:</p>
-              <input type="number" v-model.number="input.pricing.baseRate" />
+              <input-with-title
+                type="number"
+                title="Flat Rate:"
+                :inputValue="input.pricing.baseRate"
+                @input="fieldInput(input.pricing, 'baseRate', $event)"
+              />
             </div>
             <div class="service-item">
               <button-standard-with-icon
@@ -173,6 +197,7 @@
 import SVGs from "../../../../../assets/SVGs/svgIndex";
 import { formatPrice } from "../../../../../helpers.js";
 import _cloneDeep from "lodash/cloneDeep";
+import InputWithTitle from "../../../../../SharedComponents/SharedComponentsUI/ElementLibrary/InputWithTitle.vue";
 
 // import { Storage } from "aws-amplify";
 
@@ -183,6 +208,7 @@ export default {
       // services: [],
       editIndex: undefined,
       photoFile: undefined,
+      priceOptions: ["Hourly", "Flat"],
       input: {
         id: "service" + new Date().getTime(),
         name: undefined,
@@ -213,6 +239,13 @@ export default {
   },
   methods: {
     formatPrice,
+    fieldInput(object, property, value) {
+      if (object) {
+        object[property] = value;
+      } else {
+        this[property] = value;
+      }
+    },
     async addService() {
       let service = _cloneDeep(this.input);
       if (this.photoFile) {
@@ -310,6 +343,7 @@ export default {
       this.photoFile = files[0];
     },
   },
+  components: { InputWithTitle },
 };
 </script>
 

@@ -4,86 +4,70 @@
     @close-popup="closeWindow()"
   >
     <template v-slot:window>
-      <h3 class="popup-heading"></h3>
-      <h5 class="popup-text">From:</h5>
-      <p class="danger" v-if="errors.to">
-        Oops! You must choose a "From" address.
-      </p>
-      <select v-model="email.Source">
-        <option
-          :value="address"
-          v-for="address in emailAddresses"
-          :key="address"
-        >
-          {{ address }}
-        </option>
-      </select>
-      <h5 class="popup-text">To:</h5>
-      <p class="danger" v-if="errors.to">
-        Oops! You must choose a "To" address.
-      </p>
-      <input
-        type="text"
-        id="to-email"
-        v-model="
-          email.Destination.ToAddresses[
-            email.Destination.ToAddresses.length - 1
-          ]
-        "
-      />
-      <h5 class="popup-text">Subject:</h5>
-      <p class="danger" v-if="errors.subject">
-        Oops! You must include a "Subject".
-      </p>
-      <input type="text" id="to-email" v-model="email.Message.Subject.Data" />
-      <h5 class="popup-text">Message:</h5>
-      <p class="danger" v-if="errors.contentEmpty">
-        We need some content here!
-      </p>
-      <p class="danger" v-if="errors.bodyNeedsText">
-        Be sure to include some content for Plain Text also.
-      </p>
-      <!-- <div class="row-flex">
-        <p
-          @click="changeEmailBodyType('Text')"
-          :class="emailBodyType === 'Text' ? 'bold' : ''"
-        >
-          Plain Text
-        </p>
-        <p
-          @click="changeEmailBodyType('Html')"
-          :class="emailBodyType === 'Html' ? 'bold' : ''"
-        >
-          HTML
-        </p>
-      </div> -->
-      <p></p>
-      <textarea
-        name="email-message"
-        id="email-message"
-        cols="30"
-        rows="10"
-        placeholder="Start typing your message..."
-        v-model="email.Message.Body[emailBodyType].Data"
-      ></textarea>
-      <div class="button-container">
-        <button-standard-with-icon
-          class="black-outline"
-          text="Cancel Email"
-          @click="closeWindow()"
+      <section>
+        <input-with-title
+          class="input"
+          :options="emailAddresses"
+          type="select"
+          title="From:"
+          :error="errors.source"
+          :inputValue="email.Source"
+          @input="fieldInput(email, 'Source', $event)"
         />
-        <button-standard-with-icon
-          class="black-outline"
-          text="Send Email"
-          @click="confirmSendEmail()"
+        <input-with-title
+          class="input"
+          type="email"
+          title="To:"
+          :error="errors.to"
+          :inputValue="
+            email.Destination.ToAddresses[
+              email.Destination.ToAddresses.length - 1
+            ]
+          "
+          @input="
+            fieldInput(
+              email.Destination.ToAddresses,
+              [email.Destination.ToAddresses.length - 1],
+              $event
+            )
+          "
         />
-      </div>
+        <input-with-title
+          class="input"
+          title="Subject:"
+          :error="errors.subject"
+          :inputValue="email.Message.Subject.Data"
+          @input="fieldInput(email.Message.Subject, 'Data', $event)"
+        />
+        <input-with-title
+          class="input"
+          title="Message:"
+          type="textarea"
+          :error="errors.contentEmpty"
+          :inputValue="email.Message.Body[emailBodyType].Data"
+          placeholder="Start typing your message..."
+          @input="fieldInput(email.Message.Body[emailBodyType], 'Data', $event)"
+        />
+        <div class="button-container">
+          <button-standard-with-icon
+            class="black-outline"
+            text="Cancel Email"
+            @click="closeWindow()"
+          />
+          <button-standard-with-icon
+            class="black-outline"
+            text="Send Email"
+            @click="confirmSendEmail()"
+          />
+        </div>
+      </section>
     </template>
   </popup-modal>
 </template>
 
 <script>
 import PopupModal from "../SharedComponentsUI/PopupModal.vue";
+import InputWithTitle from "../SharedComponentsUI/ElementLibrary/InputWithTitle.vue";
 export default {
   data() {
     return {
@@ -124,6 +108,13 @@ export default {
     };
   },
   methods: {
+    fieldInput(object, property, value) {
+      if (object) {
+        object[property] = value;
+      } else {
+        this[property] = value;
+      }
+    },
     closeWindow() {
       this.$emit("closeWindow");
     },
@@ -195,44 +186,29 @@ export default {
   },
   emits: ["closeWindow"],
   props: ["contact"],
-  components: { PopupModal },
+  components: { PopupModal, InputWithTitle },
 };
 </script>
 
 <style scoped>
-.popup-text {
-  width: 100%;
-  margin: 10px;
-  text-align: left;
-}
-
-.row-flex {
+section {
   display: flex;
-  flex-direction: row;
-  width: 100%;
-  justify-content: space-evenly;
+  max-width: 500px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
-.danger {
-  color: red;
-  text-align: left;
-}
-
-#from-email,
-#to-email,
-#email-message {
-  width: 80%;
+.input {
+  width: 300px;
 }
 
 .button-container {
-  width: 100%;
+  width: 60%;
+  height: 100px;
   padding-top: 10px;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: space-evenly;
-}
-
-.black-outline {
-  border-radius: 5px;
 }
 </style>

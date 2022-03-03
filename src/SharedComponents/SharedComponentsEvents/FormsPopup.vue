@@ -77,8 +77,15 @@
                   v-for="(input, index) in formItem.fields"
                   :key="index"
                 >
-                  <p>{{ input.inputTitle }}:</p>
-                  <input
+                  <!-- <p>{{ input.inputTitle }}:</p> -->
+                  <input-with-title
+                    :title="input.inputTitle"
+                    :type="input.inputType"
+                    :inputValue="input.value"
+                    :placeholder="input.placeholder"
+                    @input="fieldInput(input, $event)"
+                  />
+                  <!-- <input
                     v-if="
                       input.inputType === 'text' ||
                       input.inputType === 'tel' ||
@@ -87,7 +94,7 @@
                     :type="input.inputType"
                     :placeholder="input.placeholder"
                     v-model="input.value"
-                  />
+                  /> -->
 
                   <div
                     class="radio-container"
@@ -168,7 +175,6 @@
               :placeholder="input.placeholder"
               v-model="input.value"
             />
-
             <div class="radio-container" v-if="input.inputType === 'radio'">
               <input
                 v-for="(option, index) in input.options"
@@ -196,6 +202,7 @@
 import MobileCloseButton from "../SharedComponentsUI/MobileCloseButton.vue";
 import Backdrop from "../SharedComponentsUI/Backdrop.vue";
 import FormsPopupAddForm from "./FormsPopupAddForm.vue";
+import InputWithTitle from "../SharedComponentsUI/ElementLibrary/InputWithTitle.vue";
 import TwoButtonDialogModal from "../SharedComponentsUI/TwoButtonDialogModal.vue";
 import SVGs from "../../assets/SVGs/svgIndex.js";
 import { Auth } from "aws-amplify";
@@ -223,6 +230,9 @@ export default {
         behavior: "smooth",
       });
       this.activeLink = id;
+    },
+    fieldInput(input, value) {
+      input.value = value;
     },
     closePopup() {
       if (this.openView === "addForm") {
@@ -288,6 +298,7 @@ export default {
   components: {
     FormsPopupAddForm,
     Backdrop,
+    InputWithTitle,
     TwoButtonDialogModal,
     MobileCloseButton,
   },
@@ -432,7 +443,7 @@ ul {
 }
 
 .form-field {
-  padding: 10px;
+  /* padding: 10px; */
   text-align: left;
   align-items: center;
   justify-content: center;
@@ -448,21 +459,22 @@ h5 {
 }
 
 .field-item {
-  flex: 1;
+  /* flex: 1; */
   display: flex;
   flex-direction: column;
   text-align: left;
   max-width: 200px;
-  margin-left: 20px;
+  margin: 0 20px;
 }
 
-input {
+/* input {
   margin-left: 20px;
-}
+} */
 
 @media screen and (min-width: 800px) {
   .field-container {
     flex-direction: row;
+    /* justify-content: space-evenly; */
   }
 }
 

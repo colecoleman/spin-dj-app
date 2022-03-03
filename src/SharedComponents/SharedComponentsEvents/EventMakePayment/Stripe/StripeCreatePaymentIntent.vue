@@ -1,13 +1,15 @@
 <template>
   <div id="payment-intent-wrapper">
-    <div class="row-flex">
-      <input
-        type="text"
-        v-model="chargeAmount"
-        placeholder="Enter Payment Amount"
-      />
-      <button-standard-with-icon text="Confirm" @click="createPaymentIntent" />
-    </div>
+    <!-- <div class="row-flex"> -->
+    <input-with-title
+      type="number"
+      title="Enter Payment Amount"
+      placeholder="100"
+      :inputValue="chargeAmount"
+      @input="fieldInput(undefined, 'chargeAmount', $event)"
+    />
+    <button-standard-with-icon text="Confirm" @click="createPaymentIntent" />
+    <!-- </div> -->
   </div>
   <p :class="chargeAmountError ? 'error' : 'hidden'">
     Oops! Enter an amount in the field above.
@@ -15,6 +17,7 @@
 </template>
 <script>
 import { balanceOutstanding } from "../../../../helpers.js";
+import InputWithTitle from "../../../../SharedComponents/SharedComponentsUI/ElementLibrary/InputWithTitle.vue";
 // import { loadStripe } from "@stripe/stripe-js";
 
 export default {
@@ -29,6 +32,13 @@ export default {
     };
   },
   methods: {
+    fieldInput(object, property, value) {
+      if (object) {
+        object[property] = value;
+      } else {
+        this[property] = value;
+      }
+    },
     createPaymentIntent() {
       if (!this.chargeAmount) {
         this.chargeAmountError = true;
@@ -71,7 +81,7 @@ export default {
     });
     // this.stripe = await loadStripe(this.stripeAPIToken);
   },
-  components: {},
+  components: { InputWithTitle },
   emits: ["submitPaymentIntent"],
   props: ["eventId", "event", "stripe"],
 };
@@ -79,7 +89,7 @@ export default {
 <style scoped>
 #payment-intent-wrapper {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: space-evenly;
   text-align: left;
 }
@@ -94,17 +104,5 @@ p {
 
 .hidden {
   visibility: hidden;
-}
-
-.row-flex {
-  display: flex;
-  width: 100%;
-  flex-direction: row;
-  justify-content: space-evenly;
-  padding-top: 20px;
-}
-
-input {
-  margin-right: 10px;
 }
 </style>

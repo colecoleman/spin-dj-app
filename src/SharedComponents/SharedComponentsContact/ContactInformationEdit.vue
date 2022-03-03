@@ -14,10 +14,12 @@
             </option>
           </select>
           <div v-if="fieldToEdit != undefined">
-            <input
-              v-if="fieldToEdit != 'profilePicture'"
+            <input-with-title
+              :title="fields[fieldToEdit].display"
               :type="fieldToEdit.inputType"
-              v-model="fields[fieldToEdit].value"
+              v-if="fieldToEdit != 'profilePicture'"
+              :inputValue="fields[fieldToEdit].value"
+              @input="fieldInput(fields[fieldToEdit], 'value', $event)"
               :placeholder="contact[fieldToEdit]"
             />
             <input
@@ -47,7 +49,7 @@
 
 <script>
 import SVGs from "../../assets/SVGs/svgIndex.js";
-
+import InputWithTitle from "../../SharedComponents/SharedComponentsUI/ElementLibrary/InputWithTitle.vue";
 export default {
   data() {
     return {
@@ -85,6 +87,13 @@ export default {
     };
   },
   methods: {
+    fieldInput(object, property, value) {
+      if (object) {
+        object[property] = value;
+      } else {
+        this[property] = value;
+      }
+    },
     closeEditCard() {
       this.$emit("closeEditCard");
     },
@@ -110,6 +119,9 @@ export default {
       };
       await this.$store.dispatch("editContact", payload);
     },
+  },
+  components: {
+    InputWithTitle,
   },
   props: ["contact"],
 };

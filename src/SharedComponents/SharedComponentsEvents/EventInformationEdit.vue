@@ -8,27 +8,35 @@
       <template v-slot:action1></template>
       <template v-slot:content>
         <div class="edit-card-inner-wrapper">
-          <select v-model="fieldToEdit">
-            <option v-for="(field, key) in fields" :key="key" :value="key">
-              {{ field.display }}
-            </option>
-          </select>
-          <div v-if="fieldToEdit != undefined">
-            <input
-              :type="fields[fieldToEdit].inputType"
-              v-model="fields[fieldToEdit].value"
-              :placeholder="
-                fieldToEdit === 'date'
-                  ? formatDate(event.data[fieldToEdit])
-                  : fieldToEdit === ('startTime' || 'endTime')
-                  ? formatTime(event.data[fieldToEdit])
-                  : event[fieldToEdit]
-              "
-            />
-            <div class="button-wrapper">
-              <button-standard-with-icon text="Save" @click="saveField()" />
-            </div>
-          </div>
+          <input-with-title
+            type="select"
+            title="Select Field To Edit"
+            :options="fields"
+            :inputValue="fields[fieldToEdit]"
+            @input="fieldInput(undefined, 'fieldToEdit', $event.field)"
+          />
+
+          <input-with-title
+            v-if="fieldToEdit != undefined"
+            :title="fields[fieldToEdit].display"
+            :type="fields[fieldToEdit].inputType"
+            :inputValue="fields[fieldToEdit].value"
+            @input="fieldInput(fields[fieldToEdit], 'value', $event)"
+            :placeholder="
+              fieldToEdit === 'date'
+                ? formatDate(event.data[fieldToEdit])
+                : fieldToEdit === ('startTime' || 'endTime')
+                ? formatTime(event.data[fieldToEdit])
+                : event[fieldToEdit]
+            "
+          />
+
+          <button-standard-with-icon
+            v-if="fieldToEdit != undefined"
+            class="button"
+            text="Save"
+            @click="saveField()"
+          />
         </div>
       </template>
     </base-card>
@@ -37,6 +45,7 @@
 
 <script>
 import { formatDate, formatTime } from "../../helpers.js";
+import InputWithTitle from "../../SharedComponents/SharedComponentsUI/ElementLibrary/InputWithTitle.vue";
 import SVGs from "../../assets/SVGs/svgIndex.js";
 
 export default {
@@ -47,21 +56,25 @@ export default {
       fieldToEdit: undefined,
       fields: {
         startTime: {
+          field: "startTime",
           display: "Start Time",
           inputType: "time",
           value: undefined,
         },
         endTime: {
+          field: "endTime",
           display: "End Time",
           inputType: "time",
           value: undefined,
         },
         date: {
+          field: "date",
           display: "Date",
           inputType: "date",
           value: undefined,
         },
         title: {
+          field: "title",
           display: "Title",
           inputType: "text",
           value: undefined,
@@ -69,11 +82,28 @@ export default {
       },
     };
   },
+  computed: {
+    options() {
+      console.log(Object.values(this.fields));
+      let arr = Object.values(this.fields);
+      return arr.map((x) => {
+        return x.display;
+      });
+    },
+  },
   methods: {
     formatDate,
     formatTime,
     closeEditCard() {
       this.$emit("closeEditCard");
+    },
+    fieldInput(object, property, value) {
+      console.log(value);
+      if (object) {
+        object[property] = value;
+      } else {
+        this[property] = value;
+      }
     },
     async saveField() {
       let payload = {
@@ -126,6 +156,7 @@ export default {
       });
     },
   },
+  components: { InputWithTitle },
   emits: ["editEvent"],
   props: ["event"],
 };
@@ -140,10 +171,7 @@ export default {
   width: 300px;
 }
 
-.button-wrapper {
-  padding: 10px;
-}
-input {
-  margin: 10px;
+.button {
+  width: 97%;
 }
 </style>
