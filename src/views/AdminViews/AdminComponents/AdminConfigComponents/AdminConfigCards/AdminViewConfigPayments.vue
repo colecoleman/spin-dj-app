@@ -45,7 +45,6 @@
         </div>
         <div class="payments-item">
           <h4>Credit Card</h4>
-          <p>Enable Credit Card Payments?</p>
           <input-with-title
             title="Enable Credit Card Payments?"
             type="select"
@@ -77,7 +76,6 @@
         </div>
         <div class="payments-item">
           <h4>Check</h4>
-          <p>Allow clients to pay by check?</p>
           <input-with-title
             title="Allow clients to pay by check?"
             type="select"
