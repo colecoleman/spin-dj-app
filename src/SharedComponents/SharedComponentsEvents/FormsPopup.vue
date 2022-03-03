@@ -177,11 +177,14 @@
                 input.inputType === 'text' ||
                 input.inputType === 'tel' ||
                 input.inputType === 'textarea' ||
-                input.inputType === 'email'
+                input.inputType === 'email' ||
+                input.inputType === 'select'
               "
               :title="input.inputTitle"
               :type="input.inputType"
-              :placeholder="input.placeholder"
+              :inputValue="input.value"
+              optionDisplay="optionValue"
+              :options="input.options ? input.options : []"
               @input="fieldInput(input, 'value', $event)"
             />
             <div class="radio-container" v-if="input.inputType === 'radio'">
