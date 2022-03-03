@@ -20,7 +20,7 @@
               ? option.display
               : optionDisplay
               ? option[optionDisplay]
-              : option == true
+              : option === true
               ? "Yes"
               : option == false
               ? "No"

@@ -1,5 +1,6 @@
 <template>
   <div class="wrapper">
+    <backdrop @click="closeModal()" />
     <div class="modal">
       <base-card
         :actionIcon="XIcon"
@@ -22,7 +23,7 @@
 
 <script>
 import XIcon from "../../assets/SVGs/x-icon.svg";
-
+import Backdrop from "./Backdrop.vue";
 export default {
   data() {
     return {
@@ -40,6 +41,7 @@ export default {
       this.$emit("closeModal");
     },
   },
+  components: { Backdrop },
   emits: ["selectButtonOne", "selectButtonTwo", "closeModal"],
   props: ["modalBody"],
 };
@@ -51,10 +53,10 @@ export default {
     position: fixed;
     width: 100%;
     height: 100%;
-    z-index: 5;
+    z-index: 6;
   }
   .modal {
-    z-index: 3;
+    z-index: 10;
     position: fixed;
     /* top: 35%; */
     /* left: 10%; */
@@ -87,10 +89,9 @@ export default {
     position: fixed;
     width: 100%;
     height: 100%;
-    z-index: 5;
   }
   .modal {
-    z-index: 3;
+
     position: fixed;
     /* height: 160px; */
     max-width: 50%;

@@ -304,7 +304,7 @@ export default {
       editIndex: undefined,
       fieldEditIndex: undefined,
       fieldTemplateTitleFieldOpen: false,
-      fieldTemplateTitle: "dur",
+      fieldTemplateTitle: undefined,
       // fieldTemplates: [],
     };
   },

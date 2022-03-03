@@ -83,7 +83,9 @@
                     :type="input.inputType"
                     :inputValue="input.value"
                     :placeholder="input.placeholder"
-                    @input="fieldInput(input, $event)"
+                    :options="input.options ? input.options : []"
+                    :optionDisplay="input.options ? 'optionValue' : ''"
+                    @input="fieldInput(input, 'value', $event)"
                   />
                   <!-- <input
                     v-if="
@@ -109,7 +111,7 @@
                     />
                     <p>{{ option }}</p>
                   </div>
-                  <select
+                  <!-- <select
                     v-if="input.inputType === 'select'"
                     v-model="input.value"
                   >
@@ -119,7 +121,7 @@
                     >
                       {{ option.optionValue }}
                     </option>
-                  </select>
+                  </select> -->
                 </div>
               </div>
               <div class="duplicate-button-wrapper">
@@ -142,14 +144,14 @@
     </div>
   </section>
   <section id="print-format">
-    <img :src="logo" alt="Business Logo" />
     <div
       class="form-wrapper"
       v-for="(form, index) in forms"
       :key="index"
       :id="form.id"
     >
-      <h3 class="form-name">{{ form.name }}</h3>
+      <img :src="logo" alt="Business Logo" />
+      <h2 class="form-title">{{ form.name }}</h2>
       <div
         class="form-field"
         v-for="(formItem, formItemIndex) in form.fields"
@@ -164,16 +166,23 @@
             v-for="(input, index) in formItem.fields"
             :key="index"
           >
-            <p>{{ input.inputTitle }}:</p>
+            <!-- <p>{{ input.inputTitle }}:</p>
             <input
-              v-if="
-                input.inputType === 'text' ||
-                input.inputType === 'tel' ||
-                input.inputType === 'email'
-              "
               :type="input.inputType"
               :placeholder="input.placeholder"
               v-model="input.value"
+            /> -->
+            <input-with-title
+              v-if="
+                input.inputType === 'text' ||
+                input.inputType === 'tel' ||
+                input.inputType === 'textarea' ||
+                input.inputType === 'email'
+              "
+              :title="input.inputTitle"
+              :type="input.inputType"
+              :placeholder="input.placeholder"
+              @input="fieldInput(input, 'value', $event)"
             />
             <div class="radio-container" v-if="input.inputType === 'radio'">
               <input
@@ -185,14 +194,15 @@
               />
               <p>{{ option }}</p>
             </div>
-            <select v-if="input.inputType === 'select'" v-model="input.value">
+            <!-- <select v-if="input.inputType === 'select'" v-model="input.value">
               <option v-for="(option, index) in input.options" :key="index">
                 {{ option }}
               </option>
-            </select>
+            </select> -->
           </div>
         </div>
       </div>
+      <h2 class="event-title">{{ eventTitle }}</h2>
     </div>
   </section>
 </template>
@@ -231,8 +241,12 @@ export default {
       });
       this.activeLink = id;
     },
-    fieldInput(input, value) {
-      input.value = value;
+    fieldInput(object, property, value) {
+      if (object) {
+        object[property] = value;
+      } else {
+        this[property] = value;
+      }
     },
     closePopup() {
       if (this.openView === "addForm") {
@@ -241,6 +255,7 @@ export default {
       this.$emit("closePopup");
     },
     downloadForms() {
+      console.log(this.forms);
       window.print();
     },
     saveForms() {
@@ -275,6 +290,7 @@ export default {
       this.deleteFormOpen = true;
     },
     closeDeleteForm() {
+      console.log("should delete");
       this.deleteFormOpen = false;
     },
     deleteForm() {
@@ -282,9 +298,6 @@ export default {
       this.closeDeleteForm();
     },
     firstDuplicatedForm(form, field) {
-      console.log(form.fields[0].name);
-      console.log(field.name);
-      console.log(form.fields.findIndex((x) => x.name == field.name));
       return form.fields.findIndex((x) => x.name == field.name);
     },
   },
@@ -293,7 +306,7 @@ export default {
     let user = await Auth.currentAuthenticatedUser();
     this.userRole = user.attributes["custom:role"];
   },
-  props: ["forms", "eventId"],
+  props: ["forms", "eventId", "eventTitle"],
 
   components: {
     FormsPopupAddForm,
@@ -306,20 +319,179 @@ export default {
 </script>
 
 <style scoped>
+@media screen {
+  #print-format {
+    display: none;
+  }
+
+  section {
+    filter: drop-shadow(0 0 20px rgba(0, 0, 0, 0.5));
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: calc(100% - 20px);
+    width: calc(100% - 40px);
+    z-index: 5;
+  }
+
+  .navigation-wrapper {
+    display: flex;
+    width: 100%;
+  }
+
+  .button-container > * {
+    margin-top: 10px;
+  }
+
+  .button-container {
+    max-width: 320px;
+    margin: auto;
+  }
+
+  .duplicate-button-wrapper {
+    width: 100px;
+    margin-top: 10px;
+    margin-left: 40px;
+  }
+
+  ul {
+    display: none;
+  }
+
+  .forms-wrapper,
+  .add-form-wrapper {
+    width: 100%;
+    height: 100%;
+    overflow-y: scroll;
+  }
+
+  .form-wrapper,
+  .navigation-wrapper {
+    margin-bottom: 10px;
+  }
+
+  .form-field {
+    /* padding: 10px; */
+    text-align: left;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .field-container {
+    display: flex;
+    flex-direction: column;
+  }
+
+  h5 {
+    margin-bottom: 0;
+  }
+
+  .field-item {
+    /* flex: 1; */
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    max-width: 200px;
+    margin: 0 20px;
+  }
+
+  /* input {
+  margin-left: 20px;
+} */
+
+  @media screen and (min-width: 800px) {
+    .field-container {
+      flex-direction: row;
+      /* justify-content: space-evenly; */
+    }
+  }
+
+  @media screen and (min-width: 1100px) {
+    section {
+      flex-direction: row;
+      height: calc(100% - 40px);
+    }
+    .navigation-wrapper {
+      backdrop-filter: blur(2px);
+      width: fit-content;
+      height: 100%;
+      min-width: 250px;
+      margin-right: 10px;
+    }
+
+    .sidebar {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+
+    ul {
+      display: unset;
+      text-align: right;
+      height: 90%;
+      padding: 0;
+    }
+
+    li {
+      width: 100%;
+      text-transform: uppercase;
+      font-size: 12pt;
+      list-style: none;
+      font-weight: 600;
+      margin: 20px 0px;
+      cursor: pointer;
+    }
+
+    li:hover {
+      color: var(--highlightColor);
+    }
+
+    a {
+      text-decoration: none;
+      font-weight: 700;
+    }
+
+    .navigation-button-wrapper {
+      margin-top: 10px;
+    }
+
+    .duplicate-button-wrapper {
+      width: 100px;
+      margin-top: 10px;
+      margin-left: 40px;
+    }
+
+    .active-link {
+      color: var(--highlightColor);
+    }
+
+    .button-container {
+      margin-top: auto;
+    }
+  }
+}
 @media print {
   #print-format {
     display: block;
     width: 100%;
-    height: auto;
+    /* height: fit-content; */
+    /* height: auto; */
     min-height: auto;
     margin: 0;
     background-color: white;
     overflow: visible !important;
     box-sizing: border-box;
-
-    font-family: Georgia, "Times New Roman", Times, serif;
+    /* font-family: Georgia, "Times New Roman", Times, serif; */
   }
 
+  input,
+  textarea {
+    font-family: arial, sans-serif;
+  }
   section {
     position: auto;
     top: unset;
@@ -332,15 +504,17 @@ export default {
 
   .forms-wrapper {
     width: 100%;
-    overflow-y: visible;
   }
   .form-name {
     text-align: center;
     border-bottom: 1px solid black;
   }
   img {
-    height: 60px;
-    margin: 40px;
+    position: fixed;
+    right: 0;
+    top: 0;
+    height: 20px;
+    /* margin: 40px; */
   }
 
   .form-wrapper {
@@ -382,163 +556,21 @@ export default {
   input {
     margin-left: 20px;
   }
+  .form-title {
+    width: 100%;
+    text-align: center;
+    /* position: absolute; */
+    top: 0;
+  }
+  .event-title {
+    width: 100%;
+    text-align: center;
+    position: fixed;
+    bottom: 0;
+  }
 
   .no-print {
     display: none;
-  }
-}
-
-#print-format {
-  display: none;
-}
-
-section {
-  filter: drop-shadow(0 0 20px rgba(0, 0, 0, 0.5));
-  position: fixed;
-  top: 20px;
-  left: 20px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  height: calc(100% - 20px);
-  width: calc(100% - 40px);
-  z-index: 5;
-}
-
-.navigation-wrapper {
-  display: flex;
-  width: 100%;
-}
-
-.button-container > * {
-  margin-top: 10px;
-}
-
-.button-container {
-  max-width: 320px;
-  margin: auto;
-}
-
-.duplicate-button-wrapper {
-  width: 100px;
-  margin-top: 10px;
-  margin-left: 40px;
-}
-
-ul {
-  display: none;
-}
-
-.forms-wrapper,
-.add-form-wrapper {
-  width: 100%;
-  height: 100%;
-  overflow-y: scroll;
-}
-
-.form-wrapper,
-.navigation-wrapper {
-  margin-bottom: 10px;
-}
-
-.form-field {
-  /* padding: 10px; */
-  text-align: left;
-  align-items: center;
-  justify-content: center;
-}
-
-.field-container {
-  display: flex;
-  flex-direction: column;
-}
-
-h5 {
-  margin-bottom: 0;
-}
-
-.field-item {
-  /* flex: 1; */
-  display: flex;
-  flex-direction: column;
-  text-align: left;
-  max-width: 200px;
-  margin: 0 20px;
-}
-
-/* input {
-  margin-left: 20px;
-} */
-
-@media screen and (min-width: 800px) {
-  .field-container {
-    flex-direction: row;
-    /* justify-content: space-evenly; */
-  }
-}
-
-@media screen and (min-width: 1100px) {
-  section {
-    flex-direction: row;
-    height: calc(100% - 40px);
-  }
-  .navigation-wrapper {
-    backdrop-filter: blur(2px);
-    width: fit-content;
-    height: 100%;
-    min-width: 250px;
-    margin-right: 10px;
-  }
-
-  .sidebar {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-  }
-
-  ul {
-    display: unset;
-    text-align: right;
-    height: 90%;
-    padding: 0;
-  }
-
-  li {
-    width: 100%;
-    text-transform: uppercase;
-    font-size: 12pt;
-    list-style: none;
-    font-weight: 600;
-    margin: 20px 0px;
-    cursor: pointer;
-  }
-
-  li:hover {
-    color: var(--highlightColor);
-  }
-
-  a {
-    text-decoration: none;
-    font-weight: 700;
-  }
-
-  .navigation-button-wrapper {
-    margin-top: 10px;
-  }
-
-  .duplicate-button-wrapper {
-    width: 100px;
-    margin-top: 10px;
-    margin-left: 40px;
-  }
-
-  .active-link {
-    color: var(--highlightColor);
-  }
-
-  .button-container {
-    margin-top: auto;
   }
 }
 </style>

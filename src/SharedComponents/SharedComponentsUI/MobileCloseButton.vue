@@ -18,7 +18,7 @@ export default {
   filter: drop-shadow(0 0 20px rgba(0, 0, 0, 0.5));
   position: fixed;
   display: flex;
-  top: 25px;
+  bottom: 25px;
   right: 25px;
   height: 45px;
   width: 45px;

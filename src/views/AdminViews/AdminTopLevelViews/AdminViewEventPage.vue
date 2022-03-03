@@ -81,6 +81,7 @@
       @delete-form="deleteForm"
       :forms="event.forms"
       :eventId="event.userId"
+      :eventTitle="event.title"
     />
     <contract-popup
       v-if="popupOpen === 'contract'"
