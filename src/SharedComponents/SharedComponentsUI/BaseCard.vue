@@ -84,6 +84,8 @@ export default {
   color: var(--textColor);
 }
 
+
+
 .title {
   flex-direction: column;
   text-align: left;

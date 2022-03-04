@@ -153,7 +153,7 @@
 <script>
 import Backdrop from "../../SharedComponents/SharedComponentsUI/Backdrop.vue";
 import { Auth } from "aws-amplify";
-// import FullPagePopup from "../SharedComponentsUI/FullPagePopup.vue";
+
 import PopupModal from "../SharedComponentsUI/PopupModal.vue";
 import TwoButtonDialogModal from "../SharedComponentsUI/TwoButtonDialogModal.vue";
 import ContractPopupDocumentView from "./ContractPopupDocumentView.vue";
