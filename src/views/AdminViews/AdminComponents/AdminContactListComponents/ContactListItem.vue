@@ -23,13 +23,8 @@
     />
     <div class="contact-wrapper" v-if="category !== 'locations'">
       <div class="name-and-photo">
-        <img
-          :src="
-            contact.profilePicture
-              ? contact.profilePicture
-              : defaultProfilePicture
-          "
-        />
+        <img v-if="contact.profilePicture" :src="contact.profilePicture" />
+        <profile-picture contact="person" :customStyle="svgStyling" />
         <div class="name" @click="viewContact()">
           <h5 v-if="contact.businessName" class="business-name">
             <span>{{ contact.businessName }}</span>
@@ -55,13 +50,7 @@
     </div>
     <div class="contact-wrapper" v-if="category === 'locations'">
       <div class="name-and-photo">
-        <img
-          :src="
-            contact.profilePicture
-              ? contact.profilePicture
-              : SVGs.LocationCircleIconSVG
-          "
-        />
+        <profile-picture contact="location" :customStyle="svgStyling" />
         <div class="name" @click="viewContact()">
           <h5 id="client-name">
             <span> {{ contact.name }}</span>
@@ -85,18 +74,16 @@
 </template>
 
 <script>
-import defaultProfilePicture from "../../../../assets/default-profile-picture.svg";
+import ProfilePicture from "../../../../assets/ProfilePicture.vue";
 import ButtonWithDropDownSelections from "../../../../SharedComponents/SharedComponentsUI/ButtonWithDropDownSelections.vue";
 import TwoButtonDialogModal from "../../../../SharedComponents/SharedComponentsUI/TwoButtonDialogModal.vue";
 import PopupEmailComposition from "../../../../SharedComponents/SharedComponentsPopupUtilities/PopupEmailComposition.vue";
-import SVGs from "../../../../assets/SVGs/svgIndex.js";
 import { formatPhoneNumber } from "../../../../helpers.js";
 
 export default {
   data() {
     return {
-      SVGs,
-      defaultProfilePicture,
+      svgStyling: "width: 31px; height: 30px; padding: 10px;",
       actionsClicked: false,
       popupOpen: null,
       actions: [
@@ -104,20 +91,20 @@ export default {
           title: "View",
           danger: false,
           action: this.viewContact,
-          icon: SVGs.EyeIconSVG,
+          icon: "eye",
         },
         {
           title: "email",
           danger: false,
           parameter: "email",
-          icon: SVGs.EmailSVG,
+          icon: "email",
         },
 
         {
           title: "delete",
           danger: true,
           parameter: "delete",
-          icon: SVGs.TrashCanSVG,
+          icon: "trash-can",
         },
       ],
     };
@@ -172,6 +159,7 @@ export default {
     ButtonWithDropDownSelections,
     PopupEmailComposition,
     TwoButtonDialogModal,
+    ProfilePicture,
   },
 };
 </script>
@@ -192,6 +180,7 @@ export default {
   .name {
     display: flex;
     flex-direction: column;
+    overflow-x: hidden;
     /* width: calc(100% - 60px); */
   }
 

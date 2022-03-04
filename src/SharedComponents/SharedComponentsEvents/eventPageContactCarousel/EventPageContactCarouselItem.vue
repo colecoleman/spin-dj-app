@@ -3,13 +3,14 @@
     <div id="contact-carousel-item-title-and-picture">
       <h4>{{ contact.role }}</h4>
       <img
-        :src="
-          contact.profilePicture
-            ? contact.profilePicture
-            : defaultProfilePicture
-        "
+        v-if="contact.profilePicture"
+        :src="contact.profilePicture"
         alt="Profile Picture"
         @click="navigateToContactPage(contact)"
+      />
+      <profile-picture
+        contact="person"
+        @clicked="navigateToContactPage(contact)"
       />
     </div>
     <div
@@ -31,12 +32,12 @@
 </template>
 
 <script>
-import defaultProfilePicture from "../../../assets/default-profile-picture.svg";
+import ProfilePicture from "../../../assets/ProfilePicture.vue";
 import { Auth } from "aws-amplify";
 export default {
   data() {
     return {
-      defaultProfilePicture,
+      profilePictureStyling: "width: 55px; height: 55px; margin-right: 10px;",
     };
   },
   methods: {
@@ -56,6 +57,7 @@ export default {
   },
   emits: ["initiateRemoveContact"],
   props: ["contact"],
+  components: { ProfilePicture },
 };
 </script>
 

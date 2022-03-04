@@ -20,7 +20,7 @@
       <contact-card-client
         :loading="contact ? false : true"
         :contact="contact"
-        :icon="SVGs.PersonSVG"
+        svg="person"
         @email-contact="togglePopup('send-email')"
       />
     </div>
@@ -46,15 +46,12 @@
     </div>
 
     <div id="upcoming-events">
-      <client-page-upcoming-events
-        :contact="contact"
-        :icon="SVGs.CalendarSVG"
-      />
+      <client-page-upcoming-events :contact="contact" svg="calendar" />
     </div>
     <!-- <div id="box-five-half-two">
           <client-page-information-card
             :contact="contact"
-            :icon="SVGs.InformationIconSVG"
+            svg="info"
           ></client-page-information-card>
         </div> -->
     <div id="automation">
@@ -67,7 +64,7 @@
     </div>
     <div id="messages">
       <base-card
-        :icon="SVGs.MessageBubbleSVG"
+        svg="message-bubble"
         :loading="contact ? false : true"
         title="Coming Soon"
       >
@@ -94,13 +91,11 @@ import FourButtonBarWithDropDown from "../../../../SharedComponents/SharedCompon
 import ClientPageUpcomingEvents from "../../AdminComponents/AdminContactPageComponents/ClientPageComponents/ClientPageUpcomingEvents.vue";
 import ContactPageResetPassword from "../../AdminComponents/AdminContactPageComponents/AdminContactPageSharedComponents/ContactPageResetPassword.vue";
 import ContactPageNotes from "../../AdminComponents/AdminContactPageComponents/AdminContactPageSharedComponents/ContactPageNotes/ContactPageNotes.vue";
-import SVGs from "../../../../assets/SVGs/svgIndex.js";
 // import TwoButtonDialogModal from "../../../../SharedComponents/SharedComponentsUI/TwoButtonDialogModal.vue";
 
 export default {
   data() {
     return {
-      SVGs,
       automations: [],
       contact: undefined,
       thread: undefined,
@@ -120,18 +115,18 @@ export default {
           {
             title: "Email",
             parameter: "send-email",
-            icon: SVGs.EmailSVG,
+            icon: "email",
           },
           {
             title: "Reset Password",
             parameter: "reset-password",
-            icon: SVGs.KeySVG,
+            icon: "key",
           },
           {
             title: "delete",
             danger: true,
             parameter: "delete",
-            icon: SVGs.TrashCanSVG,
+            icon: "trash-can",
           },
         ],
       },

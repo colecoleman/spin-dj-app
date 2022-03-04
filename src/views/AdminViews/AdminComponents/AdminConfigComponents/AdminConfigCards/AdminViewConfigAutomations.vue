@@ -110,10 +110,10 @@
                   "
                 />
                 <div class="information-hover-container">
-                  <img
-                    :src="SVGs.InfoIconSVG"
-                    alt=""
-                    @click="toggleMergeTagInformation"
+                  <vue-svg
+                    svg="info"
+                    @clicked="toggleMergeTagInformation"
+                    customStyle="width: 10px;"
                   />
                   <information-hover
                     heading="Templating"
@@ -171,15 +171,15 @@
             >
               <h4>
                 {{ automation.title }}
-                <img
-                  :src="SVGs.XIconSVG"
-                  class="x-icon"
-                  @click="deleteAutomation(index)"
+                <vue-svg
+                  svg="x-icon"
+                  :customStyle="iconStyling"
+                  @clicked="deleteAutomation(index)"
                 />
-                <img
-                  :src="SVGs.EditPenSVG"
-                  class="x-icon"
-                  @click="editAutomation(automation, index)"
+                <vue-svg
+                  svg="edit-pen"
+                  :customStyle="iconStyling"
+                  @clicked="editAutomation(automation, index)"
                 />
               </h4>
 
@@ -243,11 +243,12 @@
 <script>
 import InformationHover from "../../../../../SharedComponents/SharedComponentsUI/InformationHover.vue";
 import InputWithTitle from "../../../../../SharedComponents/SharedComponentsUI/ElementLibrary/InputWithTitle.vue";
-import SVGs from "../../../../../assets/SVGs/svgIndex.js";
+import VueSvg from "../../../../../assets/VueSvg.vue";
 export default {
   data() {
     return {
-      SVGs,
+      iconStyling:
+        "height: 10px; width: 10px; margin: 0px 5px; cursor: pointer;",
       editIndex: undefined,
       mergeTagInformationOpen: false,
       mergeTagInformation:
@@ -357,7 +358,7 @@ export default {
       return false;
     },
   },
-  components: { InformationHover, InputWithTitle },
+  components: { InformationHover, InputWithTitle, VueSvg },
 };
 </script>
 
@@ -428,19 +429,8 @@ export default {
     align-self: right;
   }
 
-  .information-hover-container > img {
-    width: 14px;
-  }
-
   :disabled {
     opacity: 0.5;
-  }
-
-  img {
-    height: 10px;
-    width: 10px;
-    margin: 0px 5px;
-    cursor: pointer;
   }
 
   .distance-number {

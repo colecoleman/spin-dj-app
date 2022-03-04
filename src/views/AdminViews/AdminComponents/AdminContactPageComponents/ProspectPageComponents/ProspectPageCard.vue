@@ -1,19 +1,8 @@
 <template>
-  <base-card :icon="icon" :actionIcon="SVGs.EditPenSVG" title="Prospect">
-    <template v-slot:action1></template>
+  <base-card :svg="icon" actionIcon="edit-pen" title="Prospect">
     <template v-slot:content>
       <div id="wrapper">
         <div id="prospect-card-upper-div">
-          <img
-            :src="
-              (prospect.status == null ? SVGs.NeutralSVG : '') ||
-              (prospect.status === 'cold' ? SVGs.SnowflakeSVG : '') ||
-              (prospect.status === 'neutral' ? SVGs.NeutralSVG : '') ||
-              (prospect.status === 'hot' ? SVGs.FireSVG : '') ||
-              ''
-            "
-            alt=""
-          />
           <div id="prospect-information">
             <h4 id="first-name">{{ prospect.given_name }}</h4>
             <h4 id="last-name">{{ prospect.family_name }}</h4>
@@ -31,16 +20,11 @@
 </template>
 
 <script>
-import defaultProfilePicture from "../../../../../assets/default-profile-picture.svg";
-import SVGs from "../../../../../assets/SVGs/svgIndex.js";
 import { formatPhoneNumber } from "../../../../../helpers.js";
 
 export default {
   data() {
-    return {
-      SVGs,
-      defaultProfilePicture,
-    };
+    return {};
   },
   methods: {
     formatPhoneNumber,
@@ -54,12 +38,6 @@ export default {
   display: flex;
   flex-direction: column;
   overflow: hidden;
-}
-
-img {
-  width: 40px;
-  margin: 10px;
-  margin-right: 15px;
 }
 
 #first-name {

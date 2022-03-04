@@ -6,19 +6,14 @@
     @close-modal="toggleRemoveContact"
   />
   <base-card
-    :icon="SVGs.GroupPeopleSVG"
+    svg="group-people"
     title="Event Contacts"
-    :actionIcon="SVGs.PlusSignSVG"
+    actionIcon="plus-sign"
     @actionOneClicked="toggleAddContactOpen"
   >
     <template v-slot:content>
       <div id="contact-carousel-top-wrapper" v-if="!addContactOpen">
-        <img
-          @click="scrollToPreviousElement()"
-          :src="SVGs.LeftArrowSVG"
-          alt=""
-        />
-
+        <vue-svg svg="left-arrow" @clicked="scrollToPreviousElement" />
         <div id="contact-carousel-wrapper">
           <event-page-contact-carousel-item
             v-for="(contact, index) in contacts"
@@ -28,7 +23,7 @@
             @initiate-remove-contact="initiateRemoveContact(contact, index)"
           />
         </div>
-        <img @click="scrollToNextElement()" :src="SVGs.RightArrowSVG" alt="" />
+        <vue-svg svg="right-arrow" @clicked="scrollToNextElement" />
       </div>
       <div class="add-contact-wrapper" v-if="addContactOpen">
         <div class="form-input">
@@ -65,13 +60,12 @@
 
 <script>
 import EventPageContactCarouselItem from "./EventPageContactCarouselItem.vue";
-import SVGs from "../../../assets/SVGs/svgIndex.js";
+import VueSvg from "../../../assets/VueSvg.vue";
 import TwoButtonDialogModal from "../../SharedComponentsUI/TwoButtonDialogModal.vue";
 
 export default {
   data() {
     return {
-      SVGs,
       addContactOpen: false,
       clientDropdownOpen: false,
       clientSearchField: undefined,
@@ -198,7 +192,7 @@ export default {
     },
   },
   props: ["contacts", "event"],
-  components: { EventPageContactCarouselItem, TwoButtonDialogModal },
+  components: { EventPageContactCarouselItem, TwoButtonDialogModal, VueSvg },
 };
 </script>
 
@@ -208,6 +202,7 @@ export default {
   align-items: center;
   justify-content: center;
   max-width: 100%;
+  color: var(--textColor);
 }
 
 #contact-carousel-wrapper {
@@ -218,11 +213,6 @@ export default {
   height: 90%;
   overflow: scroll;
   /* white-space: nowrap; */
-}
-
-img {
-  height: 15px;
-  width: 15px;
 }
 
 .form-input {

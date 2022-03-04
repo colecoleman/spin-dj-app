@@ -35,17 +35,15 @@
   <button-standard-with-icon
     text="Submit"
     @click="submitContact"
-    :icon="SVGs.CircleCheckmarkSVG"
+    svg="circle-checkmark"
   />
 </template>
 
 <script>
-import SVGs from "../../../../../assets/SVGs/svgIndex.js";
 import InputWithTitle from "../../../../../SharedComponents/SharedComponentsUI/ElementLibrary/InputWithTitle.vue";
 export default {
   data() {
     return {
-      SVGs,
       location: {
         name: undefined,
         address: {
@@ -159,8 +157,4 @@ h4 {
   margin: 10px;
 }
 
-img {
-  height: 15px;
-  width: 15px;
-}
 </style>

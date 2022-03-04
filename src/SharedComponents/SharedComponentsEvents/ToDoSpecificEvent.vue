@@ -1,5 +1,10 @@
 <template>
-  <base-card :icon="SVGs.ClipboardSVG" title="To-Do">
+  <base-card
+    title="To-Do"
+    svg="clipboard"
+    actionIcon="plus-sign"
+    @action-one-clicked="toggleNewToDo"
+  >
     <template v-slot:content>
       <div id="wrapper">
         <div class="to-do-item" v-if="newToDoOpened">
@@ -44,7 +49,7 @@
             v-model="newToDo"
             @keyup.enter="submitToDo()"
           />
-          <img :src="SVGs.CircleCheckmarkSVG" @click="submitToDo()" alt="" />
+          <vue-svg svg="circle-checkmark" @clicked="submitToDo()" />
         </div>
         <div class="to-do-item" v-for="toDo in uncompletedToDos" :key="toDo.id">
           <to-do-item :toDo="toDo"></to-do-item>
@@ -58,57 +63,25 @@
         </div>
       </div>
     </template>
-    <template v-slot:action1>
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="14"
-        height="14"
-        viewBox="0 0 21 21"
-        @click="newToDoOpened = !newToDoOpened"
-      >
-        <g id="Group_395" data-name="Group 395" transform="translate(1.5 1.5)">
-          <path
-            id="Path_71"
-            data-name="Path 71"
-            d="M18,7.5v18"
-            transform="translate(-9 -7.5)"
-            fill="none"
-            stroke="currentColor"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="3"
-          />
-          <path
-            id="Path_72"
-            data-name="Path 72"
-            d="M7.5,18h18"
-            transform="translate(-7.5 -9)"
-            fill="none"
-            stroke="currentColor"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="3"
-          />
-        </g>
-      </svg>
-    </template>
   </base-card>
 </template>
 
 <script>
 import ToDoItem from "../SharedComponentsToDoList/ToDoItem.vue";
-import SVGs from "../../assets/SVGs/svgIndex.js";
+import VueSvg from "../../assets/VueSvg.vue";
 
 export default {
   data() {
     return {
       toDos: [],
-      SVGs,
       newToDoOpened: false,
       newToDo: undefined,
     };
   },
   methods: {
+    toggleNewToDo() {
+      this.newToDoOpened = !this.newToDoOpened;
+    },
     submitToDo() {
       let item = {
         id: "todo" + new Date().getTime(),
@@ -145,7 +118,7 @@ export default {
       }
     );
   },
-  components: { ToDoItem },
+  components: { ToDoItem, VueSvg },
   props: ["event"],
 };
 </script>

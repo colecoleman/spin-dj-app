@@ -8,18 +8,22 @@
       <p>
         {{ status.note }}
       </p>
-      <img :src="XIconSVG" alt="" @click="clearStatus(index)" />
+      <vue-svg
+        svg="x-icon"
+        :customStyle="svgStyling"
+        @clicked="clearStatus(index)"
+      />
     </div>
   </div>
 </template>
 
 <script>
-import XIconSVG from "../../assets/SVGs/x-icon.svg";
+import VueSvg from "../../assets/VueSvg.vue";
 
 export default {
   data() {
     return {
-      XIconSVG,
+      svgStyling: "height: 10px; width: 10px; margin-left: 10px;",
     };
   },
   computed: {
@@ -37,6 +41,7 @@ export default {
       setTimeout(this.clearStatus, 3000, index);
     }
   },
+  components: { VueSvg },
 };
 </script>
 
@@ -73,13 +78,5 @@ export default {
 p {
   text-transform: capitalize;
   font-size: 10pt;
-}
-
-img {
-  height: 10px;
-  width: 10px;
-  margin-left: 10px;
-  /* right: 10px; */
-  /* top: 10px; */
 }
 </style>

@@ -1,17 +1,22 @@
 <template>
-  <base-card :icon="SVGs.ClipboardSVG" :loading="contact ? false : true">
-    <template v-slot:title>To-Do</template>
+  <base-card
+    svg="clipboard"
+    actionIcon="plus-sign"
+    @action-one-clicked="toggleNewToDo"
+    title="To-Do"
+    :loading="contact ? false : true"
+  >
     <template v-slot:content>
       <div id="wrapper" v-if="contact">
         <div class="to-do-item" v-if="newToDoOpened">
-          <img :src="SVGs.PlusSignSVG" alt="" />
+          <vue-svg svg="plus-sign" />
           <input
             type="text"
             placeholder="Start typing.."
             v-model="newToDo"
             @keyup.enter="submitToDo()"
           />
-          <img :src="SVGs.CircleCheckmarkSVG" @click="submitToDo()" alt="" />
+          <vue-svg svg="circle-checkmark" @clicked="submitToDo()" />
         </div>
         <div class="to-do-item" v-for="toDo in uncompletedToDos" :key="toDo.id">
           <to-do-item :toDo="toDo"></to-do-item>
@@ -25,30 +30,25 @@
         </div>
       </div>
     </template>
-    <template v-slot:action1>
-      <img
-        :src="SVGs.PlusSignSVG"
-        @click="newToDoOpened = !newToDoOpened"
-        alt=""
-      />
-    </template>
   </base-card>
 </template>
 
 <script>
+import VueSvg from "../../../../../assets/VueSvg.vue";
 import ToDoItem from "../../../../../SharedComponents/SharedComponentsToDoList/ToDoItem.vue";
-import SVGs from "../../../../../assets/SVGs/svgIndex.js";
 
 export default {
   data() {
     return {
       toDos: [],
-      SVGs,
       newToDoOpened: false,
       newToDo: undefined,
     };
   },
   methods: {
+    toggleNewToDo() {
+      this.newToDoOpened = !this.newToDoOpened;
+    },
     submitToDo() {
       let item = {
         id: "todo" + new Date().getTime(),
@@ -87,7 +87,7 @@ export default {
       );
     },
   },
-  components: { ToDoItem },
+  components: { ToDoItem, VueSvg },
   props: ["contact"],
 };
 </script>
@@ -112,11 +112,6 @@ export default {
 
 svg {
   margin: 4px;
-}
-
-img {
-  height: 14px;
-  width: 14px;
 }
 
 h4,

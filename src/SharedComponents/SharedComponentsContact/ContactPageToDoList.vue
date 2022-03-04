@@ -1,20 +1,22 @@
 <template>
   <base-card
-    :icon="SVGs.ClipboardSVG"
+    svg="clipboard"
     title="To-Do"
+    actionIcon="plus-sign"
+    @action-one-clicked="toggleNewToDo"
     :loading="contact ? false : true"
   >
     <template v-slot:content>
       <div id="wrapper" v-if="contact">
         <div class="to-do-item" v-if="newToDoOpened">
-          <img :src="SVGs.ClipboardSVG" alt="" />
+          <vue-svg svg="clipboard" />
           <input
             type="text"
             placeholder="Start typing.."
             v-model="newToDo"
             @keyup.enter="submitToDo()"
           />
-          <img :src="SVGs.CircleCheckmarkSVG" @click="submitToDo()" alt="" />
+          <vue-svg svg="circle-checkmark" @click="submitToDo()" />
         </div>
         <div class="to-do-item" v-for="toDo in uncompletedToDos" :key="toDo.id">
           <to-do-item :toDo="toDo"></to-do-item>
@@ -28,30 +30,25 @@
         </div>
       </div>
     </template>
-    <template v-slot:action1>
-      <img
-        :src="SVGs.PlusSignSVG"
-        @click="newToDoOpened = !newToDoOpened"
-        alt=""
-      />
-    </template>
   </base-card>
 </template>
 
 <script>
-import SVGs from "../../assets/SVGs/svgIndex.js";
+import VueSvg from "../../assets/VueSvg.vue";
 import ToDoItem from "../SharedComponentsToDoList/ToDoItem.vue";
 
 export default {
   data() {
     return {
       toDos: [],
-      SVGs,
       newToDoOpened: false,
       newToDo: undefined,
     };
   },
   methods: {
+    toggleNewToDo() {
+      this.newToDoOpened = !this.newToDoOpened;
+    },
     submitToDo() {
       let item = {
         id: "todo" + new Date().getTime(),
@@ -90,7 +87,7 @@ export default {
       );
     },
   },
-  components: { ToDoItem },
+  components: { ToDoItem, VueSvg },
   props: ["contact"],
 };
 </script>
@@ -111,15 +108,6 @@ export default {
   flex-direction: row;
   align-content: center;
   align-items: center;
-}
-
-svg {
-  margin: 4px;
-}
-
-img {
-  height: 14px;
-  width: 14px;
 }
 
 h4,

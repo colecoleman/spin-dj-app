@@ -27,7 +27,11 @@
           :key="index"
           class="row-flex"
         >
-          <img :src="SVGs.XIconSVG" alt="" @click="removeAdjustment(index)" />
+          <vue-svg
+            svg="x-icon"
+            :customStyle="svgStyling"
+            @clicked="removeAdjustment(index)"
+          />
           <p>{{ adjustment.name }}: {{ adjustmentDisplay(adjustment) }}</p>
         </div>
         <h4>Add Adjustments:</h4>
@@ -37,10 +41,10 @@
           :key="index"
           class="row-flex"
         >
-          <img
-            :src="SVGs.PlusSignSVG"
-            alt=""
-            @click="addAdjustment(adjustment)"
+          <vue-svg
+            svg="plus-sign"
+            @clicked="addAdjustment(adjustment)"
+            :customStyle="svgStyling"
           />
           <p>{{ adjustment.name }}: {{ adjustmentDisplay(adjustment) }}</p>
         </div>
@@ -164,12 +168,12 @@ import TwoButtonDialogModal from "../../../SharedComponents/SharedComponentsUI/T
 import EventEditProducts from "../AdminComponents/AdminEventPageComponents/EventEditProducts.vue";
 import _ from "lodash";
 
-import SVGs from "../../../assets/SVGs/svgIndex.js";
+import VueSvg from "../../../assets/VueSvg.vue";
 
 export default {
   data() {
     return {
-      SVGs,
+      svgStyling: "height: 14px; margin: 10px;",
       event: undefined,
       contacts: [],
       locations: [],
@@ -198,7 +202,7 @@ export default {
             // action: this.deleteEvent,
             parameter: "delete-event",
             danger: true,
-            icon: SVGs.TrashCanSVG,
+            icon: "trash-can",
           },
           {
             title: "Payments",
@@ -402,6 +406,7 @@ export default {
     FourButtonBarWithDropDown,
     TwoButtonDialogModal,
     EventEditProducts,
+    VueSvg,
   },
 };
 </script>
@@ -414,16 +419,12 @@ export default {
   align-content: center;
   justify-content: center;
   align-items: center;
+  color: var(--textColor);
 }
 
 .row-flex {
   display: flex;
   align-items: center;
-}
-
-img {
-  height: 14px;
-  margin: 10px;
 }
 
 section {

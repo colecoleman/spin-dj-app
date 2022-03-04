@@ -33,19 +33,15 @@
           <div id="contract-popup-left-menu">
             <div class="heading-container">
               <div v-if="contracts.length > 0">
-                <img
-                  :src="contractScroller != 0 ? SVGs.LeftArrowSVG : ''"
-                  @click="contractScroller != 0 ? previousContract : ''"
+                <vue-svg
+                  v-if="contractScroller != 0"
+                  svg="left-arrow"
+                  @click="previousContract"
                 />
-                <img
-                  :src="
-                    contractScroller != contractQuantity
-                      ? SVGs.RightArrowSVG
-                      : ''
-                  "
-                  @click="
-                    contractScroller != contractQuantity ? nextContract : ''
-                  "
+                <vue-svg
+                  v-if="contractScroller != contractQuantity"
+                  svg="right-arrow"
+                  @click="nextContract"
                 />
               </div>
               <div v-if="contracts.length === 0">
@@ -155,7 +151,6 @@
 </template>
 
 <script>
-import SVGs from "../../assets/SVGs/svgIndex.js";
 import Backdrop from "../../SharedComponents/SharedComponentsUI/Backdrop.vue";
 import { Auth } from "aws-amplify";
 // import FullPagePopup from "../SharedComponentsUI/FullPagePopup.vue";
@@ -170,7 +165,7 @@ export default {
   data() {
     return {
       loading: true,
-      SVGs,
+
       role: undefined,
       contractScroller: 0,
       scrolledToBottom: false,

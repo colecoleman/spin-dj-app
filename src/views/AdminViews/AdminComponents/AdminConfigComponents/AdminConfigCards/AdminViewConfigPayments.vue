@@ -112,13 +112,11 @@
 </template>
 
 <script>
-import SVGs from "../../../../../assets/SVGs/svgIndex";
 import InputWithTitle from "../../../../../SharedComponents/SharedComponentsUI/ElementLibrary/InputWithTitle.vue";
 
 export default {
   data() {
     return {
-      SVGs,
       loaded: false,
       depositTerminologies: ["deposit", "retainer"],
       depositTypes: ["percentage", "dollar"],
@@ -380,12 +378,6 @@ export default {
     margin-top: 10px;
   }
 
-  img {
-    height: 10px;
-    width: 10px;
-    margin: 0px 5px;
-    cursor: pointer;
-  }
   @media (min-width: 850px) {
     .payments-wrapper {
       flex-direction: column;

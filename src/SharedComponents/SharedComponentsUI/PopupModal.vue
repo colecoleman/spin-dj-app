@@ -2,7 +2,7 @@
   <backdrop @click="closePopup"></backdrop>
   <div class="window">
     <base-card
-      :actionIcon="XIconSvg"
+      actionIcon="x-icon"
       @action-one-clicked="closePopup()"
       :title="title"
     >
@@ -12,14 +12,8 @@
 </template>
 
 <script>
-import XIconSvg from "../../assets/SVGs/x-icon.svg";
 import Backdrop from "../SharedComponentsUI/Backdrop.vue";
 export default {
-  data() {
-    return {
-      XIconSvg,
-    };
-  },
   methods: {
     closePopup() {
       this.$emit("close-popup");

@@ -1,8 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="118" height="118" viewBox="0 0 19 19">
-  <g id="Icon_feather-trash-2" data-name="Icon feather-trash-2" transform="translate(-1.75 -0.875)">
-    <path id="Path_141" data-name="Path 141" d="M2.625,5.25h15.75" fill="none" stroke="red" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75"/>
-    <path id="Path_142" data-name="Path 142" d="M16.625,5.25V17.5a1.75,1.75,0,0,1-1.75,1.75H6.125a1.75,1.75,0,0,1-1.75-1.75V5.25M7,5.25V3.5A1.75,1.75,0,0,1,8.75,1.75h3.5A1.75,1.75,0,0,1,14,3.5V5.25" fill="none" stroke="red" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75"/>
-    <path id="Path_143" data-name="Path 143" d="M8.75,9.625v5.25" fill="none" stroke="red" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75"/>
-    <path id="Path_144" data-name="Path 144" d="M12.25,9.625v5.25" fill="none" stroke="red" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75"/>
-  </g>
-</svg>

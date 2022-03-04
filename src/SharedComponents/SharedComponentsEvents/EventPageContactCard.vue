@@ -1,7 +1,7 @@
 <template>
   <base-card
-    :icon="SVGs.InfoIconSVG"
-    :actionIcon="userRole === 'admin' ? SVGs.EditPenSVG : ''"
+    svg="info"
+    :actionIcon="userRole === 'admin' ? 'edit-pen' : ''"
     :loading="loading"
     :title="formatDate(event.data.date)"
     :subtitle="`${formatTime(event.data.startTime)} - ${formatTime(
@@ -21,8 +21,6 @@
 </template>
 
 <script>
-import infoIconSvg from "../../assets/SVGs/info-icon.svg";
-import SVGs from "../../assets/SVGs/svgIndex.js";
 import { formatDate, formatTime, subtotal } from "../../helpers.js";
 import EventInformationEdit from "./EventInformationEdit.vue";
 import { Auth } from "aws-amplify";
@@ -30,8 +28,6 @@ import { Auth } from "aws-amplify";
 export default {
   data() {
     return {
-      SVGs,
-      infoIconSvg,
       editCardOpen: false,
       userRole: undefined,
     };

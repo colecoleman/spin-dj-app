@@ -1,7 +1,16 @@
 <template>
   <div class="single-event-item" v-if="event" :class="loading ? loading : ''">
-    <div class="client-event-identifier">
-      <img :src="defaultProfilePicture" alt="" />
+    <div class="client-event-identifier" v-if="matchedClient">
+      <img
+        v-if="matchedClient.profilePicture"
+        :src="matchedClient.profilePicture"
+        alt=""
+      />
+      <profile-picture
+        v-if="!matchedClient.profilePicture"
+        contact="person"
+        :customStyle="profilePictureStyling"
+      />
       <h5 class="client-name" v-if="matchedClient">
         {{ matchedClient.given_name }} <br />
         <span> {{ matchedClient.family_name }}</span>
@@ -46,7 +55,7 @@
 </template>
 
 <script>
-import defaultProfilePicture from "../../assets/default-profile-picture.svg";
+import ProfilePicture from "../../assets/ProfilePicture.vue";
 import {
   formatDate,
   formatTime,
@@ -57,7 +66,7 @@ import {
 export default {
   data() {
     return {
-      defaultProfilePicture,
+      profilePictureStyling: "height: 30px; width: 30px; margin: 5px;",
       loading: true,
       primaryLocation: undefined,
       matchedClient: undefined,
@@ -97,6 +106,7 @@ export default {
     }
   },
   props: ["event", "first"],
+  components: { ProfilePicture },
 };
 </script>
 

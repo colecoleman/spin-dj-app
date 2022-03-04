@@ -1,5 +1,5 @@
 <template>
-  <base-card :skeleton="['title']" :icon="SVGs.InfoIconSVG">
+  <base-card :skeleton="['title']" svg="icon">
     <template v-slot:content>
       <div id="contact-card">
         <div class="contact-card-half">
@@ -34,17 +34,6 @@
     </template>
   </base-card>
 </template>
-
-<script>
-import SVGs from "../../../assets/SVGs/svgIndex.js";
-export default {
-  data() {
-    return {
-      SVGs,
-    };
-  },
-};
-</script>
 
 <style scoped>
 p,

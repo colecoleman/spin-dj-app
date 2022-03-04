@@ -27,10 +27,10 @@
             >
               <p class="bold">{{ field.name }}</p>
               <div class="form-item row-flex">
-                <img
-                  :src="SVGs.EditPenSVG"
-                  class="x-icon"
-                  @click="editField(field, index)"
+                <vue-svg
+                  svg="edit-pen"
+                  :customStyle="svgStyling"
+                  @clicked="editField(field, index)"
                 />
                 <div
                   class="form-item input-view"
@@ -241,15 +241,15 @@
           <div v-if="hasForms" class="form-list">
             <h5 v-for="(form, index) in forms" :key="index">
               {{ form.name }}
-              <img
-                :src="SVGs.XIconSVG"
-                class="x-icon"
-                @click="deleteForm(index)"
+              <vue-svg
+                svg="x-icon"
+                :customStyle="svgStyling"
+                @clicked="deleteForm(index)"
               />
-              <img
-                :src="SVGs.EditPenSVG"
-                class="x-icon"
-                @click="editForm(form, index)"
+              <vue-svg
+                svg="edit-pen"
+                :customStyle="svgStyling"
+                @clicked="editForm(form, index)"
               />
             </h5>
           </div>
@@ -260,15 +260,16 @@
 </template>
 
 <script>
-import SVGs from "../../../../../assets/SVGs/svgIndex";
+import VueSvg from "../../../../../assets/VueSvg.vue";
 import InputWithTitle from "../../../../../SharedComponents/SharedComponentsUI/ElementLibrary/InputWithTitle.vue";
 import ButtonStandardWithIcon from "../../../../../SharedComponents/SharedComponentsUI/ButtonStandardWithIcon.vue";
 
 export default {
-  components: { ButtonStandardWithIcon, InputWithTitle },
+  components: { ButtonStandardWithIcon, InputWithTitle, VueSvg },
   data() {
     return {
-      SVGs,
+      svgStyling:
+        "height: 10px; width: 10px; margin: 0px 5px; cursor: pointer;",
       inputTypes: [
         "text",
         "tel",
@@ -496,13 +497,6 @@ export default {
     margin-top: 5px;
   }
 
-  img {
-    height: 10px;
-    width: 10px;
-    margin: 0px 5px;
-    cursor: pointer;
-  }
-
   .form-list {
     text-align: right;
   }
@@ -572,13 +566,6 @@ export default {
 
     .field-creator {
       margin-top: 5px;
-    }
-
-    img {
-      height: 10px;
-      width: 10px;
-      margin: 0px 5px;
-      cursor: pointer;
     }
 
     .form-list {

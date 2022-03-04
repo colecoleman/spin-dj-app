@@ -12,7 +12,10 @@
       </div>
       <div v-if="typeof contact === 'object'" class="contact-item">
         <div class="contact-identifier">
-          <img class="profile-picture" :src="defaultProfilePicture" alt="" />
+          <profile-picture
+            contact="person"
+            :customStyle="profilePictureStyling"
+          />
           <div class="flex-column">
             <p>
               <b>{{ `${contact.given_name}` }}</b>
@@ -31,12 +34,12 @@
   </div>
 </template>
 <script>
-import defaultProfilePicture from "../../assets/default-profile-picture.svg";
+import ProfilePicture from "../../assets/ProfilePicture.vue";
 
 export default {
   data() {
     return {
-      defaultProfilePicture,
+      profilePictureStyling: "height: 35px; margin: 0 10px 0 0;",
       searchTerm: undefined,
     };
   },
@@ -71,7 +74,7 @@ export default {
     },
   },
   created() {},
-  components: {},
+  components: { ProfilePicture },
   props: [],
 };
 </script>
@@ -119,10 +122,5 @@ export default {
 
 p {
   margin: 2px;
-}
-
-img {
-  height: 35px;
-  margin: 0 10px 0 0;
 }
 </style>

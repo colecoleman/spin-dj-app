@@ -1,11 +1,10 @@
 <template>
   <div class="edit-card-wrapper">
     <base-card
-      :actionIcon="SVGs.XIconSVG"
+      actionIcon="x-icon"
       title="Edit Event"
       @action-one-clicked="closeEditCard()"
     >
-      <template v-slot:action1></template>
       <template v-slot:content>
         <div class="edit-card-inner-wrapper">
           <input-with-title
@@ -46,12 +45,10 @@
 <script>
 import { formatDate, formatTime } from "../../helpers.js";
 import InputWithTitle from "../../SharedComponents/SharedComponentsUI/ElementLibrary/InputWithTitle.vue";
-import SVGs from "../../assets/SVGs/svgIndex.js";
 
 export default {
   data() {
     return {
-      SVGs,
       photoFile: undefined,
       fieldToEdit: undefined,
       fields: {

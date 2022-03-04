@@ -1,5 +1,5 @@
 <template>
-  <base-card :icon="svg.automationSvg" :loading="loading">
+  <base-card svg="automation" :loading="loading">
     <template v-slot:title>Automation</template>
     <template v-slot:content
       ><div id="list-wrapper" v-if="automations">
@@ -24,15 +24,10 @@
 
 <script>
 import AutomationListItem from "./AutomationListItem.vue";
-import automationSvg from "../../../../assets/SVGs/automation.svg";
 
 export default {
   data() {
-    return {
-      svg: {
-        automationSvg,
-      },
-    };
+    return {};
   },
   computed: {
     automationsPending() {

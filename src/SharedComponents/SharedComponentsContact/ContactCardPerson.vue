@@ -1,10 +1,10 @@
 <template>
   <base-card
-    :icon="icon"
+    :svg="icon"
     :title="
       contact ? contact.given_name + ' ' + contact.family_name : 'Contact'
     "
-    :actionIcon="editPen"
+    actionIcon="edit-pen"
     :loading="loading"
     @action-one-clicked="toggleEditCard"
   >
@@ -16,13 +16,9 @@
     /></template>
     <template v-slot:content v-if="contact">
       <div id="wrapper" v-if="!loading">
-        <img
-          :src="
-            contact.profilePicture
-              ? contact.profilePicture
-              : defaultProfilePicture
-          "
-          alt=""
+        <profile-picture
+          contact="person"
+          :customStyle="profilePictureStyling"
         />
         <div id="contact-information">
           <p class="contact-contact-information">
@@ -39,15 +35,13 @@
 
 <script>
 import ContactInformationEdit from "../SharedComponentsContact/ContactInformationEdit.vue";
-import defaultProfilePicture from "../../assets/default-profile-picture.svg";
-import editPen from "../../assets/SVGs/edit-pen.svg";
+import ProfilePicture from "../../assets/ProfilePicture.vue";
 import { formatPhoneNumber } from "../../helpers.js";
 
 export default {
   data() {
     return {
-      defaultProfilePicture,
-      editPen,
+      profilePictureStyling: "width: 55px; height: 55px; margin-right: 10px;",
       editCardOpen: false,
     };
   },
@@ -62,7 +56,7 @@ export default {
   },
   emits: ["email-contact"],
   props: ["contact", "icon", "loading"],
-  components: { ContactInformationEdit },
+  components: { ContactInformationEdit, ProfilePicture },
 };
 </script>
 

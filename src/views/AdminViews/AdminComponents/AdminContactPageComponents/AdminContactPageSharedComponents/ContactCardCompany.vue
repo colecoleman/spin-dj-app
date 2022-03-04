@@ -1,7 +1,7 @@
 <template>
   <base-card
-    :icon="icon"
-    :actionIcon="editPen"
+    :svg="icon"
+    actionIcon="edit-pen"
     :loading="contact ? false : true"
     :title="contact ? contact.businessName : 'Contact'"
     @action-one-clicked="toggleEditCard()"
@@ -29,15 +29,11 @@
 </template>
 
 <script>
-import defaultProfilePicture from "../../../../../assets/default-profile-picture.svg";
 import ContactInformationEditCompany from "./ContactInformationEditCompany.vue";
-import editPen from "../../../../../assets/SVGs/edit-pen.svg";
 import { formatPhoneNumber } from "../../../../../helpers.js";
 export default {
   data() {
     return {
-      defaultProfilePicture,
-      editPen,
       editCardOpen: false,
     };
   },

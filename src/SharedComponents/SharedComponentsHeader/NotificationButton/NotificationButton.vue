@@ -1,21 +1,18 @@
 <template>
   <div id="notification-button" @mousedown.prevent="">
-    <img :src="SVGs.NotificationBellSVG" alt="" @click="toggleClick()" />
+    <vue-svg
+      svg="notification-bell"
+      @clicked="toggleClick()"
+      :customStyle="'height: 20px; width: 20px; cursor: pointer;'"
+    />
     <transition name="fade1">
       <div id="notification-button-popup-container">
         <base-card
           v-if="isClicked"
-          :icon="SVGs.NotificationBellSVG"
+          svg="notification-bell"
           title="Notifications"
+          actionIcon="x-icon"
         >
-          <template v-slot:action1>
-            <img
-              :src="SVGs.XIconSVG"
-              alt=""
-              class="x-icon"
-              @click="toggleClick()"
-            />
-          </template>
           <template v-slot:content>
             <div id="popup-inner-wrapper">
               <notification-button-item
@@ -36,12 +33,11 @@
 
 <script>
 import NotificationButtonItem from "./NotificationButtonItem.vue";
-import SVGs from "../../../assets/SVGs/svgIndex.js";
+import VueSvg from "../../../assets/VueSvg.vue";
 
 export default {
   data() {
     return {
-      SVGs,
       isClicked: false,
     };
   },
@@ -55,7 +51,7 @@ export default {
       return this.$store.state.notifications;
     },
   },
-  components: { NotificationButtonItem },
+  components: { NotificationButtonItem, VueSvg },
 };
 </script>
 
@@ -103,11 +99,7 @@ export default {
   align-items: center;
   justify-content: center;
 }
-img {
-  height: 20px;
-  width: 20px;
-  cursor: pointer;
-}
+
 
 .x-icon {
   width: 14px;

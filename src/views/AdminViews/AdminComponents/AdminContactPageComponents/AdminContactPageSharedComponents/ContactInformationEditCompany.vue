@@ -1,11 +1,10 @@
 <template>
   <div class="edit-card-wrapper">
     <base-card
-      :actionIcon="XIconSVG"
+      actionIcon="x-icon"
       @action-one-clicked="closeEditCard()"
       title="Edit Contact"
     >
-      <template v-slot:action1></template>
       <template v-slot:content>
         <div class="edit-card-inner-wrapper">
           <select v-model="fieldToEdit">
@@ -68,8 +67,6 @@
 </template>
 
 <script>
-import XIconSVG from "../../../../../assets/SVGs/x-icon.svg";
-
 export default {
   data() {
     return {
@@ -95,7 +92,6 @@ export default {
         "Florist",
         "Musician",
       ],
-      XIconSVG,
     };
   },
   methods: {

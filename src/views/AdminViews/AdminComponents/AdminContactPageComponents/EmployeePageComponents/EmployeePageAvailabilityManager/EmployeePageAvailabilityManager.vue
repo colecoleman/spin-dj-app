@@ -40,41 +40,44 @@
           </div>
           <div class="availability-list-item">
             <p>Date Ranges:</p>
-            <p
+            <div
+              class="date-range"
               v-for="(range, index) in availabilityRules.dateRanges"
               :key="index"
             >
-              {{
-                new Date(range.start).toLocaleDateString("en-US", {
-                  year: "numeric",
-                  month: "short",
-                  day: "numeric",
-                  timeZone: "UTC",
-                })
-              }}
-              -
-              {{
-                new Date(range.end).toLocaleDateString("en-US", {
-                  year: "numeric",
-                  month: "short",
-                  day: "numeric",
-                  timeZone: "UTC",
-                })
-              }}
-              <img
-                class="x-icon"
-                :src="SVGs.XIconSvg"
-                alt=""
-                @click="removeDateRange(index)"
+              <p>
+                {{
+                  new Date(range.start).toLocaleDateString("en-US", {
+                    year: "numeric",
+                    month: "short",
+                    day: "numeric",
+                    timeZone: "UTC",
+                  })
+                }}
+                -
+                {{
+                  new Date(range.end).toLocaleDateString("en-US", {
+                    year: "numeric",
+                    month: "short",
+                    day: "numeric",
+                    timeZone: "UTC",
+                  })
+                }}
+              </p>
+              <vue-svg
+                svg="x-icon"
+                :customStyle="svgStyling"
+                @clicked="removeDateRange(index)"
               />
-            </p>
+            </div>
             <div class="date-range-input">
               <input type="date" v-model="dateRangeInput.start" />
               <p>-</p>
               <input type="date" v-model="dateRangeInput.end" />
-              <img
-                :src="SVGs.CircleCheckmarkSVG"
-                @click="submitNewDateRange()"
+              <vue-svg
+                svg="circle-checkmark"
+                :customStyle="svgStyling"
+                @clicked="submitNewDateRange()"
               />
             </div>
             <p v-if="dateErrorMessage" class="danger">
@@ -93,11 +96,11 @@
 
 <script>
 import popupModal from "../../../../../../SharedComponents/SharedComponentsUI/PopupModal.vue";
-import SVGs from "../../../../../../assets/SVGs/svgIndex.js";
+import VueSvg from "../../../../../../assets/VueSvg.vue";
 export default {
   data() {
     return {
-      SVGs,
+      svgStyling: "height: 8px; width: 8px;",
       months: [
         "January",
         "February",
@@ -195,7 +198,7 @@ export default {
 
   props: ["employee"],
   emits: ["close-popup"],
-  components: { popupModal },
+  components: { VueSvg, popupModal },
 };
 </script>
 
@@ -211,6 +214,11 @@ export default {
 .availability-list-item > p {
   width: 100%;
   font-weight: 600;
+}
+
+.date-range {
+  display: flex;
+  align-items: center;
 }
 
 .input-item {
@@ -236,22 +244,13 @@ export default {
   width: 100%;
   justify-content: center;
   align-items: center;
-}
-
-.x-icon {
-  height: 8px;
-  width: 8px;
+  align-content: center;
 }
 
 .date-range-input > input {
   padding: 0px;
   margin: 0 5px;
   text-align: center;
-}
-
-.date-range-input > img {
-  height: 14px;
-  width: 14px;
 }
 
 .danger {

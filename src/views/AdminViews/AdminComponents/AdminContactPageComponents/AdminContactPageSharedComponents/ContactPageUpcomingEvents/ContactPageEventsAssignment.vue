@@ -1,18 +1,18 @@
 <template>
   <base-card
-    :actionIcon="SVGs.XIconSVG"
+    actionIcon="x-icon"
     @action-one-clicked="eventAssignmentToggle()"
+    actionText="Cancel"
     title="Assign To Events"
   >
-    <template v-slot:action1>Cancel</template>
     <template v-slot:content>
       <div class="events-content">
-          <two-button-dialog-modal
-            v-if="addEventId"
-            @close-modal="closeConfirmationDialog()"
-            @select-button-one="addUserToEvent()"
-            @select-button-two="closeConfirmationDialog()"
-          />
+        <two-button-dialog-modal
+          v-if="addEventId"
+          @close-modal="closeConfirmationDialog()"
+          @select-button-one="addUserToEvent()"
+          @select-button-two="closeConfirmationDialog()"
+        />
         <div
           v-for="(event, index) in allEvents"
           :key="index"
@@ -31,11 +31,10 @@
 <script>
 import LocationUpcomingEventsListItem from "../../../../../../SharedComponents/SharedComponentsUpcomingEvents/UpcomingEventListItem.vue";
 import TwoButtonDialogModal from "../../../../../../SharedComponents/SharedComponentsUI/TwoButtonDialogModal.vue";
-import SVGs from "../../../../../../assets/SVGs/svgIndex.js";
+
 export default {
   data() {
     return {
-      SVGs,
       addEventId: undefined,
       loaded: false,
       sortItems: [

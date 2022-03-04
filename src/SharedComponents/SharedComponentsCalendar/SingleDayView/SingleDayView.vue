@@ -1,6 +1,6 @@
 <template>
   <base-card
-    :actionIcon="xIcon"
+    actionIcon="x-icon"
     @action-one-clicked="closeSingleDayView"
     :title="displayableDate"
   >
@@ -21,14 +21,8 @@
 <script>
 import BaseCard from "../../SharedComponentsUI/BaseCard.vue";
 import SingleDayViewItem from "../SingleDayView/SingleDayViewItem.vue";
-import xIcon from "../../../assets/SVGs/x-icon.svg";
 
 export default {
-  data() {
-    return {
-      xIcon,
-    };
-  },
   methods: {
     navigateToEventPage(id) {
       this.$router.push("/admin/events/" + id);

@@ -1,17 +1,16 @@
 <template>
-  <base-card :icon="SVGs.MessageBubbleSVG" title="Coming Soon">
+  <base-card svg="message-bubble" title="Coming Soon">
     <!-- move one line up, these are all attributes of base-card -->
-    <!-- :actionIcon="
+    <!-- actionIcon="
       openView === 'single'
-        ? SVGs.XIconSVG
+        ? 'x-icon'
         : openView === 'default' && userRole === 'admin'
-        ? SVGs.PlusSignSVG
+        ? 'plus-sign'
         : ''
     "
     @action-one-clicked="
       openView === 'single' ? closeSingleMessaging() : addConversationClicked()
     " -->
-    <template v-slot:action1> </template>
     <template v-slot:content>
       <div id="container" v-if="loaded">
         <!-- <div class="conditional-wrapper" v-if="openView === 'single'">
@@ -37,14 +36,12 @@
 </template>
 
 <script>
-import SVGs from "../../assets/SVGs/svgIndex.js";
 // import MessagingSingleComponent from "./MessagingSingleComponent.vue";
 // import MessagingContactSearch from "./MessagingContactSearch.vue";
 // import MessagingThreadList from "./MessagingThreadList.vue";
 export default {
   data() {
     return {
-      SVGs,
       loaded: false,
       singleMessagingConversation: undefined,
       openView: "default",

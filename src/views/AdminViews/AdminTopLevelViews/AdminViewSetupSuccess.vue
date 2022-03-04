@@ -16,7 +16,7 @@
           :class="name == activeTab ? 'config-card' : 'config-card inactive'"
           @click="assignActiveTab(name)"
         >
-          <base-card :title="tab.title" :icon="tab.icon ? tab.icon : ''">
+          <base-card :title="tab.title" :svg="tab.icon ? tab.icon : ''">
             <template v-slot:content>
               <p>
                 <span>{{ tab.body }}</span>
@@ -31,7 +31,7 @@
           :key="index"
           class="config-card"
         >
-          <base-card :title="card.title" :icon="card.icon ? card.icon : ''">
+          <base-card :title="card.title" :svg="card.icon ? card.icon : ''">
             <template v-slot:content>
               <p v-html="card.body"></p>
             </template>
@@ -42,36 +42,34 @@
   </section>
 </template>
 <script>
-import SVGs from "../../../assets/SVGs/svgIndex.js";
 export default {
   data() {
     return {
-      SVGs,
       view: 1,
       activeTab: "dashboard",
       tabs: {
         dashboard: {
           title: "Dashboard Tab",
-          icon: SVGs.ToolboxSVG,
+          icon: "toolbox",
           body: "This is where the magic happens. From here, you can view upcoming events, view your calendar, view your sales in particular metrics, and view recent messages via the in-app chat function. As Spin DJ becomes more developed, this will become more and more integral in the operation of your daily routine.",
           cards: [
             {
-              icon: SVGs.DiscSVG,
+              icon: "disc",
               title: "Events",
               body: "View your events from your dashboard. You can click on an event to be directed to the event page! You can currently sort date-ascending and date-descending, but we're working hard on adding more features to make this card more robust. ",
             },
             {
-              icon: SVGs.MetricChartSVG,
+              icon: "metric-chart",
               title: "Metrics",
               body: "Your whole year in financials, on a beautiful line chart. You can see each month's total, and how it compares to the next. Hover over a point on the chart to see the total for that month.",
             },
             {
-              icon: SVGs.MessageBubbleSVG,
+              icon: "message-bubble",
               title: "Messaging",
               body: "Recent messages, in one convenient place. Click on a message to interact with that conversation and pull up the single messaging component.",
             },
             {
-              icon: SVGs.CalendarSVG,
+              icon: "calendar",
               title: "Calendar",
               body: "View a monthly calendar, navigate forward and backward, and even jump years. We have multiple years both ways capable, so don't be afraid to look forward or reminisce on the past.",
             },
@@ -79,17 +77,17 @@ export default {
         },
         contacts: {
           title: "Contacts Tab",
-          icon: SVGs.GroupPeopleSVG,
+          icon: "group-people",
           body: " The real bread and butter of Spin (and Simple City Software's core product): contacts. We're currently working on making this easier to create, and other features that will make these easier to manage. believe that people are the key to success in any business, and this is where you'll manage them. The contacts tab allows you to view contacts sorted by type, add new contacts, and navigate to contact's specific pages. On desktop, you can use the tabs on the left to jump between categories, or simply scroll between the category cards.",
           cards: [
             {
-              icon: SVGs.PersonSVG,
+              icon: "person",
               title: "Contact Page",
               body: "Contact management is key in any program. The contact page is where you'll be able to manage your contacts and react with them. You can fire off an email from one of your configured identities**, edit contact information, send messages in the in-app chat, view upcoming automations, and even view a list of all events the contact is associated with. The contact page is an incredibly userful tool in managing relationships and ensuring that you can stay on top of everything.",
               disclaimer: "**configurable in settings",
             },
             {
-              icon: SVGs.PersonSVG,
+              icon: "person",
               title: "Contact Types",
               body: `Spin has several different contact types, allowing you, the 'Admin'
             to give finely-tuned access to your assets. These contact types will
@@ -126,7 +124,7 @@ export default {
         },
         config: {
           title: "Config Tab",
-          icon: SVGs.WrenchGearSVG,
+          icon: "wrench-gear",
           body: "The config page is where things get a bit complicated. As we evolve, we hope to simplify this by taking more conntrol over what happens and when, and allow the program to be a bit more opinionated. For now, this is where you'll put your business settings and edit things like: branding and site colors, business info, product information, forms, and even build automations. This page will be built out more in the future, but for now, we feel as though we have a really solid foundation with which to build an amazing product.",
           cards: [
             {

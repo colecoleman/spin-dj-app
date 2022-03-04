@@ -132,14 +132,13 @@
 
 <script>
 import { formatPrice } from "../../../../helpers.js";
-import SVGs from "../../../../assets/SVGs/svgIndex.js";
+
 export default {
   data() {
     return {
       eventId: undefined,
       eventContacts: [],
       eventLocations: [],
-      SVGs,
     };
   },
   methods: {
@@ -365,9 +364,6 @@ export default {
   text-align: right;
 }
 
-img {
-  height: 10px;
-}
 
 :disabled {
   opacity: 0.25;

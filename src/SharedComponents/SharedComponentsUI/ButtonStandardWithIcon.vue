@@ -8,17 +8,27 @@
   >
     <h5 v-if="!loading && text">{{ text }}</h5>
     <h5 v-if="loading">Loading</h5>
-    <img
-      v-if="icon"
-      :src="icon"
-      :class="text ? 'companion-icon' : 'sole-icon'"
+    <vue-svg
+      v-if="svg"
+      :svg="svg"
+      :customStyle="text ? companionIcon : soleIcon"
     />
   </div>
 </template>
 
 <script>
+import VueSvg from "../../assets/VueSvg.vue";
 export default {
-  props: ["text", "icon", "loading"],
+  data() {
+    return {
+      companionIcon:
+        "max-height: 13px; min-height: 13px; width: 13px; margin: 0px 10px;",
+      soleIcon:
+        "max-height: 13px; min-height: 13px; width: 13px; margin: 0px 10px;",
+    };
+  },
+  props: ["text", "svg", "loading"],
+  components: { VueSvg },
 };
 </script>
 
@@ -46,17 +56,6 @@ export default {
 
   .button-standard-with-icon:active {
     filter: invert(100%);
-  }
-
-  img {
-    max-height: 13px;
-    min-height: 13px;
-    width: 13px;
-    margin: 0px 10px;
-  }
-
-  .companion-icon {
-    padding-left: 10px;
   }
 
   h5 {

@@ -25,12 +25,6 @@
 .event-metadata-identifier {
   display: flex;
 }
-
-.client-event-identifier img {
-  height: 40px;
-  width: 40px;
-  margin: 10px;
-}
 .client-name {
   display: flex;
   flex-direction: column;

@@ -1,5 +1,5 @@
 <template>
-  <base-card :icon="icon" :loading="contact ? false : true" title="Information">
+  <base-card :svg="icon" :loading="contact ? false : true" title="Information">
     <template v-slot:content>
       <div id="contact-card-lower-div" v-if="contact">
         <div class="contact-card-lower-div-half">
@@ -63,17 +63,4 @@ h5 {
   font-size: 8pt;
 }
 
-input {
-  background-color: black;
-  color: white;
-  border: none;
-  border-bottom: 1px solid white;
-  width: 80%;
-  margin: 0;
-  text-align: right;
-}
-
-input:focus {
-  outline: none;
-}
 </style>

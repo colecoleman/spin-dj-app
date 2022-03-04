@@ -68,17 +68,15 @@
   <button-standard-with-icon
     text="Submit"
     @click="submitContact"
-    :icon="SVGs.CircleCheckmarkSVG"
+    svg="circle-checkmark"
   />
 </template>
 
 <script>
-import SVGs from "../../../../../assets/SVGs/svgIndex.js";
 import InputWithTitle from "../../../../../SharedComponents/SharedComponentsUI/ElementLibrary/InputWithTitle.vue";
 export default {
   data() {
     return {
-      SVGs,
       pronouns: ["Mr.", "Mrs.", "Ms.", "Other (please prefix first name)"],
       categories: [
         "Photographer",
@@ -216,10 +214,6 @@ h5 {
   text-transform: uppercase;
 }
 
-img {
-  height: 15px;
-  width: 15px;
-}
 
 .row-flex {
   display: flex;

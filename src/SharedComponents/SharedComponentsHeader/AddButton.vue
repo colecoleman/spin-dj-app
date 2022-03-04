@@ -11,22 +11,18 @@
     @mousedown.prevent=""
     :class="isClicked ? `` : `pointer`"
   >
-    <img
-      :src="plusButton"
-      :class="isClicked ? `clicked` : `unclicked`"
-      alt=""
-    />
+    <vue-svg svg="plus-sign" :customStyle="svgStyling" />
   </div>
 </template>
 
 <script>
-import plusButton from "../../assets/SVGs/plus-sign.svg";
+import VueSvg from "../../assets/VueSvg.vue";
 // import RightSideDrawer from "../SharedComponentsUI/RightSideDrawer.vue";
 
 export default {
   data() {
     return {
-      plusButton,
+      svgStyling: "width: 35%; height: 35%; margin: auto;",
       isClicked: false,
       items: [
         {
@@ -55,6 +51,7 @@ export default {
   },
   emits: ["closeDrawer"],
   components: {
+    VueSvg,
     // RightSideDrawer,
   },
 };
@@ -71,16 +68,12 @@ export default {
     margin-left: 10px;
     border: 1px solid var(--cardOutline);
     background-color: var(--foregroundColor);
+    color: var(--textColor);
     display: flex;
   }
 
   #add-button:hover {
     filter: drop-shadow(0px 0px 0.5px var(--textColor));
-  }
-  img {
-    width: 15px;
-    height: 35%;
-    margin: 32.5%;
   }
 
   #add-button {
@@ -97,12 +90,6 @@ export default {
 }
 
 @media screen and (min-width: 800px) {
-  img {
-    width: 15px;
-    height: 35%;
-    margin: 32.5%;
-  }
-
   #add-button {
     width: 40px;
     min-width: 40px;
@@ -113,10 +100,6 @@ export default {
 }
 
 @media screen and (min-width: 1200px) {
-  img {
-    width: auto;
-  }
-
   #add-button {
     width: 60px;
     min-width: 60px;
@@ -126,12 +109,7 @@ export default {
   }
 }
 
-/* img {
-  width: 35%;
-  height: 35%;
-  margin: 32.5%;
-}
-
+/*
 #add-button {
   cursor: pointer;
   width: 60px;

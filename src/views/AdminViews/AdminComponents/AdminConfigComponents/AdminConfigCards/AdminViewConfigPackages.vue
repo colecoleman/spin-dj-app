@@ -168,16 +168,19 @@
             >
               <h4>
                 {{ packag.name }}
-                <img
-                  :src="SVGs.XIconSVG"
-                  class="x-icon"
-                  @click="deletePackage(index)"
+
+                <vue-svg
+                  svg="x-icon"
+                  :customStyle="svgStyling"
+                  @clicked="deletePackage(index)"
                 />
-                <img
-                  :src="SVGs.EditPenSVG"
-                  class="x-icon"
-                  @click="editPackage(packag, index)"
+
+                <vue-svg
+                  svg="edit-pen"
+                  :customStyle="svgStyling"
+                  @clicked="editPackage(packag, index)"
                 />
+                <vue-svg svg="" />
               </h4>
               <div class="package-display-section">
                 <div class="package-item" v-if="packag.photo">
@@ -231,7 +234,7 @@
 </template>
 
 <script>
-import SVGs from "../../../../../assets/SVGs/svgIndex";
+import VueSvg from "../../../../../assets/VueSvg.vue";
 import { formatPrice } from "../../../../../helpers.js";
 import InputWithTitle from "../../../../../SharedComponents/SharedComponentsUI/ElementLibrary/InputWithTitle.vue";
 import _cloneDeep from "lodash/cloneDeep";
@@ -239,7 +242,8 @@ import _cloneDeep from "lodash/cloneDeep";
 export default {
   data() {
     return {
-      SVGs,
+      svgStyling:
+        "height: 10px; width: 10px; margin: 0px 5px; cursor: pointer;",
       editIndex: undefined,
       photoFile: undefined,
       priceOptions: ["Hourly", "Flat"],
@@ -413,7 +417,7 @@ export default {
       });
     },
   },
-  components: { InputWithTitle },
+  components: { InputWithTitle, VueSvg },
   created() {
     if ("product" in this.$store.state.businessSettings) {
       this.businessSettings = this.$store.state.businessSettings;
@@ -471,12 +475,6 @@ export default {
     margin-top: 10px;
   }
 
-  img {
-    height: 10px;
-    width: 10px;
-    margin: 0px 5px;
-    cursor: pointer;
-  }
   @media (min-width: 850px) {
     .package-wrapper {
       flex-direction: row;

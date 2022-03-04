@@ -6,10 +6,10 @@
     @close-modal="toggleRemoveLocation"
   />
   <base-card
-    :icon="SVGs.LocationMarkerSVG"
+    svg="location-marker"
     title="Locations"
     :subtitle="addLocationOpen ? 'Add New Location' : venueName"
-    :actionIcon="SVGs.PlusSignSVG"
+    actionIcon="plus-sign"
     @actionOneClicked="toggleAddLocation()"
   >
     <template v-slot:content>
@@ -17,22 +17,20 @@
         id="specific-event-page-location-scroller-wrapper"
         v-if="!addLocationOpen"
       >
-        <img
+        <vue-svg
+          svg="left-arrow"
           v-if="locations.length > 1"
-          :src="SVGs.LeftArrowSVG"
-          @click="decrementCounter()"
+          @clicked="decrementCounter()"
         />
-
         <specific-event-page-location-scroller-item
           :location="location"
           v-if="locations.length > 0"
           @initiateDeleteLocation="toggleRemoveLocation"
         ></specific-event-page-location-scroller-item>
-
-        <img
+        <vue-svg
+          svg="right-arrow"
           v-if="locations.length > 1"
-          :src="SVGs.RightArrowSVG"
-          @click="incrementCounter()"
+          @clicked="incrementCounter()"
         />
       </div>
       <div class="add-location" v-if="addLocationOpen">
@@ -67,14 +65,13 @@
 </template>
 
 <script>
-import SVGs from "../../../assets/SVGs/svgIndex.js";
+import VueSvg from "../../../assets/VueSvg.vue";
 import SpecificEventPageLocationScrollerItem from "./SpecificEventPageLocationScrollerItem.vue";
 import TwoButtonDialogModal from "../../../SharedComponents/SharedComponentsUI/TwoButtonDialogModal.vue";
 
 export default {
   data() {
     return {
-      SVGs,
       counter: 0,
       locations: [],
       addLocationOpen: false,
@@ -193,6 +190,7 @@ export default {
   components: {
     SpecificEventPageLocationScrollerItem,
     TwoButtonDialogModal,
+    VueSvg,
   },
 };
 </script>
@@ -208,10 +206,7 @@ export default {
   height: 100%;
 }
 
-img {
-  height: 16px;
-  width: 16px;
-}
+
 
 .form-input {
   width: 100%;

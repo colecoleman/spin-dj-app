@@ -1,11 +1,9 @@
 <template>
   <div :class="loading ? 'loading-background card' : 'card'">
-    <div id="heading" v-if="icon || title || subtitle || actionIcon">
-      <img v-if="icon" :src="icon" alt="" />
-      <slot name="icon"></slot>
+    <div class="heading" v-if="svg || title || subtitle || actionIcon">
       <div class="title">
-        <h3>
-          <slot name="title"></slot>
+        <vue-svg :svg="svg" v-if="svg" />
+        <h3 v-if="title">
           {{ title }}
         </h3>
         <h5 v-if="subtitle">
@@ -13,41 +11,42 @@
         </h5>
       </div>
       <div class="right-top">
-        <h4 @click="actionOneClicked()">
-          <slot name="action1"></slot>
-        </h4>
+        <h3 @click="actionOneClicked()" v-if="actionText">
+          {{ actionText }}
+        </h3>
         <div class="dropdown-container">
           <slot name="dropdownContainer"></slot>
         </div>
-        <img
+        <vue-svg
           v-if="actionIcon"
-          :src="actionIcon"
-          alt=""
-          @click="actionOneClicked()"
+          :svg="actionIcon"
+          @clicked="actionOneClicked"
         />
       </div>
     </div>
 
-    <div id="content">
+    <div class="content">
       <slot name="content"></slot>
     </div>
   </div>
 </template>
 
 <script>
+import VueSvg from "../../assets/VueSvg.vue";
 export default {
-  props: ["icon", "actionIcon", "loading", "title", "subtitle"],
+  props: ["svg", "actionIcon", "loading", "actionText", "title", "subtitle"],
   methods: {
     actionOneClicked() {
       this.$emit("actionOneClicked");
     },
   },
+  components: { VueSvg },
 };
 </script>
 
 <style scoped>
 @media print {
-  #content,
+  .content,
   .card {
     display: block !important;
     position: relative !important;
@@ -56,7 +55,7 @@ export default {
     overflow: visible !important;
     margin-left: 0 !important;
   }
-  #heading {
+  .heading {
     visibility: hidden;
   }
 }
@@ -70,21 +69,19 @@ export default {
   width: 100%;
   height: 100%;
 }
-img {
-  margin-top: 2px;
-  width: 13px;
-  height: 13px;
-}
-#content {
+
+.content {
   height: 87%;
   display: inherit;
 }
 
-#heading {
+.heading,
+.title,
+.right-top {
   display: flex;
-  flex-direction: row;
-  align-items: flex-start;
+  align-items: center;
   text-transform: uppercase;
+  color: var(--textColor);
 }
 
 h3,
@@ -104,7 +101,6 @@ h5 {
 
 .right-top {
   margin-left: auto;
-  display: flex;
   position: relative;
   cursor: pointer;
 }
@@ -115,7 +111,7 @@ h5 {
 }
 
 @media screen and (min-width: 320px) {
-  #content {
+  .content {
     height: 90%;
   }
 }

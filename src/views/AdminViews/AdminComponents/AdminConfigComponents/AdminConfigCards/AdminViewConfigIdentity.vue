@@ -111,10 +111,11 @@ df
               >
                 <div class="row-flex">
                   <p>{{ address }}</p>
-                  <img
-                    :src="SVGs.XIconSVG"
-                    alt=""
-                    @click="startDeleteEmail(index)"
+
+                  <vue-svg
+                    svg="x-icon"
+                    :customStyle="svgStyling"
+                    @clicked="startDeleteEmail(index)"
                   />
                 </div>
               </div>
@@ -127,7 +128,12 @@ df
                   v-model="newEmailField"
                 />
                 <p class="input-suffix">@{{ subdomain }}.spindj.io</p>
-                <img :src="SVGs.CircleCheckmarkSVG" alt="" @click="addEmail" />
+
+                <vue-svg
+                  svg="circle-checkmark"
+                  :customStyle="svgStyling"
+                  @clicked="addEmail"
+                />
               </div>
             </div>
             <div class="business-information-item">
@@ -184,10 +190,10 @@ df
                     .businessSettings.identity.subdomain"
                   :key="index"
                 >
-                  <img
-                    :src="SVGs.XIconSVG"
-                    alt=""
-                    @click="initiateDeleteSubdomain(index, subdomain)"
+                  <vue-svg
+                    svg="x-icon"
+                    :customStyle="svgStyling"
+                    @clicked="initiateDeleteSubdomain(index, subdomain)"
                   />
                   <p>
                     {{ subdomain }}
@@ -208,10 +214,11 @@ df
                   v-model="subdomainField"
                 />
                 <p class="input-suffix">.spindj.io</p>
-                <img
-                  :src="SVGs.CircleCheckmarkSVG"
-                  alt=""
-                  @click="
+
+                <vue-svg
+                  svg="circle-checkmark"
+                  :customStyle="svgStyling"
+                  @clicked="
                     subdomainAvailable ? addSubdomain() : checkSubdomain()
                   "
                 />
@@ -250,11 +257,12 @@ df
 <script>
 import TwoButtonDialogModal from "../../../../../SharedComponents/SharedComponentsUI/TwoButtonDialogModal.vue";
 import InputWithTitle from "../../../../../SharedComponents/SharedComponentsUI/ElementLibrary/InputWithTitle.vue";
-import SVGs from "../../../../../assets/SVGs/svgIndex.js";
+import VueSvg from "../../../../../assets/VueSvg.vue";
 export default {
   data() {
     return {
-      SVGs,
+      svgStyling:
+        "height: 10px; width: 10px; margin: 0px 5px; cursor: pointer;",
       dialogModal: null,
       newEmailField: null,
       emailDeleteIndex: undefined,
@@ -506,7 +514,7 @@ export default {
       this.closeDialogModal();
     },
   },
-  components: { TwoButtonDialogModal, InputWithTitle },
+  components: { TwoButtonDialogModal, InputWithTitle, VueSvg },
   watch: {
     subdomainField() {
       this.subdomainAvailable = false;
@@ -517,6 +525,9 @@ export default {
 
 <style scoped>
 @media screen {
+  * {
+    color: var(--textColor);
+  }
   p {
     font-size: 9pt;
   }
@@ -611,12 +622,6 @@ export default {
     border-radius: 0px 5px 5px 0px;
   }
 
-  img {
-    height: 10px;
-    width: 10px;
-    margin: 0px 5px;
-    cursor: pointer;
-  }
   .button-wrapper {
     width: 50%;
   }

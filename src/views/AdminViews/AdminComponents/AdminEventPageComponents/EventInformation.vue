@@ -1,8 +1,5 @@
 <template>
-  <base-card
-    :title="event.title ? event.title : 'Information'"
-    :icon="SVGs.InfoIconSVG"
-  >
+  <base-card :title="event.title ? event.title : 'Information'" svg="icon">
     <template v-slot:content>
       <div id="contact-card-lower-div">
         <div class="contact-card-lower-div-half">
@@ -47,13 +44,8 @@ import {
   balanceOutstanding,
   formatPrice,
 } from "../../../../helpers.js";
-import SVGs from "../../../../assets/SVGs/svgIndex.js";
+
 export default {
-  data() {
-    return {
-      SVGs,
-    };
-  },
   methods: {
     formatDate,
     formatTime,

@@ -10,7 +10,10 @@
   >
     <div class="heading-container">
       <h5>{{ text }}</h5>
-      <img :src="dropdownArrow" alt="" />
+      <vue-svg
+        svg="dropdown-arrow"
+        :customStyle="actionsActive ? downArrow : upArrow"
+      />
     </div>
     <div v-if="actionsActive" class="dropdown">
       <div
@@ -23,7 +26,7 @@
             : buttonClicked(action.parameter)
         "
       >
-        <img v-if="action.icon" :src="action.icon" alt="" />
+        <vue-svg v-if="action.icon" :svg="action.icon" />
         <h5 :class="action.danger ? 'danger' : ''">
           {{ action.title }}
         </h5>
@@ -33,11 +36,13 @@
 </template>
 
 <script>
-import dropdownArrow from "../../assets/SVGs/dropdown-arrow.svg";
+import VueSvg from "../../assets/VueSvg.vue";
+
 export default {
   data() {
     return {
-      dropdownArrow,
+      downArrow: "transform: rotate(180deg)",
+      upArrow: "",
       actionsActive: false,
     };
   },
@@ -49,6 +54,7 @@ export default {
       this.$emit("button-clicked", param);
     },
   },
+  components: { VueSvg },
   emits: ["button-clicked"],
   props: ["text", "actions"],
 };
@@ -73,9 +79,6 @@ export default {
     border: 1px solid var(--textColor);
     border-radius: 7px;
     cursor: pointer;
-  }
-  .heading-container > img {
-    margin: 0 3px;
   }
 
   .actions-item {
@@ -108,11 +111,6 @@ export default {
     align-items: center;
   }
 
-  .actions-item > img {
-    height: 10px;
-    margin-right: 10px;
-  }
-
   .inactive:hover {
     background-color: gray;
   }
@@ -123,16 +121,8 @@ export default {
   }
 
   @media (min-width: 850px) {
-    .heading-container > img {
-      margin: 5px;
-    }
-
     .heading-container {
       height: 100%;
-    }
-
-    .actions-item > img {
-      height: 12px;
     }
 
     h5 {

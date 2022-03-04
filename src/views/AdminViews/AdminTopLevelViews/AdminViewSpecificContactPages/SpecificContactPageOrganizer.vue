@@ -16,11 +16,7 @@
   />
   <section>
     <div id="contact-card">
-      <contact-card-person
-        v-if="contact"
-        :contact="contact"
-        :icon="SVGs.PersonSVG"
-      />
+      <contact-card-person v-if="contact" :contact="contact" svg="person" />
     </div>
     <div id="notes">
       <contact-page-notes v-if="contact" :contact="contact" />
@@ -47,7 +43,7 @@
         v-if="eventAssignmentOpen"
         :events="events"
         :contact="contact"
-        :icon="SVGs.CalendarSVG"
+        svg="calendar"
         @event-assignment-toggle="toggleEventAssignment()"
       />
     </div>
@@ -62,7 +58,7 @@
       />
     </div>
     <div id="messages">
-      <base-card :icon="SVGs.MessageBubbleSVG" title="Coming Soon">
+      <base-card svg="message-bubble" title="Coming Soon">
         <template v-slot:content>
           <!-- <messaging-single-component
             v-if="contact"
@@ -88,12 +84,10 @@ import ContactPageResetPassword from "../../AdminComponents/AdminContactPageComp
 import ContactPageDeleteContact from "../../AdminComponents/AdminContactPageComponents/AdminContactPageSharedComponents/ContactPageDeleteContact.vue";
 // import MessagingSingleComponent from "../../../../SharedComponents/SharedComponentsMessaging/MessagingSingleComponent.vue";
 import FourButtonBarWithDropDown from "../../../../SharedComponents/SharedComponentsUI/FourButtonBarWithDropDown.vue";
-import SVGs from "../../../../assets/SVGs/svgIndex.js";
 
 export default {
   data() {
     return {
-      SVGs,
       contact: undefined,
       eventAssignmentOpen: false,
       events: [],
@@ -119,18 +113,18 @@ export default {
           {
             title: "Email",
             parameter: "send-email",
-            icon: SVGs.EmailSVG,
+            icon: "email",
           },
           {
             title: "Reset Password",
             parameter: "reset-password",
-            icon: SVGs.KeySVG,
+            icon: "key",
           },
           {
             title: "delete",
             danger: true,
             parameter: "delete",
-            icon: SVGs.TrashCanSVG,
+            icon: "trash-can",
           },
         ],
       },

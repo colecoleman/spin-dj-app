@@ -24,12 +24,14 @@
             >
               <div class="detail-wrapper">
                 <img
-                  :src="
-                    client.profilePicture
-                      ? client.profilePicture
-                      : defaultProfilePicture
-                  "
+                  v-if="client.profilePicture"
+                  :src="client.profilePicture"
                   alt=""
+                />
+                <profile-picture
+                  v-if="!client.profilePicture"
+                  contact="contact"
+                  :customStyle="profilePictureStyling"
                 />
                 <h5>{{ client.given_name }} {{ client.family_name }}</h5>
               </div>
@@ -49,13 +51,13 @@
 </template>
 
 <script>
-import defaultProfilePicture from "../../../../../assets/default-profile-picture.svg";
+import ProfilePicture from "../../../../../assets/ProfilePicture.vue";
 import PopupModal from "../../../../../SharedComponents/SharedComponentsUI/PopupModal.vue";
 
 export default {
   data() {
     return {
-      defaultProfilePicture,
+      profilePictureStyling: "height: 40px; width: 40px; margin: 5px;",
       searchTerm: undefined,
       selectedClient: undefined,
     };
@@ -98,7 +100,7 @@ export default {
   async mounted() {
     await this.$store.dispatch("getAdminUsers");
   },
-  components: { PopupModal },
+  components: { PopupModal, ProfilePicture },
 };
 </script>
 

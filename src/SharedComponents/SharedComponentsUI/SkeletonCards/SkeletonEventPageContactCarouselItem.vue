@@ -2,7 +2,7 @@
   <div class="contact-wrapper">
     <div class="contact-title-and-picture">
       <h4 class="skeleton"></h4>
-      <img :src="defaultProfilePicture" alt="Profile Picture" />
+      <profile-picture contact="person" :customStyle="svgStyling" />
     </div>
     <div class="contact-name">
       <h5 class="skeleton"></h5>
@@ -16,13 +16,15 @@
 </template>
 
 <script>
-import defaultProfilePicture from "../../../assets/default-profile-picture.svg";
+import ProfilePicture from "../../../assets/ProfilePicture.vue";
 export default {
   data() {
     return {
-      defaultProfilePicture,
+      svgStyling:
+        "width: 65px; height: 65px; margin: 10px; background-color: var(--textColor);",
     };
   },
+  components: { ProfilePicture },
 };
 </script>
 
@@ -35,15 +37,6 @@ export default {
   justify-content: space-between;
   align-items: center;
   cursor: pointer;
-}
-
-img {
-  width: 65px;
-  height: 65px;
-  margin: 10px;
-  object-fit: cover;
-  border-radius: 50%;
-  background-color: var(--textColor);
 }
 
 .skeleton {

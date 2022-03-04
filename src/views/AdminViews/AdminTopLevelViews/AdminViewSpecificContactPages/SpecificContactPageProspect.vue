@@ -7,7 +7,7 @@
   <div id="section-wrapper">
     <div id="left-column">
       <div id="box-one">
-        <prospect-page-card :prospect="contact" :icon="SVGs.PersonSVG" />
+        <prospect-page-card :prospect="contact" svg="person" />
       </div>
       <div id="box-two">
         <prospect-page-contact-health :prospect="contact" />
@@ -58,17 +58,15 @@ import FourButtonBarWithDropDown from "../../../../SharedComponents/SharedCompon
 import ProspectPageEventDetails from "../../AdminComponents/AdminContactPageComponents/ProspectPageComponents/ProspectPageEventDetails.vue";
 import ProspectPageContactHealth from "../../AdminComponents/AdminContactPageComponents/ProspectPageComponents/ProspectPageContactHealth.vue";
 import ProspectPageCard from "../../AdminComponents/AdminContactPageComponents/ProspectPageComponents/ProspectPageCard.vue";
-import SVGs from "../../../../assets/SVGs/svgIndex.js";
 
 export default {
   data() {
     return {
-      SVGs,
       buttons: [
         {
           title: "Send Email",
           action: this.openEmailComposition,
-          icon: SVGs.EmailSVG,
+          icon: "email",
         },
         {
           title: "Send Proposal",
@@ -85,17 +83,17 @@ export default {
           {
             title: "hot",
             action: this.changeProspectStatus,
-            icon: SVGs.FireSVG,
+            icon: "fire",
           },
           {
             title: "neutral",
             action: this.changeProspectStatus,
-            icon: SVGs.NeutralSVG,
+            icon: "neutral",
           },
           {
             title: "cold",
             action: this.changeProspectStatus,
-            icon: SVGs.SnowflakeSVG,
+            icon: "snowflake",
           },
         ],
       },

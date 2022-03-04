@@ -1,16 +1,13 @@
 <template>
   <div class="mobile-close-button no-print">
-    <img :src="SVGs.XIconSVG" alt="close-button" />
+    <vue-svg svg="x-icon" customStyle="width: 14px; margin: auto" />
   </div>
 </template>
 <script>
-import SVGs from "../../assets/SVGs/svgIndex.js";
+import VueSvg from "../../assets/VueSvg.vue";
+
 export default {
-  data() {
-    return {
-      SVGs,
-    };
-  },
+  components: { VueSvg },
 };
 </script>
 <style scoped>
@@ -28,8 +25,4 @@ export default {
   z-index: 20;
 }
 
-img {
-  width: 14px;
-  margin: auto;
-}
 </style>

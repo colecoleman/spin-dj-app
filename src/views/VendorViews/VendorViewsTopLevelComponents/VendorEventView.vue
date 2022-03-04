@@ -57,7 +57,6 @@ import SpecificEventPageLocationScroller from "../../../SharedComponents/SharedC
 import FormsPopup from "../../../SharedComponents/SharedComponentsEvents/FormsPopup.vue";
 import FourButtonBarWithDropDown from "../../../SharedComponents/SharedComponentsUI/FourButtonBarWithDropDown.vue";
 import EventPageAlerts from "../../../SharedComponents/SharedComponentsEvents/EventPageAlerts.vue";
-import SVGs from "../../../assets/SVGs/svgIndex.js";
 import {
   finalPaymentDueDate,
   balanceOutstanding,
@@ -67,7 +66,6 @@ import {
 export default {
   data() {
     return {
-      SVGs,
       event: undefined,
       contacts: [],
       locations: [],

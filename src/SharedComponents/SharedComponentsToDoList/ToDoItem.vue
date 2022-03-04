@@ -1,33 +1,22 @@
 <template>
   <div id="to-do-item" @click="clickToDo(toDo)">
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="21"
-      height="21"
-      viewBox="0 0 21 21"
-    >
-      <path
-        id="Icon_feather-circle"
-        data-name="Icon feather-circle"
-        d="M22,12.5A9.5,9.5,0,1,1,12.5,3,9.5,9.5,0,0,1,22,12.5Z"
-        transform="translate(-2 -2)"
-        :fill="clicked || toDo.completed ? 'currentColor' : `none`"
-        stroke="currentColor"
-        stroke-width="1"
-      />
-    </svg>
+    <vue-svg
+      svg="fillable-circle"
+      :customStyle="toDo.completed ? completedSvg : uncompletedSvg"
+    />
     <h4 :class="clicked || toDo.completed ? `strike` : ``">{{ toDo.title }}</h4>
   </div>
 </template>
 
 <script>
-import circleSvg from "../../assets/SVGs/fillable-circle.svg";
-
+import VueSvg from "../../assets/VueSvg.vue";
 export default {
   data() {
     return {
-      circleSvg,
       clicked: false,
+      completedSvg:
+        "width: 14px; height: 14px; fill: currentColor: stroke: currentColor",
+      uncompletedSvg: "fill: none; stroke: currentColor",
     };
   },
   props: ["toDo"],
@@ -44,6 +33,7 @@ export default {
       toDo.completed = !toDo.completed;
     },
   },
+  components: { VueSvg },
 };
 </script>
 

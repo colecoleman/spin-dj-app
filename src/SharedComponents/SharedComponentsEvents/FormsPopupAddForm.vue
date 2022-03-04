@@ -4,15 +4,14 @@
       <template v-slot:content>
         <div class="form-item" v-for="form in forms" :key="form.id">
           <div class="form-title" @click="toggleActiveForm(form.id)">
-            <img
-              :src="SVGs.DownArrowSVG"
-              alt=""
-              :class="form.id === activeForm ? '' : 'inactive-arrow'"
+            <vue-svg
+              svg="down-arrow"
+              :customStyle="form.id === activeForm ? '' : 'rotate: 270deg;'"
             />
-            <img
-              :src="SVGs.PlusSignSVG"
+            <vue-svg
+              svg="plus-sign"
               v-if="activeForm === form.id"
-              @click="addFormToEvent(form)"
+              @clicked="addFormToEvent(form)"
             />
             <h4>{{ form.name }}</h4>
           </div>
@@ -63,13 +62,12 @@
   </div>
 </template>
 <script>
+import VueSvg from "../../assets/VueSvg.vue";
 import BaseCard from "../SharedComponentsUI/BaseCard.vue";
 import InputWithTitle from "../SharedComponentsUI/ElementLibrary/InputWithTitle.vue";
-import SVGs from "../../assets/SVGs/svgIndex.js";
 export default {
   data() {
     return {
-      SVGs,
       activeForm: undefined,
     };
   },
@@ -99,7 +97,7 @@ export default {
     },
   },
   created() {},
-  components: { BaseCard, InputWithTitle },
+  components: { BaseCard, InputWithTitle, VueSvg },
   emit: ["addFormToEvent"],
   props: ["eventForms"],
 };
@@ -121,7 +119,7 @@ export default {
   align-items: center;
 }
 
-.form-title > img {
+.form-title > svg {
   height: 10px;
   margin-right: 10px;
 }

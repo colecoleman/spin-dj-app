@@ -1,6 +1,5 @@
 <template>
   <div class="site-header">
-    <!-- <img src="@/assets/company-logo.svg" alt="" /> -->
     <img :src="businessLogo" alt="" />
     <tab-switcher />
     <search-bar />

@@ -1,11 +1,10 @@
 <template>
   <div class="edit-card-wrapper">
     <base-card
-      :actionIcon="SVGs.XIconSVG"
+      actionIcon="x-icon"
       @action-one-clicked="closeEditCard()"
       title="Edit Contact"
     >
-      <template v-slot:action1></template>
       <template v-slot:content>
         <div class="edit-card-inner-wrapper">
           <select v-model="fieldToEdit">
@@ -48,12 +47,10 @@
 </template>
 
 <script>
-import SVGs from "../../assets/SVGs/svgIndex.js";
 import InputWithTitle from "../../SharedComponents/SharedComponentsUI/ElementLibrary/InputWithTitle.vue";
 export default {
   data() {
     return {
-      SVGs,
       photoFile: undefined,
       fieldToEdit: undefined,
       fields: {

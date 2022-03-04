@@ -1,6 +1,6 @@
 <template>
   <div class="notification-item">
-    <div class="read-indentifier"><img :src="fillableCircle" alt="" /></div>
+    <div class="read-indentifier"></div>
     <div>
       <h5>{{ notification.title }}</h5>
       <p>{{ notification.body }}</p>
@@ -16,14 +16,11 @@
 </template>
 
 <script>
-import fillableCircle from "../../../assets/SVGs/fillable-circle.svg";
 import { formatDate, formatTime } from "../../../helpers.js";
 
 export default {
   data() {
-    return {
-      fillableCircle,
-    };
+    return {};
   },
   methods: {
     formatDate,
@@ -53,10 +50,5 @@ h5 {
   margin-bottom: 20px;
   display: flex;
   flex-direction: row;
-}
-img {
-  height: 6px;
-  width: 6px;
-  color: aqua;
 }
 </style>

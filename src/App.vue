@@ -12,14 +12,12 @@
 /* eslint-disable */
 import { Auth } from "aws-amplify";
 import axios from "axios";
-import SVGs from "./assets/SVGs/svgIndex.js";
 import StatusIndicator from "./SharedComponents/SharedComponentsUI/StatusIndicator.vue";
 import ButtonStandardWithIcon from "./SharedComponents/SharedComponentsUI/ButtonStandardWithIcon.vue";
 
 export default {
   data() {
     return {
-      SVGs,
       loaded: true,
     };
   },

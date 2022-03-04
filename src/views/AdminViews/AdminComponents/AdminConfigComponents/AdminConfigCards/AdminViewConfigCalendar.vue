@@ -36,11 +36,10 @@ df
 
 <script>
 import TwoButtonDialogModal from "../../../../../SharedComponents/SharedComponentsUI/TwoButtonDialogModal.vue";
-import SVGs from "../../../../../assets/SVGs/svgIndex.js";
+
 export default {
   data() {
     return {
-      SVGs,
       copied: false,
       copyError: false,
     };

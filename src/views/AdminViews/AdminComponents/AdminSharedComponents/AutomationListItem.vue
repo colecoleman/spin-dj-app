@@ -13,28 +13,19 @@
     </div>
     <div class="right-div">
       <button-standard-with-icon
-        :icon="SVGs.CircleCheckmarkSVG"
+        svg="circle-checkmark"
         @click="approveAutomation"
         v-if="!automation.approved"
       />
-      <button-standard-with-icon
-        :icon="SVGs.TrashCanSVG"
-        @click="deleteAutomation"
-      />
+      <button-standard-with-icon svg="trash-can" @click="deleteAutomation" />
     </div>
   </div>
 </template>
 
 <script>
-import SVGs from "../../../../assets/SVGs/svgIndex.js";
 import { formatDate } from "../../../../helpers.js";
 
 export default {
-  data() {
-    return {
-      SVGs,
-    };
-  },
   methods: {
     formatDate,
     capitalizeFirstLetter(str) {
@@ -67,6 +58,8 @@ export default {
 <style scoped>
 #item-wrapper {
   width: 100%;
+  margin: 0;
+  padding: 0;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -76,14 +69,15 @@ export default {
 
 .left-div {
   text-align: left;
-  width: 70%;
+  /* width: auto; */
 }
 .right-div {
   max-width: 30%;
+  /* width: 40%; */
+  /* width: auto; */
   display: flex;
   flex-direction: row;
-  justify-content: space-evenly;
-  align-items: center;
+  justify-content: right;
 }
 
 .right-div > * {

@@ -1,7 +1,7 @@
 <template>
   <div class="single-event-item">
     <div class="client-event-identifier">
-      <img :src="defaultProfilePicture" alt="" />
+      <profile-picture contact="person" :customStyle="svgStyling" />
       <div class="client-name">
         <h5 class="skeleton"></h5>
         <h5 class="skeleton"></h5>
@@ -20,17 +20,16 @@
   </div>
 </template>
 <script>
-import defaultProfilePicture from "../../../assets/default-profile-picture.svg";
+
+import ProfilePicture from "../../../assets/ProfilePicture.vue";
 export default {
   data() {
     return {
-      defaultProfilePicture,
+
+      svgStyling: "height: 40px; margin: 10px;",
     };
   },
-  methods: {},
-  created() {},
-  components: {},
-  props: [],
+  components: { ProfilePicture },
 };
 </script>
 <style scoped>

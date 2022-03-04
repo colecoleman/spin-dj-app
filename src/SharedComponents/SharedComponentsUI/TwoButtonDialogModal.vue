@@ -3,7 +3,7 @@
     <backdrop @click="closeModal()" />
     <div class="modal">
       <base-card
-        :actionIcon="XIcon"
+        actionIcon="x-icon"
         title="Are you sure?"
         @action-one-clicked="closeModal()"
       >
@@ -22,12 +22,12 @@
 </template>
 
 <script>
-import XIcon from "../../assets/SVGs/x-icon.svg";
+
 import Backdrop from "./Backdrop.vue";
 export default {
   data() {
     return {
-      XIcon,
+
     };
   },
   methods: {
@@ -91,7 +91,6 @@ export default {
     height: 100%;
   }
   .modal {
-
     position: fixed;
     /* height: 160px; */
     max-width: 50%;

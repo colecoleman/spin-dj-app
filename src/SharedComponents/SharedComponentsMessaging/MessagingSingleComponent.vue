@@ -20,21 +20,25 @@
         v-model="messageInput"
         @keyup.enter="clickHandler()"
       />
-      <img :src="circleArrowUp" alt="" @click="clickHandler()" />
+      <vue-svg
+        svg="circle-arrow-up"
+        :customStyle="svgStyling"
+        @clicked="clickHandler()"
+      />
     </div>
   </div>
 </template>
 
 <script>
-import circleArrowUp from "../../assets/SVGs/circle-arrow-up.svg";
+import VueSvg from "../../assets/VueSvg.vue";
 
 export default {
   data() {
     return {
       messageInput: undefined,
+      svgStyling: "height: 20px; width: 20px; margin-left: 10px;",
       messages: [],
       thread: undefined,
-      circleArrowUp,
     };
   },
   computed: {
@@ -113,6 +117,7 @@ export default {
       this.$router.push("/contacts/clients/" + id);
     },
   },
+  components: { VueSvg },
   props: ["id", "icon", "conversation", "defaultUser"],
 };
 </script>
@@ -189,11 +194,5 @@ input {
 
 input:focus {
   outline: none;
-}
-
-img {
-  height: 20px;
-  width: 20px;
-  margin-left: 10px;
 }
 </style>

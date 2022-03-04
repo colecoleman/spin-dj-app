@@ -1,8 +1,8 @@
 <template>
   <base-card
     title="Make Payment"
-    :icon="SVGs.CreditCardSVG"
-    :actionIcon="SVGs.DownArrowSVG"
+    svg="credit-card"
+    actionIcon="down-arrow"
     :subtitle="paymentMethod.title"
     @action-one-clicked="togglePaymentMethodsOpen"
   >
@@ -72,12 +72,10 @@ import {
   balanceOutstanding,
   formatPrice,
 } from "../../../helpers.js";
-import SVGs from "../../../assets/SVGs/svgIndex.js";
 
 export default {
   data() {
     return {
-      SVGs,
       paymentMethodsOpen: false,
       selectedPaymentMethod: undefined,
       paymentMethod: undefined,

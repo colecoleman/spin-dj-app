@@ -146,15 +146,16 @@
             >
               <h4>
                 {{ service.name }}
-                <img
-                  :src="SVGs.XIconSVG"
-                  class="x-icon"
-                  @click="deleteService(index)"
+
+                <vue-svg
+                  svg="x-icon"
+                  :customStyle="svgStyling"
+                  @clicked="deleteService(index)"
                 />
-                <img
-                  :src="SVGs.EditPenSVG"
-                  class="x-icon"
-                  @click="editService(service, index)"
+                <vue-svg
+                  svg="edit-pen"
+                  :customStyle="svgStyling"
+                  @clicked="editService(service, index)"
                 />
               </h4>
               <div class="service-display-section">
@@ -194,7 +195,7 @@
 </template>
 
 <script>
-import SVGs from "../../../../../assets/SVGs/svgIndex";
+import VueSvg from "../../../../../assets/VueSvg.vue";
 import { formatPrice } from "../../../../../helpers.js";
 import _cloneDeep from "lodash/cloneDeep";
 import InputWithTitle from "../../../../../SharedComponents/SharedComponentsUI/ElementLibrary/InputWithTitle.vue";
@@ -204,10 +205,11 @@ import InputWithTitle from "../../../../../SharedComponents/SharedComponentsUI/E
 export default {
   data() {
     return {
-      SVGs,
       // services: [],
       editIndex: undefined,
       photoFile: undefined,
+      svgStyling:
+        "height: 10px; width: 10px; margin: 0px 5px; cursor: pointer;",
       priceOptions: ["Hourly", "Flat"],
       input: {
         id: "service" + new Date().getTime(),
@@ -343,7 +345,7 @@ export default {
       this.photoFile = files[0];
     },
   },
-  components: { InputWithTitle },
+  components: { InputWithTitle, VueSvg },
 };
 </script>
 
@@ -396,12 +398,6 @@ export default {
     margin-top: 10px;
   }
 
-  img {
-    height: 10px;
-    width: 10px;
-    margin: 0px 5px;
-    cursor: pointer;
-  }
   @media (min-width: 850px) {
     .service-wrapper {
       flex-direction: row;

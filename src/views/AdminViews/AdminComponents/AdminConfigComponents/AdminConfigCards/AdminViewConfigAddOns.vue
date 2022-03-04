@@ -84,15 +84,16 @@
             >
               <h4>
                 {{ addOn.name }}
-                <img
-                  :src="SVGs.XIconSVG"
-                  class="x-icon"
-                  @click="deleteAddOn(index)"
+
+                <vue-svg
+                  svg="x-icon"
+                  @clicked="deleteAddOn(index)"
+                  customStyle="height: 10px; width: 10px; margin: 0px 5px; cursor: pointer;"
                 />
-                <img
-                  :src="SVGs.EditPenSVG"
-                  class="x-icon"
-                  @click="editAddOn(addOn, index)"
+                <vue-svg
+                  svg="edit-pen"
+                  @clicked="editAddOn(addOn, index)"
+                  customStyle="height: 10px; width: 10px; margin: 0px 5px; cursor: pointer;"
                 />
               </h4>
               <div class="add-on-display-section">
@@ -124,14 +125,13 @@
 </template>
 
 <script>
-import SVGs from "../../../../../assets/SVGs/svgIndex.js";
+import VueSvg from "../../../../../assets/VueSvg.vue";
 import InputWithTitle from "../../../../../SharedComponents/SharedComponentsUI/ElementLibrary/InputWithTitle.vue";
 import { formatPrice } from "../../../../../helpers.js";
 
 export default {
   data() {
     return {
-      SVGs,
       editIndex: undefined,
       addOn: {
         id: "addOn" + Date.now(),
@@ -219,6 +219,7 @@ export default {
     },
   },
   components: {
+    VueSvg,
     InputWithTitle,
   },
 };
@@ -271,12 +272,6 @@ export default {
   .button-standard-with-icon {
     margin-top: 10px;
   }
-  img {
-    height: 10px;
-    width: 10px;
-    margin: 0px 5px;
-    cursor: pointer;
-  }
 
   @media (min-width: 850px) {
     p {
@@ -318,12 +313,6 @@ export default {
 
     .button-standard-with-icon {
       margin-top: 10px;
-    }
-    img {
-      height: 10px;
-      width: 10px;
-      margin: 0px 5px;
-      cursor: pointer;
     }
   }
 }

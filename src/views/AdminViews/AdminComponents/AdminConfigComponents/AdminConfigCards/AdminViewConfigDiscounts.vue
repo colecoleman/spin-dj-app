@@ -52,15 +52,15 @@
               <h4>
                 {{ discount.name }}
 
-                <img
-                  :src="SVGs.XIconSVG"
-                  class="x-icon"
-                  @click="deleteDiscount(index)"
+                <vue-svg
+                  svg="x-icon"
+                  :customStyle="svgStyling"
+                  @clicked="deleteDiscount(index)"
                 />
-                <img
-                  :src="SVGs.EditPenSVG"
-                  class="x-icon"
-                  @click="editDiscount(discount, index)"
+                <vue-svg
+                  svg="edit-pen"
+                  :customStyle="svgStyling"
+                  @clicked="editDiscount(discount, index)"
                 />
               </h4>
 
@@ -89,13 +89,14 @@
 </template>
 
 <script>
-import SVGs from "../../../../../assets/SVGs/svgIndex.js";
+import VueSvg from "../../../../../assets/VueSvg.vue";
 import InputWithTitle from "../../../../../SharedComponents/SharedComponentsUI/ElementLibrary/InputWithTitle.vue";
 import { formatPrice } from "../../../../../helpers.js";
 export default {
   data() {
     return {
-      SVGs,
+      svgStyling:
+        "height: 10px; width: 10px; margin: 0px 5px; cursor: pointer;",
       editIndex: undefined,
       discountTypes: ["percentage", "dollar"],
       discount: {
@@ -165,7 +166,7 @@ export default {
       return this.$store.state.businessSettings.product.discounts;
     },
   },
-  components: { InputWithTitle },
+  components: { InputWithTitle, VueSvg },
 };
 </script>
 
@@ -228,13 +229,6 @@ export default {
 
   :disabled {
     opacity: 0.5;
-  }
-
-  img {
-    height: 10px;
-    width: 10px;
-    margin: 0px 5px;
-    cursor: pointer;
   }
   @media (min-width: 850px) {
     .discounts-wrapper {

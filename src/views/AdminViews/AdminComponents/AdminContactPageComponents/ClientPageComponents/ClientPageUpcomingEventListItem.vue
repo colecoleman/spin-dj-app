@@ -37,7 +37,6 @@
 </template>
 
 <script>
-import defaultProfilePicture from "../../../../../assets/default-profile-picture.svg";
 import {
   formatDate,
   formatTime,
@@ -48,7 +47,6 @@ import {
 export default {
   data() {
     return {
-      defaultProfilePicture,
       location: undefined,
       loaded: false,
     };

@@ -1,5 +1,5 @@
 <template>
-  <base-card :icon="SVGs.MessageBubbleSVG" title="Messages">
+  <base-card svg="message-bubble" title="Messages">
     <template v-slot:content
       ><div id="container">
         <message-thread-list
@@ -13,12 +13,10 @@
 
 <script>
 import MessageThreadList from "./MessagingThreadList.vue";
-import SVGs from "../../assets/SVGs/svgIndex.js";
 
 export default {
   data() {
     return {
-      SVGs,
       singleMessagingConversation: undefined,
       openView: "default",
       conversations: [],

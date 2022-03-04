@@ -1,13 +1,8 @@
 <template>
   <section>
     <div id="messaging-profile-photo">
-      <img
-        v-if="person"
-        :src="
-          person.profilePicture ? person.profilePicture : defaultProfilePicture
-        "
-      />
-      <img v-if="!person" :src="defaultProfilePicture" />
+      <img v-if="person.profilePicture" :src="person.profilePicture" />
+      <profile-picture contact="person" :customStyle="svgStyling" />
     </div>
     <div id="messaging-content">
       <h5>{{ fullName }}</h5>
@@ -17,12 +12,12 @@
 </template>
 
 <script>
-import defaultProfilePicture from "../../assets/default-profile-picture.svg";
+import ProfilePicture from "../../assets/ProfilePicture.vue";
 
 export default {
   data() {
     return {
-      defaultProfilePicture,
+      svgStyling: "border-radius: 50%; height: 40px; width: 40px",
     };
   },
   props: ["id", "conversationId", "conversation"],
@@ -46,6 +41,7 @@ export default {
       return this.conversation.users[0];
     },
   },
+  components: { ProfilePicture },
 };
 </script>
 

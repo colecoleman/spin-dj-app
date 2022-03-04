@@ -1,5 +1,5 @@
 <template>
-  <base-card :icon="SVGs.HealthSignSvg" title="Prospect Health">
+  <base-card svg="health-icon" title="Prospect Health">
     <template v-slot:content>
       <div id="prospect-health-wrapper">
         <div class="prospect-status-wrapper">
@@ -24,15 +24,9 @@
 </template>
 
 <script>
-import SVGs from "../../../../../assets/SVGs/svgIndex.js";
 import { formatDate, formatTime } from "../../../../../helpers.js";
 
 export default {
-  data() {
-    return {
-      SVGs,
-    };
-  },
   methods: {
     formatDate,
     formatTime,
@@ -42,11 +36,6 @@ export default {
 </script>
 
 <style scoped>
-img {
-  height: 14px;
-  width: 14px;
-  margin: 5px;
-}
 .prospect-status-wrapper,
 .prospect-contact-wrapper {
   text-align: left;

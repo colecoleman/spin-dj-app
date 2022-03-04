@@ -1,5 +1,5 @@
 <template>
-  <base-card :icon="referCircle" title="Preferred">
+  <base-card svg="refer-circle" title="Preferred">
     <template v-slot:title>Preferred</template>
     <template v-slot:content>
       <div id="preferred-information">
@@ -13,14 +13,6 @@
 </template>
 
 <script>
-import referCircle from "../../../../../assets/SVGs/refer-circle.svg";
-export default {
-  data() {
-    return {
-      referCircle,
-    };
-  },
-};
 </script>
 
 <style scoped>

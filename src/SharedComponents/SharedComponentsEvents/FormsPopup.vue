@@ -55,9 +55,7 @@
       >
         <base-card
           :title="form.name"
-          :action-icon="
-            userRole === 'admin' || 'client' ? SVGs.TrashCanSVG : ''
-          "
+          :actionIcon="userRole === 'admin' || 'client' ? 'trash-can' : ''"
           @action-one-clicked="
             userRole === 'admin' || 'client' ? initiateDeleteForm(index) : ''
           "
@@ -217,14 +215,12 @@ import Backdrop from "../SharedComponentsUI/Backdrop.vue";
 import FormsPopupAddForm from "./FormsPopupAddForm.vue";
 import InputWithTitle from "../SharedComponentsUI/ElementLibrary/InputWithTitle.vue";
 import TwoButtonDialogModal from "../SharedComponentsUI/TwoButtonDialogModal.vue";
-import SVGs from "../../assets/SVGs/svgIndex.js";
 import { Auth } from "aws-amplify";
 import _ from "lodash";
 
 export default {
   data() {
     return {
-      SVGs,
       activeLink: undefined,
       openView: "eventForms",
       deleteFormOpen: false,

@@ -1,17 +1,17 @@
 <template>
   <div id="logout-button" @mousedown.prevent="">
-    <img :src="exitDoor" alt="" @click="logout()" />
+    <vue-svg svg="exit-door" :customStyle="svgStyling" @clicked="logout()" />
   </div>
 </template>
 
 <script>
 import { Auth } from "aws-amplify";
-import exitDoor from "../../assets/SVGs/exit-door.svg";
+import VueSvg from "../../assets/VueSvg.vue";
 
 export default {
   data() {
     return {
-      exitDoor,
+      svgStyling: "width: 35%; height: 35%; margin: auto;",
     };
   },
   methods: {
@@ -27,7 +27,7 @@ export default {
       }
     },
   },
-  computed: {},
+  components: { VueSvg },
 };
 </script>
 
@@ -39,6 +39,7 @@ export default {
     border: 1px solid var(--cardOutline);
     margin: 10px;
     display: flex;
+    color: var(--textColor);
     width: 30px;
     min-width: 30px;
     height: 30px;
@@ -47,13 +48,6 @@ export default {
 
   #logout-button:hover {
     filter: drop-shadow(0px 0px 0.5px var(--textColor));
-  }
-
-  img {
-    cursor: pointer;
-    width: 15px;
-    height: 35%;
-    margin: 32.5%;
   }
 }
 
@@ -67,9 +61,6 @@ export default {
 }
 
 @media screen and (min-width: 1200px) {
-  img {
-    width: auto;
-  }
   #logout-button {
     width: 60px;
     min-width: 60px;

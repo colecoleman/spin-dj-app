@@ -12,10 +12,10 @@
               @input="fieldInput(contract, 'contractName', $event)"
             />
             <div class="information-hover-container">
-              <img
-                :src="SVGs.InfoIconSVG"
-                alt=""
-                @click="toggleMergeTagInformation"
+              <vue-svg
+                svg="info"
+                :customStyle="infoIconStyling"
+                @clicked="toggleMergeTagInformation"
               />
               <information-hover
                 heading="Templating"
@@ -48,16 +48,16 @@
             :key="contract.id"
           >
             <h4>
-              {{ contract.contractName
-              }}<img
-                :src="SVGs.XIconSVG"
-                class="x-icon"
-                @click="deleteContract(index)"
+              {{ contract.contractName }}
+              <vue-svg
+                :customStyle="contractIconStyling"
+                svg="x-icon"
+                @clicked="deleteContract(index)"
               />
-              <img
-                :src="SVGs.EditPenSVG"
-                class="x-icon"
-                @click="editContract(contract, index)"
+              <vue-svg
+                :customStyle="contractIconStyling"
+                svg="edit-pen"
+                @clicked="editContract(contract, index)"
               />
             </h4>
             <div class="window-box">
@@ -71,14 +71,16 @@
 </template>
 
 <script>
-import SVGs from "../../../../../assets/SVGs/svgIndex.js";
+import VueSvg from "../../../../../assets/VueSvg.vue";
 import InformationHover from "../../../../../SharedComponents/SharedComponentsUI/InformationHover.vue";
 import InputWithTitle from "../../../../../SharedComponents/SharedComponentsUI/ElementLibrary/InputWithTitle.vue";
 
 export default {
   data() {
     return {
-      SVGs,
+      contractIconStyling:
+        "height: 10px; width: 10px; margin: 0px 5px; cursor: pointer;",
+      infoIconStyling: "position: absolute; width: 14px; top: 0; z-index: 10;",
       mergeTagInformationOpen: false,
       mergeTagInformation:
         "Use the following merge tags to personalize your emails to your contacts: <br/><b><br/>Signer First Name: {given_name}<br/> Signer Last Name: {family_name}<br/> Event Start Time: {event-start-time}<br/> Event End Time: {event-end-time}<br/> Event Length: {event-length}<br/> Event Date: {event-date}<br/> Invoice Total: {invoice-total}<br/> Invoice Subtotal: {invoice-subtotal}<br/> Invoice Adjustments: {invoice-adjustments}<br/> Invoice Final Payment Due: {invoice-final-payment-due}<br/> Invoice Deposit Amount: {invoice-deposit-amount}<br/> Client List: {client-list}<br/> Location List: {location-list}<br/> Business Name: {business-name}<br/> </b><br/>Be sure to include the brackets {}. Otherwise, the tag will not be replaced.",
@@ -130,12 +132,15 @@ export default {
       this.$store.commit("adminConfigDeleteContract", index);
     },
   },
-  components: { InformationHover, InputWithTitle },
+  components: { InformationHover, InputWithTitle, VueSvg },
 };
 </script>
 
 <style scoped>
 @media screen {
+  * {
+    color: var(--textColor);
+  }
   p {
     font-size: 9pt;
   }
@@ -204,19 +209,6 @@ export default {
     z-index: 8;
   }
 
-  .information-hover-container > img {
-    position: absolute;
-    width: 14px;
-    top: 0;
-    z-index: 10;
-  }
-
-  img {
-    height: 10px;
-    width: 10px;
-    margin: 0px 5px;
-    cursor: pointer;
-  }
   @media (min-width: 850px) {
     .contracts-wrapper {
       flex-direction: row;

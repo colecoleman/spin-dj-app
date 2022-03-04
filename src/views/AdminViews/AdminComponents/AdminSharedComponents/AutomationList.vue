@@ -1,5 +1,5 @@
 <template>
-  <base-card :icon="SVGs.AutomationSVG" title="Automation">
+  <base-card svg="automation" title="Automation">
     <template v-slot:content>
       <div id="list-wrapper">
         <automation-list-item
@@ -20,12 +20,10 @@
 
 <script>
 import AutomationListItem from "./AutomationListItem.vue";
-import SVGs from "../../../../assets/SVGs/svgIndex.js";
 
 export default {
   data() {
     return {
-      SVGs,
       automations: [],
     };
   },
@@ -71,9 +69,9 @@ export default {
 #list-wrapper {
   height: 90%;
   max-height: 90%;
-  width: 100%;
+  max-width: 100%;
   overflow-y: scroll;
-  overflow-x: visible;
+  overflow-x: hidden;
 }
 
 #empty-automations {
@@ -82,9 +80,5 @@ export default {
   align-items: center;
   justify-items: center;
   justify-content: center;
-}
-
-#button-container {
-  width: 50%;
 }
 </style>

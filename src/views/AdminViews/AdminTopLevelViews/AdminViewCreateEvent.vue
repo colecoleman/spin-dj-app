@@ -516,7 +516,6 @@
 </template>
 
 <script>
-import SVGs from "../../../assets/SVGs/svgIndex.js";
 import InputWithTitle from "../../../SharedComponents/SharedComponentsUI/ElementLibrary/InputWithTitle.vue";
 import {
   formatTime,
@@ -541,7 +540,7 @@ export default {
       eventContacts: [],
       eventLocations: [],
       // from event summary
-      SVGs,
+
       loaded: false,
       locationDropdownOpen: false,
       clientDropdownOpen: false,
@@ -1152,11 +1151,6 @@ export default {
     font-family: Lato, sans-serif;
     width: 90%;
     margin: 5px;
-  }
-
-  img {
-    height: 10px;
-    cursor: pointer;
   }
 
   :disabled {

@@ -1,6 +1,8 @@
 <template>
   <base-card
-    :icon="SVGs.CalendarSVG"
+    svg="calendar"
+    actionIcon=""
+    :actionText="`${monthArray[masterMonth]}, ${masterYear}`"
     v-if="!singleDayViewOpen"
     title="calendar"
     @action-one-clicked="floatingMenuOpen = !floatingMenuOpen"
@@ -16,9 +18,6 @@
         />
       </div>
     </template>
-    <template v-slot:action1>
-      {{ `${monthArray[masterMonth] + ", "}` }} {{ masterYear }}
-    </template>
     <template v-slot:content v-if="events">
       <div id="calendar-container" v-if="!singleDayViewOpen">
         <div id="body">
@@ -27,7 +26,7 @@
             @click="monthChange(`backward`)"
             @mousedown.prevent=""
           >
-            <img :src="SVGs.LeftArrowSVG" alt="" />
+            <vue-svg svg="left-arrow" />
           </div>
           <div id="main-calendar-content">
             <div id="days">
@@ -53,7 +52,7 @@
             @click="monthChange(`forward`)"
             @mousedown.prevent=""
           >
-            <img :src="SVGs.RightArrowSVG" alt="" />
+            <vue-svg svg="right-arrow" />
           </div>
         </div>
       </div>
@@ -70,12 +69,11 @@
 <script>
 import SingleDayView from "./SingleDayView/SingleDayView.vue";
 import DualSideFloatingMenuWithListItems from "../SharedComponentsUI/DualSideFloatingMenuWithListItems.vue";
-import SVGs from "../../assets/SVGs/svgIndex.js";
+import VueSvg from "../../assets/VueSvg.vue";
 
 export default {
   data() {
     return {
-      SVGs,
       WEEKDAYS: {
         sunday: {
           key: 1,
@@ -299,6 +297,7 @@ export default {
   props: ["events"],
   components: {
     // TimeSelector,
+    VueSvg,
     SingleDayView,
     DualSideFloatingMenuWithListItems,
   },
@@ -308,16 +307,7 @@ export default {
 <style scoped>
 #calendar-container {
   height: 100%;
-}
-
-img {
-  height: 14px;
-  width: 14px;
-  cursor: pointer;
-}
-
-img:hover {
-  filter: drop-shadow(0px 0px 0.5px var(--textColor));
+  color: var(--textColor);
 }
 
 #body {

@@ -15,12 +15,12 @@
         :id="`${contact_category + `-card`}`"
       >
         <base-card
-          :icon="SVGs.PersonSVG"
+          svg="person"
           :title="contact_category"
-          :actionIcon="SVGs.SortAlphaSVG"
+          actionIcon="sort-alpha"
+          actionText="Sort:"
           @action-one-clicked="toggleSortMenuOpened(contact_category)"
         >
-          <template v-slot:action1> Sort: </template>
           <template v-slot:dropdownContainer>
             <floating-menu-with-list-items
               v-if="sortMenuOpened === contact_category"
@@ -51,7 +51,7 @@
       </div>
     </div>
     <div id="add-contact">
-      <base-card :icon="SVGs.AddPersonSVG" title="Add New">
+      <base-card svg="add-person" title="Add New">
         <template v-slot:content>
           <add-contact-module />
         </template>
@@ -65,12 +65,10 @@ import ContactListItem from "../AdminComponents/AdminContactListComponents/Conta
 import AddContactModule from "../AdminComponents/AdminContactListComponents/AdminAddContactModules/AddContactModule.vue";
 import ContactNavigation from "../AdminComponents/AdminContactListComponents/AdminViewContactListNavigation.vue";
 import FloatingMenuWithListItems from "../../../SharedComponents/SharedComponentsUI/FloatingMenuWithListItems.vue";
-import SVGs from "../../../assets/SVGs/svgIndex.js";
 
 export default {
   data() {
     return {
-      SVGs,
       sortMenuOpened: undefined,
       sortItems: [
         {

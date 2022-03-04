@@ -13,7 +13,7 @@
     <div id="location-card">
       <contact-card-location
         v-if="location"
-        :icon="SVGs.LocationMarkerSVG"
+        svg="location-marker"
         :location="location"
       />
     </div>
@@ -32,7 +32,7 @@
       <location-page-upcoming-events
         v-if="location"
         :location="location"
-        :icon="SVGs.CalendarSVG"
+        svg="calendar"
         @event-assignment-toggle="toggleEventAssignment()"
         :eventAssignmentOpen="eventAssignmentOpen"
       />
@@ -65,12 +65,10 @@ import ContactCardLocation from "../../AdminComponents/AdminContactPageComponent
 import ContactCardPerson from "../../../../SharedComponents/SharedComponentsContact/ContactCardPerson.vue";
 import PopupEmailComposition from "../../../../SharedComponents/SharedComponentsPopupUtilities/PopupEmailComposition.vue";
 import FourButtonBarWithDropDown from "../../../../SharedComponents/SharedComponentsUI/FourButtonBarWithDropDown.vue";
-import SVGs from "../../../../assets/SVGs/svgIndex.js";
 
 export default {
   data() {
     return {
-      SVGs,
       eventAssignmentOpen: false,
       location: undefined,
       contact: undefined,
@@ -91,7 +89,7 @@ export default {
           {
             title: "Email",
             parameter: "send-email",
-            icon: SVGs.EmailSVG,
+            icon: "email",
           },
         ],
       },

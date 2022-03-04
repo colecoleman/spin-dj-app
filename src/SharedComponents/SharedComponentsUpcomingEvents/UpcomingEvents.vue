@@ -1,13 +1,13 @@
 <template>
   <base-card
-    :icon="SVGs.DiscSVG"
-    :actionIcon="SVGs.SortAlphaSVG"
+    svg="disc"
+    actionIcon="sort-alpha"
+    actionText="Sort:"
     @action-one-clicked="sortMenuOpened = !sortMenuOpened"
     :loading="events ? false : true"
     title="Events"
   >
-    <template v-slot:action1
-      >Sort:
+    <template v-slot:dropdownContainer>
       <floating-menu-with-list-items
         v-if="sortMenuOpened"
         :actions="sortItems"
@@ -75,13 +75,11 @@
 <script>
 import UpcomingEventsListItem from "./UpcomingEventListItem.vue";
 import FloatingMenuWithListItems from "../SharedComponentsUI/FloatingMenuWithListItems.vue";
-import SVGs from "../../assets/SVGs/svgIndex.js";
 import ClientViewUpcomingEventListItem from "./ClientViewUpcomingEventListItem.vue";
 
 export default {
   data() {
     return {
-      SVGs,
       mutableEvents: undefined,
       pastEventsCopy: [],
       sortMenuOpened: false,

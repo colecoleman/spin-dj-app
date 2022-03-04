@@ -1,5 +1,5 @@
 <template>
-  <base-card :icon="SVGs.GroupPeopleSVG" title="Event Contacts">
+  <base-card svg="group-people" title="Event Contacts">
     <template v-slot:content>
       <div id="contact-carousel-top-wrapper">
         <div class="contact-carousel-wrapper">
@@ -13,14 +13,8 @@
 
 <script>
 import SkeletonEventPageContactCarouselItem from "./SkeletonEventPageContactCarouselItem.vue";
-import SVGs from "../../../assets/SVGs/svgIndex.js";
 
 export default {
-  data() {
-    return {
-      SVGs,
-    };
-  },
   components: {
     SkeletonEventPageContactCarouselItem,
   },

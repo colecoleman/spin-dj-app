@@ -1,5 +1,5 @@
 <template>
-  <base-card :icon="SVGs.InfoIconSvg" title="Event Details">
+  <base-card svg="icon" title="Event Details">
     <template v-slot:content>
       <h5 v-if="!prospect.eventDetails">No event found for this prospect.</h5>
       <div id="event-details-wrapper">
@@ -10,7 +10,6 @@
               v-if="!prospect.eventDetails"
               @click="toggleAddLocation()"
             >
-              <img :src="SVGs.LocationAddSVG" class="big-add-svg-icon" alt="" />
               <h5>No locations yet.</h5>
               <h5><b>Click to add one.</b></h5>
             </div>
@@ -36,11 +35,6 @@
               v-if="!addDateTimeOpen && !prospect.eventDetails"
               @click="toggleAddDateTime()"
             >
-              <img
-                :src="SVGs.AddTimeClockSVG"
-                class="big-add-svg-icon"
-                alt=""
-              />
               <h5>No date or time yet.</h5>
               <h5><b>Click to add.</b></h5>
             </div>
@@ -87,7 +81,6 @@
               v-if="!addpackageOpen"
               @click="toggleAddPackage()"
             >
-              <img :src="SVGs.AddPackageSVG" class="big-add-svg-icon" alt="" />
               <h5>No packages yet.</h5>
               <h5><b>Click to add one.</b></h5>
             </div>
@@ -100,13 +93,12 @@
 </template>
 
 <script>
-import SVGs from "../../../../../assets/SVGs/svgIndex.js";
 import { formatTime, formatDate } from "../../../../../helpers.js";
 
 export default {
   data() {
     return {
-      SVGs,
+      // SVGs,
       addLocationOpen: false,
       addDateTimeOpen: false,
 

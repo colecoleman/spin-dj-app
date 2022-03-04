@@ -20,15 +20,11 @@
       <contact-card-person :contact="contact" />
     </div>
     <div id="company-card">
-      <contact-card-company
-        :contact="contact"
-        v-if="contact"
-        :icon="SVGs.PersonSVG"
-      />
+      <contact-card-company :contact="contact" v-if="contact" svg="person" />
     </div>
     <div id="messages">
       <base-card
-        :icon="SVGs.MessageBubbleSVG"
+        svg="message-bubble"
         title="Coming Soon"
         v-if="contact"
         :subtitle="`${contact.given_name}`"
@@ -64,7 +60,7 @@
         v-if="eventAssignmentOpen"
         :events="events"
         :contact="contact"
-        :icon="SVGs.CalendarSVG"
+        svg="calendar"
         @event-assignment-toggle="toggleEventAssignment()"
       />
     </div>
@@ -102,12 +98,10 @@ import ContactPageToDoList from "../../AdminComponents/AdminContactPageComponent
 import AutomationList from "../../AdminComponents/AdminSharedComponents/AutomationList.vue";
 // import VendorPageReferralPopup from "../../AdminComponents/AdminContactPageComponents/VendorPageComponents/VendorPageReferralPopup.vue";
 import ContactPageNotes from "../../AdminComponents/AdminContactPageComponents/AdminContactPageSharedComponents/ContactPageNotes/ContactPageNotes.vue";
-import SVGs from "../../../../assets/SVGs/svgIndex.js";
 
 export default {
   data() {
     return {
-      SVGs,
       eventAssignmentOpen: false,
       popupOpen: null,
       contact: {},
@@ -136,18 +130,18 @@ export default {
           {
             title: "Email",
             parameter: "send-email",
-            icon: SVGs.EmailSVG,
+            icon: "email",
           },
           {
             title: "Reset Password",
             parameter: "reset-password",
-            icon: SVGs.KeySVG,
+            icon: "key",
           },
           {
             title: "delete",
             danger: true,
             parameter: "delete",
-            icon: SVGs.TrashCanSVG,
+            icon: "trash-can",
           },
         ],
       },

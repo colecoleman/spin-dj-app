@@ -2,12 +2,14 @@
   <div class="single-day-item" v-if="!loading">
     <div class="client-identifier">
       <img
-        :src="
-          matchedClient.profilePicture
-            ? matchedClient.profilePicture
-            : defaultProfilePicture
-        "
+        :src="matchedClient.profilePicture"
+        v-if="matchedClient.profilePicture"
         alt=""
+      />
+      <profile-picture
+        v-if="!matchedClient.profilePicture"
+        contact="person"
+        :customStyle="defaultProfileStyling"
       />
       <div class="client-name">
         <p>{{ matchedClient.given_name }}</p>
@@ -28,13 +30,13 @@
 </template>
 
 <script>
-import defaultProfilePicture from "../../../assets/default-profile-picture.svg";
+import ProfilePicture from "../../../assets/ProfilePicture.vue";
 import { formatTime } from "../../../helpers.js";
 
 export default {
   data() {
     return {
-      defaultProfilePicture,
+      defaultProfileStyling: "height: 30px; width: 30px; margin-right: 8px;",
       loading: true,
       primaryLocation: undefined,
       matchedClient: undefined,
@@ -61,6 +63,7 @@ export default {
     });
   },
   props: ["event"],
+  components: { ProfilePicture },
 };
 </script>
 

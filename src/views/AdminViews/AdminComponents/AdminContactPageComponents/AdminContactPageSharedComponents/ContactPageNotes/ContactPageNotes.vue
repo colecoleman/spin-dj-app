@@ -1,13 +1,10 @@
 <template>
-  <base-card :icon="SVGs.FileOpenSVG" title="Notes">
-    <template v-slot:action1>
-      <img
-        :src="SVGs.PlusSignSVG"
-        :class="addNewNoteOpen ? 'tilted' : ''"
-        @click="toggleOpenNote()"
-        alt=""
-      />
-    </template>
+  <base-card
+    svg="file-open"
+    actionIcon="plus-sign"
+    @action-one-clicked="toggleOpenNote"
+    title="Notes"
+  >
     <template v-slot:content v-if="contact">
       <contact-page-notes-add-new
         v-if="addNewNoteOpen"
@@ -57,14 +54,12 @@
 </template>
 
 <script>
-import SVGs from "../../../../../../assets/SVGs/svgIndex.js";
 import { formatDate } from "../../../../../../helpers.js";
 import ContactPageNotesAddNew from "./ContactPageNotesAddNew.vue";
 
 export default {
   data() {
     return {
-      SVGs,
       addNewNoteOpen: false,
     };
   },
@@ -107,11 +102,6 @@ h5 {
 
 .tilted {
   transform: rotate(45deg);
-}
-
-img {
-  height: 14px;
-  width: 14px;
 }
 
 .note-date {

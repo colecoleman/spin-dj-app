@@ -8,16 +8,19 @@
         :key="product.id"
       >
         <div class="product-title" @click="toggleActiveProduct(product.id)">
-          <img
-            :src="SVGs.DownArrowSVG"
-            alt=""
-            :class="product.id === activeEventProduct ? '' : 'inactive-arrow'"
+          <vue-svg
+            svg="down-arrow"
+            :customStyle="
+              product.id === activeEventProduct ? '' : inactiveArrow
+            "
           />
-          <img
-            :src="SVGs.XIconSVG"
+          <vue-svg
+            svg="x-icon"
             v-if="activeEventProduct === product.id"
-            @click="removeProductFromEvent(index)"
+            :customStyle="productTitleSvgStyling"
+            @clicked="removeProductFromEvent(index)"
           />
+
           <h4>{{ product.name }}</h4>
         </div>
         <div v-if="product.id === activeEventProduct" class="product-wrapper">
@@ -57,13 +60,14 @@
                 <p>
                   Units: <b>{{ product.pricing.units }}</b>
                 </p>
-                <img
-                  @click="editQuantityOfAddOnUnits(index)"
-                  :src="SVGs.EditPenSVG"
+
+                <vue-svg
+                  svg="edit-pen"
                   v-if="addOnQuantityEditIndex !== index"
-                  alt=""
-                  class="edit-pen"
-                /><input
+                  @clicked="editQuantityOfAddOnUnits(index)"
+                  :customStyle="editPenStyling"
+                />
+                <input
                   type="number"
                   v-if="addOnQuantityEditIndex === index"
                   v-model="product.pricing.units"
@@ -87,15 +91,18 @@
           class="product-title"
           @click="toggleActiveStoreProduct(product.id)"
         >
-          <img
-            :src="SVGs.DownArrowSVG"
-            alt=""
-            :class="product.id === activeStoreProduct ? '' : 'inactive-arrow'"
+          <vue-svg
+            svg="down-arrow"
+            :customStyle="
+              product.id === activeStoreProduct ? '' : inactiveArrow
+            "
           />
-          <img
-            :src="SVGs.PlusSignSVG"
+
+          <vue-svg
+            svg="plus-sign"
+            :customStyle="productTitleSvgStyling"
             v-if="activeStoreProduct === product.id"
-            @click="addProductToEvent(product)"
+            @clicked="addProductToEvent"
           />
           <h4>{{ product.name }}</h4>
         </div>
@@ -104,6 +111,7 @@
             v-if="
               product.id.includes('service') || product.id.includes('package')
             "
+            class="price-details"
           >
             <div v-if="product.priceOption == 'Hourly'">
               <p>
@@ -145,15 +153,17 @@
   </div>
 </template>
 <script>
-import SVGs from "../../../../assets/SVGs/svgIndex.js";
+import VueSvg from "../../../../assets/VueSvg.vue";
 import { formatPrice } from "../../../../helpers.js";
 export default {
   data() {
     return {
-      SVGs,
       activeEventProduct: undefined,
       activeStoreProduct: undefined,
       addOnQuantityEditIndex: undefined,
+      inactiveArrow: "rotate: 270deg;",
+      productTitleSvgStyling: "height: 10px; width: 10px; margin-right: 15px;",
+      editPenStyling: "height: 10px; margin-left: 5px;",
     };
   },
   methods: {
@@ -229,7 +239,7 @@ export default {
     },
   },
   created() {},
-  components: {},
+  components: { VueSvg },
   emits: ["addProductToEvent", "removeProductFromEvent", "saveProducts"],
   props: ["products"],
 };
@@ -250,15 +260,6 @@ export default {
   align-items: center;
 }
 
-.product-title > img {
-  height: 10px;
-  margin-right: 10px;
-}
-
-.inactive-arrow {
-  rotate: 270deg;
-}
-
 .product-wrapper {
   text-align: left;
 }
@@ -271,11 +272,6 @@ export default {
 
 .price-details {
   margin-left: 20px;
-}
-
-.edit-pen {
-  height: 10px;
-  margin-left: 5px;
 }
 
 input {

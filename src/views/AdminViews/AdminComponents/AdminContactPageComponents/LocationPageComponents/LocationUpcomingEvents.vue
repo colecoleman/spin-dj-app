@@ -1,15 +1,14 @@
 <template>
   <base-card
-    :icon="SVGs.DiscSVG"
-    :actionIcon="eventAssignmentOpen ? SVGs.XIconSVG : SVGs.SortAlphaSVG"
+    svg="disc"
+    :actionIcon="eventAssignmentOpen ? 'x-icon' : 'sort-alpha'"
+    :actionText="eventAssignmentOpen ? 'Cancel' : 'Sort'"
     :title="title"
     @action-one-clicked="
       eventAssignmentOpen ? eventAssignmentToggle() : toggleSortMenuOpened()
     "
   >
-    <template v-slot:action1
-      >{{ eventAssignmentOpen ? "Cancel" : "Sort" }}
-
+    <template v-slot:dropdownContainer>
       <floating-menu-with-list-items
         v-if="sortMenuOpened"
         :actions="sortItems"
@@ -58,12 +57,10 @@
 import LocationUpcomingEventsListItem from "./LocationUpcomingEventListItem.vue";
 import FloatingMenuWithListItems from "../../../../../SharedComponents/SharedComponentsUI/FloatingMenuWithListItems.vue";
 import TwoButtonDialogModal from "../../../../../SharedComponents/SharedComponentsUI/TwoButtonDialogModal.vue";
-import SVGs from "../../../../../assets/SVGs/svgIndex.js";
 
 export default {
   data() {
     return {
-      SVGs,
       sortMenuOpened: false,
       addEventId: undefined,
       sortItems: [

@@ -1,16 +1,16 @@
 <template>
   <div id="dashboard-button" @mousedown.prevent="">
-    <img :src="SVGs.HomeSVG" alt="" @click="dashboard()" />
+    <vue-svg svg="home" @clicked="dashboard()" :customStyle="svgStyling" />
   </div>
 </template>
 
 <script>
-import SVGs from "../../assets/SVGs/svgIndex.js";
+import VueSvg from "../../assets/VueSvg.vue";
 
 export default {
   data() {
     return {
-      SVGs,
+      svgStyling: "width: 35%; height: 35%; margin: auto;",
     };
   },
   methods: {
@@ -18,6 +18,7 @@ export default {
       this.$router.push("/");
     },
   },
+  components: { VueSvg },
 };
 </script>
 
@@ -29,6 +30,7 @@ export default {
     border: 1px solid var(--cardOutline);
     margin: 10px;
     display: flex;
+    color: var(--textColor);
     width: 30px;
     min-width: 30px;
     height: 30px;
@@ -37,13 +39,6 @@ export default {
 
   #dashboard-button:hover {
     filter: drop-shadow(0px 0px 0.5px var(--textColor));
-  }
-
-  img {
-    cursor: pointer;
-    width: 15px;
-    height: 35%;
-    margin: 32.5%;
   }
 }
 
@@ -57,9 +52,6 @@ export default {
 }
 
 @media screen and (min-width: 1200px) {
-  img {
-    width: auto;
-  }
   #dashboard-button {
     width: 60px;
     min-width: 60px;

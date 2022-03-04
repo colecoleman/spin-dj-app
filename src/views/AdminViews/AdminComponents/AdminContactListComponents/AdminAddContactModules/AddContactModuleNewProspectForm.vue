@@ -35,17 +35,14 @@
   <button-standard-with-icon
     text="Submit"
     @click="submitContact"
-    :icon="SVGs.CircleCheckmarkSVG"
+    svg="circle-checkmark"
   />
 </template>
 
 <script>
-import SVGs from "../../../../../assets/SVGs/svgIndex.js";
-
 export default {
   data() {
     return {
-      SVGs,
       prospect: {
         sendInvitation: false,
         role: "prospect",
@@ -148,8 +145,5 @@ h5 {
   margin-bottom: 10px;
 }
 
-img {
-  height: 15px;
-  width: 15px;
-}
+
 </style>

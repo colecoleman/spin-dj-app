@@ -1,17 +1,10 @@
 <template>
-  <base-card
-    :icon="SVGs.NotificationBellSVG"
-    :title="`Alerts (${alerts.length})`"
-  >
+  <base-card svg="notification-bell" :title="`Alerts (${alerts.length})`">
     <template v-slot:content>
       <div class="scroll-container">
         <div v-for="(alert, index) in alerts" :key="index" class="alert-item">
           <h4 class="alert-icon">
-            <img
-              :src="SVGs.ExclamationSVG"
-              alt=""
-              :class="alert.urgency + '-alert-icon'"
-            />
+            <vue-svg svg="exclamation" :class="alert.urgency + '-alert-icon'" />
           </h4>
           <h4>
             {{ alert.text }}
@@ -23,15 +16,14 @@
   </base-card>
 </template>
 <script>
-import SVGs from "../../assets/SVGs/svgIndex.js";
+import VueSvg from "../../assets/VueSvg.vue";
+
 export default {
   data() {
-    return {
-      SVGs,
-    };
+    return {};
   },
   methods: {},
-  components: {},
+  components: { VueSvg },
   props: ["alerts"],
 };
 </script>
@@ -47,11 +39,6 @@ export default {
   flex-direction: row;
   /* justify-content: center; */
   align-items: center;
-}
-
-img {
-  height: 20px;
-  margin: 10px;
 }
 
 .high-alert-icon {

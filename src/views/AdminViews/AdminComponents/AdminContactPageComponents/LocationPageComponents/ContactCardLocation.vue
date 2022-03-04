@@ -1,7 +1,7 @@
 <template>
   <base-card
-    :icon="icon"
-    :actionIcon="editPen"
+    :svg="icon"
+    actionIcon="edit-pen"
     @action-one-clicked="toggleEditCard()"
     title="Location"
   >
@@ -22,12 +22,10 @@
 </template>
 
 <script>
-import editPen from "../../../../../assets/SVGs/edit-pen.svg";
 import LocationInformationEdit from "./LocationInformationEdit.vue";
 export default {
   data() {
     return {
-      editPen,
       editCardOpen: false,
     };
   },
