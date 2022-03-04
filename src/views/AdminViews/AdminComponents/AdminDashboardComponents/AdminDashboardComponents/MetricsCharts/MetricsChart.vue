@@ -1,7 +1,10 @@
 <template>
   <div id="metrics-chart-container">
-    <base-card svg="metric-chart" :loading="events ? false : true">
-      <template v-slot:title>Metrics</template>
+    <base-card
+      svg="metric-chart"
+      title="Metrics"
+      :loading="events ? false : true"
+    >
       <template v-slot:content>
         <line-chart :events="events" v-if="events" />
       </template>
