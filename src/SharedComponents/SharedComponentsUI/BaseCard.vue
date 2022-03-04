@@ -1,8 +1,8 @@
 <template>
   <div :class="loading ? 'loading-background card' : 'card'">
     <div class="heading" v-if="svg || title || subtitle || actionIcon">
+      <vue-svg :svg="svg" v-if="svg" />
       <div class="title">
-        <vue-svg :svg="svg" v-if="svg" />
         <h3 v-if="title">
           {{ title }}
         </h3>
@@ -82,6 +82,12 @@ export default {
   align-items: center;
   text-transform: uppercase;
   color: var(--textColor);
+}
+
+.title {
+  flex-direction: column;
+  text-align: left;
+  align-items: flex-start;
 }
 
 h3,
