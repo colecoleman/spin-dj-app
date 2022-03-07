@@ -170,10 +170,9 @@ export default {
         console.log("hi");
         let term = this.searchLocationName.toLowerCase();
         return this.$store.state.contacts.locations.filter(
-          (x) =>
-            x.name.toLowerCase().includes(term) ||
-            x.address.cityStateZip.toLowerCase().includes(term) ||
-            x.address.streetAddress1.toLowerCase().includes(term)
+          (x) => x.name.toLowerCase().includes(term)
+          // || x.address.cityStateZip.toLowerCase().includes(term) ||
+          // x.address.streetAddress1.toLowerCase().includes(term)
         );
       }
       return [];
@@ -205,8 +204,6 @@ export default {
   width: 100%;
   height: 100%;
 }
-
-
 
 .form-input {
   width: 100%;

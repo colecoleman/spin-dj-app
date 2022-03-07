@@ -1013,10 +1013,9 @@ export default {
       if (this.fields.location.name) {
         let term = this.fields.location.name.toLowerCase();
         return this.$store.state.contacts.locations.filter(
-          (x) =>
-            x.name.toLowerCase().includes(term) ||
-            x.address.cityStateZip.toLowerCase().includes(term) ||
-            x.address.streetAddress1.toLowerCase().includes(term)
+          (x) => x.name.toLowerCase().includes(term)
+          // x.address.cityStateZip.toLowerCase().includes(term) ||
+          // x.address.streetAddress1.toLowerCase().includes(term)
         );
       }
       return [];
