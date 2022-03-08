@@ -11,123 +11,89 @@ df
     <template v-slot:content>
       <div id="wrapper">
         <div class="branding-colors">
-          <div class="branding-preferences-item">
-            <input-with-title
-              :title="`
+          <input-with-title
+            :title="`
               Background Color:
               ${backgroundColor}`"
-              type="color"
-              :inputValue="backgroundColor"
-              @input="fieldInput(undefined, 'backgroundColor', $event)"
-            />
-          </div>
-          <div class="branding-preferences-item">
-            <input-with-title
-              :title="`
+            type="color"
+            :inputValue="backgroundColor"
+            @input="fieldInput(undefined, 'backgroundColor', $event)"
+          />
+          <input-with-title
+            :title="`
               Foreground Color:
               ${foregroundColor}`"
-              type="color"
-              :inputValue="foregroundColor"
-              @input="fieldInput(undefined, 'foregroundColor', $event)"
-            />
-          </div>
-          <div class="branding-preferences-item">
-            <input-with-title
-              :title="`
+            type="color"
+            :inputValue="foregroundColor"
+            @input="fieldInput(undefined, 'foregroundColor', $event)"
+          />
+          <input-with-title
+            :title="`
               Card Outline:
               ${cardOutline}`"
-              type="color"
-              :inputValue="cardOutline"
-              @input="fieldInput(undefined, 'cardOutline', $event)"
-            />
-          </div>
-          <div class="branding-preferences-item">
-            <input-with-title
-              :title="`
+            type="color"
+            :inputValue="cardOutline"
+            @input="fieldInput(undefined, 'cardOutline', $event)"
+          />
+          <input-with-title
+            :title="`
               Highlight Color:
               ${highlightColor}`"
-              type="color"
-              :inputValue="highlightColor"
-              @input="fieldInput(undefined, 'highlightColor', $event)"
-            />
-          </div>
-          <div class="branding-preferences-item">
-            <input-with-title
-              :title="`
+            type="color"
+            :inputValue="highlightColor"
+            @input="fieldInput(undefined, 'highlightColor', $event)"
+          />
+          <input-with-title
+            :title="`
               Text Color:
               ${textColor}`"
-              type="color"
-              :inputValue="textColor"
-              @input="fieldInput(undefined, 'textColor', $event)"
-            />
-          </div>
-          <div class="branding-preferences-item">
-            <input-with-title
-              :title="`
+            type="color"
+            :inputValue="textColor"
+            @input="fieldInput(undefined, 'textColor', $event)"
+          />
+          <input-with-title
+            :title="`
               Secondary Text Color:
               ${secondaryTextColor}`"
-              type="color"
-              :inputValue="secondaryTextColor"
-              @input="fieldInput(undefined, 'secondaryTextColor', $event)"
-            />
-          </div>
+            type="color"
+            :inputValue="secondaryTextColor"
+            @input="fieldInput(undefined, 'secondaryTextColor', $event)"
+          />
         </div>
         <div class="business-information-wrapper">
           <div class="business-information-section">
-            <div class="business-information-item">
-              <!-- <p class="bold">Business Name:</p>
-              <input
-                type="text"
-                :placeholder="businessName"
-                v-model="businessName"
-              /> -->
-              <input-with-title
-                title="Business Name:"
-                type="text"
-                :inputValue="businessName"
-                @input="fieldInput(undefined, 'businessName', $event)"
-              />
-            </div>
-            <div class="business-information-item">
-              <!-- <p>Business Phone Number:</p>
-              <input
-                type="text"
-                :placeholder="businessPhoneNumber"
-                v-model="businessPhoneNumber"
-              /> -->
-              <input-with-title
-                title="Business Phone:"
-                type="text"
-                :inputValue="businessPhoneNumber"
-                @input="fieldInput(undefined, 'businessPhoneNumber', $event)"
-              />
-            </div>
+            <input-with-title
+              title="Business Name:"
+              type="text"
+              :inputValue="businessName"
+              @input="fieldInput(undefined, 'businessName', $event)"
+            />
+
+            <input-with-title
+              title="Business Phone:"
+              type="text"
+              :inputValue="businessPhoneNumber"
+              @input="fieldInput(undefined, 'businessPhoneNumber', $event)"
+            />
             <div class="business-information-item">
               <p class="bold">Business Email Addresses:</p>
-              <div
-                class="business-information-item"
-                v-for="(address, index) in emailAddresses"
-                :key="index"
-              >
-                <div class="row-flex">
-                  <p>{{ address }}</p>
-
-                  <vue-svg
+              <div class="bubble-container">
+                <div v-for="(address, index) in emailAddresses" :key="index">
+                  <item-with-actionable-icon
                     svg="x-icon"
-                    :customStyle="svgStyling"
+                    :item="address"
                     @clicked="startDeleteEmail(index)"
                   />
                 </div>
               </div>
-              <p class="bold">Add New Email Address:</p>
               <div class="row-flex">
-                <input
-                  class="input-prefix"
-                  type="text"
+                <input-with-suffix
                   placeholder="Start Typing..."
-                  v-model="newEmailField"
+                  title="Add New Email Address:"
+                  @input="fieldInput(undefined, 'newEmailField', $event)"
+                  :inputValue="newEmailField"
+                  :suffix="`@${subdomain}.spindj.io`"
                 />
-                <p class="input-suffix">@{{ subdomain }}.spindj.io</p>
 
                 <vue-svg
                   svg="circle-checkmark"
@@ -156,50 +122,31 @@ df
           <div class="business-information-section">
             <div class="business-information-item">
               <p class="bold">Business Address:</p>
-              <div class="business-information-item">
-                <input-with-title
-                  title="Address 1:"
-                  type="text"
-                  :inputValue="streetAddress1"
-                  @input="fieldInput(undefined, 'streetAddress1', $event)"
-                />
-              </div>
-              <div class="business-information-item">
-                <input-with-title
-                  title="Address 2:"
-                  type="text"
-                  :inputValue="streetAddress2"
-                  @input="fieldInput(undefined, 'streetAddress2', $event)"
-                />
-              </div>
-              <div class="business-information-item">
-                <input-with-title
-                  title="City, State, Zip Code:"
-                  type="text"
-                  :inputValue="cityStateZip"
-                  @input="fieldInput(undefined, 'cityStateZip', $event)"
-                />
-              </div>
+
+              <input-with-title
+                title="Address 1:"
+                type="text"
+                :inputValue="streetAddress1"
+                @input="fieldInput(undefined, 'streetAddress1', $event)"
+              />
+
+              <input-with-title
+                title="Address 2:"
+                type="text"
+                :inputValue="streetAddress2"
+                @input="fieldInput(undefined, 'streetAddress2', $event)"
+              />
+
+              <input-with-title
+                title="City, State, Zip Code:"
+                type="text"
+                :inputValue="cityStateZip"
+                @input="fieldInput(undefined, 'cityStateZip', $event)"
+              />
             </div>
             <div class="business-information-item">
-              <p class="bold">Subdomain:</p>
-              <div class="subdomain-list">
-                <div
-                  class="row-flex"
-                  v-for="(subdomain, index) in this.$store.state
-                    .businessSettings.identity.subdomain"
-                  :key="index"
-                >
-                  <vue-svg
-                    svg="x-icon"
-                    :customStyle="svgStyling"
-                    @clicked="initiateDeleteSubdomain(index, subdomain)"
-                  />
-                  <p>
-                    {{ subdomain }}
-                  </p>
-                </div>
-              </div>
+              <!-- <p class="bold">Subdomain:</p> -->
+
               <div
                 class="row-flex"
                 v-if="
@@ -207,13 +154,13 @@ df
                   3
                 "
               >
-                <input
-                  class="input-prefix"
-                  type="text"
+                <input-with-suffix
                   placeholder="Start Typing..."
-                  v-model="subdomainField"
+                  suffix=".spindj.io"
+                  title="Subdomain:"
+                  :inputValue="subdomainField"
+                  @input="fieldInput(undefined, 'subdomainField', $event)"
                 />
-                <p class="input-suffix">.spindj.io</p>
 
                 <vue-svg
                   svg="circle-checkmark"
@@ -222,6 +169,20 @@ df
                     subdomainAvailable ? addSubdomain() : checkSubdomain()
                   "
                 />
+              </div>
+              <div class="subdomain-list">
+                <div
+                  class="row-flex"
+                  v-for="(subdomain, index) in this.$store.state
+                    .businessSettings.identity.subdomain"
+                  :key="index"
+                >
+                  <item-with-actionable-icon
+                    svg="x-icon"
+                    :item="subdomain"
+                    @clicked="initiateDeleteSubdomain(index, subdomain)"
+                  />
+                </div>
               </div>
               <p
                 class="context"
@@ -257,6 +218,8 @@ df
 <script>
 import TwoButtonDialogModal from "../../../../../SharedComponents/SharedComponentsUI/TwoButtonDialogModal.vue";
 import InputWithTitle from "../../../../../SharedComponents/SharedComponentsUI/ElementLibrary/InputWithTitle.vue";
+import InputWithSuffix from "../../../../../SharedComponents/SharedComponentsUI/ElementLibrary/InputWithSuffix.vue";
+import ItemWithActionableIcon from "../../../../../SharedComponents/SharedComponentsUI/ElementLibrary/ItemWithActionableIcon.vue";
 import VueSvg from "../../../../../assets/VueSvg.vue";
 export default {
   data() {
@@ -434,6 +397,7 @@ export default {
       document.getElementById("business-logo-hidden-file-button").click();
     },
     fieldInput(object, property, value) {
+      console.log(object, property, value);
       if (object) {
         object[property] = value;
       } else {
@@ -514,7 +478,13 @@ export default {
       this.closeDialogModal();
     },
   },
-  components: { TwoButtonDialogModal, InputWithTitle, VueSvg },
+  components: {
+    TwoButtonDialogModal,
+    InputWithTitle,
+    VueSvg,
+    InputWithSuffix,
+    ItemWithActionableIcon,
+  },
   watch: {
     subdomainField() {
       this.subdomainAvailable = false;
@@ -532,7 +502,8 @@ export default {
     font-size: 9pt;
   }
 
-  .branding-colors {
+  .branding-colors,
+  .bubble-container {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
