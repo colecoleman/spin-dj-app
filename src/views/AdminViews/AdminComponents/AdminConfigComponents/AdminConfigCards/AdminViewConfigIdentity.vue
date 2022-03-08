@@ -10,10 +10,10 @@ df
   <base-card title="Identity">
     <template v-slot:content>
       <div id="wrapper">
-        <div class="branding-colors">
+        <div class="flex-wrap">
           <input-with-title
             :title="`
-              Background Color:
+              Background:
               ${backgroundColor}`"
             type="color"
             :inputValue="backgroundColor"
@@ -21,7 +21,7 @@ df
           />
           <input-with-title
             :title="`
-              Foreground Color:
+              Foreground:
               ${foregroundColor}`"
             type="color"
             :inputValue="foregroundColor"
@@ -37,7 +37,7 @@ df
           />
           <input-with-title
             :title="`
-              Highlight Color:
+              Highlight:
               ${highlightColor}`"
             type="color"
             :inputValue="highlightColor"
@@ -45,7 +45,7 @@ df
           />
           <input-with-title
             :title="`
-              Text Color:
+              Text:
               ${textColor}`"
             type="color"
             :inputValue="textColor"
@@ -53,7 +53,7 @@ df
           />
           <input-with-title
             :title="`
-              Secondary Text Color:
+              Secondary Text:
               ${secondaryTextColor}`"
             type="color"
             :inputValue="secondaryTextColor"
@@ -68,146 +68,121 @@ df
               :inputValue="businessName"
               @input="fieldInput(undefined, 'businessName', $event)"
             />
-
             <input-with-title
               title="Business Phone:"
               type="text"
               :inputValue="businessPhoneNumber"
               @input="fieldInput(undefined, 'businessPhoneNumber', $event)"
             />
-            <div class="business-information-item">
-              <p class="bold">Business Email Addresses:</p>
-              <div class="bubble-container">
-                <div v-for="(address, index) in emailAddresses" :key="index">
-                  <item-with-actionable-icon
-                    svg="x-icon"
-                    :item="address"
-                    @clicked="startDeleteEmail(index)"
-                  />
-                </div>
-              </div>
-              <div class="row-flex">
-                <input-with-suffix
-                  placeholder="Start Typing..."
-                  title="Add New Email Address:"
-                  @input="fieldInput(undefined, 'newEmailField', $event)"
-                  :inputValue="newEmailField"
-                  :suffix="`@${subdomain}.spindj.io`"
-                />
-
-                <vue-svg
-                  svg="circle-checkmark"
-                  :customStyle="svgStyling"
-                  @clicked="addEmail"
+            <p>Business Email Addresses:</p>
+            <input-with-suffix
+              placeholder="Start Typing..."
+              title="Add New Email Address:"
+              :inputValue="newEmailField"
+              :suffix="`@${subdomain}.spindj.io`"
+              svg="circle-checkmark"
+              @iconClicked="addEmail"
+              @input="fieldInput(undefined, 'newEmailField', $event)"
+            />
+            <div class="flex-wrap">
+              <div v-for="(address, index) in emailAddresses" :key="index">
+                <item-with-actionable-icon
+                  svg="x-icon"
+                  :item="address"
+                  @clicked="startDeleteEmail(index)"
                 />
               </div>
             </div>
-            <div class="business-information-item">
-              <p class="bold">Business Logo:</p>
-              <input
-                type="file"
-                id="business-logo-hidden-file-button"
-                @change="onFileChange"
-                style="display: none"
+            <p>Business Logo:</p>
+            <input
+              type="file"
+              id="business-logo-hidden-file-button"
+              @change="onFileChange"
+              style="display: none"
+            />
+            <div class="button-wrapper">
+              <button-standard-with-icon
+                :text="photoFile ? photoFile.name : 'Choose File'"
+                @click="chooseFile()"
+                class="form-button"
               />
-              <div class="button-wrapper">
-                <button-standard-with-icon
-                  :text="photoFile ? photoFile.name : 'Choose File'"
-                  @click="chooseFile()"
-                  class="form-button"
-                />
-              </div>
             </div>
           </div>
           <div class="business-information-section">
-            <div class="business-information-item">
-              <p class="bold">Business Address:</p>
+            <input-with-title
+              title="Address 1:"
+              type="text"
+              :inputValue="streetAddress1"
+              @input="fieldInput(undefined, 'streetAddress1', $event)"
+            />
 
-              <input-with-title
-                title="Address 1:"
-                type="text"
-                :inputValue="streetAddress1"
-                @input="fieldInput(undefined, 'streetAddress1', $event)"
-              />
+            <input-with-title
+              title="Address 2:"
+              type="text"
+              :inputValue="streetAddress2"
+              @input="fieldInput(undefined, 'streetAddress2', $event)"
+            />
 
-              <input-with-title
-                title="Address 2:"
-                type="text"
-                :inputValue="streetAddress2"
-                @input="fieldInput(undefined, 'streetAddress2', $event)"
-              />
+            <input-with-title
+              title="City, State, Zip Code:"
+              type="text"
+              :inputValue="cityStateZip"
+              @input="fieldInput(undefined, 'cityStateZip', $event)"
+            />
 
-              <input-with-title
-                title="City, State, Zip Code:"
-                type="text"
-                :inputValue="cityStateZip"
-                @input="fieldInput(undefined, 'cityStateZip', $event)"
+            <div
+              v-if="
+                this.$store.state.businessSettings.identity.subdomain.length < 3
+              "
+            >
+              <p>Business Subdomains:</p>
+              <input-with-suffix
+                placeholder="Start Typing..."
+                suffix=".spindj.io"
+                title="Subdomain:"
+                svg="circle-checkmark"
+                @iconClicked="
+                  subdomainAvailable ? addSubdomain() : checkSubdomain()
+                "
+                :inputValue="subdomainField"
+                @input="fieldInput(undefined, 'subdomainField', $event)"
               />
             </div>
-            <div class="business-information-item">
-              <!-- <p class="bold">Subdomain:</p> -->
-
+            <div class="flex-wrap">
               <div
-                class="row-flex"
-                v-if="
-                  this.$store.state.businessSettings.identity.subdomain.length <
-                  3
-                "
+                v-for="(subdomain, index) in this.$store.state.businessSettings
+                  .identity.subdomain"
+                :key="index"
               >
-                <input-with-suffix
-                  placeholder="Start Typing..."
-                  suffix=".spindj.io"
-                  title="Subdomain:"
-                  :inputValue="subdomainField"
-                  @input="fieldInput(undefined, 'subdomainField', $event)"
-                />
-
-                <vue-svg
-                  svg="circle-checkmark"
-                  :customStyle="svgStyling"
-                  @clicked="
-                    subdomainAvailable ? addSubdomain() : checkSubdomain()
-                  "
+                <item-with-actionable-icon
+                  svg="x-icon"
+                  :item="subdomain"
+                  @clicked="initiateDeleteSubdomain(index, subdomain)"
                 />
               </div>
-              <div class="subdomain-list">
-                <div
-                  class="row-flex"
-                  v-for="(subdomain, index) in this.$store.state
-                    .businessSettings.identity.subdomain"
-                  :key="index"
-                >
-                  <item-with-actionable-icon
-                    svg="x-icon"
-                    :item="subdomain"
-                    @clicked="initiateDeleteSubdomain(index, subdomain)"
-                  />
-                </div>
-              </div>
-              <p
-                class="context"
-                v-if="
-                  this.$store.state.businessSettings.identity.subdomain
-                    .length >= 3
-                "
-              >
-                You've reached the maximum limit of 3 subdomains. Please delete
-                one to add another.
-              </p>
-              <p class="context" v-if="checkingSubdomain">Checking...</p>
-              <p class="context" v-if="subdomainUnavailable">
-                Subdomain Unavailable. Try choosing another!
-              </p>
-              <p class="context" v-if="subdomainAvailable">
-                Subdomain Available! Click again to confirm.
-              </p>
-              <p class="context" v-if="subdomainAvailable">
-                Note: Changing your subdomain will change links to your portal
-                and your email domains. Please be sure to alert clients, and
-                change login links on your website to retain consistent
-                branding.
-              </p>
             </div>
+            <p
+              class="context"
+              v-if="
+                this.$store.state.businessSettings.identity.subdomain.length >=
+                3
+              "
+            >
+              You've reached the maximum limit of 3 subdomains. Please delete
+              one to add another.
+            </p>
+            <p class="context" v-if="checkingSubdomain">Checking...</p>
+            <p class="context" v-if="subdomainUnavailable">
+              Subdomain Unavailable. Try choosing another!
+            </p>
+            <p class="context" v-if="subdomainAvailable">
+              Subdomain Available! Click again to confirm.
+            </p>
+            <p class="context" v-if="subdomainAvailable">
+              Note: Changing your subdomain will change links to your email
+              domains. Please be sure to alert clients to retain consistent
+              branding.
+            </p>
           </div>
         </div>
       </div>
@@ -220,7 +195,7 @@ import TwoButtonDialogModal from "../../../../../SharedComponents/SharedComponen
 import InputWithTitle from "../../../../../SharedComponents/SharedComponentsUI/ElementLibrary/InputWithTitle.vue";
 import InputWithSuffix from "../../../../../SharedComponents/SharedComponentsUI/ElementLibrary/InputWithSuffix.vue";
 import ItemWithActionableIcon from "../../../../../SharedComponents/SharedComponentsUI/ElementLibrary/ItemWithActionableIcon.vue";
-import VueSvg from "../../../../../assets/VueSvg.vue";
+
 export default {
   data() {
     return {
@@ -481,7 +456,6 @@ export default {
   components: {
     TwoButtonDialogModal,
     InputWithTitle,
-    VueSvg,
     InputWithSuffix,
     ItemWithActionableIcon,
   },
@@ -500,37 +474,22 @@ export default {
   }
   p {
     font-size: 9pt;
+    text-align: left;
+    font-weight: 600;
   }
 
-  .branding-colors,
-  .bubble-container {
+  .flex-wrap {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
     width: 100%;
   }
 
-  .branding-colors input {
-    cursor: pointer;
-  }
-
-  .branding-preferences-item {
-    display: flex;
-    flex-direction: column;
-    flex-wrap: wrap;
-    width: 33%;
-  }
-
-  .branding-preferences-item > p {
-    height: 40px;
-    text-align: left;
-  }
-
   .business-information-wrapper {
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
-    max-height: 100%;
+    /* max-height: 100%; */
     overflow-y: scroll;
     margin-top: 10px;
   }
@@ -539,77 +498,20 @@ export default {
     width: 100%;
   }
 
-  .business-information-item {
-    display: flex;
-    flex-direction: column;
-    justify-content: left;
-    margin-left: 10px;
-  }
-
-  .business-information-item > p {
-    text-align: left;
-  }
-
-  input {
-    width: 90%;
-    align-self: left;
-    justify-self: left;
-  }
-
   .context {
     margin: 2px;
-    text-align: right;
     font-style: italic;
-  }
-
-  :disabled {
-    opacity: 0.5;
-  }
-  .row-flex {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-  }
-
-  .subdomain-list p {
-    margin: 2px;
-  }
-
-  .input-prefix,
-  .input-suffix {
-    height: 15px;
-    padding: 4px;
-    outline: none;
-    border: 1px solid var(--textColor);
-  }
-
-  .input-prefix {
-    border-right: none;
-    border-radius: 5px 0px 0px 5px;
-  }
-  .input-suffix {
-    background-color: var(--backgroundColor);
-    border-left: none;
-    border-radius: 0px 5px 5px 0px;
   }
 
   .button-wrapper {
     width: 50%;
   }
   @media (min-width: 850px) {
-    .branding-preferences-item {
-      width: 20%;
-    }
-
     .business-information-wrapper {
       flex-direction: row;
     }
 
     .business-information-section {
-      width: 50%;
-    }
-
-    .business-information-item > input {
       width: 50%;
     }
   }

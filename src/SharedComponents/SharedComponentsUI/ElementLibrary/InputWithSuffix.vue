@@ -9,13 +9,15 @@
         :placeholder="placeholder"
         @blur="blur()"
       />
+      <div class="suffix">
+        <p>{{ suffix }}</p>
+      </div>
     </div>
-    <div class="suffix">
-      <p>{{ suffix }}</p>
-    </div>
+    <vue-svg v-if="svg" :svg="svg" @clicked="iconClicked" />
   </div>
 </template>
 <script>
+import VueSvg from "../../../assets/VueSvg.vue";
 export default {
   data() {
     return {};
@@ -34,25 +36,39 @@ export default {
     blur() {
       this.$emit("blur");
     },
+    iconClicked() {
+      this.$emit("iconClicked");
+    },
   },
-  emits: ["input", "blur", "keydown"],
-  props: ["type", "title", "error", "placeholder", "inputValue", "suffix"],
+  components: { VueSvg },
+  emits: ["input", "blur", "keydown", "iconClicked"],
+  props: [
+    "type",
+    "title",
+    "error",
+    "placeholder",
+    "inputValue",
+    "suffix",
+    "svg",
+  ],
 };
 </script>
 <style scoped>
 .wrapper {
-  /* width: auto; */
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  position: relative;
+  margin: 10px 10px 10px 0;
+}
+
+.input-container {
   min-width: 125px;
   max-width: 300px;
   border: 1px solid var(--textColor);
   border-radius: 4px;
   display: flex;
-  flex-direction: row;
-  position: relative;
-  margin: 10px 10px 10px 0;
-  /* padding: 10px; */
 }
-
 .error {
   border: 1px solid red;
 }
@@ -64,10 +80,6 @@ input {
   width: 100%;
   max-width: 100%;
   /* height: 100%; */
-}
-
-.input-container {
-  display: flex;
 }
 
 .title {
