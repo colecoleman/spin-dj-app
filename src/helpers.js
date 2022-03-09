@@ -1,4 +1,4 @@
-
+import store from './store/index.js';
 export function formatDate(date) {
   if (typeof date === "object") {
     return date.toLocaleDateString("lookup", {
@@ -106,7 +106,11 @@ export function balanceOutstanding(invoice, data) {
 }
 export function formatPrice(n) {
   let price = n / 100;
-  return `${"$" + price.toLocaleString()}`;
+  return price.toLocaleString("lookup", {
+    localeMatcher: "lookup",
+    style: "currency",
+    currency: store.getters.currencyCode,
+  });
 }
 export function finalPaymentDueDate(data, businessSettings) {
   let date = new Date(data.date);

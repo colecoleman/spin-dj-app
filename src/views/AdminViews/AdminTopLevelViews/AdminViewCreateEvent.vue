@@ -420,7 +420,7 @@
                     <b>{{
                       event.invoice.payments[0]
                         ? formatPrice(event.invoice.payments[0].amount)
-                        : "$" + 0
+                        : formatPrice(0)
                     }}</b>
                   </p>
                 </div>
@@ -439,9 +439,9 @@
               </div>
             </div>
             <button-standard-with-icon
-              id="submit-buttom"
-              text="Create Event"
-              @click="startCreate()"
+              id="submit-button"
+              :text="eventCreating ? 'Creating Event...' : 'Create Event'"
+              @click="eventCreating ? '' : startCreate()"
             />
           </div>
         </template>
@@ -545,6 +545,7 @@ export default {
           products: [],
         },
       },
+      eventCreating: false,
     };
   },
   methods: {
@@ -829,6 +830,7 @@ export default {
       return Promise.all(promises);
     },
     async startCreate() {
+      this.eventCreating = true;
       console.log(this.event);
       if (
         this.event.data.date &&

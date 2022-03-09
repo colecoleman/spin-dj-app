@@ -1149,6 +1149,10 @@ const store = createStore({
     adminConfigIdentitySetBusinessLogo(state, payload) {
       state.businessSettings.identity.businessLogo = payload;
     },
+    adminConfigPaymentsSetBusinessCurrencyCode(state, payload) {
+      state.businessSettings.payments.currencyCode = payload;
+      console.log(state.businessSettings.payments)
+    },
     adminConfigPaymentsSetDepositAmount(state, payload) {
       if (!state.businessSettings.payments.deposit) {
         Object.defineProperty(state.businessSettings.payments, "deposit", {
@@ -1347,6 +1351,15 @@ const store = createStore({
         subject.eventDetails.eventEndTime = undefined;
       }
     },
+  },
+  getters: {
+    currencyCode(state) {
+      if (state.businessSettings.payments.currencyCode) {
+        return state.businessSettings.payments.currencyCode;
+      } else {
+        return "USD";
+      }
+    }
   },
   plugins: [
     createPersistedState({
