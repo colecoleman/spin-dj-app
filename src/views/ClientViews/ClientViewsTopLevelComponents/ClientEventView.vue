@@ -1,5 +1,5 @@
 <template>
-  <section>
+  <section v-if="event">
     <invoice-popup
       :invoice="event.invoice"
       :event="event"
@@ -142,31 +142,33 @@ export default {
     },
     eventAlerts() {
       let alerts = [];
-      if (this.event.contracts.some((e) => e.status !== "signed")) {
-        alerts.push({
-          urgency: "high",
-          text: "Unsigned Contracts",
-        });
-      }
-      let today = new Date();
-      if (
-        today > finalPaymentDueDate(this.event.data, this.businessSettings) &&
-        balanceOutstanding(this.event.invoice, this.event.data) > 0
-      ) {
-        alerts.push({
-          urgency: "high",
-          text: "Remaining Balance Due",
-        });
-      }
-      if (
-        total(this.event.invoice, this.event.data) -
-          balanceOutstanding(this.event.invoice, this.event.data) <
-        this.depositAmount * 100
-      ) {
-        alerts.push({
-          urgency: "high",
-          text: `${this.depositTerminology} Unpaid`,
-        });
+      if (this.event) {
+        if (this.event.contracts.some((e) => e.status !== "signed")) {
+          alerts.push({
+            urgency: "high",
+            text: "Unsigned Contracts",
+          });
+        }
+        let today = new Date();
+        if (
+          today > finalPaymentDueDate(this.event.data, this.businessSettings) &&
+          balanceOutstanding(this.event.invoice, this.event.data) > 0
+        ) {
+          alerts.push({
+            urgency: "high",
+            text: "Remaining Balance Due",
+          });
+        }
+        if (
+          total(this.event.invoice, this.event.data) -
+            balanceOutstanding(this.event.invoice, this.event.data) <
+          this.depositAmount * 100
+        ) {
+          alerts.push({
+            urgency: "high",
+            text: `${this.depositTerminology} Unpaid`,
+          });
+        }
       }
       return alerts;
     },
