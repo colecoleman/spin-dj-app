@@ -46,6 +46,7 @@
       />
     </div>
     <button-standard-with-icon
+      v-if="userRole === 'admin'"
       @click="changeToManualPayment"
       text="Record Manual Payment"
     />
@@ -59,7 +60,7 @@ import { loadStripe } from "@stripe/stripe-js";
 export default {
   data() {
     return {
-      method: "manual",
+      method: "stripe",
       stripe: null,
       paymentIntent: null,
       payeeAccount: null,
@@ -106,6 +107,11 @@ export default {
       this.method = "manual";
     },
   },
+  computed: {
+    userRole() {
+      return this.$store.state.user.role;
+    },
+  },
   async created() {
     this.payeeAccount =
       this.$store.state.businessSettings.payments.creditCard.Stripe;
@@ -132,6 +138,7 @@ export default {
   align-items: center;
   justify-content: space-evenly;
   text-align: left;
+  height: 100%;
   /* margin: 20px; */
 }
 
