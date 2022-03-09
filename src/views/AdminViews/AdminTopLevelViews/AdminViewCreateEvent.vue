@@ -2,87 +2,73 @@
   <section id="event-creation-wrapper" v-if="loaded">
     <div id="form-wrapper">
       <div class="event-creation-card">
-        <base-card title="Event Details">
+        <base-card title="Date and Time">
           <template v-slot:content>
-            <div class="row-flex section-inner-wrapper">
+            <div class="form-section-wrapper">
               <div class="event-date">
-                <div class="form-input">
-                  <input-with-title
-                    title="Event Title (Optional):"
-                    type="text"
-                    :inputValue="event.title"
-                    @input="fieldInput(event, 'title', $event)"
-                  />
-                </div>
-                <div class="form-input">
-                  <!-- <p>Event Date:</p>
-                  <input type="date" v-model.lazy="fields.data.date" /> -->
-                  <input-with-title
-                    title="Event Date:"
-                    type="date"
-                    :inputValue="fields.data.date"
-                    @input="fieldInput(fields.data, 'date', $event)"
-                  />
-                  <p class="disclaimer">
-                    * if using Safari or IE without a date picker, enter date in
-                    'YYYY-MM-DD' format
-                  </p>
-                </div>
+                <input-with-title
+                  title="Event Title (Optional):"
+                  type="text"
+                  :inputValue="event.title"
+                  @input="fieldInput(event, 'title', $event)"
+                />
+
+                <input-with-title
+                  title="Event Date:"
+                  type="date"
+                  :inputValue="fields.data.date"
+                  @input="fieldInput(fields.data, 'date', $event)"
+                />
+                <p class="disclaimer">
+                  * if using Safari or IE without a date picker, enter date in
+                  'YYYY-MM-DD' format
+                </p>
               </div>
               <div class="event-times">
-                <div class="form-input">
-                  <div class="row-flex">
-                    <input-with-title
-                      title="Start"
-                      type="select"
-                      :inputValue="fields.data.startTime.hours"
-                      :options="hours"
-                      @input="
-                        fieldInput(fields.data.startTime, 'hours', $event)
-                      "
-                    />
-                    <input-with-title
-                      type="select"
-                      :inputValue="fields.data.startTime.minutes"
-                      :options="minutes"
-                      @input="
-                        fieldInput(fields.data.startTime, 'minutes', $event)
-                      "
-                    />
-                    <input-with-title
-                      type="select"
-                      :inputValue="fields.data.startTime.period"
-                      :options="periods"
-                      @input="
-                        fieldInput(fields.data.startTime, 'period', $event)
-                      "
-                    />
-                  </div>
+                <div class="time-inputs">
+                  <input-with-title
+                    title="Start"
+                    type="select"
+                    :inputValue="fields.data.startTime.hours"
+                    :options="hours"
+                    @input="fieldInput(fields.data.startTime, 'hours', $event)"
+                  />
+                  <input-with-title
+                    type="select"
+                    :inputValue="fields.data.startTime.minutes"
+                    :options="minutes"
+                    @input="
+                      fieldInput(fields.data.startTime, 'minutes', $event)
+                    "
+                  />
+                  <input-with-title
+                    type="select"
+                    :inputValue="fields.data.startTime.period"
+                    :options="periods"
+                    @input="fieldInput(fields.data.startTime, 'period', $event)"
+                  />
                 </div>
-                <div class="form-input">
-                  <div class="row-flex">
-                    <input-with-title
-                      title="End"
-                      type="select"
-                      :inputValue="fields.data.endTime.hours"
-                      :options="hours"
-                      @input="fieldInput(fields.data.endTime, 'hours', $event)"
-                    />
-                    <input-with-title
-                      type="select"
-                      :inputValue="fields.data.endTime.minutes"
-                      :options="minutes"
-                      @input="
-                        fieldInput(fields.data.endTime, 'minutes', $event)
-                      "
-                    />
-                    <input-with-title
-                      type="select"
-                      :inputValue="fields.data.endTime.period"
-                      :options="periods"
-                      @input="fieldInput(fields.data.endTime, 'period', $event)"
-                    />
-                  </div>
+
+                <div class="time-inputs">
+                  <input-with-title
+                    title="End"
+                    type="select"
+                    :inputValue="fields.data.endTime.hours"
+                    :options="hours"
+                    @input="fieldInput(fields.data.endTime, 'hours', $event)"
+                  />
+                  <input-with-title
+                    type="select"
+                    :inputValue="fields.data.endTime.minutes"
+                    :options="minutes"
+                    @input="fieldInput(fields.data.endTime, 'minutes', $event)"
+                  />
+                  <input-with-title
+                    type="select"
+                    :inputValue="fields.data.endTime.period"
+                    :options="periods"
+                    @input="fieldInput(fields.data.endTime, 'period', $event)"
+                  />
                 </div>
               </div>
             </div>
@@ -90,105 +76,81 @@
         </base-card>
       </div>
       <div class="event-creation-card">
-        <base-card title="Product">
+        <base-card title="Invoice">
           <template v-slot:content>
-            <div class="row-flex section-inner-wrapper">
-              <div class="form-input">
-                <p><b>Select Product(s):</b></p>
-                <div
-                  class="checkboxes"
-                  v-for="(product, index) in businessProducts"
+            <div>
+              <p class="subheading">Select Product(s):</p>
+              <div class="bubble-container">
+                <input-with-binary-selections
+                  v-for="(product, index) in businessProducts.packages"
                   :key="index"
-                >
-                  <div v-if="product.type != 'Add-On'" class="checkboxes">
-                    <input
-                      type="checkbox"
-                      @change="toggleProductFromEvent(product)"
-                    />
-                    <p>{{ product.name }}</p>
-                  </div>
-                  <div v-if="product.type === 'Add-On'" class="checkboxes">
-                    <input
-                      type="checkbox"
-                      @change="toggleProductFromEvent(product)"
-                    />
-                    <p>{{ product.name }} x</p>
-                    <input
-                      type="number"
-                      :min="product.pricing.minUnits"
-                      @change="changeAddOnQuantity($event, product)"
-                      :disabled="!productAssigned(product)"
-                      class="checkbox-add-on-units"
-                    />
-                  </div>
-                </div>
+                  title="Package"
+                  :item="product.name"
+                  :checked="
+                    checkForEventPresence(event.invoice.products, product)
+                  "
+                  @clicked="
+                    toggleItemFromEvent(event.invoice.products, product)
+                  "
+                />
+                <input-with-binary-selections
+                  v-for="(product, index) in businessProducts.services"
+                  :key="index"
+                  title="Service"
+                  :item="product.name"
+                  :checked="
+                    checkForEventPresence(event.invoice.products, product)
+                  "
+                  @clicked="
+                    toggleItemFromEvent(event.invoice.products, product)
+                  "
+                />
+
+                <binary-input-with-number-modifier
+                  v-for="(product, index) in businessProducts.addOns"
+                  :key="index"
+                  title="Add-On"
+                  :item="product.name"
+                  :defaultValue="product.pricing.minUnits"
+                  @number-change="changeAddOnQuantity($event, product)"
+                  :checked="
+                    checkForEventPresence(event.invoice.products, product)
+                  "
+                  @clicked="
+                    toggleItemFromEvent(event.invoice.products, product)
+                  "
+                />
               </div>
-              <div class="form-input">
-                <p>Select Adjustment(s):</p>
-                <div
-                  class="checkboxes"
+              <p class="subheading">Select Adjustment(s):</p>
+              <div class="bubble-container">
+                <input-with-binary-selections
                   v-for="(adjustment, index) in adjustments"
                   :key="index"
-                  :value="adjustment.name"
-                >
-                  <input
-                    type="checkbox"
-                    @change="toggleAdjustmentToEvent(adjustment)"
-                    :id="adjustment.id"
-                  />
-                  <p>{{ adjustment.name }}</p>
-                </div>
+                  :item="adjustment.name"
+                  :checked="
+                    checkForEventPresence(event.invoice.adjustments, adjustment)
+                  "
+                  @clicked="
+                    toggleItemFromEvent(event.invoice.adjustments, adjustment)
+                  "
+                />
               </div>
-              <div class="form-input">
-                <p>Enter Manual Payment:</p>
-                <div class="row-flex">
-                  <input-with-title
-                    title="Payment Name"
-                    :inputValue="fields.payment.name"
-                    type="text"
-                    @input="fieldInput(fields.payment, 'name', $event)"
-                  />
-                  <input-with-title
-                    title="Amount"
-                    type="number"
-                    :inputValue="fields.payment.amount"
-                    @input="fieldInput(fields.payment, 'amount', $event)"
-                    @blur="assignPaymentToEvent()"
-                  />
-                </div>
-                <!-- <p>Enter Manual Adjustment:</p>
-                <div class="row-flex">
-                  <input
-                    type="checkbox"
-                    id="input-checkbox"
-                    @change="toggleAdjustmentToEvent(fields.adjustment, true)"
-                  />
-                  <input
-                    type="text"
-                    v-model.lazy="fields.adjustment.name"
-                    placeholder="Name"
-                  />
-                  <div class="unified-field row-flex">
-                    <select v-model="fields.adjustment.type">
-                      <option
-                        v-for="(item, index) in [
-                          { sign: '%', type: 'percentage' },
-                          { sign: '$', type: 'dollar' },
-                        ]"
-                        :key="index"
-                        :value="item.type"
-                      >
-                        {{ item.sign }}
-                      </option>
-                    </select>
-                    <input
-                      type="number"
-                      class="less-width"
-                      v-model.lazy="fields.adjustment.amount"
-                      placeholder="Amount"
-                    />
-                  </div>
-                </div> -->
+
+              <p class="subheading">Enter Manual Payment:</p>
+              <div class="manual-payment-field">
+                <input-with-title
+                  title="Payment Name"
+                  :inputValue="fields.payment.name"
+                  type="text"
+                  @input="fieldInput(fields.payment, 'name', $event)"
+                />
+                <input-with-title
+                  title="Amount"
+                  type="number"
+                  :inputValue="fields.payment.amount"
+                  @input="fieldInput(fields.payment, 'amount', $event)"
+                  @blur="assignPaymentToEvent()"
+                />
               </div>
             </div>
           </template>
@@ -197,38 +159,35 @@
       <div class="event-creation-card">
         <base-card title="Select Form(s):">
           <template v-slot:content>
-            <div class="row-flex section-inner-wrapper">
+            <div>
               <div class="form-input">
-                <p>Suggested Form(s):</p>
-                <div class="checkboxes">
-                  <input
-                    :disabled="event.invoice.products.length > 0 ? false : true"
-                    type="checkbox"
-                    @change="toggleAllDefaultForms()"
-                  />
-                  <p>Attach All Default Forms For Chosen Product(s)</p>
-                </div>
-                <div
-                  class="form-name"
+                <p class="subheading">Suggested Form(s):</p>
+
+                <input-with-binary-selections
+                  item="Attach all default forms?"
+                  :checked="checkDefaultForms()"
+                  @clicked="toggleAllDefaultForms()"
+                  :disabled="event.invoice.products.length > 0 ? false : true"
+                />
+
+                <p
+                  class="detail"
                   v-for="(form, index) in suggestedForms"
                   :key="index"
                 >
-                  <p>- {{ form.name }}</p>
-                </div>
+                  - {{ form.name }}
+                </p>
               </div>
               <div class="form-input">
-                <p>All Forms:</p>
-                <div
-                  class="checkboxes"
-                  v-for="(form, index) in forms"
-                  :key="index"
-                >
-                  <input
-                    type="checkbox"
-                    @change="toggleFormFromEvent(form)"
-                    :id="form.id"
+                <p class="subheading">All Forms:</p>
+                <div class="bubble-container">
+                  <input-with-binary-selections
+                    v-for="(form, index) in forms"
+                    :key="index"
+                    :item="form.name"
+                    :checked="checkForEventPresence(event.forms, form)"
+                    @clicked="toggleItemFromEvent(event.forms, form)"
                   />
-                  <p>{{ form.name }}</p>
                 </div>
               </div>
             </div>
@@ -238,30 +197,22 @@
       <div class="event-creation-card">
         <base-card title="Location">
           <template v-slot:content>
-            <div class="row-flex section-inner-wrapper">
-              <div class="form-input">
+            <div class="form-section-wrapper">
+              <div class="form-details">
                 <div class="dropdown-parent">
-                  <input-with-title
+                  <input-with-title-with-dropdown
                     type="text"
                     title="Location Name:"
                     placeholder="Start typing to find past location or add a new one."
                     :inputValue="fields.location.name"
+                    :dropdownSelections="searchLocations"
+                    :dropdownDisplay="['name']"
                     @input="fieldInput(fields.location, 'name', $event)"
+                    @dropdownSelected="selectLocation"
                   />
-                  <div class="dropdown" v-if="searchLocations.length > 0">
-                    <div
-                      class="dropdown-item"
-                      v-for="location in searchLocations"
-                      :key="location.userId"
-                      :value="location.name"
-                      @click="selectLocation(location)"
-                    >
-                      <p class="location-name">{{ location.name }}</p>
-                    </div>
-                  </div>
                 </div>
               </div>
-              <div class="column-flex">
+              <div class="form-details">
                 <input-with-title
                   title="Street Address 1:"
                   type="text"
@@ -302,41 +253,29 @@
       <div class="event-creation-card">
         <base-card title="Client">
           <template v-slot:content>
-            <div class="row-flex section-inner-wrapper">
-              <div class="column-flex">
-                <div class="form-input">
-                  <input-with-title
-                    title="Pronoun / Prefix"
-                    type="select"
-                    :options="pronouns"
-                    :inputValue="fields.client.pronoun"
-                    @input="fieldInput(fields.client, 'pronoun', $event)"
+            <div class="form-section-wrapper">
+              <div class="form-details">
+                <input-with-title
+                  title="Pronoun / Prefix"
+                  type="select"
+                  :options="pronouns"
+                  :inputValue="fields.client.pronoun"
+                  @input="fieldInput(fields.client, 'pronoun', $event)"
+                />
+
+                <div class="dropdown-parent">
+                  <input-with-title-with-dropdown
+                    title="First Name:"
+                    type="text"
+                    :inputValue="fields.client.given_name"
+                    :dropdownSelections="clientSearchResults"
+                    :dropdownDisplay="['given_name', 'family_name']"
+                    @input="fieldInput(fields.client, 'given_name', $event)"
+                    @dropdownSelected="selectClient"
+                    placeholder="Start typing to assign existing client, or add a new one."
                   />
                 </div>
-                <div class="form-input">
-                  <div id="client-search-parent" class="dropdown-parent">
-                    <input-with-title
-                      title="First Name:"
-                      type="text"
-                      :inputValue="fields.client.given_name"
-                      @input="fieldInput(fields.client, 'given_name', $event)"
-                      placeholder="Start typing to assign existing client, or add a new one."
-                    />
-                    <div class="dropdown" v-if="clientSearchResults.length > 0">
-                      <div
-                        class="dropdown-item"
-                        v-for="client in clientSearchResults"
-                        :key="client.userId"
-                        :value="client.given_name + ' ' + client.family_name"
-                        @click="selectClient(client)"
-                      >
-                        <p class="location-name">
-                          {{ client.given_name + " " + client.family_name }}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+
                 <input-with-title
                   title="Last Name:"
                   type="text"
@@ -344,7 +283,7 @@
                   @input="fieldInput(fields.client, 'family_name', $event)"
                 />
               </div>
-              <div class="column-flex">
+              <div class="form-details">
                 <input-with-title
                   title="Email Address:"
                   type="text"
@@ -360,14 +299,18 @@
                 />
 
                 <div class="form-input row-flex">
-                  <p>
-                    <input
-                      type="checkbox"
-                      style="width: 10px"
-                      v-model="fields.client.sendInvitation"
-                    />
-                    Send Invitation?
-                  </p>
+                  <input-with-binary-selections
+                    :item="
+                      fields.client.sendInvitation
+                        ? `Inviting Client`
+                        : `Not Sending Invitation`
+                    "
+                    :checked="fields.client.sendInvitation"
+                    @clicked="
+                      fields.client.sendInvitation =
+                        !fields.client.sendInvitation
+                    "
+                  />
                 </div>
               </div>
             </div>
@@ -378,46 +321,36 @@
     <div id="sidebar-wrapper">
       <base-card title="Summary">
         <template v-slot:content>
-          <div class="summary-inner-wrapper" v-if="event">
-            <div class="column-flex">
-              <div class="row-flex">
-                <div class="title-and-indented-text">
-                  <h5>Date:</h5>
-                  <p class="indented-text">
-                    {{ fields.data.date ? formatDate(eventDate) : "" }}
-                  </p>
-                </div>
-                <div class="title-and-indented-text">
-                  <h5>Time:</h5>
-                  <p class="indented-text">
-                    <!-- {{
-                      event.data.startTime
-                        ? formatTime(event.data.startTime)
-                        : ""
-                    }} -->
-                    {{ formatTime(eventStartTime) }}
-                    -
-                    {{ eventEndTime ? formatTime(eventEndTime) : "" }}
-                  </p>
-                </div>
+          <div id="summary-inner-wrapper">
+            <div id="summary-body">
+              <div class="title-and-indented-text">
+                <h5 class="subheading">Date and Time:</h5>
+                <p class="detail">
+                  {{ fields.data.date ? formatDate(eventDate) : "" }}
+                </p>
+                <p class="detail" v-if="fields.data.date">
+                  {{ formatTime(eventStartTime) }}
+                  -
+                  {{ eventEndTime ? formatTime(eventEndTime) : "" }}
+                </p>
               </div>
               <div class="title-and-indented-text">
-                <h5>Location(s):</h5>
+                <h5 class="subheading">Location(s):</h5>
 
                 <div class="row-flex">
                   <div v-if="fields.location.name">
-                    <p class="indented-text">{{ fields.location.name }},</p>
-                    <p class="indented-text">
+                    <p class="detail">{{ fields.location.name }},</p>
+                    <p class="detail">
                       {{ fields.location.address.streetAddress1 }}
                     </p>
                     <p
-                      class="indented-text"
+                      class="detail"
                       v-if="fields.location.address.streetAddress2"
                     >
                       {{ fields.location.address.streetAddress2 }}
                     </p>
                     <p
-                      class="indented-text"
+                      class="detail"
                       v-if="fields.location.address.cityStateZip"
                     >
                       {{ fields.location.address.cityStateZip }}
@@ -426,89 +359,91 @@
                 </div>
               </div>
               <div class="title-and-indented-text">
-                <h5>Client(s):</h5>
+                <h5 class="subheading">Client(s):</h5>
 
                 <p
-                  class="indented-text"
-                  v-if="
-                    fields.client.given_name &&
-                    fields.client.family_name &&
-                    fields.client.username &&
-                    fields.client.phoneNumber
-                  "
+                  class="detail"
+                  v-if="fields.client.given_name && fields.client.family_name"
                 >
                   {{ fields.client.given_name }}
-                  {{ fields.client.family_name }},<br />
-                  {{ fields.client.username }},<br />
+                  {{ fields.client.family_name }}
+                </p>
+                <p class="detail" v-if="fields.client.username">
+                  {{ fields.client.username }}
+                </p>
+                <p class="detail" v-if="fields.client.phoneNumber">
                   {{ formatPhoneNumber(fields.client.phoneNumber) }}
                 </p>
               </div>
+              <div class="title-and-right-aligned-text">
+                <h5 class="subheading">Invoice Details:</h5>
+                <div
+                  class="invoice-item"
+                  v-for="(product, index) in event.invoice.products"
+                  :key="index"
+                >
+                  <!-- <p>{{ event }}</p> -->
+                  <p>{{ product.name }}</p>
+                  <p class="invoice-item-price">
+                    <b>{{ formatPrice(productTotal(product, event.data)) }}</b>
+                  </p>
+                </div>
+                <div class="invoice-item">
+                  <p>Subtotal:</p>
+                  <p class="invoice-item-price">
+                    <b>{{
+                      formatPrice(subtotal(event.invoice, event.data))
+                    }}</b>
+                  </p>
+                </div>
+                <div
+                  class="invoice-item"
+                  v-for="(adjustment, index) in event.invoice.adjustments"
+                  :key="index"
+                >
+                  <p>
+                    {{ adjustment.name }}
+                  </p>
+                  <p class="invoice-item-price">
+                    <b>{{ adjustment.display }}</b>
+                  </p>
+                </div>
+                <div class="invoice-item">
+                  <p>Total:</p>
+                  <p class="invoice-item-price">
+                    <b>{{ formatPrice(total(event.invoice, event.data)) }}</b>
+                  </p>
+                </div>
+                <div class="invoice-item">
+                  <p>Payments Collected:</p>
+                  <p class="invoice-item-price">
+                    <b>{{
+                      event.invoice.payments[0]
+                        ? formatPrice(event.invoice.payments[0].amount)
+                        : "$" + 0
+                    }}</b>
+                  </p>
+                </div>
+                <div class="invoice-item">
+                  <p>Balance Outstanding:</p>
+                  <p class="invoice-item-price">
+                    <b>{{
+                      event.invoice
+                        ? formatPrice(
+                            balanceOutstanding(event.invoice, event.data)
+                          )
+                        : formatPrice(0)
+                    }}</b>
+                  </p>
+                </div>
+              </div>
             </div>
-            <div class="title-and-right-aligned-text">
-              <h5>Invoice Details:</h5>
-              <div
-                class="indented-text row-flex product"
-                v-for="(product, index) in event.invoice.products"
-                :key="index"
-              >
-                <!-- <p>{{ event }}</p> -->
-                <p class="product">{{ product.name }}</p>
-                <p class="right-aligned-text">
-                  <b>{{ formatPrice(productTotal(product, event.data)) }}</b>
-                </p>
-              </div>
-              <div class="indented-text row-flex">
-                <p>Subtotal:</p>
-                <p class="right-aligned-text">
-                  <b>{{ formatPrice(subtotal(event.invoice, event.data)) }}</b>
-                </p>
-              </div>
-              <div
-                class="indented-text row-flex"
-                v-for="(adjustment, index) in event.invoice.adjustments"
-                :key="index"
-              >
-                <p>
-                  {{ adjustment.name }}
-                </p>
-                <p class="right-aligned-text">
-                  <b>{{ adjustment.display }}</b>
-                </p>
-              </div>
-              <div class="indented-text row-flex">
-                <p>Total:</p>
-                <p class="right-aligned-text">
-                  <b>{{ formatPrice(total(event.invoice, event.data)) }}</b>
-                </p>
-              </div>
-              <div class="indented-text row-flex">
-                <p>Payments Collected:</p>
-                <p class="right-aligned-text">
-                  <b>{{
-                    event.invoice.payments[0]
-                      ? formatPrice(event.invoice.payments[0].amount)
-                      : "$" + 0
-                  }}</b>
-                </p>
-              </div>
-              <div class="indented-text row-flex">
-                <p>Balance Outstanding:</p>
-                <p class="right-aligned-text">
-                  <b>{{
-                    event.invoice
-                      ? formatPrice(
-                          balanceOutstanding(event.invoice, event.data)
-                        )
-                      : formatPrice(0)
-                  }}</b>
-                </p>
-              </div>
-            </div>
+            <button-standard-with-icon
+              id="submit-buttom"
+              text="Create Event"
+              @click="startCreate()"
+            />
           </div>
-          <button-standard-with-icon
-            text="Create Event"
-            @click="startCreate()"
-          />
         </template>
       </base-card>
     </div>
@@ -517,6 +452,9 @@
 
 <script>
 import InputWithTitle from "../../../SharedComponents/SharedComponentsUI/ElementLibrary/InputWithTitle.vue";
+import InputWithBinarySelections from "../../../SharedComponents/SharedComponentsUI/ElementLibrary/InputWithBinarySelection.vue";
+import InputWithTitleWithDropdown from "../../../SharedComponents/SharedComponentsUI/ElementLibrary/InputWithTitleWithDropdown.vue";
+import BinaryInputWithNumberModifier from "../../../SharedComponents/SharedComponentsUI/ElementLibrary/BinaryInputWithNumberModifier.vue";
 import {
   formatTime,
   formatPrice,
@@ -539,8 +477,6 @@ export default {
       eventId: undefined,
       eventContacts: [],
       eventLocations: [],
-      // from event summary
-
       loaded: false,
       locationDropdownOpen: false,
       clientDropdownOpen: false,
@@ -636,6 +572,41 @@ export default {
       Object.assign(this.fields.client, client);
       return;
     },
+    checkDefaultForms() {
+      let array = this.suggestedForms.map((x) => {
+        let index = this.event.forms.indexOf(x);
+        console.log(index);
+        if (index > -1) {
+          return true;
+        } else {
+          return false;
+        }
+      });
+      if (array.includes(false)) {
+        return false;
+      } else if (array.length === 0) {
+        return false;
+      } else {
+        return true;
+      }
+    },
+    checkForEventPresence(array, item) {
+      let index = array.indexOf(item);
+      if (index > -1) {
+        return true;
+      } else {
+        return false;
+      }
+    },
+    toggleItemFromEvent(array, item) {
+      console.log(this.event);
+      let index = array.indexOf(item);
+      if (index > -1) {
+        array.splice(index, 1);
+      } else {
+        array.push(item);
+      }
+    },
     toggleProductFromEvent(product) {
       let array = this.event.invoice.products;
       let index = array.indexOf(product);
@@ -653,7 +624,7 @@ export default {
       let array = this.event.invoice.products;
       let index = this.productAssigned(product);
       if (index > -1) {
-        array[index].pricing.units = e.target.value;
+        array[index].pricing.units = e;
       } else {
         return;
       }
@@ -668,9 +639,6 @@ export default {
       }
     },
     toggleAllDefaultForms() {
-      this.suggestedForms.forEach((f) => {
-        document.getElementById(f.id).checked = true;
-      });
       if (this.event.forms.length === 0) {
         this.event.forms = [...this.suggestedForms];
         return;
@@ -993,8 +961,11 @@ export default {
       let addOns = this.$store.state.businessSettings.product.addOns.map(
         (x) => ({ ...x, type: "Add-On" })
       );
-
-      array = [...packages, ...services, ...addOns];
+      array = {
+        packages: packages,
+        services: services,
+        addOns: addOns,
+      };
       return array;
     },
     adjustments() {
@@ -1026,234 +997,169 @@ export default {
     await this.$store.dispatch("getAdminUsers");
     this.loaded = true;
   },
-  components: { InputWithTitle },
+  components: {
+    InputWithTitle,
+    InputWithBinarySelections,
+    InputWithTitleWithDropdown,
+    BinaryInputWithNumberModifier,
+  },
 };
 </script>
 
 <style scoped>
 @media screen {
   #event-creation-wrapper {
-    display: grid;
-    padding-bottom: 60px;
-    grid-template-columns: 1fr;
-    grid-template-rows: 1fr 500px;
-    gap: 10px;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
   }
   #form-wrapper {
-    grid-row: 1;
-    grid-column: 1;
-    display: flex;
-    flex-direction: column;
     overflow-y: visible;
   }
-
   .event-creation-card {
-    margin-bottom: 10px;
+    padding-bottom: 10px;
+  }
+  .form-details {
+    height: fit-content;
+    width: 350px;
+    min-height: 60px;
   }
 
-  .row-flex {
+  .event-date {
     display: flex;
     flex-direction: column;
-    justify-content: space-evenly;
-    align-items: flex-start;
-  }
-
-  .form-name > p {
-    margin-left: 20px;
-    text-align: left;
-  }
-
-  .row-flex div {
-    width: 100%;
-  }
-
-  .dropdown-parent {
-    width: 100%;
-    position: relative;
-  }
-
-  #client-search-parent {
-    width: 100%;
-  }
-
-  .dropdown-parent > input {
-    z-index: 2;
-    position: relative;
-  }
-
-  .dropdown {
-    z-index: 1;
-    top: 100%;
-    position: absolute;
-    margin-left: 0%;
-    border: 1px solid var(--textColor);
-    background-color: var(--foregroundColor);
-    max-height: 100px;
-    overflow-x: scroll;
-    max-width: 92%;
-  }
-
-  .column-flex {
-    display: flex;
-    flex-direction: column;
-  }
-
-  .form-input > p {
-    text-align: left;
-    font-size: 8pt;
-  }
-
-  .form-input > .row-flex {
-    margin-left: 20px;
-  }
-
-  .event-times {
-    align-content: center;
-    align-items: flex-end;
-  }
-
-  .less-width {
-    width: 90%;
-  }
-
-  .checkboxes {
-    display: flex;
-    flex-direction: row;
-    width: 100%;
-    justify-content: left;
+    justify-content: center;
     align-items: center;
   }
 
-  .checkboxes > input {
-    width: unset;
+  .event-date .text,
+  .event-date .date {
+    width: 350px;
   }
 
-  input[type="checkbox"] {
-    width: unset;
+  .event-times {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
   }
 
-  .unified-field > input,
-  .unified-field > select {
-    margin: 0px;
-  }
-
-  .checkboxes > .checkbox-add-on-units {
-    width: 40px;
-    height: 10px;
-    outline: none;
-    border: none;
-    border-radius: 0;
-    border-bottom: 1px solid var(--textColor);
-  }
-
-  input {
-    font-family: Lato, sans-serif;
-    width: 90%;
-    margin: 5px;
-  }
-
-  :disabled {
-    opacity: 0.25;
-  }
-
-  .disclaimer {
-    font-style: italic;
-    font-size: 6pt;
-  }
-
-  .column-flex {
+  .time-inputs {
     display: flex;
     flex-direction: column;
   }
 
-  #sidebar-wrapper {
-    /* width: 100%; */
-    grid-row: 2/3;
-    grid-column: 1;
+  .time-inputs .select {
+    width: 350px;
   }
 
-  .summary-inner-wrapper {
-    height: 100%;
-    overflow-y: scroll;
-  }
-
-  .title-and-right-aligned-text h5,
-  .title-and-right-aligned-text p,
-  .title-and-indented-text h5,
-  .title-and-indented-text p {
+  .subheading {
     text-align: left;
+    font-weight: 600;
+    text-transform: uppercase;
   }
 
-  .product {
-    margin: 1px 0 1px 0;
+  .bubble-container {
+    display: flex;
+    flex-wrap: wrap;
   }
 
-  #sidebar-wrapper p {
-    margin-left: 20px;
-    font-size: 8pt;
+  .manual-payment-field {
+    display: flex;
+    flex-wrap: wrap;
   }
 
-  .indented-text {
-    margin-left: 40px;
+  .form-section-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    height: fit-content;
+    /* height: 300px; */
   }
 
-  .right-aligned-text {
-    text-align: right;
+  .dropdown-parent {
+    position: relative;
+    min-height: 60px;
+  }
+
+  #sidebar-wrapper {
+    padding-bottom: 60px;
+  }
+
+  #summary-inner-wrapper {
+    height: 100%;
+    display: grid;
+    grid-template-columns: 100%;
+    grid-template-rows: 1fr 40px;
+  }
+
+  #summary-body {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .detail {
+    text-align: left;
+    margin-left: 10px;
+  }
+
+  .invoice-item {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+
+  .invoice-item-price {
+    margin-left: 10px;
+  }
+
+  #submit-button {
+    grid-row: 2/ 3;
   }
 
   @media (min-width: 850px) {
     #event-creation-wrapper {
       display: grid;
-      height: 100%;
-      padding: 0;
-      grid-template-columns: 1fr 250px;
-      grid-template-rows: 1fr;
+      grid-template-rows: 100%;
+      grid-template-columns: 1fr 300px;
+      gap: 10px;
     }
     #form-wrapper {
-      grid-column: 1 / 2;
-      height: 100%;
+      grid-row: 1;
+      grid-column: 1/2;
       overflow-y: scroll;
     }
 
-    .event-creation-card {
-      max-height: 300px;
+    .event-date {
+      display: unset;
     }
 
-    .section-inner-wrapper {
-      height: 100%;
-      overflow-y: scroll;
+    .event-date .text,
+    .event-date .date {
+      width: unset;
     }
 
-    .row-flex {
+    .event-times {
+      display: flex;
+      flex-direction: column;
+      width: unset;
+    }
+
+    .time-inputs {
+      display: flex;
       flex-direction: row;
+      flex-wrap: wrap;
     }
 
-    .row-flex div {
-      width: 80%;
-    }
-
-    .dropdown {
-      left: 3px;
-      width: 100%;
-    }
-    .less-width {
-      width: 40%;
-    }
-
-    input {
-      width: 80%;
-    }
-
-    .row-flex {
-      flex-direction: row;
-      justify-content: space-between;
-      align-items: center;
+    .time-inputs .select {
+      width: unset;
     }
 
     #sidebar-wrapper {
-      /* width: 100%; */
       grid-row: 1;
       grid-column: 2/3;
+      padding: 0;
     }
   }
 }
