@@ -55,22 +55,18 @@ export default {
     align-items: center;
     justify-content: space-between;
     flex-wrap: wrap;
-    height: 100%;
+    height: fit-content;
+    padding: 10px;
   }
   .button-div {
     width: 45%;
-    height: 45px;
+    padding: 10px 0;
     position: relative;
     box-sizing: border-box;
   }
   @media (min-width: 700px) {
-    .button-parent {
-      flex-wrap: unset;
-    }
     .button-div {
       width: 23%;
-      height: 100%;
-      padding: unset;
     }
   }
 }

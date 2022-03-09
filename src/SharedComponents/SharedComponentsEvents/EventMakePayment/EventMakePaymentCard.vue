@@ -152,6 +152,9 @@ h5 {
   margin: 5px;
 }
 
+#payment-method-wrapper {
+  height: 100%;
+}
 .indented-item {
   text-align: left;
   margin: 20px 4px;

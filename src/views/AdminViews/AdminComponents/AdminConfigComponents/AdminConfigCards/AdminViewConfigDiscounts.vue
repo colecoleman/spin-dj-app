@@ -182,7 +182,7 @@ export default {
     flex-wrap: wrap;
     max-height: 100%;
     overflow-y: scroll;
-    margin-top: 10px;
+    padding: 10px;
   }
 
   .discounts-section {

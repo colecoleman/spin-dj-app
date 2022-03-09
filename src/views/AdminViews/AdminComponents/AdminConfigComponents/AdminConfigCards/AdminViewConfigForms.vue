@@ -445,7 +445,9 @@ export default {
   p {
     font-size: 9pt;
   }
-
+  .split-view {
+    padding: 10px;
+  }
   .split-view,
   .input-creation {
     display: flex;

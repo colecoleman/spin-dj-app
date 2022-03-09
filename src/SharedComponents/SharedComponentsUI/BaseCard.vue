@@ -1,12 +1,15 @@
 <template>
   <div :class="loading ? 'loading-background card' : 'card'">
-    <div class="heading" v-if="svg || title || subtitle || actionIcon">
+    <div
+      :class="soloHeading ? 'solo-heading' : 'heading'"
+      v-if="svg || title || subtitle || actionIcon"
+    >
       <vue-svg :svg="svg" v-if="svg" />
       <div class="title">
         <h3 v-if="title">
           {{ title }}
         </h3>
-        <h5 v-if="subtitle">
+        <h5 v-if="subtitle" class="subtitle">
           {{ subtitle }}
         </h5>
       </div>
@@ -25,7 +28,7 @@
       </div>
     </div>
 
-    <div class="content">
+    <div v-if="!soloHeading" :class="title ? 'content' : 'sole-content'">
       <slot name="content"></slot>
     </div>
   </div>
@@ -34,7 +37,15 @@
 <script>
 import VueSvg from "../../assets/VueSvg.vue";
 export default {
-  props: ["svg", "actionIcon", "loading", "actionText", "title", "subtitle"],
+  props: [
+    "svg",
+    "actionIcon",
+    "loading",
+    "actionText",
+    "title",
+    "subtitle",
+    "soloHeading",
+  ],
   methods: {
     actionOneClicked() {
       this.$emit("actionOneClicked");
@@ -65,27 +76,45 @@ export default {
   border-radius: 25px;
   background-color: var(--foregroundColor);
   box-sizing: border-box;
-  padding: 20px 20px 10px 20px;
+  overflow: hidden;
   width: 100%;
   height: 100%;
 }
 
 .content {
-  height: 87%;
+  padding: 0 20px 0 20px;
+  /* padding: 20px; */
+  max-height: calc(100% - 44px);
+  height: calc(100% - 44px);
+  display: inherit;
+}
+
+.sole-content {
+  padding: 0 20px 0 20px;
+  /* padding: 20px; */
+  height: 100%;
   display: inherit;
 }
 
 .heading,
 .title,
-.right-top {
+.right-top,
+.solo-heading {
   display: flex;
   align-items: center;
   text-transform: uppercase;
   color: var(--textColor);
 }
 
+.heading,
+.solo-heading {
+  padding: 0 20px 0 20px;
+  height: 44px;
+}
 
-
+.solo-heading {
+  height: 100%;
+}
 .title {
   flex-direction: column;
   text-align: left;
@@ -101,7 +130,7 @@ h4 {
 
 h5 {
   border-top: 1px solid var(--textColor);
-  font-size: 9pt;
+  font-size: 8pt;
   text-align: left;
   margin: 0 0 0 10px;
   font-weight: 400;
@@ -116,11 +145,5 @@ h5 {
   position: absolute;
   right: 0;
   top: 100%;
-}
-
-@media screen and (min-width: 320px) {
-  .content {
-    height: 90%;
-  }
 }
 </style>

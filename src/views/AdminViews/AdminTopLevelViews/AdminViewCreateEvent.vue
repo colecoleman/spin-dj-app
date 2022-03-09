@@ -159,7 +159,7 @@
       <div class="event-creation-card">
         <base-card title="Select Form(s):">
           <template v-slot:content>
-            <div>
+            <div class="forms-wrapper">
               <div class="form-input">
                 <p class="subheading">Suggested Form(s):</p>
 
@@ -1075,7 +1075,12 @@ export default {
     flex-wrap: wrap;
     justify-content: space-evenly;
     height: fit-content;
+    padding: 10px;
     /* height: 300px; */
+  }
+
+  .forms-wrapper {
+    padding: 10px;
   }
 
   .dropdown-parent {
@@ -1091,7 +1096,7 @@ export default {
     height: 100%;
     display: grid;
     grid-template-columns: 100%;
-    grid-template-rows: 1fr 40px;
+    grid-template-rows: 1fr 60px;
   }
 
   #summary-body {

@@ -485,6 +485,10 @@ export default {
     width: 100%;
   }
 
+  #wrapper {
+    padding: 10px;
+  }
+
   .business-information-wrapper {
     display: flex;
     flex-direction: column;

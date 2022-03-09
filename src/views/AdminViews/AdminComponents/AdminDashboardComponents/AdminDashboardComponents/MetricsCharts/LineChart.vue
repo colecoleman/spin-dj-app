@@ -124,12 +124,13 @@ export default {
   #chart {
     cursor: pointer;
     min-width: 600px;
-    height: 300px;
+    height: 100%;
   }
 
   #chart-container {
     overflow-x: scroll;
     overflow-y: hidden;
+    height: 100%;
   }
 }
 </style>
