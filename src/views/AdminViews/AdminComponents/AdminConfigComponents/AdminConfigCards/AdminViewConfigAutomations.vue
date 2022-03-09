@@ -31,25 +31,40 @@
                   @click="automation.approved = !automation.approved"
                 />
                 Approval Required?:
+                <input-with-binary-selection
+                  :item="
+                    automation.approved
+                      ? 'Does Not Require Approval'
+                      : 'Requires Approval'
+                  "
+                  :checked="!automation.approved"
+                  @clicked="
+                    fieldInput(automation, 'approved', !automation.approved)
+                  "
+                />
               </p>
             </div>
             <div class="automations-item">
               <p>Trigger:</p>
-              <p>
-                <input
-                  type="checkbox"
-                  @click="
-                    (automation.trigger.quantity = undefined),
-                      (automation.trigger.distance = undefined),
-                      (automation.direction = undefined),
-                      (automation.trigger.immediate =
-                        !automation.trigger.immediate)
-                  "
-                />
-                Immediate? (will invalidate time-related selections)
-              </p>
+              <p>Immediate? (will invalidate time-related selections)</p>
+              <input-with-binary-selection
+                :item="
+                  automation.trigger.immediate ? 'Immediate' : 'Not Immediate'
+                "
+                :checked="automation.trigger.immediate"
+                @clicked="
+                  (automation.trigger.quantity = undefined),
+                    (automation.trigger.distance = undefined),
+                    (automation.direction = undefined),
+                    (automation.trigger.immediate =
+                      !automation.trigger.immediate)
+                "
+              />
 
-              <div class="row-flex">
+              <div
+                class="automations-item"
+                v-if="!automation.trigger.immediate"
+              >
                 <div class="distance-number">
                   <input-with-title
                     type="number"
@@ -129,14 +144,17 @@
                     fieldInput(automation.action.email, 'content', $event)
                   "
                 />
-
-                <p>
-                  <input
-                    type="checkbox"
-                    v-model="automation.applyToExistingEvents"
-                  />
-                  Apply to existing events?
-                </p>
+                <input-with-binary-selection
+                  item="Apply To Existing Events?"
+                  :checked="automation.applyToExistingEvents"
+                  @clicked="
+                    fieldInput(
+                      automation,
+                      'applyToExistingEvents',
+                      !automation.applyToExistingEvents
+                    )
+                  "
+                />
                 <button-standard-with-icon
                   text="Add Automation"
                   @click="addAutomation()"
@@ -243,6 +261,7 @@
 <script>
 import InformationHover from "../../../../../SharedComponents/SharedComponentsUI/InformationHover.vue";
 import InputWithTitle from "../../../../../SharedComponents/SharedComponentsUI/ElementLibrary/InputWithTitle.vue";
+import InputWithBinarySelection from "../../../../../SharedComponents/SharedComponentsUI/ElementLibrary/InputWithBinarySelection.vue";
 import VueSvg from "../../../../../assets/VueSvg.vue";
 export default {
   data() {
@@ -296,6 +315,7 @@ export default {
       } else {
         this[property] = value;
       }
+      console.log(this.automation);
     },
     toggleMergeTagInformation() {
       this.mergeTagInformationOpen = !this.mergeTagInformationOpen;
@@ -358,7 +378,12 @@ export default {
       return false;
     },
   },
-  components: { InformationHover, InputWithTitle, VueSvg },
+  components: {
+    InformationHover,
+    InputWithTitle,
+    InputWithBinarySelection,
+    VueSvg,
+  },
 };
 </script>
 

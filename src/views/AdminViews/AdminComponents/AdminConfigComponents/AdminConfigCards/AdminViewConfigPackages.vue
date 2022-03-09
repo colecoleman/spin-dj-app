@@ -4,149 +4,115 @@
       <div class="package-wrapper" v-if="businessSettings">
         <div class="package-section">
           <h5 class="bold">Add New Package:</h5>
-          <div class="package-item">
-            <!-- <p>Package Name:</p>
-            <input type="text" v-model.trim="input.packages.name" /> -->
-            <input-with-title
-              title="Package Name:"
-              type="text"
-              :inputValue="input.packages.name"
-              @input="fieldInput(input.packages, 'name', $event)"
-            />
-          </div>
-          <div class="package-item">
-            <p>Photo:</p>
-            <input
-              type="file"
-              id="hidden-file-button-package"
-              @change="onFileChange"
-              style="display: none"
-            />
-            <button-standard-with-icon
-              :text="photoFile ? photoFile.name : 'Choose File'"
-              @click="chooseFile()"
-              class="form-button"
-            />
-          </div>
-          <div class="package-item">
-            <p>Services Included:</p>
-            <div
-              class="package-item row-flex"
+          <input-with-title
+            title="Package Name:"
+            type="text"
+            :inputValue="input.packages.name"
+            @input="fieldInput(input.packages, 'name', $event)"
+          />
+          <p>Photo:</p>
+          <input
+            type="file"
+            id="hidden-file-button-package"
+            @change="onFileChange"
+            style="display: none"
+          />
+          <button-standard-with-icon
+            :text="photoFile ? photoFile.name : 'Choose File'"
+            @click="chooseFile()"
+            class="form-button"
+          />
+          <p>Services Included:</p>
+          <div class="bubble-wrapper">
+            <input-with-binary-selection
               v-for="service in businessSettings.product.services"
               :key="service.name"
-            >
-              <p>
-                <input
-                  type="checkbox"
-                  class="checkbox"
-                  :id="service.name"
-                  @change="toggleServiceFromPackage(service.name)"
-                  :name="service.name"
-                />{{ service.name }}
-              </p>
-            </div>
-          </div>
-          <div class="package-item">
-            <p>Standard Forms Included:</p>
-            <div
-              class="package-item row-flex"
-              v-for="form in forms"
-              :key="form.id"
-            >
-              <p>
-                <input
-                  type="checkbox"
-                  :id="'package-form-' + form.id"
-                  class="checkbox"
-                  @change="toggleFormFromPackage(form.id)"
-                  :name="form.name"
-                />{{ form.name }}
-              </p>
-            </div>
-          </div>
-          <div class="package-item">
-            <p>Standard Contract(s) Included:</p>
-            <div
-              class="package-item row-flex"
-              v-for="contract in businessSettings.contracts"
-              :key="contract.id"
-            >
-              <p>
-                <input
-                  type="checkbox"
-                  :id="'package-contract-' + contract.id"
-                  class="checkbox"
-                  @change="toggleContractFromPackage(contract.id)"
-                  :name="contract.contractName"
-                />{{ contract.contractName }}
-              </p>
-            </div>
-          </div>
-
-          <div class="package-item">
-            <input-with-title
-              title="Price Option:"
-              type="select"
-              :inputValue="input.packages.priceOption"
-              :options="priceOptions"
-              @input="fieldInput(input.packages, 'priceOption', $event)"
+              :item="service.name"
+              :checked="
+                checkForPackagePresence(input.packages.serviceIds, service.name)
+              "
+              @clicked="
+                toggleItemFromPackage(input.packages.serviceIds, service.name)
+              "
             />
           </div>
-          <div
-            class="package-item"
-            v-if="input.packages.priceOption === 'Hourly'"
-          >
-            <div class="package-item">
-              <!-- <p>Minimum # Hours:</p>
-              <input
-                type="number"
-                v-model.number="input.packages.pricing.baseTime"
-              /> -->
-              <input-with-title
-                type="number"
-                title="Minimum # Hours:"
-                :inputValue="input.packages.pricing.baseTime"
-                @input="fieldInput(input.packages.pricing, 'baseTime', $event)"
-              />
-            </div>
-            <div class="package-item">
-              <input-with-title
-                type="number"
-                :title="`Base Rate (${input.packages.pricing.baseTime}) Hours:`"
-                :inputValue="input.packages.pricing.baseRate"
-                @input="fieldInput(input.packages.pricing, 'baseRate', $event)"
-              />
-            </div>
-            <div class="package-item">
-              <input-with-title
-                type="number"
-                title="Additional Hourly:"
-                :inputValue="input.packages.pricing.addHourly"
-                @input="fieldInput(input.packages.pricing, 'addHourly', $event)"
-              />
-            </div>
+          <p>Standard Forms Included:</p>
+          <div class="bubble-wrapper">
+            <input-with-binary-selection
+              v-for="form in forms"
+              :key="form.id"
+              :item="form.name"
+              :checked="checkForPackagePresence(input.packages.forms, form.id)"
+              @clicked="toggleItemFromPackage(input.packages.forms, form.id)"
+            />
+          </div>
+          <p>Standard Contract(s) Included:</p>
+          <div class="bubble-wrapper">
+            <input-with-binary-selection
+              v-for="contract in businessSettings.contracts"
+              :key="contract.id"
+              :item="contract.contractName"
+              :checked="
+                checkForPackagePresence(
+                  input.packages.contracts,
+                  contract.contractName
+                )
+              "
+              @clicked="
+                toggleItemFromPackage(
+                  input.packages.contracts,
+                  contract.contractName
+                )
+              "
+            />
+          </div>
+          <p>Package Details:</p>
+
+          <input-with-title
+            title="Price Option:"
+            type="select"
+            :inputValue="input.packages.priceOption"
+            :options="priceOptions"
+            @input="fieldInput(input.packages, 'priceOption', $event)"
+          />
+
+          <div v-if="input.packages.priceOption === 'Hourly'">
+            <input-with-title
+              type="number"
+              title="Minimum # Hours:"
+              :inputValue="input.packages.pricing.baseTime"
+              @input="fieldInput(input.packages.pricing, 'baseTime', $event)"
+            />
+            <input-with-title
+              type="number"
+              :title="`Base Rate (${input.packages.pricing.baseTime}) Hours:`"
+              :inputValue="input.packages.pricing.baseRate"
+              @input="fieldInput(input.packages.pricing, 'baseRate', $event)"
+            />
+            <input-with-title
+              type="number"
+              title="Additional Hourly:"
+              :inputValue="input.packages.pricing.addHourly"
+              @input="fieldInput(input.packages.pricing, 'addHourly', $event)"
+            />
             <button-standard-with-icon
               text="Add Package"
               @click="addPackage()"
               class="form-button"
             />
           </div>
-          <div class="package-item" v-if="input.packages.priceOption == 'Flat'">
-            <div class="package-item">
-              <input-with-title
-                type="number"
-                title="Flat Rate"
-                :inputValue="input.packages.pricing.baseRate"
-                @input="fieldInput(input.packages.pricing, 'baseRate', $event)"
-              />
-            </div>
-            <div class="package-item">
-              <button-standard-with-icon
-                text="Add package"
-                @click="addPackage()"
-                class="form-button"
-              />
-            </div>
+          <div v-if="input.packages.priceOption == 'Flat'">
+            <input-with-title
+              type="number"
+              title="Flat Rate"
+              :inputValue="input.packages.pricing.baseRate"
+              @input="fieldInput(input.packages.pricing, 'baseRate', $event)"
+            />
+            <button-standard-with-icon
+              text="Add package"
+              @click="addPackage()"
+              class="form-button"
+            />
           </div>
         </div>
         <div class="package-section">
@@ -212,7 +178,7 @@
                   <p>
                     <b>Included Forms: </b
                     ><span v-for="form in packag.forms" :key="form">
-                      {{ findForm(form, index) }},
+                      {{ findForm(form, packag) }},
                     </span>
                   </p>
                 </div>
@@ -220,7 +186,7 @@
                   <p>
                     <b>Included Contracts: </b
                     ><span v-for="contract in packag.contracts" :key="contract">
-                      {{ findContract(contract, index) }}</span
+                      {{ findContract(contract, packag) }}</span
                     >
                   </p>
                 </div>
@@ -235,6 +201,7 @@
 
 <script>
 import VueSvg from "../../../../../assets/VueSvg.vue";
+import InputWithBinarySelection from "../../../../../SharedComponents/SharedComponentsUI/ElementLibrary/InputWithBinarySelection.vue";
 import { formatPrice } from "../../../../../helpers.js";
 import InputWithTitle from "../../../../../SharedComponents/SharedComponentsUI/ElementLibrary/InputWithTitle.vue";
 import _cloneDeep from "lodash/cloneDeep";
@@ -291,63 +258,37 @@ export default {
       if (!files.length) return;
       this.photoFile = files[0];
     },
-    submitEventType() {
-      this.businessSettings.product.eventTypes.push(this.input.eventTypesInput);
-    },
 
-    toggleServiceFromPackage(service) {
-      let array = this.input.packages.serviceIds;
-      let index = array.indexOf(service);
+    checkForPackagePresence(arr, item) {
+      let index = arr.indexOf(item);
+      if (index > -1) {
+        return true;
+      } else {
+        return false;
+      }
+    },
+    toggleItemFromPackage(array, item) {
+      let index = array.indexOf(item);
       if (index > -1) {
         array.splice(index, 1);
       } else {
-        array.push(service);
+        array.push(item);
       }
     },
-    toggleFormFromPackage(form, packageIndex) {
-      let packages = this.businessSettings.product.packages;
-      let array;
-      if (packageIndex) {
-        array = packages[packageIndex].forms;
-      } else {
-        array = this.input.packages.forms;
-      }
-      let index = array.indexOf(form);
-      if (index > -1) {
-        array.splice(index, 1);
-      } else {
-        array.push(form);
-      }
-    },
-    toggleContractFromPackage(contract, packageIndex) {
-      let packages = this.businessSettings.product.packages;
-      let array;
-      if (packageIndex) {
-        array = packages[packageIndex].contracts;
-      } else {
-        array = this.input.packages.contracts;
-      }
-      let index = array.indexOf(contract);
-      if (index > -1) {
-        array.splice(index, 1);
-      } else {
-        array.push(contract);
-      }
-    },
-    findForm(form, packageIndex) {
+    findForm(form, packag) {
       let item = this.businessSettings.product.forms.forms.find(
-        (x) => x.id === form
+        (x) => x.id == form
       );
       if (!item) {
-        this.toggleFormFromPackage(form, packageIndex);
+        this.toggleItemFromPackage(packag.forms, form);
       } else {
         return item.name;
       }
     },
-    findContract(contract, packageIndex) {
+    findContract(contract, packag) {
       let item = this.businessSettings.contracts.find((x) => x.id === contract);
       if (!item) {
-        this.toggleContractFromPackage(contract, packageIndex);
+        this.toggleItemFromPackage(packag.contracts, contract);
         return;
       } else {
         return item.contractName;
@@ -391,9 +332,6 @@ export default {
         employeesRequired: undefined,
         photo: undefined,
       };
-      document
-        .querySelectorAll("input[type=checkbox")
-        .forEach((el) => (el.checked = false));
     },
     deletePackage(index) {
       this.$store.commit("adminConfigDeletePackage", index);
@@ -406,18 +344,9 @@ export default {
         baseRate: this.input.packages.pricing.baseRate / 100,
         addHourly: this.input.packages.pricing.addHourly / 100,
       };
-      packag.forms.forEach((form) => {
-        document.getElementById("package-form-" + form).checked = true;
-      });
-      packag.contracts.forEach((contracts) => {
-        document.getElementById("package-contract-" + contracts).checked = true;
-      });
-      packag.serviceIds.forEach((service) => {
-        document.getElementById(service).checked = true;
-      });
     },
   },
-  components: { InputWithTitle, VueSvg },
+  components: { InputWithTitle, InputWithBinarySelection, VueSvg },
   created() {
     if ("product" in this.$store.state.businessSettings) {
       this.businessSettings = this.$store.state.businessSettings;
@@ -451,14 +380,12 @@ export default {
     width: 100%;
   }
 
-  .package-item {
+  .bubble-wrapper {
     display: flex;
-    flex-direction: column;
-    justify-content: left;
-    margin-left: 10px;
+    flex-wrap: wrap;
   }
 
-  .package-item > p,
+  p,
   .package-section > h5 {
     text-align: left;
   }

@@ -90,11 +90,16 @@
                 />
               </div>
               <div class="form-item">
-                <p>Allow user to duplicate field?</p>
-                <input
-                  type="checkbox"
-                  style="width: 10%"
-                  v-model="newField.duplicable"
+                <input-with-binary-selection
+                  :item="
+                    newField.duplicable
+                      ? 'User may duplicate field'
+                      : 'User may not duplicate field'
+                  "
+                  :checked="newField.duplicable"
+                  @clicked="
+                    fieldInput(newField, 'duplicable', !newField.duplicable)
+                  "
                 />
               </div>
               <div class="form-item">
@@ -261,11 +266,17 @@
 
 <script>
 import VueSvg from "../../../../../assets/VueSvg.vue";
+import InputWithBinarySelection from "../../../../../SharedComponents/SharedComponentsUI/ElementLibrary/InputWithBinarySelection.vue";
 import InputWithTitle from "../../../../../SharedComponents/SharedComponentsUI/ElementLibrary/InputWithTitle.vue";
 import ButtonStandardWithIcon from "../../../../../SharedComponents/SharedComponentsUI/ButtonStandardWithIcon.vue";
 
 export default {
-  components: { ButtonStandardWithIcon, InputWithTitle, VueSvg },
+  components: {
+    ButtonStandardWithIcon,
+    InputWithTitle,
+    InputWithBinarySelection,
+    VueSvg,
+  },
   data() {
     return {
       svgStyling:

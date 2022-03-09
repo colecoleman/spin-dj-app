@@ -28,43 +28,30 @@
           </div>
           <div class="service-item">
             <p>Standard Forms Included:</p>
-            <div
-              class="service-item row-flex"
-              v-for="form in forms"
-              :key="form.id"
-            >
-              <p>
-                <input
-                  type="checkbox"
-                  :id="'service-form-' + form.id"
-                  class="checkbox"
-                  @change="toggleFormFromService(form.id)"
-                  :name="form.name"
-                />{{ form.name }}
-              </p>
+            <div class="bubble-wrapper">
+              <input-with-binary-selection
+                v-for="form in forms"
+                :key="form.id"
+                :item="form.name"
+                :checked="checkForServicePresence(input.forms, form.id)"
+                @clicked="toggleItemFromService(input.forms, form.id)"
+              />
             </div>
           </div>
           <div class="service-item">
             <p>Standard Contract Included:</p>
-            <div
-              class="service-item row-flex"
-              v-for="contract in contracts"
-              :key="contract.id"
-            >
-              <p>
-                <input
-                  type="checkbox"
-                  :id="'service-contract-' + contract.id"
-                  class="checkbox"
-                  @change="toggleContractFromService(contract.id)"
-                  :name="contract.contractName"
-                />{{ contract.contractName }}
-              </p>
+            <div class="bubble-wrapper">
+              <input-with-binary-selection
+                v-for="contract in contracts"
+                :key="contract.id"
+                :item="contract.contractName"
+                :checked="checkForServicePresence(input.contracts, contract.id)"
+                @clicked="toggleItemFromService(input.contracts, contract.id)"
+              />
             </div>
           </div>
           <div class="service-item">
-            <!-- <p>Employees Required</p>
-            <input type="number" v-model.number="input.employeesRequired" /> -->
+            <p>Service Details:</p>
             <input-with-title
               type="number"
               title="Employees Required:"
@@ -196,6 +183,7 @@
 
 <script>
 import VueSvg from "../../../../../assets/VueSvg.vue";
+import InputWithBinarySelection from "../../../../../SharedComponents/SharedComponentsUI/ElementLibrary/InputWithBinarySelection.vue";
 import { formatPrice } from "../../../../../helpers.js";
 import _cloneDeep from "lodash/cloneDeep";
 import InputWithTitle from "../../../../../SharedComponents/SharedComponentsUI/ElementLibrary/InputWithTitle.vue";
@@ -282,9 +270,22 @@ export default {
         equipmentNeeded: [],
         employeesRequired: undefined,
       };
-      document
-        .querySelectorAll("input[type=checkbox")
-        .forEach((el) => (el.checked = false));
+    },
+    checkForServicePresence(arr, item) {
+      let index = arr.indexOf(item);
+      if (index > -1) {
+        return true;
+      } else {
+        return false;
+      }
+    },
+    toggleItemFromService(array, item) {
+      let index = array.indexOf(item);
+      if (index > -1) {
+        array.splice(index, 1);
+      } else {
+        array.push(item);
+      }
     },
     toggleFormFromService(form, serviceIndex) {
       let services = this.services;
@@ -328,13 +329,6 @@ export default {
         baseRate: this.input.pricing.baseRate / 100,
         addHourly: this.input.pricing.addHourly / 100,
       };
-      service.forms.forEach((form) => {
-        document.getElementById("service-form-" + form).checked = true;
-      });
-      service.contracts.forEach((contracts) => {
-        document.getElementById("service-contract-" + contracts).checked = true;
-      });
-      console.log(this.input);
     },
     chooseFile() {
       document.getElementById("hidden-file-button-service").click();
@@ -345,7 +339,7 @@ export default {
       this.photoFile = files[0];
     },
   },
-  components: { InputWithTitle, VueSvg },
+  components: { InputWithTitle, InputWithBinarySelection, VueSvg },
 };
 </script>
 
@@ -392,6 +386,11 @@ export default {
     width: 90%;
     align-self: left;
     justify-self: left;
+  }
+
+  .bubble-wrapper {
+    display: flex;
+    flex-wrap: wrap;
   }
 
   .button-standard-with-icon {
