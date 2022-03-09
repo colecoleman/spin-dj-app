@@ -147,7 +147,7 @@ export default {
 <style scoped>
 .form-body {
   width: 100%;
-  /* height: calc(100% - 50px); */
+  height: calc(100% - 56px);
   overflow-y: scroll;
   overflow-x: hidden;
   display: flex;

@@ -128,7 +128,7 @@ export default {
 <style scoped>
 .form-body {
   width: 100%;
-  height: 90%;
+  height: calc(100% - 56px);
   overflow-y: scroll;
   display: flex;
   flex-direction: column;
