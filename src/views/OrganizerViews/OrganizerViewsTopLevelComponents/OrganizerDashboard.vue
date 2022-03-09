@@ -120,6 +120,7 @@ export default {
     #to-do {
       grid-column: 1 / 2;
       grid-row: 3 / 11;
+      padding: 0;
     }
 
     #upcoming-events {
@@ -132,7 +133,8 @@ export default {
       grid-row: 1/ 6;
     }
 
-    #messages {
+    #messaging {
+      display: unset;
       grid-column: 3/4;
       grid-row: 6/11;
     }
