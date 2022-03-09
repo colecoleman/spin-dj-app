@@ -56,17 +56,23 @@ export default {
     justify-content: space-between;
     flex-wrap: wrap;
     height: fit-content;
+    overflow: visible;
     padding: 10px;
   }
   .button-div {
     width: 45%;
+    height: 60px;
     padding: 10px 0;
     position: relative;
-    box-sizing: border-box;
+    overflow: visible;
+    /* box-sizing: border-box; */
   }
   @media (min-width: 700px) {
     .button-div {
       width: 23%;
+      height: 60px;
+      overflow: visible;
+      min-height: 60px;
     }
   }
 }

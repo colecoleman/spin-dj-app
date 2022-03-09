@@ -76,7 +76,7 @@ export default {
   border-radius: 25px;
   background-color: var(--foregroundColor);
   box-sizing: border-box;
-  overflow: hidden;
+  /* overflow: hidden; */
   width: 100%;
   height: 100%;
 }
@@ -87,6 +87,7 @@ export default {
   max-height: calc(100% - 44px);
   height: calc(100% - 44px);
   display: inherit;
+  overflow: visible;
 }
 
 .sole-content {
