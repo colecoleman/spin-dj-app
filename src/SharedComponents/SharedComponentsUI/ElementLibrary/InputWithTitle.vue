@@ -22,6 +22,8 @@
               ? option[optionDisplay]
               : option === true
               ? "Yes"
+              : option === "00"
+              ? option
               : option == false
               ? "No"
               : option
