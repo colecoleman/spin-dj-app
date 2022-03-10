@@ -12,7 +12,11 @@
         :key="index"
         contact="person"
         :profilePicture="
-          contact.profilePicture ? contact.profilePicture : undefined
+          contact
+            ? contact.profilePicture
+              ? contact.profilePicture
+              : undefined
+            : undefined
         "
         :customStyle="'width: 25px; height: 25px; margin: -13px; fill: var(--foregroundColor);'"
       />
