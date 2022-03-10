@@ -214,9 +214,9 @@ const store = createStore({
           () => {
             context.commit("addStatus", {
               type: "success",
-              note: "To-Do Added",
+              note: "To-Do Completed",
             });
-            context.commit("completeToDo", payload.id);
+
           },
           (error) => {
             context.commit("addStatus", {
@@ -1315,9 +1315,6 @@ const store = createStore({
     },
     setEvents(state, payload) {
       state.events = [...payload.data.Items];
-    },
-    completeToDo(state, id) {
-      console.log(state, id);
     },
     addToDo(state, payload) {
       state.toDos.unshift(payload);
