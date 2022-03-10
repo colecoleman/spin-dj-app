@@ -24,13 +24,16 @@ export default {
     clickToDo(toDo) {
       this.clicked = true;
       setTimeout(() => {
-        this.$store.dispatch("completeToDo", {
-          id: toDo.userId,
-          variable: "completed",
-          value: !toDo.completed,
-        });
+        this.$store
+          .dispatch("completeToDo", {
+            id: toDo.userId,
+            variable: "completed",
+            value: !toDo.completed,
+          })
+          .then(() => {
+            toDo.completed = !toDo.completed;
+          });
       }, 500);
-      toDo.completed = !toDo.completed;
     },
   },
   components: { VueSvg },
