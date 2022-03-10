@@ -1,14 +1,9 @@
 <template>
   <div id="single-event-item">
     <div id="client-event-identifier" v-if="matchedClient">
-      <img
-        v-if="matchedClient.profilePicture"
-        :src="matchedClient.profilePicture"
-        alt=""
-      />
       <profile-picture
         contact="person"
-        v-if="!matchedClient.profilePicture"
+        :profilePicture="matchedClient.profilePicture"
         :customStyle="profilePictureStyling"
       />
       <h5 id="client-name">

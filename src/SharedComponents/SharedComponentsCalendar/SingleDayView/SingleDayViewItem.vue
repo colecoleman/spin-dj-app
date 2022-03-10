@@ -1,13 +1,8 @@
 <template>
   <div class="single-day-item" v-if="!loading">
     <div class="client-identifier">
-      <img
-        :src="matchedClient.profilePicture"
-        v-if="matchedClient.profilePicture"
-        alt=""
-      />
       <profile-picture
-        v-if="!matchedClient.profilePicture"
+        :profilePicture="matchedClient.profilePicture"
         contact="person"
         :customStyle="defaultProfileStyling"
       />
@@ -79,11 +74,6 @@ export default {
   display: flex;
   flex-direction: row;
   align-items: center;
-}
-img {
-  height: 30px;
-  width: 30px;
-  margin-right: 8px;
 }
 
 .client-name > p {

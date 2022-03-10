@@ -23,14 +23,9 @@
               :key="client.userId"
             >
               <div class="detail-wrapper">
-                <img
-                  v-if="client.profilePicture"
-                  :src="client.profilePicture"
-                  alt=""
-                />
                 <profile-picture
-                  v-if="!client.profilePicture"
                   contact="contact"
+                  :profilePicture="client.profilePicture"
                   :customStyle="profilePictureStyling"
                 />
                 <h5>{{ client.given_name }} {{ client.family_name }}</h5>

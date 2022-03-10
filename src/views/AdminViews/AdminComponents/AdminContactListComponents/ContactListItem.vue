@@ -23,8 +23,11 @@
     />
     <div class="contact-wrapper" v-if="category !== 'locations'">
       <div class="name-and-photo">
-        <img v-if="contact.profilePicture" :src="contact.profilePicture" />
-        <profile-picture contact="person" :customStyle="svgStyling" />
+        <profile-picture
+          contact="person"
+          :profilePicture="contact.profilePicture"
+          :customStyle="svgStyling"
+        />
         <div class="name" @click="viewContact()">
           <h5 v-if="contact.businessName" class="business-name">
             <span>{{ contact.businessName }}</span>
@@ -184,14 +187,6 @@ export default {
     /* width: calc(100% - 60px); */
   }
 
-  img {
-    width: 25%;
-    width: 30px;
-    padding: 5px;
-    object-fit: cover;
-    border-radius: 50%;
-  }
-
   .name-and-photo,
   .email-and-phone {
     width: 30%;
@@ -243,11 +238,6 @@ export default {
   }
 
   @media (min-width: 700px) {
-    img {
-      width: 45px;
-      padding: 10px;
-    }
-
     .button-wrapper {
       width: 25%;
       position: relative;

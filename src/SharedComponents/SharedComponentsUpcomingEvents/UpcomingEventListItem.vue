@@ -1,14 +1,9 @@
 <template>
   <div class="single-event-item" v-if="event" :class="loading ? loading : ''">
     <div class="client-event-identifier" v-if="matchedClient">
-      <img
-        v-if="matchedClient.profilePicture"
-        :src="matchedClient.profilePicture"
-        alt=""
-      />
       <profile-picture
-        v-if="!matchedClient.profilePicture"
         contact="person"
+        :profilePicture="matchedClient.profilePicture"
         :customStyle="profilePictureStyling"
       />
       <h5 class="client-name" v-if="matchedClient">
@@ -135,11 +130,6 @@ export default {
     align-items: center;
   }
 
-  .client-event-identifier img {
-    height: 30px;
-    width: 30px;
-    margin: 5px;
-  }
   .client-name {
     font-size: 10pt;
     display: flex;

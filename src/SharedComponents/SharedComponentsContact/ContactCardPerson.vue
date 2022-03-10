@@ -19,6 +19,7 @@
         <profile-picture
           contact="person"
           :customStyle="profilePictureStyling"
+          :profilePicture="contact.profilePicture"
         />
         <div id="contact-information">
           <p class="contact-contact-information">

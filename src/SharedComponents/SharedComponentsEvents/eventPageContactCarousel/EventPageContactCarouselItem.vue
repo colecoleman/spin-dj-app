@@ -2,14 +2,9 @@
   <div class="contact-carousel-item-wrapper">
     <div id="contact-carousel-item-title-and-picture">
       <h4>{{ contact.role }}</h4>
-      <img
-        v-if="contact.profilePicture"
-        :src="contact.profilePicture"
-        alt="Profile Picture"
-        @click="navigateToContactPage(contact)"
-      />
       <profile-picture
         contact="person"
+        :profilePicture="contact.profilePicture"
         @clicked="navigateToContactPage(contact)"
       />
     </div>

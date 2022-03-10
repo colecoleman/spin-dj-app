@@ -1,8 +1,11 @@
 <template>
   <section>
     <div id="messaging-profile-photo">
-      <img v-if="person.profilePicture" :src="person.profilePicture" />
-      <profile-picture contact="person" :customStyle="svgStyling" />
+      <profile-picture
+        contact="person"
+        :profilePicture="person.profilePicture"
+        :customStyle="svgStyling"
+      />
     </div>
     <div id="messaging-content">
       <h5>{{ fullName }}</h5>
