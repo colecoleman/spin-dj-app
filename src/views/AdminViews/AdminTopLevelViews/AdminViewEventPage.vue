@@ -137,7 +137,7 @@
         <event-page-contact-carousel :contacts="contacts" :event="event" />
       </div>
       <div id="to-do">
-        <to-do-specific-event :event="event" />
+        <to-do-specific-event :event="event" :eventContacts="contacts" />
       </div>
       <div id="recent-messages">
         <recent-messages :conversationList="eventConversations" />
@@ -510,7 +510,7 @@ section {
 @media screen and (min-width: 800px) {
   section {
     grid-template-columns: repeat(10, 1fr);
-    grid-template-rows: 75px 240px 1fr;
+    grid-template-rows: 75px 240px minmax(0, 1fr);
   }
 
   #contact-card {
@@ -545,6 +545,9 @@ section {
   #to-do {
     grid-column: 5 / 8;
     grid-row: 3 / 4;
+
+    height: 100%;
+    max-height: 100%;
   }
 
   #recent-messages {

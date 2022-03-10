@@ -7,25 +7,31 @@
   >
     <template v-slot:content>
       <div id="wrapper">
-        <div class="to-do-item" v-if="newToDoOpened">
-          <vue-svg svg="plus-sign" />
-          <input
-            type="text"
-            placeholder="Start typing.."
-            v-model="newToDo"
-            @keyup.enter="submitToDo()"
+        <div v-if="newToDoOpened">
+          <to-do-add-to-do
+            :eventId="event.userId"
+            :eventContacts="eventContacts"
+            @add-to-do="submitToDo"
           />
-          <vue-svg svg="circle-checkmark" @clicked="submitToDo()" />
-        </div>
-        <div class="to-do-item" v-for="toDo in uncompletedToDos" :key="toDo.id">
-          <to-do-item :toDo="toDo"></to-do-item>
         </div>
         <div v-if="uncompletedToDos.length < 1">
-          <p class="bold">Looks like you're all done!</p>
-          <p>Add another or take a vacation.</p>
+          <!-- <p class="bold">Looks like you're all done!</p>
+          <p>Add another or take a vacation.</p> -->
         </div>
-        <div class="to-do-item" v-for="toDo in completedToDos" :key="toDo.id">
-          <to-do-item :toDo="toDo"></to-do-item>
+        <div id="to-do-scroll-container">
+          <to-do-item
+            v-for="toDo in uncompletedToDos"
+            :key="toDo.userId"
+            :contacts="eventContacts"
+            :toDo="toDo"
+          />
+
+          <to-do-item
+            v-for="toDo in completedToDos"
+            :key="toDo.userId"
+            :contacts="eventContacts"
+            :toDo="toDo"
+          />
         </div>
       </div>
     </template>
@@ -34,7 +40,7 @@
 
 <script>
 import ToDoItem from "../SharedComponentsToDoList/ToDoItem.vue";
-import VueSvg from "../../assets/VueSvg.vue";
+import ToDoAddToDo from "../SharedComponentsToDoList/ToDoAddToDo.vue";
 
 export default {
   data() {
@@ -48,14 +54,8 @@ export default {
     toggleNewToDo() {
       this.newToDoOpened = !this.newToDoOpened;
     },
-    submitToDo() {
-      let item = {
-        id: "todo" + new Date().getTime(),
-        associatedContacts: [],
-        associatedEvents: [this.event.userId],
-        title: this.newToDo,
-        completed: false,
-      };
+    submitToDo(item) {
+      console.log(item);
       this.$store.dispatch("addToDo", item).then((res) => {
         this.toDos.unshift(res.data);
       });
@@ -78,56 +78,32 @@ export default {
     this.$store.dispatch("getToDos", payload).then(
       (res) => {
         this.toDos = [...res.Items];
+        console.log(res.Items);
       },
       (error) => {
         this.$store.commit("addStatus", { type: "error", note: error });
       }
     );
   },
-  components: { ToDoItem, VueSvg },
-  props: ["event"],
+  components: { ToDoItem, ToDoAddToDo },
+  props: ["event", "eventContacts"],
 };
 </script>
 
 <style scoped>
 #wrapper {
   width: 100%;
-  height: 90%;
-  overflow-y: scroll;
-  position: relative;
+  max-height: 100%;
   display: flex;
   flex-direction: column;
-}
-.to-do-item {
-  height: 50px;
-  display: flex;
-  flex-direction: row;
-  align-content: center;
-  align-items: center;
+  overflow: scroll;
 }
 
-svg {
-  margin: 4px;
-}
-
-h4,
-input {
-  margin: 10px;
-  text-align: left;
-}
-
-input {
-  background: none;
-  border: none;
-  border-bottom: 1px solid gray;
-  color: var(--textColor);
-}
-
-input:active,
-input:focus {
-  outline: none;
-}
-h5 {
-  margin: 5px;
+#to-do-scroll-container {
+  /* height: 100%;
+  max-height: 100%; */
+  width: 100%;
+  /* height: 100%; */
+  overflow-y: scroll;
 }
 </style>
