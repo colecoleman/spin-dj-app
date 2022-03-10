@@ -8,7 +8,7 @@
   >
     <p class="title">{{ title }}</p>
     <input
-      :type="type"
+      type="text"
       v-model="value"
       :placeholder="placeholder"
       @blur="blur()"
@@ -48,8 +48,6 @@ export default {
       this.$emit("dropdownSelected", item);
     },
     dropdownItemDisplay(item) {
-      console.log(item);
-      console.log(this.dropdownDisplay);
       let str = "";
       this.dropdownDisplay.forEach((element) => {
         str = str + " " + item[element];
@@ -59,7 +57,6 @@ export default {
   },
   emits: ["input", "blur", "keydown", "dropdownSelected"],
   props: [
-    "type",
     "title",
     "error",
     "placeholder",
