@@ -28,7 +28,7 @@
           <p>{{ paymentMethod.info.instructions }}</p>
         </div>
       </div>
-      <div id="contact-card-lower-div">
+      <!-- <div id="contact-card-lower-div">
         <div class="contact-card-lower-div-half">
           <div class="indented-item">
             <p class="bold">
@@ -57,8 +57,9 @@
             </p>
             <p class="indented"></p>
           </div>
-        </div></div
-    ></template>
+        </div>
+      </div> -->
+    </template>
   </base-card>
 </template>
 <script>
