@@ -1096,6 +1096,7 @@ export default {
 
   #summary-inner-wrapper {
     height: 100%;
+    overflow: scroll;
     display: grid;
     grid-template-columns: 100%;
     grid-template-rows: 1fr 60px;
