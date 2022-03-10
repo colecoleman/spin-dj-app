@@ -34,7 +34,7 @@ import FloatingMenuWithListItems from "../../../../../SharedComponents/SharedCom
 export default {
   data() {
     return {
-      events: undefined,
+      events: [],
       isFetching: this.$store.state.isFetching,
       sortMenuOpened: false,
       sortItems: [
@@ -76,11 +76,20 @@ export default {
     },
   },
   props: ["contact"],
+  created() {
+    this.contact.associatedEvents.forEach((event) => {
+      this.$store.dispatch("adminGetEvent", event).then((res) => {
+        console.log(res);
+        this.events.push(res.data.Item);
+      });
+    });
+  },
   watch: {
     contact: function () {
       this.events = [];
       this.contact.associatedEvents.forEach((event) => {
         this.$store.dispatch("adminGetEvent", event).then((res) => {
+          console.log(res);
           this.events.push(res.data.Item);
         });
       });
