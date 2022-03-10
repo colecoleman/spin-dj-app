@@ -1,7 +1,11 @@
 <template>
   <div class="item-with-actionable-icon-wrapper">
     <p>{{ item }}</p>
-    <vue-svg :svg="svg" :customStyle="style" @clicked="click" />
+    <vue-svg
+      :svg="svg ? svg : 'x-icon'"
+      :customStyle="style"
+      @clicked="click"
+    />
   </div>
 </template>
 <script>
@@ -30,7 +34,7 @@ export default {
   display: flex;
   align-items: center;
   /* background-color: var(--highlightColor); */
-  outline: 1px solid var(--textColor);
+  border: 1px solid var(--textColor);
   width: fit-content;
   padding: 10px 20px;
   margin: 5px;

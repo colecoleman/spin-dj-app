@@ -53,7 +53,7 @@ export default {
   position: relative;
   align-items: center;
   /* background-color: var(--highlightColor); */
-  outline: 1px solid var(--textColor);
+  border: 1px solid var(--textColor);
   width: fit-content;
   padding: 10px 15px;
   margin: 5px;
@@ -61,7 +61,7 @@ export default {
 }
 
 .item-with-actionable-icon-wrapper:hover {
-  outline: 2px solid var(--highlightColor);
+  border: 2px solid var(--highlightColor);
 }
 
 .title {
@@ -77,7 +77,7 @@ export default {
 }
 .checked {
   background-color: var(--textColor);
-  outline: 2px solid var(--highlightColor);
+  border: 2px solid var(--highlightColor);
   color: var(--foregroundColor);
 }
 
