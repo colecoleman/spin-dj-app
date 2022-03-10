@@ -25,13 +25,32 @@
               v-for="(field, index) in form.fields"
               :key="index"
             >
-              <p class="bold">{{ field.name }}</p>
-              <div class="form-item row-flex">
+              <div class="row-flex">
+                <p class="bold">{{ field.name }}</p>
+                <vue-svg
+                  svg="x-icon"
+                  :customStyle="svgStyling"
+                  @clicked="deleteField(form, index)"
+                />
                 <vue-svg
                   svg="edit-pen"
                   :customStyle="svgStyling"
                   @clicked="editField(field, index)"
                 />
+                <vue-svg
+                  svg="down-arrow"
+                  @clicked="moveField(index - 1, index, form.fields)"
+                  :customStyle="svgStyling + ' transform: rotate(180deg)'"
+                  v-if="index != 0"
+                />
+                <vue-svg
+                  svg="down-arrow"
+                  @clicked="moveField(index + 1, index, form.fields)"
+                  :customStyle="svgStyling"
+                  v-if="index != form.fields.length - 1"
+                />
+              </div>
+              <div class="form-item row-flex">
                 <div
                   class="form-item input-view"
                   v-for="(input, inputIndex) in field.fields"
@@ -413,6 +432,15 @@ export default {
       this.newField = { ...this.newField, ...field };
       this.fieldEditIndex = index;
     },
+    deleteField(form, index) {
+      console.log(form, index);
+      form.fields.splice(index, 1);
+    },
+    moveField(direction, index, array) {
+      let item = array.slice(index, index + 1);
+      array.splice(index, 1);
+      array.splice(direction, 0, ...item);
+    },
   },
   computed: {
     forms() {
@@ -460,11 +488,12 @@ export default {
   }
 
   .form-item {
-    display: flex;
-    width: 90%;
-    flex-direction: column;
-    justify-content: left;
-    margin-left: 15px;
+    /* display: flex; */
+    /* width: 90%; */
+    /* flex-direction: column; */
+    /* justify-content: left; */
+    /* margin-left: 15px; */
+    max-width: 100%;
   }
 
   .row-flex {
@@ -535,7 +564,7 @@ export default {
       display: flex;
       flex-direction: column;
       justify-content: left;
-      margin-left: 15px;
+      /* margin-left: 15px; */
     }
 
     .row-flex {
