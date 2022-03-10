@@ -112,10 +112,7 @@
         />
       </div>
       <div id="location-scroller">
-        <specific-event-page-location-scroller
-          :event="event"
-          :loading="locations ? false : true"
-        />
+        <specific-event-page-location-scroller :event="event" />
       </div>
       <div id="button-bar">
         <four-button-bar-with-drop-down

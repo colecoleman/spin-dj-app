@@ -2,7 +2,6 @@
   <base-card
     svg="info"
     :actionIcon="userRole === 'admin' ? 'edit-pen' : ''"
-    :loading="loading"
     :soloHeading="true"
     :title="formatDate(event.data.date)"
     :subtitle="`${formatTime(event.data.startTime)} - ${formatTime(
