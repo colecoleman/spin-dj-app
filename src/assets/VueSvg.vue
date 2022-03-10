@@ -7,6 +7,7 @@
     height="107.309"
     viewBox="0 0 96.7 107.309"
     v-if="svg === 'add-package'"
+    @mousedown.prevent=""
   >
     <g
       id="Group_635"
