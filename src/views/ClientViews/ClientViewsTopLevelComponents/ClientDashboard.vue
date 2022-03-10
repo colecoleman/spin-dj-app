@@ -1,12 +1,12 @@
 <template>
-  <section>
+  <section v-if="client">
     <!-- <div id="client-dashboard-wrapper" v-if="!loading">
       <div class="column-one"> -->
     <div id="contact-card">
       <contact-card-person :contact="client" />
     </div>
     <div id="to-do">
-      <contact-page-to-do-list :contact="client" />
+      <to-do-list listType="contact" :contact="client" />
     </div>
     <!-- </div> -->
     <div id="upcoming-events">
@@ -28,7 +28,7 @@
 </template>
 <script>
 import RecentMessages from "../../../SharedComponents/SharedComponentsMessaging/RecentMessages.vue";
-import ContactPageToDoList from "../../../SharedComponents/SharedComponentsContact/ContactPageToDoList.vue";
+import ToDoList from "../../../SharedComponents/SharedComponentsToDoList/ToDoList.vue";
 import EventCalendar from "../../../SharedComponents/SharedComponentsCalendar/EventCalendar.vue";
 import UpcomingEvents from "../../../SharedComponents/SharedComponentsUpcomingEvents/UpcomingEvents.vue";
 import ContactCardPerson from "../../../SharedComponents/SharedComponentsContact/ContactCardPerson.vue";
@@ -74,7 +74,7 @@ export default {
     ContactCardPerson,
     UpcomingEvents,
     RecentMessages,
-    ContactPageToDoList,
+    ToDoList,
     EventCalendar,
   },
   props: [],

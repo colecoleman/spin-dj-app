@@ -35,7 +35,12 @@
         <event-page-contact-carousel :contacts="contacts" />
       </div>
       <div id="to-do">
-        <to-do-specific-event :event="event" />
+        <to-do-list
+          v-if="contacts"
+          listType="event"
+          :eventContacts="contacts"
+          :event="event"
+        />
       </div>
       <div id="messages">
         <!-- <recent-messages-event v-if="contacts"></recent-messages-event> -->
@@ -49,7 +54,7 @@
 </template>
 
 <script>
-import ToDoSpecificEvent from "../../../SharedComponents/SharedComponentsEvents/ToDoSpecificEvent.vue";
+import ToDoList from "../../../SharedComponents/SharedComponentsToDoList/ToDoList.vue";
 // import RecentMessagesEvent from "../../../SharedComponents/SharedComponentsMessaging/RecentMessagesEvent.vue";
 import RecentMessages from "../../../SharedComponents/SharedComponentsMessaging/RecentMessages.vue";
 import EventPageContactCard from "../../../SharedComponents/SharedComponentsEvents/EventPageContactCard.vue";
@@ -135,7 +140,7 @@ export default {
     return this.event.contacts;
   },
   components: {
-    ToDoSpecificEvent,
+    ToDoList,
     // RecentMessagesEvent,
     RecentMessages,
     EventPageContactCard,

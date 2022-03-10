@@ -137,7 +137,7 @@
         <event-page-contact-carousel :contacts="contacts" :event="event" />
       </div>
       <div id="to-do">
-        <to-do-specific-event :event="event" :eventContacts="contacts" />
+        <to-do-list :event="event" :eventContacts="contacts" listType="event" />
       </div>
       <div id="recent-messages">
         <recent-messages :conversationList="eventConversations" />
@@ -147,7 +147,7 @@
 </template>
 
 <script>
-import ToDoSpecificEvent from "../../../SharedComponents/SharedComponentsEvents/ToDoSpecificEvent.vue";
+import ToDoList from "../../../SharedComponents/SharedComponentsToDoList/ToDoList.vue";
 import RecentMessages from "../../../SharedComponents/SharedComponentsMessaging/RecentMessages.vue";
 import EventPageContactCard from "../../../SharedComponents/SharedComponentsEvents/EventPageContactCard.vue";
 import EventPageContactCarousel from "../../../SharedComponents/SharedComponentsEvents/eventPageContactCarousel/EventPageContactCarousel.vue";
@@ -388,7 +388,7 @@ export default {
     });
   },
   components: {
-    ToDoSpecificEvent,
+    ToDoList,
     RecentMessages,
     EventPageContactCard,
     EventPageContactCarousel,

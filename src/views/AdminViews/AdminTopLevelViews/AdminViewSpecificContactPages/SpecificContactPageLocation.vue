@@ -9,7 +9,7 @@
     @toggle-popup="togglePopup"
     v-if="popupOpen === 'delete'"
   /> -->
-  <section>
+  <section v-if="location">
     <div id="location-card">
       <contact-card-location
         v-if="location"
@@ -18,7 +18,7 @@
       />
     </div>
     <div id="to-do">
-      <contact-page-to-do-list :contact="location" />
+      <to-do-list listType="contact" :contact="location" />
     </div>
     <div id="button-bar">
       <four-button-bar-with-drop-down
@@ -56,7 +56,8 @@
 </template>
 
 <script>
-import ContactPageToDoList from "../../AdminComponents/AdminContactPageComponents/AdminContactPageSharedComponents/ContactPageToDoList.vue";
+import ToDoList from "../../../../SharedComponents/SharedComponentsToDoList/ToDoList.vue";
+
 import AutomationList from "../../AdminComponents/AdminSharedComponents/AutomationList.vue";
 import ContactPageNotes from "../../AdminComponents/AdminContactPageComponents/AdminContactPageSharedComponents/ContactPageNotes/ContactPageNotes.vue";
 import LocationPageUpcomingEvents from "../../AdminComponents/AdminContactPageComponents/LocationPageComponents/LocationUpcomingEvents.vue";
@@ -99,15 +100,16 @@ export default {
     await this.$store
       .dispatch("adminGetContact", this.$route.params.id)
       .then((res) => {
-        console.log(res);
         this.location = res.data.Item;
       });
-    if (this.location.contacts.length > 0) {
-      await this.$store
-        .dispatch("adminGetContact", this.location.contacts[0])
-        .then((res) => {
-          this.contact = res.data.Item;
-        });
+    if (this.location.contacts) {
+      if (this.location.contacts.length > 0) {
+        await this.$store
+          .dispatch("adminGetContact", this.location.contacts[0])
+          .then((res) => {
+            this.contact = res.data.Item;
+          });
+      }
     }
   },
   methods: {
@@ -126,7 +128,7 @@ export default {
   components: {
     PopupEmailComposition,
     ContactCardPerson,
-    ContactPageToDoList,
+    ToDoList,
     LocationPageUpcomingEvents,
     ContactPageNotes,
     AutomationList,

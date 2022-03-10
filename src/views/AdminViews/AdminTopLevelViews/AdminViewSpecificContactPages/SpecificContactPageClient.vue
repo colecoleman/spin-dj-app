@@ -15,17 +15,16 @@
     v-if="popupOpen === 'delete'"
   />
 
-  <section>
+  <section v-if="contact">
     <div id="contact-card">
       <contact-card-client
-        :loading="contact ? false : true"
         :contact="contact"
         svg="person"
         @email-contact="togglePopup('send-email')"
       />
     </div>
     <div id="to-do">
-      <contact-page-to-do-list :contact="contact" />
+      <to-do-list :contact="contact" listType="contact" />
     </div>
     <div id="notes">
       <contact-page-notes
@@ -81,7 +80,7 @@
 </template>
 
 <script>
-import ContactPageToDoList from "../../AdminComponents/AdminContactPageComponents/AdminContactPageSharedComponents/ContactPageToDoList.vue";
+import ToDoList from "../../../../SharedComponents/SharedComponentsToDoList/ToDoList.vue";
 import AutomationList from "../../AdminComponents/AdminSharedComponents/AutomationList.vue";
 import ContactCardClient from "../../../../SharedComponents/SharedComponentsContact/ContactCardPerson.vue";
 import PopupEmailComposition from "../../../../SharedComponents/SharedComponentsPopupUtilities/PopupEmailComposition.vue";
@@ -220,7 +219,7 @@ export default {
   components: {
     PopupEmailComposition,
     ContactCardClient,
-    ContactPageToDoList,
+    ToDoList,
     ClientPageUpcomingEvents,
     ContactPageResetPassword,
     // TwoButtonDialogModal,

@@ -13,7 +13,7 @@
         <prospect-page-contact-health :prospect="contact" />
       </div>
       <div id="box-three">
-        <contact-page-to-do-list :id="contact.userId" />
+        <!-- <contact-page-to-do-list :id="contact.userId" /> -->
       </div>
     </div>
     <div id="right-column">
@@ -50,7 +50,7 @@
 </template>
 
 <script>
-import ContactPageToDoList from "../../AdminComponents/AdminContactPageComponents/AdminContactPageSharedComponents/ContactPageToDoList.vue";
+
 import AutomationList from "../../AdminComponents/AdminSharedComponents/AutomationList.vue";
 import ContactPageNotes from "../../AdminComponents/AdminContactPageComponents/AdminContactPageSharedComponents/ContactPageNotes/ContactPageNotes.vue";
 import PopupEmailComposition from "../../../../SharedComponents/SharedComponentsPopupUtilities/PopupEmailComposition.vue";
@@ -132,7 +132,7 @@ export default {
     PopupEmailComposition,
     ContactPageNotes,
 
-    ContactPageToDoList,
+
     AutomationList,
     ProspectPageEventDetails,
     ProspectPageContactHealth,

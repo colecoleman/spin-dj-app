@@ -19,12 +19,12 @@
     @togglePopup="togglePopup"
     v-if="popupOpen === 'reset-password'"
   />
-  <section>
+  <section v-if="contact">
     <div id="contact-card">
       <contact-card-person :contact="contact" svg="person" />
     </div>
     <div id="to-do">
-      <contact-page-to-do-list :contact="contact" />
+      <to-do-list listType="contact" :contact="contact" />
     </div>
     <div id="notes">
       <contact-page-notes :contact="contact" />
@@ -81,7 +81,7 @@
 <script>
 import UpcomingEvents from "../../../../SharedComponents/SharedComponentsUpcomingEvents/UpcomingEvents.vue";
 import ContactPageEventsAssignment from "../../AdminComponents/AdminContactPageComponents/AdminContactPageSharedComponents/ContactPageUpcomingEvents/ContactPageEventsAssignment.vue";
-import ContactPageToDoList from "../../AdminComponents/AdminContactPageComponents/AdminContactPageSharedComponents/ContactPageToDoList.vue";
+import ToDoList from "../../../../SharedComponents/SharedComponentsToDoList/ToDoList.vue";
 import AutomationList from "../../AdminComponents/AdminSharedComponents/AutomationList.vue";
 import ContactPageNotes from "../../AdminComponents/AdminContactPageComponents/AdminContactPageSharedComponents/ContactPageNotes/ContactPageNotes.vue";
 import ContactCardPerson from "../../../../SharedComponents/SharedComponentsContact/ContactCardPerson.vue";
@@ -249,7 +249,7 @@ export default {
     EmployeePageAvailabilityManager,
     ContactPageEventsAssignment,
     ContactCardPerson,
-    ContactPageToDoList,
+    ToDoList,
     UpcomingEvents,
     AutomationList,
     ContactPageNotes,

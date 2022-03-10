@@ -9,21 +9,22 @@
       <div id="wrapper">
         <div v-if="newToDoOpened">
           <to-do-add-to-do
-            :eventId="event.userId"
+            :listType="listType"
+            :eventId="event ? event.userId : undefined"
+            :contactId="contact ? contact.userId : undefined"
             :eventContacts="eventContacts"
+            :contactEvents="contact ? contact.associatedEvents : undefined"
             @add-to-do="submitToDo"
           />
         </div>
-        <div v-if="uncompletedToDos.length < 1">
-          <!-- <p class="bold">Looks like you're all done!</p>
-          <p>Add another or take a vacation.</p> -->
-        </div>
+        <div v-if="uncompletedToDos.length < 1"></div>
         <div id="to-do-scroll-container">
           <to-do-item
             v-for="toDo in uncompletedToDos"
             :key="toDo.userId"
             :contacts="eventContacts"
             :toDo="toDo"
+            :listType="listType"
           />
 
           <to-do-item
@@ -31,6 +32,7 @@
             :key="toDo.userId"
             :contacts="eventContacts"
             :toDo="toDo"
+            :listType="listType"
           />
         </div>
       </div>
@@ -50,19 +52,6 @@ export default {
       newToDo: undefined,
     };
   },
-  methods: {
-    toggleNewToDo() {
-      this.newToDoOpened = !this.newToDoOpened;
-    },
-    submitToDo(item) {
-      console.log(item);
-      this.$store.dispatch("addToDo", item).then((res) => {
-        this.toDos.unshift(res.data);
-      });
-      this.newToDo = undefined;
-      this.newToDoOpened = false;
-    },
-  },
   computed: {
     uncompletedToDos() {
       return this.toDos.filter((item) => !item.completed);
@@ -71,10 +60,31 @@ export default {
       return this.toDos.filter((item) => item.completed);
     },
   },
+  methods: {
+    toggleNewToDo() {
+      this.newToDoOpened = !this.newToDoOpened;
+    },
+    submitToDo(item) {
+      this.$store.dispatch("addToDo", item).then((res) => {
+        this.toDos.unshift(res.data);
+      });
+      this.newToDo = undefined;
+      this.newToDoOpened = false;
+    },
+  },
   created() {
-    let payload = {
-      associatedEventId: this.event.userId,
-    };
+    let payload;
+    if (this.event) {
+      payload = {
+        associatedEventId: this.event.userId,
+      };
+    }
+    if (this.contact) {
+      console.log("hey");
+      payload = {
+        associatedContactId: this.contact.userId,
+      };
+    }
     this.$store.dispatch("getToDos", payload).then(
       (res) => {
         this.toDos = [...res.Items];
@@ -86,7 +96,7 @@ export default {
     );
   },
   components: { ToDoItem, ToDoAddToDo },
-  props: ["event", "eventContacts"],
+  props: ["event", "eventContacts", "listType", "contact"],
 };
 </script>
 

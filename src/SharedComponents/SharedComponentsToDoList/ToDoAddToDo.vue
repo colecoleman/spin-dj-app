@@ -8,15 +8,17 @@
       />
       <vue-svg svg="circle-checkmark" @clicked="submitToDo" />
     </div>
-    <h5>Assign Contacts:</h5>
-    <div class="bubble-wrapper">
-      <input-with-binary-selection
-        v-for="(contact, index) in eventContacts"
-        :key="index"
-        :item="`${contact.given_name} ${contact.family_name}`"
-        :checked="checkToDoForContact(contact.userId)"
-        @clicked="assignContactToToDo(contact.userId)"
-      />
+    <div v-if="listType === 'event'">
+      <h5>Assign Contacts:</h5>
+      <div class="bubble-wrapper">
+        <input-with-binary-selection
+          v-for="(contact, index) in eventContacts"
+          :key="index"
+          :item="`${contact.given_name} ${contact.family_name}`"
+          :checked="checkToDoForContact(contact.userId)"
+          @clicked="assignContactToToDo(contact.userId)"
+        />
+      </div>
     </div>
   </div>
 </template>
@@ -31,17 +33,15 @@ export default {
       contactSearchTerm: undefined,
       toDo: {
         id: "todo" + new Date().getTime(),
-        associatedContacts: [],
-        associatedEvents: [this.eventId],
+        associatedContacts: this.contactId ? [this.contactId] : [],
+        associatedEvents: this.eventId ? [this.eventId] : [],
         title: this.newToDo,
         completed: false,
       },
     };
   },
-  computed: {},
   methods: {
     fieldInput(object, property, value) {
-      console.log(value);
       if (object) {
         object[property] = value;
       } else {
@@ -70,7 +70,7 @@ export default {
     InputWithBinarySelection,
   },
   emits: ["addToDo"],
-  props: ["eventId", "eventContacts"],
+  props: ["eventId", "eventContacts", "listType", "contactId"],
 };
 </script>
 <style scoped>

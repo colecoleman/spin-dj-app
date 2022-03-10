@@ -15,7 +15,7 @@
     v-if="popupOpen === 'delete'"
   />
 
-  <section>
+  <section v-if="contact">
     <div id="contact-card">
       <contact-card-person :contact="contact" />
     </div>
@@ -65,17 +65,17 @@
       />
     </div>
     <div id="to-do">
-      <contact-page-to-do-list :contact="contact" />
+      <to-do-list :contact="contact" listType="contact" />
     </div>
     <div id="automation">
+      <!-- :automations="automations" -->
       <automation-list
-        :automations="automations"
         :contacts="[$route.params.id]"
         automationType="Contact"
         :id="$route.params.id"
-        @automation-deleted="deleteAutomation"
-        @automation-approved="approveAutomation"
       />
+      <!-- @automation-deleted="deleteAutomation"
+        @automation-approved="approveAutomation" -->
     </div>
     <div id="notes">
       <contact-page-notes :contact="contact" />
@@ -94,7 +94,7 @@ import FourButtonBarWithDropDown from "../../../../SharedComponents/SharedCompon
 import UpcomingEvents from "../../../../SharedComponents/SharedComponentsUpcomingEvents/UpcomingEvents.vue";
 import ContactPageEventsAssignment from "../../AdminComponents/AdminContactPageComponents/AdminContactPageSharedComponents/ContactPageUpcomingEvents/ContactPageEventsAssignment.vue";
 import ContactCardCompany from "../../AdminComponents/AdminContactPageComponents/AdminContactPageSharedComponents/ContactCardCompany.vue";
-import ContactPageToDoList from "../../AdminComponents/AdminContactPageComponents/AdminContactPageSharedComponents/ContactPageToDoList.vue";
+import ToDoList from "../../../../SharedComponents/SharedComponentsToDoList/ToDoList.vue";
 import AutomationList from "../../AdminComponents/AdminSharedComponents/AutomationList.vue";
 // import VendorPageReferralPopup from "../../AdminComponents/AdminContactPageComponents/VendorPageComponents/VendorPageReferralPopup.vue";
 import ContactPageNotes from "../../AdminComponents/AdminContactPageComponents/AdminContactPageSharedComponents/ContactPageNotes/ContactPageNotes.vue";
@@ -104,7 +104,7 @@ export default {
     return {
       eventAssignmentOpen: false,
       popupOpen: null,
-      contact: {},
+      contact: undefined,
       events: [],
       eventsLoaded: false,
       pastEvents: [],
@@ -259,7 +259,7 @@ export default {
     ContactCardCompany,
     ContactCardPerson,
     UpcomingEvents,
-    ContactPageToDoList,
+    ToDoList,
     ContactPageEventsAssignment,
     AutomationList,
     ContactPageNotes,

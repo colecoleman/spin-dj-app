@@ -33,20 +33,28 @@
       v-for="(contact, index) in matchedContacts"
       :key="index"
     >
-      <profile-picture
+      <to-do-item-person-item :contact="contact" />
+      <!-- <profile-picture
         contact="person"
         :profilePicture="
-          contact.profilePicture ? contact.profilePicture : undefined
+          contact
+            ? contact.profilePicture
+              ? contact.profilePicture
+              : undefined
+            : undefined
         "
         :customStyle="'width: 25px; height: 25px; margin-left: 10px; padding: 5px;'"
       />
-      <h5>{{ contact.given_name + " " + contact.family_name }}</h5>
+      <h5 v-if="contact">
+        {{ contact.given_name + " " + contact.family_name }}
+      </h5> -->
     </div>
   </div>
 </template>
 
 <script>
 import VueSvg from "../../assets/VueSvg.vue";
+import ToDoItemPersonItem from "./ToDoItemPersonItem.vue";
 import ProfilePicture from "../../assets/ProfilePicture.vue";
 export default {
   data() {
@@ -59,9 +67,29 @@ export default {
   },
   computed: {
     matchedContacts() {
-      if (this.contacts.length > 0 && this.toDo.associatedContacts.length > 0) {
+      if (
+        this.listType === "event" &&
+        this.contacts.length > 0 &&
+        this.toDo.associatedContacts.length > 0
+      ) {
         return this.toDo.associatedContacts.map((x) => {
           return this.contacts.find((c) => x == c.userId);
+        });
+      } else if (this.listType == "contact") {
+        console.log("in map");
+        let contacts = [
+          ...this.$store.state.contacts.clients,
+          ...this.$store.state.contacts.employees,
+          ...this.$store.state.contacts.vendors,
+          ...this.$store.state.contacts.organizers,
+        ];
+        return this.toDo.associatedContacts.map((x) => {
+          let contact = contacts.find((c) => x == c.userId);
+          if (contact) {
+            return contact;
+          } else {
+            return x;
+          }
         });
       } else {
         return [];
@@ -77,12 +105,12 @@ export default {
       this.$store.dispatch("completeToDo", {
         id: toDo.userId,
         variable: "completed",
-        value: !toDo.completed,
+        value: toDo.completed,
       });
     },
   },
-  props: ["toDo", "contacts"],
-  components: { VueSvg, ProfilePicture },
+  props: ["toDo", "contacts", "listType"],
+  components: { VueSvg, ProfilePicture, ToDoItemPersonItem },
 };
 </script>
 
@@ -106,16 +134,7 @@ h4 {
   margin-bottom: 25px;
 }
 
-.to-do-contact-item {
-  display: flex;
-  align-items: center;
-}
 
-h5 {
-  margin: 0;
-  font-size: 8pt;
-  text-transform: uppercase;
-}
 
 @keyframes strike {
   0% {

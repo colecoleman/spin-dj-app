@@ -14,7 +14,7 @@
     @toggle-popup="togglePopup"
     v-if="popupOpen === 'delete'"
   />
-  <section>
+  <section v-if="contact">
     <div id="contact-card">
       <contact-card-person v-if="contact" :contact="contact" svg="person" />
     </div>
@@ -22,7 +22,7 @@
       <contact-page-notes v-if="contact" :contact="contact" />
     </div>
     <div id="to-do">
-      <contact-page-to-do-list v-if="contact" :contact="contact" />
+      <to-do-list listType="contact" :contact="contact" />
     </div>
 
     <div id="button-bar">
@@ -73,7 +73,7 @@
 </template>
 
 <script>
-import ContactPageToDoList from "../../AdminComponents/AdminContactPageComponents/AdminContactPageSharedComponents/ContactPageToDoList.vue";
+import ToDoList from "../../../../SharedComponents/SharedComponentsToDoList/ToDoList.vue";
 import AutomationList from "../../AdminComponents/AdminSharedComponents/AutomationList.vue";
 import UpcomingEvents from "../../../../SharedComponents/SharedComponentsUpcomingEvents/UpcomingEvents.vue";
 import ContactPageNotes from "../../AdminComponents/AdminContactPageComponents/AdminContactPageSharedComponents/ContactPageNotes/ContactPageNotes.vue";
@@ -240,7 +240,7 @@ export default {
     PopupEmailComposition,
     ContactCardPerson,
     ContactPageNotes,
-    ContactPageToDoList,
+    ToDoList,
     UpcomingEvents,
     ContactPageEventsAssignment,
     ContactPageDeleteContact,

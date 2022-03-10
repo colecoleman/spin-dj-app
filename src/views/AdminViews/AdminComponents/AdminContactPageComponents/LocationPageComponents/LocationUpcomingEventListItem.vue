@@ -53,12 +53,15 @@ export default {
     formatPrice,
     balanceOutstanding,
   },
-  mounted() {
+  async mounted() {
     this.loading = true;
-
-    this.$store.dispatch("getUser", this.event.contacts[0]).then((res) => {
-      this.matchedClient = res.Item;
-    });
+    console.log(this.event.contacts);
+    await this.$store
+      .dispatch("getUser", this.event.contacts[0].id)
+      .then((res) => {
+        console.log(res);
+        this.matchedClient = res;
+      });
     this.loading = false;
   },
   props: ["event"],
