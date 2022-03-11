@@ -8,6 +8,7 @@
     >
       {{ config }}
     </li>
+    <li @click="manageSubscription">Subscription</li>
   </ul>
 </template>
 
@@ -24,6 +25,11 @@ export default {
         behavior: "smooth",
       });
       this.activeLink = id;
+    },
+    manageSubscription() {
+      this.$store.dispatch("stripeCreatePortal").then((res) => {
+        window.location.href = res.data.url;
+      });
     },
   },
   props: ["items"],
