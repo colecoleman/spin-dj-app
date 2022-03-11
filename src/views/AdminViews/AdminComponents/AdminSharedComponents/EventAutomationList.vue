@@ -2,7 +2,7 @@
   <base-card
     svg="automation"
     title="Automation"
-    actionIcon="plus-sign"
+    actionIcon="edit-pen"
     @action-one-clicked="toggleAddAutomationsOpen"
   >
     <template v-slot:content>
