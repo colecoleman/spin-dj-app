@@ -51,6 +51,7 @@ export default {
       this.$emit("actionOneClicked");
     },
   },
+  emits: ["actionOneClicked"],
   components: { VueSvg },
 };
 </script>
