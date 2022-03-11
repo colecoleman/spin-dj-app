@@ -102,7 +102,7 @@
             svg="plus-sign"
             :customStyle="productTitleSvgStyling"
             v-if="activeStoreProduct === product.id"
-            @clicked="addProductToEvent"
+            @clicked="addProductToEvent(product)"
           />
           <h4>{{ product.name }}</h4>
         </div>
