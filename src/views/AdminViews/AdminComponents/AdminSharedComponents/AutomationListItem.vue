@@ -17,7 +17,6 @@
         @click="approveAutomation"
         v-if="!automation.approved"
       />
-      <button-standard-with-icon svg="trash-can" @click="deleteAutomation" />
     </div>
   </div>
 </template>
@@ -43,14 +42,8 @@ export default {
         this.$emit("automationApproved", this.automation.id);
       });
     },
-    deleteAutomation() {
-      this.$store
-        .dispatch("adminDeleteAutomation", this.automation.id)
-        .then(() => {
-          this.$emit("automationDeleted", this.automation.id);
-        });
-    },
   },
+  emits: ["automationApproved"],
   props: ["automation"],
 };
 </script>
@@ -65,16 +58,14 @@ export default {
   align-items: center;
   justify-content: space-between;
   margin-bottom: 10px;
+  border-bottom: 1px solid var(--textColor);
 }
 
 .left-div {
   text-align: left;
-  /* width: auto; */
 }
 .right-div {
   max-width: 30%;
-  /* width: 40%; */
-  /* width: auto; */
   display: flex;
   flex-direction: row;
   justify-content: right;
