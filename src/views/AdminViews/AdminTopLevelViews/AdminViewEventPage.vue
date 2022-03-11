@@ -126,11 +126,10 @@
         <event-information :event="event" :eventId="event.userId" />
       </div>
       <div id="automation">
-        <automation-list
+        <event-automation-list
           :automations="automations"
           :contacts="contacts"
-          automationType="Event"
-          :id="$route.params.id"
+          :event="event"
         />
       </div>
       <div id="contact-carousel">
@@ -152,7 +151,7 @@ import RecentMessages from "../../../SharedComponents/SharedComponentsMessaging/
 import EventPageContactCard from "../../../SharedComponents/SharedComponentsEvents/EventPageContactCard.vue";
 import EventPageContactCarousel from "../../../SharedComponents/SharedComponentsEvents/eventPageContactCarousel/EventPageContactCarousel.vue";
 import SpecificEventPageLocationScroller from "../../../SharedComponents/SharedComponentsEvents/specificEventPageLocationScroller/SpecificEventPageLocationScroller.vue";
-import AutomationList from "../AdminComponents/AdminSharedComponents/AutomationList.vue";
+import EventAutomationList from "../AdminComponents/AdminSharedComponents/EventAutomationList.vue";
 // import Backdrop from "../../../SharedComponents/SharedComponentsUI/Backdrop.vue";
 import FormsPopup from "../../../SharedComponents/SharedComponentsEvents/FormsPopup.vue";
 import InvoicePopup from "../../../SharedComponents/SharedComponentsEvents/InvoicePopup.vue";
@@ -393,7 +392,7 @@ export default {
     EventPageContactCard,
     EventPageContactCarousel,
     SpecificEventPageLocationScroller,
-    AutomationList,
+    EventAutomationList,
     EventMakePayment,
     InvoicePopup,
     PopupModal,

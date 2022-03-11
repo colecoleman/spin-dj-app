@@ -56,11 +56,10 @@
     <div id="automation">
       <automation-list
         :automations="automations"
+        :events="events"
+        :contact="contact"
         automationType="Contact"
-        :contacts="[contact]"
         :id="$route.params.id"
-        @automation-deleted="deleteAutomation"
-        @automation-approved="approveAutomation"
       />
     </div>
     <div id="messages">
@@ -82,7 +81,7 @@
 import UpcomingEvents from "../../../../SharedComponents/SharedComponentsUpcomingEvents/UpcomingEvents.vue";
 import ContactPageEventsAssignment from "../../AdminComponents/AdminContactPageComponents/AdminContactPageSharedComponents/ContactPageUpcomingEvents/ContactPageEventsAssignment.vue";
 import ToDoList from "../../../../SharedComponents/SharedComponentsToDoList/ToDoList.vue";
-import AutomationList from "../../AdminComponents/AdminSharedComponents/AutomationList.vue";
+import AutomationList from "../../AdminComponents/AdminSharedComponents/ContactAutomationList.vue";
 import ContactPageNotes from "../../AdminComponents/AdminContactPageComponents/AdminContactPageSharedComponents/ContactPageNotes/ContactPageNotes.vue";
 import ContactCardPerson from "../../../../SharedComponents/SharedComponentsContact/ContactCardPerson.vue";
 import EmployeePageAvailabilityManager from "../../AdminComponents/AdminContactPageComponents/EmployeePageComponents/EmployeePageAvailabilityManager/EmployeePageAvailabilityManager.vue";

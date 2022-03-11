@@ -70,7 +70,8 @@
     <div id="automation">
       <!-- :automations="automations" -->
       <automation-list
-        :contacts="[$route.params.id]"
+        :events="events"
+        :contact="contact"
         automationType="Contact"
         :id="$route.params.id"
       />
@@ -95,7 +96,7 @@ import UpcomingEvents from "../../../../SharedComponents/SharedComponentsUpcomin
 import ContactPageEventsAssignment from "../../AdminComponents/AdminContactPageComponents/AdminContactPageSharedComponents/ContactPageUpcomingEvents/ContactPageEventsAssignment.vue";
 import ContactCardCompany from "../../AdminComponents/AdminContactPageComponents/AdminContactPageSharedComponents/ContactCardCompany.vue";
 import ToDoList from "../../../../SharedComponents/SharedComponentsToDoList/ToDoList.vue";
-import AutomationList from "../../AdminComponents/AdminSharedComponents/AutomationList.vue";
+import AutomationList from "../../AdminComponents/AdminSharedComponents/ContactAutomationList.vue";
 // import VendorPageReferralPopup from "../../AdminComponents/AdminContactPageComponents/VendorPageComponents/VendorPageReferralPopup.vue";
 import ContactPageNotes from "../../AdminComponents/AdminContactPageComponents/AdminContactPageSharedComponents/ContactPageNotes/ContactPageNotes.vue";
 

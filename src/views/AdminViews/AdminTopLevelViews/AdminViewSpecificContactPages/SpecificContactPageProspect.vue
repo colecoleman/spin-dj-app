@@ -51,7 +51,7 @@
 
 <script>
 
-import AutomationList from "../../AdminComponents/AdminSharedComponents/AutomationList.vue";
+import AutomationList from "../../AdminComponents/AdminSharedComponents/ContactAutomationList.vue";
 import ContactPageNotes from "../../AdminComponents/AdminContactPageComponents/AdminContactPageSharedComponents/ContactPageNotes/ContactPageNotes.vue";
 import PopupEmailComposition from "../../../../SharedComponents/SharedComponentsPopupUtilities/PopupEmailComposition.vue";
 import FourButtonBarWithDropDown from "../../../../SharedComponents/SharedComponentsUI/FourButtonBarWithDropDown.vue";

@@ -4,11 +4,7 @@
     :contact="contact"
     @closeWindow="togglePopup"
   />
-  <!-- <contact-page-delete-contact
-    :contact="contact"
-    @toggle-popup="togglePopup"
-    v-if="popupOpen === 'delete'"
-  /> -->
+ 
   <section v-if="location">
     <div id="location-card">
       <contact-card-location
@@ -38,7 +34,7 @@
       />
     </div>
     <div id="contact-card">
-      <!-- <location-preferred-information></location-preferred-information> -->
+
       <contact-card-person :contact="contact" />
     </div>
     <div id="automation">
@@ -58,7 +54,7 @@
 <script>
 import ToDoList from "../../../../SharedComponents/SharedComponentsToDoList/ToDoList.vue";
 
-import AutomationList from "../../AdminComponents/AdminSharedComponents/AutomationList.vue";
+import AutomationList from "../../AdminComponents/AdminSharedComponents/ContactAutomationList.vue";
 import ContactPageNotes from "../../AdminComponents/AdminContactPageComponents/AdminContactPageSharedComponents/ContactPageNotes/ContactPageNotes.vue";
 import LocationPageUpcomingEvents from "../../AdminComponents/AdminContactPageComponents/LocationPageComponents/LocationUpcomingEvents.vue";
 // import LocationPreferredInformation from "../ContactPageComponents/LocationPageComponents/LocationPreferredInformation.vue";

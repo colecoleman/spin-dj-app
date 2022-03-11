@@ -55,8 +55,8 @@
         </div> -->
     <div id="automation">
       <automation-list
-        :automations="automations"
-        :contacts="[contact]"
+        :events="events"
+        :contact="contact"
         automationType="Contact"
         :id="$route.params.id"
       />
@@ -81,7 +81,7 @@
 
 <script>
 import ToDoList from "../../../../SharedComponents/SharedComponentsToDoList/ToDoList.vue";
-import AutomationList from "../../AdminComponents/AdminSharedComponents/AutomationList.vue";
+import AutomationList from "../../AdminComponents/AdminSharedComponents/ContactAutomationList.vue";
 import ContactCardClient from "../../../../SharedComponents/SharedComponentsContact/ContactCardPerson.vue";
 import PopupEmailComposition from "../../../../SharedComponents/SharedComponentsPopupUtilities/PopupEmailComposition.vue";
 import ContactPageDeleteContact from "../../AdminComponents/AdminContactPageComponents/AdminContactPageSharedComponents/ContactPageDeleteContact.vue";
@@ -95,11 +95,10 @@ import ContactPageNotes from "../../AdminComponents/AdminContactPageComponents/A
 export default {
   data() {
     return {
-      automations: [],
       contact: undefined,
       thread: undefined,
       conversation: undefined,
-
+      events: [],
       eventConversation: [],
       popupOpen: null,
       buttons: [
@@ -197,6 +196,12 @@ export default {
           }
         }
       });
+    this.contact.associatedEvents.forEach((event) => {
+      this.$store.dispatch("adminGetEvent", event).then((res) => {
+        console.log(res);
+        this.events.push(res.data.Item);
+      });
+    });
     if (this.eventConversation) {
       Promise.all(this.getConversations(this.eventConversation)).then((res) => {
         let conversations = res;
