@@ -350,6 +350,27 @@ const store = createStore({
           );
       });
     },
+    async adminManualAddAutomation(context, payload) {
+      return new Promise((resolve, reject) => {
+        axios
+          .put(
+            `https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/admin/${context.state.user.tenantId}/automations`,
+            payload
+          )
+          .then(
+            (result) => {
+              resolve(result);
+            },
+            (error) => {
+              context.commit("addStatus", {
+                type: "error",
+                note: error,
+              });
+              reject(error);
+            }
+          );
+      })
+    },
     async adminDeleteAutomation(context, payload) {
       return new Promise((resolve, reject) => {
         axios
@@ -359,10 +380,6 @@ const store = createStore({
           .then(
             (result) => {
               resolve(result);
-              context.commit("addStatus", {
-                type: "success",
-                note: "Automation Deleted",
-              });
             },
             (error) => {
               context.commit("addStatus", {
