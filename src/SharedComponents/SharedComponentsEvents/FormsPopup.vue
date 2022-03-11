@@ -59,6 +59,7 @@
           @action-one-clicked="
             userRole === 'admin' || 'client' ? initiateDeleteForm(index) : ''
           "
+          :subtitle="form.description"
         >
           <template v-slot:content>
             <div
@@ -209,7 +210,6 @@
 </template>
 
 <script>
-
 import MobileCloseButton from "../SharedComponentsUI/MobileCloseButton.vue";
 import Backdrop from "../SharedComponentsUI/Backdrop.vue";
 import FormsPopupAddForm from "./FormsPopupAddForm.vue";
