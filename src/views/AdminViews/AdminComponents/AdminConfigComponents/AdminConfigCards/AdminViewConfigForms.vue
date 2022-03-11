@@ -428,12 +428,10 @@ export default {
       this.editIndex = index;
     },
     editField(field, index) {
-      console.log(field);
       this.newField = { ...this.newField, ...field };
       this.fieldEditIndex = index;
     },
     deleteField(form, index) {
-      console.log(form, index);
       form.fields.splice(index, 1);
     },
     moveField(direction, index, array) {
