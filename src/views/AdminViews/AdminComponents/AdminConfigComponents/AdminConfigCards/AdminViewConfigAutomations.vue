@@ -25,24 +25,17 @@
           </div>
           <div class="automations-item" v-if="automation.contactType">
             <div class="automations-item">
-              <p>
-                <input
-                  type="checkbox"
-                  @click="automation.approved = !automation.approved"
-                />
-                Approval Required?:
-                <input-with-binary-selection
-                  :item="
-                    automation.approved
-                      ? 'Does Not Require Approval'
-                      : 'Requires Approval'
-                  "
-                  :checked="!automation.approved"
-                  @clicked="
-                    fieldInput(automation, 'approved', !automation.approved)
-                  "
-                />
-              </p>
+              <input-with-binary-selection
+                :item="
+                  automation.approved
+                    ? 'Does Not Require Approval'
+                    : 'Requires Approval'
+                "
+                :checked="!automation.approved"
+                @clicked="
+                  fieldInput(automation, 'approved', !automation.approved)
+                "
+              />
             </div>
             <div class="automations-item">
               <p>Trigger:</p>
@@ -144,7 +137,7 @@
                     fieldInput(automation.action.email, 'content', $event)
                   "
                 />
-                <input-with-binary-selection
+                <!-- <input-with-binary-selection
                   item="Apply To Existing Events?"
                   :checked="automation.applyToExistingEvents"
                   @clicked="
@@ -154,7 +147,7 @@
                       !automation.applyToExistingEvents
                     )
                   "
-                />
+                /> -->
                 <button-standard-with-icon
                   text="Add Automation"
                   @click="addAutomation()"
@@ -234,10 +227,8 @@
                       <b>Subject: </b>
                       {{ automation.action.email.subject }}
                     </p>
-                    <p>
-                      <b>Content: </b>
-                      {{ automation.action.email.content }}
-                    </p>
+                    <b>Content: </b>
+                    <p v-html="automation.action.email.content"></p>
                   </div>
                   <div
                     class="automations-item"
@@ -408,7 +399,8 @@ export default {
   }
 
   .automation-conditional-wrapper {
-    max-height: 300px;
+    height: 100%;
+    max-height: 100%;
     overflow: scroll;
   }
   .automations-section {
@@ -467,8 +459,7 @@ export default {
   }
   @media (min-width: 850px) {
     .automation-conditional-wrapper {
-      height: fit-content;
-      max-height: 100%;
+      max-height: 400px;
       overflow: scroll;
     }
 
