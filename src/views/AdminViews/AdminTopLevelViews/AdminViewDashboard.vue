@@ -8,7 +8,7 @@
       </base-card>
     </div>
     <div id="upcoming-events">
-      <upcoming-events :events="events" />
+      <upcoming-events :events="events" :loaded="loaded" />
     </div>
     <div id="metrics-chart">
       <metrics-chart :events="events" />
@@ -31,17 +31,33 @@ import RecentMessages from "../../../SharedComponents/SharedComponentsMessaging/
 import AdminDashboardNavigation from "../AdminComponents/AdminDashboardComponents/AdminDashboardNavigation.vue";
 
 export default {
+  data() {
+    return {
+      loaded: false,
+    };
+  },
   computed: {
     currentUser() {
       return this.$store.state.user;
     },
-
     events() {
       return this.$store.state.events;
     },
     userConversations() {
       return [...new Set(this.currentUser.conversations)];
     },
+  },
+  async created() {
+    await this.$store
+      .dispatch("getAdminEvents")
+      .then(() => {
+        this.$store.commit("sortEvents");
+        this.$store.dispatch("getAdminEventsContacts");
+        this.$store.dispatch("getAdminEventsLocations");
+      })
+      .then(() => {
+        this.loaded = true;
+      });
   },
   components: {
     UpcomingEvents,

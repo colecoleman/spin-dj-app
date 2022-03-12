@@ -23,12 +23,10 @@ export default {
     if (!this.$store.state.user) {
       await this.$store.dispatch("setUser");
     }
-
-    await this.$store.dispatch("getAdminEvents");
     await this.$store.dispatch("setBusinessSettings");
     this.loaded = true;
-    await this.$store.dispatch("getAdminUsers");
-    await this.$store.dispatch("getLocations");
+    // await this.$store.dispatch("getAdminUsers");
+    // await this.$store.dispatch("getLocations");
   },
 };
 </script>

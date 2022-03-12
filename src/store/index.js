@@ -11,6 +11,7 @@ const store = createStore({
       notifications: [],
       toDos: [],
       automations: {},
+      contactsArr: [],
       contacts: {
         clients: [],
         // prospects: [],
@@ -65,27 +66,62 @@ const store = createStore({
             }
           );
       });
+
     },
     //remove below
     async adminGetContact(context, payload) {
-      return new Promise((resolve, reject) => {
-        axios
-          .get(
-            `https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/admin/${context.state.user.tenantId}/users/${payload}`
-          )
-          .then(
-            (result) => {
-              resolve(result);
-            },
-            (error) => {
-              context.commit("addStatus", {
-                type: "error",
-                note: error,
-              });
-              reject(error);
-            }
-          );
-      });
+      let userSearch = context.commit("searchForUser", payload);
+      if (userSearch) {
+        return userSearch;
+      } else {
+        return new Promise((resolve, reject) => {
+          axios
+            .get(
+              `https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/admin/${context.state.user.tenantId}/users/${payload}`
+            )
+            .then(
+              (result) => {
+                resolve(result);
+              },
+              (error) => {
+                context.commit("addStatus", {
+                  type: "error",
+                  note: error,
+                });
+                reject(error);
+              }
+            );
+        });
+      }
+    },
+    async getContactListItem(context, payload) {
+      let userSearch = context.commit("searchForUser", payload);
+      if (userSearch) {
+        return userSearch;
+      } else {
+        return new Promise((resolve, reject) => {
+          axios
+            .get(
+              `https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/admin/${context.state.user.tenantId}/users/${payload}/listItem`
+            )
+            .then(
+              (result) => {
+                if (result.data.Item.role) {
+                  let role = result.data.Item.role;
+                  context.state.contacts[role + "s"].push(result.data.Item);
+                }
+                resolve(result.data.Item);
+              },
+              (error) => {
+                context.commit("addStatus", {
+                  type: "error",
+                  note: error,
+                });
+                reject(error);
+              }
+            );
+        });
+      }
     },
     async nonAdminGetUser(context, payload) {
       return new Promise((resolve, reject) => {
@@ -162,6 +198,24 @@ const store = createStore({
           );
       });
     },
+    async getAdminEventsContacts(context) {
+      for (let x = 0; x < context.state.events.length; x++) {
+        let event = context.state.events[x];
+        let contacts = event.contacts.map((x) => {
+          return context.dispatch("getContactListItem", x.id);
+        });
+        event.contacts = await Promise.all(contacts);
+      }
+    },
+    async getAdminEventsLocations(context) {
+      for (let x = 0; x < context.state.events.length; x++) {
+        let event = context.state.events[x];
+        let locations = event.locations.map((x) => {
+          return context.dispatch("getLocation", x);
+        });
+        event.locations = await Promise.all(locations);
+      }
+    },
     async setBusinessSettings(context) {
       await axios
         .get(
@@ -216,7 +270,6 @@ const store = createStore({
               type: "success",
               note: "To-Do Completed",
             });
-
           },
           (error) => {
             context.commit("addStatus", {
@@ -369,7 +422,7 @@ const store = createStore({
               reject(error);
             }
           );
-      })
+      });
     },
     async adminDeleteAutomation(context, payload) {
       return new Promise((resolve, reject) => {
@@ -420,6 +473,7 @@ const store = createStore({
           `https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/admin/${context.state.user.tenantId}/users`
         )
         .then((response) => {
+          console.log(response)
           context.commit("setContactsToCategory", {
             category: "clients",
             items: response.data.Items.filter((x) => x.role === "client"),
@@ -533,24 +587,29 @@ const store = createStore({
       });
     },
     async getLocation(context, location) {
-      return new Promise((resolve, reject) => {
-        axios
-          .get(
-            `https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/admin/${context.state.user.tenantId}/locations/${location}`
-          )
-          .then(
-            (result) => {
-              resolve(result.data);
-            },
-            (error) => {
-              context.commit("addStatus", {
-                type: "error",
-                note: error,
-              });
-              reject(error);
-            }
-          );
-      });
+      let userSearch = context.commit("searchForUser", location);
+      if (userSearch) {
+        return userSearch;
+      } else {
+        return new Promise((resolve, reject) => {
+          axios
+            .get(
+              `https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/admin/${context.state.user.tenantId}/locations/${location}`
+            )
+            .then(
+              (result) => {
+                resolve(result.data.Item);
+              },
+              (error) => {
+                context.commit("addStatus", {
+                  type: "error",
+                  note: error,
+                });
+                reject(error);
+              }
+            );
+        });
+      }
     },
     async getLocations(context) {
       return new Promise((resolve, reject) => {
@@ -1042,6 +1101,18 @@ const store = createStore({
     setUser(state, user) {
       state.user = user;
     },
+    searchForUser(state, user) {
+      let contacts = [
+        ...state.contacts.clients,
+        ...state.contacts.employees,
+        ...state.contacts.organizers,
+        ...state.contacts.vendors,
+        ...state.contacts.locations,
+      ];
+      return contacts.find((x) => {
+        return x.userId == user;
+      });
+    },
     setBusinessSettings(state, settings) {
       state.businessSettings = settings;
     },
@@ -1168,7 +1239,7 @@ const store = createStore({
     },
     adminConfigPaymentsSetBusinessCurrencyCode(state, payload) {
       state.businessSettings.payments.currencyCode = payload;
-      console.log(state.businessSettings.payments)
+      console.log(state.businessSettings.payments);
     },
     adminConfigPaymentsSetDepositAmount(state, payload) {
       if (!state.businessSettings.payments.deposit) {
@@ -1275,10 +1346,10 @@ const store = createStore({
     // contact mutations /////////////////////////////
 
     setContactsToCategory(state, payload) {
+
       state.contacts[payload.category] = [...payload.items];
     },
     addContact(state, payload) {
-      console.log(payload);
       state.contacts[payload.item.role + "s"].push(payload.item);
     },
     editClient(state, { id, key, value }) {
@@ -1333,6 +1404,21 @@ const store = createStore({
     setEvents(state, payload) {
       state.events = [...payload.data.Items];
     },
+    sortEvents(state, logic) {
+      if (!logic) {
+        state.events.sort((a, b) => {
+          return new Date(a.data.startTime).getTime() <
+            new Date(b.data.startTime).getTime()
+            ? -1
+            : new Date(a.data.startTime).getTime() >
+              new Date(b.data.startTime).getTime()
+              ? 1
+              : 0;
+        });
+      } else {
+        state.events.sort(logic);
+      }
+    },
     addToDo(state, payload) {
       state.toDos.unshift(payload);
     },
@@ -1373,7 +1459,7 @@ const store = createStore({
       } else {
         return "USD";
       }
-    }
+    },
   },
   plugins: [
     createPersistedState({

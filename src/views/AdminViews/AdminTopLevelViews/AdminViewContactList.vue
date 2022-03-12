@@ -115,7 +115,10 @@ export default {
     },
   },
 
-  mounted() {},
+  mounted() {
+    this.$store.dispatch("getAdminUsers");
+    this.$store.dispatch("getLocations");
+  },
   components: {
     ContactListItem,
     AddContactModule,
