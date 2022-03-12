@@ -63,8 +63,8 @@ export default {
         .dispatch("getLocation", this.event.locations[0])
         .then((res) => {
           console.log(res);
-          if (res.Item) {
-            this.primaryLocation = res.Item;
+          if (res) {
+            this.primaryLocation = res
           }
         });
     }

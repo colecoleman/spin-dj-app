@@ -47,8 +47,8 @@ export default {
         this.$store
           .dispatch("getLocation", this.event.locations[0])
           .then((res) => {
-            if (res.Item) {
-              this.primaryLocation = res.Item;
+            if (res) {
+              this.primaryLocation = res;
             }
             this.loading = false;
           });

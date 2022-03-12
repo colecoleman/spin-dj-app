@@ -182,7 +182,7 @@ export default {
   async created() {
     await this.event.locations.forEach((location) => {
       this.$store.dispatch("getLocation", location).then((res) => {
-        this.locations.push(res.Item);
+        this.locations.push(res);
       });
     });
   },
