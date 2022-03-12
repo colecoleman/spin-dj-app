@@ -4,7 +4,7 @@
     :contact="contact"
     @closeWindow="togglePopup"
   />
- 
+
   <section v-if="location">
     <div id="location-card">
       <contact-card-location
@@ -34,7 +34,6 @@
       />
     </div>
     <div id="contact-card">
-
       <contact-card-person :contact="contact" />
     </div>
     <div id="automation">
@@ -93,15 +92,13 @@ export default {
     };
   },
   async created() {
-    await this.$store
-      .dispatch("adminGetContact", this.$route.params.id)
-      .then((res) => {
-        this.location = res.data.Item;
-      });
+    await this.$store.dispatch("getUser", this.$route.params.id).then((res) => {
+      this.location = res.data.Item;
+    });
     if (this.location.contacts) {
       if (this.location.contacts.length > 0) {
         await this.$store
-          .dispatch("adminGetContact", this.location.contacts[0])
+          .dispatch("getUser", this.location.contacts[0])
           .then((res) => {
             this.contact = res.data.Item;
           });

@@ -205,20 +205,18 @@ export default {
   },
 
   async created() {
-    await this.$store
-      .dispatch("adminGetContact", this.$route.params.id)
-      .then((res) => {
-        this.contact = res.data.Item;
-        console.log(this.contact);
-        if (this.contact.conversations) {
-          let matchedItem = this.contact.conversations.find((x) => {
-            return this.currentUser.conversations.includes(x);
-          });
-          if (matchedItem) {
-            this.eventConversation.push(matchedItem);
-          }
+    await this.$store.dispatch("getUser", this.$route.params.id).then((res) => {
+      this.contact = res.data.Item;
+      console.log(this.contact);
+      if (this.contact.conversations) {
+        let matchedItem = this.contact.conversations.find((x) => {
+          return this.currentUser.conversations.includes(x);
+        });
+        if (matchedItem) {
+          this.eventConversation.push(matchedItem);
         }
-      });
+      }
+    });
     for (
       let index = 0;
       index < [...new Set(this.contact.associatedEvents)].length;

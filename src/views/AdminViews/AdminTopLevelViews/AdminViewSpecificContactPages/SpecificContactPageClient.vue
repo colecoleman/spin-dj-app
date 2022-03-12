@@ -183,19 +183,17 @@ export default {
     },
   },
   async created() {
-    await this.$store
-      .dispatch("adminGetContact", this.$route.params.id)
-      .then((res) => {
-        this.contact = res.data.Item;
-        if (this.contact.conversations) {
-          let matchedItem = this.contact.conversations.find((x) => {
-            return this.currentUser.conversations.includes(x);
-          });
-          if (matchedItem) {
-            this.eventConversation.push(matchedItem);
-          }
-        }
+    this.contact = await this.$store.dispatch("getUser", this.$route.params.id);
+    console.log(this.contact);
+    if (this.contact.conversations) {
+      let matchedItem = this.contact.conversations.find((x) => {
+        return this.currentUser.conversations.includes(x);
       });
+      if (matchedItem) {
+        this.eventConversation.push(matchedItem);
+      }
+    }
+
     this.contact.associatedEvents.forEach((event) => {
       this.$store.dispatch("adminGetEvent", event).then((res) => {
         console.log(res);
