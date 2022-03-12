@@ -20,13 +20,11 @@
   </div>
 </template>
 <script>
-
 import ProfilePicture from "../../../assets/ProfilePicture.vue";
 export default {
   data() {
     return {
-
-      svgStyling: "height: 40px; margin: 10px;",
+      svgStyling: "height: 30px; width: 30px; margin: 5px;",
     };
   },
   components: { ProfilePicture },
@@ -37,13 +35,13 @@ export default {
 .event-location-identifier,
 .event-metadata-identifier {
   display: flex;
-  flex: 1;
+  height: 70px;
+  max-width: 33%;
+  width: 33%;
 }
 .single-event-item {
   display: flex;
   width: 100%;
-  min-height: 100px;
-  height: 100px;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
@@ -87,6 +85,7 @@ export default {
 .client-name {
   display: flex;
   flex-direction: column;
+  justify-content: center;
   height: 100%;
 }
 
