@@ -130,10 +130,10 @@ export default {
         let eventDate = new Date(this.event.data.date);
         eventDate.setHours(eventDate.getHours() + timeArray[0]);
         eventDate.setMinutes(eventDate.getMinutes() + timeArray[1]);
-        if (new Date(payload.value.startTime) > eventDate) {
+        let data = Object.assign({}, this.event.data);
+        if (new Date(data.startTime) > eventDate) {
           eventDate.setDate(eventDate.getDate() + 1);
         }
-        let data = Object.assign({}, this.event.data);
         data.endTime = eventDate;
         payload.value = data;
         payload.variable = "data";
