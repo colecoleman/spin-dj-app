@@ -1,31 +1,29 @@
 <template>
-  <div class="single-event-item" v-if="event" :class="loading ? loading : ''">
-    <div class="client-event-identifier" v-if="matchedClient">
+  <div class="single-event-item" v-if="!loading" @click="eventClicked">
+    <div class="client-event-identifier">
       <profile-picture
         contact="person"
-        :profilePicture="matchedClient.profilePicture"
+        :profilePicture="client.profilePicture"
         :customStyle="profilePictureStyling"
       />
-      <h5 class="client-name" v-if="matchedClient">
-        {{ matchedClient.given_name }} <br />
-        <span> {{ matchedClient.family_name }}</span>
-      </h5>
-      <h5 class="client-name" v-if="!matchedClient">
-        Unknown<br />
-        <span>User</span>
+      <h5 class="client-name" v-if="client.username">
+        {{ client.given_name }} <br />
+        <span> {{ client.family_name }}</span>
       </h5>
     </div>
-    <div class="event-location-identifier" v-if="primaryLocation">
-      <h4 class="venue-name">{{ primaryLocation.name }}</h4>
-      <div class="event-address">
-        <p>{{ primaryLocation.address.streetAddress1 }}</p>
-        <!-- <p v-if="primaryLocation.address.streetAddress2">
-          {{ primaryLocation.address.streetAddress2 }}
+    <div class="event-location-identifier">
+      <h4 class="venue-name" v-if="location.name">
+        {{ location.name }}
+      </h4>
+      <div class="event-address" v-if="location.address">
+        <p>{{ location.address.streetAddress1 }}</p>
+        <!-- <p v-if="location.address.streetAddress2">
+          {{ location.address.streetAddress2 }}
         </p> -->
-        <p>{{ primaryLocation.address.cityStateZip }}</p>
+        <p>{{ location.address.cityStateZip }}</p>
       </div>
     </div>
-    <div class="event-location-identifier" v-if="!primaryLocation">
+    <div class="event-location-identifier" v-if="!location">
       <h4>Unknown Location</h4>
     </div>
     <div class="event-metadata-identifier">
@@ -47,10 +45,12 @@
       </div>
     </div>
   </div>
+  <skeleton-card v-if="loading" />
 </template>
 
 <script>
 import ProfilePicture from "../../assets/ProfilePicture.vue";
+import SkeletonCard from "../SharedComponentsUI/SkeletonCards/SkeletonThreeSectionUpcomingEventListItem.vue";
 import {
   formatDate,
   formatTime,
@@ -62,9 +62,6 @@ export default {
   data() {
     return {
       profilePictureStyling: "height: 30px; width: 30px; margin: 5px;",
-      loading: true,
-      primaryLocation: undefined,
-      matchedClient: undefined,
     };
   },
   computed: {
@@ -76,32 +73,36 @@ export default {
         return user.role;
       }
     },
+    client() {
+      return this.event.contacts[0];
+    },
+    location() {
+      return this.event.locations[0];
+    },
+    loading() {
+      if (!this.client.userId) {
+        return true;
+      } else if (!this.location.name) {
+        return true;
+      } else if (this.loaded) {
+        return false;
+      } else {
+        return false;
+      }
+    },
   },
   methods: {
     formatDate,
     formatTime,
     formatPrice,
     balanceOutstanding,
+    eventClicked() {
+      this.$emit("clicked");
+    },
   },
-  mounted() {
-    this.loading = true;
-    if (this.event.locations) {
-      this.$store
-        .dispatch("getLocation", this.event.locations[0])
-        .then((res) => {
-          if (res.Item) {
-            this.primaryLocation = res.Item;
-          }
-        });
-    }
-    if (this.event.contacts.length > 0) {
-      this.$store.dispatch("getUser", this.event.contacts[0].id).then((res) => {
-        this.matchedClient = res;
-      });
-    }
-  },
-  props: ["event", "first"],
-  components: { ProfilePicture },
+  emits: ["clicked"],
+  props: ["event", "first", "loaded"],
+  components: { ProfilePicture, SkeletonCard },
 };
 </script>
 

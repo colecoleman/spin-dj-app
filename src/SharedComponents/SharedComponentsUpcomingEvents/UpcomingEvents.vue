@@ -4,7 +4,6 @@
     actionIcon="sort-alpha"
     actionText="Sort:"
     @action-one-clicked="sortMenuOpened = !sortMenuOpened"
-    :loading="events ? false : true"
     title="Events"
   >
     <template v-slot:dropdownContainer>
@@ -16,55 +15,54 @@
     </template>
     <template v-slot:content>
       <div class="wrapper">
+        <div class="events-content" v-if="!loaded && userRole === 'admin'">
+          <skeleton-card v-for="num in skeletonQuantity" :key="num" />
+        </div>
         <div
-          id="events-content"
+          class="events-content"
           v-if="
-            ((userRole === 'admin' ||
-              userRole === 'vendor' ||
-              userRole === 'employee' ||
-              userRole === 'organizer') &&
-              sortedEvents.length > 0) ||
-            pastEventsCopy.length > 0
+            userRole === 'admin' ||
+            userRole === 'vendor' ||
+            userRole === 'employee' ||
+            userRole === 'organizer'
           "
         >
           <upcoming-events-list-item
-            v-for="event in sortedEvents"
+            v-for="event in events"
             :key="event.userId"
             :event="event"
-            :first="event === sortedEvents[0]"
-            @click="navigateToEventPage(event.userId)"
+            :loaded="loaded"
+            @clicked="navigateToEventPage(event.userId)"
           />
 
           <upcoming-events-list-item
             v-for="event in pastEventsCopy"
             :key="event.userId"
             :event="event"
-            :first="event === sortedEvents[0]"
-            @click="navigateToEventPage(event.userId)"
+            :loaded="loaded"
+            @clicked="navigateToEventPage(event.userId)"
             class="past-event"
           />
         </div>
         <div
-          id="events-content"
+          class="events-content"
           v-if="userRole === 'client' && sortedEvents.length > 0"
         >
           <client-view-upcoming-event-list-item
             v-for="event in sortedEvents"
             :key="event.userId"
             :event="event"
-            :first="event === sortedEvents[0]"
             @click="navigateToEventPage(event.userId)"
           />
           <client-view-upcoming-event-list-item
             v-for="event in pastEventsCopy"
             :key="event.userId"
             :event="event"
-            :first="event === sortedEvents[0]"
             @click="navigateToEventPage(event.userId)"
             class="past-event"
           />
         </div>
-        <h5 v-if="events.length <= 0 && pastEventsCopy.length <= 0">
+        <h5 v-if="events.length <= 0 && pastEventsCopy.length <= 0 && loaded">
           No events to display! Add some!
         </h5>
       </div>
@@ -74,6 +72,7 @@
 
 <script>
 import UpcomingEventsListItem from "./UpcomingEventListItem.vue";
+import SkeletonCard from "../SharedComponentsUI/SkeletonCards/SkeletonThreeSectionUpcomingEventListItem.vue";
 import FloatingMenuWithListItems from "../SharedComponentsUI/FloatingMenuWithListItems.vue";
 import ClientViewUpcomingEventListItem from "./ClientViewUpcomingEventListItem.vue";
 
@@ -121,6 +120,15 @@ export default {
     };
   },
   computed: {
+    skeletonQuantity() {
+      if (this.loaded) {
+        return 0;
+      } else if (this.events.length >= 5) {
+        return 0;
+      } else {
+        return 5 - this.events.length;
+      }
+    },
     sortedEvents() {
       let temp = this.events;
       return temp.sort(this.selectedSortLogic).filter((x) => {
@@ -143,16 +151,15 @@ export default {
     if (this.pastEvents) {
       this.pastEventsCopy = [...this.pastEvents];
     }
-    console.log(this.events[0]);
-    console.log(this.events);
-    console.log(this.pastEvents);
   },
   methods: {
     toggleSortMenuOpened() {
       this.sortMenuOpened = !this.sortMenuOpened;
     },
     selectSort(action) {
+      this.$store.commit("sortEvents", action);
       this.selectedSortLogic = action;
+      this.toggleSortMenuOpened();
     },
     navigateToEventPage(id) {
       let user = this.$store.state.user;
@@ -163,9 +170,11 @@ export default {
       }
     },
   },
-  props: ["events", "pastEvents"],
+  emits: [""],
+  props: ["events", "pastEvents", "loaded"],
   components: {
     UpcomingEventsListItem,
+    SkeletonCard,
     FloatingMenuWithListItems,
     ClientViewUpcomingEventListItem,
   },
@@ -177,12 +186,12 @@ export default {
   height: 100%;
   max-width: 100%;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
 }
 
-#events-content {
+.events-content {
   display: flex;
   flex-direction: column;
   overflow: scroll;
