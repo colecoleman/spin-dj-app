@@ -229,15 +229,15 @@ export default {
     currentUser() {
       return this.$store.state.user;
     },
-    eventConversations() {
-      return this.contacts.map((x) => {
-        if (x.conversations) {
-          return x.conversations.find((x) => {
-            return this.currentUser.conversations.includes(x);
-          });
-        }
-      });
-    },
+    // eventConversations() {
+    //   return this.contacts.map((x) => {
+    //     if (x.conversations) {
+    //       return x.conversations.find((x) => {
+    //         return this.currentUser.conversations.includes(x);
+    //       });
+    //     }
+    //   });
+    // },
   },
   methods: {
     togglePopup(popup) {
