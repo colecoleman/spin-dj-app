@@ -1,33 +1,33 @@
 <template>
   <div class="single-event-item">
     <div class="client-event-identifier">
-      <profile-picture contact="person" :customStyle="svgStyling" />
-      <div class="client-name">
-        <h5 class="skeleton"></h5>
-        <h5 class="skeleton"></h5>
-      </div>
+      <skeleton-contact />
     </div>
     <div class="event-location-identifier">
-      <h4 class="venue-name skeleton"></h4>
-      <p class="venue-address skeleton"></p>
-      <p class="venue-address skeleton"></p>
+      <skeleton-location />
     </div>
     <div class="event-metadata-identifier">
-      <p class="date-and-time skeleton"></p>
-      <p class="date-and-time skeleton"></p>
-      <p class="invoice-data skeleton"></p>
+      <skeleton-event />
     </div>
   </div>
 </template>
 <script>
-import ProfilePicture from "../../../assets/ProfilePicture.vue";
+import SkeletonLocation from "./SkeletonLocationListItem.vue";
+import SkeletonContact from "./SkeletonProfilePictureName.vue";
+import SkeletonEvent from "./SkeletonUpcomingEventInformation.vue";
+// import ProfilePicture from "../../../assets/ProfilePicture.vue";
 export default {
   data() {
     return {
       svgStyling: "height: 30px; width: 30px; margin: 5px;",
     };
   },
-  components: { ProfilePicture },
+  components: {
+    // ProfilePicture,
+    SkeletonLocation,
+    SkeletonContact,
+    SkeletonEvent,
+  },
 };
 </script>
 <style scoped>

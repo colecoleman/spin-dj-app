@@ -1,31 +1,33 @@
 <template>
-  <div class="single-event-item" v-if="!loading" @click="eventClicked">
-    <div class="client-event-identifier" v-if="client">
-      <profile-picture
-        contact="person"
-        :profilePicture="client.profilePicture"
-        :customStyle="profilePictureStyling"
-      />
-      <h5 class="client-name" v-if="client.username">
-        {{ client.given_name }} <br />
-        <span> {{ client.family_name }}</span>
-      </h5>
+  <div class="single-event-item" @click="eventClicked">
+    <div class="client-event-identifier">
+      <div class="conditional-wrapper" v-if="client.userId">
+        <profile-picture
+          contact="person"
+          :profilePicture="client.profilePicture"
+          :customStyle="profilePictureStyling"
+        />
+        <h5 class="client-name" v-if="client.userId">
+          {{ client.given_name }} <br />
+          <span> {{ client.family_name }}</span>
+        </h5>
+      </div>
+      <client-skeleton-card v-if="!client.userId" />
     </div>
-    <client-skeleton-card v-if="!client" />
-    <div class="event-location-identifier" v-if="location">
+    <div class="event-location-identifier" v-if="location.name">
       <h4 class="venue-name" v-if="location.name">
         {{ location.name }}
       </h4>
       <div class="event-address" v-if="location.address">
         <p>{{ location.address.streetAddress1 }}</p>
-        <!-- <p v-if="location.address.streetAddress2">
-          {{ location.address.streetAddress2 }}
-        </p> -->
         <p>{{ location.address.cityStateZip }}</p>
       </div>
     </div>
-    <location-skeleton-card v-if="!location" />
-    <div class="event-metadata-identifier">
+    <location-skeleton-card v-if="!location.name" />
+    <div
+      class="event-metadata-identifier"
+      v-if="location.name || client.userId"
+    >
       <div class="date-and-time-identifier">
         <p>{{ formatDate(event.data.date) }}</p>
         <p>
@@ -43,14 +45,14 @@
         </p>
       </div>
     </div>
-    <event-skeleton-card v-if="loading" />
+    <event-skeleton-card v-if="!location.name && !client.userId" />
   </div>
-  <skeleton-card v-if="loading" />
+  <!-- <skeleton-card v-if="loading" /> -->
 </template>
 
 <script>
 import ProfilePicture from "../../assets/ProfilePicture.vue";
-import SkeletonCard from "../SharedComponentsUI/SkeletonCards/SkeletonThreeSectionUpcomingEventListItem.vue";
+// import SkeletonCard from "../SharedComponentsUI/SkeletonCards/SkeletonThreeSectionUpcomingEventListItem.vue";
 import ClientSkeletonCard from "../SharedComponentsUI/SkeletonCards/SkeletonProfilePictureName.vue";
 import LocationSkeletonCard from "../SharedComponentsUI/SkeletonCards/SkeletonLocationListItem.vue";
 import EventSkeletonCard from "../SharedComponentsUI/SkeletonCards/SkeletonUpcomingEventInformation.vue";
@@ -64,7 +66,8 @@ import {
 export default {
   data() {
     return {
-      profilePictureStyling: "height: 30px; width: 30px; margin: 5px;",
+      profilePictureStyling:
+        "height: 30px; width: 30px; margin: 5px 5px 5px 0;",
     };
   },
   computed: {
@@ -82,17 +85,17 @@ export default {
     location() {
       return this.event.locations[0];
     },
-    loading() {
-      if (this.loaded) {
-        return false;
-      } else if (!this.client) {
-        return true;
-      } else if (!this.location) {
-        return true;
-      } else {
-        return false;
-      }
-    },
+    // loading() {
+    //   if (this.loaded) {
+    //     return false;
+    //   } else if (!this.client) {
+    //     return true;
+    //   } else if (!this.location) {
+    //     return true;
+    //   } else {
+    //     return false;
+    //   }
+    // },
   },
   methods: {
     formatDate,
@@ -107,10 +110,13 @@ export default {
   props: ["event", "first", "loaded"],
   components: {
     ProfilePicture,
-    SkeletonCard,
+    // SkeletonCard,
     ClientSkeletonCard,
     LocationSkeletonCard,
     EventSkeletonCard,
+  },
+  created() {
+    console.log(JSON.stringify(this.event.contacts[0]));
   },
 };
 </script>
@@ -125,6 +131,7 @@ export default {
     max-width: 33%;
     width: 33%;
   }
+
   .single-event-item {
     display: flex;
     width: 100%;
@@ -135,7 +142,8 @@ export default {
     cursor: pointer;
   }
 
-  .client-event-identifier {
+  .conditional-wrapper {
+    display: flex;
     flex-direction: row;
     align-items: center;
   }

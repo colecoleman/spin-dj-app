@@ -12,7 +12,7 @@ import ProfilePicture from "../../../assets/ProfilePicture.vue";
 export default {
   data() {
     return {
-      svgStyling: "height: 30px; width: 30px; margin: 5px;",
+      svgStyling: "height: 30px; width: 30px; margin: 5px 5px 5px 0;",
     };
   },
   methods: {},
@@ -25,6 +25,7 @@ export default {
 .client-event-identifier {
   flex-direction: row;
   align-items: center;
+  min-width: 100%;
 }
 
 .client-event-identifier img {

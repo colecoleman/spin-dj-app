@@ -15,9 +15,6 @@
     </template>
     <template v-slot:content>
       <div class="wrapper">
-        <div class="events-content" v-if="!loaded && userRole === 'admin'">
-          <skeleton-card v-for="num in skeletonQuantity" :key="num" />
-        </div>
         <div
           class="events-content"
           v-if="
@@ -72,7 +69,7 @@
 
 <script>
 import UpcomingEventsListItem from "./UpcomingEventListItem.vue";
-import SkeletonCard from "../SharedComponentsUI/SkeletonCards/SkeletonThreeSectionUpcomingEventListItem.vue";
+// import SkeletonCard from "../SharedComponentsUI/SkeletonCards/SkeletonThreeSectionUpcomingEventListItem.vue";
 import FloatingMenuWithListItems from "../SharedComponentsUI/FloatingMenuWithListItems.vue";
 import ClientViewUpcomingEventListItem from "./ClientViewUpcomingEventListItem.vue";
 
@@ -174,7 +171,7 @@ export default {
   props: ["events", "pastEvents", "loaded"],
   components: {
     UpcomingEventsListItem,
-    SkeletonCard,
+    // SkeletonCard,
     FloatingMenuWithListItems,
     ClientViewUpcomingEventListItem,
   },
