@@ -11,7 +11,8 @@
         <span> {{ client.family_name }}</span>
       </h5>
     </div>
-    <div class="event-location-identifier">
+    <client-skeleton-card v-if="!client" />
+    <div class="event-location-identifier" v-if="location">
       <h4 class="venue-name" v-if="location.name">
         {{ location.name }}
       </h4>
@@ -23,9 +24,7 @@
         <p>{{ location.address.cityStateZip }}</p>
       </div>
     </div>
-    <div class="event-location-identifier" v-if="!location">
-      <h4>Unknown Location</h4>
-    </div>
+    <location-skeleton-card v-if="!location" />
     <div class="event-metadata-identifier">
       <div class="date-and-time-identifier">
         <p>{{ formatDate(event.data.date) }}</p>
@@ -44,6 +43,7 @@
         </p>
       </div>
     </div>
+    <event-skeleton-card v-if="loading" />
   </div>
   <skeleton-card v-if="loading" />
 </template>
@@ -51,6 +51,9 @@
 <script>
 import ProfilePicture from "../../assets/ProfilePicture.vue";
 import SkeletonCard from "../SharedComponentsUI/SkeletonCards/SkeletonThreeSectionUpcomingEventListItem.vue";
+import ClientSkeletonCard from "../SharedComponentsUI/SkeletonCards/SkeletonProfilePictureName.vue";
+import LocationSkeletonCard from "../SharedComponentsUI/SkeletonCards/SkeletonLocationListItem.vue";
+import EventSkeletonCard from "../SharedComponentsUI/SkeletonCards/SkeletonUpcomingEventInformation.vue";
 import {
   formatDate,
   formatTime,
@@ -82,9 +85,9 @@ export default {
     loading() {
       if (this.loaded) {
         return false;
-      } else if (!this.client.userId) {
+      } else if (!this.client) {
         return true;
-      } else if (!this.location.name) {
+      } else if (!this.location) {
         return true;
       } else {
         return false;
@@ -102,7 +105,13 @@ export default {
   },
   emits: ["clicked"],
   props: ["event", "first", "loaded"],
-  components: { ProfilePicture, SkeletonCard },
+  components: {
+    ProfilePicture,
+    SkeletonCard,
+    ClientSkeletonCard,
+    LocationSkeletonCard,
+    EventSkeletonCard,
+  },
 };
 </script>
 

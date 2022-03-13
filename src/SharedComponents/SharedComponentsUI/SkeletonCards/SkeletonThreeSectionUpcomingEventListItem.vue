@@ -63,6 +63,7 @@ export default {
   background-color: var(--textColor);
   width: 100px;
   height: 9px;
+  border-radius: 3px;
 }
 
 .event-location-identifier,
