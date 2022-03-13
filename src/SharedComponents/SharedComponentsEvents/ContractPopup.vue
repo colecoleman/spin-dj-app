@@ -1,6 +1,6 @@
 <template>
-  <backdrop @click="closePopup" class="no-print" />
   <mobile-close-button @click="closePopup" />
+  <backdrop @click="closePopup" class="no-print" />
   <section class="no-print">
     <two-button-dialog-modal
       class="no-print"
@@ -159,6 +159,7 @@ import TwoButtonDialogModal from "../SharedComponentsUI/TwoButtonDialogModal.vue
 import ContractPopupDocumentView from "./ContractPopupDocumentView.vue";
 import MobileCloseButton from "../SharedComponentsUI/MobileCloseButton.vue";
 import InputWithTitle from "../SharedComponentsUI/ElementLibrary/InputWithTitle.vue";
+import VueSvg from "../../assets/VueSvg.vue";
 import { formatDate } from "../../helpers.js";
 
 export default {
@@ -306,6 +307,7 @@ export default {
     PopupModal,
     MobileCloseButton,
     InputWithTitle,
+    VueSvg,
   },
   async created() {
     await Auth.currentAuthenticatedUser().then((res) => {

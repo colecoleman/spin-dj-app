@@ -2,9 +2,9 @@
   <div id="contract-popup-document-view" class="page">
     <div id="heading"><h4>Contract</h4></div>
     <div id="contract-copy">
-      <p v-html="mergeTagReplace(contract.contractBody)"></p>
+      <p v-if="contract" v-html="mergeTagReplace(contract.contractBody)"></p>
     </div>
-    <div class="signatures">
+    <div class="signatures" v-if="contract">
       <div class="contract-data">
         <h5>Signer Name:</h5>
         <p>{{ contract.signerName }}</p>
@@ -165,15 +165,19 @@ export default {
     },
 
     mergeTagReplace(string) {
-      return this.replacePrimaryContact(
-        this.replaceEventData(
-          this.replaceInvoiceItems(
-            this.replaceClientItems(
-              this.replaceLocationItems(this.replaceBusinessInformation(string))
+      if (string) {
+        return this.replacePrimaryContact(
+          this.replaceEventData(
+            this.replaceInvoiceItems(
+              this.replaceClientItems(
+                this.replaceLocationItems(
+                  this.replaceBusinessInformation(string)
+                )
+              )
             )
           )
-        )
-      );
+        );
+      }
     },
   },
   props: ["contract", "contacts", "event", "locations"],
@@ -181,12 +185,14 @@ export default {
     let contractIndex = this.event.contracts.findIndex((x) => {
       return x.id == this.contract.id;
     });
-    if (
-      this.event.contracts[contractIndex].contractBody !=
-      this.contract.contractBody
-    ) {
-      this.needsResign = true;
-      console.log(this.needsResign);
+    if (this.event.contracts.length > 0) {
+      if (
+        this.event.contracts[contractIndex].contractBody !=
+        this.contract.contractBody
+      ) {
+        this.needsResign = true;
+        console.log(this.needsResign);
+      }
     }
   },
 };
