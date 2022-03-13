@@ -1,6 +1,6 @@
 <template>
-  <mobile-close-button @click="closePopup" />
   <backdrop @click="closePopup" class="no-print" />
+  <mobile-close-button @click="closePopup" />
   <section class="no-print">
     <two-button-dialog-modal
       class="no-print"
