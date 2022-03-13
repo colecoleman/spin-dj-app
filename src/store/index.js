@@ -66,7 +66,6 @@ const store = createStore({
             }
           );
       });
-
     },
     //remove below
     async adminGetContact(context, payload) {
@@ -106,11 +105,15 @@ const store = createStore({
             )
             .then(
               (result) => {
-                if (result.data.Item.role) {
-                  let role = result.data.Item.role;
-                  context.state.contacts[role + "s"].push(result.data.Item);
+                if (result.data.Item) {
+                  if (result.data.Item.role) {
+                    let role = result.data.Item.role;
+                    context.state.contacts[role + "s"].push(result.data.Item);
+                  }
+                  resolve(result.data.Item);
+                } else {
+                  resolve(undefined);
                 }
-                resolve(result.data.Item);
               },
               (error) => {
                 context.commit("addStatus", {
@@ -201,8 +204,20 @@ const store = createStore({
     async getAdminEventsContacts(context) {
       for (let x = 0; x < context.state.events.length; x++) {
         let event = context.state.events[x];
-        let contacts = event.contacts.map((x) => {
-          return context.dispatch("getContactListItem", x.id);
+        let contacts = event.contacts.map((x, index) => {
+          return context.dispatch("getContactListItem", x.id).then((res) => {
+            if (!res) {
+              let contactRemoveParameters = {
+                eventId: event.userId,
+                operation: "removeFromList",
+                variable: "contacts",
+                value: index,
+              };
+              context.dispatch("editEvent", contactRemoveParameters);
+            } else {
+              return res;
+            }
+          });
         });
         event.contacts = await Promise.all(contacts);
       }
@@ -1346,7 +1361,6 @@ const store = createStore({
     // contact mutations /////////////////////////////
 
     setContactsToCategory(state, payload) {
-
       state.contacts[payload.category] = [...payload.items];
     },
     addContact(state, payload) {
