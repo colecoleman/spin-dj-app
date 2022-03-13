@@ -60,8 +60,9 @@ export default {
           password: this.newUserPassword,
           userId: this.contact.userId,
         };
+        console.log(payload);
         await this.$store.dispatch("resetUserPassword", payload);
-        this.togglePopup;
+        this.togglePopup();
       } else {
         this.newUserPasswordError = true;
       }
