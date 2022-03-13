@@ -1,6 +1,6 @@
 <template>
   <div class="single-event-item" v-if="!loading" @click="eventClicked">
-    <div class="client-event-identifier">
+    <div class="client-event-identifier" v-if="client">
       <profile-picture
         contact="person"
         :profilePicture="client.profilePicture"
@@ -80,12 +80,12 @@ export default {
       return this.event.locations[0];
     },
     loading() {
-      if (!this.client.userId) {
+      if (this.loaded) {
+        return false;
+      } else if (!this.client.userId) {
         return true;
       } else if (!this.location.name) {
         return true;
-      } else if (this.loaded) {
-        return false;
       } else {
         return false;
       }
