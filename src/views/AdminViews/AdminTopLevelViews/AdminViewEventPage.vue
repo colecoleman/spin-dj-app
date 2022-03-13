@@ -139,7 +139,8 @@
         <to-do-list :event="event" :eventContacts="contacts" listType="event" />
       </div>
       <div id="recent-messages">
-        <recent-messages :conversationList="eventConversations" />
+        <recent-messages />
+        <!-- :conversationList="eventConversations" -->
       </div>
     </section>
   </div>
