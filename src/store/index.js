@@ -12,14 +12,7 @@ const store = createStore({
       toDos: [],
       automations: {},
       contactsArr: [],
-      contacts: {
-        clients: [],
-        // prospects: [],
-        vendors: [],
-        employees: [],
-        locations: [],
-        organizers: [],
-      },
+      contacts: [],
       equipment: [],
       events: [],
     };
@@ -48,24 +41,30 @@ const store = createStore({
       });
     },
     async getUser(context, user) {
-      return new Promise((resolve, reject) => {
-        axios
-          .get(
-            `https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/admin/${context.state.user.tenantId}/users/${user}`
-          )
-          .then(
-            (result) => {
-              resolve(result.data.Item);
-            },
-            (error) => {
-              context.commit("addStatus", {
-                type: "error",
-                note: error,
-              });
-              reject(error);
-            }
-          );
-      });
+      let userSearch = context.commit("searchForUser", user);
+      if (userSearch) {
+        return userSearch;
+      } else {
+        return new Promise((resolve, reject) => {
+          axios
+            .get(
+              `https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/admin/${context.state.user.tenantId}/users/${user}`
+            )
+            .then(
+              (result) => {
+                resolve(result.data.Item);
+                context.state.contacts.push(result.data.Item);
+              },
+              (error) => {
+                context.commit("addStatus", {
+                  type: "error",
+                  note: error,
+                });
+                reject(error);
+              }
+            );
+        });
+      }
     },
     //remove below
     async adminGetContact(context, payload) {
@@ -81,6 +80,7 @@ const store = createStore({
             .then(
               (result) => {
                 resolve(result);
+                context.state.contacts.push(result.data.Item)
               },
               (error) => {
                 context.commit("addStatus", {
@@ -106,11 +106,8 @@ const store = createStore({
             .then(
               (result) => {
                 if (result.data.Item) {
-                  if (result.data.Item.role) {
-                    let role = result.data.Item.role;
-                    context.state.contacts[role + "s"].push(result.data.Item);
-                  }
                   resolve(result.data.Item);
+
                 } else {
                   resolve(undefined);
                 }
@@ -204,33 +201,84 @@ const store = createStore({
     async getAdminEventsContacts(context) {
       for (let x = 0; x < context.state.events.length; x++) {
         let event = context.state.events[x];
-        let contacts = event.contacts.map((x, index) => {
-          return context.dispatch("getContactListItem", x.id).then((res) => {
-            if (!res) {
-              let contactRemoveParameters = {
-                eventId: event.userId,
-                operation: "removeFromList",
-                variable: "contacts",
-                value: index,
-              };
-              context.dispatch("editEvent", contactRemoveParameters);
-            } else {
-              return res;
-            }
-          });
-        });
-        event.contacts = await Promise.all(contacts);
+        context.dispatch("getEventContacts", event);
       }
+    },
+    async getEventContacts(context, event) {
+      let contacts = event.contacts.map((x, index) => {
+        return context.dispatch("getContactListItem", x.id).then((res) => {
+          if (!res) {
+            let contactRemoveParameters = {
+              eventId: event.userId,
+              operation: "removeFromList",
+              variable: "contacts",
+              value: index,
+            };
+            context.dispatch("editEvent", contactRemoveParameters);
+          } else {
+            return res;
+          }
+        });
+      });
+      event.contacts = await Promise.all(contacts);
     },
     async getAdminEventsLocations(context) {
       for (let x = 0; x < context.state.events.length; x++) {
         let event = context.state.events[x];
-        let locations = event.locations.map((x) => {
-          return context.dispatch("getLocation", x);
-        });
-        event.locations = await Promise.all(locations);
+        context.dispatch("getEventLocations", event);
       }
     },
+    async getEventLocations(context, event) {
+      let locations = event.locations.map((x) => {
+        return context.dispatch("getLocation", x);
+      });
+      event.locations = await Promise.all(locations);
+    },
+    async getContactEvents(context, contact) {
+      contact.associatedEvents = await Promise.all(
+        contact.associatedEvents.map(async (ae, index) => {
+          return await context.dispatch("adminGetEvent", ae).then((res) => {
+            if (!res) {
+              let parameters = {
+                clientId: contact.userId,
+                operation: "removeFromList",
+                variable: "associatedEvents",
+                value: index,
+              };
+              context.dispatch("editContact", parameters).then(() => {
+                this.events.splice(index, 1);
+              });
+            } else {
+              return res;
+            }
+          });
+        })
+      );
+      return contact.associatedEvents;
+    },
+    async getLocationEvents(context, location) {
+      location.associatedEvents = await Promise.all(
+        location.associatedEvents.map(async (ae, index) => {
+          return await context.dispatch("adminGetEvent", ae).then((res) => {
+            if (!res) {
+              let parameters = {
+                locationId: location.userId,
+                operation: "removeFromList",
+                variable: "associatedEvents",
+                value: index,
+              };
+              context.dispatch("editLocation", parameters).then(() => {
+                this.events.splice(index, 1);
+              });
+            } else {
+              return res;
+            }
+          });
+        })
+      );
+      return location.associatedEvents;
+    },
+
     async setBusinessSettings(context) {
       await axios
         .get(
@@ -483,30 +531,15 @@ const store = createStore({
 
     // contact-based-actions
     async getAdminUsers(context) {
-      axios
+      let contacts = await axios
         .get(
           `https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/admin/${context.state.user.tenantId}/users`
         )
-        .then((response) => {
-          console.log(response)
-          context.commit("setContactsToCategory", {
-            category: "clients",
-            items: response.data.Items.filter((x) => x.role === "client"),
-          });
-          context.commit("setContactsToCategory", {
-            category: "employees",
-            items: response.data.Items.filter((x) => x.role === "employee"),
-          });
-          context.commit("setContactsToCategory", {
-            category: "organizers",
-            items: response.data.Items.filter((x) => x.role === "organizer"),
-          });
-          context.commit("setContactsToCategory", {
-            category: "vendors",
-            items: response.data.Items.filter((x) => x.role === "vendor"),
-          });
-        })
-        .catch((e) => context.commit("addStatus", `Error: ${e}`));
+        .then((res) => {
+          return res.data.Items;
+        });
+      let locations = await context.dispatch("getLocations");
+      context.commit("setContacts", [...contacts, ...locations]);
     },
     async addContact(context, contact) {
       return new Promise((resolve, reject) => {
@@ -517,12 +550,8 @@ const store = createStore({
           )
           .then(
             (result) => {
-              console.log(result);
               resolve(result.data);
-              context.commit("addContact", {
-                role: result.data.role,
-                item: result.data,
-              });
+              context.commit("addContact", result.data);
             },
             (error) => {
               context.commit("addStatus", `Error: ${error}`);
@@ -541,12 +570,11 @@ const store = createStore({
           .then(
             (result) => {
               resolve(result);
-
               context.commit("addStatus", {
                 type: "success",
                 note: "Contact Successfully Updated",
               });
-              context.commit("editEvent", result);
+              context.commit("editContact", payload);
             },
             (error) => {
               context.commit("addStatus", {
@@ -588,11 +616,7 @@ const store = createStore({
           .then(
             (result) => {
               resolve(result);
-
-              context.commit("addContact", {
-                role: "locations",
-                item: result.data,
-              });
+              context.commit("addContact", result.data);
             },
             (error) => {
               context.commit("addStatus", `Error: ${error}`);
@@ -634,11 +658,7 @@ const store = createStore({
           )
           .then(
             (result) => {
-              resolve(result.data);
-              context.commit("setContactsToCategory", {
-                category: "locations",
-                items: result.data.Items,
-              });
+              resolve(result.data.Items);
             },
             (error) => {
               context.commit("addStatus", {
@@ -856,24 +876,29 @@ const store = createStore({
       });
     },
     async adminGetEvent(context, payload) {
-      return new Promise((resolve, reject) => {
-        axios
-          .get(
-            `https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/admin/${context.state.user.tenantId}/events/${payload}`
-          )
-          .then(
-            (result) => {
-              resolve(result);
-            },
-            (error) => {
-              context.commit("addStatus", {
-                type: "error",
-                note: error,
-              });
-              reject(error);
-            }
-          );
-      });
+      let eventSearch = context.commit("searchForEvent", payload);
+      if (eventSearch) {
+        return eventSearch;
+      } else {
+        return new Promise((resolve, reject) => {
+          axios
+            .get(
+              `https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/admin/${context.state.user.tenantId}/events/${payload}`
+            )
+            .then(
+              (result) => {
+                resolve(result.data.Item);
+              },
+              (error) => {
+                context.commit("addStatus", {
+                  type: "error",
+                  note: error,
+                });
+                reject(error);
+              }
+            );
+        });
+      }
     },
     async editEvent(context, payload) {
       return new Promise((resolve, reject) => {
@@ -1086,9 +1111,6 @@ const store = createStore({
         .catch((e) => {
           console.log(e);
         });
-      // console.log(context, payload);
-      // const result = await Storage.put("test.txt", "Hello");
-      // console.log(result);
     },
     async getPhoto(context, payload) {
       return new Promise((resolve, reject) => {
@@ -1117,15 +1139,13 @@ const store = createStore({
       state.user = user;
     },
     searchForUser(state, user) {
-      let contacts = [
-        ...state.contacts.clients,
-        ...state.contacts.employees,
-        ...state.contacts.organizers,
-        ...state.contacts.vendors,
-        ...state.contacts.locations,
-      ];
-      return contacts.find((x) => {
+      return state.contacts.find((x) => {
         return x.userId == user;
+      });
+    },
+    searchForEvent(state, event) {
+      return state.events.find((x) => {
+        return x == event;
       });
     },
     setBusinessSettings(state, settings) {
@@ -1359,44 +1379,23 @@ const store = createStore({
     },
 
     // contact mutations /////////////////////////////
-
-    setContactsToCategory(state, payload) {
-      state.contacts[payload.category] = [...payload.items];
+    setContacts(state, payload) {
+      state.contacts = [...payload];
     },
     addContact(state, payload) {
-      state.contacts[payload.item.role + "s"].push(payload.item);
+      state.contacts.push(payload);
     },
-    editClient(state, { id, key, value }) {
-      let subject = state.contacts.clients.find((c) => c.id === id);
-      subject[key] = value;
+    async editContact(state, payload) {
+      let subject = state.contacts.find((x) => {
+        return x.userId == payload.clientId;
+      });
+      if (subject) {
+        subject[payload.variable] = payload.value;
+      }
     },
     deleteUser(state, payload) {
-      let cat = state.contacts[payload.category];
-      let subject = cat.findIndex((e) => e.id === payload.id);
-      cat.splice(subject, 1);
-    },
-    addEmployeeToEvent(state, payload) {
-      state.events
-        .find((x) => x.id === payload.eventId)
-        .associatedContacts.push({ id: payload.employee, role: "employee" });
-    },
-    ////// check on the employeeAvailability status v
-    changeEmployeeAvailability(state, payload) {
-      let employee = state.contacts.employees.find(
-        (x) => x.id === payload.employeeId
-      );
-      if (payload.type === "availability") {
-        employee.availableDates.push(payload.date);
-      }
-      if (payload.type === "unavailability") {
-        employee.unavailableDates.push(payload.date);
-      }
-    },
-    changeEmployeeAvailabilityRules(state, payload) {
-      let employee = state.contacts.employees.find(
-        (x) => x.id === payload.employeeId
-      );
-      employee.availabilityRules = payload.availabilityRules;
+      let index = state.contacts.findIndex((e) => e.id === payload.id);
+      state.contacts.splice(index, 1);
     },
 
     // event mutations ////////////////////////////
@@ -1439,32 +1438,6 @@ const store = createStore({
 
     //prospect-specific mutations /////////////////////
 
-    changeProspectStatus(state, payload) {
-      let subject = state.contacts.prospects.find((c) => c.id == payload.id);
-      subject.status = payload.status;
-    },
-
-    addProspectLocation(state, payload) {
-      let subject = state.contacts.prospects.find((c) => c.id == payload.id);
-      subject.eventDetails.eventLocations.push(payload.location);
-    },
-
-    addProspectDateTime(state, payload) {
-      let subject = state.contacts.prospects.find((c) => c.id == payload.id);
-      subject.eventDetails.eventDate = payload.eventDate;
-
-      if (payload.eventStartTime) {
-        subject.eventDetails.eventStartTime = payload.eventStartTime;
-      } else {
-        subject.eventDetails.eventStartTime = undefined;
-      }
-
-      if (payload.eventEndTime) {
-        subject.eventDetails.eventEndTime = payload.eventEndTime;
-      } else {
-        subject.eventDetails.eventEndTime = undefined;
-      }
-    },
   },
   getters: {
     currencyCode(state) {
@@ -1473,6 +1446,21 @@ const store = createStore({
       } else {
         return "USD";
       }
+    },
+    clients(state) {
+      return state.contacts.filter((x) => x.role == "client");
+    },
+    employees(state) {
+      return state.contacts.filter((x) => x.role == "employee");
+    },
+    organizers(state) {
+      return state.contacts.filter((x) => x.role == "organizer");
+    },
+    vendors(state) {
+      return state.contacts.filter((x) => x.role == "vendor");
+    },
+    locations(state) {
+      return state.contacts.filter((x) => x.role == "location");
     },
   },
   plugins: [
