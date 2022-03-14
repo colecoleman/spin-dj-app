@@ -33,12 +33,12 @@
             <p>Last Name:</p>
             <input
               type="text"
-              v-model="familyName"
-              :class="familyNameError ? 'error' : 'healthy'"
+              v-model="family_name"
+              :class="family_nameError ? 'error' : 'healthy'"
             />
           </div>
         </div>
-        <p class="error-text" v-if="familyNameError || given_nameError">
+        <p class="error-text" v-if="family_nameError || given_nameError">
           <i> Oops! We're missing your name.</i>
         </p>
         <div class="input-field">
@@ -111,7 +111,10 @@
           </p>
         </div>
 
-        <button-standard-with-icon text="Confirm" @click="validationBlock()" />
+        <button-standard-with-icon
+          text="Confirm"
+          @click="submitConfirmationCode()"
+        />
       </div>
       <p class="disclaimer">
         <i
@@ -134,7 +137,7 @@ export default {
     return {
       SpinLogoWithText,
       given_name: undefined,
-      familyName: undefined,
+      family_name: undefined,
       username: undefined,
       password: undefined,
       confirmPassword: undefined,
@@ -143,7 +146,7 @@ export default {
       accessCode: undefined,
       user: undefined,
       given_nameError: false,
-      familyNameError: false,
+      family_nameError: false,
       usernameError: false,
       passwordError: {
         match: false,
@@ -164,19 +167,19 @@ export default {
         this.signUp(
           this.username,
           this.password,
-          this.familyName,
+          this.family_name,
           this.given_name
         );
       }
     },
-    async signUp(username, password, familyName, given_name) {
+    async signUp(username, password, family_name, given_name) {
       try {
         const { user } = await Auth.signUp({
           username,
           password,
           attributes: {
             email: username,
-            family_name: familyName,
+            family_name: family_name,
             given_name: given_name,
             "custom:role": "admin",
           },
@@ -189,6 +192,22 @@ export default {
           type: "error",
           note: `Error signing up: ${error}`,
         });
+      }
+    },
+    async submitConfirmationCode() {
+      const user = this.user;
+      const code = this.confirmationCode;
+      try {
+        await Auth.confirmSignUp(user.username, code);
+        await Auth.signIn(user.username, this.password);
+        await this.$store.dispatch("setUser");
+        this.$router.push("/setup");
+      } catch (error) {
+        this.$store.commit("addStatus", {
+          type: "error",
+          note: `Error signing up: ${error}`,
+        });
+        console.log("dur confirming sign up", error);
       }
     },
   },
