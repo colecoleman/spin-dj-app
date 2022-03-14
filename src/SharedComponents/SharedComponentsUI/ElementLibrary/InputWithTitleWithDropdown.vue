@@ -13,7 +13,7 @@
       :placeholder="placeholder"
       @blur="blur()"
     />
-    <div class="dropdown" v-if="dropdownSelections.length > 1">
+    <div class="dropdown" v-if="dropdownSelections.length > 0">
       <div
         class="dropdown-item"
         v-for="(item, index) in dropdownSelections"
@@ -36,6 +36,7 @@ export default {
         return this.inputValue;
       },
       set(val) {
+        console.log(this.dropdownSelections);
         return this.$emit("input", val);
       },
     },

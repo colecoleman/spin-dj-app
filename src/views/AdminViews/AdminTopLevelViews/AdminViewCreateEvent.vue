@@ -591,6 +591,7 @@ export default {
         return true;
       }
     },
+
     checkForEventPresence(array, item) {
       let index = array.indexOf(item);
       if (index > -1) {
@@ -755,7 +756,6 @@ export default {
         signerUUID: null,
         status: "pending",
       }));
-      console.log(dbEvent);
       return new Promise((resolve, reject) => {
         this.$store
           .dispatch("addEvent", dbEvent)
@@ -913,14 +913,29 @@ export default {
       );
     },
     clientSearchResults() {
-      if (this.fields.client.given_name) {
-        let term = this.fields.client.given_name;
-        let clients = this.$store.getters.clients;
-        return clients.filter(
-          (x) =>
-            x.family_name.toLowerCase().includes(term.toLowerCase()) ||
-            x.given_name.toLowerCase().includes(term.toLowerCase())
-        );
+      let clients = this.$store.getters.clients;
+      if (
+        clients.find((x) => {
+          return (
+            x.given_name == this.fields.client.given_name &&
+            x.family_name == this.fields.client.family_name &&
+            x.phoneNumber == this.fields.client.phoneNumber &&
+            x.username == this.fields.client.username
+          );
+        })
+      ) {
+        return [];
+      } else if (this.fields.client.given_name) {
+        let term = this.fields.client.given_name.toLowerCase();
+        return clients.filter((x) => {
+          let clientFullName =
+            x.given_name.toLowerCase() + " " + x.family_name.toLowerCase();
+          if (clientFullName.includes(term)) {
+            return true;
+          } else {
+            return false;
+          }
+        });
       } else {
         return [];
       }
@@ -987,9 +1002,13 @@ export default {
       if (this.fields.location.name) {
         let locations = this.$store.getters.locations;
         let term = this.fields.location.name.toLowerCase();
-        return locations.filter((x) => x.name.toLowerCase().includes(term));
+        return locations.filter(
+          (x) =>
+            x.name.toLowerCase().includes(term) && x.name.toLowerCase() !== term
+        );
+      } else {
+        return [];
       }
-      return [];
     },
   },
   async created() {
