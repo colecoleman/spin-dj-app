@@ -94,7 +94,7 @@ export default {
       this.sortMenuOpened = !this.sortMenuOpened;
     },
     selectSort(action) {
-      this.events.sort(action);
+      this.$store.commit("sortEvents", action);
       this.toggleSortMenuOpened();
     },
     navigateToEventPage(id) {
@@ -131,16 +131,6 @@ export default {
     title() {
       return this.eventAssignmentOpen ? "Assign To Events" : "Events";
     },
-    events() {
-      let today = new Date().getTime();
-      let location = this.location;
-      let array = [...this.$store.state.events];
-      return array.filter(
-        (event) =>
-          new Date(event.data.date).getTime() > today &&
-          event.locations.includes(location.userId)
-      );
-    },
     allEvents() {
       let today = new Date().getTime();
       return this.$store.state.events.filter((event) => {
@@ -148,7 +138,7 @@ export default {
       });
     },
   },
-  props: ["location", "eventAssignmentOpen"],
+  props: ["location", "events", "eventAssignmentOpen"],
   components: {
     LocationUpcomingEventsListItem,
     FloatingMenuWithListItems,
