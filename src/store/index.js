@@ -268,7 +268,7 @@ const store = createStore({
                 value: index,
               };
               context.dispatch("editLocation", parameters).then(() => {
-                this.events.splice(index, 1);
+                location.associatedEvents.splice(index, 1);
               });
             } else {
               return res;
