@@ -10,41 +10,38 @@
     <div id="scroll-container">
       <div
         class="contacts-container"
-        v-for="(value, contact_category) in contacts"
-        :key="contact_category"
-        :id="`${contact_category + `-card`}`"
+        v-for="(type, index) in contactTypes"
+        :key="index"
+        :id="`${type + 's' + `-card`}`"
       >
         <base-card
           svg="person"
-          :title="contact_category"
+          :title="type + 's'"
           actionIcon="sort-alpha"
           actionText="Sort:"
-          @action-one-clicked="toggleSortMenuOpened(contact_category)"
+          @action-one-clicked="toggleSortMenuOpened(type)"
         >
           <template v-slot:dropdownContainer>
             <floating-menu-with-list-items
-              v-if="sortMenuOpened === contact_category"
+              v-if="sortMenuOpened === type"
               :actions="sortItems"
-              :identifier="contact_category"
+              :identifier="type"
               @actionClicked="selectSort"
             />
           </template>
           <template v-slot:content>
-            <div class="personal-contact-list" v-if="value.length > 0">
+            <div class="personal-contact-list">
               <div
-                v-for="contact in value"
+                v-for="contact in $store.getters[type + 's']"
                 :key="contact.userId"
-                :category="contact_category"
+                :category="type"
                 class="contact-list-item"
               >
-                <contact-list-item
-                  :contact="contact"
-                  :category="contact_category"
-                />
+                <contact-list-item :contact="contact" :category="type" />
               </div>
             </div>
-            <h4 v-if="value.length <= 0" class="placeholder-text">
-              No {{ contact_category }} to view! Add some
+            <h4 v-if="type.length <= 0" class="placeholder-text">
+              No {{ type }} to view! Add some
             </h4>
           </template>
         </base-card>
@@ -90,8 +87,10 @@ export default {
           },
         },
       ],
+      contactTypes: ["client", "employee", "location", "organizer", "vendor"],
     };
   },
+
   methods: {
     toggleSortMenuOpened(cat) {
       if (this.sortMenuOpened !== cat) {
@@ -109,15 +108,9 @@ export default {
       }
     },
   },
-  computed: {
-    contacts() {
-      return this.$store.state.contacts;
-    },
-  },
 
   mounted() {
     this.$store.dispatch("getAdminUsers");
-    this.$store.dispatch("getLocations");
   },
   components: {
     ContactListItem,
@@ -206,9 +199,9 @@ export default {
     grid-row: 1 / 4;
   }
 
-  #scroll-container .contacts-container:last-child {
+  /* #scroll-container .contacts-container:last-child {
     padding-bottom: 12px;
-  }
+  } */
 
   #add-contact {
     grid-column: 3/4;

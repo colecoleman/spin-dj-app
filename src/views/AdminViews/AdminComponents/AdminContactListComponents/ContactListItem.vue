@@ -21,7 +21,7 @@
       @cancel-send-email="togglePopup"
       @close-window="togglePopup"
     />
-    <div class="contact-wrapper" v-if="category !== 'locations'">
+    <div class="contact-wrapper" v-if="category !== 'location'">
       <div class="name-and-photo">
         <profile-picture
           contact="person"
@@ -51,7 +51,7 @@
         />
       </div>
     </div>
-    <div class="contact-wrapper" v-if="category === 'locations'">
+    <div class="contact-wrapper" v-if="category === 'location'">
       <div class="name-and-photo">
         <profile-picture contact="location" :customStyle="svgStyling" />
         <div class="name" @click="viewContact()">
@@ -116,7 +116,7 @@ export default {
   methods: {
     viewContact() {
       this.$router.push(
-        "contacts/" + this.category + "/" + this.contact.userId
+        "contacts/" + this.category + "s/" + this.contact.userId
       );
     },
     formatPhoneNumber,
@@ -133,7 +133,7 @@ export default {
           let eventObject;
           this.$store.dispatch("adminGetEvent", event).then(
             (res) => {
-              eventObject = res.data.Item;
+              eventObject = res;
               let index = eventObject.contacts.indexOf(this.contact.userId);
               let payload = {
                 eventId: eventObject.userId,
@@ -156,6 +156,9 @@ export default {
       this.$store.dispatch("deleteUser", deletePayload);
       this.popupOpen = null;
     },
+  },
+  created() {
+    console.log(this.category);
   },
   props: ["contact", "category"],
   components: {

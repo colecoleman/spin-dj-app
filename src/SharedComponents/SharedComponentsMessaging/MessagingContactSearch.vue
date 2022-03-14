@@ -45,17 +45,9 @@ export default {
   },
   computed: {
     contacts() {
-      let contactsArr = this.$store.state.contacts;
-      let contacts = [
-        "Clients",
-        ...contactsArr.clients,
-        "Vendors",
-        ...contactsArr.vendors,
-        "Organizers",
-        ...contactsArr.organizers,
-        "Employees",
-        ...contactsArr.employees,
-      ];
+      let contacts = this.$store.state.contacts.filter((x) => {
+        x.role !== "location";
+      });
       if (this.searchTerm) {
         contacts = contacts.filter(
           (x) =>

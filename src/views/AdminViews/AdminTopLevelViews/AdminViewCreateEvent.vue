@@ -915,7 +915,8 @@ export default {
     clientSearchResults() {
       if (this.fields.client.given_name) {
         let term = this.fields.client.given_name;
-        return this.$store.state.contacts.clients.filter(
+        let clients = this.$store.getters.clients;
+        return clients.filter(
           (x) =>
             x.family_name.toLowerCase().includes(term.toLowerCase()) ||
             x.given_name.toLowerCase().includes(term.toLowerCase())
@@ -984,18 +985,14 @@ export default {
     },
     searchLocations() {
       if (this.fields.location.name) {
+        let locations = this.$store.getters.locations;
         let term = this.fields.location.name.toLowerCase();
-        return this.$store.state.contacts.locations.filter(
-          (x) => x.name.toLowerCase().includes(term)
-          // x.address.cityStateZip.toLowerCase().includes(term) ||
-          // x.address.streetAddress1.toLowerCase().includes(term)
-        );
+        return locations.filter((x) => x.name.toLowerCase().includes(term));
       }
       return [];
     },
   },
   async created() {
-    await this.$store.dispatch("getLocations");
     await this.$store.dispatch("getAdminUsers");
     this.loaded = true;
   },

@@ -79,14 +79,10 @@ export default {
     contactSearchResults() {
       if (this.clientSearchField) {
         let term = this.clientSearchField;
-        let contacts = this.$store.state.contacts;
-        let contactsArray = [
-          ...contacts.clients,
-          ...contacts.vendors,
-          ...contacts.organizers,
-          ...contacts.vendors,
-        ];
-        return contactsArray.filter(
+        let contacts = this.$store.state.contacts.filter((x) => {
+          return x.role !== "location";
+        });
+        return contacts.filter(
           (x) =>
             x.family_name.toLowerCase().includes(term.toLowerCase()) ||
             x.given_name.toLowerCase().includes(term.toLowerCase())

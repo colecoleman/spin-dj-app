@@ -3,10 +3,10 @@
     <li
       v-for="(value, name) in contacts"
       :key="name"
-      @click="scroll(`${name + '-card'}`)"
-      :class="activeLink === `${name + '-card'}` ? 'active-link' : ' '"
+      @click="scroll(`${value + '-card'}`)"
+      :class="activeLink === `${value + '-card'}` ? 'active-link' : ' '"
     >
-      {{ name }}
+      {{ value }}
     </li>
   </ul>
 </template>
@@ -16,12 +16,8 @@ export default {
   data() {
     return {
       activeLink: "clients-card",
+      contacts: ["clients", "employees", "locations", "organizers", "vendors"],
     };
-  },
-  computed: {
-    contacts() {
-      return this.$store.state.contacts;
-    },
   },
   methods: {
     scroll(id) {

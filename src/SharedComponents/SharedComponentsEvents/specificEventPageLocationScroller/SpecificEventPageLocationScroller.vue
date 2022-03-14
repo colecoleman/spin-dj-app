@@ -167,9 +167,9 @@ export default {
     },
     searchLocations() {
       if (this.searchLocationName) {
-        console.log("hi");
+        let locations = this.$store.getters.locations;
         let term = this.searchLocationName.toLowerCase();
-        return this.$store.state.contacts.locations.filter(
+        return locations.filter(
           (x) => x.name.toLowerCase().includes(term)
           // || x.address.cityStateZip.toLowerCase().includes(term) ||
           // x.address.streetAddress1.toLowerCase().includes(term)
