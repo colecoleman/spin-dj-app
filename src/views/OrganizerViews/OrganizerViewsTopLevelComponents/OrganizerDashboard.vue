@@ -57,8 +57,10 @@ export default {
     if (!this.$store.state.user) {
       await this.$store.dispatch("setUser");
     }
-    await this.$store.dispatch("getEvents").then((res) => {
-      console.log(res);
+    await this.$store.dispatch("getEvents").then(() => {
+      this.$store.commit("sortEvents");
+      this.$store.dispatch("getAdminEventsContacts");
+      this.$store.dispatch("getAdminEventsLocations");
     });
     this.loading = false;
   },

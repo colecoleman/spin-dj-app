@@ -32,7 +32,6 @@ export default {
   data() {
     return {
       loading: true,
-      // events: [],
     };
   },
   methods: {},
@@ -44,7 +43,6 @@ export default {
       return this.$store.state.user;
     },
     events() {
-      console.log(this.$store.state.events);
       return this.$store.state.events;
     },
     pastEvents() {
@@ -63,8 +61,10 @@ export default {
     if (!this.$store.state.user) {
       await this.$store.dispatch("setUser");
     }
-    await this.$store.dispatch("getEvents").then((res) => {
-      console.log(res);
+    await this.$store.dispatch("getEvents").then(() => {
+      this.$store.commit("sortEvents");
+      this.$store.dispatch("getAdminEventsContacts");
+      this.$store.dispatch("getAdminEventsLocations");
     });
     this.loading = false;
   },
