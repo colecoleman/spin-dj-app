@@ -22,7 +22,6 @@
           <to-do-item
             v-for="toDo in uncompletedToDos"
             :key="toDo.userId"
-            :contacts="eventContacts"
             :toDo="toDo"
             :listType="listType"
           />
@@ -30,7 +29,6 @@
           <to-do-item
             v-for="toDo in completedToDos"
             :key="toDo.userId"
-            :contacts="eventContacts"
             :toDo="toDo"
             :listType="listType"
           />

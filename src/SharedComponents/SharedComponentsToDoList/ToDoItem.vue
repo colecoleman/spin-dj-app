@@ -8,7 +8,7 @@
     <h4 :class="toDo.completed ? `strike` : ``">{{ toDo.title }}</h4>
     <div class="people-wrapper">
       <profile-picture
-        v-for="(contact, index) in matchedContacts"
+        v-for="(contact, index) in contacts"
         :key="index"
         contact="person"
         :profilePicture="
@@ -30,24 +30,11 @@
   <div class="expanded-to-do" v-if="expansionActive">
     <div
       class="to-do-contact-item"
-      v-for="(contact, index) in matchedContacts"
+      v-for="(contact, index) in contacts"
       :key="index"
     >
       <to-do-item-person-item :contact="contact" />
-      <!-- <profile-picture
-        contact="person"
-        :profilePicture="
-          contact
-            ? contact.profilePicture
-              ? contact.profilePicture
-              : undefined
-            : undefined
-        "
-        :customStyle="'width: 25px; height: 25px; margin-left: 10px; padding: 5px;'"
-      />
-      <h5 v-if="contact">
-        {{ contact.given_name + " " + contact.family_name }}
-      </h5> -->
+   
     </div>
   </div>
 </template>
@@ -63,38 +50,8 @@ export default {
       completedSvg:
         "width: 14px; height: 14px; fill: currentColor: stroke: currentColor",
       uncompletedSvg: "fill: none; stroke: currentColor",
+      contacts: [],
     };
-  },
-  computed: {
-    matchedContacts() {
-      if (
-        this.listType === "event" &&
-        this.contacts.length > 0 &&
-        this.toDo.associatedContacts.length > 0
-      ) {
-        return this.toDo.associatedContacts.map((x) => {
-          return this.contacts.find((c) => x == c.userId);
-        });
-      } else if (this.listType == "contact") {
-        console.log("in map");
-        let contacts = [
-          ...this.$store.state.contacts.clients,
-          ...this.$store.state.contacts.employees,
-          ...this.$store.state.contacts.vendors,
-          ...this.$store.state.contacts.organizers,
-        ];
-        return this.toDo.associatedContacts.map((x) => {
-          let contact = contacts.find((c) => x == c.userId);
-          if (contact) {
-            return contact;
-          } else {
-            return x;
-          }
-        });
-      } else {
-        return [];
-      }
-    },
   },
   methods: {
     toggleExpansion() {
@@ -109,7 +66,19 @@ export default {
       });
     },
   },
-  props: ["toDo", "contacts", "listType"],
+  async created() {
+    this.contacts = await Promise.all(
+      this.toDo.associatedContacts.map(async (x) => {
+        let contact = await this.$store.dispatch("getContactListItem", x);
+        if (contact) {
+          return contact;
+        } else {
+          return x;
+        }
+      })
+    );
+  },
+  props: ["toDo", "listType"],
   components: { VueSvg, ProfilePicture, ToDoItemPersonItem },
 };
 </script>
@@ -133,8 +102,6 @@ h4 {
 .expanded-to-do {
   margin-bottom: 25px;
 }
-
-
 
 @keyframes strike {
   0% {

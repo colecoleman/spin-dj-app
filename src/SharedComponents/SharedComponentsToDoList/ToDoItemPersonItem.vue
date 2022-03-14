@@ -3,16 +3,16 @@
     <profile-picture
       contact="person"
       :profilePicture="
-        contactItem
-          ? contactItem.profilePicture
-            ? contactItem.profilePicture
+        contact
+          ? contact.profilePicture
+            ? contact.profilePicture
             : undefined
           : undefined
       "
       :customStyle="'width: 25px; height: 25px; margin-left: 10px; padding: 5px;'"
     />
-    <h5 v-if="contactItem">
-      {{ contactItem.given_name + " " + contactItem.family_name }}
+    <h5 v-if="contact">
+      {{ contact.given_name + " " + contact.family_name }}
     </h5>
   </div>
 </template>
@@ -20,22 +20,10 @@
 import ProfilePicture from "../../assets/ProfilePicture.vue";
 export default {
   data() {
-    return {
-      contactItem: undefined,
-    };
+    return {};
   },
   methods: {},
-  async created() {
-    if (typeof this.contact !== "object") {
-      this.contactItem = await this.$store
-        .dispatch("nonAdminGetUser", this.contact)
-        .then((res) => {
-          return res;
-        });
-    } else {
-      this.contactItem = this.contact;
-    }
-  },
+
   components: {
     ProfilePicture,
   },
