@@ -4,7 +4,7 @@
       <div class="hero-left hero-half">
         <div class="image-container">
           <img
-            src="../../../assets/spin-beta-logo.png"
+            src="../../../assets/spin-logo-with-text.svg"
             alt="Spin DJ Software Logo"
           />
         </div>
@@ -80,10 +80,11 @@
         <div class="price-section">
           <div class="price-item">
             <div class="price-item-top">
+              <h1>PUBLIC</h1>
               <h1>BETA</h1>
             </div>
             <div class="price-item-bottom">
-              <h2>$5/MO</h2>
+              <h2>$15/MO</h2>
               <h5>USD</h5>
             </div>
           </div>

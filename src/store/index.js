@@ -1385,7 +1385,7 @@ const store = createStore({
     addContact(state, payload) {
       state.contacts.push(payload);
     },
-    async editContact(state, payload) {
+    editContact(state, payload) {
       let subject = state.contacts.find((x) => {
         return x.userId == payload.clientId;
       });

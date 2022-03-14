@@ -2,7 +2,10 @@
   <div id="hero">
     <div class="hero-left hero-half">
       <div class="image-container">
-        <img src="../../assets/spin-beta-logo.png" alt="Spin DJ Software`" />
+        <img
+          src="../../assets/spin-logo-with-text.svg"
+          alt="Spin DJ Software`"
+        />
       </div>
       <div class="tagline-container">
         <h1>Software Built<br /><b>by</b> DJs<br /><b>for</b> DJs</h1>
@@ -78,10 +81,6 @@
             >
           </p>
         </div>
-        <div class="input-field">
-          <p>Beta Access Code:</p>
-          <input v-model="accessCode" type="text" class="healthy" />
-        </div>
         <button-standard-with-icon text="Sign Up" @click="validationBlock()" />
       </div>
       <p class="disclaimer">
@@ -112,10 +111,7 @@
           </p>
         </div>
 
-        <button-standard-with-icon
-          text="Confirm"
-          @click="submitConfirmationCode()"
-        />
+        <button-standard-with-icon text="Confirm" @click="signUp()" />
       </div>
       <p class="disclaimer">
         <i
@@ -174,51 +170,25 @@ export default {
       }
     },
     async signUp(username, password, familyName, given_name) {
-      let access = await this.$store
-        .dispatch("submitBetaAccessCode", this.accessCode)
-        .catch(() => {
-          this.$store.commit("addStatus", {
-            type: "error",
-            note: "Incorrect Access Code",
-          });
-        });
-      if (access) {
-        try {
-          const { user } = await Auth.signUp({
-            username,
-            password,
-            attributes: {
-              email: username,
-              family_name: familyName,
-              given_name: given_name,
-              "custom:role": "admin",
-            },
-          });
-          this.step++;
-          this.user = user;
-          console.log(this.user);
-        } catch (error) {
-          this.$store.commit("addStatus", {
-            type: "error",
-            note: `Error signing up: ${error}`,
-          });
-        }
-      }
-    },
-    async submitConfirmationCode() {
-      const user = this.user;
-      const code = this.confirmationCode;
       try {
-        await Auth.confirmSignUp(user.username, code);
-        await Auth.signIn(user.username, this.password);
-        await this.$store.dispatch("setUser");
-        this.$router.push("/setup");
+        const { user } = await Auth.signUp({
+          username,
+          password,
+          attributes: {
+            email: username,
+            family_name: familyName,
+            given_name: given_name,
+            "custom:role": "admin",
+          },
+        });
+        this.step++;
+        this.user = user;
+        console.log(this.user);
       } catch (error) {
         this.$store.commit("addStatus", {
           type: "error",
           note: `Error signing up: ${error}`,
         });
-        console.log("error confirming sign up", error);
       }
     },
   },
@@ -534,7 +504,7 @@ export default {
     }
 
     .image-container > img {
-      width: 125px;
+      width: 250px;
       padding: 30px;
     }
 
