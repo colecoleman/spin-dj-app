@@ -45,14 +45,13 @@
     </div>
 
     <div id="upcoming-events">
-      <client-page-upcoming-events :contact="contact" svg="calendar" />
+      <client-page-upcoming-events
+        :contact="contact"
+        :events="events"
+        svg="calendar"
+      />
     </div>
-    <!-- <div id="box-five-half-two">
-          <client-page-information-card
-            :contact="contact"
-            svg="info"
-          ></client-page-information-card>
-        </div> -->
+
     <div id="automation">
       <automation-list
         :events="events"
@@ -67,13 +66,6 @@
         :loading="contact ? false : true"
         title="Coming Soon"
       >
-        <template v-slot:content>
-          <!-- <messaging-single-component
-            v-if="conversation"
-            :contact="contact"
-            :conversation="conversation"
-          ></messaging-single-component> -->
-        </template>
       </base-card>
     </div>
   </section>
@@ -143,80 +135,13 @@ export default {
         this.popupOpen = popup;
       }
     },
-    getConversations(conversations) {
-      return conversations.map((x) => {
-        x = this.$store.dispatch("getThreadParticipants", x).then((res) => {
-          return res.Items;
-        });
-        return x;
-      });
-    },
-    async getConversationUsers(conversation) {
-      conversation.users = conversation.users.filter((x) => {
-        return x !== this.currentUser.userId;
-      });
-      var promises = conversation.users.map((x) => {
-        let correctCall = this.currentUser.role ? "nonAdminGetUser" : "getUser";
-        return this.$store
-          .dispatch(correctCall, x)
-          .then((res) => {
-            return res;
-          })
-          .catch((err) => {
-            console.log(err);
-          });
-      });
-      let users;
-      return Promise.all(promises).then((res) => {
-        users = res;
-        return users;
-      });
-    },
-    async getConversationMessages(conversation) {
-      let thread = await this.$store
-        .dispatch("getMessageThread", conversation.pk)
-        .then((res) => {
-          res.Items;
-          return res.Items;
-        });
-      return thread;
-    },
   },
   async created() {
     this.contact = await this.$store.dispatch("getUser", this.$route.params.id);
-    console.log(this.contact);
-    if (this.contact.conversations) {
-      let matchedItem = this.contact.conversations.find((x) => {
-        return this.currentUser.conversations.includes(x);
-      });
-      if (matchedItem) {
-        this.eventConversation.push(matchedItem);
-      }
-    }
-
-    this.contact.associatedEvents.forEach((event) => {
-      this.$store.dispatch("adminGetEvent", event).then((res) => {
-        console.log(res);
-        this.events.push(res.data.Item);
-      });
-    });
-    if (this.eventConversation) {
-      Promise.all(this.getConversations(this.eventConversation)).then((res) => {
-        let conversations = res;
-        for (let index = 0; index < conversations.length; index++) {
-          Promise.all([
-            this.getConversationUsers(...conversations[index]),
-            this.getConversationMessages(...conversations[index]),
-          ]).then((res) => {
-            let conversation = {
-              ...conversations[index],
-              thread: res[1],
-              users: res[0],
-            };
-            this.conversation = conversation;
-          });
-        }
-      });
+    this.events = await this.$store.dispatch("getContactEvents", this.contact);
+    for (let x = 0; x < this.events.length; x++) {
+      this.$store.dispatch("getEventContacts", this.events[x]);
+      this.$store.dispatch("getEventLocations", this.events[x]);
     }
   },
   components: {
@@ -225,11 +150,8 @@ export default {
     ToDoList,
     ClientPageUpcomingEvents,
     ContactPageResetPassword,
-    // TwoButtonDialogModal,
     ContactPageDeleteContact,
-    // ClientPageInformationCard,
     AutomationList,
-    // MessagingSingleComponent,
     ContactPageNotes,
     FourButtonBarWithDropDown,
   },
@@ -259,7 +181,6 @@ export default {
   }
   #messages {
     display: none;
-    /* grid-row: 6/ 10; */
   }
 
   #button-bar {

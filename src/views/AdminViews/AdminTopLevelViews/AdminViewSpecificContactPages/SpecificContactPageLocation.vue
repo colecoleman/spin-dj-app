@@ -28,6 +28,7 @@
       <location-page-upcoming-events
         v-if="location"
         :location="location"
+        :events="events"
         svg="calendar"
         @event-assignment-toggle="toggleEventAssignment()"
         :eventAssignmentOpen="eventAssignmentOpen"
@@ -69,6 +70,7 @@ export default {
       location: undefined,
       contact: undefined,
       popupOpen: null,
+      events: [],
       buttons: [
         {
           title: "Send Email",
@@ -92,9 +94,20 @@ export default {
     };
   },
   async created() {
-    await this.$store.dispatch("getUser", this.$route.params.id).then((res) => {
-      this.location = res.data.Item;
-    });
+    this.location = await this.$store.dispatch(
+      "getUser",
+      this.$route.params.id
+    );
+    console.log(this.location);
+    this.events = await this.$store.dispatch(
+      "getLocationEvents",
+      this.location
+    );
+    for (let x = 0; x < this.events.length; x++) {
+      this.$store.dispatch("getEventContacts", this.events[x]);
+      this.$store.dispatch("getEventLocations", this.events[x]);
+    }
+    console.log(this.events);
     if (this.location.contacts) {
       if (this.location.contacts.length > 0) {
         await this.$store

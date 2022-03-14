@@ -46,7 +46,7 @@
       />
       <contact-page-events-assignment
         v-if="eventAssignmentOpen"
-        :events="events"
+        :events="this.$store.state.events"
         :contact="contact"
         svg="calendar"
         @event-assignment-toggle="toggleEventAssignment()"
@@ -153,92 +153,19 @@ export default {
       }
     },
 
-    toggleEventAssignment() {
+    async toggleEventAssignment() {
       this.eventAssignmentOpen = !this.eventAssignmentOpen;
-    },
-    getConversations(conversations) {
-      return conversations.map((x) => {
-        x = this.$store.dispatch("getThreadParticipants", x).then((res) => {
-          return res.Items;
-        });
-        return x;
-      });
-    },
-    async getConversationUsers(conversation) {
-      conversation.users = conversation.users.filter((x) => {
-        return x !== this.currentUser.userId;
-      });
-      var promises = conversation.users.map((x) => {
-        let correctCall = this.currentUser.role ? "nonAdminGetUser" : "getUser";
-        return this.$store
-          .dispatch(correctCall, x)
-          .then((res) => {
-            return res;
-          })
-          .catch((err) => {
-            console.log(err);
-          });
-      });
-      let users;
-      return Promise.all(promises).then((res) => {
-        users = res;
-        return users;
-      });
-    },
-    async getConversationMessages(conversation) {
-      let thread = await this.$store
-        .dispatch("getMessageThread", conversation.pk)
-        .then((res) => {
-          res.Items;
-          return res.Items;
-        });
-      return thread;
+      await this.$store.dispatch("getAdminEvents");
+      this.$store.dispatch("getAdminEventsContacts");
+      this.$store.dispatch("getAdminEventsLocations");
     },
   },
   async created() {
-    await this.$store.dispatch("getUser", this.$route.params.id).then((res) => {
-      this.contact = res.data.Item;
-      if (this.contact.conversations) {
-        let matchedItem = this.contact.conversations.find((x) => {
-          return this.currentUser.conversations.includes(x);
-        });
-        if (matchedItem) {
-          this.eventConversation.push(matchedItem);
-        }
-      }
-    });
-    for (
-      let index = 0;
-      index < [...new Set(this.contact.associatedEvents)].length;
-      index++
-    ) {
-      const event = this.contact.associatedEvents[index];
-      await this.$store.dispatch("adminGetEvent", event).then((res) => {
-        let today = new Date();
-        if (new Date(res.data.Item.data.date) < today) {
-          this.pastEvents.push(res.data.Item);
-        } else {
-          this.events.push(res.data.Item);
-        }
-      });
-    }
-    if (this.eventConversation) {
-      Promise.all(this.getConversations(this.eventConversation)).then((res) => {
-        let conversations = res;
-        for (let index = 0; index < conversations.length; index++) {
-          Promise.all([
-            this.getConversationUsers(...conversations[index]),
-            this.getConversationMessages(...conversations[index]),
-          ]).then((res) => {
-            let conversation = {
-              ...conversations[index],
-              thread: res[1],
-              users: res[0],
-            };
-            this.conversation = conversation;
-          });
-        }
-      });
+    this.contact = await this.$store.dispatch("getUser", this.$route.params.id);
+    this.events = await this.$store.dispatch("getContactEvents", this.contact);
+    for (let x = 0; x < this.events.length; x++) {
+      this.$store.dispatch("getEventContacts", this.events[x]);
+      this.$store.dispatch("getEventLocations", this.events[x]);
     }
   },
   components: {
