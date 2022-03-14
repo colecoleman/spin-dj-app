@@ -367,8 +367,7 @@ export default {
     await this.$store
       .dispatch("adminGetEvent", this.$route.params.id)
       .then((res) => {
-        this.event = res.data.Item;
-        console.log(res.data.Item);
+        this.event = res;
       })
       .catch((e) =>
         this.$store.commit("addStatus", { type: "error", note: e })

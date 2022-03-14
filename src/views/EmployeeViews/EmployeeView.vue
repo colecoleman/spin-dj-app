@@ -15,10 +15,7 @@ export default {
   components: { NonAdminHeader },
   async created() {
     if (!this.$store.state.user) {
-      await this.$store.dispatch("setUser").then((res) => {
-        console.log(this.$store.state.user);
-        console.log(res);
-      });
+      await this.$store.dispatch("setUser");
     }
     await this.$store.dispatch("getPublicSettings");
     this.loaded = true;

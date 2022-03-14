@@ -21,7 +21,7 @@ export default {
           let eventObject;
           this.$store.dispatch("adminGetEvent", event).then(
             (res) => {
-              eventObject = res.data.Item;
+              eventObject = res;
               let index = eventObject.contacts.indexOf(this.contact.userId);
               let payload = {
                 eventId: eventObject.userId,
