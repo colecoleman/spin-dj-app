@@ -111,7 +111,7 @@
           </p>
         </div>
 
-        <button-standard-with-icon text="Confirm" @click="signUp()" />
+        <button-standard-with-icon text="Confirm" @click="validationBlock()" />
       </div>
       <p class="disclaimer">
         <i
