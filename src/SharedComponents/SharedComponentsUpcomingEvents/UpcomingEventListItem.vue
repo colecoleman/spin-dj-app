@@ -67,7 +67,7 @@ export default {
   data() {
     return {
       profilePictureStyling:
-        "height: 30px; width: 30px; margin: 5px 5px 5px 0;",
+        "height: 30px; min-height: 30px; min-width: 30px; width: 30px; margin: 5px 5px 5px 0;",
     };
   },
   computed: {
