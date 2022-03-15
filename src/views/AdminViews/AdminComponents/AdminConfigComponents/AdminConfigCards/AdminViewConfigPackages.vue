@@ -53,16 +53,10 @@
               :key="contract.id"
               :item="contract.contractName"
               :checked="
-                checkForPackagePresence(
-                  input.packages.contracts,
-                  contract.contractName
-                )
+                checkForPackagePresence(input.packages.contracts, contract.id)
               "
               @clicked="
-                toggleItemFromPackage(
-                  input.packages.contracts,
-                  contract.contractName
-                )
+                toggleItemFromPackage(input.packages.contracts, contract.id)
               "
             />
           </div>
@@ -261,6 +255,8 @@ export default {
 
     checkForPackagePresence(arr, item) {
       let index = arr.indexOf(item);
+      console.log(arr, item);
+      console.log(index);
       if (index > -1) {
         return true;
       } else {
