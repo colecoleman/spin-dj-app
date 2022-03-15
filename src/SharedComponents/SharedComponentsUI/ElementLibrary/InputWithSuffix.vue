@@ -97,8 +97,6 @@ input {
 
 .suffix {
   background-color: var(--backgroundColor);
-  border-left: none;
-  border-radius: 0px 5px 5px 0px;
   padding: 5px 10px;
 }
 </style>
