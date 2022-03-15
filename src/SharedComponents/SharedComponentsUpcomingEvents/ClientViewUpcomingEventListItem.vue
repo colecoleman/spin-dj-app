@@ -2,7 +2,6 @@
   <div class="single-event-item" v-if="event" :class="loading ? loading : ''">
     <div class="event-location-identifier" v-if="primaryLocation">
       <h4 class="venue-name">{{ primaryLocation.name }}</h4>
-      <h4 class="venue-name">{{ primaryLocation.name }}</h4>
       <div class="event-address">
         <p v-if="primaryLocation.address">
           {{ primaryLocation.address.streetAddress1 }}
