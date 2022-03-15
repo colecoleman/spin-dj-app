@@ -18,10 +18,11 @@
         <div
           class="events-content"
           v-if="
-            userRole === 'admin' ||
-            userRole === 'vendor' ||
-            userRole === 'employee' ||
-            userRole === 'organizer'
+            (userRole === 'admin' ||
+              userRole === 'vendor' ||
+              userRole === 'employee' ||
+              userRole === 'organizer') &&
+            events.length > 0
           "
         >
           <upcoming-events-list-item
