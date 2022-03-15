@@ -85,17 +85,6 @@ export default {
     location() {
       return this.event.locations[0];
     },
-    // loading() {
-    //   if (this.loaded) {
-    //     return false;
-    //   } else if (!this.client) {
-    //     return true;
-    //   } else if (!this.location) {
-    //     return true;
-    //   } else {
-    //     return false;
-    //   }
-    // },
   },
   methods: {
     formatDate,
@@ -114,9 +103,6 @@ export default {
     ClientSkeletonCard,
     LocationSkeletonCard,
     EventSkeletonCard,
-  },
-  created() {
-    console.log(JSON.stringify(this.event.contacts[0]));
   },
 };
 </script>
