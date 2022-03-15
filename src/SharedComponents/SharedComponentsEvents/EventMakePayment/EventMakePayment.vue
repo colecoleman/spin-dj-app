@@ -46,7 +46,7 @@
       />
     </div>
     <button-standard-with-icon
-      v-if="userRole === 'admin'"
+      v-if="userRole == 'admin'"
       @click="changeToManualPayment"
       text="Record Manual Payment"
     />
@@ -109,7 +109,11 @@ export default {
   },
   computed: {
     userRole() {
-      return this.$store.state.user.role;
+      if (this.$store.state.user.userId === this.$store.state.user.tenantId) {
+        return "admin";
+      } else {
+        return this.$store.state.user.role;
+      }
     },
   },
   async created() {
