@@ -62,6 +62,11 @@
                 :text="role == 'admin' ? 'Sign as Admin' : 'Start Signing'"
                 @click="initiateESign"
               />
+              <button-standard-with-icon
+                v-if="role == 'admin' && contract.status !== 'signed'"
+                text="Mark as Signed"
+                @click="adminMarkAsSigned"
+              />
             </div>
 
             <div v-if="eSignStep === 2">
@@ -254,6 +259,22 @@ export default {
     },
     closePaperSignInstructions() {
       this.paperSignInstructionsOpen = false;
+    },
+    async adminMarkAsSigned() {
+      let item = [...this.contracts];
+      let contract = item[this.contractScroller];
+      contract.signerName = "Marked By Admin";
+      contract.signerDate = new Date();
+      contract.signerUUID = this.$store.state.user.userId;
+      contract.status = "signed";
+      let payload = {
+        variable: "contracts",
+        value: item,
+        eventId: this.eventId,
+      };
+      await this.$store.dispatch("editEvent", payload).then((res) => {
+        console.log(res);
+      });
     },
     async submitESignature() {
       let item = [...this.contracts];
