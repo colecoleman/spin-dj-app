@@ -3,8 +3,8 @@
     <template v-slot:content>
       <div class="scroll-container">
         <div v-for="(alert, index) in alerts" :key="index" class="alert-item">
-          <h4 class="alert-icon">
-            <vue-svg svg="exclamation" :class="alert.urgency + '-alert-icon'" />
+          <h4 :class="alert.urgency + '-alert-icon'">
+            <vue-svg svg="exclamation-mark" />
           </h4>
           <h4>
             {{ alert.text }}
@@ -42,16 +42,13 @@ export default {
 }
 
 .high-alert-icon {
-  filter: invert(11%) sepia(100%) saturate(6967%) hue-rotate(359deg)
-    brightness(100%) contrast(107%);
+  color: red;
 }
 
 .medium-alert-icon {
-  filter: invert(57%) sepia(87%) saturate(664%) hue-rotate(359deg)
-    brightness(102%) contrast(106%);
+  color: yellow;
 }
 .low-alert-icon {
-  filter: invert(79%) sepia(100%) saturate(4834%) hue-rotate(357deg)
-    brightness(102%) contrast(102%);
+  color: green;
 }
 </style>
