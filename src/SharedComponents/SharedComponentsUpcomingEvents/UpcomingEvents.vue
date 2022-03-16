@@ -4,7 +4,7 @@
     actionIcon="sort-alpha"
     actionText="Sort:"
     @action-one-clicked="sortMenuOpened = !sortMenuOpened"
-    title="Events"
+    :title="`Events (${events.length})`"
   >
     <template v-slot:dropdownContainer>
       <floating-menu-with-list-items
