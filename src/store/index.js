@@ -66,33 +66,7 @@ const store = createStore({
         });
       }
     },
-    //remove below
-    async adminGetContact(context, payload) {
-      let userSearch = context.commit("searchForUser", payload);
-      if (userSearch) {
-        return userSearch;
-      } else {
-        return new Promise((resolve, reject) => {
-          axios
-            .get(
-              `https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/admin/${context.state.user.tenantId}/users/${payload}`
-            )
-            .then(
-              (result) => {
-                resolve(result);
-                context.state.contacts.push(result.data.Item)
-              },
-              (error) => {
-                context.commit("addStatus", {
-                  type: "error",
-                  note: error,
-                });
-                reject(error);
-              }
-            );
-        });
-      }
-    },
+ 
     async getContactListItem(context, payload) {
       let userSearch = context.commit("searchForUser", payload);
       if (userSearch) {
@@ -163,20 +137,7 @@ const store = createStore({
     },
 
     // admin actions
-    async submitBetaAccessCode(context, payload) {
-      return new Promise((resolve, reject) => {
-        axios
-          .put(
-            `https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/beta/access/${payload}`
-          )
-          .then((res) => {
-            resolve(res);
-          })
-          .catch((e) => {
-            reject(e);
-          });
-      });
-    },
+
     async getAdminEvents(context) {
       return new Promise((resolve, reject) => {
         axios
