@@ -111,7 +111,21 @@ export default {
       if (this.fieldToEdit === "date") {
         let array = this.fields[this.fieldToEdit].value.split("-");
         let data = Object.assign({}, this.event.data);
-        data.date = new Date(array[0], array[1] - 1, array[2]);
+        let date = new Date(array[0], array[1] - 1, array[2]);
+        data.date = date;
+        let start = new Date(data.startTime);
+        let end = new Date(data.endTime);
+        end.setMonth(date.getMonth());
+        start.setMonth(date.getMonth());
+        start.setDate(date.getDate());
+        end.setDate(date.getDate());
+        start.setFullYear(date.getFullYear());
+        end.setFullYear(date.getFullYear());
+        if (start > end) {
+          end.setDate(end.getDate() + 1);
+        }
+        data.startTime = start;
+        data.endTime = end;
         payload.value = data;
         payload.variable = "data";
       }
