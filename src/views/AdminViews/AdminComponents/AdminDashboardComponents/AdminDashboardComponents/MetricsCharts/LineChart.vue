@@ -160,6 +160,12 @@ export default {
         {
           data: this.totals,
         },
+        {
+          data: this.balancesOutstanding,
+        },
+        {
+          data: this.amountPaid,
+        },
       ]);
     },
   },
