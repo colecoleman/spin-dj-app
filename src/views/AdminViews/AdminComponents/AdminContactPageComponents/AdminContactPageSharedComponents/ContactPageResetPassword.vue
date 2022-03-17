@@ -56,7 +56,7 @@ export default {
       if (re.test(this.newUserPassword)) {
         this.newUserPasswordError = false;
         let payload = {
-          username: this.contact.username,
+          username: this.contact.email,
           password: this.newUserPassword,
           userId: this.contact.userId,
         };
