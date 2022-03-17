@@ -6,7 +6,11 @@
 
 <script>
 import ApexCharts from "apexcharts";
-import { total, formatPrice } from "../../../../../../helpers.js";
+import {
+  total,
+  formatPrice,
+  balanceOutstanding,
+} from "../../../../../../helpers.js";
 
 export default {
   data() {
@@ -47,10 +51,45 @@ export default {
       });
       return totals;
     },
+    balancesOutstanding() {
+      let totals = [];
+      this.months.forEach((_, index) => {
+        let monthTotal = 0;
+        let monthEvents = this.events.filter(
+          (x) =>
+            new Date(x.data.date).getMonth() === index &&
+            new Date(x.data.date).getYear() === new Date().getYear()
+        );
+        monthEvents.forEach((event) => {
+          monthTotal += this.balanceOutstanding(event.invoice, event.data);
+        });
+        totals.push(monthTotal);
+      });
+      return totals;
+    },
+    amountPaid() {
+      let totals = [];
+      this.months.forEach((_, index) => {
+        let monthTotal = 0;
+        let monthEvents = this.events.filter(
+          (x) =>
+            new Date(x.data.date).getMonth() === index &&
+            new Date(x.data.date).getYear() === new Date().getYear()
+        );
+        monthEvents.forEach((event) => {
+          monthTotal +=
+            this.total(event.invoice, event.data) -
+            this.balanceOutstanding(event.invoice, event.data);
+        });
+        totals.push(monthTotal);
+      });
+      return totals;
+    },
   },
   methods: {
     total,
     formatPrice,
+    balanceOutstanding,
   },
   props: ["events"],
   mounted() {
@@ -63,7 +102,11 @@ export default {
             show: false,
           },
         },
-        colors: [this.$root.branding.highlightColor],
+        colors: [
+          this.$root.branding.highlightColor,
+          this.$root.branding.textColor,
+          this.$root.branding.backgroundColor,
+        ],
         stroke: {
           curve: "smooth",
         },
@@ -84,6 +127,14 @@ export default {
           {
             name: "Sales",
             data: this.totals,
+          },
+          {
+            name: "Open",
+            data: this.balancesOutstanding,
+          },
+          {
+            name: "Paid",
+            data: this.amountPaid,
           },
         ],
         xaxis: {
