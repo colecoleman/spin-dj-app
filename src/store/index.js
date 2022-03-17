@@ -811,12 +811,7 @@ const store = createStore({
       });
     },
     async getEvent(context, payload) {
-      let role;
-      if (context.state.user.userId === context.state.user.tenantId) {
-        role = "admin";
-      } else {
-        role = context.state.user.role;
-      }
+      let role = context.state.user.role;
       return new Promise((resolve, reject) => {
         axios
           .get(
@@ -824,7 +819,8 @@ const store = createStore({
           )
           .then(
             (result) => {
-              resolve(result);
+              console.log(result.data.Item);
+              resolve(result.data.Item);
             },
             (error) => {
               context.commit("addStatus", {

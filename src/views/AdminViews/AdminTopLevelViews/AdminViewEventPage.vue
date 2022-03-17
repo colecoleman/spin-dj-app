@@ -94,7 +94,7 @@
       :contracts="event.contracts"
       :event="event"
       :eventId="event.userId"
-      :locations="locations"
+      :locations="event.locations"
     />
     <two-button-dialog-modal
       v-if="popupOpen === 'delete-event'"
@@ -105,8 +105,7 @@
     <section>
       <div id="contact-card">
         <event-page-contact-card
-          v-if="client && event"
-          :client="client"
+          v-if="event"
           :event="event"
           @edit-event="editEvent"
         />
@@ -128,15 +127,22 @@
       <div id="automation">
         <event-automation-list
           :automations="automations"
-          :contacts="contacts"
+          :contacts="event.contacts"
           :event="event"
         />
       </div>
       <div id="contact-carousel">
-        <event-page-contact-carousel :contacts="contacts" :event="event" />
+        <event-page-contact-carousel
+          :contacts="event.contacts"
+          :event="event"
+        />
       </div>
       <div id="to-do">
-        <to-do-list :event="event" :eventContacts="contacts" listType="event" />
+        <to-do-list
+          :event="event"
+          :eventContacts="event.contacts"
+          listType="event"
+        />
       </div>
       <div id="recent-messages">
         <recent-messages />
@@ -172,9 +178,9 @@ export default {
     return {
       svgStyling: "height: 14px; margin: 10px;",
       event: undefined,
-      contacts: [],
-      locations: [],
-      clients: [],
+      // contacts: [],
+      // locations: [],
+      // clients: [],
       automations: [],
       buttons: [
         {
@@ -196,7 +202,6 @@ export default {
         actionItems: [
           {
             title: "delete",
-            // action: this.deleteEvent,
             parameter: "delete-event",
             danger: true,
             icon: "trash-can",
@@ -204,7 +209,6 @@ export default {
           {
             title: "Payments",
             parameter: "payment",
-            // action: this.processPayment,
             danger: false,
           },
           {
@@ -215,7 +219,6 @@ export default {
           {
             title: "Edit Products",
             parameter: "edit-products",
-            // action: this.editProducts,
             danger: false,
           },
         ],
@@ -225,20 +228,12 @@ export default {
   },
   computed: {
     client() {
-      return this.clients[0];
+      let contacts = this.event.contacts.filter((x) => x.role == "client");
+      return contacts[0];
     },
     currentUser() {
       return this.$store.state.user;
     },
-    // eventConversations() {
-    //   return this.contacts.map((x) => {
-    //     if (x.conversations) {
-    //       return x.conversations.find((x) => {
-    //         return this.currentUser.conversations.includes(x);
-    //       });
-    //     }
-    //   });
-    // },
   },
   methods: {
     togglePopup(popup) {
@@ -272,7 +267,7 @@ export default {
       this.togglePopup();
     },
     async confirmDeleteEvent() {
-      let contacts = [...this.contacts];
+      let contacts = [...this.event.contacts];
       contacts.forEach((contact) => {
         if (contact) {
           let index = contact.associatedEvents.indexOf(this.event.userId);
@@ -320,7 +315,6 @@ export default {
       this.$store.dispatch("editEvent", payload);
     },
     addProductToEvent(product) {
-      console.log(product);
       this.event.invoice.products.push(_.cloneDeep(product));
       let payload = {
         variable: "invoice",
@@ -350,9 +344,7 @@ export default {
       this.event = payload;
     },
     applyManualPayment(payment) {
-      console.log(payment);
       this.event.invoice.payments.push(payment);
-      console.log(this.event);
       let payload = {
         variable: "invoice",
         value: this.event.invoice,
@@ -364,28 +356,13 @@ export default {
   },
 
   async created() {
-    await this.$store
-      .dispatch("adminGetEvent", this.$route.params.id)
-      .then((res) => {
-        this.event = res;
-      })
-      .catch((e) =>
-        this.$store.commit("addStatus", { type: "error", note: e })
-      );
-    await this.event.contacts.forEach((contact) => {
-      let id = contact.id ? contact.id : contact;
-      this.$store.dispatch("getUser", id).then((res) => {
-        this.contacts.push(res);
-        if (contact.role === "client") {
-          this.clients.push(res);
-        }
-      });
-    });
-    await this.event.locations.forEach((location) => {
-      this.$store.dispatch("getLocation", location).then((res) => {
-        this.locations.push(res);
-      });
-    });
+    this.event = await this.$store.dispatch(
+      "adminGetEvent",
+      this.$route.params.id
+    );
+    await this.$store.dispatch("getEventContacts", this.event);
+    await this.$store.dispatch("getEventLocations", this.event);
+    console.log(this.event);
   },
   components: {
     ToDoList,

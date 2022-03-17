@@ -16,18 +16,14 @@
     <contract-popup
       v-if="popupOpen === 'contract'"
       @close-popup="togglePopup()"
-      :contacts="contacts"
+      :contacts="event.contacts"
       :contracts="event.contracts"
       :event="event"
       :eventId="event.userId"
       :locations="locations"
     />
     <div id="contact-card">
-      <event-page-contact-card
-        v-if="client && event"
-        :client="client"
-        :event="event"
-      />
+      <event-page-contact-card :event="event" />
     </div>
     <div id="alerts">
       <event-page-alerts :alerts="eventAlerts" />
@@ -45,19 +41,17 @@
       <event-make-payment-card :event="event" :eventId="event.userId" />
     </div>
     <div id="contact-carousel">
-      <event-page-contact-carousel :contacts="contacts" />
+      <event-page-contact-carousel :contacts="event.contacts" />
     </div>
     <div id="to-do">
       <to-do-list
-        v-if="contacts"
         listType="event"
         :event="event"
-        :eventContacts="contacts"
+        :eventContacts="event.contacts"
       />
     </div>
     <div id="messages">
-      <!-- <recent-messages-event v-if="contacts"></recent-messages-event> -->
-      <recent-messages v-if="contacts" :conversationList="eventConversations" />
+      <recent-messages :conversationList="eventConversations" />
     </div>
   </section>
 </template>
@@ -109,7 +103,10 @@ export default {
   },
   computed: {
     client() {
-      return this.clients[0];
+      let clients = this.event.contacts.filter((x) => {
+        return x.role === "client";
+      });
+      return clients[0];
     },
     businessSettings() {
       return this.$store.state.businessSettings;
@@ -189,34 +186,13 @@ export default {
   },
 
   async created() {
+    let id = this.$route.params.eventId;
     if (!this.$store.state.user) {
       await this.$store.dispatch("setUser");
     }
-    await this.$store
-      .dispatch("getEvent", this.$route.params.eventId)
-      .then((res) => {
-        this.event = res.data.Item;
-      })
-      .catch((e) =>
-        this.$store.commit("addStatus", { type: "error", note: e })
-      );
-    await this.event.contacts.forEach((contact) => {
-      this.$store.dispatch("nonAdminGetUser", contact.id).then((res) => {
-        this.contacts.push(res);
-        if (res.role === "client") {
-          this.clients.push(res);
-        }
-        if (res.conversations) {
-          let matchedItem = res.conversations.find((x) => {
-            return this.$store.state.user.conversations.includes(x);
-          });
-          if (matchedItem) {
-            this.eventConversations.push(matchedItem);
-          }
-        }
-      });
-    });
-    return this.event.contacts;
+    this.event = await this.$store.dispatch("getEvent", id);
+    await this.$store.dispatch("getEventContacts", this.event);
+    await this.$store.dispatch("getEventLocations", this.event);
   },
   components: {
     ToDoList,
