@@ -11,7 +11,7 @@
         <p v-if="businessInfo.businessAddress.streetAddress2">
           {{ businessInfo.businessAddress.streetAddress2 }}
         </p>
-        <p>{{ businessInfo.businessAddress.address2 }}</p>
+        <p>{{ businessInfo.businessAddress.cityStateZip }}</p>
         <p>{{ formatPhoneNumber(businessInfo.businessPhoneNumber) }}</p>
         <p>{{ businessInfo.businessEmailAddress }}</p>
       </div>
