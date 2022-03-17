@@ -4,13 +4,15 @@
       v-if="invoiceOpen || formsOpen || contractOpen"
       @click="closePopup()"
     ></backdrop> -->
-    <invoice-popup
-      :invoice="event.invoice"
-      :event="event"
-      :client="client"
-      v-if="popupOpen === 'invoice'"
-      @close-popup="togglePopup"
-    />
+    <Transition name="fade">
+      <invoice-popup
+        :invoice="event.invoice"
+        :event="event"
+        :client="client"
+        v-if="popupOpen === 'invoice'"
+        @close-popup="togglePopup"
+      />
+    </Transition>
     <popup-modal
       title="Edit Adjustments"
       v-if="popupOpen === 'adjustments'"
@@ -532,6 +534,18 @@ section {
     grid-row: 3 / 4;
     display: flex;
   }
+
+  .rise-enter-active,
+  .rise-leave-active {
+    /* transition: all 15s ease; */
+    transition: opacity 0.5s ease;
+  }
+
+  .rise-enter-from,
+  .rise-leave-to {
+    top: 100%;
+    opacity: 0;
+  }
 }
 
 @media print {
@@ -545,5 +559,17 @@ section {
   section {
     display: none;
   }
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: all 0.5s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+  z-index: 100;
+  /* top: 0; */
 }
 </style>

@@ -112,12 +112,12 @@ export default {
             parameter: "reset-password",
             icon: "key",
           },
-          {
-            title: "delete",
-            danger: true,
-            parameter: "delete",
-            icon: "trash-can",
-          },
+          // {
+          //   title: "delete",
+          //   danger: true,
+          //   parameter: "delete",
+          //   icon: "trash-can",
+          // },
         ],
       },
     };

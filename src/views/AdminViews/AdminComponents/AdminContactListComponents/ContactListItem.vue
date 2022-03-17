@@ -103,12 +103,12 @@ export default {
           icon: "email",
         },
 
-        {
-          title: "delete",
-          danger: true,
-          parameter: "delete",
-          icon: "trash-can",
-        },
+        // {
+        //   title: "delete",
+        //   danger: true,
+        //   parameter: "delete",
+        //   icon: "trash-can",
+        // },
       ],
     };
   },
