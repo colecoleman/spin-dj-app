@@ -1,27 +1,31 @@
 <template>
   <section v-if="event">
-    <invoice-popup
-      :invoice="event.invoice"
-      :event="event"
-      :client="client"
-      v-if="popupOpen === 'invoice'"
-      @close-popup="togglePopup()"
-    />
+    <Transition name="rise">
+      <invoice
+        :invoice="event.invoice"
+        :event="event"
+        :client="client"
+        v-if="popupOpen === 'invoice'"
+        @close="togglePopup()"
+      />
+    </Transition>
+
     <forms-popup
       v-if="popupOpen === 'forms'"
       @close-popup="togglePopup()"
       :forms="event.forms"
       :eventId="event.userId"
     />
-    <contract-popup
-      v-if="popupOpen === 'contract'"
-      @close-popup="togglePopup()"
-      :contacts="event.contacts"
-      :contracts="event.contracts"
-      :event="event"
-      :eventId="event.userId"
-      :locations="locations"
-    />
+
+    <Transition name="rise">
+      <contracts
+        v-if="popupOpen === 'contract'"
+        @close="togglePopup()"
+        :contacts="event.contacts"
+        :event="event"
+        :locations="event.locations"
+      />
+    </Transition>
     <div id="contact-card">
       <event-page-contact-card :event="event" />
     </div>
@@ -66,8 +70,8 @@ import SpecificEventPageLocationScroller from "../../../SharedComponents/SharedC
 
 import EventMakePaymentCard from "../../../SharedComponents/SharedComponentsEvents/EventMakePayment/EventMakePaymentCard.vue";
 import FormsPopup from "../../../SharedComponents/SharedComponentsEvents/FormsPopup.vue";
-import InvoicePopup from "../../../SharedComponents/SharedComponentsEvents/InvoicePopup.vue";
-import ContractPopup from "../../../SharedComponents/SharedComponentsEvents/ContractPopup.vue";
+import Invoice from "../../../SharedComponents/SharedComponentsEvents/Invoice.vue";
+import Contracts from "../../../SharedComponents/SharedComponentsEvents/Contracts.vue";
 import FourButtonBarWithDropDown from "../../../SharedComponents/SharedComponentsUI/FourButtonBarWithDropDown.vue";
 import EventPageAlerts from "../../../SharedComponents/SharedComponentsEvents/EventPageAlerts.vue";
 import {
@@ -193,6 +197,7 @@ export default {
     this.event = await this.$store.dispatch("getEvent", id);
     await this.$store.dispatch("getEventContacts", this.event);
     await this.$store.dispatch("getEventLocations", this.event);
+    console.log(this.event);
   },
   components: {
     ToDoList,
@@ -204,9 +209,9 @@ export default {
     EventPageAlerts,
     EventMakePaymentCard,
 
-    InvoicePopup,
+    Invoice,
     FormsPopup,
-    ContractPopup,
+    Contracts,
     FourButtonBarWithDropDown,
     // TwoButtonDialogModal,
   },
@@ -317,5 +322,17 @@ export default {
   section {
     display: none;
   }
+}
+.rise-enter-active,
+.rise-leave-active {
+  transition: all 1s ease;
+}
+
+.rise-enter-from,
+.rise-leave-to {
+  opacity: 0;
+  position: fixed;
+  margin-top: 100%;
+  left: 0;
 }
 </style>

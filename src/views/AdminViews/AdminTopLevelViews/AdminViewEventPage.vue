@@ -4,13 +4,33 @@
       v-if="invoiceOpen || formsOpen || contractOpen"
       @click="closePopup()"
     ></backdrop> -->
-    <Transition name="fade">
-      <invoice-popup
+    <Transition name="rise">
+      <invoice
         :invoice="event.invoice"
         :event="event"
         :client="client"
         v-if="popupOpen === 'invoice'"
         @close-popup="togglePopup"
+      />
+    </Transition>
+    <Transition name="rise">
+      <forms-popup
+        v-if="popupOpen === 'forms'"
+        @close-popup="togglePopup"
+        @add-form-to-event="addFormToEvent"
+        @delete-form="deleteForm"
+        :forms="event.forms"
+        :eventId="event.userId"
+        :eventTitle="event.title"
+      />
+    </Transition>
+    <Transition name="rise">
+      <contracts
+        v-if="popupOpen === 'contract'"
+        @close="togglePopup"
+        :contacts="event.contacts"
+        :event="event"
+        :locations="event.locations"
       />
     </Transition>
     <popup-modal
@@ -80,24 +100,6 @@
         />
       </template>
     </popup-modal>
-    <forms-popup
-      v-if="popupOpen === 'forms'"
-      @close-popup="togglePopup"
-      @add-form-to-event="addFormToEvent"
-      @delete-form="deleteForm"
-      :forms="event.forms"
-      :eventId="event.userId"
-      :eventTitle="event.title"
-    />
-    <contract-popup
-      v-if="popupOpen === 'contract'"
-      @close-popup="togglePopup"
-      :contacts="contacts"
-      :contracts="event.contracts"
-      :event="event"
-      :eventId="event.userId"
-      :locations="event.locations"
-    />
     <two-button-dialog-modal
       v-if="popupOpen === 'delete-event'"
       @select-button-one="confirmDeleteEvent()"
@@ -163,11 +165,11 @@ import SpecificEventPageLocationScroller from "../../../SharedComponents/SharedC
 import EventAutomationList from "../AdminComponents/AdminSharedComponents/EventAutomationList.vue";
 // import Backdrop from "../../../SharedComponents/SharedComponentsUI/Backdrop.vue";
 import FormsPopup from "../../../SharedComponents/SharedComponentsEvents/FormsPopup.vue";
-import InvoicePopup from "../../../SharedComponents/SharedComponentsEvents/InvoicePopup.vue";
+import Invoice from "../../../SharedComponents/SharedComponentsEvents/Invoice.vue";
 import EventInformation from "../AdminComponents/AdminEventPageComponents/EventInformation.vue";
 import EventMakePayment from "../../../SharedComponents/SharedComponentsEvents/EventMakePayment/EventMakePayment.vue";
 import PopupModal from "../../../SharedComponents/SharedComponentsUI/PopupModal.vue";
-import ContractPopup from "../../../SharedComponents/SharedComponentsEvents/ContractPopup.vue";
+import Contracts from "../../../SharedComponents/SharedComponentsEvents/Contracts.vue";
 import FourButtonBarWithDropDown from "../../../SharedComponents/SharedComponentsUI/FourButtonBarWithDropDown.vue";
 import TwoButtonDialogModal from "../../../SharedComponents/SharedComponentsUI/TwoButtonDialogModal.vue";
 import EventEditProducts from "../AdminComponents/AdminEventPageComponents/EventEditProducts.vue";
@@ -374,11 +376,11 @@ export default {
     SpecificEventPageLocationScroller,
     EventAutomationList,
     EventMakePayment,
-    InvoicePopup,
+    Invoice,
     PopupModal,
     EventInformation,
     FormsPopup,
-    ContractPopup,
+    Contracts,
     FourButtonBarWithDropDown,
     TwoButtonDialogModal,
     EventEditProducts,
@@ -534,18 +536,6 @@ section {
     grid-row: 3 / 4;
     display: flex;
   }
-
-  .rise-enter-active,
-  .rise-leave-active {
-    /* transition: all 15s ease; */
-    transition: opacity 0.5s ease;
-  }
-
-  .rise-enter-from,
-  .rise-leave-to {
-    top: 100%;
-    opacity: 0;
-  }
 }
 
 @media print {
@@ -561,15 +551,16 @@ section {
   }
 }
 
-.fade-enter-active,
-.fade-leave-active {
-  transition: all 0.5s ease;
+.rise-enter-active,
+.rise-leave-active {
+  transition: all 1s ease;
 }
 
-.fade-enter-from,
-.fade-leave-to {
+.rise-enter-from,
+.rise-leave-to {
   opacity: 0;
-  z-index: 100;
-  /* top: 0; */
+  position: fixed;
+  margin-top: 100%;
+  left: 0;
 }
 </style>
