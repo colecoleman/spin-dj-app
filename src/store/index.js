@@ -66,7 +66,6 @@ const store = createStore({
         });
       }
     },
- 
     async getContactListItem(context, payload) {
       let userSearch = context.commit("searchForUser", payload);
       if (userSearch) {
@@ -812,25 +811,31 @@ const store = createStore({
     },
     async getEvent(context, payload) {
       let role = context.state.user.role;
-      return new Promise((resolve, reject) => {
-        axios
-          .get(
-            `https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/${role}/${context.state.user.tenantId}/${context.state.user.userId}/events/${payload}`
-          )
-          .then(
-            (result) => {
-              console.log(result.data.Item);
-              resolve(result.data.Item);
-            },
-            (error) => {
-              context.commit("addStatus", {
-                type: "error",
-                note: error,
-              });
-              reject(error);
-            }
-          );
-      });
+      let eventSearch = context.commit("searchForEvent", payload);
+      if (eventSearch) {
+        return eventSearch;
+      } else {
+        return new Promise((resolve, reject) => {
+          axios
+            .get(
+              `https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/${role}/${context.state.user.tenantId}/${context.state.user.userId}/events/${payload}`
+            )
+            .then(
+              (result) => {
+                resolve(result.data.Item);
+                context.commit("addEvent", result.data.Item);
+                return context.commit("searchForEvent", result.data.Item);
+              },
+              (error) => {
+                context.commit("addStatus", {
+                  type: "error",
+                  note: error,
+                });
+                reject(error);
+              }
+            );
+        });
+      }
     },
     async adminGetEvent(context, payload) {
       let eventSearch = context.commit("searchForEvent", payload);
@@ -845,6 +850,8 @@ const store = createStore({
             .then(
               (result) => {
                 resolve(result.data.Item);
+                context.commit("addEvent", result.data.Item);
+                return context.commit("searchForEvent", result.data.Item);
               },
               (error) => {
                 context.commit("addStatus", {
@@ -866,13 +873,13 @@ const store = createStore({
           )
           .then(
             (result) => {
-              resolve(result);
               let mutationPayload = {
                 variable: payload.variable,
                 eventId: result.data.Attributes.userId,
                 data: result.data.Attributes,
               };
               context.commit("editEvent", mutationPayload);
+              resolve(result);
             },
             (error) => {
               context.commit("addStatus", {
@@ -1361,14 +1368,10 @@ const store = createStore({
       state.events.push(payload);
     },
     editEvent(state, payload) {
-      console.log(payload);
       let index = state.events.findIndex((e) => e.userId === payload.eventId);
-      console.log(index);
       if (index > -1) {
         let event = state.events[index];
-        console.log(event);
         event[payload.variable] = payload.data[payload.variable];
-        console.log(event);
       }
     },
     setEvents(state, payload) {
