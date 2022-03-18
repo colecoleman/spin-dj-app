@@ -1,6 +1,6 @@
 <template>
   <div id="document-wrapper">
-    <backdrop @click="close" />
+    <!-- <backdrop @click="close" /> -->
     <div class="document">
       <div class="toolbar-wrapper">
         <toolbar
@@ -24,7 +24,7 @@
   </div>
 </template>
 <script>
-import Backdrop from "./Backdrop.vue";
+// import Backdrop from "./Backdrop.vue";
 import Toolbar from "./DocumentToolbar.vue";
 export default {
   data() {
@@ -56,7 +56,7 @@ export default {
   created() {},
   components: {
     Toolbar,
-    Backdrop,
+    // Backdrop,
   },
   emits: [
     "close",
@@ -89,6 +89,7 @@ export default {
     min-height: 100%;
     z-index: 25;
     margin: 50px 5% 0% 5%;
+    filter: drop-shadow(1px 1px 3px rgba(0, 0, 0, 1));
   }
   .toolbar-wrapper {
     width: 100%;
@@ -100,8 +101,9 @@ export default {
   .page {
     background-color: white;
     width: 100%;
-    height: 100%;
-    aspect-ratio: 8.5/11;
+    min-height: 100%;
+    height: fit-content;
+    /* aspect-ratio: 8.5/11; */
     margin-bottom: 80px;
   }
 
