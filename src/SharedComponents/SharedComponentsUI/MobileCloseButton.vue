@@ -25,4 +25,9 @@ export default {
   z-index: 20;
 }
 
+@media print {
+  .mobile-close-button {
+    display: none;
+  }
+}
 </style>
