@@ -78,10 +78,11 @@ div {
   min-width: 125px;
   max-width: 300px;
   border: 1px solid var(--textColor);
+  background-color: var(--foregroundColor);
   border-radius: 4px;
   position: relative;
   padding: 10px;
-  margin: 10px 10px 10px 0;
+  margin: 10px 10px 10px 10px;
 }
 
 .error {
@@ -94,6 +95,7 @@ select {
   outline: none;
   border: none;
   width: 100%;
+  background: none;
   max-width: 100%;
   height: 100%;
 }
@@ -106,6 +108,7 @@ p {
   font-family: roboto, sans-serif;
   font-size: 7pt;
   font-weight: 600;
+  border-radius: 3px;
   text-transform: uppercase;
   position: absolute;
   margin: 0;
