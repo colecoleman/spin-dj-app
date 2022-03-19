@@ -12,7 +12,7 @@
     addOnItemTitle="contractName"
   >
     <template v-slot:document>
-      <div id="heading"><h4>Contract</h4></div>
+      <h4>{{ contract.contractName ? contract.contractName : "Contract" }}</h4>
       <div id="contract-copy">
         <p v-if="contract" v-html="mergeTagReplace(contract.contractBody)"></p>
       </div>
@@ -224,9 +224,7 @@ export default {
         variable: "contracts",
         value: this.contracts,
       };
-      console.log(this.contracts);
       await this.$store.dispatch("editEvent", payload);
-      console.log(this.event);
       this.close();
     },
     async submitAdminESignature(signature) {
@@ -249,7 +247,6 @@ export default {
       let index = this.event.contracts.findIndex((x) => {
         return x.id === item.id;
       });
-      console.log(index);
       if (index > -1) {
         contracts.splice(index, 1);
       } else {
@@ -344,14 +341,6 @@ export default {
 </script>
 
 <style scoped>
-#contract-popup-document-view {
-  background-color: white;
-  /* aspect-ratio: 8.5/11; */
-  width: 100%;
-  min-height: 100%;
-  height: fit-content;
-}
-
 h1,
 h2,
 h3,
@@ -361,57 +350,23 @@ p {
   color: black;
 }
 
-#heading {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  justify-items: flex-end;
-  align-items: center;
-  align-content: center;
-  padding: 20px;
-}
-
-#contract-copy {
-  margin: 10px 60px;
+/* #contract-copy {
   height: fit-content;
-}
+} */
 
 .signatures {
   display: flex;
-  width: 100%;
   justify-content: space-evenly;
 }
 
-.contract-data {
+/* .contract-data {
   width: 50%;
-}
+} */
 @media screen {
   @media (min-width: 320px) {
-    #contract-popup-document-view {
-      min-height: unset;
-      min-width: unset;
-      padding-bottom: 40px;
-    }
-
     #contract-copy {
-      margin: 10px 20px;
+      /* margin: 10px 20px; */
     }
-  }
-  @media (min-width: 850px) {
-    #contract-popup-document-view {
-      min-width: 500px;
-    }
-  }
-}
-
-@media print {
-  p,
-  h1,
-  h2,
-  h3,
-  h4,
-  h5 {
-    font-family: Georgia, "Times New Roman", Times, serif;
   }
 }
 </style>

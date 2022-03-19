@@ -204,11 +204,9 @@ export default {
   flex-direction: row;
   justify-content: flex-end;
   align-items: center;
-  padding: 20px;
 }
 
 .event-title {
-  margin-left: 20px;
   text-transform: uppercase;
   margin-right: auto;
 }
@@ -229,11 +227,6 @@ export default {
 .invoice-information-half {
   text-align: left;
   width: 50%;
-  margin: 0 20px;
-}
-
-.invoice-item {
-  margin: 10px;
 }
 
 .invoice-item p {
@@ -258,8 +251,8 @@ img {
 }
 
 table {
-  width: 90%;
-  margin: 5%;
+  width: 100%;
+  margin: 40px 0;
   color: black;
   border-collapse: collapse;
   font-size: 10px;
@@ -275,23 +268,5 @@ td {
 .divider {
   background-color: black;
   height: 2px;
-}
-
-@media print {
-  p,
-  h1,
-  h2,
-  h3,
-  h4,
-  h5 {
-    /* font-family: Georgia, "Times New Roman", Times, serif; */
-  }
-  #invoice-popup-document-view {
-    background-color: white;
-    aspect-ratio: 8.5/11;
-    height: auto;
-    width: auto;
-    margin: 0;
-  }
 }
 </style>

@@ -100,9 +100,10 @@ export default {
   }
   .page {
     background-color: white;
-    width: 100%;
+    /* width: 100%; */
     min-height: 100%;
     height: fit-content;
+    padding: 50px;
     /* aspect-ratio: 8.5/11; */
     margin-bottom: 80px;
   }
