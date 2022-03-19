@@ -2,6 +2,7 @@
   <document-view-with-toolbar @close="closePopup()" :icons="['print']">
     <template v-slot:document>
       <div id="heading">
+        <h5 class="event-title" v-if="event.title">{{ event.title }}</h5>
         <img
           :src="$store.state.businessSettings.identity.businessLogo"
           alt="Logo"
@@ -22,12 +23,22 @@
           <div class="invoice-item" v-if="client">
             <h5>Prepared For:</h5>
             <p>
-              <span v-if="client"
-                >{{ client.given_name }} {{ client.family_name }}</span
-              >
+              <span>{{ client.given_name }} {{ client.family_name }}</span>
             </p>
             <p>{{ formatPhoneNumber(client.phoneNumber) }}</p>
             <p>{{ client.emailAddress }}</p>
+          </div>
+          <div class="invoice-item" v-if="event.locations[0].name">
+            <h5>
+              Service Location{{ event.locations.length > 1 ? "s:" : ":" }}
+            </h5>
+            <div v-for="(location, index) in event.locations" :key="index">
+              <p>
+                <span>{{ location.name }}</span>
+              </p>
+              <p>{{ location.address.streetAddress1 }}</p>
+              <p>{{ location.address.cityStateZip }}</p>
+            </div>
           </div>
           <div class="invoice-item">
             <h5>Invoice Number:</h5>
@@ -35,14 +46,14 @@
               <span>{{ event.userId }}</span>
             </p>
           </div>
+        </div>
+        <div class="invoice-information-half">
           <div class="invoice-item">
             <h5>Invoice Date:</h5>
             <p>
               <span>{{ bookDate }}</span>
             </p>
           </div>
-        </div>
-        <div class="invoice-information-half">
           <div class="invoice-item">
             <h5>Event Date:</h5>
             <p>
@@ -192,10 +203,14 @@ export default {
   display: flex;
   flex-direction: row;
   justify-content: flex-end;
-  justify-items: flex-end;
   align-items: center;
-  align-content: center;
   padding: 20px;
+}
+
+.event-title {
+  margin-left: 20px;
+  text-transform: uppercase;
+  margin-right: auto;
 }
 
 #heading-copy {
@@ -221,11 +236,16 @@ export default {
   margin: 10px;
 }
 
-.invoice-item > p {
+.invoice-item p {
+  margin: 5px;
   margin-left: 10px;
 }
 
-.invoice-item > p > span {
+h5 {
+  margin: 15px 0;
+}
+
+.invoice-item p span {
   font-weight: 600;
 }
 
