@@ -43,6 +43,7 @@
               title="Legal Name"
               :placeholder="`${user.given_name} ${user.family_name}`"
               :inputValue="eSignField"
+              :error="eSignFieldNotFilled"
               @input="setESignField($event)"
             />
             <vue-svg
@@ -115,6 +116,7 @@ export default {
       svgStyling:
         "width: 18px; height: 18px; color: var(--textColor); margin: 3px;",
       adminESignOpen: false,
+      eSignFieldNotFilled: false,
       eSignOpen: false,
       addMenuOpened: false,
       eSignField: undefined,
@@ -151,13 +153,17 @@ export default {
       this.$emit("toggleAddOnItemFromIncluded", item);
     },
     submitESign() {
-      let signature = {
-        signerName: this.eSignField,
-        signerDate: new Date(),
-        signerUUID: this.$store.state.user.userId,
-        status: "signed",
-      };
-      this.$emit("submitESignature", signature);
+      if (!this.eSignField) {
+        this.eSignFieldNotFilled = true;
+      } else {
+        let signature = {
+          signerName: this.eSignField,
+          signerDate: new Date(),
+          signerUUID: this.$store.state.user.userId,
+          status: "signed",
+        };
+        this.$emit("submitESignature", signature);
+      }
     },
     markAsSigned() {
       let signature = {
@@ -169,13 +175,17 @@ export default {
       this.$emit("submitESignature", signature);
     },
     submitAdminESign() {
-      let signature = {
-        signerName: this.eSignField,
-        signerDate: new Date(),
-        signerUUID: this.$store.state.user.userId,
-        status: "signed",
-      };
-      this.$emit("submitAdminESignature", signature);
+      if (!this.eSignField) {
+        this.eSignFieldNotFilled = true;
+      } else {
+        let signature = {
+          signerName: this.eSignField,
+          signerDate: new Date(),
+          signerUUID: this.$store.state.user.userId,
+          status: "signed",
+        };
+        this.$emit("submitAdminESignature", signature);
+      }
     },
     toggleAdminESign() {
       this.adminESignOpen = !this.adminESignOpen;
