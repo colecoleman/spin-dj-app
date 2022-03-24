@@ -98,7 +98,6 @@ export default {
       "getUser",
       this.$route.params.id
     );
-    console.log(this.location);
     this.events = await this.$store.dispatch(
       "getLocationEvents",
       this.location
@@ -107,7 +106,6 @@ export default {
       this.$store.dispatch("getEventContacts", this.events[x]);
       this.$store.dispatch("getEventLocations", this.events[x]);
     }
-    console.log(this.events);
     if (this.location.contacts) {
       if (this.location.contacts.length > 0) {
         await this.$store

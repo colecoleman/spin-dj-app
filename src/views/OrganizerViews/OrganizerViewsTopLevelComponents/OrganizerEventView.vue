@@ -136,9 +136,7 @@ export default {
     },
     depositTerminology() {
       if (this.businessSettings.payments.deposit) {
-        console.log("we have deposit stuff");
         if (this.businessSettings.payments.deposit.terminology) {
-          console.log("we have terminology");
           return this.businessSettings.payments.deposit.terminology;
         } else {
           return "deposit";

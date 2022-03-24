@@ -78,7 +78,6 @@ export default {
         : (this.activeForm = id);
     },
     addFormToEvent(form) {
-      console.log(form);
       this.$emit("addFormToEvent", form);
     },
   },

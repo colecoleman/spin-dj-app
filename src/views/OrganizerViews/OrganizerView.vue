@@ -1,7 +1,7 @@
 <template>
   <div class="organizer-wrapper">
     <div class="header-wrapper">
-      <non-admin-header/>
+      <non-admin-header />
     </div>
     <div class="content-container">
       <router-view name="content"></router-view>
@@ -15,10 +15,7 @@ export default {
   components: { NonAdminHeader },
   async created() {
     if (!this.$store.state.user) {
-      await this.$store.dispatch("setUser").then((res) => {
-        console.log(this.$store.state.user);
-        console.log(res);
-      });
+      await this.$store.dispatch("setUser");
     }
     await this.$store.dispatch("getPublicSettings");
     this.loaded = true;

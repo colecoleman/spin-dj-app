@@ -81,7 +81,6 @@ export default {
   },
   computed: {
     options() {
-      console.log(Object.values(this.fields));
       let arr = Object.values(this.fields);
       return arr.map((x) => {
         return x.display;
@@ -95,7 +94,6 @@ export default {
       this.$emit("closeEditCard");
     },
     fieldInput(object, property, value) {
-      console.log(value);
       if (object) {
         object[property] = value;
       } else {

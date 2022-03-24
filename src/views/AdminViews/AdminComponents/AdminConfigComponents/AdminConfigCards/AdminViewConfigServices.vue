@@ -301,7 +301,6 @@ export default {
       } else {
         array.push(form);
       }
-      console.log(this.input);
     },
     toggleContractFromService(contract, serviceIndex) {
       let services = this.services;

@@ -366,7 +366,6 @@ export default {
     );
     await this.$store.dispatch("getEventContacts", this.event);
     await this.$store.dispatch("getEventLocations", this.event);
-    console.log(this.event);
   },
   components: {
     ToDoList,

@@ -332,7 +332,6 @@ export default {
     businessCurrencyCode: {
       get() {
         if (this.paymentSettings.currencyCode) {
-          console.log(this.paymentSettings.currencyCode);
           return this.paymentSettings.currencyCode;
         } else {
           return "USD";

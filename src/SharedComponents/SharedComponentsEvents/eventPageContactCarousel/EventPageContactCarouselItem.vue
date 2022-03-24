@@ -38,7 +38,6 @@ export default {
   methods: {
     async navigateToContactPage(contact) {
       let user = await Auth.currentAuthenticatedUser();
-      console.log(user.attributes["custom:role"]);
       let role = user.attributes["custom:role"];
       if (role === "admin") {
         this.$router.push(

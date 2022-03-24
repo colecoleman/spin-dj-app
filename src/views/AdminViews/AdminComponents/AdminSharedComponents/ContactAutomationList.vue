@@ -127,7 +127,6 @@ export default {
     InputWithBinarySelection,
   },
   async created() {
-    console.log(this.events);
     await this.$store
       .dispatch(`getContactAutomations`, this.$route.params.id)
       .then((res) => {

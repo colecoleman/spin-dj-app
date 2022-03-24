@@ -157,9 +157,7 @@ export default {
       this.popupOpen = null;
     },
   },
-  created() {
-    console.log(this.category);
-  },
+
   props: ["contact", "category"],
   components: {
     ButtonWithDropDownSelections,

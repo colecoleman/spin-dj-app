@@ -255,8 +255,6 @@ export default {
 
     checkForPackagePresence(arr, item) {
       let index = arr.indexOf(item);
-      console.log(arr, item);
-      console.log(index);
       if (index > -1) {
         return true;
       } else {

@@ -300,13 +300,11 @@ export default {
   },
   methods: {
     fieldInput(object, property, value) {
-      console.log(value);
       if (object) {
         object[property] = value;
       } else {
         this[property] = value;
       }
-      console.log(this.automation);
     },
     toggleMergeTagInformation() {
       this.mergeTagInformationOpen = !this.mergeTagInformationOpen;
@@ -351,7 +349,6 @@ export default {
       };
     },
     editAutomation(automation, index) {
-      console.log(automation, index);
       this.automation = { ...this.automation, ...automation };
       this.editIndex = index;
     },

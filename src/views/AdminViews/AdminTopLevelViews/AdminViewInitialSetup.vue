@@ -189,7 +189,6 @@ export default {
           .cityStateZip;
       },
       set(value) {
-        console.log(value);
         return this.$store.commit(
           "adminConfigIdentitySetBusinessCityStateZip",
           value
@@ -237,9 +236,7 @@ export default {
     async addToDB() {
       this.loading = true;
       if (this.logo) {
-        console.log(this.logo);
         let photo = await this.$store.dispatch("addPhoto", this.logo);
-        console.log(photo);
         await this.$store.commit("adminConfigIdentitySetBusinessLogo", photo);
         await this.$store.dispatch("updateBusinessSettings");
       }

@@ -423,7 +423,6 @@ export default {
       return field.inputTitle.replace(/:/g, "");
     },
     editForm(form, index) {
-      console.log(form);
       this.form = { ...this.form, ...form };
       this.editIndex = index;
     },

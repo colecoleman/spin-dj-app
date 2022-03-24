@@ -134,9 +134,7 @@ export default {
     },
     depositTerminology() {
       if (this.businessSettings.payments.deposit) {
-        console.log("we have deposit stuff");
         if (this.businessSettings.payments.deposit.terminology) {
-          console.log("we have terminology");
           return this.businessSettings.payments.deposit.terminology;
         } else {
           return "deposit";
@@ -199,7 +197,6 @@ export default {
     this.event = await this.$store.dispatch("getEvent", id);
     await this.$store.dispatch("getEventContacts", this.event);
     await this.$store.dispatch("getEventLocations", this.event);
-    console.log(this.event);
   },
   components: {
     ToDoList,

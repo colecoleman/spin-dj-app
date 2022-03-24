@@ -333,7 +333,6 @@ export default {
         this.contract.contractBody
       ) {
         this.needsResign = true;
-        console.log(this.needsResign);
       }
     }
   },

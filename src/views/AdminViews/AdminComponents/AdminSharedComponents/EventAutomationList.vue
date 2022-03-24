@@ -127,7 +127,6 @@ export default {
     await this.$store
       .dispatch(`getEventAutomations`, this.$route.params.id)
       .then((res) => {
-        console.log(res);
         if (this.contacts.length > 0) {
           this.automations = [...res.Items].map((automation) => ({
             ...automation,

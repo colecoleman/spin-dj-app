@@ -78,7 +78,6 @@ export default {
       };
     }
     if (this.contact) {
-      console.log("hey");
       payload = {
         associatedContactId: this.contact.userId,
       };
@@ -86,7 +85,6 @@ export default {
     this.$store.dispatch("getToDos", payload).then(
       (res) => {
         this.toDos = [...res.Items];
-        console.log(res.Items);
       },
       (error) => {
         this.$store.commit("addStatus", { type: "error", note: error });

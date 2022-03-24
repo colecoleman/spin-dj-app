@@ -254,7 +254,6 @@ export default {
       this.$emit("closePopup");
     },
     downloadForms() {
-      console.log(this.forms);
       window.print();
     },
     saveForms() {
@@ -268,8 +267,6 @@ export default {
     duplicateField(form, fieldItem, formItemIndex) {
       form.fields.splice(formItemIndex, 0, _.cloneDeep(fieldItem));
       form.fields[formItemIndex].duplicable = false;
-      console.log(fieldItem);
-      console.log(this.forms);
     },
     toggleAddForms() {
       if (this.openView === "addForms") {
@@ -277,11 +274,9 @@ export default {
         this.openView = "eventForms";
       } else {
         this.openView = "addForms";
-        console.log(this.openView);
       }
     },
     addFormToEvent(form) {
-      console.log(form);
       this.$emit("addFormToEvent", form);
     },
     initiateDeleteForm(index) {
@@ -289,7 +284,6 @@ export default {
       this.deleteFormOpen = true;
     },
     closeDeleteForm() {
-      console.log("should delete");
       this.deleteFormOpen = false;
     },
     deleteForm() {

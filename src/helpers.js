@@ -251,9 +251,6 @@ export default class Helpers {
 
   static finalPaymentDueDate(data, businessSettings) {
     let date = new Date(data.date);
-    console.log(data);
-    console.log(date);
-    console.log(businessSettings);
     let dueDateItem = businessSettings.payments.finalPayment;
     if (dueDateItem.type === "weeks") {
       return new Date(date.setDate(date.getDate() - dueDateItem.increment * 7));

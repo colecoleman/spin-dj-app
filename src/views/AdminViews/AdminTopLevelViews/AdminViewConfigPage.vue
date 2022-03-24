@@ -90,7 +90,6 @@ export default {
   methods: {
     async newLogoSelected(logo) {
       this.logo = logo;
-      console.log(this.logo);
     },
     async saveChanges() {
       this.saving = true;
@@ -98,7 +97,6 @@ export default {
         await this.$store
           .dispatch("addPhoto", this.logo)
           .then((res) => {
-            console.log(res);
             this.$store.commit("adminConfigIdentitySetBusinessLogo", res);
           })
           .catch((e) => {

@@ -133,16 +133,13 @@ export default {
       this.paymentMethodsOpen = !this.paymentMethodsOpen;
     },
     selectPaymentMethod(method) {
-      console.log(method);
       this.paymentMethod = method;
-      console.log(this.paymentMethod);
       this.togglePaymentMethodsOpen();
     },
   },
   props: ["event", "eventId"],
   created() {
     this.paymentMethod = this.paymentMethods[0];
-    console.log(this.$store.state.businessSettings);
   },
 };
 </script>

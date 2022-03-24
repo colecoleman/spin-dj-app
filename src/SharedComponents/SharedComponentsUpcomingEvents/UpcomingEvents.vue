@@ -137,7 +137,6 @@ export default {
     },
     userRole() {
       let user = this.$store.state.user;
-      console.log(user);
       if (user.tenantId === user.userId) {
         return "admin";
       } else {

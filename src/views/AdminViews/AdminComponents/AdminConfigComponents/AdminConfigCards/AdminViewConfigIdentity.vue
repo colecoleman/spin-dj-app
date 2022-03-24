@@ -297,7 +297,6 @@ export default {
           .secondaryTextColor;
       },
       set(value) {
-        console.log(value);
         return this.$store.commit(
           "adminConfigIdentitySetSecondaryTextColor",
           value
@@ -314,9 +313,6 @@ export default {
     },
     businessPhoneNumber: {
       get() {
-        console.log(
-          this.$store.state.businessSettings.identity.businessPhoneNumber
-        );
         return this.$store.state.businessSettings.identity.businessPhoneNumber;
       },
       set(value) {
@@ -372,7 +368,6 @@ export default {
       document.getElementById("business-logo-hidden-file-button").click();
     },
     fieldInput(object, property, value) {
-      console.log(object, property, value);
       if (object) {
         object[property] = value;
       } else {
@@ -383,7 +378,6 @@ export default {
       var files = e.target.files || e.dataTransfer.files;
       if (!files.length) return;
       this.photoFile = files[0];
-      console.log(this.photoFile);
       this.$emit("logo", this.photoFile);
     },
 
@@ -397,7 +391,6 @@ export default {
       this.dialogModal = null;
     },
     startDeleteEmail(index) {
-      console.log(index);
       this.dialogModal = "deleteEmail";
       this.emailDeleteIndex = index;
     },
