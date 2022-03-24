@@ -349,8 +349,9 @@ export default {
   background: radial-gradient(
     circle at center,
     var(--highlightColor) 0%,
-    var(--highlightColor) 50%,
-    rgba(0, 0, 0, 0) 53%
+    var(--highlightColor) 40%,
+    var(--textColor) 43%,
+    rgba(0, 0, 0, 0) 44%
   );
   cursor: pointer;
 }
@@ -382,8 +383,8 @@ export default {
   background: radial-gradient(
     circle at center,
     var(--textColor) 0%,
-    var(--textColor) 50%,
-    rgba(0, 0, 0, 0) 53%
+    var(--textColor) 43%,
+    rgba(0, 0, 0, 0) 44%
   );
 }
 
