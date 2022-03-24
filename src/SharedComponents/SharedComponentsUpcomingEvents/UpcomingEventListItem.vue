@@ -1,7 +1,7 @@
 <template>
   <div class="single-event-item" @click="eventClicked">
     <div class="client-event-identifier">
-      <div class="conditional-wrapper" v-if="client.userId">
+      <div class="conditional-wrapper" v-if="client">
         <profile-picture
           contact="person"
           :profilePicture="client.profilePicture"
@@ -12,9 +12,12 @@
           <span> {{ client.family_name }}</span>
         </h5>
       </div>
-      <client-skeleton-card v-if="!client.userId" />
+      <client-skeleton-card v-if="!client" />
     </div>
-    <div class="event-location-identifier" v-if="location.name">
+    <div
+      class="event-location-identifier"
+      v-if="this.event.locations.length > 0"
+    >
       <h4 class="venue-name" v-if="location.name">
         {{ location.name }}
       </h4>
@@ -26,7 +29,7 @@
     <location-skeleton-card v-if="!location.name" />
     <div
       class="event-metadata-identifier"
-      v-if="location.name || client.userId"
+      v-if="(location.name || client) && event.data.date"
     >
       <div class="date-and-time-identifier">
         <p>{{ formatDate(event.data.date) }}</p>
@@ -45,7 +48,9 @@
         </p>
       </div>
     </div>
-    <event-skeleton-card v-if="!location.name && !client.userId" />
+    <event-skeleton-card
+      v-if="(!location.name && !client) || !event.data.date"
+    />
   </div>
   <!-- <skeleton-card v-if="loading" /> -->
 </template>
@@ -83,7 +88,17 @@ export default {
       return this.event.contacts[0];
     },
     location() {
-      return this.event.locations[0];
+      if (this.event.locations.length > 0) {
+        return this.event.locations[0];
+      } else {
+        return {
+          name: "Unknown",
+          address: {
+            streetAddress1: "Unknown",
+            cityStateZip: "Unknown",
+          },
+        };
+      }
     },
   },
   methods: {
