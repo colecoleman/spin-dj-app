@@ -42,7 +42,8 @@ import { formatPhoneNumber } from "../../helpers.js";
 export default {
   data() {
     return {
-      profilePictureStyling: "width: 55px; height: 55px; margin-right: 10px;",
+      profilePictureStyling:
+        "min-width: 40px; height: 40px; margin-right: 10px;",
       editCardOpen: false,
     };
   },
