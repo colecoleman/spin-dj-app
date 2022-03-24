@@ -55,13 +55,12 @@ export default {
   },
   async mounted() {
     this.loading = true;
-    console.log(this.event.contacts);
-    await this.$store
-      .dispatch("getUser", this.event.contacts[0].id)
-      .then((res) => {
-        console.log(res);
-        this.matchedClient = res;
-      });
+    let contactId = this.event.contacts[0].key
+      ? this.event.contacts[0].key.userId
+      : this.event.contacts[0].id;
+    await this.$store.dispatch("getUser", contactId).then((res) => {
+      this.matchedClient = res;
+    });
     this.loading = false;
   },
   props: ["event"],

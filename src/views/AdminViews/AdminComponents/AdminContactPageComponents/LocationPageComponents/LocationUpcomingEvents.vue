@@ -38,11 +38,11 @@
           class="upcoming-event-list-item-container"
         >
           <location-upcoming-events-list-item
-            @click="initializeAddToEvent(event.userId)"
+            @click="initializeAddToEvent(event)"
             :event="event"
           />
           <two-button-dialog-modal
-            v-if="addEventId"
+            v-if="addEventKey"
             @close-modal="closeConfirmationDialog()"
             @select-button-one="addLocationToEvent()"
             @select-button-two="closeConfirmationDialog()"
@@ -62,7 +62,7 @@ export default {
   data() {
     return {
       sortMenuOpened: false,
-      addEventId: undefined,
+      addEventKey: undefined,
       sortItems: [
         {
           title: "Date Ascending",
@@ -103,24 +103,31 @@ export default {
     eventAssignmentToggle() {
       this.$emit("eventAssignmentToggle");
     },
-    initializeAddToEvent(id) {
-      this.addEventId = id;
+    initializeAddToEvent(event) {
+      this.addEventKey = { userId: event.userId, tenantId: event.tenantId };
     },
     closeConfirmationDialog() {
-      this.addEventId = undefined;
+      this.addEventKey = undefined;
     },
     async addLocationToEvent() {
       let locationPayload = {
         locationId: this.location.userId,
-        variable: "associatedEvents",
-        value: this.addEventId,
         operation: "addToList",
+        variable: "associatedEvents",
+        value: {
+          key: this.addEventKey,
+        },
       };
       let eventPayload = {
-        eventId: this.addEventId,
+        eventId: this.addEventKey.userId,
         operation: "addToList",
         variable: "locations",
-        value: this.location.userId,
+        value: {
+          key: {
+            userId: this.location.userId,
+            tenantId: this.location.tenantId,
+          },
+        },
       };
       await this.$store.dispatch("editLocation", locationPayload);
       await this.$store.dispatch("editEvent", eventPayload);
@@ -138,6 +145,7 @@ export default {
       });
     },
   },
+  created() {},
   props: ["location", "events", "eventAssignmentOpen"],
   components: {
     LocationUpcomingEventsListItem,

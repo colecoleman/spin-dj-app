@@ -22,12 +22,11 @@ const store = createStore({
       return new Promise((resolve, reject) => {
         axios
           .get(
-            `https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/public/${context.state.user.tenantId}/settings`
+            `https://api.spindj.io/public/${context.state.user.tenantId}/settings`
           )
           .then(
             (result) => {
               resolve(result.data);
-              console.log(result.data);
               context.commit("setBusinessSettings", result.data);
             },
             (error) => {
@@ -48,7 +47,7 @@ const store = createStore({
         return new Promise((resolve, reject) => {
           axios
             .get(
-              `https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/admin/${context.state.user.tenantId}/users/${user}`
+              `https://api.spindj.io/admin/${context.state.user.tenantId}/users/${user}`
             )
             .then(
               (result) => {
@@ -74,13 +73,12 @@ const store = createStore({
         return new Promise((resolve, reject) => {
           axios
             .get(
-              `https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/admin/${context.state.user.tenantId}/users/${payload}/listItem`
+              `https://api.spindj.io/admin/${context.state.user.tenantId}/users/${payload}/listItem`
             )
             .then(
               (result) => {
                 if (result.data.Item) {
                   resolve(result.data.Item);
-
                 } else {
                   resolve(undefined);
                 }
@@ -100,7 +98,7 @@ const store = createStore({
       return new Promise((resolve, reject) => {
         axios
           .get(
-            `https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/${context.state.user.role}/${context.state.user.tenantId}/${context.state.user.userId}/users/${payload}`
+            `https://api.spindj.io/${context.state.user.role}/${context.state.user.tenantId}/${context.state.user.userId}/users/${payload}`
           )
           .then(
             (result) => {
@@ -124,9 +122,7 @@ const store = createStore({
         ? user.attributes["custom:tenantId"]
         : userId;
       await axios
-        .get(
-          `https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/admin/${tenantId}/users/${userId}`
-        )
+        .get(`https://api.spindj.io/admin/${tenantId}/users/${userId}`)
         .then((response) => {
           context.commit("setUser", response.data.Item);
         })
@@ -141,7 +137,7 @@ const store = createStore({
       return new Promise((resolve, reject) => {
         axios
           .get(
-            `https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/admin/${context.state.user.tenantId}/events`
+            `https://api.spindj.io/admin/${context.state.user.tenantId}/events`
           )
           .then(
             (result) => {
@@ -166,7 +162,8 @@ const store = createStore({
     },
     async getEventContacts(context, event) {
       let contacts = event.contacts.map((x, index) => {
-        return context.dispatch("getContactListItem", x.id).then((res) => {
+        let id = x.key ? x.key.userId : x.id;
+        return context.dispatch("getContactListItem", id).then((res) => {
           if (!res) {
             let contactRemoveParameters = {
               eventId: event.userId,
@@ -190,14 +187,17 @@ const store = createStore({
     },
     async getEventLocations(context, event) {
       let locations = event.locations.map((x) => {
-        return context.dispatch("getLocation", x);
+        let id = x.key ? x.key.userId : x;
+        return context.dispatch("getLocation", id);
       });
       event.locations = await Promise.all(locations);
     },
     async getContactEvents(context, contact) {
       contact.associatedEvents = await Promise.all(
         contact.associatedEvents.map(async (ae, index) => {
-          return await context.dispatch("adminGetEvent", ae).then((res) => {
+          let id = ae.key ? ae.key.userId : ae;
+          return await context.dispatch("adminGetEvent", id).then((res) => {
+            console.log(res);
             if (!res) {
               let parameters = {
                 clientId: contact.userId,
@@ -219,7 +219,8 @@ const store = createStore({
     async getLocationEvents(context, location) {
       location.associatedEvents = await Promise.all(
         location.associatedEvents.map(async (ae, index) => {
-          return await context.dispatch("adminGetEvent", ae).then((res) => {
+          let id = ae.key ? ae.key.userId : ae;
+          return await context.dispatch("adminGetEvent", id).then((res) => {
             if (!res) {
               let parameters = {
                 locationId: location.userId,
@@ -239,10 +240,27 @@ const store = createStore({
       return location.associatedEvents;
     },
 
+    async removeEventFromContact(context, payload) {
+      console.log(payload);
+      let contact = await context.dispatch("getUser", payload.contact.userId);
+      let eventIndex = contact.associatedEvents.findIndex((x) => {
+        let id = x.key ? x.key.userId : x;
+        return id === payload.event;
+      });
+      let contactRemoveParameters = {
+        clientId: contact.userId,
+        operation: "removeFromList",
+        variable: "associatedEvents",
+        value: eventIndex,
+      };
+      await context.dispatch("editContact", contactRemoveParameters);
+      return eventIndex;
+    },
+
     async setBusinessSettings(context) {
       await axios
         .get(
-          `https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/admin/${context.state.user.userId}/settings`
+          `https://api.spindj.io/admin/${context.state.user.userId}/settings`
         )
         .then((response) => {
           if ("businessSettings" in response.data.Item) {
@@ -263,7 +281,7 @@ const store = createStore({
       return new Promise((resolve, reject) => {
         axios
           .put(
-            `https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/admin/${context.state.user.tenantId}/todo`,
+            `https://api.spindj.io/admin/${context.state.user.tenantId}/todo`,
             payload
           )
           .then(
@@ -284,7 +302,7 @@ const store = createStore({
     async completeToDo(context, payload) {
       await axios
         .put(
-          `https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/admin/${context.state.user.tenantId}/todo/${payload.id}`,
+          `https://api.spindj.io/admin/${context.state.user.tenantId}/todo/${payload.id}`,
           payload
         )
         .then(
@@ -310,7 +328,7 @@ const store = createStore({
       return new Promise((resolve, reject) => {
         axios
           .get(
-            `https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/admin/${context.state.user.tenantId}/todo/${category}/${id}`
+            `https://api.spindj.io/admin/${context.state.user.tenantId}/todo/${category}/${id}`
           )
           .then(
             (result) => {
@@ -340,7 +358,7 @@ const store = createStore({
       return new Promise((resolve, reject) => {
         axios
           .put(
-            `https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/admin/${state.user.tenantId}/users/${state.user.userId}`,
+            `https://api.spindj.io/admin/${state.user.tenantId}/users/${state.user.userId}`,
             payload
           )
           .then(() => {
@@ -357,7 +375,7 @@ const store = createStore({
       return new Promise((resolve, reject) => {
         axios
           .get(
-            `https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/admin/${context.state.user.tenantId}/subdomain/check/${payload}`
+            `https://api.spindj.io/admin/${context.state.user.tenantId}/subdomain/check/${payload}`
           )
           .then(
             (result) => {
@@ -376,7 +394,7 @@ const store = createStore({
     async addSubdomain(context, payload) {
       axios
         .put(
-          `https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/admin/${context.state.user.tenantId}/subdomain/add/${payload}`
+          `https://api.spindj.io/admin/${context.state.user.tenantId}/subdomain/add/${payload}`
         )
         .then(() => {
           context.commit("adminConfigIdentityAddSubdomain", payload);
@@ -388,7 +406,7 @@ const store = createStore({
     async deleteSubdomain(context, payload) {
       axios
         .put(
-          `https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/admin/${context.state.user.tenantId}/subdomain/delete/${payload}`
+          `https://api.spindj.io/admin/${context.state.user.tenantId}/subdomain/delete/${payload}`
         )
         .then(() => {
           context.commit("addStatus", {
@@ -409,7 +427,7 @@ const store = createStore({
       return new Promise((resolve, reject) => {
         axios
           .put(
-            `https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/admin/${context.state.user.tenantId}/automations/${payload.id}`,
+            `https://api.spindj.io/admin/${context.state.user.tenantId}/automations/${payload.id}`,
             payload.payload
           )
           .then(
@@ -430,7 +448,7 @@ const store = createStore({
       return new Promise((resolve, reject) => {
         axios
           .put(
-            `https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/admin/${context.state.user.tenantId}/automations`,
+            `https://api.spindj.io/admin/${context.state.user.tenantId}/automations`,
             payload
           )
           .then(
@@ -451,7 +469,7 @@ const store = createStore({
       return new Promise((resolve, reject) => {
         axios
           .delete(
-            `https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/admin/${context.state.user.tenantId}/automations/${payload}`
+            `https://api.spindj.io/admin/${context.state.user.tenantId}/automations/${payload}`
           )
           .then(
             (result) => {
@@ -471,7 +489,7 @@ const store = createStore({
       return new Promise((resolve, reject) => {
         axios
           .put(
-            `https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/admin/${context.state.user.tenantId}/users/${payload.userId}/resetPassword`,
+            `https://api.spindj.io/admin/${context.state.user.tenantId}/users/${payload.userId}/resetPassword`,
             payload
           )
           .then(
@@ -492,9 +510,7 @@ const store = createStore({
     // contact-based-actions
     async getAdminUsers(context) {
       let contacts = await axios
-        .get(
-          `https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/admin/${context.state.user.tenantId}/users`
-        )
+        .get(`https://api.spindj.io/admin/${context.state.user.tenantId}/users`)
         .then((res) => {
           return res.data.Items;
         });
@@ -505,7 +521,7 @@ const store = createStore({
       return new Promise((resolve, reject) => {
         axios
           .put(
-            `https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/admin/${context.state.user.tenantId}/users`,
+            `https://api.spindj.io/admin/${context.state.user.tenantId}/users`,
             contact
           )
           .then(
@@ -524,7 +540,7 @@ const store = createStore({
       return new Promise((resolve, reject) => {
         axios
           .put(
-            `https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/admin/${context.state.user.tenantId}/users/${payload.clientId}`,
+            `https://api.spindj.io/admin/${context.state.user.tenantId}/users/${payload.clientId}`,
             payload
           )
           .then(
@@ -549,7 +565,7 @@ const store = createStore({
     async deleteUser(context, payload) {
       await axios
         .delete(
-          `https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/admin/${context.state.user.tenantId}/users/${payload.id}`
+          `https://api.spindj.io/admin/${context.state.user.tenantId}/users/${payload.id}`
         )
         .then(() => {
           context.commit("addStatus", {
@@ -570,7 +586,7 @@ const store = createStore({
       return new Promise((resolve, reject) => {
         axios
           .put(
-            `https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/admin/${context.state.user.tenantId}/locations`,
+            `https://api.spindj.io/admin/${context.state.user.tenantId}/locations`,
             location
           )
           .then(
@@ -586,14 +602,15 @@ const store = createStore({
       });
     },
     async getLocation(context, location) {
-      let userSearch = context.commit("searchForUser", location);
+      let id = location.key ? location.key.userId : location;
+      let userSearch = context.commit("searchForUser", id);
       if (userSearch) {
         return userSearch;
       } else {
         return new Promise((resolve, reject) => {
           axios
             .get(
-              `https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/admin/${context.state.user.tenantId}/locations/${location}`
+              `https://api.spindj.io/admin/${context.state.user.tenantId}/locations/${id}`
             )
             .then(
               (result) => {
@@ -614,7 +631,7 @@ const store = createStore({
       return new Promise((resolve, reject) => {
         axios
           .get(
-            `https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/admin/${context.state.user.tenantId}/locations`
+            `https://api.spindj.io/admin/${context.state.user.tenantId}/locations`
           )
           .then(
             (result) => {
@@ -634,7 +651,7 @@ const store = createStore({
       return new Promise((resolve, reject) => {
         axios
           .put(
-            `https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/admin/${context.state.user.tenantId}/locations/${payload.locationId}`,
+            `https://api.spindj.io/admin/${context.state.user.tenantId}/locations/${payload.locationId}`,
             payload
           )
           .then(
@@ -658,7 +675,7 @@ const store = createStore({
       return new Promise((resolve, reject) => {
         axios
           .put(
-            `https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/admin/${context.state.user.tenantId}/sendEmail`,
+            `https://api.spindj.io/admin/${context.state.user.tenantId}/sendEmail`,
             payload
           )
           .then((res) => {
@@ -678,7 +695,7 @@ const store = createStore({
       return new Promise((resolve, reject) => {
         axios
           .get(
-            `https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/admin/${context.state.user.tenantId}/users/${payload}/automations`
+            `https://api.spindj.io/admin/${context.state.user.tenantId}/users/${payload}/automations`
           )
           .then(
             (result) => {
@@ -698,56 +715,46 @@ const store = createStore({
     // messaging actions
     async createMessagingThread(context, payload) {
       return new Promise((resolve, reject) => {
-        axios
-          .put(
-            `https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/messaging/createThread`,
-            payload
-          )
-          .then(
-            (result) => {
-              resolve(result);
-              context.commit("addStatus", {
-                type: "success",
-                note: "Message Thread Complete",
-              });
-              context.commit("editEvent", result);
-            },
-            (error) => {
-              context.commit("addStatus", {
-                type: "error",
-                note: error,
-              });
-              reject(error);
-            }
-          );
+        axios.put(`https://api.spindj.io/messaging/createThread`, payload).then(
+          (result) => {
+            resolve(result);
+            context.commit("addStatus", {
+              type: "success",
+              note: "Message Thread Complete",
+            });
+            context.commit("editEvent", result);
+          },
+          (error) => {
+            context.commit("addStatus", {
+              type: "error",
+              note: error,
+            });
+            reject(error);
+          }
+        );
       });
     },
     async sendMessage(context, payload) {
       return new Promise((resolve, reject) => {
-        axios
-          .put(
-            `https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/messaging/message`,
-            payload
-          )
-          .then(
-            (result) => {
-              resolve(result);
-            },
-            (error) => {
-              context.commit("addStatus", {
-                type: "error",
-                note: error,
-              });
-              reject(error);
-            }
-          );
+        axios.put(`https://api.spindj.io/messaging/message`, payload).then(
+          (result) => {
+            resolve(result);
+          },
+          (error) => {
+            context.commit("addStatus", {
+              type: "error",
+              note: error,
+            });
+            reject(error);
+          }
+        );
       });
     },
     async getMessageThread(context, thread) {
       return new Promise((resolve, reject) => {
         axios
           .get(
-            `https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/messaging/getThread/${thread.replaceAll(
+            `https://api.spindj.io/messaging/getThread/${thread.replaceAll(
               "#",
               "%23"
             )}`
@@ -770,7 +777,7 @@ const store = createStore({
       return new Promise((resolve, reject) => {
         axios
           .get(
-            `https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/messaging/getThreadParticipants/${thread.replaceAll(
+            `https://api.spindj.io/messaging/getThreadParticipants/${thread.replaceAll(
               "#",
               "%23"
             )}`
@@ -794,7 +801,7 @@ const store = createStore({
       return new Promise((resolve, reject) => {
         axios
           .put(
-            `https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/admin/${context.state.user.tenantId}/events`,
+            `https://api.spindj.io/admin/${context.state.user.tenantId}/createEvent`,
             event
           )
           .then(
@@ -818,7 +825,7 @@ const store = createStore({
         return new Promise((resolve, reject) => {
           axios
             .get(
-              `https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/${role}/${context.state.user.tenantId}/${context.state.user.userId}/events/${payload}`
+              `https://api.spindj.io/${role}/${context.state.user.tenantId}/${context.state.user.userId}/events/${payload}`
             )
             .then(
               (result) => {
@@ -845,7 +852,7 @@ const store = createStore({
         return new Promise((resolve, reject) => {
           axios
             .get(
-              `https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/admin/${context.state.user.tenantId}/events/${payload}`
+              `https://api.spindj.io/admin/${context.state.user.tenantId}/events/${payload}`
             )
             .then(
               (result) => {
@@ -868,7 +875,7 @@ const store = createStore({
       return new Promise((resolve, reject) => {
         axios
           .put(
-            `https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/admin/${context.state.user.tenantId}/events/${payload.eventId}`,
+            `https://api.spindj.io/admin/${context.state.user.tenantId}/events/${payload.eventId}`,
             payload
           )
           .then(
@@ -894,7 +901,7 @@ const store = createStore({
     async deleteEvent(context, payload) {
       await axios
         .delete(
-          `https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/admin/${context.state.user.tenantId}/events/${payload}`
+          `https://api.spindj.io/admin/${context.state.user.tenantId}/events/${payload}`
         )
         .then(() => {
           context.commit("addStatus", {
@@ -913,7 +920,7 @@ const store = createStore({
       return new Promise((resolve, reject) => {
         axios
           .get(
-            `https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/${context.state.user.role}/${context.state.user.tenantId}/${context.state.user.userId}/events`
+            `https://api.spindj.io/${context.state.user.role}/${context.state.user.tenantId}/${context.state.user.userId}/events`
           )
           .then(
             (result) => {
@@ -938,7 +945,7 @@ const store = createStore({
       return new Promise((resolve, reject) => {
         axios
           .put(
-            `https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/${context.state.user.role}/${context.state.user.tenantId}/${context.state.user.userId}/events/${callerPayload.eventId}`,
+            `https://api.spindj.io/${context.state.user.role}/${context.state.user.tenantId}/${context.state.user.userId}/events/${callerPayload.eventId}`,
             payload
           )
           .then(
@@ -965,7 +972,7 @@ const store = createStore({
       return new Promise((resolve, reject) => {
         axios
           .get(
-            `https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/admin/${context.state.user.tenantId}/events/${payload}/automations`
+            `https://api.spindj.io/admin/${context.state.user.tenantId}/events/${payload}/automations`
           )
           .then(
             (result) => {
@@ -987,7 +994,7 @@ const store = createStore({
       return new Promise((resolve, reject) => {
         axios
           .put(
-            `https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/admin/${context.state.user.tenantId}/stripe/createAccount/${payload}`
+            `https://api.spindj.io/admin/${context.state.user.tenantId}/stripe/createAccount/${payload}`
           )
           .then((res) => {
             resolve(res);
@@ -1003,7 +1010,7 @@ const store = createStore({
       return new Promise((resolve, reject) => {
         axios
           .get(
-            `https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/admin/${context.state.user.tenantId}/stripe/checkAccount/${stripeId}`
+            `https://api.spindj.io/admin/${context.state.user.tenantId}/stripe/checkAccount/${stripeId}`
           )
           .then(
             (result) => {
@@ -1019,7 +1026,7 @@ const store = createStore({
       return new Promise((resolve, reject) => {
         axios
           .put(
-            `https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/admin/${context.state.user.tenantId}/stripe/pay/${payload.eventId}`,
+            `https://api.spindj.io/admin/${context.state.user.tenantId}/stripe/pay/${payload.eventId}`,
             payload
           )
           .then((res) => {
@@ -1034,7 +1041,7 @@ const store = createStore({
       return new Promise((resolve, reject) => {
         axios
           .put(
-            `https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/admin/${context.state.user.tenantId}/subscribe`,
+            `https://api.spindj.io/admin/${context.state.user.tenantId}/subscribe`,
             payload
           )
           .then((res) => {
@@ -1049,11 +1056,10 @@ const store = createStore({
       return new Promise((resolve, reject) => {
         axios
           .put(
-            `https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/stripe/portal/${context.state.user.stripeId}`
+            `https://api.spindj.io/stripe/portal/${context.state.user.stripeId}`
           )
           .then((res) => {
             resolve(res);
-            console.log(res);
           })
           .catch((e) => {
             reject(e);
@@ -1063,10 +1069,8 @@ const store = createStore({
     // utlity actions
     async addPhoto(context, payload) {
       let name = context.state.user.userId + Date.now();
-      console.log(payload);
       return await Storage.put(name, payload)
         .then((res) => {
-          console.log(res);
           return (
             "https://spindjappstorage140016-prod.s3.amazonaws.com/public/" +
             res.key
@@ -1080,7 +1084,7 @@ const store = createStore({
       return new Promise((resolve, reject) => {
         axios
           .get(
-            `https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/admin/${context.state.user.tenantId}/getFile/${payload}`
+            `https://api.spindj.io/admin/${context.state.user.tenantId}/getFile/${payload}`
           )
           .then(
             (result) => {
@@ -1104,7 +1108,8 @@ const store = createStore({
     },
     searchForUser(state, user) {
       return state.contacts.find((x) => {
-        return x.userId == user;
+        let id = user.key ? user.key.userId : user;
+        return x.userId == id;
       });
     },
     searchForEvent(state, event) {
@@ -1238,7 +1243,6 @@ const store = createStore({
     },
     adminConfigPaymentsSetBusinessCurrencyCode(state, payload) {
       state.businessSettings.payments.currencyCode = payload;
-      console.log(state.businessSettings.payments);
     },
     adminConfigPaymentsSetDepositAmount(state, payload) {
       if (!state.businessSettings.payments.deposit) {
@@ -1397,7 +1401,6 @@ const store = createStore({
     },
 
     //prospect-specific mutations /////////////////////
-
   },
   getters: {
     currencyCode(state) {

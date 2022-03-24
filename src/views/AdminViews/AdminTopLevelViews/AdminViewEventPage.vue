@@ -274,26 +274,10 @@ export default {
       let contacts = [...this.event.contacts];
       contacts.forEach((contact) => {
         if (contact) {
-          let index = contact.associatedEvents.indexOf(this.event.userId);
-          if (index > -1) {
-            let payload = {
-              clientId: contact.userId,
-              variable: "associatedEvents",
-              value: index,
-              operation: "removeFromList",
-            };
-            this.$store
-              .dispatch("editContact", payload)
-              .then(() => {
-                this.$store.commit("addStatus", {
-                  type: "success",
-                  note: "Event Removed From Contact",
-                });
-              })
-              .catch((e) => {
-                this.$store.commit("addStatus", { type: "error", note: e });
-              });
-          }
+          this.$store.dispatch("removeEventFromContact", {
+            event: this.event.userId,
+            contact: contact,
+          });
         }
       });
       await this.$store.dispatch("deleteEvent", this.event.userId);
@@ -364,6 +348,7 @@ export default {
       "adminGetEvent",
       this.$route.params.id
     );
+    console.log(JSON.stringify(this.event));
     await this.$store.dispatch("getEventContacts", this.event);
     await this.$store.dispatch("getEventLocations", this.event);
   },

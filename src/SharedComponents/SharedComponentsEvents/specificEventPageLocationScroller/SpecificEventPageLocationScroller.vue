@@ -91,13 +91,7 @@ export default {
       this.removeLocationOpen = !this.removeLocationOpen;
     },
     async confirmRemoveLocation() {
-      console.log(this.locations);
-      // console.log(this.locations[this.counter]);
-      // let index = this.event.locations.indexOf(
-      //   this.locations[this.counter].userId
-      // );
       let index = this.counter;
-      console.log(index);
       let payload = {
         eventId: this.event.userId,
         operation: "removeFromList",
@@ -107,34 +101,44 @@ export default {
       await this.$store.dispatch("editEvent", payload);
 
       if (this.locations[this.counter].associatedEvents) {
-        let locationPayloadIndex = this.locations[
-          this.counter
-        ].associatedEvents.indexOf(this.event.userId);
-        let locationPayload = {
-          locationId: this.locations[this.counter].userId,
-          operation: "removeFromList",
-          variable: "associatedEvents",
-          value: locationPayloadIndex,
+        let payload = {
+          contact: this.locations[this.counter],
+          event: this.event.userId,
         };
-        await this.$store.dispatch("editLocation", locationPayload);
+        let index = await this.$store.dispatch(
+          "removeEventFromContact",
+          payload
+        );
+        this.locations.splice(index, 1);
       }
-      this.locations.splice(index, 1);
       this.counter = 0;
       this.toggleRemoveLocation();
     },
     async selectLocation(location) {
       this.locationDropdownOpen = false;
+      let locationKey = {
+        key: {
+          userId: location.userId,
+          tenantId: location.tenantId,
+        },
+      };
+      let eventKey = {
+        key: {
+          userId: this.event.userId,
+          tenantId: this.event.tenantId,
+        },
+      };
       let eventEditPayload = {
         eventId: this.event.userId,
         operation: "addToList",
         variable: "locations",
-        value: location.userId,
+        value: locationKey,
       };
       let locationPayload = {
         locationId: location.userId,
-        variable: "associatedEvents",
-        value: this.event.userId,
         operation: "addToList",
+        variable: "associatedEvents",
+        value: eventKey,
       };
       await this.$store.dispatch("editEvent", eventEditPayload);
       await this.$store.dispatch("editLocation", locationPayload);
@@ -181,7 +185,8 @@ export default {
   props: ["event"],
   async created() {
     await this.event.locations.forEach((location) => {
-      this.$store.dispatch("getLocation", location).then((res) => {
+      let id = location.key ? location.key.userId : location;
+      this.$store.dispatch("getLocation", id).then((res) => {
         this.locations.push(res);
       });
     });

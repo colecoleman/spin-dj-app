@@ -139,31 +139,34 @@ export default {
       this.removeContactOpen = !this.removeContactOpen;
     },
     initiateRemoveContact(contact, index) {
-      console.log(index);
       this.contactRemoveIndex = index;
       this.contactToBeRemoved = contact;
       this.toggleRemoveContact();
     },
     async selectContact(contact) {
       this.locationDropdownOpen = false;
-      let chosenContact = {
-        id: contact.userId,
+      let contactKey = {
+        key: { userId: contact.userId, tenantId: contact.tenantId },
+        role: contact.role,
+      };
+      let eventKey = {
+        key: { userId: this.event.userId, tenantId: this.event.tenantId },
         role: contact.role,
       };
       let eventParameters = {
         eventId: this.event.userId,
         operation: "addToList",
         variable: "contacts",
-        value: chosenContact,
+        value: contactKey,
       };
       let contactParameters = {
         clientId: contact.userId,
         variable: "associatedEvents",
-        value: this.event.userId,
+        value: eventKey,
         operation: "addToList",
       };
-      await this.$store.dispatch("editEvent", eventParameters);
       await this.$store.dispatch("editContact", contactParameters);
+      await this.$store.dispatch("editEvent", eventParameters);
       this.toggleAddContactOpen();
     },
     async removeContact() {
@@ -173,18 +176,11 @@ export default {
         variable: "contacts",
         value: this.contactRemoveIndex,
       };
-      let eventIndex = this.contactToBeRemoved.associatedEvents.indexOf(
-        this.event.userId
-      );
-      let contactParameters = {
-        clientId: this.contactToBeRemoved.userId,
-        operation: "removeFromList",
-        variable: "associatedEvents",
-        value: eventIndex,
-      };
+      await this.$store.dispatch("removeEventFromContact", {
+        event: this.event.userId,
+        contact: this.contactToBeRemoved,
+      });
       await this.$store.dispatch("editEvent", eventParameters);
-      await this.$store.dispatch("editContact", contactParameters);
-      this.toggleRemoveContact();
     },
   },
   props: ["contacts", "event"],

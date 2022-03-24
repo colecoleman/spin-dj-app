@@ -8,7 +8,7 @@
     <template v-slot:content>
       <div class="events-content">
         <two-button-dialog-modal
-          v-if="addEventId"
+          v-if="addEventKey"
           @close-modal="closeConfirmationDialog()"
           @select-button-one="addUserToEvent()"
           @select-button-two="closeConfirmationDialog()"
@@ -19,7 +19,7 @@
           class="upcoming-event-list-item-container"
         >
           <location-upcoming-events-list-item
-            @click="initializeAddToEvent(event.userId)"
+            @click="initializeAddToEvent(event)"
             :event="event"
           />
         </div>
@@ -35,7 +35,7 @@ import TwoButtonDialogModal from "../../../../../../SharedComponents/SharedCompo
 export default {
   data() {
     return {
-      addEventId: undefined,
+      addEventKey: undefined,
       loaded: false,
       sortItems: [
         {
@@ -76,25 +76,34 @@ export default {
     eventAssignmentToggle() {
       this.$emit("eventAssignmentToggle");
     },
-    initializeAddToEvent(id) {
-      this.addEventId = id;
+    initializeAddToEvent(event) {
+      console.log(event);
+      this.addEventKey = { userId: event.userId, tenantId: event.tenantId };
     },
     closeConfirmationDialog() {
-      this.addEventId = undefined;
+      this.addEventKey = undefined;
     },
     async addUserToEvent() {
       let contactPayload = {
         clientId: this.contact.userId,
-        variable: "associatedEvents",
-        value: this.addEventId,
         operation: "addToList",
+        variable: "associatedEvents",
+        value: {
+          key: this.addEventKey,
+          role: this.contact.role,
+        },
       };
       let eventPayload = {
-        eventId: this.addEventId,
+        eventId: this.addEventKey.userId,
         operation: "addToList",
         variable: "contacts",
-        value: { id: this.contact.userId, role: this.contact.role },
+        value: {
+          key: { userId: this.contact.userId, tenantId: this.contact.tenantId },
+          role: this.contact.role,
+        },
       };
+      console.log("contact", contactPayload);
+      console.log("event", eventPayload);
       await this.$store.dispatch("editContact", contactPayload);
       await this.$store.dispatch("editEvent", eventPayload);
       this.closeConfirmationDialog();
@@ -103,6 +112,7 @@ export default {
   computed: {
     allEvents() {
       let today = new Date().getTime();
+      console.log(this.$store.state.events);
       return this.$store.state.events.filter((event) => {
         return new Date(event.data.date).getTime() > today;
       });
