@@ -1,5 +1,8 @@
-import store from './store/index.js';
+import store from "./store/index.js";
 export function formatDate(date) {
+  if (!date) {
+    return "UNKNOWN";
+  }
   if (typeof date === "object") {
     return date.toLocaleDateString("lookup", {
       day: "numeric",
@@ -132,6 +135,9 @@ export default class Helpers {
   // format helpers
 
   static formatDate(date) {
+    if (!date) {
+      return "UNKNOWN";
+    }
     if (typeof date === "object") {
       return date.toLocaleDateString("lookup", {
         day: "numeric",
