@@ -12,8 +12,9 @@
       v-model="value"
       :placeholder="placeholder"
       @blur="blur()"
+      @keydown="keydown()"
     />
-    <div class="dropdown" v-if="dropdownSelections.length > 0">
+    <div class="dropdown" v-if="dropdownSelections.length > 0 && dropdownOpen">
       <div
         class="dropdown-item"
         v-for="(item, index) in dropdownSelections"
@@ -28,7 +29,9 @@
 <script>
 export default {
   data() {
-    return {};
+    return {
+      dropdownOpen: true,
+    };
   },
   computed: {
     value: {
@@ -36,13 +39,16 @@ export default {
         return this.inputValue;
       },
       set(val) {
-        console.log(this.dropdownSelections);
         return this.$emit("input", val);
       },
     },
   },
   methods: {
+    keydown() {
+      this.dropdownOpen = true;
+    },
     blur() {
+      this.dropdownOpen = false;
       this.$emit("blur");
     },
     dropdownSelected(item) {
