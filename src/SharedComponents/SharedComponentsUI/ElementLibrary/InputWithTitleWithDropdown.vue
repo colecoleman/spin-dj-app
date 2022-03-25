@@ -48,7 +48,9 @@ export default {
       this.dropdownOpen = true;
     },
     blur() {
-      this.dropdownOpen = false;
+      setTimeout(() => {
+        this.dropdownOpen = false;
+      }, 300);
       this.$emit("blur");
     },
     dropdownSelected(item) {
