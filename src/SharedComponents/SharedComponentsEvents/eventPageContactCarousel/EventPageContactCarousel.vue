@@ -27,31 +27,15 @@
       </div>
       <div class="add-contact-wrapper" v-if="addContactOpen">
         <div class="form-input">
-          <p>Name:</p>
-          <div id="contact-search-parent" class="dropdown-parent">
-            <input
-              type="text"
-              v-model="clientSearchField"
-              @keydown="toggleClientDropdown"
-              placeholder="Start typing to assign existing contact, or add a new one."
-            />
-            <div
-              class="dropdown"
-              v-if="clientDropdownOpen && contactSearchResults.length > 0"
-            >
-              <div
-                class="dropdown-item"
-                v-for="contact in contactSearchResults"
-                :key="contact.userId"
-                :value="contact.given_name + ' ' + contact.family_name"
-                @click="selectContact(contact)"
-              >
-                <p class="location-name">
-                  {{ contact.given_name + " " + contact.family_name }}
-                </p>
-              </div>
-            </div>
-          </div>
+          <input-with-title-with-dropdown
+            title="Search"
+            placeholder="Start typing..."
+            :dropdownSelections="contactSearchResults"
+            :dropdownDisplay="['given_name', 'family_name']"
+            :inputValue="clientSearchField"
+            @input="searchForClient($event)"
+            @dropdown-selected="selectContact($event)"
+          />
         </div>
       </div>
     </template>
@@ -60,6 +44,7 @@
 
 <script>
 import EventPageContactCarouselItem from "./EventPageContactCarouselItem.vue";
+import InputWithTitleWithDropdown from "../../SharedComponentsUI/ElementLibrary/InputWithTitleWithDropdown.vue";
 import VueSvg from "../../../assets/VueSvg.vue";
 import TwoButtonDialogModal from "../../SharedComponentsUI/TwoButtonDialogModal.vue";
 
@@ -78,6 +63,9 @@ export default {
   computed: {
     contactSearchResults() {
       if (this.clientSearchField) {
+        if (this.$store.state.contacts.length < 5) {
+          this.$store.dispatch("getAdminUsers");
+        }
         let term = this.clientSearchField;
         let contacts = this.$store.state.contacts.filter((x) => {
           return x.role !== "location";
@@ -98,6 +86,9 @@ export default {
     },
     toggleAddContactOpen() {
       this.addContactOpen = !this.addContactOpen;
+    },
+    searchForClient(val) {
+      this.clientSearchField = val;
     },
     scrollToNextElement() {
       let container = document.getElementById("contact-carousel-wrapper");
@@ -144,7 +135,6 @@ export default {
       this.toggleRemoveContact();
     },
     async selectContact(contact) {
-      this.locationDropdownOpen = false;
       let contactKey = {
         key: { userId: contact.userId, tenantId: contact.tenantId },
         role: contact.role,
@@ -184,7 +174,12 @@ export default {
     },
   },
   props: ["contacts", "event"],
-  components: { EventPageContactCarouselItem, TwoButtonDialogModal, VueSvg },
+  components: {
+    EventPageContactCarouselItem,
+    TwoButtonDialogModal,
+    VueSvg,
+    InputWithTitleWithDropdown,
+  },
 };
 </script>
 
@@ -209,6 +204,8 @@ export default {
 
 .form-input {
   width: 100%;
+  display: flex;
+  justify-content: center;
 }
 
 .dropdown-parent {
