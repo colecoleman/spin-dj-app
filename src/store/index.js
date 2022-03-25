@@ -635,6 +635,13 @@ const store = createStore({
           )
           .then(
             (result) => {
+              result.data.Items.forEach((element) => {
+                if (context.commit("searchForUser", element)) {
+                  return;
+                } else {
+                  context.commit("addContact", element);
+                }
+              });
               resolve(result.data.Items);
             },
             (error) => {
@@ -1108,7 +1115,7 @@ const store = createStore({
     },
     searchForUser(state, user) {
       return state.contacts.find((x) => {
-        let id = user.key ? user.key.userId : user;
+        let id = user.key ? user.key.userId : user.userId ? user.userId : user;
         return x.userId == id;
       });
     },
