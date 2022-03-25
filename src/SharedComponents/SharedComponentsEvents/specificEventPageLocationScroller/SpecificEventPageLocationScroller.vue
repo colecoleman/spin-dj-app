@@ -35,29 +35,15 @@
       </div>
       <div class="add-location" v-if="addLocationOpen">
         <div class="form-input">
-          <p>Location Name:</p>
-          <div class="dropdown-parent">
-            <input
-              type="text"
-              v-model="searchLocationName"
-              @keydown="openLocationDropdown"
-              placeholder="Start typing to find past location or add a new one."
-            />
-            <div
-              class="dropdown"
-              v-if="locationDropdownOpen && searchLocations.length > 0"
-            >
-              <div
-                class="dropdown-item"
-                v-for="location in searchLocations"
-                :key="location.userId"
-                :value="location.name"
-                @click="selectLocation(location)"
-              >
-                <p class="location-name">{{ location.name }}</p>
-              </div>
-            </div>
-          </div>
+          <input-with-title-with-dropdown
+            title="Location Name:"
+            placeholder="Start Typing..."
+            :inputValue="searchLocationName"
+            @input="searchForLocation($event)"
+            @dropdown-selected="selectLocation($event)"
+            :dropdownSelections="searchLocations"
+            :dropdownDisplay="['name']"
+          />
         </div>
       </div>
     </template>
@@ -66,6 +52,7 @@
 
 <script>
 import VueSvg from "../../../assets/VueSvg.vue";
+import InputWithTitleWithDropdown from "../../../SharedComponents/SharedComponentsUI/ElementLibrary/InputWithTitleWithDropdown.vue";
 import SpecificEventPageLocationScrollerItem from "./SpecificEventPageLocationScrollerItem.vue";
 import TwoButtonDialogModal from "../../../SharedComponents/SharedComponentsUI/TwoButtonDialogModal.vue";
 
@@ -75,15 +62,11 @@ export default {
       counter: 0,
       locations: [],
       addLocationOpen: false,
-      locationDropdownOpen: false,
       searchLocationName: undefined,
       removeLocationOpen: false,
     };
   },
   methods: {
-    openLocationDropdown() {
-      this.locationDropdownOpen = true;
-    },
     toggleAddLocation() {
       this.addLocationOpen = !this.addLocationOpen;
     },
@@ -114,8 +97,10 @@ export default {
       this.counter = 0;
       this.toggleRemoveLocation();
     },
+    searchForLocation(val) {
+      this.searchLocationName = val;
+    },
     async selectLocation(location) {
-      this.locationDropdownOpen = false;
       let locationKey = {
         key: {
           userId: location.userId,
@@ -171,13 +156,12 @@ export default {
     },
     searchLocations() {
       if (this.searchLocationName) {
+        if (this.$store.getters.locations.length < 3) {
+          this.$store.dispatch("getLocations");
+        }
         let locations = this.$store.getters.locations;
         let term = this.searchLocationName.toLowerCase();
-        return locations.filter(
-          (x) => x.name.toLowerCase().includes(term)
-          // || x.address.cityStateZip.toLowerCase().includes(term) ||
-          // x.address.streetAddress1.toLowerCase().includes(term)
-        );
+        return locations.filter((x) => x.name.toLowerCase().includes(term));
       }
       return [];
     },
@@ -195,6 +179,7 @@ export default {
     SpecificEventPageLocationScrollerItem,
     TwoButtonDialogModal,
     VueSvg,
+    InputWithTitleWithDropdown,
   },
 };
 </script>
@@ -211,14 +196,13 @@ export default {
 }
 
 .form-input {
-  width: 100%;
+  display: flex;
+  justify-content: center;
+  position: relative;
 }
 
-.dropdown-parent {
-  width: 100%;
-}
-
-.dropdown-parent > input {
-  width: 80%;
+.form-input .input-with-dropdown-selection-parent {
+  width: 90%;
+  margin-right: 0;
 }
 </style>
