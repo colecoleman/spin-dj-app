@@ -16,11 +16,6 @@ export default {
       svgStyling: "width: 50%; height: 50%;",
     };
   },
-  methods: {
-    async dashboard() {
-      this.$router.push("/");
-    },
-  },
   components: { VueSvg, RoundHeaderButtonWithIcon },
 };
 </script>
