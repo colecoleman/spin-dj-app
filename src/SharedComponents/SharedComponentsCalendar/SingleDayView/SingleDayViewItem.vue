@@ -40,23 +40,7 @@ export default {
   methods: {
     formatTime,
   },
-  created() {
-    this.$store.dispatch("getUser", this.event.contacts[0]).then((res) => {
-      this.matchedClient = res.Item;
-      if (this.event.locations.length > 0) {
-        this.$store
-          .dispatch("getLocation", this.event.locations[0])
-          .then((res) => {
-            if (res) {
-              this.primaryLocation = res;
-            }
-            this.loading = false;
-          });
-      } else {
-        this.loading = false;
-      }
-    });
-  },
+
   props: ["event"],
   components: { ProfilePicture },
 };

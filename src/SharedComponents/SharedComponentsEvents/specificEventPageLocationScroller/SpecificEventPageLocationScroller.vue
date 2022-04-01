@@ -60,7 +60,7 @@ export default {
   data() {
     return {
       counter: 0,
-      locations: [],
+      // locations: [],
       addLocationOpen: false,
       searchLocationName: undefined,
       removeLocationOpen: false,
@@ -76,7 +76,7 @@ export default {
     async confirmRemoveLocation() {
       let index = this.counter;
       let payload = {
-        eventId: this.event.userId,
+        eventKey: { userId: this.event.userId, tenantId: this.event.tenantId },
         operation: "removeFromList",
         variable: "locations",
         value: index,
@@ -84,13 +84,21 @@ export default {
       await this.$store.dispatch("editEvent", payload);
 
       if (this.locations[this.counter].associatedEvents) {
-        let payload = {
-          contact: this.locations[this.counter],
-          event: this.event.userId,
+        let userId = this.locations[this.counter].key
+          ? this.locations[this.counter].key.userId
+          : this.locations[this.counter];
+        let eventKey = {
+          userId: this.event.userId,
+          tenantId: this.event.tenantId,
+        };
+        let contactParameters = {
+          contactKey: { userId: userId, tenantId: this.event.tenantId },
+          variable: "associatedEvents",
+          value: eventKey,
         };
         let index = await this.$store.dispatch(
           "removeEventFromContact",
-          payload
+          contactParameters
         );
         this.locations.splice(index, 1);
       }
@@ -114,7 +122,7 @@ export default {
         },
       };
       let eventEditPayload = {
-        eventId: this.event.userId,
+        eventKey: { userId: this.event.userId, tenantId: this.event.tenantId },
         operation: "addToList",
         variable: "locations",
         value: locationKey,
@@ -149,6 +157,9 @@ export default {
     location() {
       return this.locations[this.counter] ? this.locations[this.counter] : {};
     },
+    locations() {
+      return this.event.locations;
+    },
     venueName() {
       return this.locations[this.counter]
         ? this.locations[this.counter].name
@@ -167,14 +178,6 @@ export default {
     },
   },
   props: ["event"],
-  async created() {
-    await this.event.locations.forEach((location) => {
-      let id = location.key ? location.key.userId : location;
-      this.$store.dispatch("getLocation", id).then((res) => {
-        this.locations.push(res);
-      });
-    });
-  },
   components: {
     SpecificEventPageLocationScrollerItem,
     TwoButtonDialogModal,

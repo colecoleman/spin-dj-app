@@ -234,12 +234,13 @@ const routes = [
         },
       },
       {
-        path: "events/:eventId",
+        path: "events/:tenantId/:eventId",
         name: "clientEventView",
         meta: { requiresClientAuth: true },
         components: {
           content: ClientEventView,
         },
+
       },
     ],
   },
@@ -268,7 +269,7 @@ const routes = [
         },
       },
       {
-        path: "events/:eventId",
+        path: "events/:tenantId/:eventId",
         name: "employeeEventView",
         meta: { requiresEmployeeAuth: true },
         components: {
@@ -302,7 +303,7 @@ const routes = [
         },
       },
       {
-        path: "events/:eventId",
+        path: "events/:tenantId/:eventId",
         name: "organizerEventView",
         meta: { requiresOrganizerAuth: true },
         components: {
@@ -336,7 +337,7 @@ const routes = [
         },
       },
       {
-        path: "events/:eventId",
+        path: "events/:tenantId/:eventId",
         name: "vendorEventView",
         meta: { requiresVendorAuth: true },
         components: {

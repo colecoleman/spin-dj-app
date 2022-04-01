@@ -1,6 +1,9 @@
 <template>
-  <div class="single-event-item" v-if="event" :class="loading ? loading : ''">
-    <div class="event-location-identifier" v-if="primaryLocation">
+  <div class="single-event-item" v-if="event">
+    <div
+      class="event-location-identifier"
+      v-if="typeof primaryLocation !== 'string'"
+    >
       <h4 class="venue-name">{{ primaryLocation.name }}</h4>
       <div class="event-address">
         <p v-if="primaryLocation.address">
@@ -43,31 +46,16 @@ import {
 } from "../../helpers.js";
 
 export default {
-  data() {
-    return {
-      loading: true,
-      primaryLocation: undefined,
-    };
+  computed: {
+    primaryLocation() {
+      return this.event.locations[0];
+    },
   },
   methods: {
     formatDate,
     formatTime,
     formatPrice,
     balanceOutstanding,
-  },
-  mounted() {
-    this.loading = true;
-    if (this.event.locations.length > 0) {
-      this.$store
-        .dispatch("getLocation", this.event.locations[0])
-        .then((res) => {
-          if (res) {
-            this.primaryLocation = res;
-          }
-        });
-    }
-
-    this.loading = false;
   },
   props: ["event", "first"],
 };

@@ -77,7 +77,10 @@ export default {
           date: note.date,
           note: note.note,
         },
-        clientId: this.contact.userId,
+        contactKey: {
+          tenantId: this.contact.tenantId,
+          userId: this.contact.userId,
+        },
       };
       this.$store.dispatch("editContact", payload);
     },

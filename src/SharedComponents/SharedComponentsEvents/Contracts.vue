@@ -220,7 +220,7 @@ export default {
       });
       this.contracts[index] = item;
       let payload = {
-        eventId: this.event.userId,
+        eventKey: { userId: this.event.userId, tenantId: this.event.tenantId },
         variable: "contracts",
         value: this.contracts,
       };
@@ -235,7 +235,7 @@ export default {
       });
       this.contracts[index] = item;
       let payload = {
-        eventId: this.event.userId,
+        eventKey: { userId: this.event.userId, tenantId: this.event.tenantId },
         variable: "contracts",
         value: this.contracts,
       };
@@ -253,7 +253,7 @@ export default {
         contracts.push(item);
       }
       let payload = {
-        eventId: this.event.userId,
+        eventKey: { userId: this.event.userId, tenantId: this.event.tenantId },
         variable: "contracts",
         value: contracts,
       };

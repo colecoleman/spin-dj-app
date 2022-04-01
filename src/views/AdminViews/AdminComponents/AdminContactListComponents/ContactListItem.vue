@@ -131,12 +131,19 @@ export default {
       if (this.contact.associatedEvents) {
         this.contact.associatedEvents.forEach((event) => {
           let eventObject;
-          this.$store.dispatch("adminGetEvent", event).then(
+          let key = {
+            userId: event.userId,
+            tenantId: this.$store.state.user.tenantId,
+          };
+          this.$store.dispatch("adminGetEvent", key).then(
             (res) => {
               eventObject = res;
               let index = eventObject.contacts.indexOf(this.contact.userId);
               let payload = {
-                eventId: eventObject.userId,
+                eventKey: {
+                  userId: eventObject.userId,
+                  tenantId: eventObject.tenantId,
+                },
                 variable: "contacts",
                 value: index,
                 operation: "removeFromList",
@@ -149,11 +156,11 @@ export default {
           );
         });
       }
-      let deletePayload = {
-        category: this.category,
-        id: this.contact.userId,
-      };
-      this.$store.dispatch("deleteUser", deletePayload);
+      // let deletePayload = {
+      //   category: this.category,
+      //   id: this.contact.userId,
+      // };
+      // this.$store.dispatch("deleteUser", deletePayload);
       this.popupOpen = null;
     },
   },

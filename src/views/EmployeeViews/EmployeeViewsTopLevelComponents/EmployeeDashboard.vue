@@ -63,8 +63,8 @@ export default {
     }
     await this.$store.dispatch("getEvents").then(() => {
       this.$store.commit("sortEvents");
-      this.$store.dispatch("getAdminEventsContacts");
-      this.$store.dispatch("getAdminEventsLocations");
+      this.$store.dispatch("getEventsContacts");
+      this.$store.dispatch("getEventsLocations");
     });
     this.loading = false;
   },

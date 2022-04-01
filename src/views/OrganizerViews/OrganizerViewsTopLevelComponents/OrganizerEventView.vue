@@ -195,7 +195,12 @@ export default {
     if (!this.$store.state.user) {
       await this.$store.dispatch("setUser");
     }
-    this.event = await this.$store.dispatch("getEvent", id);
+    console.log(this.$route.params);
+    let key = {
+      userId: id,
+      tenantId: this.$route.params.tenantId,
+    };
+    this.event = await this.$store.dispatch("getEvent", key);
     await this.$store.dispatch("getEventContacts", this.event);
     await this.$store.dispatch("getEventLocations", this.event);
   },

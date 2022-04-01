@@ -1,5 +1,5 @@
 <template>
-  <div id="single-event-item" @click="routeToEvent()" v-if="loaded">
+  <div id="single-event-item" @click="routeToEvent()">
     <div class="event-location-identifier" v-if="location">
       <h4 class="venue-name">{{ location.name }}</h4>
       <div class="event-address">
@@ -45,11 +45,10 @@ import {
 } from "../../../../../helpers.js";
 
 export default {
-  data() {
-    return {
-      location: undefined,
-      loaded: false,
-    };
+  computed: {
+    location() {
+      return this.event.locations[0];
+    },
   },
   methods: {
     formatDate,
@@ -61,12 +60,6 @@ export default {
     },
   },
   props: ["event"],
-  created() {
-    this.$store.dispatch("getLocation", this.event.locations[0]).then((res) => {
-      this.location = res;
-      this.loaded = true;
-    });
-  },
 };
 </script>
 

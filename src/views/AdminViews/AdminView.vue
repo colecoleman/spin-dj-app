@@ -24,8 +24,8 @@ export default {
       await this.$store.dispatch("setUser");
     }
     await this.$store.dispatch("setBusinessSettings");
+    await this.$store.dispatch("getAdminUsers");
     this.loaded = true;
-    // await this.$store.dispatch("getAdminUsers");
     // await this.$store.dispatch("getLocations");
   },
 };

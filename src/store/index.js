@@ -39,20 +39,20 @@ const store = createStore({
           );
       });
     },
-    async getUser(context, user) {
-      let userSearch = context.commit("searchForUser", user);
+    async getUser(context, userId) {
+      let userSearch = context.commit("searchForUser", userId);
       if (userSearch) {
         return userSearch;
       } else {
         return new Promise((resolve, reject) => {
           axios
             .get(
-              `https://api.spindj.io/admin/${context.state.user.tenantId}/users/${user}`
+              `https://api.spindj.io/admin/${context.state.user.tenantId}/users/${userId}/getUser`
             )
             .then(
               (result) => {
-                resolve(result.data.Item);
-                context.state.contacts.push(result.data.Item);
+                resolve(result.data);
+                context.state.contacts.push(result.data);
               },
               (error) => {
                 context.commit("addStatus", {
@@ -65,15 +65,15 @@ const store = createStore({
         });
       }
     },
-    async getContactListItem(context, payload) {
-      let userSearch = context.commit("searchForUser", payload);
+    async getContactListItem(context, key) {
+      let userSearch = context.commit("searchForUser", key);
       if (userSearch) {
         return userSearch;
       } else {
         return new Promise((resolve, reject) => {
           axios
             .get(
-              `https://api.spindj.io/admin/${context.state.user.tenantId}/users/${payload}/listItem`
+              `https://api.spindj.io/admin/${key.tenantId}/users/${key.userId}/listItem`
             )
             .then(
               (result) => {
@@ -93,27 +93,6 @@ const store = createStore({
             );
         });
       }
-    },
-    async nonAdminGetUser(context, payload) {
-      return new Promise((resolve, reject) => {
-        axios
-          .get(
-            `https://api.spindj.io/${context.state.user.role}/${context.state.user.tenantId}/${context.state.user.userId}/users/${payload}`
-          )
-          .then(
-            (result) => {
-              resolve(result.data.Item);
-              // context.commit('setUser', result.data.Item);
-            },
-            (error) => {
-              context.commit("addStatus", {
-                type: "error",
-                note: error,
-              });
-              reject(error);
-            }
-          );
-      });
     },
     async setUser(context) {
       let user = await Auth.currentAuthenticatedUser();
@@ -142,7 +121,7 @@ const store = createStore({
           .then(
             (result) => {
               resolve(result);
-              context.commit("setEvents", result);
+              context.commit("setEvents", result.data.Items);
             },
             (error) => {
               context.commit("addStatus", {
@@ -154,24 +133,36 @@ const store = createStore({
           );
       });
     },
-    async getAdminEventsContacts(context) {
+    async getEventsContacts(context) {
       for (let x = 0; x < context.state.events.length; x++) {
         let event = context.state.events[x];
         context.dispatch("getEventContacts", event);
       }
     },
+    async getEventsLocations(context) {
+      for (let x = 0; x < context.state.events.length; x++) {
+        let event = context.state.events[x];
+        context.dispatch("getEventLocations", event);
+      }
+    },
     async getEventContacts(context, event) {
       let contacts = event.contacts.map((x, index) => {
-        let id = x.key ? x.key.userId : x.id;
-        return context.dispatch("getContactListItem", id).then((res) => {
+        let userId = x.key ? x.key.userId : x.id;
+        let tenantId = x.key ? x.key.tenantId : event.tenantId;
+        let key = { userId, tenantId };
+        return context.dispatch("getContactListItem", key).then((res) => {
           if (!res) {
-            let contactRemoveParameters = {
-              eventId: event.userId,
-              operation: "removeFromList",
-              variable: "contacts",
-              value: index,
-            };
-            context.dispatch("editEvent", contactRemoveParameters);
+            console.log(index);
+            // let contactRemoveParameters = {
+            //   eventKey: {
+            //     userId: this.event.userId,
+            //     tenantId: this.event.tenantId,
+            //   },
+            //   operation: "removeFromList",
+            //   variable: "contacts",
+            //   value: index,
+            // };
+            // context.dispatch("editEvent", contactRemoveParameters);
           } else {
             return res;
           }
@@ -179,58 +170,77 @@ const store = createStore({
       });
       event.contacts = await Promise.all(contacts);
     },
-    async getAdminEventsLocations(context) {
-      for (let x = 0; x < context.state.events.length; x++) {
-        let event = context.state.events[x];
-        context.dispatch("getEventLocations", event);
-      }
-    },
     async getEventLocations(context, event) {
       let locations = event.locations.map((x) => {
-        let id = x.key ? x.key.userId : x;
-        return context.dispatch("getLocation", id);
+        let userId = x.key ? x.key.userId : x;
+        let tenantId = x.key ? x.key.tenantId : event.tenantId;
+        let key = {
+          userId,
+          tenantId,
+        };
+        return context.dispatch("getLocation", key);
       });
       event.locations = await Promise.all(locations);
     },
     async getContactEvents(context, contact) {
-      contact.associatedEvents = await Promise.all(
-        contact.associatedEvents.map(async (ae, index) => {
-          let id = ae.key ? ae.key.userId : ae;
-          return await context.dispatch("adminGetEvent", id).then((res) => {
-            console.log(res);
-            if (!res) {
-              let parameters = {
-                clientId: contact.userId,
-                operation: "removeFromList",
-                variable: "associatedEvents",
-                value: index,
-              };
-              context.dispatch("editContact", parameters).then(() => {
-                this.events.splice(index, 1);
-              });
-            } else {
+      let events = contact.associatedEvents.map((x) => {
+        if (x.key) {
+          return x;
+        } else {
+          return {
+            key: {
+              userId: x,
+              tenantId: contact.tenantId,
+            },
+          };
+        }
+      });
+      events = events.filter((x) => {
+        return x.key.tenantId === context.state.user.tenantId;
+      });
+      return (contact.associatedEvents = await Promise.all(
+        events.map(async (ae, index) => {
+          return await context.dispatch("adminGetEvent", ae.key).then((res) => {
+            console.log(index);
+            if (res) {
               return res;
+            } else {
+              // let parameters = {
+              //   clientId: contact.userId,
+              //   operation: "removeFromList",
+              //   variable: "associatedEvents",
+              //   value: index,
+              // };
+              // context.dispatch("editContact", parameters).then(() => {
+              //   this.events.splice(index, 1);
+              // });
+              return;
             }
           });
         })
-      );
-      return contact.associatedEvents;
+      ));
     },
     async getLocationEvents(context, location) {
       location.associatedEvents = await Promise.all(
         location.associatedEvents.map(async (ae, index) => {
-          let id = ae.key ? ae.key.userId : ae;
-          return await context.dispatch("adminGetEvent", id).then((res) => {
+          let userId = ae.key ? ae.key.userId : ae;
+          let tenantId = ae.key ? ae.key.tenantId : location.tenantId;
+          let key = {
+            userId,
+            tenantId,
+          };
+          return await context.dispatch("adminGetEvent", key).then((res) => {
             if (!res) {
-              let parameters = {
-                locationId: location.userId,
-                operation: "removeFromList",
-                variable: "associatedEvents",
-                value: index,
-              };
-              context.dispatch("editLocation", parameters).then(() => {
-                location.associatedEvents.splice(index, 1);
-              });
+              console.log(index);
+              // let parameters = {
+              //   locationId: location.userId,
+              //   operation: "removeFromList",
+              //   variable: "associatedEvents",
+              //   value: index,
+              // };
+              // context.dispatch("editLocation", parameters).then(() => {
+              //   location.associatedEvents.splice(index, 1);
+              // });
             } else {
               return res;
             }
@@ -239,16 +249,20 @@ const store = createStore({
       );
       return location.associatedEvents;
     },
-
     async removeEventFromContact(context, payload) {
-      console.log(payload);
-      let contact = await context.dispatch("getUser", payload.contact.userId);
+      let contact = await context.dispatch(
+        "getUser",
+        payload.contactKey.userId
+      );
       let eventIndex = contact.associatedEvents.findIndex((x) => {
         let id = x.key ? x.key.userId : x;
-        return id === payload.event;
+        return id === payload.value.key.userId;
       });
       let contactRemoveParameters = {
-        clientId: contact.userId,
+        contactKey: {
+          tenantId: contact.tenantId,
+          userId: contact.userId,
+        },
         operation: "removeFromList",
         variable: "associatedEvents",
         value: eventIndex,
@@ -256,7 +270,6 @@ const store = createStore({
       await context.dispatch("editContact", contactRemoveParameters);
       return eventIndex;
     },
-
     async setBusinessSettings(context) {
       await axios
         .get(
@@ -510,9 +523,11 @@ const store = createStore({
     // contact-based-actions
     async getAdminUsers(context) {
       let contacts = await axios
-        .get(`https://api.spindj.io/admin/${context.state.user.tenantId}/users`)
+        .get(
+          `https://api.spindj.io/admin/${context.state.user.tenantId}/users/getUsers`
+        )
         .then((res) => {
-          return res.data.Items;
+          return res.data;
         });
       let locations = await context.dispatch("getLocations");
       context.commit("setContacts", [...contacts, ...locations]);
@@ -521,7 +536,7 @@ const store = createStore({
       return new Promise((resolve, reject) => {
         axios
           .put(
-            `https://api.spindj.io/admin/${context.state.user.tenantId}/users`,
+            `https://api.spindj.io/admin/${context.state.user.tenantId}/users/putUser`,
             contact
           )
           .then(
@@ -540,7 +555,7 @@ const store = createStore({
       return new Promise((resolve, reject) => {
         axios
           .put(
-            `https://api.spindj.io/admin/${context.state.user.tenantId}/users/${payload.clientId}`,
+            `https://api.spindj.io/admin/${payload.contactKey.tenantId}/users/${payload.contactKey.userId}`,
             payload
           )
           .then(
@@ -601,16 +616,15 @@ const store = createStore({
           );
       });
     },
-    async getLocation(context, location) {
-      let id = location.key ? location.key.userId : location;
-      let userSearch = context.commit("searchForUser", id);
+    async getLocation(context, key) {
+      let userSearch = context.commit("searchForUser", key);
       if (userSearch) {
         return userSearch;
       } else {
         return new Promise((resolve, reject) => {
           axios
             .get(
-              `https://api.spindj.io/admin/${context.state.user.tenantId}/locations/${id}`
+              `https://api.spindj.io/admin/${key.tenantId}/locations/${key.userId}`
             )
             .then(
               (result) => {
@@ -823,16 +837,16 @@ const store = createStore({
           );
       });
     },
-    async getEvent(context, payload) {
+    async getEvent(context, key) {
       let role = context.state.user.role;
-      let eventSearch = context.commit("searchForEvent", payload);
+      let eventSearch = context.commit("searchForEvent", key);
       if (eventSearch) {
         return eventSearch;
       } else {
         return new Promise((resolve, reject) => {
           axios
             .get(
-              `https://api.spindj.io/${role}/${context.state.user.tenantId}/${context.state.user.userId}/events/${payload}`
+              `https://api.spindj.io/${role}/${key.tenantId}/${context.state.user.userId}/events/${key.userId}`
             )
             .then(
               (result) => {
@@ -851,15 +865,15 @@ const store = createStore({
         });
       }
     },
-    async adminGetEvent(context, payload) {
-      let eventSearch = context.commit("searchForEvent", payload);
+    async adminGetEvent(context, key) {
+      let eventSearch = context.commit("searchForEvent", key);
       if (eventSearch) {
         return eventSearch;
       } else {
         return new Promise((resolve, reject) => {
           axios
             .get(
-              `https://api.spindj.io/admin/${context.state.user.tenantId}/events/${payload}`
+              `https://api.spindj.io/admin/${key.tenantId}/events/${key.userId}`
             )
             .then(
               (result) => {
@@ -882,11 +896,12 @@ const store = createStore({
       return new Promise((resolve, reject) => {
         axios
           .put(
-            `https://api.spindj.io/admin/${context.state.user.tenantId}/events/${payload.eventId}`,
+            `https://api.spindj.io/admin/${payload.eventKey.tenantId}/events/${payload.eventKey.userId}`,
             payload
           )
           .then(
             (result) => {
+              console.log(result);
               let mutationPayload = {
                 variable: payload.variable,
                 eventId: result.data.Attributes.userId,
@@ -927,12 +942,13 @@ const store = createStore({
       return new Promise((resolve, reject) => {
         axios
           .get(
-            `https://api.spindj.io/${context.state.user.role}/${context.state.user.tenantId}/${context.state.user.userId}/events`
+            `https://api.spindj.io/${context.state.user.role}/${context.state.user.tenantId}/${context.state.user.userId}/events/getEvents`
           )
           .then(
             (result) => {
-              resolve(result);
-              context.commit("setEvents", result);
+              console.log(result);
+              resolve(result.data);
+              context.commit("setEvents", result.data);
             },
             (error) => {
               context.commit("addStatus", {
@@ -944,37 +960,7 @@ const store = createStore({
           );
       });
     },
-    async clientSignContract(context, callerPayload) {
-      let payload = {
-        value: callerPayload.contracts,
-        variable: "contracts",
-      };
-      return new Promise((resolve, reject) => {
-        axios
-          .put(
-            `https://api.spindj.io/${context.state.user.role}/${context.state.user.tenantId}/${context.state.user.userId}/events/${callerPayload.eventId}`,
-            payload
-          )
-          .then(
-            (result) => {
-              resolve(result);
-              let mutationPayload = {
-                variable: payload.variable,
-                eventId: result.data.Attributes.userId,
-                data: result.data.Attributes,
-              };
-              context.commit("editEvent", mutationPayload);
-            },
-            (error) => {
-              context.commit("addStatus", {
-                type: "error",
-                note: error,
-              });
-              reject(error);
-            }
-          );
-      });
-    },
+
     async getEventAutomations(context, payload) {
       return new Promise((resolve, reject) => {
         axios
@@ -1362,7 +1348,7 @@ const store = createStore({
     },
     editContact(state, payload) {
       let subject = state.contacts.find((x) => {
-        return x.userId == payload.clientId;
+        return x.userId == payload.contactKey.userId;
       });
       if (subject) {
         subject[payload.variable] = payload.value;
@@ -1383,10 +1369,11 @@ const store = createStore({
       if (index > -1) {
         let event = state.events[index];
         event[payload.variable] = payload.data[payload.variable];
-      }
+      };
+      console.log(state.events[index])
     },
     setEvents(state, payload) {
-      state.events = [...payload.data.Items];
+      state.events = [...payload];
     },
     sortEvents(state, logic) {
       if (!logic) {

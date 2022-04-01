@@ -34,7 +34,6 @@
       :key="index"
     >
       <to-do-item-person-item :contact="contact" />
-   
     </div>
   </div>
 </template>
@@ -69,7 +68,10 @@ export default {
   async created() {
     this.contacts = await Promise.all(
       this.toDo.associatedContacts.map(async (x) => {
-        let contact = await this.$store.dispatch("getContactListItem", x);
+        let userId = x.key ? x.key.userId : x;
+        let tenantId = x.key ? x.key.tenantId : this.toDo.tenantId;
+        let key = { userId, tenantId };
+        let contact = await this.$store.dispatch("getContactListItem", key);
         if (contact) {
           return contact;
         } else {

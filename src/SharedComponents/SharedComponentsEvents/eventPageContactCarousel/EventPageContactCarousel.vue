@@ -144,13 +144,13 @@ export default {
         role: contact.role,
       };
       let eventParameters = {
-        eventId: this.event.userId,
+        eventKey: { userId: this.event.userId, tenantId: this.event.tenantId },
         operation: "addToList",
         variable: "contacts",
         value: contactKey,
       };
       let contactParameters = {
-        clientId: contact.userId,
+        contactKey: contactKey.key,
         variable: "associatedEvents",
         value: eventKey,
         operation: "addToList",
@@ -160,16 +160,27 @@ export default {
       this.toggleAddContactOpen();
     },
     async removeContact() {
+      let contact = this.contactToBeRemoved;
+      let contactKey = {
+        key: { userId: contact.userId, tenantId: contact.tenantId },
+        role: contact.role,
+      };
+      let eventKey = {
+        key: { userId: this.event.userId, tenantId: this.event.tenantId },
+        role: contact.role,
+      };
       let eventParameters = {
-        eventId: this.event.userId,
+        eventKey: { userId: this.event.userId, tenantId: this.event.tenantId },
         operation: "removeFromList",
         variable: "contacts",
         value: this.contactRemoveIndex,
       };
-      await this.$store.dispatch("removeEventFromContact", {
-        event: this.event.userId,
-        contact: this.contactToBeRemoved,
-      });
+      let contactParameters = {
+        contactKey: contactKey.key,
+        variable: "associatedEvents",
+        value: eventKey,
+      };
+      await this.$store.dispatch("removeEventFromContact", contactParameters);
       await this.$store.dispatch("editEvent", eventParameters);
     },
   },

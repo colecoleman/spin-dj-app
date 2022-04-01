@@ -100,7 +100,10 @@ export default {
     },
     saveField() {
       let payload = {
-        clientId: this.contact.userId,
+        contactKey: {
+          tenantId: this.contact.tenantId,
+          userId: this.contact.userId,
+        },
         variable: JSON.parse(this.fieldToEdit).value,
         value: this.fields[JSON.parse(this.fieldToEdit).value],
       };

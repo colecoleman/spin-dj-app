@@ -260,7 +260,7 @@ export default {
       let payload = {
         variable: "forms",
         value: this.forms,
-        eventId: this.eventId,
+        eventKey: { userId: this.event.userId, tenantId: this.event.tenantId },
       };
       this.$store.dispatch("editEvent", payload);
     },

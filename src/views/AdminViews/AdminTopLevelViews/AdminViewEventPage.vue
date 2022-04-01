@@ -265,7 +265,7 @@ export default {
       let payload = {
         variable: "invoice",
         value: this.event.invoice,
-        eventId: this.event.userId,
+        eventKey: { userId: this.event.userId, tenantId: this.event.tenantId },
       };
       this.$store.dispatch("editEvent", payload);
       this.togglePopup();
@@ -274,10 +274,18 @@ export default {
       let contacts = [...this.event.contacts];
       contacts.forEach((contact) => {
         if (contact) {
-          this.$store.dispatch("removeEventFromContact", {
-            event: this.event.userId,
-            contact: contact,
-          });
+          let contactKey = {
+            key: { userId: contact.userId, tenantId: contact.tenantId },
+          };
+          let eventKey = {
+            key: { userId: this.event.userId, tenantId: this.event.tenantId },
+          };
+          let contactParameters = {
+            contactKey: contactKey.key,
+            variable: "associatedEvents",
+            value: eventKey,
+          };
+          this.$store.dispatch("removeEventFromContact", contactParameters);
         }
       });
       await this.$store.dispatch("deleteEvent", this.event.userId);
@@ -289,7 +297,7 @@ export default {
       let payload = {
         variable: "forms",
         value: this.event.forms,
-        eventId: this.event.userId,
+        eventKey: { userId: this.event.userId, tenantId: this.event.tenantId },
       };
       this.$store.dispatch("editEvent", payload);
     },
@@ -298,7 +306,7 @@ export default {
       let payload = {
         variable: "forms",
         value: this.event.forms,
-        eventId: this.event.userId,
+        eventKey: { userId: this.event.userId, tenantId: this.event.tenantId },
       };
       this.$store.dispatch("editEvent", payload);
     },
@@ -307,7 +315,7 @@ export default {
       let payload = {
         variable: "invoice",
         value: this.event.invoice,
-        eventId: this.event.userId,
+        eventKey: { userId: this.event.userId, tenantId: this.event.tenantId },
       };
       this.$store.dispatch("editEvent", payload);
     },
@@ -316,7 +324,7 @@ export default {
       let payload = {
         variable: "invoice",
         value: this.event.invoice,
-        eventId: this.event.userId,
+        eventKey: { userId: this.event.userId, tenantId: this.event.tenantId },
       };
       this.$store.dispatch("editEvent", payload);
     },
@@ -324,7 +332,7 @@ export default {
       let payload = {
         variable: "invoice",
         value: this.event.invoice,
-        eventId: this.event.userId,
+        eventKey: { userId: this.event.userId, tenantId: this.event.tenantId },
       };
       this.$store.dispatch("editEvent", payload);
     },
@@ -336,7 +344,7 @@ export default {
       let payload = {
         variable: "invoice",
         value: this.event.invoice,
-        eventId: this.event.userId,
+        eventKey: { userId: this.event.userId, tenantId: this.event.tenantId },
       };
       this.$store.dispatch("editEvent", payload);
       this.togglePopup();
@@ -344,11 +352,11 @@ export default {
   },
 
   async created() {
-    this.event = await this.$store.dispatch(
-      "adminGetEvent",
-      this.$route.params.id
-    );
-    console.log(JSON.stringify(this.event));
+    let key = {
+      tenantId: this.$store.state.user.tenantId,
+      userId: this.$route.params.id,
+    };
+    this.event = await this.$store.dispatch("adminGetEvent", key);
     await this.$store.dispatch("getEventContacts", this.event);
     await this.$store.dispatch("getEventLocations", this.event);
   },

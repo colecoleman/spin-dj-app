@@ -85,7 +85,7 @@ export default {
     },
     async addUserToEvent() {
       let contactPayload = {
-        clientId: this.contact.userId,
+        contactKey: this.contact.userId,
         operation: "addToList",
         variable: "associatedEvents",
         value: {
@@ -94,7 +94,7 @@ export default {
         },
       };
       let eventPayload = {
-        eventId: this.addEventKey.userId,
+        eventKey: { userId: this.event.userId, tenantId: this.event.tenantId },
         operation: "addToList",
         variable: "contacts",
         value: {

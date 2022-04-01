@@ -30,7 +30,7 @@
             :key="event.userId"
             :event="event"
             :loaded="loaded"
-            @clicked="navigateToEventPage(event.userId)"
+            @clicked="navigateToEventPage(event)"
           />
 
           <upcoming-events-list-item
@@ -38,7 +38,7 @@
             :key="event.userId"
             :event="event"
             :loaded="loaded"
-            @clicked="navigateToEventPage(event.userId)"
+            @clicked="navigateToEventPage(event)"
             class="past-event"
           />
         </div>
@@ -50,13 +50,13 @@
             v-for="event in sortedEvents"
             :key="event.userId"
             :event="event"
-            @click="navigateToEventPage(event.userId)"
+            @click="navigateToEventPage(event)"
           />
           <client-view-upcoming-event-list-item
             v-for="event in pastEventsCopy"
             :key="event.userId"
             :event="event"
-            @click="navigateToEventPage(event.userId)"
+            @click="navigateToEventPage(event)"
             class="past-event"
           />
         </div>
@@ -158,12 +158,14 @@ export default {
       this.selectedSortLogic = action;
       this.toggleSortMenuOpened();
     },
-    navigateToEventPage(id) {
+    navigateToEventPage(event) {
       let user = this.$store.state.user;
       if (user.tenantId === user.userId) {
-        this.$router.push(`/admin/events/` + id);
+        this.$router.push(`/admin/events/` + event.userId);
       } else {
-        this.$router.push(`/${this.$store.state.user.role}/events/` + id);
+        this.$router.push({
+          path: `/${this.$store.state.user.role}/events/${event.tenantId}/${event.userId}`,
+        });
       }
     },
   },

@@ -119,7 +119,7 @@ export default {
         },
       };
       let eventPayload = {
-        eventId: this.addEventKey.userId,
+        eventKey: { userId: this.event.userId, tenantId: this.event.tenantId },
         operation: "addToList",
         variable: "locations",
         value: {
@@ -145,7 +145,9 @@ export default {
       });
     },
   },
-  created() {},
+  created() {
+    console.log(this.events);
+  },
   props: ["location", "events", "eventAssignmentOpen"],
   components: {
     LocationUpcomingEventsListItem,
