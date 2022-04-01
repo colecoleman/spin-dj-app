@@ -2,10 +2,10 @@
   <!-- <amplify-authenticator> -->
   <div id="application-wrapper" :style="cssVars" v-if="loaded">
     <router-view name="main"></router-view>
+    <transition name="fade1">
+      <status-indicator />
+    </transition>
   </div>
-  <transition name="fade1">
-    <status-indicator />
-  </transition>
 </template>
 
 <script>

@@ -1,5 +1,5 @@
 <template>
-  <div class="successes-wrapper" v-if="statuses.length > 0">
+  <div class="successes-wrapper">
     <div
       :class="`status-item ${status.type}`"
       v-for="(status, index) in statuses"
@@ -58,13 +58,16 @@ export default {
   color: black;
 }
 .success {
-  background-color: rgb(64, 230, 72);
+  border: 2px solid rgb(64, 230, 72);
+  border-left: 15px solid rgb(64, 230, 72);
 }
 
 .error {
-  background-color: rgb(255, 80, 80);
+  border: 2px solid rgb(255, 80, 80);
+  border-left: 15px solid rgb(255, 80, 80);
 }
 .status-item {
+  background-color: var(--foregroundColor);
   border-radius: 10px;
   padding: 0 10px;
   margin-top: 3px;
