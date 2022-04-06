@@ -1,12 +1,12 @@
 <template>
   <div class="single-event-item" v-if="event">
-    <div
-      class="event-location-identifier"
-      v-if="typeof primaryLocation !== 'string'"
-    >
-      <h4 class="venue-name">{{ primaryLocation.name }}</h4>
-      <div class="event-address">
-        <p v-if="primaryLocation.address">
+    <div class="event-location-identifier">
+      <h4 v-if="primaryLocation.name" class="venue-name">
+        {{ primaryLocation.name }}
+      </h4>
+      <div v-if="!primaryLocation.name" class="skeleton"></div>
+      <div class="event-address" v-if="primaryLocation.address">
+        <p>
           {{ primaryLocation.address.streetAddress1 }}
         </p>
         <p v-if="!primaryLocation.address">Unknown Location</p>

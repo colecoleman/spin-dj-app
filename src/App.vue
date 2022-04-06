@@ -23,7 +23,7 @@ export default {
   },
   computed: {
     branding() {
-      if (this.$store.state.businessSettings) {
+      if (this.$store.state.businessSettings.identity) {
         return this.$store.state.businessSettings.identity.branding;
       } else {
         return {
@@ -55,13 +55,11 @@ export default {
 
   async created() {
     await this.$store.dispatch("setUser");
-    console.log(this.$store.state.user);
     // await this.$store.dispatch("setBusinessSettings");
-    console.log(this.$store.state);
     if (this.$store.state.businessSettings.identity.businessName) {
       document.title = this.$store.state.businessSettings.identity.businessName;
     } else {
-      document.title = "Spin";
+      document.title = "SPIN";
     }
     this.loaded = true;
   },

@@ -7,6 +7,7 @@ const store = createStore({
   state() {
     return {
       user: undefined,
+      tenants: [],
       statuses: [],
       notifications: [],
       toDos: [],
@@ -18,25 +19,21 @@ const store = createStore({
     };
   },
   actions: {
-    async getPublicSettings(context) {
-      return new Promise((resolve, reject) => {
-        axios
-          .get(
-            `https://api.spindj.io/public/${context.state.user.tenantId}/settings`
-          )
-          .then(
-            (result) => {
-              resolve(result.data);
-              context.commit("setBusinessSettings", result.data);
-            },
-            (error) => {
-              context.commit("addStatus", {
-                type: "error",
-                note: error,
-              });
-              reject(error);
-            }
-          );
+    async getPublicSettings(context, tenantId) {
+      let tenant = tenantId ? tenantId : context.state.user.tenantId;
+      return await new Promise((resolve, reject) => {
+        axios.get(`https://api.spindj.io/public/${tenant}/settings`).then(
+          (result) => {
+            resolve(result.data);
+          },
+          (error) => {
+            context.commit("addStatus", {
+              type: "error",
+              note: error,
+            });
+            reject(error);
+          }
+        );
       });
     },
     async getUser(context, userId) {
@@ -109,6 +106,46 @@ const store = createStore({
           console.log(e);
         });
     },
+    async getTenants(context) {
+      let user = context.state.user;
+      if (!user.tenants) {
+        user.tenants = [];
+      }
+      if (
+        !user.tenants.find((x) => {
+          return x === user.tenantId;
+        }) &&
+        !user.tenants.find((x) => {
+          return x.tenantId === user.tenantId;
+        })
+      ) {
+        user.tenants.push(user.tenantId);
+      }
+      context.state.user.tenants = await Promise.all(
+        user.tenants.map(async (x) => {
+          let settings;
+          if (typeof x === "string") {
+            settings = await context.dispatch("getPublicSettings", x);
+          } else {
+            settings = await context.dispatch("getPublicSettings", x.tenantId);
+          }
+          return {
+            ...settings,
+            businessName: settings.identity.businessName,
+            tenantId: typeof x === "string" ? x : x.tenantId,
+          };
+        })
+      );
+      await context.dispatch("newTenantChosen", user.tenants[0]);
+    },
+    async newTenantChosen(context, tenant) {
+      context.commit("setBusinessSettings", tenant);
+      context.dispatch("getEvents").then(() => {
+        context.commit("filterEventsByTenant", tenant.tenantId);
+        context.dispatch("getEventsContacts");
+        context.dispatch("getEventsLocations");
+      });
+    },
 
     // admin actions
 
@@ -169,6 +206,17 @@ const store = createStore({
         });
       });
       event.contacts = await Promise.all(contacts);
+    },
+    getEventsTenants(context) {
+      for (let x = 0; x < context.state.events.length; x++) {
+        let event = context.state.events[x];
+        context.dispatch("getEventTenant", event);
+      }
+    },
+    async getEventTenant(context, event) {
+      event.tenant = context.user.tenants.find((x) => {
+        event.tenantId === x.tenantId;
+      });
     },
     async getEventLocations(context, event) {
       let locations = event.locations.map((x) => {
@@ -946,8 +994,8 @@ const store = createStore({
           )
           .then(
             (result) => {
-              console.log(result);
               resolve(result.data);
+              console.log(result);
               context.commit("setEvents", result.data);
             },
             (error) => {
@@ -1112,6 +1160,17 @@ const store = createStore({
     },
     setBusinessSettings(state, settings) {
       state.businessSettings = settings;
+    },
+    filterEventsByTenant(state, tenantId) {
+      if (tenantId !== "ALL") {
+        state.events = state.events.filter((x) => {
+          return x.tenantId === tenantId;
+        });
+      }
+    },
+    setNewBusinessSettingsByTenant(state, tenant) {
+      state.businessSettings = tenant;
+      document.title = state.businessSettings.identity.businessName;
     },
     setBusinessLogo(state, settings) {
       state.businessLogo = settings;
@@ -1369,8 +1428,8 @@ const store = createStore({
       if (index > -1) {
         let event = state.events[index];
         event[payload.variable] = payload.data[payload.variable];
-      };
-      console.log(state.events[index])
+      }
+      console.log(state.events[index]);
     },
     setEvents(state, payload) {
       state.events = [...payload];
