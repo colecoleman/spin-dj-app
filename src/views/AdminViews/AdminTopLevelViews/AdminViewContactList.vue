@@ -93,7 +93,6 @@ export default {
         "locations",
         "organizers",
         "vendors",
-        "uncategorized",
       ],
     };
   },
