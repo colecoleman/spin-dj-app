@@ -575,6 +575,7 @@ const store = createStore({
           `https://api.spindj.io/admin/${context.state.user.tenantId}/users/getUsers`
         )
         .then((res) => {
+          console.log(res.data);
           return res.data;
         });
       let locations = await context.dispatch("getLocations");
@@ -1442,8 +1443,8 @@ const store = createStore({
             ? -1
             : new Date(a.data.startTime).getTime() >
               new Date(b.data.startTime).getTime()
-              ? 1
-              : 0;
+            ? 1
+            : 0;
         });
       } else {
         state.events.sort(logic);
@@ -1477,6 +1478,17 @@ const store = createStore({
     },
     locations(state) {
       return state.contacts.filter((x) => x.role == "location");
+    },
+    uncategorized(state) {
+      return state.contacts.filter((x) => {
+        return (
+          x.role !== "client" &&
+          x.role !== "employee" &&
+          x.role !== "location" &&
+          x.role !== "organizer" &&
+          x.role !== "vendor"
+        );
+      });
     },
   },
   plugins: [

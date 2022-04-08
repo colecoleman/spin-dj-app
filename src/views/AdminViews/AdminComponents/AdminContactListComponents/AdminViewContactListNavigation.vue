@@ -16,7 +16,14 @@ export default {
   data() {
     return {
       activeLink: "clients-card",
-      contacts: ["clients", "employees", "locations", "organizers", "vendors"],
+      contacts: [
+        "clients",
+        "employees",
+        "locations",
+        "organizers",
+        "vendors",
+        "uncategorized",
+      ],
     };
   },
   methods: {
