@@ -21,7 +21,7 @@
       @cancel-send-email="togglePopup"
       @close-window="togglePopup"
     />
-    <div class="contact-wrapper" v-if="category !== 'location'">
+    <div class="contact-wrapper" v-if="category !== 'locations'">
       <div class="name-and-photo">
         <profile-picture
           contact="person"
@@ -51,7 +51,7 @@
         />
       </div>
     </div>
-    <div class="contact-wrapper" v-if="category === 'location'">
+    <div class="contact-wrapper" v-if="category === 'locations'">
       <div class="name-and-photo">
         <profile-picture contact="location" :customStyle="svgStyling" />
         <div class="name" @click="viewContact()">
