@@ -578,6 +578,21 @@ const store = createStore({
           console.log(res.data);
           return res.data;
         });
+      let uncategorizedRoleMap = contacts.map((x) => {
+        if (!x.role) {
+          return context.dispatch("editContact", {
+            contactKey: {
+              userId: x.userId,
+              tenantId: x.tenantId,
+            },
+            value: "client",
+            variable: "role",
+          });
+        } else {
+          return;
+        }
+      });
+      await Promise.all(uncategorizedRoleMap);
       let locations = await context.dispatch("getLocations");
       context.commit("setContacts", [...contacts, ...locations]);
     },
@@ -1443,8 +1458,8 @@ const store = createStore({
             ? -1
             : new Date(a.data.startTime).getTime() >
               new Date(b.data.startTime).getTime()
-            ? 1
-            : 0;
+              ? 1
+              : 0;
         });
       } else {
         state.events.sort(logic);
