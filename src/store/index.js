@@ -593,8 +593,10 @@ const store = createStore({
         }
       });
       await Promise.all(uncategorizedRoleMap);
-      let locations = await context.dispatch("getLocations");
-      context.commit("setContacts", [...contacts, ...locations]);
+      // let locations = await context.dispatch("getLocations");
+      context.commit("setContacts", [...contacts
+        // , ...locations
+      ]);
     },
     async addContact(context, contact) {
       return new Promise((resolve, reject) => {
