@@ -876,7 +876,7 @@ export default {
       return array;
     },
     adjustments() {
-      if (this.$store.state.businessSettings.discounts) {
+      if (this.$store.state.businessSettings.product.discounts) {
         let discounts = this.$store.state.businessSettings.product.discounts;
         for (let x = 0; x < discounts.length; x++) {
           if (discounts[x].type === "dollar") {
