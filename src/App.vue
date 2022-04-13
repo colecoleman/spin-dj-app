@@ -23,7 +23,18 @@ export default {
   },
   computed: {
     branding() {
-      if (this.$store.state.businessSettings.identity) {
+      if (!this.$store.state.businessSettings) {
+        return {
+          backgroundColor: "#F0F0F0",
+          foregroundColor: "#FFFFFF",
+          cardOutline: "#DDDDDD",
+          highlightColor: "#00F5FF",
+          textColor: "#000000",
+        };
+      } else if (
+        this.$store.state.businessSettings.identity &&
+        this.$store.state.user !== undefined
+      ) {
         return this.$store.state.businessSettings.identity.branding;
       } else {
         return {
