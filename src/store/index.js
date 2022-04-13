@@ -575,7 +575,6 @@ const store = createStore({
           `https://api.spindj.io/admin/${context.state.user.tenantId}/users/getUsers`
         )
         .then((res) => {
-          console.log(res.data);
           return res.data;
         });
       let uncategorizedRoleMap = contacts.map((x) => {
@@ -593,10 +592,8 @@ const store = createStore({
         }
       });
       await Promise.all(uncategorizedRoleMap);
-      // let locations = await context.dispatch("getLocations");
-      context.commit("setContacts", [...contacts
-        // , ...locations
-      ]);
+
+      context.commit("setContacts", [...contacts]);
     },
     async addContact(context, contact) {
       return new Promise((resolve, reject) => {
