@@ -1231,6 +1231,9 @@ const store = createStore({
       state.businessSettings.product.addOns[payload.index] = payload.addOn;
     },
     adminConfigAddDiscount(state, payload) {
+      if (!state.businessSettings.product.discounts) {
+        state.businessSettings.product.discounts = [];
+      }
       state.businessSettings.product.discounts.push(payload);
     },
     adminConfigDeleteDiscount(state, payload) {
