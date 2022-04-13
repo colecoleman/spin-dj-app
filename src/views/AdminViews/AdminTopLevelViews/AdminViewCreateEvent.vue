@@ -876,16 +876,20 @@ export default {
       return array;
     },
     adjustments() {
-      let discounts = this.$store.state.businessSettings.product.discounts;
-      for (let x = 0; x < discounts.length; x++) {
-        if (discounts[x].type === "dollar") {
-          discounts[x].display = this.formatPrice(discounts[x].amount);
+      if (this.$store.state.businessSettings.discounts) {
+        let discounts = this.$store.state.businessSettings.product.discounts;
+        for (let x = 0; x < discounts.length; x++) {
+          if (discounts[x].type === "dollar") {
+            discounts[x].display = this.formatPrice(discounts[x].amount);
+          }
+          if (discounts[x].type === "percentage") {
+            discounts[x].display = `${discounts[x].amount * 100}%`;
+          }
         }
-        if (discounts[x].type === "percentage") {
-          discounts[x].display = `${discounts[x].amount * 100}%`;
-        }
+        return discounts;
+      } else {
+        return [];
       }
-      return discounts;
     },
     searchLocations() {
       if (this.fields.location.name) {
