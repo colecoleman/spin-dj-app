@@ -172,7 +172,11 @@ export default {
         }
         let locations = this.$store.getters.locations;
         let term = this.searchLocationName.toLowerCase();
-        return locations.filter((x) => x.name.toLowerCase().includes(term));
+        return locations.filter((x) => {
+          if (x.name) {
+            return x.name.toLowerCase().includes(term);
+          }
+        });
       }
       return [];
     },
