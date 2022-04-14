@@ -52,6 +52,8 @@ export default {
             this.$store.state.user.given_name +
             " " +
             this.$store.state.user.family_name,
+          payerTenantId: this.event.tenantId,
+          payerUserId: this.$store.state.user.userId,
           chargeAmount: this.chargeAmount * 100,
           currencyType: this.payeeAccount.default_currency,
           payeeId: this.payeeAccount.id,
@@ -59,6 +61,7 @@ export default {
         this.$store
           .dispatch("stripeCreatePaymentIntent", payload)
           .then((res) => {
+            console.log(res);
             this.clientSecret = res.data.client_secret;
             this.$emit("submitPaymentIntent", res.data);
           });
