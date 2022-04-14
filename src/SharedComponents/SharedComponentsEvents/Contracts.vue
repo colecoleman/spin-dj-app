@@ -140,6 +140,9 @@ export default {
     eventEndTime() {
       return formatTime(this.event.data.endTime);
     },
+    eventTitle() {
+      return this.event.title;
+    },
     invoiceTotal() {
       return formatPrice(total(this.event.invoice, this.event.data));
     },
@@ -283,7 +286,8 @@ export default {
         .replace(/{event-start-time}/g, this.eventStartTime)
         .replace(/{event-end-time}/g, this.eventEndTime)
         .replace(/{event-length}/g, this.eventLength + " hours")
-        .replace(/{event-date}/g, this.eventDate);
+        .replace(/{event-date}/g, this.eventDate)
+        .replace(/{event-title}/g, this.eventTitle);
     },
     replaceInvoiceItems(string) {
       return string
