@@ -182,6 +182,7 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 import VueSvg from "../../../../../assets/VueSvg.vue";
 import InputWithBinarySelection from "../../../../../SharedComponents/SharedComponentsUI/ElementLibrary/InputWithBinarySelection.vue";
 import { formatPrice } from "../../../../../helpers.js";
@@ -217,15 +218,7 @@ export default {
     };
   },
   computed: {
-    services() {
-      return this.$store.state.businessSettings.product.services;
-    },
-    forms() {
-      return this.$store.state.businessSettings.product.forms.forms;
-    },
-    contracts() {
-      return this.$store.state.businessSettings.contracts;
-    },
+    ...mapGetters(["services", "forms", "contracts"]),
   },
   methods: {
     formatPrice,

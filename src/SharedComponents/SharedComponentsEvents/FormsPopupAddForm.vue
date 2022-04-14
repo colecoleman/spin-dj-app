@@ -83,16 +83,14 @@ export default {
   },
   computed: {
     forms() {
-      return this.$store.state.businessSettings.product.forms.forms.filter(
-        (x) => {
-          return !this.eventForms.find((ef) => {
-            return x.id === ef.id;
-          });
-        }
-      );
+      return this.$store.getters.forms.filter((x) => {
+        return !this.eventForms.find((ef) => {
+          return x.id === ef.id;
+        });
+      });
     },
     formTemplates() {
-      return this.$store.state.businessSEttings.product.forms.formTemplates;
+      return this.$store.getters.formTemplates;
     },
   },
   created() {},

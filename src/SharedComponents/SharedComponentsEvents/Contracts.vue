@@ -123,7 +123,7 @@ export default {
       return this.$store.state.businessSettings;
     },
     businessName() {
-      return this.businessSettings.identity.businessName;
+      return this.$store.getters.businessName;
     },
     primaryContact() {
       return this.$store.state.user;
@@ -151,24 +151,25 @@ export default {
     },
     invoiceFinalPaymentDue() {
       return formatDate(
-        finalPaymentDueDate(this.event.data, this.$store.state.businessSettings)
+        finalPaymentDueDate(
+          this.event.data,
+          this.$store.getters.finalPaymentSettings
+        )
       );
     },
     invoiceDepositAmount() {
       if (this.businessSettings.payments.deposit) {
-        if (this.businessSettings.payments.deposit.type === "percentage") {
+        if (this.$store.getters.depositType === "percentage") {
           return formatPrice(
-            this.businessSettings.payments.deposit.amount *
+            this.$store.getters.depositAmount *
               0.01 *
               total(this.event.invoice, this.event.data)
           );
         } else {
-          return formatPrice(
-            this.businessSettings.payments.deposit.amount * 100
-          );
+          return formatPrice(this.$store.getters.depositAmount * 100);
         }
       } else {
-        return formatPrice(this.businessSettings.payments.depositAmount * 100);
+        return formatPrice(this.$store.getters.depositAmount * 100);
       }
     },
     contactStrings() {

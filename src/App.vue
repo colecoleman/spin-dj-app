@@ -23,28 +23,7 @@ export default {
   },
   computed: {
     branding() {
-      if (!this.$store.state.businessSettings) {
-        return {
-          backgroundColor: "#F0F0F0",
-          foregroundColor: "#FFFFFF",
-          cardOutline: "#DDDDDD",
-          highlightColor: "#00F5FF",
-          textColor: "#000000",
-        };
-      } else if (
-        this.$store.state.businessSettings.identity &&
-        this.$store.state.user !== undefined
-      ) {
-        return this.$store.state.businessSettings.identity.branding;
-      } else {
-        return {
-          backgroundColor: "#F0F0F0",
-          foregroundColor: "#FFFFFF",
-          cardOutline: "#DDDDDD",
-          highlightColor: "#00F5FF",
-          textColor: "#000000",
-        };
-      }
+      return this.$store.getters.branding;
     },
     cssVars() {
       return {
@@ -67,10 +46,8 @@ export default {
   async created() {
     await this.$store.dispatch("setUser");
     // await this.$store.dispatch("setBusinessSettings");
-    if (this.$store.state.businessSettings.identity.businessName) {
-      document.title = this.$store.state.businessSettings.identity.businessName;
-    } else {
-      document.title = "SPIN";
+    if (this.$store.getters.identity.businessName) {
+      document.title = this.$store.getters.identity.businessName;
     }
     this.loaded = true;
   },

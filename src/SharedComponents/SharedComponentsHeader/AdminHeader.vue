@@ -33,11 +33,7 @@ export default {
   },
   computed: {
     businessLogo() {
-      if (this.$store.state.businessSettings) {
-        return this.$store.state.businessSettings.identity.businessLogo;
-      } else {
-        return "../../spin-beta-logo.png";
-      }
+      return this.$store.getters.businessLogo;
     },
   },
 

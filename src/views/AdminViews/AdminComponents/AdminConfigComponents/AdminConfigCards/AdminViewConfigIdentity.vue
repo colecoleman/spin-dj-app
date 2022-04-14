@@ -130,11 +130,7 @@ df
               @input="fieldInput(undefined, 'cityStateZip', $event)"
             />
 
-            <div
-              v-if="
-                this.$store.state.businessSettings.identity.subdomain.length < 3
-              "
-            >
+            <div v-if="this.$store.getters.identity.subdomain.length < 3">
               <p>Business Subdomains:</p>
               <input-with-suffix
                 placeholder="Start Typing..."
@@ -163,10 +159,7 @@ df
             </div>
             <p
               class="context"
-              v-if="
-                this.$store.state.businessSettings.identity.subdomain.length >=
-                3
-              "
+              v-if="this.$store.getters.identity.subdomain.length >= 3"
             >
               You've reached the maximum limit of 3 subdomains. Please delete
               one to add another.
@@ -235,14 +228,13 @@ export default {
       };
     },
     subdomain() {
-      return this.$store.state.businessSettings.identity.businessName
+      return this.$store.getters.identity.businessName
         .replaceAll(" ", "")
         .toLowerCase();
     },
     backgroundColor: {
       get() {
-        return this.$store.state.businessSettings.identity.branding
-          .backgroundColor;
+        return this.$store.getters.branding.backgroundColor;
       },
       set(value) {
         return this.$store.commit(
@@ -253,8 +245,7 @@ export default {
     },
     foregroundColor: {
       get() {
-        return this.$store.state.businessSettings.identity.branding
-          .foregroundColor;
+        return this.$store.getters.branding.foregroundColor;
       },
       set(value) {
         return this.$store.commit(
@@ -265,7 +256,7 @@ export default {
     },
     cardOutline: {
       get() {
-        return this.$store.state.businessSettings.identity.branding.cardOutline;
+        return this.$store.getters.branding.cardOutline;
       },
       set(value) {
         return this.$store.commit("adminConfigIdentitySetCardOutline", value);
@@ -273,8 +264,7 @@ export default {
     },
     highlightColor: {
       get() {
-        return this.$store.state.businessSettings.identity.branding
-          .highlightColor;
+        return this.$store.getters.branding.highlightColor;
       },
       set(value) {
         return this.$store.commit(
@@ -285,7 +275,7 @@ export default {
     },
     textColor: {
       get() {
-        return this.$store.state.businessSettings.identity.branding.textColor;
+        return this.$store.getters.branding.textColor;
       },
       set(value) {
         return this.$store.commit("adminConfigIdentitySetTextColor", value);
@@ -293,8 +283,7 @@ export default {
     },
     secondaryTextColor: {
       get() {
-        return this.$store.state.businessSettings.identity.branding
-          .secondaryTextColor;
+        return this.$store.getters.branding.secondaryTextColor;
       },
       set(value) {
         return this.$store.commit(
@@ -305,7 +294,7 @@ export default {
     },
     businessName: {
       get() {
-        return this.$store.state.businessSettings.identity.businessName;
+        return this.$store.getters.identity.businessName;
       },
       set(value) {
         return this.$store.commit("adminConfigIdentitySetBusinessName", value);
@@ -313,7 +302,7 @@ export default {
     },
     businessPhoneNumber: {
       get() {
-        return this.$store.state.businessSettings.identity.businessPhoneNumber;
+        return this.$store.getters.identity.businessPhoneNumber;
       },
       set(value) {
         return this.$store.commit(
@@ -324,8 +313,7 @@ export default {
     },
     streetAddress1: {
       get() {
-        return this.$store.state.businessSettings.identity.businessAddress
-          .streetAddress1;
+        return this.$store.getters.identity.businessAddress.streetAddress1;
       },
       set(value) {
         return this.$store.commit(
@@ -336,8 +324,7 @@ export default {
     },
     streetAddress2: {
       get() {
-        return this.$store.state.businessSettings.identity.businessAddress
-          .streetAddress2;
+        return this.$store.getters.identity.businessAddress.streetAddress2;
       },
       set(value) {
         return this.$store.commit(
@@ -348,8 +335,7 @@ export default {
     },
     cityStateZip: {
       get() {
-        return this.$store.state.businessSettings.identity.businessAddress
-          .cityStateZip;
+        return this.$store.getters.identity.businessAddress.cityStateZip;
       },
       set(value) {
         return this.$store.commit(
@@ -359,7 +345,7 @@ export default {
       },
     },
     emailAddresses() {
-      return this.$store.state.businessSettings.identity.emailAddresses;
+      return this.$store.getters.emailAddresses;
     },
   },
   emits: ["logo"],

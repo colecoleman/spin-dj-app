@@ -153,17 +153,14 @@ export default {
   },
   computed: {
     hasDiscounts() {
-      if ("product" in this.$store.state.businessSettings) {
-        if ("discounts" in this.$store.state.businessSettings.product) {
-          if (this.discounts.length > 0) {
-            return true;
-          }
-        }
+      if (this.discounts.length > 0) {
+        return true;
+      } else {
+        return false;
       }
-      return false;
     },
     discounts() {
-      return this.$store.state.businessSettings.product.discounts;
+      return this.$store.getters.discounts;
     },
   },
   components: { InputWithTitle, VueSvg },

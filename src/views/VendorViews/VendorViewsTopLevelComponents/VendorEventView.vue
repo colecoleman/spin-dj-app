@@ -53,11 +53,7 @@ import SpecificEventPageLocationScroller from "../../../SharedComponents/SharedC
 import FormsPopup from "../../../SharedComponents/SharedComponentsEvents/FormsPopup.vue";
 import FourButtonBarWithDropDown from "../../../SharedComponents/SharedComponentsUI/FourButtonBarWithDropDown.vue";
 import EventPageAlerts from "../../../SharedComponents/SharedComponentsEvents/EventPageAlerts.vue";
-import {
-  finalPaymentDueDate,
-  balanceOutstanding,
-  total,
-} from "../../../helpers.js";
+import { balanceOutstanding, total } from "../../../helpers.js";
 
 export default {
   data() {
@@ -91,7 +87,6 @@ export default {
     },
   },
   methods: {
-    finalPaymentDueDate,
     balanceOutstanding,
     total,
     togglePopup(popup) {

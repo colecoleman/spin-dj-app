@@ -196,39 +196,33 @@ export default {
   },
   computed: {
     services() {
-      let services = this.$store.state.businessSettings.product.services.filter(
-        (x) => {
-          return !this.products.find((ef) => {
-            return x.id === ef.id;
-          });
-        }
-      );
+      let services = this.$store.getters.services.filter((x) => {
+        return !this.products.find((ef) => {
+          return x.id === ef.id;
+        });
+      });
       return services.map((x) => ({
         ...x,
         type: "Service",
       }));
     },
     addOns() {
-      let products = this.$store.state.businessSettings.product.addOns.filter(
-        (x) => {
-          return !this.products.find((ef) => {
-            return x.id === ef.id;
-          });
-        }
-      );
+      let products = this.$store.getters.addOns.filter((x) => {
+        return !this.products.find((ef) => {
+          return x.id === ef.id;
+        });
+      });
       return products.map((x) => ({
         ...x,
         type: "Add-On",
       }));
     },
     packages() {
-      let packages = this.$store.state.businessSettings.product.packages.filter(
-        (x) => {
-          return !this.products.find((ef) => {
-            return x.id === ef.id;
-          });
-        }
-      );
+      let packages = this.$store.getters.packages.filter((x) => {
+        return !this.products.find((ef) => {
+          return x.id === ef.id;
+        });
+      });
       return packages.map((x) => ({
         ...x,
         type: "Package",

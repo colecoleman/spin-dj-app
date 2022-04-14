@@ -94,7 +94,7 @@ export default {
   },
   computed: {
     contracts() {
-      return this.$store.state.businessSettings.contracts;
+      return this.$store.getters.contracts;
     },
   },
   methods: {

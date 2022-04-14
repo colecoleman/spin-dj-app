@@ -830,7 +830,7 @@ export default {
       }
     },
     forms() {
-      return this.$store.state.businessSettings.product.forms.forms;
+      return this.$store.getters.forms;
     },
     suggestedForms() {
       return this.forms.filter((form) => {
@@ -859,15 +859,18 @@ export default {
     },
     businessProducts() {
       let array = [];
-      let packages = this.$store.state.businessSettings.product.packages.map(
-        (x) => ({ ...x, type: "Package" })
-      );
-      let services = this.$store.state.businessSettings.product.services.map(
-        (x) => ({ ...x, type: "Service" })
-      );
-      let addOns = this.$store.state.businessSettings.product.addOns.map(
-        (x) => ({ ...x, type: "Add-On" })
-      );
+      let packages = this.$store.getters.packages.map((x) => ({
+        ...x,
+        type: "Package",
+      }));
+      let services = this.$store.getters.services.map((x) => ({
+        ...x,
+        type: "Service",
+      }));
+      let addOns = this.$store.getters.addOns.map((x) => ({
+        ...x,
+        type: "Add-On",
+      }));
       array = {
         packages: packages,
         services: services,
@@ -876,8 +879,8 @@ export default {
       return array;
     },
     adjustments() {
-      if (this.$store.state.businessSettings.product.discounts) {
-        let discounts = this.$store.state.businessSettings.product.discounts;
+      if (this.$store.getters.discounts) {
+        let discounts = this.$store.getters.discounts;
         for (let x = 0; x < discounts.length; x++) {
           if (discounts[x].type === "dollar") {
             discounts[x].display = this.formatPrice(discounts[x].amount);

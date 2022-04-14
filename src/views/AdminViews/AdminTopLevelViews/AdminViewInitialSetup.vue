@@ -142,7 +142,7 @@ export default {
   computed: {
     businessName: {
       get() {
-        return this.$store.state.businessSettings.identity.businessName;
+        return this.$store.getters.identity.businessName;
       },
       set(value) {
         return this.$store.commit("adminConfigIdentitySetBusinessName", value);
@@ -150,7 +150,7 @@ export default {
     },
     businessPhoneNumber: {
       get() {
-        return this.$store.state.businessSettings.identity.businessPhoneNumber;
+        return this.$store.getters.identity.businessPhoneNumber;
       },
       set(value) {
         return this.$store.commit(
@@ -161,8 +161,7 @@ export default {
     },
     streetAddress1: {
       get() {
-        return this.$store.state.businessSettings.identity.businessAddress
-          .streetAddress1;
+        return this.$store.getters.identity.businessAddress.streetAddress1;
       },
       set(value) {
         return this.$store.commit(
@@ -173,8 +172,7 @@ export default {
     },
     streetAddress2: {
       get() {
-        return this.$store.state.businessSettings.identity.businessAddress
-          .streetAddress2;
+        return this.$store.getters.identity.businessAddress.streetAddress2;
       },
       set(value) {
         return this.$store.commit(
@@ -185,8 +183,7 @@ export default {
     },
     cityStateZip: {
       get() {
-        return this.$store.state.businessSettings.identity.businessAddress
-          .cityStateZip;
+        return this.$store.getters.identity.businessAddress.cityStateZip;
       },
       set(value) {
         return this.$store.commit(

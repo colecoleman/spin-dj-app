@@ -35,11 +35,7 @@ export default {
   },
   computed: {
     logo() {
-      if (this.$store.state.businessSettings.identity.businessLogo) {
-        return this.$store.state.businessSettings.identity.businessLogo;
-      } else {
-        return "";
-      }
+      return this.$store.getters.businessLogo;
     },
     tenants() {
       if (this.$store.state.user) {

@@ -44,17 +44,7 @@ export default {
   },
   computed: {
     branding() {
-      if (this.$store.state.businessSettings.identity.branding) {
-        return this.$store.state.businessSettings.identity.branding;
-      } else {
-        return {
-          backgroundColor: "#F0F0F0",
-          foregroundColor: "#FFFFFF",
-          cardOutline: "#DDDDDD",
-          highlightColor: "#00F5FF",
-          textColor: "#000000",
-        };
-      }
+      return this.$store.getters.branding;
     },
   },
   async created() {

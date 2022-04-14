@@ -230,7 +230,7 @@ export default {
   },
   computed: {
     logo() {
-      return this.$store.state.businessSettings.identity.businessLogo;
+      return this.$store.getters.identity.businessLogo;
     },
   },
   methods: {

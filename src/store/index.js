@@ -410,12 +410,12 @@ const store = createStore({
         variable: "businessSettings",
         value: state.businessSettings,
       };
-      if (Array.isArray(payload.value.product.forms)) {
-        payload.value.product.forms = {
-          forms: [...payload.value.product.forms],
-          fieldTemplates: [],
-        };
-      }
+      // if (Array.isArray(payload.value.product.forms)) {
+      //   payload.value.product.forms = {
+      //     forms: [...payload.value.product.forms],
+      //     fieldTemplates: [],
+      //   };
+      // }
       return new Promise((resolve, reject) => {
         axios
           .put(
@@ -556,6 +556,7 @@ const store = createStore({
           .then(
             (result) => {
               resolve(result);
+              console.log(result);
             },
             (error) => {
               context.commit("addStatus", {
@@ -1474,6 +1475,122 @@ const store = createStore({
     //prospect-specific mutations /////////////////////
   },
   getters: {
+    // business settings getters
+    // // business settings identity getters
+    identity(state) {
+      if (state.businessSettings && state.user) {
+        return state.businessSettings.identity;
+      } else {
+        return undefined;
+      }
+    },
+    branding(state) {
+      let defaultBranding = {
+        backgroundColor: "#F0F0F0",
+        foregroundColor: "#FFFFFF",
+        cardOutline: "#DDDDDD",
+        highlightColor: "#00F5FF",
+        textColor: "#000000",
+      };
+      if (state.businessSettings && state.user) {
+        if (state.businessSettings.identity) {
+          return state.businessSettings.identity.branding;
+        } else {
+          return defaultBranding;
+        }
+      } else {
+        return defaultBranding;
+      }
+    },
+    businessLogo(state) {
+      let defaultLogo = "../assets/spin-logo-with-text.svg";
+      if (state.businessSettings) {
+        if (state.businessSettings.identity) {
+          return state.businessSettings.identity.businessLogo;
+        } else {
+          return defaultLogo;
+        }
+      } else {
+        return defaultLogo;
+      }
+    },
+    businessEmailAddresses(state) {
+      return state.businessSettings.identity.emailAddresses;
+    },
+    businessAddress(state) {
+      return state.businessSettings.identity.businessAddress;
+    },
+    businessName(state) {
+      return state.businessSettings.identity.businessName;
+    },
+    businessPhoneNumber(state) {
+      return state.businessSettings.identity.phoneNumber;
+    },
+    automations(state) {
+      if (state.businessSettings.automations) {
+        return state.businessSettings.automations;
+      } else {
+        return [];
+      }
+    },
+    // // business settings product getters
+    addOns(state) {
+      if (state.businessSettings.product.addOns) {
+        return state.businessSettings.product.addOns;
+      } else {
+        return [];
+      }
+    },
+    contracts(state) {
+      if (state.businessSettings) {
+        return state.businessSettings.contracts;
+      } else {
+        return [];
+      }
+    },
+    discounts(state) {
+      if (state.businessSettings.product.discounts) {
+        return state.businessSettings.product.discounts;
+      } else {
+        return [];
+      }
+    },
+    forms(state) {
+      console.log(state.businessSettings);
+      if (state.businessSettings.product.forms.forms) {
+        return state.businessSettings.product.forms.forms;
+      } else {
+        return state.businessSettings.product.forms;
+      }
+    },
+    formTemplates(state) {
+      if (state.businessSettings.product.forms.fieldTemplates) {
+        return state.businessSettings.product.forms.fieldTemplates;
+      } else {
+        return [];
+      }
+    },
+    packages(state) {
+      console.log(state.businessSettings);
+      if (state.businessSettings.product.packages) {
+        return state.businessSettings.product.packages;
+      } else {
+        return [];
+      }
+    },
+    services(state) {
+      console.log(state.businessSettings);
+      if (state.businessSettings.product.services) {
+        return state.businessSettings.product.services;
+      } else {
+        return [];
+      }
+    },
+    // // business settings payments getters
+    paymentSettings(state) {
+      return state.businessSettings.payments;
+    },
+
     currencyCode(state) {
       if (state.businessSettings.payments.currencyCode) {
         return state.businessSettings.payments.currencyCode;
@@ -1481,6 +1598,100 @@ const store = createStore({
         return "USD";
       }
     },
+    depositType(state) {
+      if (state.businessSettings.payments.deposit.depositType) {
+        return state.businessSettings.payments.deposit.type;
+      } else {
+        return "dollar";
+      }
+    },
+    depositAmount(state) {
+      if (state.businessSettings.payments.deposit) {
+        if (state.businessSettings.payments.depositType === 'percentage') {
+          return this.$store.getters.depositAmount * 0.01;
+        } else {
+          return state.businessSettings.payments.deposit.amount;
+        }
+      } else if (state.businessSettings.payments.depositAmount) {
+        return state.businessSettings.payments.depositAmount;
+      } else {
+        return '100';
+      }
+    },
+    depositTerminology(state) {
+      if (state.businessSettings.payments.deposit) {
+        if (state.businessSettings.payments.deposit.depositTerminology) {
+          return state.businessSettings.payments.deposit.depositTerminology;
+        } else {
+          return "deposit";
+        }
+      } else {
+        return "deposit";
+      }
+    },
+    finalPaymentSettings(state) {
+      if (state.businessSettings.payments.finalPayment) {
+        return state.businessSettings.payments.finalPayment;
+      } else {
+        return {
+          increment: 2,
+          type: "weeks",
+        }
+      }
+    },
+    finalPaymentIncrement(state) {
+      if (state.businessSettings.payments.finalPayment) {
+        return state.businessSettings.payments.finalPayment.increment;
+      } else {
+        return 2;
+      }
+    },
+    finalPaymentType(state) {
+      if (state.businessSettings.payments.finalPayment) {
+        return state.businessSettings.payments.finalPayment.type;
+      } else {
+        return 'weeks';
+      }
+    },
+    creditCardEnabled(state) {
+      if (state.businessSettings.payments.creditCard.enabled) {
+        return state.businessSettings.payments.creditCard.enabled;
+      } else {
+        return false;
+      }
+    },
+    checkEnabled(state) {
+      if (state.businessSettings.payments.check.enabled) {
+        return state.businessSettings.payments.check.enabled;
+      } else {
+        return false;
+      }
+    },
+    checkInstructions(state) {
+      if (state.businessSettings.payments.check.instructions) {
+        return state.businessSettings.payments.check.instructions;
+      } else {
+        return "";
+      }
+    },
+    customPaymentName(state) {
+      if (state.businessSettings.payments.custom.name) {
+        return state.businessSettings.payments.custom.name;
+      } else {
+        return "";
+      }
+    },
+    customPaymentInstructions(state) {
+      if (state.businessSettings.payments.custom.instructions) {
+        return state.businessSettings.payments.custom.instructions;
+      } else {
+        return "";
+      }
+    },
+
+
+    // contact getters
+
     clients(state) {
       return state.contacts.filter((x) => x.role == "client");
     },

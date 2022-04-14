@@ -120,30 +120,17 @@ export default {
       return this.$store.state.businessSettings;
     },
     depositAmount() {
-      if (this.businessSettings.payments.deposit) {
-        if (this.businessSettings.payments.deposit.type === "percentage") {
-          return (
-            this.businessSettings.payments.deposit.amount *
-            0.01 *
-            this.total(this.event.invoice, this.event.data)
-          );
-        } else {
-          return this.businessSettings.payments.deposit.amount;
-        }
+      if (this.$store.getters.depositType === "percentage") {
+        return (
+          this.$store.getters.depositAmount *
+          this.total(this.event.invoice, this.event.data)
+        );
       } else {
-        return this.businessSettings.payments.depositAmount;
+        return this.$store.getters.depositAmount;
       }
     },
     depositTerminology() {
-      if (this.businessSettings.payments.deposit) {
-        if (this.businessSettings.payments.deposit.terminology) {
-          return this.businessSettings.payments.deposit.terminology;
-        } else {
-          return "deposit";
-        }
-      } else {
-        return "deposit";
-      }
+      return this.$store.getters.depositTerminology;
     },
     eventAlerts() {
       let alerts = [];
@@ -156,7 +143,10 @@ export default {
       let today = new Date();
       if (
         today >
-          this.finalPaymentDueDate(this.event.data, this.businessSettings) &&
+          this.finalPaymentDueDate(
+            this.event.data,
+            this.$store.getters.finalPaymentSettings
+          ) &&
         this.balanceOutstanding(this.event.invoice, this.event.data) > 0
       ) {
         alerts.push({

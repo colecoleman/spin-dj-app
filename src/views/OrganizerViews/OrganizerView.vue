@@ -14,12 +14,12 @@ import NonAdminHeader from "../../SharedComponents/SharedComponentsHeader/NonAdm
 export default {
   components: { NonAdminHeader },
   async created() {
-   if (!this.$store.state.user) {
+    if (!this.$store.state.user) {
       await this.$store.dispatch("setUser");
     }
     await this.$store.dispatch("getTenants");
-    if (this.$store.state.businessSettings.identity.businessName) {
-      document.title = this.$store.state.businessSettings.identity.businessName;
+    if (this.$store.getters.identity.businessName) {
+      document.title = this.$store.getters.identity.businessName;
     } else {
       document.title = "SPIN";
     }
