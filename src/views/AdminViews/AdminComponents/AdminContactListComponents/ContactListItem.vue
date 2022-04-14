@@ -115,9 +115,7 @@ export default {
   computed: {},
   methods: {
     viewContact() {
-      this.$router.push(
-        "contacts/" + this.category + "s/" + this.contact.userId
-      );
+      this.$router.push(`contacts/${this.category}/${this.contact.userId}`);
     },
     formatPhoneNumber,
     togglePopup(str) {
