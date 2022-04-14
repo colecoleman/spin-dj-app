@@ -43,6 +43,7 @@
         :stripePk="stripeAPIToken"
         :paymentIntent="paymentIntent"
         :stripe="stripe"
+        @close-card="closeCard"
       />
     </div>
     <button-standard-with-icon
@@ -106,6 +107,9 @@ export default {
     changeToManualPayment() {
       this.method = "manual";
     },
+    closeCard() {
+      this.$emit("closePopup");
+    },
   },
   computed: {
     userRole() {
@@ -127,7 +131,7 @@ export default {
     StripeCreatePaymentIntent,
     StripeEnterCardDetails,
   },
-  emits: ["applyManualPayment"],
+  emits: ["applyManualPayment", "closeCard"],
   props: ["eventId", "event"],
 };
 </script>

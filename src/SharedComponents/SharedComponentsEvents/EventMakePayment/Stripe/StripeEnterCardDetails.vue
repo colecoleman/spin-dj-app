@@ -3,7 +3,6 @@
     <form id="payment-form">
       <div id="card-element"></div>
       <div id="card-errors" role="alert"></div>
-      <!-- <button id="submit">Pay</button> -->
       <button-standard-with-icon text="Pay" @click="submitCardPayment" />
     </form>
   </div>
@@ -36,6 +35,7 @@ export default {
               note: "Payment Successful",
             });
           }
+          this.$emit("closeCard");
         })
         .catch((e) => {
           console.log(e);
@@ -77,6 +77,7 @@ export default {
   },
 
   components: { ButtonStandardWithIcon },
+  emits: ["closeCard"],
   props: ["paymentIntent", "stripePk"],
 };
 </script>

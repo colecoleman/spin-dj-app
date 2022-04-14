@@ -83,6 +83,7 @@
           :eventId="event.userId"
           :event="event"
           @apply-manual-payment="applyManualPayment"
+          @close-popup="togglePopup"
         />
       </template>
     </popup-modal>
