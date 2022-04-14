@@ -17,11 +17,6 @@
                 :customStyle="infoIconStyling"
                 @clicked="toggleMergeTagInformation"
               />
-              <information-hover
-                heading="Templating"
-                :body="mergeTagInformation"
-                v-if="mergeTagInformationOpenl"
-              ></information-hover>
             </div>
             <p v-html="mergeTagInformation" v-if="mergeTagInformationOpen"></p>
             <input-with-title
@@ -72,7 +67,6 @@
 
 <script>
 import VueSvg from "../../../../../assets/VueSvg.vue";
-import InformationHover from "../../../../../SharedComponents/SharedComponentsUI/InformationHover.vue";
 import InputWithTitle from "../../../../../SharedComponents/SharedComponentsUI/ElementLibrary/InputWithTitle.vue";
 
 export default {
@@ -132,7 +126,7 @@ export default {
       this.$store.commit("adminConfigDeleteContract", index);
     },
   },
-  components: { InformationHover, InputWithTitle, VueSvg },
+  components: { InputWithTitle, VueSvg },
 };
 </script>
 
