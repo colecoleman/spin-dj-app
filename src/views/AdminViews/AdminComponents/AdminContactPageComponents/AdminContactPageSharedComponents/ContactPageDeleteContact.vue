@@ -11,44 +11,16 @@
 <script>
 import TwoButtonDialogModal from "../../../../../SharedComponents/SharedComponentsUI/TwoButtonDialogModal.vue";
 export default {
-  data() {
-    return {};
-  },
   methods: {
     async confirmDeleteContact() {
-      if (this.contact.associatedEvents) {
-        this.contact.associatedEvents.forEach((event) => {
-          let eventObject;
-          let key = {
-            userId: event.userId,
-            tenantId: this.$store.state.user.tenantId,
-          };
-          this.$store.dispatch("adminGetEvent", key).then(
-            (res) => {
-              eventObject = res;
-              let index = eventObject.contacts.indexOf(this.contact.userId);
-              let payload = {
-                eventKey: {
-                  userId: eventObject.userId,
-                  tenantId: eventObject.tenantId,
-                },
-                variable: "contacts",
-                value: index,
-                operation: "removeFromList",
-              };
-              this.$store.dispatch("editEvent", payload);
-            },
-            (error) => {
-              console.log(error);
-            }
-          );
-        });
-      }
-      // let deletePayload = {
-      //   category: this.contact.role,
-      //   id: this.contact.userId,
-      // };
-      // this.$store.dispatch("deleteUser", deletePayload);
+      let deletePayload = {
+        userKey: {
+          userId: this.contact.userId,
+          tenantId: this.contact.tenantId,
+        },
+        tenantId: this.$store.state.user.tenantId,
+      };
+      this.$store.dispatch("deleteUser", deletePayload);
       this.popupOpen = null;
     },
     togglePopup() {

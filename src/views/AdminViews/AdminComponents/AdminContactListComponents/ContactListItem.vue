@@ -103,16 +103,15 @@ export default {
           icon: "email",
         },
 
-        // {
-        //   title: "delete",
-        //   danger: true,
-        //   parameter: "delete",
-        //   icon: "trash-can",
-        // },
+        {
+          title: "delete",
+          danger: true,
+          parameter: "delete",
+          icon: "trash-can",
+        },
       ],
     };
   },
-  computed: {},
   methods: {
     viewContact() {
       this.$router.push(`contacts/${this.category}/${this.contact.userId}`);
@@ -126,39 +125,14 @@ export default {
       }
     },
     async confirmDeleteContact() {
-      if (this.contact.associatedEvents) {
-        this.contact.associatedEvents.forEach((event) => {
-          let eventObject;
-          let key = {
-            userId: event.userId,
-            tenantId: this.$store.state.user.tenantId,
-          };
-          this.$store.dispatch("adminGetEvent", key).then(
-            (res) => {
-              eventObject = res;
-              let index = eventObject.contacts.indexOf(this.contact.userId);
-              let payload = {
-                eventKey: {
-                  userId: eventObject.userId,
-                  tenantId: eventObject.tenantId,
-                },
-                variable: "contacts",
-                value: index,
-                operation: "removeFromList",
-              };
-              this.$store.dispatch("editEvent", payload);
-            },
-            (error) => {
-              console.log(error);
-            }
-          );
-        });
-      }
-      // let deletePayload = {
-      //   category: this.category,
-      //   id: this.contact.userId,
-      // };
-      // this.$store.dispatch("deleteUser", deletePayload);
+      let deletePayload = {
+        userKey: {
+          userId: this.contact.userId,
+          tenantId: this.contact.tenantId,
+        },
+        tenantId: this.$store.state.user.tenantId,
+      };
+      this.$store.dispatch("deleteUser", deletePayload);
       this.popupOpen = null;
     },
   },

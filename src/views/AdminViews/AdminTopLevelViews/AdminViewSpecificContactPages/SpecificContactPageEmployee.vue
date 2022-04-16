@@ -128,12 +128,12 @@ export default {
             parameter: "reset-password",
             icon: "key",
           },
-          // {
-          //   title: "delete",
-          //   danger: true,
-          //   parameter: "delete",
-          //   icon: "delete",
-          // },
+          {
+            title: "delete",
+            danger: true,
+            parameter: "delete",
+            icon: "delete",
+          },
         ],
       },
       availabilityManagerOpen: false,

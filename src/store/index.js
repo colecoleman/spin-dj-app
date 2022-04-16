@@ -643,9 +643,7 @@ const store = createStore({
     },
     async deleteUser(context, payload) {
       await axios
-        .delete(
-          `https://api.spindj.io/admin/${context.state.user.tenantId}/users/${payload.id}`
-        )
+        .post(`https://api.spindj.io/admin/deleteUser`, payload)
         .then(() => {
           context.commit("addStatus", {
             type: "success",
@@ -1433,8 +1431,12 @@ const store = createStore({
       }
     },
     deleteUser(state, payload) {
-      let index = state.contacts.findIndex((e) => e.id === payload.id);
-      state.contacts.splice(index, 1);
+      let index = state.contacts.findIndex(
+        (e) => e.userId === payload.userKey.userId
+      );
+      if (index > -1) {
+        state.contacts.splice(index, 1);
+      }
     },
 
     // event mutations ////////////////////////////
