@@ -20,6 +20,7 @@
         @add-form-to-event="addFormToEvent"
         @delete-form="deleteForm"
         :forms="event.forms"
+        :event="event"
         :eventId="event.userId"
         :eventTitle="event.title"
       />

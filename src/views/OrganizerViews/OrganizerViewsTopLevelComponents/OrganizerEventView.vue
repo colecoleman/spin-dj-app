@@ -14,6 +14,7 @@
       v-if="popupOpen === 'forms'"
       @close-popup="togglePopup()"
       :forms="event.forms"
+      :event="event"
       :eventId="event.userId"
     />
 

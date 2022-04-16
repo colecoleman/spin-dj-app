@@ -299,7 +299,7 @@ export default {
     let user = await Auth.currentAuthenticatedUser();
     this.userRole = user.attributes["custom:role"];
   },
-  props: ["forms", "eventId", "eventTitle"],
+  props: ["forms", "event", "eventId", "eventTitle"],
 
   components: {
     FormsPopupAddForm,
