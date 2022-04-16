@@ -1,6 +1,18 @@
 <template>
-  <div :class="error ? 'error ' + type : type">
-    <p>{{ title }}</p>
+  <div :class="error ? 'error ' + type : type" class="input-wrapper">
+    <!-- <p>{{ title }}</p> -->
+    <div class="title">
+      <div :class="title.length < 25 ? 'hidden' : 'tooltip'">
+        <span class="tooltip-text"
+          ><p>
+            {{ title }}
+          </p></span
+        >
+      </div>
+      <p :class="title.length < 25 ? 'title-text' : 'hoverable title-text'">
+        {{ title }}
+      </p>
+    </div>
     <textarea
       v-if="type === 'textarea'"
       v-model="value"
@@ -42,9 +54,6 @@
 </template>
 <script>
 export default {
-  data() {
-    return {};
-  },
   computed: {
     value: {
       get() {
@@ -73,10 +82,11 @@ export default {
 };
 </script>
 <style scoped>
-div {
+.input-wrapper {
   /* width: auto; */
   min-width: 125px;
   max-width: 300px;
+  height: fit-content;
   border: 1px solid var(--textColor);
   background-color: var(--foregroundColor);
   border-radius: 4px;
@@ -104,16 +114,55 @@ select {
   height: 50%;
 }
 
+.title {
+  margin: 0;
+  top: -15px;
+  /* padding: 0 5px; */
+  position: absolute;
+}
+
 p {
   font-family: roboto, sans-serif;
   font-size: 7pt;
   font-weight: 600;
   border-radius: 3px;
   text-transform: uppercase;
-  position: absolute;
-  margin: 0;
-  top: -6px;
+  /* position: absolute; */
+}
+
+.title-text {
   background-color: var(--foregroundColor);
-  padding: 0 5px;
+  max-width: 150px;
+  padding: 0 3px;
+  display: block;
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  cursor: pointer;
+}
+
+.hoverable {
+  border-bottom: 1px dotted black; /* If you want dots under the hoverable text */
+}
+.hidden {
+  display: none;
+}
+.title .tooltip {
+  visibility: hidden;
+  width: 200px;
+  background-color: var(--foregroundColor);
+  color: var(--textColor);
+  border: 1px solid var(--cardOutline);
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 10px;
+  position: absolute;
+  top: -30px;
+  z-index: 1;
+}
+
+.title:hover .tooltip {
+  visibility: visible;
 }
 </style>
