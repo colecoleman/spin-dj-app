@@ -475,10 +475,14 @@ export default {
     /* height: auto; */
     min-height: auto;
     margin: 0;
+    margin-bottom: 10px;
     background-color: white;
     overflow: visible !important;
     box-sizing: border-box;
     /* font-family: Georgia, "Times New Roman", Times, serif; */
+  }
+  @page {
+    margin: auto auto 0 auto;
   }
 
   input,
@@ -559,7 +563,7 @@ export default {
     width: 100%;
     text-align: center;
     position: fixed;
-    bottom: 0;
+    bottom: 0px;
   }
 
   .no-print {
