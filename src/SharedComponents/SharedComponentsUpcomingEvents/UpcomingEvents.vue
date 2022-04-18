@@ -136,12 +136,7 @@ export default {
       });
     },
     userRole() {
-      let user = this.$store.state.user;
-      if (user.tenantId === user.userId) {
-        return "admin";
-      } else {
-        return user.role;
-      }
+      return this.$store.getters.userRole;
     },
   },
   created() {
@@ -159,12 +154,11 @@ export default {
       this.toggleSortMenuOpened();
     },
     navigateToEventPage(event) {
-      let user = this.$store.state.user;
-      if (user.tenantId === user.userId) {
+      if (this.userRole === "admin") {
         this.$router.push(`/admin/events/` + event.userId);
       } else {
         this.$router.push({
-          path: `/${this.$store.state.user.role}/events/${event.tenantId}/${event.userId}`,
+          path: `/${this.userRole}/events/${event.tenantId}/${event.userId}`,
         });
       }
     },

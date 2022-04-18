@@ -113,11 +113,7 @@ export default {
       return array;
     },
     role() {
-      if (this.primaryContact.tenantId === this.primaryContact.userId) {
-        return "admin";
-      } else {
-        return this.primaryContact.role;
-      }
+      return this.$store.getters.role;
     },
     businessSettings() {
       return this.$store.state.businessSettings;

@@ -77,12 +77,7 @@ export default {
   },
   computed: {
     userRole() {
-      let user = this.$store.state.user;
-      if (user.tenantId === user.userId) {
-        return "admin";
-      } else {
-        return user.role;
-      }
+      return this.$store.getters.userRole;
     },
     client() {
       return this.event.contacts[0];

@@ -1477,6 +1477,16 @@ const store = createStore({
     //prospect-specific mutations /////////////////////
   },
   getters: {
+    user(state) {
+      return state.user;
+    },
+    userRole(state) {
+      if (state.user.tenantId === state.user.userId) {
+        return "admin";
+      } else {
+        return state.user.role;
+      }
+    },
     // business settings getters
     // // business settings identity getters
     identity(state) {
@@ -1592,7 +1602,6 @@ const store = createStore({
     paymentSettings(state) {
       return state.businessSettings.payments;
     },
-
     currencyCode(state) {
       if (state.businessSettings.payments.currencyCode) {
         return state.businessSettings.payments.currencyCode;

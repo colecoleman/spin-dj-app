@@ -113,11 +113,7 @@ export default {
   },
   computed: {
     userRole() {
-      if (this.$store.state.user.userId === this.$store.state.user.tenantId) {
-        return "admin";
-      } else {
-        return this.$store.state.user.role;
-      }
+      return this.$store.getters.userRole;
     },
   },
   async created() {

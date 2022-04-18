@@ -28,20 +28,22 @@
 
 <script>
 import ProfilePicture from "../../../assets/ProfilePicture.vue";
-import { Auth } from "aws-amplify";
 export default {
   data() {
     return {
       profilePictureStyling: "width: 55px; height: 55px; margin-right: 10px;",
     };
   },
+  computed: {
+    userRole() {
+      return this.$store.getters.userRole;
+    },
+  },
   methods: {
     async navigateToContactPage(contact) {
-      let user = await Auth.currentAuthenticatedUser();
-      let role = user.attributes["custom:role"];
-      if (role === "admin") {
+      if (this.userRole === "admin") {
         this.$router.push(
-          `/${role}/contacts/${contact.role}s/${contact.userId}`
+          `/${this.userRole}/contacts/${contact.this.userRole}s/${contact.userId}`
         );
       }
     },
