@@ -1,7 +1,7 @@
 <template>
   <div :class="error ? 'error ' + type : type" class="input-wrapper">
     <!-- <p>{{ title }}</p> -->
-    <div class="title">
+    <div v-if="title" class="title">
       <div :class="title.length < 25 ? 'hidden' : 'tooltip'">
         <span class="tooltip-text"
           ><p>
@@ -9,7 +9,10 @@
           </p></span
         >
       </div>
-      <p :class="title.length < 25 ? 'title-text' : 'hoverable title-text'">
+      <p
+        v-if="title"
+        :class="title.length < 25 ? 'title-text' : 'hoverable title-text'"
+      >
         {{ title }}
       </p>
     </div>
