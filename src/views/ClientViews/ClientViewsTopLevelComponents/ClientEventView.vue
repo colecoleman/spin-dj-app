@@ -6,7 +6,7 @@
         :event="event"
         :client="client"
         v-if="popupOpen === 'invoice'"
-        @close="togglePopup()"
+        @close="togglePopup"
       />
     </Transition>
 
@@ -110,7 +110,9 @@ export default {
   computed: {
     client() {
       let clients = this.event.contacts.filter((x) => {
-        return x.role === "client";
+        if (x.role) {
+          return x.role === "client";
+        }
       });
       return clients[0];
     },
@@ -196,19 +198,16 @@ export default {
   },
   components: {
     ToDoList,
-    // RecentMessagesEvent,
     RecentMessages,
     EventPageContactCard,
     EventPageContactCarousel,
     SpecificEventPageLocationScroller,
     EventPageAlerts,
     EventMakePaymentCard,
-
     Invoice,
     Forms,
     Contracts,
     FourButtonBarWithDropDown,
-    // TwoButtonDialogModal,
   },
 };
 </script>

@@ -1610,10 +1610,14 @@ const store = createStore({
       }
     },
     depositType(state) {
-      if (state.businessSettings.payments.deposit.depositType) {
-        return state.businessSettings.payments.deposit.type;
+      if (state.businessSettings.payments.deposit) {
+        if (state.businessSettings.payments.deposit.depositType) {
+          return state.businessSettings.payments.deposit.type;
+        } else {
+          return "dollar";
+        }
       } else {
-        return "dollar";
+        return 'dollar'
       }
     },
     depositAmount(state) {
