@@ -14,9 +14,9 @@
       />
     </Transition>
     <Transition name="rise">
-      <forms-popup
+      <forms
         v-if="popupOpen === 'forms'"
-        @close-popup="togglePopup"
+        @close="togglePopup"
         @add-form-to-event="addFormToEvent"
         @delete-form="deleteForm"
         :forms="event.forms"
@@ -165,8 +165,7 @@ import EventPageContactCard from "../../../SharedComponents/SharedComponentsEven
 import EventPageContactCarousel from "../../../SharedComponents/SharedComponentsEvents/eventPageContactCarousel/EventPageContactCarousel.vue";
 import SpecificEventPageLocationScroller from "../../../SharedComponents/SharedComponentsEvents/specificEventPageLocationScroller/SpecificEventPageLocationScroller.vue";
 import EventAutomationList from "../AdminComponents/AdminSharedComponents/EventAutomationList.vue";
-// import Backdrop from "../../../SharedComponents/SharedComponentsUI/Backdrop.vue";
-import FormsPopup from "../../../SharedComponents/SharedComponentsEvents/FormsPopup.vue";
+import Forms from "../../../SharedComponents/SharedComponentsEvents/Forms.vue";
 import Invoice from "../../../SharedComponents/SharedComponentsEvents/Invoice.vue";
 import EventInformation from "../AdminComponents/AdminEventPageComponents/EventInformation.vue";
 import EventMakePayment from "../../../SharedComponents/SharedComponentsEvents/EventMakePayment/EventMakePayment.vue";
@@ -373,7 +372,7 @@ export default {
     Invoice,
     PopupModal,
     EventInformation,
-    FormsPopup,
+    Forms,
     Contracts,
     FourButtonBarWithDropDown,
     TwoButtonDialogModal,

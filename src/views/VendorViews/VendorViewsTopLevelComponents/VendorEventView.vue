@@ -1,8 +1,8 @@
 <template>
   <div v-if="event" id="div-wrapper">
-    <forms-popup
+    <forms
       v-if="popupOpen === 'forms'"
-      @close-popup="togglePopup"
+      @close="togglePopup"
       :event="event"
       :forms="event.forms"
       :eventId="event.userId"
@@ -51,7 +51,7 @@ import RecentMessages from "../../../SharedComponents/SharedComponentsMessaging/
 import EventPageContactCard from "../../../SharedComponents/SharedComponentsEvents/EventPageContactCard.vue";
 import EventPageContactCarousel from "../../../SharedComponents/SharedComponentsEvents/eventPageContactCarousel/EventPageContactCarousel.vue";
 import SpecificEventPageLocationScroller from "../../../SharedComponents/SharedComponentsEvents/specificEventPageLocationScroller/SpecificEventPageLocationScroller.vue";
-import FormsPopup from "../../../SharedComponents/SharedComponentsEvents/FormsPopup.vue";
+import Forms from "../../../SharedComponents/SharedComponentsEvents/Forms.vue";
 import FourButtonBarWithDropDown from "../../../SharedComponents/SharedComponentsUI/FourButtonBarWithDropDown.vue";
 import EventPageAlerts from "../../../SharedComponents/SharedComponentsEvents/EventPageAlerts.vue";
 import { balanceOutstanding, total } from "../../../helpers.js";
@@ -121,7 +121,7 @@ export default {
     EventPageContactCarousel,
     SpecificEventPageLocationScroller,
     EventPageAlerts,
-    FormsPopup,
+    Forms,
     FourButtonBarWithDropDown,
     // TwoButtonDialogModal,
   },
