@@ -124,6 +124,7 @@ export default {
       if (this.$store.getters.depositType === "percentage") {
         return (
           this.$store.getters.depositAmount *
+          0.01 *
           this.total(this.event.invoice, this.event.data)
         );
       } else {

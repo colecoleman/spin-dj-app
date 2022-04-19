@@ -1611,7 +1611,7 @@ const store = createStore({
     },
     depositType(state) {
       if (state.businessSettings.payments.deposit) {
-        if (state.businessSettings.payments.deposit.depositType) {
+        if (state.businessSettings.payments.deposit.type) {
           return state.businessSettings.payments.deposit.type;
         } else {
           return "dollar";
@@ -1622,11 +1622,7 @@ const store = createStore({
     },
     depositAmount(state) {
       if (state.businessSettings.payments.deposit) {
-        if (state.businessSettings.payments.depositType === 'percentage') {
-          return this.$store.getters.depositAmount * 0.01;
-        } else {
-          return state.businessSettings.payments.deposit.amount;
-        }
+        return state.businessSettings.payments.deposit.amount;
       } else if (state.businessSettings.payments.depositAmount) {
         return state.businessSettings.payments.depositAmount;
       } else {
@@ -1635,8 +1631,8 @@ const store = createStore({
     },
     depositTerminology(state) {
       if (state.businessSettings.payments.deposit) {
-        if (state.businessSettings.payments.deposit.depositTerminology) {
-          return state.businessSettings.payments.deposit.depositTerminology;
+        if (state.businessSettings.payments.deposit.terminology) {
+          return state.businessSettings.payments.deposit.terminology;
         } else {
           return "deposit";
         }
