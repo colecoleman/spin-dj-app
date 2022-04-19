@@ -1196,7 +1196,10 @@ const store = createStore({
       state.businessSettings = settings;
     },
     addStatus(state, status) {
-      state.statuses.push(status);
+      state.statuses.unshift(status);
+      setTimeout(() => {
+        state.statuses.splice(0, 1);
+      }, 3000);
     },
     clearStatus(state, index) {
       state.statuses.splice(index, 1);
