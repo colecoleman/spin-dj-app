@@ -177,7 +177,10 @@ export default {
 <style scoped>
 h2 {
   font-size: 20px;
-  margin: 0;
+  margin-bottom: 10px;
+}
+h4 {
+  font-size: 12px;
 }
 
 .form-field {
@@ -213,7 +216,7 @@ h2 {
   .form-field {
     align-items: center;
     justify-content: center;
-    margin-bottom: 50px;
+    margin-bottom: 30px;
   }
 
   .field-item {
