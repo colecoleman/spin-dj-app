@@ -5,10 +5,10 @@
     @select-button-two="toggleRemoveLocation"
     @close-modal="toggleRemoveLocation"
   />
+  <!-- :subtitle="addLocationOpen ? 'Add New Location' : venueName" -->
   <base-card
     svg="location-marker"
     title="Locations"
-    :subtitle="addLocationOpen ? 'Add New Location' : venueName"
     actionIcon="plus-sign"
     @actionOneClicked="toggleAddLocation()"
   >
@@ -17,21 +17,27 @@
         id="specific-event-page-location-scroller-wrapper"
         v-if="!addLocationOpen"
       >
-        <vue-svg
-          svg="left-arrow"
+        <round-icon-button
+          id="left-arrow"
+          class="arrow-container"
           v-if="locations.length > 1"
-          @clicked="decrementCounter()"
+          @click="decrementCounter()"
+          svg="left-arrow"
         />
+
         <specific-event-page-location-scroller-item
           :location="location"
           v-if="locations.length > 0"
           @initiateDeleteLocation="toggleRemoveLocation"
-        ></specific-event-page-location-scroller-item>
-        <vue-svg
+        />
+        <round-icon-button
+          id="right-arrow"
+          class="arrow-container"
           svg="right-arrow"
           v-if="locations.length > 1"
-          @clicked="incrementCounter()"
+          @click="incrementCounter()"
         />
+        <!-- </div> -->
       </div>
       <div class="add-location" v-if="addLocationOpen">
         <div class="form-input">
@@ -51,7 +57,7 @@
 </template>
 
 <script>
-import VueSvg from "../../../assets/VueSvg.vue";
+import RoundIconButton from "../../../SharedComponents/SharedComponentsUI/RoundIconButton.vue";
 import InputWithTitleWithDropdown from "../../../SharedComponents/SharedComponentsUI/ElementLibrary/InputWithTitleWithDropdown.vue";
 import SpecificEventPageLocationScrollerItem from "./SpecificEventPageLocationScrollerItem.vue";
 import TwoButtonDialogModal from "../../../SharedComponents/SharedComponentsUI/TwoButtonDialogModal.vue";
@@ -155,9 +161,11 @@ export default {
   },
   computed: {
     location() {
+      console.log(this.locations[this.counter]);
       return this.locations[this.counter] ? this.locations[this.counter] : {};
     },
     locations() {
+      console.log(this.event.locations);
       return this.event.locations;
     },
     venueName() {
@@ -185,21 +193,38 @@ export default {
   components: {
     SpecificEventPageLocationScrollerItem,
     TwoButtonDialogModal,
-    VueSvg,
     InputWithTitleWithDropdown,
+    RoundIconButton,
   },
 };
 </script>
 
 <style scoped>
 #specific-event-page-location-scroller-wrapper {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  position: relative;
-  align-items: center;
   width: 100%;
   height: 100%;
+  min-height: 200px;
+  position: relative;
+}
+.arrow-container {
+  position: absolute;
+  top: 20%;
+  z-index: 2;
+  background-color: var(--foregroundColor);
+  border: 1px solid var(--cardOutline);
+  border-radius: 20px;
+  height: 35px;
+  width: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#left-arrow {
+  left: 0;
+}
+#right-arrow {
+  right: 0;
 }
 
 .form-input {
