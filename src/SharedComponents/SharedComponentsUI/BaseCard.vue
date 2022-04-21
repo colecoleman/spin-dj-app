@@ -77,7 +77,7 @@ export default {
   border-radius: 25px;
   background-color: var(--foregroundColor);
   box-sizing: border-box;
-  /* overflow: hidden; */
+  overflow: hidden;
   width: 100%;
   height: 100%;
 }
