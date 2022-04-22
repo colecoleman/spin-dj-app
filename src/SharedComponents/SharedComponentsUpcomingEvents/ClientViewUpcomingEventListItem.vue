@@ -19,21 +19,8 @@
         <p v-if="!primaryLocation.address">Unknown Location</p>
       </div>
     </div>
-    <div id="event-metadata-identifier">
-      <div id="date-and-time-identifier">
-        <p>{{ formatDate(event.data.date) }}</p>
-        <p>
-          {{ formatTime(event.data.startTime) }} -
-          {{ formatTime(event.data.endTime) }}
-        </p>
-      </div>
-      <div id="event-invoice-metadata">
-        <p>
-          {{ formatPrice(balanceOutstanding(event.invoice, event.data)) }}
-          Outstanding
-        </p>
-      </div>
-    </div>
+
+    <event-date-time-balance class="event-metadata-identifier" :event="event" />
   </div>
 </template>
 
@@ -44,6 +31,7 @@ import {
   formatPrice,
   balanceOutstanding,
 } from "../../helpers.js";
+import EventDateTimeBalance from "../SharedComponentsUI/ListComponents/EventDateTimeBalance.vue";
 
 export default {
   computed: {
@@ -58,12 +46,15 @@ export default {
     balanceOutstanding,
   },
   props: ["event", "first"],
+  components: {
+    EventDateTimeBalance,
+  },
 };
 </script>
 
 <style scoped>
 #event-location-identifier,
-#event-metadata-identifier {
+.event-metadata-identifier {
   display: flex;
   flex: 1;
 }
@@ -72,7 +63,7 @@ export default {
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  border-bottom: 1px solid var(--cardOutline);
+  border: 1px solid var(--cardOutline);
   cursor: pointer;
 }
 
@@ -89,7 +80,7 @@ export default {
   font-size: 12px;
 }
 
-#event-metadata-identifier {
+.event-metadata-identifier {
   flex-direction: column;
   font-size: 10pt;
   text-align: right;
