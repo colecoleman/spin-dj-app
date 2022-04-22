@@ -70,6 +70,7 @@ export default {
       location: undefined,
       contact: undefined,
       popupOpen: null,
+      automations: [],
       events: [],
       buttons: [
         {
