@@ -63,7 +63,6 @@ export default {
       contacts: [],
       locations: [],
       eventConversations: [],
-      automations: undefined,
       buttons: [
         {
           title: "View Forms",

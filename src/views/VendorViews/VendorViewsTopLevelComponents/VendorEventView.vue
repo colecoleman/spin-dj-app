@@ -64,7 +64,6 @@ export default {
       locations: [],
       clients: [],
       eventConversations: [],
-      automations: undefined,
       buttons: [
         {
           title: "View Forms",
