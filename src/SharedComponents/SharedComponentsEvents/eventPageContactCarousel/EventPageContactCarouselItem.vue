@@ -1,33 +1,22 @@
 <template>
   <div class="contact-carousel-item-wrapper">
-    <div id="contact-carousel-item-title-and-picture">
-      <h4>{{ contact.role }}</h4>
-      <profile-picture
-        contact="person"
-        :profilePicture="contact.profilePicture"
-        @clicked="navigateToContactPage(contact)"
-      />
-    </div>
-    <div
-      id="contact-carousel-item-name"
-      @click="navigateToContactPage(contact)"
-    >
-      <h5>{{ contact.given_name }}</h5>
-      <h5>
-        <span>{{ contact.family_name }}</span>
-      </h5>
-    </div>
+    <h4>
+      <span>{{ contact.role }}</span>
+    </h4>
+    <div class="contact-carousel-contact-item">
+      <picture-and-name :contact="contact" @click="navigateToContactPage()" />
 
-    <div id="contact-carousel-item-contact-information">
-      <p>{{ contact.phoneNumber }}</p>
-      <p>{{ contact.email }}</p>
+      <phone-and-email :contact="contact" @click="navigateToContactPage()" />
+      <round-icon-button svg="x-icon" @click="initiateRemoveContact()" />
     </div>
-    <p class="delete" @click="initiateRemoveContact">REMOVE</p>
   </div>
 </template>
 
 <script>
-import ProfilePicture from "../../../assets/ProfilePicture.vue";
+import PictureAndName from "../../SharedComponentsUI/ListComponents/ContactProfilePictureAndName.vue";
+import PhoneAndEmail from "../../SharedComponentsUI/ListComponents/ContactEmailAndPhoneNumber.vue";
+import RoundIconButton from "../../SharedComponentsUI/RoundIconButton.vue";
+
 export default {
   data() {
     return {
@@ -40,10 +29,10 @@ export default {
     },
   },
   methods: {
-    async navigateToContactPage(contact) {
+    async navigateToContactPage() {
       if (this.userRole === "admin") {
         this.$router.push(
-          `/${this.userRole}/contacts/${contact.role}s/${contact.userId}`
+          `/${this.userRole}/contacts/${this.contact.role}s/${this.contact.userId}`
         );
       }
     },
@@ -53,62 +42,49 @@ export default {
   },
   emits: ["initiateRemoveContact"],
   props: ["contact"],
-  components: { ProfilePicture },
+  components: { PictureAndName, PhoneAndEmail, RoundIconButton },
 };
 </script>
 
 <style scoped>
 @media screen and (min-width: 320px) {
   .contact-carousel-item-wrapper {
-    width: 150px;
-    /* height: 95%; */
-    padding: 5%;
+    width: calc(100% - 20px);
+    box-sizing: border-box;
+    padding: 5px;
+    margin: 10px;
     display: flex;
-    flex-direction: column;
+    justify-content: space-between;
+    cursor: pointer;
+    position: relative;
+  }
+
+  h4 {
+    position: absolute;
+    top: -3px;
+    left: 15px;
+    z-index: 3;
+  }
+  h4 span {
+    background-color: var(--foregroundColor);
+    padding: 4px;
+  }
+
+  .contact-carousel-contact-item {
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+    border: 1px solid var(--cardOutline);
+    border-radius: 10px;
+    filter: drop-shadow(0px 1px 1px var(--cardOutline));
+    background-color: var(--foregroundColor);
+    display: flex;
     justify-content: space-between;
     align-items: center;
-    cursor: pointer;
-  }
-
-  img {
-    width: 40px;
-    height: 40px;
-    padding: 10px;
-    object-fit: cover;
-    border-radius: 50%;
-  }
-
-  h5 {
-    font-weight: 300;
-    margin: 2px;
-    text-transform: uppercase;
-  }
-
-  h5 span {
-    font-weight: 600;
-  }
-
-  p {
-    font-size: 8pt;
-    margin: 5px;
-  }
-
-  .delete {
-    font-weight: 600;
-    width: 100%;
-    cursor: pointer;
   }
 }
 @media screen and (min-width: 700px) {
-  img {
-    padding: 5px;
-  }
 }
 @media screen and (min-width: 800px) {
-  img {
-    width: 65px;
-    height: 65px;
-    padding: 10px;
-  }
 }
 </style>

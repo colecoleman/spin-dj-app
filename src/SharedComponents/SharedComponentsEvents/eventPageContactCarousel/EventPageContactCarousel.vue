@@ -13,7 +13,6 @@
   >
     <template v-slot:content>
       <div id="contact-carousel-top-wrapper" v-if="!addContactOpen">
-        <vue-svg svg="left-arrow" @clicked="scrollToPreviousElement" />
         <div id="contact-carousel-wrapper">
           <event-page-contact-carousel-item
             v-for="(contact, index) in contacts"
@@ -23,7 +22,6 @@
             @initiate-remove-contact="initiateRemoveContact(contact, index)"
           />
         </div>
-        <vue-svg svg="right-arrow" @clicked="scrollToNextElement" />
       </div>
       <div class="add-contact-wrapper" v-if="addContactOpen">
         <div class="form-input">
@@ -45,7 +43,6 @@
 <script>
 import EventPageContactCarouselItem from "./EventPageContactCarouselItem.vue";
 import InputWithTitleWithDropdown from "../../SharedComponentsUI/ElementLibrary/InputWithTitleWithDropdown.vue";
-import VueSvg from "../../../assets/VueSvg.vue";
 import TwoButtonDialogModal from "../../SharedComponentsUI/TwoButtonDialogModal.vue";
 
 export default {
@@ -89,42 +86,6 @@ export default {
     },
     searchForClient(val) {
       this.clientSearchField = val;
-    },
-    scrollToNextElement() {
-      let container = document.getElementById("contact-carousel-wrapper");
-      let sLeft = container.scrollLeft;
-      let containerWidth = container.getBoundingClientRect().width;
-      let childWidth = containerWidth / 2;
-      let currentObjectIndex = Math.round(sLeft / childWidth);
-      let scrollToObjectIndex = currentObjectIndex + 2;
-      if (scrollToObjectIndex > this.contacts.length - 1) {
-        document.getElementById("0-card").scrollIntoView({
-          behavior: "smooth",
-        });
-      } else {
-        document.getElementById(scrollToObjectIndex + "-card").scrollIntoView({
-          behavior: "smooth",
-        });
-      }
-    },
-    scrollToPreviousElement() {
-      let container = document.getElementById("contact-carousel-wrapper");
-      let sLeft = container.scrollLeft;
-      let containerWidth = container.getBoundingClientRect().width;
-      let childWidth = containerWidth / 2;
-      let currentObjectIndex = Math.round(sLeft / childWidth);
-      let scrollToObjectIndex = currentObjectIndex - 1;
-      if (currentObjectIndex === 0) {
-        document
-          .getElementById(this.contacts.length - 1 + "-card")
-          .scrollIntoView({
-            behavior: "smooth",
-          });
-      } else {
-        document.getElementById(scrollToObjectIndex + "-card").scrollIntoView({
-          behavior: "smooth",
-        });
-      }
     },
     toggleRemoveContact() {
       this.removeContactOpen = !this.removeContactOpen;
@@ -188,7 +149,6 @@ export default {
   components: {
     EventPageContactCarouselItem,
     TwoButtonDialogModal,
-    VueSvg,
     InputWithTitleWithDropdown,
   },
 };
@@ -199,16 +159,16 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
-  max-width: 100%;
   color: var(--textColor);
+  height: 100%;
 }
 
 #contact-carousel-wrapper {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   width: 100%;
   max-width: 100%;
-  height: 90%;
+  height: 100%;
   overflow: scroll;
   /* white-space: nowrap; */
 }
