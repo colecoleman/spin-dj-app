@@ -3,20 +3,18 @@
     <h4 class="venue-name" v-if="location.name">
       {{ location.name }}
     </h4>
-    <div class="location-address" v-if="location.address">
-      <p>{{ location.address.streetAddress1 }}</p>
-      <p>{{ location.address.cityStateZip }}</p>
-    </div>
+    <location-address :location="location" v-if="location.address" />
   </div>
 </template>
 <script>
+import LocationAddress from "./LocationAddress.vue";
 export default {
   data() {
     return {};
   },
   methods: {},
   created() {},
-  components: {},
+  components: { LocationAddress },
   props: ["location"],
 };
 </script>
