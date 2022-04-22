@@ -150,7 +150,7 @@ export default {
   max-height: 100%;
   max-width: 100%;
   overflow-y: scroll;
-  overflow-x: hidden;
+  overflow-x: visible;
 }
 
 .automations-section h5,
