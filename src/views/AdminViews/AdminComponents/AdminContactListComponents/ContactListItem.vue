@@ -23,20 +23,7 @@
     />
     <div class="contact-wrapper" v-if="category !== 'locations'">
       <div class="name-and-photo">
-        <profile-picture
-          contact="person"
-          :profilePicture="contact.profilePicture"
-          :customStyle="svgStyling"
-        />
-        <div class="name" @click="viewContact()">
-          <h5 v-if="contact.businessName" class="business-name">
-            <span>{{ contact.businessName }}</span>
-          </h5>
-          <h5 id="client-name">
-            {{ contact.given_name }} <br />
-            <span> {{ contact.family_name }}</span>
-          </h5>
-        </div>
+        <contact :contact="contact" />
       </div>
       <div class="email-and-phone">
         <p>{{ formatPhoneNumber(contact.phoneNumber) }}</p>
@@ -69,6 +56,7 @@
 
 <script>
 import ProfilePicture from "../../../../assets/ProfilePicture.vue";
+import Contact from "../../../../SharedComponents/SharedComponentsUI/ListComponents/ContactProfilePictureAndName.vue";
 import RoundIconButton from "../../../../SharedComponents/SharedComponentsUI/RoundIconButton.vue";
 import TwoButtonDialogModal from "../../../../SharedComponents/SharedComponentsUI/TwoButtonDialogModal.vue";
 import PopupEmailComposition from "../../../../SharedComponents/SharedComponentsPopupUtilities/PopupEmailComposition.vue";
@@ -136,6 +124,7 @@ export default {
 
   props: ["contact", "category"],
   components: {
+    Contact,
     PopupEmailComposition,
     RoundIconButton,
     TwoButtonDialogModal,
