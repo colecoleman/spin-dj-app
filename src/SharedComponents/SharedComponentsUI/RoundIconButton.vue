@@ -24,6 +24,7 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
+  cursor: pointer;
   border-radius: 20px;
   box-sizing: border-box;
   padding: 5px;
@@ -31,5 +32,9 @@ export default {
   filter: drop-shadow(0px 1px 1px var(--cardOutline));
   /* border: 1px solid var(--cardOutline); */
   margin: 10px;
+}
+
+.round-button-wrapper:hover {
+  filter: drop-shadow(0px 2px 2px var(--cardOutline));
 }
 </style>
