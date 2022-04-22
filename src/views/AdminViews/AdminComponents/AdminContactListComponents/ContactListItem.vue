@@ -43,12 +43,8 @@
         <p>{{ contact.email }}</p>
       </div>
       <div class="button-wrapper">
-        <button-with-drop-down-selections
-          text="Actions"
-          :actions="actions"
-          :clicked="actionsClicked"
-          @button-clicked="togglePopup"
-        />
+        <round-icon-button svg="email" @click="emailContact()" />
+        <round-icon-button svg="trash-can" @click="initiateDeleteContact()" />
       </div>
     </div>
     <div class="contact-wrapper" v-if="category === 'locations'">
@@ -65,12 +61,7 @@
         <p>{{ contact.address.cityStateZip }}</p>
       </div>
       <div class="button-wrapper">
-        <button-with-drop-down-selections
-          text="Actions"
-          :actions="actions"
-          :clicked="actionsClicked"
-          @button-clicked="togglePopup"
-        />
+        <round-icon-button svg="trash-can" @click="initiateDeleteContact()" />
       </div>
     </div>
   </div>
@@ -78,7 +69,7 @@
 
 <script>
 import ProfilePicture from "../../../../assets/ProfilePicture.vue";
-import ButtonWithDropDownSelections from "../../../../SharedComponents/SharedComponentsUI/ButtonWithDropDownSelections.vue";
+import RoundIconButton from "../../../../SharedComponents/SharedComponentsUI/RoundIconButton.vue";
 import TwoButtonDialogModal from "../../../../SharedComponents/SharedComponentsUI/TwoButtonDialogModal.vue";
 import PopupEmailComposition from "../../../../SharedComponents/SharedComponentsPopupUtilities/PopupEmailComposition.vue";
 import { formatPhoneNumber } from "../../../../helpers.js";
@@ -124,6 +115,12 @@ export default {
         this.popupOpen = str;
       }
     },
+    emailContact() {
+      this.togglePopup("email");
+    },
+    initiateDeleteContact() {
+      this.togglePopup("delete");
+    },
     async confirmDeleteContact() {
       let deletePayload = {
         userKey: {
@@ -139,8 +136,8 @@ export default {
 
   props: ["contact", "category"],
   components: {
-    ButtonWithDropDownSelections,
     PopupEmailComposition,
+    RoundIconButton,
     TwoButtonDialogModal,
     ProfilePicture,
   },
@@ -155,7 +152,13 @@ export default {
     justify-content: space-between;
     align-items: center;
     align-content: center;
-    width: 99%;
+    width: 100%;
+    border: 1px solid var(--cardOutline);
+    border-radius: 10px;
+    filter: drop-shadow(0px 1px 0px var(--cardOutline));
+    background-color: var(--foregroundColor);
+    box-sizing: border-box;
+    margin-bottom: 5px;
     cursor: pointer;
     /* max-height: 100px; */
   }
@@ -176,15 +179,11 @@ export default {
     overflow: hidden;
   }
   .button-wrapper {
-    width: 30%;
-    position: relative;
+    width: auto;
     display: flex;
-    /* justify-content: center; */
-    /* min-height: 50px; */
+    align-items: center;
+    justify-content: flex-end;
     height: 45px;
-    /* align-items: center; */
-    box-sizing: border-box;
-    /* margin-top: 20px; */
   }
 
   .name-and-photo {
@@ -220,7 +219,7 @@ export default {
   @media (min-width: 700px) {
     .button-wrapper {
       width: 25%;
-      position: relative;
+      /* position: relative; */
     }
 
     .name-and-photo {
