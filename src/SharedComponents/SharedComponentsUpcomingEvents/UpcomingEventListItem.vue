@@ -5,16 +5,9 @@
     </div>
     <div class="event-location-identifier">
       <location :location="location" v-if="this.event.locations.length > 0" />
-      <location-skeleton-card v-if="!location.name" />
     </div>
     <div class="event-metadata-identifier">
-      <event-data
-        v-if="(location.name || client) && event.data.date"
-        :event="event"
-      />
-      <event-skeleton-card
-        v-if="(!location.name && !client) || !event.data.date"
-      />
+      <event-data :event="event" />
     </div>
   </list-item-style-wrapper>
 </template>
@@ -23,8 +16,8 @@
 import Contact from "../SharedComponentsUI/ListComponents/ContactProfilePictureAndName.vue";
 import Location from "../SharedComponentsUI/ListComponents/LocationNameAndAddressStacked.vue";
 import EventData from "../SharedComponentsUI/ListComponents/EventDateTimeBalance.vue";
-import LocationSkeletonCard from "../SharedComponentsUI/SkeletonCards/SkeletonLocationListItem.vue";
-import EventSkeletonCard from "../SharedComponentsUI/SkeletonCards/SkeletonUpcomingEventInformation.vue";
+// import LocationSkeletonCard from "../SharedComponentsUI/SkeletonCards/SkeletonLocationListItem.vue";
+// import EventSkeletonCard from "../SharedComponentsUI/SkeletonCards/SkeletonUpcomingEventInformation.vue";
 import ListItemStyleWrapper from "../SharedComponentsUI/ListItemStyleWrapper.vue";
 
 export default {
@@ -58,8 +51,8 @@ export default {
     Contact,
     Location,
     EventData,
-    LocationSkeletonCard,
-    EventSkeletonCard,
+    // LocationSkeletonCard,
+    // EventSkeletonCard,
     ListItemStyleWrapper,
   },
 };
