@@ -403,7 +403,7 @@ section {
   height: 100%;
   display: grid;
   grid-template-columns: 100%;
-  grid-template-rows: 75px 150px repeat(4, 1fr);
+  grid-template-rows: 75px 150px 250px 150px repeat(3, 250px);
   gap: 10px;
 }
 
@@ -442,7 +442,7 @@ section {
 @media screen and (min-width: 700px) {
   section {
     grid-template-columns: repeat(4, 1fr);
-    grid-template-rows: 75px 75px 150px repeat(2, 1fr);
+    grid-template-rows: 75px 75px 150px repeat(2, 250px);
   }
 
   #contact-card {
