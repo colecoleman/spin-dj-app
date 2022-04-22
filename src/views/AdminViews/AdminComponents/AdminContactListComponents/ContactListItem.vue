@@ -22,12 +22,8 @@
       @close-window="togglePopup"
     />
     <div class="contact-wrapper" v-if="category !== 'locations'">
-      <div class="name-and-photo">
-        <contact :contact="contact" />
-      </div>
-      <div class="email-and-phone">
-        <phone-and-email :contact="contact" />
-      </div>
+      <contact class="name-and-photo" :contact="contact" />
+      <phone-and-email class="email-and-phone" :contact="contact" />
       <div class="button-wrapper">
         <round-icon-button svg="email" @click="emailContact()" />
         <round-icon-button svg="trash-can" @click="initiateDeleteContact()" />
