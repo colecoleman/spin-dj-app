@@ -28,7 +28,8 @@ export default {
   box-sizing: border-box;
   padding: 5px;
   background-color: var(--foregroundColor);
-  border: 1px solid var(--cardOutline);
+  filter: drop-shadow(0px 1px 1px var(--cardOutline));
+  /* border: 1px solid var(--cardOutline); */
   margin: 10px;
 }
 </style>
