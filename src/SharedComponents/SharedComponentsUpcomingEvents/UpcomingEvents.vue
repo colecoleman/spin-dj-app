@@ -46,13 +46,13 @@
           class="events-content"
           v-if="userRole === 'client' && sortedEvents.length > 0"
         >
-          <client-view-upcoming-event-list-item
+          <client-page-upcoming-event-list-item
             v-for="event in sortedEvents"
             :key="event.userId"
             :event="event"
             @click="navigateToEventPage(event)"
           />
-          <client-view-upcoming-event-list-item
+          <client-page-upcoming-event-list-item
             v-for="event in pastEventsCopy"
             :key="event.userId"
             :event="event"
@@ -72,7 +72,7 @@
 import UpcomingEventsListItem from "./UpcomingEventListItem.vue";
 // import SkeletonCard from "../SharedComponentsUI/SkeletonCards/SkeletonThreeSectionUpcomingEventListItem.vue";
 import FloatingMenuWithListItems from "../SharedComponentsUI/FloatingMenuWithListItems.vue";
-import ClientViewUpcomingEventListItem from "./ClientViewUpcomingEventListItem.vue";
+import ClientPageUpcomingEventListItem from "./ClientPageUpcomingEventListItem.vue";
 
 export default {
   data() {
@@ -169,7 +169,7 @@ export default {
     UpcomingEventsListItem,
     // SkeletonCard,
     FloatingMenuWithListItems,
-    ClientViewUpcomingEventListItem,
+    ClientPageUpcomingEventListItem,
   },
 };
 </script>

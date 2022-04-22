@@ -15,9 +15,9 @@
 </template>
 
 <script>
-import ListItemStyleWrapper from "../../../../../SharedComponents/SharedComponentsUI/ListItemStyleWrapper.vue";
-import LocationNameAndAddressStacked from "../../../../../SharedComponents/SharedComponentsUI/ListComponents/LocationNameAndAddressStacked.vue";
-import EventDateTimeBalance from "../../../../../SharedComponents/SharedComponentsUI/ListComponents/EventDateTimeBalance.vue";
+import ListItemStyleWrapper from "../SharedComponentsUI/ListItemStyleWrapper.vue";
+import LocationNameAndAddressStacked from "../SharedComponentsUI/ListComponents/LocationNameAndAddressStacked.vue";
+import EventDateTimeBalance from "../SharedComponentsUI/ListComponents/EventDateTimeBalance.vue";
 
 export default {
   computed: {

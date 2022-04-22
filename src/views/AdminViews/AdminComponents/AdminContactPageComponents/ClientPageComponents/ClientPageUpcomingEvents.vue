@@ -28,7 +28,7 @@
 </template>
 
 <script>
-import LocationUpcomingEventsListItem from "./ClientPageUpcomingEventListItem.vue";
+import LocationUpcomingEventsListItem from "../../../../../SharedComponents/SharedComponentsUpcomingEvents/ClientPageUpcomingEventListItem.vue";
 import FloatingMenuWithListItems from "../../../../../SharedComponents/SharedComponentsUI/FloatingMenuWithListItems.vue";
 export default {
   data() {
