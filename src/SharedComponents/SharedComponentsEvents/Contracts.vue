@@ -78,15 +78,17 @@ export default {
     },
     icons() {
       let array = ["print"];
+      console.log(this.role);
       if (this.role == "admin") {
         if (this.contract) {
+          console.log(this.contract);
           if (this.contract.admin) {
             if (this.contract.admin.status !== "signed") {
               array.push("admin-signature");
             }
-            if (this.contract.status !== "signed") {
-              array.push("checked-signature");
-            }
+          }
+          if (this.contract.status !== "signed") {
+            array.push("checked-signature");
           }
         }
         if (this.businessSettings.contracts.length > 1) {
@@ -113,7 +115,7 @@ export default {
       return array;
     },
     role() {
-      return this.$store.getters.role;
+      return this.$store.getters.userRole;
     },
     businessSettings() {
       return this.$store.state.businessSettings;
