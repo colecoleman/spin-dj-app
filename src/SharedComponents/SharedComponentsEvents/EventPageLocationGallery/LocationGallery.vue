@@ -25,7 +25,7 @@
           svg="left-arrow"
         />
 
-        <specific-event-page-location-scroller-item
+        <location-gallery-item
           :location="location"
           v-if="locations.length > 0"
           @initiateDeleteLocation="toggleRemoveLocation"
@@ -59,7 +59,7 @@
 <script>
 import RoundIconButton from "../../SharedComponentsUI/RoundIconButton.vue";
 import InputWithTitleWithDropdown from "../../SharedComponentsUI/ElementLibrary/InputWithTitleWithDropdown.vue";
-import SpecificEventPageLocationScrollerItem from "./SpecificEventPageLocationScrollerItem.vue";
+import LocationGalleryItem from "./LocationGalleryItem.vue";
 import TwoButtonDialogModal from "../../SharedComponentsUI/TwoButtonDialogModal.vue";
 
 export default {
@@ -89,25 +89,25 @@ export default {
       };
       await this.$store.dispatch("editEvent", payload);
 
-      if (this.locations[this.counter].associatedEvents) {
-        let userId = this.locations[this.counter].key
-          ? this.locations[this.counter].key.userId
-          : this.locations[this.counter];
-        let eventKey = {
-          userId: this.event.userId,
-          tenantId: this.event.tenantId,
-        };
-        let contactParameters = {
-          contactKey: { userId: userId, tenantId: this.event.tenantId },
-          variable: "associatedEvents",
-          value: eventKey,
-        };
-        let index = await this.$store.dispatch(
-          "removeEventFromContact",
-          contactParameters
-        );
-        this.locations.splice(index, 1);
-      }
+      // if (this.locations[this.counter].associatedEvents) {
+      //   let userId = this.locations[this.counter].key
+      //     ? this.locations[this.counter].key.userId
+      //     : this.locations[this.counter];
+      //   let eventKey = {
+      //     userId: this.event.userId,
+      //     tenantId: this.event.tenantId,
+      //   };
+      //   let contactParameters = {
+      //     contactKey: { userId: userId, tenantId: this.event.tenantId },
+      //     variable: "associatedEvents",
+      //     value: eventKey,
+      //   };
+      //   let index = await this.$store.dispatch(
+      //     "removeEventFromContact",
+      //     contactParameters
+      //   );
+      //   this.locations.splice(index, 1);
+      // }
       this.counter = 0;
       this.toggleRemoveLocation();
     },
@@ -141,7 +141,7 @@ export default {
       };
       await this.$store.dispatch("editEvent", eventEditPayload);
       await this.$store.dispatch("editLocation", locationPayload);
-      this.locations.push(location);
+      // this.locations.push(location);
       this.toggleAddLocation();
     },
     decrementCounter() {
@@ -164,11 +164,9 @@ export default {
       return this.$store.getters.userRole;
     },
     location() {
-      console.log(this.locations[this.counter]);
       return this.locations[this.counter] ? this.locations[this.counter] : {};
     },
     locations() {
-      console.log(this.event.locations);
       return this.event.locations;
     },
     venueName() {
@@ -194,7 +192,7 @@ export default {
   },
   props: ["event"],
   components: {
-    SpecificEventPageLocationScrollerItem,
+    LocationGalleryItem,
     TwoButtonDialogModal,
     InputWithTitleWithDropdown,
     RoundIconButton,

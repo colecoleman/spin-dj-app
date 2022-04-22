@@ -41,7 +41,7 @@
         />
       </div>
       <div id="location-scroller">
-        <specific-event-page-location-scroller :event="event" />
+        <location-gallery :event="event" />
       </div>
       <div id="make-payment">
         <event-make-payment-card :event="event" :eventId="event.userId" />
@@ -69,8 +69,8 @@ import ToDoList from "../../../SharedComponents/SharedComponentsToDoList/ToDoLis
 import RecentMessages from "../../../SharedComponents/SharedComponentsMessaging/RecentMessages.vue";
 import EventPageContactCard from "../../../SharedComponents/SharedComponentsEvents/EventPageContactCard.vue";
 // import EventPageContactCarousel from "../../../SharedComponents/SharedComponentsEvents/eventPageContactCarousel/EventPageContactCarousel.vue";
-import ContactList from '../../../SharedComponents/SharedComponentsEvents/EventPageContactList/EventPageContactList.vue';
-import SpecificEventPageLocationScroller from "../../../SharedComponents/SharedComponentsEvents/specificEventPageLocationScroller/SpecificEventPageLocationScroller.vue";
+import ContactList from "../../../SharedComponents/SharedComponentsEvents/EventPageContactList/EventPageContactList.vue";
+import LocationGallery from "../../../SharedComponents/SharedComponentsEvents/EventPageLocationGallery/LocationGallery.vue";
 import EventMakePaymentCard from "../../../SharedComponents/SharedComponentsEvents/EventMakePayment/EventMakePaymentCard.vue";
 import Forms from "../../../SharedComponents/SharedComponentsEvents/Forms.vue";
 import Invoice from "../../../SharedComponents/SharedComponentsEvents/Invoice.vue";
@@ -207,7 +207,7 @@ export default {
     RecentMessages,
     EventPageContactCard,
     ContactList,
-    SpecificEventPageLocationScroller,
+    LocationGallery,
     EventPageAlerts,
     EventMakePaymentCard,
     Invoice,

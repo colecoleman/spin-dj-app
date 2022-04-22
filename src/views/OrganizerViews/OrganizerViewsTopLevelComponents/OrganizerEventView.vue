@@ -42,13 +42,13 @@
         />
       </div>
       <div id="location-scroller">
-        <specific-event-page-location-scroller :event="event" />
+        <location-gallery :event="event" />
       </div>
       <div id="make-payment">
         <event-make-payment-card :event="event" :eventId="event.userId" />
       </div>
       <div id="contact-carousel">
-        <event-page-contact-carousel :contacts="event.contacts" />
+        <contact-list :contacts="event.contacts" />
       </div>
       <div id="to-do">
         <to-do-list
@@ -73,8 +73,7 @@ import ToDoList from "../../../SharedComponents/SharedComponentsToDoList/ToDoLis
 // import RecentMessagesEvent from "../../../SharedComponents/SharedComponentsMessaging/RecentMessagesEvent.vue";
 import RecentMessages from "../../../SharedComponents/SharedComponentsMessaging/RecentMessages.vue";
 import EventPageContactCard from "../../../SharedComponents/SharedComponentsEvents/EventPageContactCard.vue";
-import EventPageContactCarousel from "../../../SharedComponents/SharedComponentsEvents/eventPageContactCarousel/EventPageContactCarousel.vue";
-import SpecificEventPageLocationScroller from "../../../SharedComponents/SharedComponentsEvents/specificEventPageLocationScroller/SpecificEventPageLocationScroller.vue";
+
 import EventMakePaymentCard from "../../../SharedComponents/SharedComponentsEvents/EventMakePayment/EventMakePaymentCard.vue";
 import Forms from "../../../SharedComponents/SharedComponentsEvents/Forms.vue";
 import Invoice from "../../../SharedComponents/SharedComponentsEvents/Invoice.vue";
@@ -86,6 +85,8 @@ import {
   balanceOutstanding,
   total,
 } from "../../../helpers.js";
+import ContactList from "../../../SharedComponents/SharedComponentsEvents/EventPageContactList/EventPageContactList.vue";
+import LocationGallery from "../../../SharedComponents/SharedComponentsEvents/EventPageLocationGallery/LocationGallery.vue";
 
 export default {
   data() {
@@ -200,8 +201,8 @@ export default {
     // RecentMessagesEvent,
     RecentMessages,
     EventPageContactCard,
-    EventPageContactCarousel,
-    SpecificEventPageLocationScroller,
+    ContactList,
+    LocationGallery,
     EventPageAlerts,
     EventMakePaymentCard,
     Invoice,

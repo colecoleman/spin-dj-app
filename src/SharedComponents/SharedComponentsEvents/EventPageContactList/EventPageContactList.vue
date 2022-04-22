@@ -14,11 +14,10 @@
     <template v-slot:content>
       <div id="contact-carousel-top-wrapper" v-if="!addContactOpen">
         <div id="contact-carousel-wrapper">
-          <event-page-contact-carousel-item
+          <contact-list-item
             v-for="(contact, index) in contacts"
             :key="index"
             :contact="contact"
-            :id="`${index + '-card'}`"
             @initiate-remove-contact="initiateRemoveContact(contact, index)"
           />
         </div>
@@ -41,7 +40,7 @@
 </template>
 
 <script>
-import EventPageContactCarouselItem from "./EventPageContactListItem.vue";
+import ContactListItem from "./EventPageContactListItem.vue";
 import InputWithTitleWithDropdown from "../../SharedComponentsUI/ElementLibrary/InputWithTitleWithDropdown.vue";
 import TwoButtonDialogModal from "../../SharedComponentsUI/TwoButtonDialogModal.vue";
 
@@ -150,7 +149,7 @@ export default {
   },
   props: ["contacts", "event"],
   components: {
-    EventPageContactCarouselItem,
+    ContactListItem,
     TwoButtonDialogModal,
     InputWithTitleWithDropdown,
   },

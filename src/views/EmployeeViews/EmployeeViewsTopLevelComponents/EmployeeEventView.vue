@@ -22,14 +22,11 @@
         />
       </div>
       <div id="location-scroller">
-        <specific-event-page-location-scroller
-          :event="event"
-          :locations="event.locations"
-        />
+        <location-gallery :event="event" :locations="event.locations" />
       </div>
 
       <div id="contact-carousel">
-        <event-page-contact-carousel :contacts="event.contacts" />
+        <contact-list :contacts="event.contacts" />
       </div>
       <div id="to-do">
         <to-do-list
@@ -50,8 +47,8 @@ import ToDoList from "../../../SharedComponents/SharedComponentsToDoList/ToDoLis
 // import RecentMessagesEvent from "../../../SharedComponents/SharedComponentsMessaging/RecentMessagesEvent.vue";
 import RecentMessages from "../../../SharedComponents/SharedComponentsMessaging/RecentMessages.vue";
 import EventPageContactCard from "../../../SharedComponents/SharedComponentsEvents/EventPageContactCard.vue";
-import EventPageContactCarousel from "../../../SharedComponents/SharedComponentsEvents/eventPageContactCarousel/EventPageContactCarousel.vue";
-import SpecificEventPageLocationScroller from "../../../SharedComponents/SharedComponentsEvents/specificEventPageLocationScroller/SpecificEventPageLocationScroller.vue";
+import ContactList from "../../../SharedComponents/SharedComponentsEvents/EventPageContactList/EventPageContactList.vue";
+import LocationGallery from "../../../SharedComponents/SharedComponentsEvents/EventPageLocationGallery/LocationGallery.vue";
 import Forms from "../../../SharedComponents/SharedComponentsEvents/Forms.vue";
 import FourButtonBarWithDropDown from "../../../SharedComponents/SharedComponentsUI/FourButtonBarWithDropDown.vue";
 import EventPageAlerts from "../../../SharedComponents/SharedComponentsEvents/EventPageAlerts.vue";
@@ -114,8 +111,8 @@ export default {
     // RecentMessagesEvent,
     RecentMessages,
     EventPageContactCard,
-    EventPageContactCarousel,
-    SpecificEventPageLocationScroller,
+    ContactList,
+    LocationGallery,
     EventPageAlerts,
     Forms,
     FourButtonBarWithDropDown,
