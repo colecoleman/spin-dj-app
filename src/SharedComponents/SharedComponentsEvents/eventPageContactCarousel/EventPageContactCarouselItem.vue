@@ -43,7 +43,7 @@ export default {
     async navigateToContactPage(contact) {
       if (this.userRole === "admin") {
         this.$router.push(
-          `/${this.userRole}/contacts/${contact.this.userRole}s/${contact.userId}`
+          `/${this.userRole}/contacts/${contact.role}s/${contact.userId}`
         );
       }
     },
