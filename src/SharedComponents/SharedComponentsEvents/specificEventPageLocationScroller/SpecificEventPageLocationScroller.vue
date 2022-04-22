@@ -9,7 +9,7 @@
   <base-card
     svg="location-marker"
     title="Locations"
-    actionIcon="plus-sign"
+    :actionIcon="userRole === 'admin' ? 'plus-sign' : undefined"
     @actionOneClicked="toggleAddLocation()"
   >
     <template v-slot:content>
@@ -160,6 +160,9 @@ export default {
     },
   },
   computed: {
+    userRole() {
+      return this.$store.getters.userRole;
+    },
     location() {
       console.log(this.locations[this.counter]);
       return this.locations[this.counter] ? this.locations[this.counter] : {};

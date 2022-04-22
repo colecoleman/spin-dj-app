@@ -10,7 +10,7 @@
       <div class="address">
         <location :location="location" />
       </div>
-      <div class="button-wrapper">
+      <div class="button-wrapper" v-if="userRole === 'admin'">
         <round-icon-button
           svg="location-marker"
           @click="navivateToLocation()"
@@ -37,6 +37,9 @@ export default {
     };
   },
   computed: {
+    userRole() {
+      return this.$store.getters.userRole;
+    },
     address() {
       console.log(this.location);
       if (this.location.address) {
@@ -50,6 +53,9 @@ export default {
     formatTime,
     initiateDeleteLocation() {
       this.$emit("initiateDeleteLocation");
+    },
+    navigateToLocation() {
+      this.$router.push(`contacts/locations/${this.location.userId}`);
     },
   },
   props: ["location", "index"],

@@ -3,10 +3,14 @@
     <h4>
       <span>{{ contact.role }}</span>
     </h4>
-    <list-item-style-wrapper hoverable="true" @click="navigateToContactPage()">
-      <picture-and-name :contact="contact" />
+    <list-item-style-wrapper hoverable="true">
+      <picture-and-name :contact="contact" @click="navigateToContactPage()" />
       <phone-and-email :contact="contact" @click="navigateToContactPage()" />
-      <round-icon-button svg="x-icon" @click="initiateRemoveContact()" />
+      <round-icon-button
+        v-if="userRole === 'admin'"
+        svg="x-icon"
+        @click="initiateRemoveContact()"
+      />
     </list-item-style-wrapper>
   </div>
 </template>

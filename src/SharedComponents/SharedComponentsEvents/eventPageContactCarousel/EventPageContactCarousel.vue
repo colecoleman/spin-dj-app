@@ -8,7 +8,7 @@
   <base-card
     svg="group-people"
     title="Event Contacts"
-    actionIcon="plus-sign"
+    :actionIcon="userRole === 'admin' ? 'plus-sign' : ''"
     @actionOneClicked="toggleAddContactOpen"
   >
     <template v-slot:content>
@@ -58,6 +58,9 @@ export default {
     };
   },
   computed: {
+    userRole() {
+      return this.$store.getters.userRole;
+    },
     contactSearchResults() {
       if (this.clientSearchField) {
         if (this.$store.state.contacts.length < 5) {
