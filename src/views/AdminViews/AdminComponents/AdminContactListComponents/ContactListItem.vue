@@ -152,6 +152,10 @@ export default {
     /* max-height: 100px; */
   }
 
+  .contact-wrapper:hover {
+    filter: drop-shadow(0px 2px 2px var(--cardOutline));
+  }
+
   .name {
     display: flex;
     flex-direction: column;
