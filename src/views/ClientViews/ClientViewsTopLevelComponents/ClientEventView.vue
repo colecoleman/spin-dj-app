@@ -47,7 +47,7 @@
         <event-make-payment-card :event="event" :eventId="event.userId" />
       </div>
       <div id="contact-carousel">
-        <event-page-contact-carousel :contacts="event.contacts" />
+        <contact-list :contacts="event.contacts" />
       </div>
       <div id="to-do">
         <to-do-list
@@ -68,7 +68,8 @@ import ToDoList from "../../../SharedComponents/SharedComponentsToDoList/ToDoLis
 // import RecentMessagesEvent from "../../../SharedComponents/SharedComponentsMessaging/RecentMessagesEvent.vue";
 import RecentMessages from "../../../SharedComponents/SharedComponentsMessaging/RecentMessages.vue";
 import EventPageContactCard from "../../../SharedComponents/SharedComponentsEvents/EventPageContactCard.vue";
-import EventPageContactCarousel from "../../../SharedComponents/SharedComponentsEvents/eventPageContactCarousel/EventPageContactCarousel.vue";
+// import EventPageContactCarousel from "../../../SharedComponents/SharedComponentsEvents/eventPageContactCarousel/EventPageContactCarousel.vue";
+import ContactList from '../../../SharedComponents/SharedComponentsEvents/EventPageContactList/EventPageContactList.vue';
 import SpecificEventPageLocationScroller from "../../../SharedComponents/SharedComponentsEvents/specificEventPageLocationScroller/SpecificEventPageLocationScroller.vue";
 import EventMakePaymentCard from "../../../SharedComponents/SharedComponentsEvents/EventMakePayment/EventMakePaymentCard.vue";
 import Forms from "../../../SharedComponents/SharedComponentsEvents/Forms.vue";
@@ -85,7 +86,7 @@ import {
 export default {
   data() {
     return {
-      event: undefined,
+      // event: undefined,
       contacts: [],
       locations: [],
       clients: [],
@@ -115,6 +116,9 @@ export default {
         }
       });
       return clients[0];
+    },
+    event() {
+      return this.$store.state.event;
     },
     businessSettings() {
       return this.$store.state.businessSettings;
@@ -193,7 +197,8 @@ export default {
       userId: id,
       tenantId: this.$route.params.tenantId,
     };
-    this.event = await this.$store.dispatch("getEvent", key);
+    let event = await this.$store.dispatch("getEvent", key);
+    this.$store.commit("setEvent", event);
     await this.$store.dispatch("getEventContacts", this.event);
     await this.$store.dispatch("getEventLocations", this.event);
   },
@@ -201,7 +206,7 @@ export default {
     ToDoList,
     RecentMessages,
     EventPageContactCard,
-    EventPageContactCarousel,
+    ContactList,
     SpecificEventPageLocationScroller,
     EventPageAlerts,
     EventMakePaymentCard,

@@ -964,7 +964,12 @@ const store = createStore({
                 data: result.data.Attributes,
               };
               context.commit("editEvent", mutationPayload);
-              context.dispatch("getEventContacts", context.state.event);
+              if (payload.variable === 'contacts') {
+                context.dispatch("getEventContacts", context.state.event);
+              }
+              if (payload.variable === 'locations') {
+                context.dispatch('getEventLocations', context.state.event);
+              }
               resolve(result);
             },
             (error) => {

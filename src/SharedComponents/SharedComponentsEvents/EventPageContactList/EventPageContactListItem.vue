@@ -1,6 +1,6 @@
 <template>
   <div class="contact-carousel-contact-item">
-    <h4>
+    <h4 v-if="contact">
       <span>{{ contact.role }}</span>
     </h4>
     <list-item-style-wrapper hoverable="true">

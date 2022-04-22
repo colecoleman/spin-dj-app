@@ -177,6 +177,7 @@ export default {
       let string = "";
       let contactsArr = [];
       if (this.contacts) {
+        console.log(this.contacts);
         if (this.contacts.length > 0) {
           contactsArr = [...this.contacts].filter((x) => {
             return x.role === "client";
