@@ -25,23 +25,25 @@
       <contact
         class="contact-section"
         :contact="contact"
-        @click="viewContact()"
+        @click="viewContact"
         v-if="category !== 'locations'"
       />
       <phone-and-email
         class="contact-section"
         :contact="contact"
+        @click="viewContact"
         v-if="category !== 'locations'"
       />
       <location
         class="contact-section"
         :location="contact"
-        @click="viewContact()"
+        @click="viewContact"
         v-if="category === 'locations'"
       />
       <location-address
         class="contact-section"
         :location="contact"
+        @click="viewContact"
         v-if="category === 'locations'"
       />
       <div class="button-wrapper">

@@ -1,12 +1,13 @@
 <template>
-  <skeleton-profile-picture-name v-if="!contact" />
-  <div class="contact-wrapper" v-if="contact">
+  <div class="contact-wrapper">
+    <skeleton-profile-picture-name v-if="!contact" />
     <profile-picture
+      v-if="contact"
       contact="person"
       :profilePicture="contact.profilePicture"
       :customStyle="profilePictureStyling"
     />
-    <div class="contact-name">
+    <div class="contact-name" v-if="contact">
       <h5 v-if="contact.given_name">
         {{ contact.given_name }}
       </h5>

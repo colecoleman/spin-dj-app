@@ -1,11 +1,9 @@
 <template>
-  <div class="location-address" v-if="location.address">
-    <p>{{ location.address.streetAddress1 }}</p>
-    <p>{{ location.address.cityStateZip }}</p>
-  </div>
-  <div class="location-address" v-if="!location.address">
-    <skeleton class="skeleton" />
-    <skeleton class="skeleton" />
+  <div class="location-address">
+    <p v-if="location.address">{{ location.address.streetAddress1 }}</p>
+    <skeleton v-if="!location.address" class="skeleton" />
+    <skeleton v-if="!location.address" class="skeleton" />
+    <p v-if="location.address">{{ location.address.cityStateZip }}</p>
   </div>
 </template>
 <script>
