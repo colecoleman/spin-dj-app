@@ -22,7 +22,11 @@
       @close-window="togglePopup"
     />
     <div class="contact-wrapper" v-if="category !== 'locations'">
-      <contact class="name-and-photo" :contact="contact" />
+      <contact
+        class="name-and-photo"
+        :contact="contact"
+        @click="viewContact()"
+      />
       <phone-and-email class="email-and-phone" :contact="contact" />
       <div class="button-wrapper">
         <round-icon-button svg="email" @click="emailContact()" />
