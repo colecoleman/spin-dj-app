@@ -1,32 +1,13 @@
 <template>
   <div class="single-event-item" @click="eventClicked">
     <div class="client-event-identifier">
-      <div class="conditional-wrapper" v-if="client">
-        <profile-picture
-          contact="person"
-          :profilePicture="client.profilePicture"
-          :customStyle="profilePictureStyling"
-        />
-        <h5 class="client-name" v-if="client.userId">
-          {{ client.given_name }} <br />
-          <span> {{ client.family_name }}</span>
-        </h5>
-      </div>
+      <contact v-if="client" :contact="client" />
       <client-skeleton-card v-if="!client" />
     </div>
-    <div
-      class="event-location-identifier"
-      v-if="this.event.locations.length > 0"
-    >
-      <h4 class="venue-name" v-if="location.name">
-        {{ location.name }}
-      </h4>
-      <div class="event-address" v-if="location.address">
-        <p>{{ location.address.streetAddress1 }}</p>
-        <p>{{ location.address.cityStateZip }}</p>
-      </div>
+    <div class="event-location-identifier">
+      <location :location="location" v-if="this.event.locations.length > 0" />
+      <location-skeleton-card v-if="!location.name" />
     </div>
-    <location-skeleton-card v-if="!location.name" />
     <div
       class="event-metadata-identifier"
       v-if="(location.name || client) && event.data.date"
@@ -52,12 +33,11 @@
       v-if="(!location.name && !client) || !event.data.date"
     />
   </div>
-  <!-- <skeleton-card v-if="loading" /> -->
 </template>
 
 <script>
-import ProfilePicture from "../../assets/ProfilePicture.vue";
-// import SkeletonCard from "../SharedComponentsUI/SkeletonCards/SkeletonThreeSectionUpcomingEventListItem.vue";
+import Contact from "../SharedComponentsUI/ListComponents/ContactProfilePictureAndName.vue";
+import Location from "../SharedComponentsUI/ListComponents/LocationNameAndAddressStacked.vue";
 import ClientSkeletonCard from "../SharedComponentsUI/SkeletonCards/SkeletonProfilePictureName.vue";
 import LocationSkeletonCard from "../SharedComponentsUI/SkeletonCards/SkeletonLocationListItem.vue";
 import EventSkeletonCard from "../SharedComponentsUI/SkeletonCards/SkeletonUpcomingEventInformation.vue";
@@ -70,10 +50,7 @@ import {
 
 export default {
   data() {
-    return {
-      profilePictureStyling:
-        "height: 30px; min-height: 30px; min-width: 30px; width: 30px; margin: 5px 5px 5px 0;",
-    };
+    return {};
   },
   computed: {
     userRole() {
@@ -108,8 +85,9 @@ export default {
   emits: ["clicked"],
   props: ["event", "first", "loaded"],
   components: {
-    ProfilePicture,
     // SkeletonCard,
+    Contact,
+    Location,
     ClientSkeletonCard,
     LocationSkeletonCard,
     EventSkeletonCard,
@@ -123,39 +101,33 @@ export default {
   .event-location-identifier,
   .event-metadata-identifier {
     display: flex;
-    height: 70px;
     max-width: 33%;
+    min-width: 33%;
     width: 33%;
   }
 
   .single-event-item {
     display: flex;
     width: 100%;
+    height: fit-content;
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
-    border-bottom: 1px solid var(--cardOutline);
+    border: 1px solid var(--cardOutline);
+    filter: drop-shadow(0px 1px 1px var(--cardOutline));
+    background-color: var(--foregroundColor);
+    border-radius: 10px;
+    box-sizing: border-box;
+    padding: 0 5px;
+    margin-bottom: 5px;
     cursor: pointer;
   }
 
-  .conditional-wrapper {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-  }
-
-  .client-name {
-    font-size: 10pt;
-    display: flex;
-    flex-direction: column;
-    text-align: left;
-    text-transform: uppercase;
-    white-space: nowrap;
-    text-overflow: ellipsis;
+  .single-event-item:hover {
+    filter: drop-shadow(0px 2px 2px var(--cardOutline));
   }
 
   .event-location-identifier {
-    font-size: 10pt;
     flex-direction: column;
     justify-content: center;
   }
