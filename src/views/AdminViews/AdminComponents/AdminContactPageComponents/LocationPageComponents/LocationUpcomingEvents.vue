@@ -15,21 +15,20 @@
         @actionClicked="selectSort"
       />
     </template>
-    <template v-slot:content v-if="events">
+    <template v-slot:content>
       <div class="events-content" v-if="!eventAssignmentOpen && location">
         <h5 @click="eventAssignmentToggle()" v-if="events.length == 0">
           {{ location.name }} has no events.
           <br />
           Click to assign to one.
         </h5>
-        <div v-if="events.length > 0">
-          <location-upcoming-events-list-item
-            v-for="event in events"
-            :key="event.id"
-            :event="event"
-            @click="navigateToEventPage(event.userId), sortByDateDescending()"
-          />
-        </div>
+
+        <location-upcoming-events-list-item
+          v-for="event in events"
+          :key="event.id"
+          :event="event"
+          @click="navigateToEventPage(event.userId), sortByDateDescending()"
+        />
       </div>
       <div class="events-content" v-if="eventAssignmentOpen">
         <div
