@@ -76,7 +76,7 @@ export default {
     text-transform: uppercase;
     color: var(--textColor);
     background-color: var(--foregroundColor);
-    border: 1px solid var(--textColor);
+    border: 1px solid var(--cardOutline);
     border-radius: 7px;
     cursor: pointer;
   }
