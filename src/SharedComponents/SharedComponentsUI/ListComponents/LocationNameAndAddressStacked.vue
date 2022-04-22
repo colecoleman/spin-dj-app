@@ -3,10 +3,13 @@
     <h4 class="venue-name" v-if="location.name">
       {{ location.name }}
     </h4>
-    <location-address :location="location" v-if="location.address" />
+    <skeleton class="venue-name" v-if="!location.name" />
+    <location-address :location="location" />
   </div>
 </template>
 <script>
+import Skeleton from "../SkeletonCards/SkeletonText.vue";
+
 import LocationAddress from "./LocationAddress.vue";
 export default {
   data() {
@@ -14,7 +17,7 @@ export default {
   },
   methods: {},
   created() {},
-  components: { LocationAddress },
+  components: { LocationAddress, Skeleton },
   props: ["location"],
 };
 </script>
@@ -22,7 +25,9 @@ export default {
 @media screen and (min-width: 320px) {
   .location-identifier {
     font-size: 10pt;
+    display: flex;
     flex-direction: column;
+    align-items: center;
     justify-content: center;
   }
 
@@ -34,6 +39,7 @@ export default {
   }
 
   .venue-name {
+    min-width: 100px;
     font-size: 9px;
   }
 }

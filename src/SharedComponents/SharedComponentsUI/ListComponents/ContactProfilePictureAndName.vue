@@ -10,16 +10,17 @@
       <h5 v-if="contact.given_name">
         {{ contact.given_name }}
       </h5>
-      <div class="skeleton" v-if="!contact.given_name"></div>
+      <skeleton v-if="!contact.given_name" />
       <h5 v-if="contact.family_name">
         {{ contact.family_name }}
       </h5>
-      <div class="skeleton" v-if="!contact.family_name"></div>
+      <skeleton v-if="!contact.family_name" />
     </div>
   </div>
 </template>
 <script>
 import SkeletonProfilePictureName from "../SkeletonCards/SkeletonProfilePictureName.vue";
+import Skeleton from "../SkeletonCards/SkeletonText.vue";
 import ProfilePicture from "../../../assets/ProfilePicture.vue";
 export default {
   data() {
@@ -31,7 +32,7 @@ export default {
   computed: {},
   methods: {},
   created() {},
-  components: { ProfilePicture, SkeletonProfilePictureName },
+  components: { ProfilePicture, SkeletonProfilePictureName, Skeleton },
   props: ["contact"],
 };
 </script>
@@ -54,13 +55,5 @@ h5 {
   font-size: 10pt;
   margin: 0;
   text-transform: uppercase;
-}
-
-.skeleton {
-  background-color: var(--textColor);
-  width: 50px;
-  height: 12px;
-  border-radius: 3px;
-  margin: 2px 0px;
 }
 </style>
