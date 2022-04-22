@@ -184,14 +184,12 @@ const store = createStore({
       }
     },
     async getEventContacts(context, event) {
-      console.log('getting event contacts');
-      let contacts = event.contacts.map((x, index) => {
+      let contacts = event.contacts.map((x) => {
         let userId = x.key ? x.key.userId : x.id;
         let tenantId = x.key ? x.key.tenantId : event.tenantId;
         let key = { userId, tenantId };
         return context.dispatch("getContactListItem", key).then((res) => {
           if (!res) {
-            console.log(index);
             // let contactRemoveParameters = {
             //   eventKey: {
             //     userId: this.event.userId,
@@ -221,7 +219,7 @@ const store = createStore({
       });
     },
     async getEventLocations(context, event) {
-      console.log('getting locations')
+      console.log("getting locations");
       let locations = event.locations.map((x) => {
         let userId = x.key ? x.key.userId : x;
         let tenantId = x.key ? x.key.tenantId : event.tenantId;
@@ -949,38 +947,35 @@ const store = createStore({
       }
     },
     async editEvent(context, payload) {
-      return new Promise((resolve, reject) => {
-        axios
-          .put(
-            `https://api.spindj.io/admin/${payload.eventKey.tenantId}/events/${payload.eventKey.userId}`,
-            payload
-          )
-          .then(
-            (result) => {
-              console.log(result);
-              let mutationPayload = {
-                variable: payload.variable,
-                eventId: result.data.Attributes.userId,
-                data: result.data.Attributes,
-              };
-              context.commit("editEvent", mutationPayload);
-              if (payload.variable === 'contacts') {
-                context.dispatch("getEventContacts", context.state.event);
-              }
-              if (payload.variable === 'locations') {
-                context.dispatch('getEventLocations', context.state.event);
-              }
-              resolve(result);
-            },
-            (error) => {
-              context.commit("addStatus", {
-                type: "error",
-                note: error,
-              });
-              reject(error);
-            }
-          );
-      });
+      let editPayload = await axios
+        .put(
+          `https://api.spindj.io/admin/${payload.eventKey.tenantId}/events/${payload.eventKey.userId}`,
+          payload
+        )
+        .then(
+          (result) => {
+            console.log(result);
+            return {
+              variable: payload.variable,
+              eventId: result.data.Attributes.userId,
+              data: result.data.Attributes,
+            };
+          },
+          (error) => {
+            context.commit("addStatus", {
+              type: "error",
+              note: error,
+            });
+          }
+        );
+      context.commit("editEvent", editPayload);
+      if (editPayload.variable === "contacts") {
+        await context.dispatch("getEventContacts", context.state.event);
+      }
+      if (payload.variable === "locations") {
+        await context.dispatch("getEventLocations", context.state.event);
+      }
+      console.log(context.state.event);
     },
     async deleteEvent(context, payload) {
       await axios
@@ -1448,12 +1443,7 @@ const store = createStore({
       state.events.push(payload);
     },
     editEvent(state, payload) {
-      if (payload.variable !== 'contacts' && payload.variable !== 'locations') {
-        state.event[payload.variable] = payload.data[payload.variable];
-      } else if (payload.variable === 'contacts') {
-        state.event[payload.variable].push(payload.data);
-        console.log(state.event);
-      }
+      state.event[payload.variable] = payload.data[payload.variable];
     },
     setEvent(state, payload) {
       state.event = payload;
@@ -1469,8 +1459,8 @@ const store = createStore({
             ? -1
             : new Date(a.data.startTime).getTime() >
               new Date(b.data.startTime).getTime()
-              ? 1
-              : 0;
+            ? 1
+            : 0;
         });
       } else {
         state.events.sort(logic);
@@ -1623,7 +1613,7 @@ const store = createStore({
           return "dollar";
         }
       } else {
-        return 'dollar'
+        return "dollar";
       }
     },
     depositAmount(state) {
@@ -1632,7 +1622,7 @@ const store = createStore({
       } else if (state.businessSettings.payments.depositAmount) {
         return state.businessSettings.payments.depositAmount;
       } else {
-        return '100';
+        return "100";
       }
     },
     depositTerminology(state) {
@@ -1653,7 +1643,7 @@ const store = createStore({
         return {
           increment: 2,
           type: "weeks",
-        }
+        };
       }
     },
     finalPaymentIncrement(state) {
@@ -1667,7 +1657,7 @@ const store = createStore({
       if (state.businessSettings.payments.finalPayment) {
         return state.businessSettings.payments.finalPayment.type;
       } else {
-        return 'weeks';
+        return "weeks";
       }
     },
     creditCardEnabled(state) {
@@ -1705,7 +1695,6 @@ const store = createStore({
         return "";
       }
     },
-
 
     // contact getters
 
