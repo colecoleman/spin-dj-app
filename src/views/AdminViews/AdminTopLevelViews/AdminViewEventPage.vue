@@ -1,9 +1,5 @@
 <template>
   <div v-if="event" id="div-wrapper">
-    <!-- <backdrop
-      v-if="invoiceOpen || formsOpen || contractOpen"
-      @click="closePopup()"
-    ></backdrop> -->
     <Transition name="rise">
       <invoice
         :invoice="event.invoice"
@@ -182,10 +178,6 @@ export default {
   data() {
     return {
       svgStyling: "height: 14px; margin: 10px;",
-      event: undefined,
-      // contacts: [],
-      // locations: [],
-      // clients: [],
       automations: [],
       buttons: [
         {
@@ -238,6 +230,9 @@ export default {
     },
     currentUser() {
       return this.$store.state.user;
+    },
+    event() {
+      return this.$store.state.event;
     },
   },
   methods: {
@@ -337,9 +332,9 @@ export default {
       };
       this.$store.dispatch("editEvent", payload);
     },
-    editEvent(payload) {
-      this.event = payload;
-    },
+    // editEvent(payload) {
+    // this.event = payload;
+    // },
     applyManualPayment(payment) {
       this.event.invoice.payments.push(payment);
       let payload = {
@@ -357,7 +352,8 @@ export default {
       tenantId: this.$store.state.user.tenantId,
       userId: this.$route.params.id,
     };
-    this.event = await this.$store.dispatch("adminGetEvent", key);
+    let event = await this.$store.dispatch("adminGetEvent", key);
+    await this.$store.commit("setEvent", event);
     await this.$store.dispatch("getEventContacts", this.event);
     await this.$store.dispatch("getEventLocations", this.event);
   },
