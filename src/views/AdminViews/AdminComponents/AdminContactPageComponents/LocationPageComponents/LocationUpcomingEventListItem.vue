@@ -1,58 +1,26 @@
 <template>
-  <div id="single-event-item">
-    <div id="client-event-identifier" v-if="matchedClient">
-      <profile-picture
-        contact="person"
-        :profilePicture="matchedClient.profilePicture"
-        :customStyle="profilePictureStyling"
-      />
-      <h5 id="client-name">
-        {{ matchedClient.given_name }} <br />
-        <span> {{ matchedClient.family_name }}</span>
-      </h5>
-    </div>
-
-    <div id="event-metadata-identifier">
-      <div id="date-and-time-identifier">
-        <p>{{ formatDate(event.data.date) }}</p>
-        <p>
-          {{ formatTime(event.data.startTime) }} -
-          {{ formatTime(event.data.endTime) }}
-        </p>
-      </div>
-      <div id="event-invoice-metadata">
-        <p>
-          {{ formatPrice(balanceOutstanding(event.invoice, event.data)) }}
-          Outstanding
-        </p>
-      </div>
-    </div>
-  </div>
+  <list-item-style-wrapper hoverable="true">
+    <contact-profile-picture-and-name
+      class="client-event-identifier"
+      v-if="matchedClient"
+      :contact="matchedClient"
+    />
+    <event-date-time-balance class="event-metadata-identifier" :event="event" />
+  </list-item-style-wrapper>
 </template>
 
 <script>
-import ProfilePicture from "../../../../../assets/ProfilePicture.vue";
-import {
-  formatDate,
-  formatTime,
-  formatPrice,
-  balanceOutstanding,
-} from "../../../../../helpers.js";
+import ContactProfilePictureAndName from "../../../../../SharedComponents/SharedComponentsUI/ListComponents/ContactProfilePictureAndName.vue";
+import EventDateTimeBalance from "../../../../../SharedComponents/SharedComponentsUI/ListComponents/EventDateTimeBalance.vue";
+import ListItemStyleWrapper from "../../../../../SharedComponents/SharedComponentsUI/ListItemStyleWrapper.vue";
 
 export default {
   data() {
     return {
-      profilePictureStyling:
-        "height: 40px; width: 40px; margin: 10px 10px 10px 0;",
       matchedClient: undefined,
     };
   },
-  methods: {
-    formatDate,
-    formatTime,
-    formatPrice,
-    balanceOutstanding,
-  },
+  methods: {},
   async mounted() {
     this.loading = true;
     let contactId = this.event.contacts[0].key
@@ -64,59 +32,16 @@ export default {
     this.loading = false;
   },
   props: ["event"],
-  components: { ProfilePicture },
+  components: {
+    ContactProfilePictureAndName,
+    EventDateTimeBalance,
+    ListItemStyleWrapper,
+  },
 };
 </script>
 
 <style scoped>
-#client-event-identifier,
-#event-metadata-identifier {
-  display: flex;
-  max-width: 50%;
-  width: 50%;
-}
-#single-event-item {
-  display: flex;
-  flex-direction: row;
-  padding-bottom: 10px;
-  cursor: pointer;
-}
-
-#client-event-identifier {
-  flex-direction: row;
-  align-items: center;
-}
-
-#client-event-identifier img {
-  height: 40px;
-  width: 40px;
-  margin: 10px 10px 10px 0;
-}
-#client-name {
-  font-size: 10pt;
-  display: flex;
-  flex-direction: column;
-  text-align: left;
-  text-transform: uppercase;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-}
-
-h5 {
-  font-weight: 300;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  text-transform: capitalize;
-}
-
-h5 span {
-  font-weight: 600;
-}
-
-#event-metadata-identifier {
-  flex-direction: column;
-  font-size: 10pt;
+.event-metadata-identifier >>> * {
   text-align: right;
 }
 </style>

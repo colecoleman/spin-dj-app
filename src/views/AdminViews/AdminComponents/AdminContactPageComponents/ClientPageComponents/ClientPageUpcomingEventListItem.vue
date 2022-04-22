@@ -1,5 +1,9 @@
 <template>
-  <div id="single-event-item" @click="routeToEvent()">
+  <list-item-style-wrapper
+    class="single-event-item"
+    hoverable="true"
+    @click="routeToEvent()"
+  >
     <div class="event-location-identifier" v-if="location">
       <h4 class="venue-name">{{ location.name }}</h4>
       <div class="event-address">
@@ -18,31 +22,13 @@
       </div>
     </div>
     <p v-if="!location">Unknown Location</p>
-    <div id="event-metadata-identifier">
-      <div id="date-and-time-identifier">
-        <p>{{ formatDate(event.data.date) }}</p>
-        <p>
-          {{ formatTime(event.data.startTime) }} -
-          {{ formatTime(event.data.endTime) }}
-        </p>
-      </div>
-      <div id="event-invoice-metadata">
-        <p>
-          {{ formatPrice(balanceOutstanding(event.invoice, event.data)) }}
-          Outstanding
-        </p>
-      </div>
-    </div>
-  </div>
+    <event-date-time-balance class="event-metadata-identifier" :event="event" />
+  </list-item-style-wrapper>
 </template>
 
 <script>
-import {
-  formatDate,
-  formatTime,
-  formatPrice,
-  balanceOutstanding,
-} from "../../../../../helpers.js";
+import ListItemStyleWrapper from "../../../../../SharedComponents/SharedComponentsUI/ListItemStyleWrapper.vue";
+import EventDateTimeBalance from "../../../../../SharedComponents/SharedComponentsUI/ListComponents/EventDateTimeBalance.vue";
 
 export default {
   computed: {
@@ -51,13 +37,13 @@ export default {
     },
   },
   methods: {
-    formatDate,
-    formatTime,
-    formatPrice,
-    balanceOutstanding,
     routeToEvent() {
       this.$router.push("events/" + this.event.id);
     },
+  },
+  components: {
+    EventDateTimeBalance,
+    ListItemStyleWrapper,
   },
   props: ["event"],
 };
@@ -65,25 +51,14 @@ export default {
 
 <style scoped>
 @media screen {
-  #event-location-identifier,
-  #event-metadata-identifier {
-    display: flex;
-    /* max-width: 50%; */
+  .event-location-identifier,
+  .event-metadata-identifier {
+    /* display: flex; */
     width: 50%;
   }
 
   .event-address {
     text-align: left;
-  }
-
-  #single-event-item {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-evenly;
-    padding-bottom: 10px;
-    border-bottom: 1px solid var(--cardOutline);
-    cursor: pointer;
   }
 
   .event-location-identifier {
@@ -103,7 +78,7 @@ export default {
     margin: 5px 0px;
   }
 
-  #event-metadata-identifier {
+  .event-metadata-identifier {
     flex-direction: column;
     text-align: right;
   }

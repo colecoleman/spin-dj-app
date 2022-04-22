@@ -1,18 +1,18 @@
 <template>
-  <div class="contact-carousel-item-wrapper">
+  <div class="contact-carousel-contact-item">
     <h4>
       <span>{{ contact.role }}</span>
     </h4>
-    <div class="contact-carousel-contact-item">
-      <picture-and-name :contact="contact" @click="navigateToContactPage()" />
-
+    <list-item-style-wrapper hoverable="true" @click="navigateToContactPage()">
+      <picture-and-name :contact="contact" />
       <phone-and-email :contact="contact" @click="navigateToContactPage()" />
       <round-icon-button svg="x-icon" @click="initiateRemoveContact()" />
-    </div>
+    </list-item-style-wrapper>
   </div>
 </template>
 
 <script>
+import ListItemStyleWrapper from "../../SharedComponentsUI/ListItemStyleWrapper.vue";
 import PictureAndName from "../../SharedComponentsUI/ListComponents/ContactProfilePictureAndName.vue";
 import PhoneAndEmail from "../../SharedComponentsUI/ListComponents/ContactEmailAndPhoneNumber.vue";
 import RoundIconButton from "../../SharedComponentsUI/RoundIconButton.vue";
@@ -42,45 +42,29 @@ export default {
   },
   emits: ["initiateRemoveContact"],
   props: ["contact"],
-  components: { PictureAndName, PhoneAndEmail, RoundIconButton },
+  components: {
+    PictureAndName,
+    PhoneAndEmail,
+    RoundIconButton,
+    ListItemStyleWrapper,
+  },
 };
 </script>
 
 <style scoped>
 @media screen and (min-width: 320px) {
-  .contact-carousel-item-wrapper {
-    width: calc(100% - 20px);
-    box-sizing: border-box;
-    padding: 5px;
-    margin: 10px;
-    display: flex;
-    justify-content: space-between;
-    cursor: pointer;
-    position: relative;
-  }
-
   h4 {
     position: absolute;
-    top: -3px;
-    left: 15px;
+    top: 3px;
+    left: 25px;
     z-index: 3;
   }
   h4 span {
     background-color: var(--foregroundColor);
     padding: 4px;
   }
-
   .contact-carousel-contact-item {
-    width: 100%;
-    height: 100%;
-    box-sizing: border-box;
-    border: 1px solid var(--cardOutline);
-    border-radius: 10px;
-    filter: drop-shadow(0px 1px 1px var(--cardOutline));
-    background-color: var(--foregroundColor);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    position: relative;
   }
 }
 @media screen and (min-width: 700px) {

@@ -1,5 +1,5 @@
 <template>
-  <div id="item-wrapper">
+  <list-item-style-wrapper>
     <div class="left-div">
       <p class="bold">{{ automation.title }}</p>
       <p class="bold" v-if="automation.contact">
@@ -17,11 +17,12 @@
       @click="approveAutomation"
       v-if="!automation.approved"
     />
-  </div>
+  </list-item-style-wrapper>
 </template>
 
 <script>
 import RoundIconButton from "../../../../SharedComponents/SharedComponentsUI/RoundIconButton.vue";
+import ListItemStyleWrapper from "../../../../SharedComponents/SharedComponentsUI/ListItemStyleWrapper.vue";
 import { formatDate } from "../../../../helpers.js";
 
 export default {
@@ -47,28 +48,12 @@ export default {
   props: ["automation"],
   components: {
     RoundIconButton,
+    ListItemStyleWrapper,
   },
 };
 </script>
 
 <style scoped>
-#item-wrapper {
-  width: 100%;
-  margin: 0;
-  padding: 10px;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  box-sizing: border-box;
-  margin-bottom: 10px;
-  border: 1px solid var(--cardOutline);
-  border-radius: 10px;
-  background-color: var(--foregroundColor);
-  filter: drop-shadow(0px 1px 2px var(--cardOutline));
-  /* border-bottom: 1px solid var(--textColor); */
-}
-
 .left-div {
   text-align: left;
 }

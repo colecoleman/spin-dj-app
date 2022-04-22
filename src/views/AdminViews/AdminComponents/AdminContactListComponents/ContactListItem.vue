@@ -21,41 +21,46 @@
       @cancel-send-email="togglePopup"
       @close-window="togglePopup"
     />
-    <div class="contact-wrapper" v-if="category !== 'locations'">
+    <list-item-style-wrapper hoverable="true">
       <contact
-        class="name-and-photo"
+        class="contact-section"
         :contact="contact"
         @click="viewContact()"
+        v-if="category !== 'locations'"
       />
-      <phone-and-email class="email-and-phone" :contact="contact" />
+      <phone-and-email
+        class="contact-section"
+        :contact="contact"
+        v-if="category !== 'locations'"
+      />
+      <location
+        class="contact-section"
+        :location="contact"
+        @click="viewContact()"
+        v-if="category === 'locations'"
+      />
+      <location-address
+        class="contact-section"
+        :location="contact"
+        v-if="category === 'locations'"
+      />
       <div class="button-wrapper">
-        <round-icon-button svg="email" @click="emailContact()" />
+        <round-icon-button
+          svg="email"
+          @click="emailContact()"
+          v-if="category !== 'locations'"
+        />
         <round-icon-button svg="trash-can" @click="initiateDeleteContact()" />
       </div>
-    </div>
-    <div class="contact-wrapper" v-if="category === 'locations'">
-      <div class="name-and-photo">
-        <profile-picture contact="location" :customStyle="svgStyling" />
-        <div class="name" @click="viewContact()">
-          <h5 id="client-name">
-            <span> {{ contact.name }}</span>
-          </h5>
-        </div>
-      </div>
-      <div class="location-address">
-        <p>{{ contact.address.streetAddress1 }}</p>
-        <p>{{ contact.address.cityStateZip }}</p>
-      </div>
-      <div class="button-wrapper">
-        <round-icon-button svg="trash-can" @click="initiateDeleteContact()" />
-      </div>
-    </div>
+    </list-item-style-wrapper>
   </div>
 </template>
 
 <script>
-import ProfilePicture from "../../../../assets/ProfilePicture.vue";
+import ListItemStyleWrapper from "../../../../SharedComponents/SharedComponentsUI/ListItemStyleWrapper.vue";
 import Contact from "../../../../SharedComponents/SharedComponentsUI/ListComponents/ContactProfilePictureAndName.vue";
+import Location from "../../../../SharedComponents/SharedComponentsUI/ListComponents/LocationProfilePictureAndName.vue";
+import LocationAddress from "../../../../SharedComponents/SharedComponentsUI/ListComponents/LocationAddress.vue";
 import PhoneAndEmail from "../../../../SharedComponents/SharedComponentsUI/ListComponents/ContactEmailAndPhoneNumber.vue";
 import RoundIconButton from "../../../../SharedComponents/SharedComponentsUI/RoundIconButton.vue";
 import TwoButtonDialogModal from "../../../../SharedComponents/SharedComponentsUI/TwoButtonDialogModal.vue";
@@ -64,7 +69,6 @@ import PopupEmailComposition from "../../../../SharedComponents/SharedComponents
 export default {
   data() {
     return {
-      svgStyling: "width: 31px; height: 30px; padding: 10px;",
       actionsClicked: false,
       popupOpen: null,
     };
@@ -102,10 +106,12 @@ export default {
   props: ["contact", "category"],
   components: {
     Contact,
+    Location,
+    LocationAddress,
     PopupEmailComposition,
     RoundIconButton,
     TwoButtonDialogModal,
-    ProfilePicture,
+    ListItemStyleWrapper,
     PhoneAndEmail,
   },
 };
@@ -113,35 +119,7 @@ export default {
 
 <style scoped>
 @media screen {
-  .contact-wrapper {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    align-content: center;
-    width: 100%;
-    border: 1px solid var(--cardOutline);
-    border-radius: 10px;
-    filter: drop-shadow(0px 1px 0px var(--cardOutline));
-    background-color: var(--foregroundColor);
-    box-sizing: border-box;
-    margin-bottom: 5px;
-    cursor: pointer;
-    /* max-height: 100px; */
-  }
-
-  .contact-wrapper:hover {
-    filter: drop-shadow(0px 2px 2px var(--cardOutline));
-  }
-
-  .name {
-    display: flex;
-    flex-direction: column;
-    overflow-x: hidden;
-  }
-
-  .name-and-photo,
-  .email-and-phone {
+  .contact-section {
     width: 30%;
     min-width: 30%;
     max-width: 30%;
@@ -156,35 +134,9 @@ export default {
     height: 45px;
   }
 
-  .name-and-photo {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-  }
-  .name-and-photo h5 {
-    font-size: 0.75em;
-    font-weight: normal;
-    text-transform: uppercase;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-  }
-
-  h5 {
-    margin: 1px;
-  }
-
-  span {
-    font-weight: bold;
-  }
-
   @media (min-width: 700px) {
     .button-wrapper {
       width: 25%;
-    }
-
-    h5 {
-      margin: 2px;
     }
   }
 }
