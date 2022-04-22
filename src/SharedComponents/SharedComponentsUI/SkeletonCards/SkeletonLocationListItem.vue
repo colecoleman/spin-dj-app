@@ -1,5 +1,5 @@
 <template>
-  <div class="event-location-identifier">
+  <div class="skeleton-location-identifier">
     <div class="venue-name skeleton"></div>
     <div class="venue-address skeleton"></div>
     <div class="venue-address skeleton"></div>
@@ -24,9 +24,10 @@ export default {
   border-radius: 3px;
 }
 
-.event-location-identifier,
-.date-and-time-identitfier {
+.skeleton-location-identifier {
+  display: flex;
   flex-direction: column;
+  justify-content: center;
   align-items: center;
 }
 .venue-address {

@@ -8,54 +8,28 @@
       <location :location="location" v-if="this.event.locations.length > 0" />
       <location-skeleton-card v-if="!location.name" />
     </div>
-    <div
-      class="event-metadata-identifier"
-      v-if="(location.name || client) && event.data.date"
-    >
-      <div class="date-and-time-identifier">
-        <p>{{ formatDate(event.data.date) }}</p>
-        <p>
-          {{ formatTime(event.data.startTime) }} -
-          {{ formatTime(event.data.endTime) }}
-        </p>
-      </div>
-      <div
-        class="event-invoice-metadata"
-        v-if="userRole === 'admin' || userRole === 'client'"
-      >
-        <p>
-          {{ formatPrice(balanceOutstanding(event.invoice, event.data)) }}
-          Outstanding
-        </p>
-      </div>
+    <div class="event-metadata-identifier">
+      <event-data
+        v-if="(location.name || client) && event.data.date"
+        :event="event"
+      />
+      <event-skeleton-card
+        v-if="(!location.name && !client) || !event.data.date"
+      />
     </div>
-    <event-skeleton-card
-      v-if="(!location.name && !client) || !event.data.date"
-    />
   </div>
 </template>
 
 <script>
 import Contact from "../SharedComponentsUI/ListComponents/ContactProfilePictureAndName.vue";
 import Location from "../SharedComponentsUI/ListComponents/LocationNameAndAddressStacked.vue";
+import EventData from "../SharedComponentsUI/ListComponents/EventDateTimeBalance.vue";
 import ClientSkeletonCard from "../SharedComponentsUI/SkeletonCards/SkeletonProfilePictureName.vue";
 import LocationSkeletonCard from "../SharedComponentsUI/SkeletonCards/SkeletonLocationListItem.vue";
 import EventSkeletonCard from "../SharedComponentsUI/SkeletonCards/SkeletonUpcomingEventInformation.vue";
-import {
-  formatDate,
-  formatTime,
-  formatPrice,
-  balanceOutstanding,
-} from "../../helpers.js";
 
 export default {
-  data() {
-    return {};
-  },
   computed: {
-    userRole() {
-      return this.$store.getters.userRole;
-    },
     client() {
       return this.event.contacts[0];
     },
@@ -74,10 +48,6 @@ export default {
     },
   },
   methods: {
-    formatDate,
-    formatTime,
-    formatPrice,
-    balanceOutstanding,
     eventClicked() {
       this.$emit("clicked");
     },
@@ -88,6 +58,7 @@ export default {
     // SkeletonCard,
     Contact,
     Location,
+    EventData,
     ClientSkeletonCard,
     LocationSkeletonCard,
     EventSkeletonCard,
