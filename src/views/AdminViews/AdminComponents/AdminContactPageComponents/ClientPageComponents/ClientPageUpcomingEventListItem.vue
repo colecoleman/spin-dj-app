@@ -4,23 +4,11 @@
     hoverable="true"
     @click="routeToEvent()"
   >
-    <div class="event-location-identifier" v-if="location">
-      <h4 class="venue-name">{{ location.name }}</h4>
-      <div class="event-address">
-        <p v-if="location.address">
-          {{ location.address.streetAddress1 }}
-        </p>
-        <p v-if="!location.address">Unknown Location</p>
-        <div v-if="location.address">
-          <p v-if="location.address.streetAddress2">
-            {{ location.address.streetAddress2 }}
-          </p>
-        </div>
-        <p v-if="location.address">
-          {{ location.address.cityStateZip }}
-        </p>
-      </div>
-    </div>
+    <location-name-and-address-stacked
+      class="event-location-identifier"
+      :location="location"
+      v-if="location"
+    />
     <p v-if="!location">Unknown Location</p>
     <event-date-time-balance class="event-metadata-identifier" :event="event" />
   </list-item-style-wrapper>
@@ -28,6 +16,7 @@
 
 <script>
 import ListItemStyleWrapper from "../../../../../SharedComponents/SharedComponentsUI/ListItemStyleWrapper.vue";
+import LocationNameAndAddressStacked from "../../../../../SharedComponents/SharedComponentsUI/ListComponents/LocationNameAndAddressStacked.vue";
 import EventDateTimeBalance from "../../../../../SharedComponents/SharedComponentsUI/ListComponents/EventDateTimeBalance.vue";
 
 export default {
@@ -44,6 +33,7 @@ export default {
   components: {
     EventDateTimeBalance,
     ListItemStyleWrapper,
+    LocationNameAndAddressStacked,
   },
   props: ["event"],
 };
@@ -53,29 +43,22 @@ export default {
 @media screen {
   .event-location-identifier,
   .event-metadata-identifier {
-    /* display: flex; */
     width: 50%;
-  }
-
-  .event-address {
-    text-align: left;
   }
 
   .event-location-identifier {
     flex-direction: column;
-    justify-content: center;
-  }
-
-  .venue-name {
-    overflow: hidden;
-    text-overflow: ellipsis;
+    justify-content: left;
     text-align: left;
-    font-size: 0.75em;
   }
 
   p {
     font-size: 0.65em;
     margin: 5px 0px;
+  }
+
+  .event-location-identifier >>> * {
+    text-align: left;
   }
 
   .event-metadata-identifier {
