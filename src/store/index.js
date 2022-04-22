@@ -7,6 +7,7 @@ const store = createStore({
   state() {
     return {
       user: undefined,
+      event: undefined,
       tenants: [],
       statuses: [],
       notifications: [],
@@ -183,6 +184,7 @@ const store = createStore({
       }
     },
     async getEventContacts(context, event) {
+      console.log('getting event contacts');
       let contacts = event.contacts.map((x, index) => {
         let userId = x.key ? x.key.userId : x.id;
         let tenantId = x.key ? x.key.tenantId : event.tenantId;
@@ -219,6 +221,7 @@ const store = createStore({
       });
     },
     async getEventLocations(context, event) {
+      console.log('getting locations')
       let locations = event.locations.map((x) => {
         let userId = x.key ? x.key.userId : x;
         let tenantId = x.key ? x.key.tenantId : event.tenantId;
@@ -253,15 +256,6 @@ const store = createStore({
             if (res) {
               return res;
             } else {
-              // let parameters = {
-              //   clientId: contact.userId,
-              //   operation: "removeFromList",
-              //   variable: "associatedEvents",
-              //   value: index,
-              // };
-              // context.dispatch("editContact", parameters).then(() => {
-              //   this.events.splice(index, 1);
-              // });
               return;
             }
           });
@@ -970,6 +964,7 @@ const store = createStore({
                 data: result.data.Attributes,
               };
               context.commit("editEvent", mutationPayload);
+              context.dispatch("getEventContacts", context.state.event);
               resolve(result);
             },
             (error) => {
@@ -1448,12 +1443,15 @@ const store = createStore({
       state.events.push(payload);
     },
     editEvent(state, payload) {
-      let index = state.events.findIndex((e) => e.userId === payload.eventId);
-      if (index > -1) {
-        let event = state.events[index];
-        event[payload.variable] = payload.data[payload.variable];
+      if (payload.variable !== 'contacts' && payload.variable !== 'locations') {
+        state.event[payload.variable] = payload.data[payload.variable];
+      } else if (payload.variable === 'contacts') {
+        state.event[payload.variable].push(payload.data);
+        console.log(state.event);
       }
-      console.log(state.events[index]);
+    },
+    setEvent(state, payload) {
+      state.event = payload;
     },
     setEvents(state, payload) {
       state.events = [...payload];
