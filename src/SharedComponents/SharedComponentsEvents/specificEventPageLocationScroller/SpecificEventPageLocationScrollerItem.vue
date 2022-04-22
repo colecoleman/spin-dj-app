@@ -8,21 +8,7 @@
     </div>
     <div id="bottom-content">
       <div class="address">
-        <p v-if="location.name" class="location-name">
-          {{ location.name }}
-        </p>
-        <div v-if="!location.name" class="skeleton location-name"></div>
-        <p v-if="address.streetAddress1">
-          {{ address.streetAddress1 }}
-        </p>
-        <div v-if="!address.streetAddress1" class="skeleton"></div>
-        <p v-if="address.streetAddress2">
-          {{ address.streetAddress2 }}
-        </p>
-        <div v-if="!address.cityStateZip" class="skeleton"></div>
-        <p v-if="address.cityStateZip">
-          {{ address.cityStateZip }}
-        </p>
+        <location :location="location" />
       </div>
       <div class="button-wrapper">
         <round-icon-button
@@ -37,6 +23,7 @@
 
 <script>
 import { formatTime } from "../../../helpers.js";
+import Location from "../../SharedComponentsUI/ListComponents/LocationNameAndAddressStacked.vue";
 import RoundIconButton from "../../SharedComponentsUI/RoundIconButton.vue";
 import AwsLocationMapDisplay from "../../SharedComponentsUI/AwsLocationMapDisplay.vue";
 
@@ -70,6 +57,7 @@ export default {
   components: {
     AwsLocationMapDisplay,
     RoundIconButton,
+    Location,
   },
 };
 </script>
@@ -78,7 +66,7 @@ export default {
 #specific-event-page-location-scroll-item-wrapper {
   height: 100%;
   /* width: 100%; */
-  width: calc(100% + 42px);
+  width: calc(100% + 40px);
   background-color: var(--cardOutline);
   left: -20px;
   display: flex;
@@ -86,6 +74,7 @@ export default {
   position: relative;
   align-items: center;
   justify-content: center;
+  border-radius: 0 0 25px 25px;
 }
 
 #map-container {
@@ -94,6 +83,8 @@ export default {
   width: 100%;
   height: 100%;
   min-height: 50%;
+  border-radius: 0 0 25px 25px;
+  outline: 1px solid var(--cardOutline);
 }
 
 .button-wrapper {
@@ -111,18 +102,15 @@ export default {
   bottom: 0;
   display: flex;
   align-items: flex-end;
+  border-radius: 0 0 25px 25px;
 }
 
 .address {
   text-align: left;
   padding: 20px 20px;
-  border-radius: 0px 15px 0 0;
+  border-radius: 0px 15px 0 25px;
   background-color: var(--foregroundColor);
-  border: 1px solid var(--cardOutline);
-  border-bottom: 0;
-  border-left: 0;
-  /* width: fit-content; */
-  /* height: fit-content; */
+  box-sizing: border-box;
   z-index: 4;
 }
 
