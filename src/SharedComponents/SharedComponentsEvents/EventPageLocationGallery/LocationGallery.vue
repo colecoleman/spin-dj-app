@@ -57,10 +57,10 @@
 </template>
 
 <script>
-import RoundIconButton from "../../../SharedComponents/SharedComponentsUI/RoundIconButton.vue";
-import InputWithTitleWithDropdown from "../../../SharedComponents/SharedComponentsUI/ElementLibrary/InputWithTitleWithDropdown.vue";
+import RoundIconButton from "../../SharedComponentsUI/RoundIconButton.vue";
+import InputWithTitleWithDropdown from "../../SharedComponentsUI/ElementLibrary/InputWithTitleWithDropdown.vue";
 import SpecificEventPageLocationScrollerItem from "./SpecificEventPageLocationScrollerItem.vue";
-import TwoButtonDialogModal from "../../../SharedComponents/SharedComponentsUI/TwoButtonDialogModal.vue";
+import TwoButtonDialogModal from "../../SharedComponentsUI/TwoButtonDialogModal.vue";
 
 export default {
   data() {

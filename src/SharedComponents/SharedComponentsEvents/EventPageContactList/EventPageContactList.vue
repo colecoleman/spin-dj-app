@@ -16,7 +16,7 @@
         <div id="contact-carousel-wrapper">
           <event-page-contact-carousel-item
             v-for="(contact, index) in contacts"
-            :key="contact.id"
+            :key="index"
             :contact="contact"
             :id="`${index + '-card'}`"
             @initiate-remove-contact="initiateRemoveContact(contact, index)"
@@ -41,7 +41,7 @@
 </template>
 
 <script>
-import EventPageContactCarouselItem from "./EventPageContactCarouselItem.vue";
+import EventPageContactCarouselItem from "./EventPageContactListItem.vue";
 import InputWithTitleWithDropdown from "../../SharedComponentsUI/ElementLibrary/InputWithTitleWithDropdown.vue";
 import TwoButtonDialogModal from "../../SharedComponentsUI/TwoButtonDialogModal.vue";
 
