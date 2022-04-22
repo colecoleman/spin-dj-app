@@ -11,17 +11,17 @@
       <p>{{ formatDate(automation.triggerDate) }}</p>
       <p></p>
     </div>
-    <div class="right-div">
-      <button-standard-with-icon
-        svg="circle-checkmark"
-        @click="approveAutomation"
-        v-if="!automation.approved"
-      />
-    </div>
+
+    <round-icon-button
+      svg="circle-checkmark"
+      @click="approveAutomation"
+      v-if="!automation.approved"
+    />
   </div>
 </template>
 
 <script>
+import RoundIconButton from "../../../../SharedComponents/SharedComponentsUI/RoundIconButton.vue";
 import { formatDate } from "../../../../helpers.js";
 
 export default {
@@ -45,6 +45,9 @@ export default {
   },
   emits: ["automationApproved"],
   props: ["automation"],
+  components: {
+    RoundIconButton,
+  },
 };
 </script>
 
@@ -52,27 +55,22 @@ export default {
 #item-wrapper {
   width: 100%;
   margin: 0;
-  padding: 0;
+  padding: 10px;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
+  box-sizing: border-box;
   margin-bottom: 10px;
-  border-bottom: 1px solid var(--textColor);
+  border: 1px solid var(--cardOutline);
+  border-radius: 10px;
+  background-color: var(--foregroundColor);
+  filter: drop-shadow(0px 1px 2px var(--cardOutline));
+  /* border-bottom: 1px solid var(--textColor); */
 }
 
 .left-div {
   text-align: left;
-}
-.right-div {
-  max-width: 30%;
-  display: flex;
-  flex-direction: row;
-  justify-content: right;
-}
-
-.right-div > * {
-  margin-left: 10px;
 }
 
 p {
