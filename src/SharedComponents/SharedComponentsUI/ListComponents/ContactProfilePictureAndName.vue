@@ -24,15 +24,15 @@ import SkeletonProfilePictureName from "../SkeletonCards/SkeletonProfilePictureN
 import Skeleton from "../SkeletonCards/SkeletonText.vue";
 import ProfilePicture from "../../../assets/ProfilePicture.vue";
 export default {
-  data() {
-    return {
-      profilePictureStyling:
-        "height: 30px; min-height: 30px; min-width: 30px; width: 30px; margin: 5px 5px 5px 0;",
-    };
+  computed: {
+    profilePictureStyling() {
+      if (window.innerWidth < 800) {
+        return "height: 20px; min-height: 20px; min-width: 20px; width: 20px; margin: 0;";
+      } else {
+        return "height: 30px; min-height: 30px; min-width: 30px; width: 30px; margin: 5px 5px 5px 0;";
+      }
+    },
   },
-  computed: {},
-  methods: {},
-  created() {},
   components: { ProfilePicture, SkeletonProfilePictureName, Skeleton },
   props: ["contact"],
 };
@@ -42,6 +42,10 @@ export default {
   display: flex;
   flex-direction: row;
   align-items: center;
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .contact-name {
   display: flex;
@@ -53,8 +57,13 @@ h5 {
   width: 100%;
   text-overflow: ellipsis;
   white-space: nowrap;
-  font-size: 10pt;
+  font-size: 8pt;
   margin: 0;
   text-transform: uppercase;
+}
+@media screen and (min-width: 1200px) {
+  h5 {
+    font-size: 9pt;
+  }
 }
 </style>

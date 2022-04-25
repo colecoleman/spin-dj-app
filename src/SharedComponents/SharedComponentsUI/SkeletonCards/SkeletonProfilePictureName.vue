@@ -1,6 +1,6 @@
 <template>
   <div class="client-skeleton-card">
-    <profile-picture contact="person" :customStyle="svgStyling" />
+    <profile-picture contact="person" :customStyle="profilePictureStyling" />
     <div class="client-name">
       <h5 class="skeleton"></h5>
       <h5 class="skeleton"></h5>
@@ -10,11 +10,14 @@
 <script>
 import ProfilePicture from "../../../assets/ProfilePicture.vue";
 export default {
-  data() {
-    return {
-      svgStyling:
-        "height: 30px; min-width: 30px; min-height: 30px; width: 30px; margin: 5px 5px 5px 0;",
-    };
+  computed: {
+    profilePictureStyling() {
+      if (window.innerWidth < 800) {
+        return "height: 20px; min-height: 20px; min-width: 20px; width: 20px; margin: 0;";
+      } else {
+        return "height: 30px; min-height: 30px; min-width: 30px; width: 30px; margin: 5px 5px 5px 0;";
+      }
+    },
   },
   methods: {},
   created() {},
@@ -37,8 +40,8 @@ export default {
   border-radius: 3px;
 }
 .client-name > .skeleton {
-  width: 70px;
-  height: 9pt;
+  width: 40px;
+  height: 7pt;
   margin: 2px 0px;
 }
 
@@ -47,5 +50,11 @@ export default {
   flex-direction: column;
   justify-content: center;
   height: 100%;
+}
+@media screen and (min-width: 800px) {
+  .client-name > .skeleton {
+    width: 70px;
+    height: 9pt;
+  }
 }
 </style>
