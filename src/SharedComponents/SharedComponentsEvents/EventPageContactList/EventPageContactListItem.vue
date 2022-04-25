@@ -59,13 +59,14 @@ export default {
 @media screen and (min-width: 320px) {
   h4 {
     position: absolute;
-    top: 3px;
+    top: 0px;
     left: 25px;
     z-index: 3;
   }
   h4 span {
     background-color: var(--foregroundColor);
-    padding: 4px;
+    font-size: 8px;
+    padding: 0 3px;
   }
   .contact-carousel-contact-item {
     position: relative;
@@ -74,5 +75,19 @@ export default {
 @media screen and (min-width: 700px) {
 }
 @media screen and (min-width: 800px) {
+  h4 {
+    position: absolute;
+    top: 0px;
+    left: 25px;
+    z-index: 3;
+  }
+  h4 span {
+    background-color: var(--foregroundColor);
+    font-size: 12px;
+    padding: 0 3px;
+  }
+  .contact-carousel-contact-item {
+    position: relative;
+  }
 }
 </style>
