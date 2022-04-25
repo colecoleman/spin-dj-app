@@ -205,17 +205,10 @@ export default {
   },
   computed: {
     hasAddOns() {
-      if ("product" in this.$store.state.businessSettings) {
-        if ("addOns" in this.$store.state.businessSettings.product) {
-          if (this.$store.state.businessSettings.product.addOns.length > 0) {
-            return true;
-          }
-        }
-      }
-      return false;
+      return this.addOns.length > 0;
     },
     addOns() {
-      return this.$store.state.businessSettings.product.addOns;
+      return this.$store.getters.addOns;
     },
   },
   components: {

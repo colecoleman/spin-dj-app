@@ -317,13 +317,11 @@ export default {
     };
   },
   computed: {
-    paymentSettings: {
-      get() {
-        return this.$store.state.businessSettings.payments;
-      },
+    paymentSettings() {
+      return this.$store.getters.paymentSettings;
     },
     stripeHealthy() {
-      if (!this.$store.state.businessSettings.payments.creditCard.Stripe.id) {
+      if (!this.$store.getters.paymentSettings.creditCard.Stripe.id) {
         return undefined;
       } else {
         return this.checkStripeAccountStatus();
@@ -331,11 +329,7 @@ export default {
     },
     businessCurrencyCode: {
       get() {
-        if (this.paymentSettings.currencyCode) {
-          return this.paymentSettings.currencyCode;
-        } else {
-          return "USD";
-        }
+        return this.$store.getters.currencyCode;
       },
       set(val) {
         return this.$store.commit(
@@ -346,13 +340,7 @@ export default {
     },
     depositAmount: {
       get() {
-        if (this.paymentSettings.deposit) {
-          return this.paymentSettings.deposit.amount;
-        } else if (this.paymentSettings.depositAmount) {
-          return this.paymentSettings.depositAmount;
-        } else {
-          return 0;
-        }
+        return this.$store.getters.depositAmount;
       },
       set(val) {
         return this.$store.commit("adminConfigPaymentsSetDepositAmount", val);
@@ -360,11 +348,7 @@ export default {
     },
     depositTerminology: {
       get() {
-        if (this.paymentSettings.deposit) {
-          return this.paymentSettings.deposit.terminology;
-        } else {
-          return "deposit";
-        }
+        return this.$store.getters.depositTerminology;
       },
       set(val) {
         return this.$store.commit(
@@ -375,11 +359,7 @@ export default {
     },
     depositType: {
       get() {
-        if (this.paymentSettings.deposit) {
-          return this.paymentSettings.deposit.type;
-        } else {
-          return "dollar";
-        }
+        return this.$store.getters.depositType;
       },
       set(val) {
         return this.$store.commit("adminConfigPaymentsSetDepositType", val);
@@ -388,11 +368,7 @@ export default {
 
     finalPaymentIncrement: {
       get() {
-        if (this.paymentSettings.finalPayment) {
-          return this.paymentSettings.finalPayment.increment;
-        } else {
-          return 0;
-        }
+        return this.$store.getters.finalPaymentIncrement;
       },
       set(val) {
         return this.$store.commit(
@@ -404,11 +380,7 @@ export default {
 
     finalPaymentType: {
       get() {
-        if (this.paymentSettings.finalPayment) {
-          return this.paymentSettings.finalPayment.type;
-        } else {
-          return "weeks";
-        }
+        return this.$store.getters.finalPaymentType;
       },
       set(val) {
         return this.$store.commit(
@@ -420,11 +392,7 @@ export default {
 
     creditCardEnabled: {
       get() {
-        if (this.paymentSettings.creditCard.enabled) {
-          return this.paymentSettings.creditCard.enabled;
-        } else {
-          return false;
-        }
+        return this.$store.getters.creditCardEnabled;
       },
       set(val) {
         return this.$store.commit(
@@ -449,11 +417,7 @@ export default {
 
     checkInstructions: {
       get() {
-        if (this.paymentSettings.check.instructions) {
-          return this.paymentSettings.check.instructions;
-        } else {
-          return "";
-        }
+        return this.$store.getters.checkInstructions;
       },
       set(val) {
         return this.$store.commit(
@@ -464,11 +428,7 @@ export default {
     },
     customName: {
       get() {
-        if (this.paymentSettings.custom.name) {
-          return this.paymentSettings.custom.name;
-        } else {
-          return "";
-        }
+        return this.$store.getters.customPaymentName;
       },
       set(val) {
         return this.$store.commit("adminConfigPaymentsSetCustomName", val);
@@ -476,11 +436,7 @@ export default {
     },
     customInstructions: {
       get() {
-        if (this.paymentSettings.custom.instructions) {
-          return this.paymentSettings.custom.instructions;
-        } else {
-          return "";
-        }
+        return this.$store.getters.customPaymentInstructions;
       },
       set(val) {
         return this.$store.commit(
@@ -525,12 +481,6 @@ export default {
     },
   },
   created() {
-    if (!this.paymentSettings.finalPayment) {
-      this.$store.state.businessSettings.payments.finalPayment = {
-        increment: null,
-        type: null,
-      };
-    }
     this.loaded = true;
   },
   components: { InputWithTitle },

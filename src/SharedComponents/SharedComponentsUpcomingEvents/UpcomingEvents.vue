@@ -30,7 +30,7 @@
             :key="event.userId"
             :event="event"
             :loaded="loaded"
-            @clicked="navigateToEventPage(event.userId)"
+            @clicked="navigateToEventPage(event)"
           />
 
           <upcoming-events-list-item
@@ -38,7 +38,7 @@
             :key="event.userId"
             :event="event"
             :loaded="loaded"
-            @clicked="navigateToEventPage(event.userId)"
+            @clicked="navigateToEventPage(event)"
             class="past-event"
           />
         </div>
@@ -46,17 +46,17 @@
           class="events-content"
           v-if="userRole === 'client' && sortedEvents.length > 0"
         >
-          <client-view-upcoming-event-list-item
+          <client-page-upcoming-event-list-item
             v-for="event in sortedEvents"
             :key="event.userId"
             :event="event"
-            @click="navigateToEventPage(event.userId)"
+            @click="navigateToEventPage(event)"
           />
-          <client-view-upcoming-event-list-item
+          <client-page-upcoming-event-list-item
             v-for="event in pastEventsCopy"
             :key="event.userId"
             :event="event"
-            @click="navigateToEventPage(event.userId)"
+            @click="navigateToEventPage(event)"
             class="past-event"
           />
         </div>
@@ -72,7 +72,7 @@
 import UpcomingEventsListItem from "./UpcomingEventListItem.vue";
 // import SkeletonCard from "../SharedComponentsUI/SkeletonCards/SkeletonThreeSectionUpcomingEventListItem.vue";
 import FloatingMenuWithListItems from "../SharedComponentsUI/FloatingMenuWithListItems.vue";
-import ClientViewUpcomingEventListItem from "./ClientViewUpcomingEventListItem.vue";
+import ClientPageUpcomingEventListItem from "./ClientPageUpcomingEventListItem.vue";
 
 export default {
   data() {
@@ -136,12 +136,7 @@ export default {
       });
     },
     userRole() {
-      let user = this.$store.state.user;
-      if (user.tenantId === user.userId) {
-        return "admin";
-      } else {
-        return user.role;
-      }
+      return this.$store.getters.userRole;
     },
   },
   created() {
@@ -158,12 +153,13 @@ export default {
       this.selectedSortLogic = action;
       this.toggleSortMenuOpened();
     },
-    navigateToEventPage(id) {
-      let user = this.$store.state.user;
-      if (user.tenantId === user.userId) {
-        this.$router.push(`/admin/events/` + id);
+    navigateToEventPage(event) {
+      if (this.userRole === "admin") {
+        this.$router.push(`/admin/events/` + event.userId);
       } else {
-        this.$router.push(`/${this.$store.state.user.role}/events/` + id);
+        this.$router.push({
+          path: `/${this.userRole}/events/${event.tenantId}/${event.userId}`,
+        });
       }
     },
   },
@@ -173,7 +169,7 @@ export default {
     UpcomingEventsListItem,
     // SkeletonCard,
     FloatingMenuWithListItems,
-    ClientViewUpcomingEventListItem,
+    ClientPageUpcomingEventListItem,
   },
 };
 </script>
@@ -192,6 +188,7 @@ export default {
   display: flex;
   flex-direction: column;
   overflow: scroll;
+  overflow-x: visible;
   width: 100%;
   height: 100%;
 }

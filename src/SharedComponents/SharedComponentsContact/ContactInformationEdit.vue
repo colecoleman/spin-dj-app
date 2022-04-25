@@ -108,9 +108,12 @@ export default {
           this.fields.profilePicture.value = res;
         });
       }
-
+      let key = {
+        userId: this.contact.userId,
+        tenantId: this.contact.tenantId,
+      };
       let payload = {
-        clientId: this.contact.userId,
+        contactKey: key,
         variable: this.fieldToEdit,
         value: this.fields[this.fieldToEdit].value,
       };

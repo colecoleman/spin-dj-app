@@ -43,6 +43,7 @@
         :stripePk="stripeAPIToken"
         :paymentIntent="paymentIntent"
         :stripe="stripe"
+        @close-card="closeCard"
       />
     </div>
     <button-standard-with-icon
@@ -106,14 +107,13 @@ export default {
     changeToManualPayment() {
       this.method = "manual";
     },
+    closeCard() {
+      this.$emit("closePopup");
+    },
   },
   computed: {
     userRole() {
-      if (this.$store.state.user.userId === this.$store.state.user.tenantId) {
-        return "admin";
-      } else {
-        return this.$store.state.user.role;
-      }
+      return this.$store.getters.userRole;
     },
   },
   async created() {
@@ -127,7 +127,7 @@ export default {
     StripeCreatePaymentIntent,
     StripeEnterCardDetails,
   },
-  emits: ["applyManualPayment"],
+  emits: ["applyManualPayment", "closeCard"],
   props: ["eventId", "event"],
 };
 </script>

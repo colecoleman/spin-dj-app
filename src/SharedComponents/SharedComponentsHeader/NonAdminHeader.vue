@@ -1,8 +1,16 @@
 <template>
   <div class="site-header">
+    <div class="admin-selector-dropdown">
+      <option-input-with-title
+        v-if="tenants.length > 1"
+        :dropdownSelections="tenants"
+        :dropdownDisplay="['businessName']"
+        :inputValue="chosenTenant"
+        @dropdown-selected="tenantChosen"
+      />
+    </div>
     <img :src="logo" alt="" />
     <div class="button-wrapper">
-      <!-- <notification-button></notification-button> -->
       <dashboard-button />
       <logout-button />
     </div>
@@ -11,20 +19,37 @@
 <script>
 import LogoutButton from "./LogoutButton.vue";
 import DashboardButton from "./DashboardButton.vue";
-// import NotificationButton from "./NotificationButton/NotificationButton.vue";
+import OptionInputWithTitle from "../SharedComponentsUI/ElementLibrary/OptionInputWithTitle.vue";
 
 export default {
-  methods: {},
+  data() {
+    return {
+      chosenTenant: undefined,
+    };
+  },
+  methods: {
+    tenantChosen(tenant) {
+      this.$store.dispatch("newTenantChosen", tenant);
+      this.chosenTenant = tenant;
+    },
+  },
   computed: {
     logo() {
-      return this.$store.state.businessSettings.identity.businessLogo;
+      return this.$store.getters.businessLogo;
+    },
+    tenants() {
+      if (this.$store.state.user) {
+        return this.$store.state.user.tenants;
+      } else {
+        return [];
+      }
     },
   },
   created() {},
   components: {
     DashboardButton,
     LogoutButton,
-    // NotificationButton,
+    OptionInputWithTitle,
   },
   props: [],
 };
@@ -33,58 +58,39 @@ export default {
 @media screen {
   .site-header {
     display: flex;
-    justify-content: center;
-    align-items: center;
+    justify-content: space-between;
+    align-items: flex-start;
     position: relative;
     height: 30px;
   }
 
   .button-wrapper {
     display: flex;
-    position: absolute;
-    right: 10px;
+    height: 100%;
+    align-items: center;
+  }
+
+  .admin-selector-dropdown {
+    width: 30%;
+    max-width: 300px;
+    z-index: 5;
   }
 
   .site-header img {
-    max-height: 25px;
-    margin: 10px;
+    position: absolute;
+    left: 50%;
+    -webkit-transform: translateX(-50%);
+    transform: translateX(-50%);
+    /* max-height: 25px; */
+    height: 100%;
   }
   @media (min-width: 800px) {
     .site-header {
-      display: flex;
-      justify-content: center;
-      align-items: center;
       height: 60px;
     }
 
-    .button-wrapper {
-      display: flex;
-      position: absolute;
-      right: 10px;
-    }
-
     .site-header img {
-      max-height: 45px;
-      margin: 15px;
-    }
-  }
-  @media (min-width: 1200px) {
-    .site-header {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 60px;
-    }
-
-    .button-wrapper {
-      display: flex;
-      position: absolute;
-      right: 10px;
-    }
-
-    .site-header img {
-      max-height: 45px;
-      margin: 15px;
+      /* max-height: 45px; */
     }
   }
 }

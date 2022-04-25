@@ -8,22 +8,19 @@
   <base-card
     svg="group-people"
     title="Event Contacts"
-    actionIcon="plus-sign"
+    :actionIcon="userRole === 'admin' ? 'plus-sign' : ''"
     @actionOneClicked="toggleAddContactOpen"
   >
     <template v-slot:content>
       <div id="contact-carousel-top-wrapper" v-if="!addContactOpen">
-        <vue-svg svg="left-arrow" @clicked="scrollToPreviousElement" />
         <div id="contact-carousel-wrapper">
-          <event-page-contact-carousel-item
+          <contact-list-item
             v-for="(contact, index) in contacts"
-            :key="contact.id"
+            :key="index"
             :contact="contact"
-            :id="`${index + '-card'}`"
             @initiate-remove-contact="initiateRemoveContact(contact, index)"
           />
         </div>
-        <vue-svg svg="right-arrow" @clicked="scrollToNextElement" />
       </div>
       <div class="add-contact-wrapper" v-if="addContactOpen">
         <div class="form-input">
@@ -43,9 +40,8 @@
 </template>
 
 <script>
-import EventPageContactCarouselItem from "./EventPageContactCarouselItem.vue";
+import ContactListItem from "./EventPageContactListItem.vue";
 import InputWithTitleWithDropdown from "../../SharedComponentsUI/ElementLibrary/InputWithTitleWithDropdown.vue";
-import VueSvg from "../../../assets/VueSvg.vue";
 import TwoButtonDialogModal from "../../SharedComponentsUI/TwoButtonDialogModal.vue";
 
 export default {
@@ -61,6 +57,9 @@ export default {
     };
   },
   computed: {
+    userRole() {
+      return this.$store.getters.userRole;
+    },
     contactSearchResults() {
       if (this.clientSearchField) {
         if (this.$store.state.contacts.length < 5) {
@@ -90,42 +89,6 @@ export default {
     searchForClient(val) {
       this.clientSearchField = val;
     },
-    scrollToNextElement() {
-      let container = document.getElementById("contact-carousel-wrapper");
-      let sLeft = container.scrollLeft;
-      let containerWidth = container.getBoundingClientRect().width;
-      let childWidth = containerWidth / 2;
-      let currentObjectIndex = Math.round(sLeft / childWidth);
-      let scrollToObjectIndex = currentObjectIndex + 2;
-      if (scrollToObjectIndex > this.contacts.length - 1) {
-        document.getElementById("0-card").scrollIntoView({
-          behavior: "smooth",
-        });
-      } else {
-        document.getElementById(scrollToObjectIndex + "-card").scrollIntoView({
-          behavior: "smooth",
-        });
-      }
-    },
-    scrollToPreviousElement() {
-      let container = document.getElementById("contact-carousel-wrapper");
-      let sLeft = container.scrollLeft;
-      let containerWidth = container.getBoundingClientRect().width;
-      let childWidth = containerWidth / 2;
-      let currentObjectIndex = Math.round(sLeft / childWidth);
-      let scrollToObjectIndex = currentObjectIndex - 1;
-      if (currentObjectIndex === 0) {
-        document
-          .getElementById(this.contacts.length - 1 + "-card")
-          .scrollIntoView({
-            behavior: "smooth",
-          });
-      } else {
-        document.getElementById(scrollToObjectIndex + "-card").scrollIntoView({
-          behavior: "smooth",
-        });
-      }
-    },
     toggleRemoveContact() {
       this.removeContactOpen = !this.removeContactOpen;
     },
@@ -144,13 +107,13 @@ export default {
         role: contact.role,
       };
       let eventParameters = {
-        eventId: this.event.userId,
+        eventKey: { userId: this.event.userId, tenantId: this.event.tenantId },
         operation: "addToList",
         variable: "contacts",
         value: contactKey,
       };
       let contactParameters = {
-        clientId: contact.userId,
+        contactKey: contactKey.key,
         variable: "associatedEvents",
         value: eventKey,
         operation: "addToList",
@@ -160,24 +123,34 @@ export default {
       this.toggleAddContactOpen();
     },
     async removeContact() {
+      let contact = this.contactToBeRemoved;
+      let contactKey = {
+        key: { userId: contact.userId, tenantId: contact.tenantId },
+        role: contact.role,
+      };
+      let eventKey = {
+        key: { userId: this.event.userId, tenantId: this.event.tenantId },
+        role: contact.role,
+      };
       let eventParameters = {
-        eventId: this.event.userId,
+        eventKey: { userId: this.event.userId, tenantId: this.event.tenantId },
         operation: "removeFromList",
         variable: "contacts",
         value: this.contactRemoveIndex,
       };
-      await this.$store.dispatch("removeEventFromContact", {
-        event: this.event.userId,
-        contact: this.contactToBeRemoved,
-      });
+      let contactParameters = {
+        contactKey: contactKey.key,
+        variable: "associatedEvents",
+        value: eventKey,
+      };
+      await this.$store.dispatch("removeEventFromContact", contactParameters);
       await this.$store.dispatch("editEvent", eventParameters);
     },
   },
   props: ["contacts", "event"],
   components: {
-    EventPageContactCarouselItem,
+    ContactListItem,
     TwoButtonDialogModal,
-    VueSvg,
     InputWithTitleWithDropdown,
   },
 };
@@ -188,16 +161,16 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
-  max-width: 100%;
   color: var(--textColor);
+  height: 100%;
 }
 
 #contact-carousel-wrapper {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   width: 100%;
   max-width: 100%;
-  height: 90%;
+  height: 100%;
   overflow: scroll;
   /* white-space: nowrap; */
 }

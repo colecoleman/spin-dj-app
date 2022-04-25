@@ -47,7 +47,11 @@ export default {
       return this.$store.state.user;
     },
     events() {
-      return this.$store.state.events;
+      return this.$store.state.events.filter((x) => {
+        let date = new Date().getTime();
+        let eventDate = new Date(x.data.endTime).getTime();
+        return eventDate > date;
+      });
     },
     pastEvents() {
       return this.$store.state.events.filter((x) => {
@@ -65,7 +69,11 @@ export default {
     if (!this.$store.state.user) {
       await this.$store.dispatch("setUser");
     }
-    await this.$store.dispatch("getEvents"); 
+    await this.$store.dispatch("getEvents").then(() => {
+      this.$store.commit("sortEvents");
+      this.$store.dispatch("getEventsContacts");
+      this.$store.dispatch("getEventsLocations");
+    });
     this.loading = false;
   },
   components: {

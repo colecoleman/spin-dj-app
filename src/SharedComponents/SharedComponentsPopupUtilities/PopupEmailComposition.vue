@@ -173,15 +173,13 @@ export default {
   },
   computed: {
     emailAddresses() {
-      return this.$store.state.businessSettings.identity.emailAddresses;
+      return this.$store.getters.identity.emailAddresses;
     },
     businessName() {
-      return this.$store.state.businessSettings.identity.businessName;
+      return this.$store.getters.identity.businessName;
     },
   },
   created() {
-    // todo: after SES production is granted, remove below line, and uncomment other
-    // this.email.Destination.ToAddresses.push("admin@simplecitysoftware.com");
     this.email.Destination.ToAddresses.push(this.contact.email);
   },
   emits: ["closeWindow"],

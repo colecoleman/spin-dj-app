@@ -2,10 +2,10 @@
   <!-- <amplify-authenticator> -->
   <div id="application-wrapper" :style="cssVars" v-if="loaded">
     <router-view name="main"></router-view>
+    <transition name="fade1">
+      <status-indicator />
+    </transition>
   </div>
-  <transition name="fade1">
-    <status-indicator />
-  </transition>
 </template>
 
 <script>
@@ -23,17 +23,7 @@ export default {
   },
   computed: {
     branding() {
-      if (this.$store.state.businessSettings) {
-        return this.$store.state.businessSettings.identity.branding;
-      } else {
-        return {
-          backgroundColor: "#F0F0F0",
-          foregroundColor: "#FFFFFF",
-          cardOutline: "#DDDDDD",
-          highlightColor: "#00F5FF",
-          textColor: "#000000",
-        };
-      }
+      return this.$store.getters.branding;
     },
     cssVars() {
       return {
@@ -55,13 +45,9 @@ export default {
 
   async created() {
     await this.$store.dispatch("setUser");
-    console.log(this.$store.state.user);
     // await this.$store.dispatch("setBusinessSettings");
-    console.log(this.$store.state);
-    if (this.$store.state.businessSettings.identity.businessName) {
-      document.title = this.$store.state.businessSettings.identity.businessName;
-    } else {
-      document.title = "Spin";
+    if (this.$store.getters.identity.businessName) {
+      document.title = this.$store.getters.identity.businessName;
     }
     this.loaded = true;
   },

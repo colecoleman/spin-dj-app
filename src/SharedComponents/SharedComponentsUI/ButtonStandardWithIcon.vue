@@ -44,7 +44,7 @@ export default {
     justify-content: center;
     text-transform: uppercase;
     color: var(--textColor);
-    border: 1px solid var(--textColor);
+    border: 1px solid var(--cardOutline);
     border-radius: 7px;
     cursor: pointer;
     box-sizing: border-box;

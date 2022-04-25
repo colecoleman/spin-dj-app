@@ -1,7 +1,6 @@
 <template>
   <base-card
     svg="disc"
-    :loading="events && contact ? false : true"
     title="Events"
     actionIcon="sort-alpha"
     actionText="Sort:"
@@ -15,7 +14,7 @@
       />
     </template>
     <template v-slot:content>
-      <div id="events-content" v-if="events">
+      <div id="events-content">
         <location-upcoming-events-list-item
           v-for="event in events"
           :key="event.userId"
@@ -29,7 +28,7 @@
 </template>
 
 <script>
-import LocationUpcomingEventsListItem from "./ClientPageUpcomingEventListItem.vue";
+import LocationUpcomingEventsListItem from "../../../../../SharedComponents/SharedComponentsUpcomingEvents/ClientPageUpcomingEventListItem.vue";
 import FloatingMenuWithListItems from "../../../../../SharedComponents/SharedComponentsUI/FloatingMenuWithListItems.vue";
 export default {
   data() {

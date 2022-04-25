@@ -441,18 +441,10 @@ export default {
   },
   computed: {
     forms() {
-      if (this.$store.state.businessSettings.product.forms.forms) {
-        return this.$store.state.businessSettings.product.forms.forms;
-      } else {
-        return this.$store.state.businessSettings.product.forms;
-      }
+      return this.$store.getters.forms;
     },
     fieldTemplates() {
-      if (this.$store.state.businessSettings.product.forms.fieldTemplates) {
-        return this.$store.state.businessSettings.product.forms.fieldTemplates;
-      } else {
-        return [];
-      }
+      return this.$store.getters.formTemplates;
     },
     hasForms() {
       if (this.forms.length > 0) {

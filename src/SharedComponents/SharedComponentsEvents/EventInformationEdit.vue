@@ -102,7 +102,7 @@ export default {
     },
     async saveField() {
       let payload = {
-        eventId: this.event.userId,
+        eventKey: { userId: this.event.userId, tenantId: this.event.tenantId },
         variable: undefined,
         value: undefined,
       };

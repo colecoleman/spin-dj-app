@@ -19,6 +19,7 @@
           :event="event"
           :eventId="eventId"
           v-if="paymentMethod.title === 'Card'"
+          @close-card="closePopup()"
         />
         <div
           v-if="
@@ -132,12 +133,16 @@ export default {
     togglePaymentMethodsOpen() {
       this.paymentMethodsOpen = !this.paymentMethodsOpen;
     },
+    closePopup() {
+      this.$emit("closePopup");
+    },
     selectPaymentMethod(method) {
       this.paymentMethod = method;
       this.togglePaymentMethodsOpen();
     },
   },
   props: ["event", "eventId"],
+  emits: ["closePopup"],
   created() {
     this.paymentMethod = this.paymentMethods[0];
   },

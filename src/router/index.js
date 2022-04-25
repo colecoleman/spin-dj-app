@@ -5,6 +5,7 @@ import LoginPage from "../views/PublicViews/LoginPage.vue";
 import ForgotPage from "../views/PublicViews/ForgotPage.vue";
 import PrivacyPolicy from "../views/PublicViews/PrivacyPolicy.vue";
 import TermsOfService from "../views/PublicViews/TermsOfService.vue";
+import NotFound from '../views/PublicViews/404NotFound.vue';
 import AdminViewInitialSetup from "../views/AdminViews/AdminTopLevelViews/AdminViewInitialSetup.vue";
 import AdminViewInitialSetupSuccess from "../views/AdminViews/AdminTopLevelViews/AdminViewSetupSuccess.vue";
 import AdminViewUpdateSubscription from "../views/AdminViews/AdminTopLevelViews/AdminViewUpdateSubscription.vue";
@@ -97,6 +98,9 @@ const routes = [
   },
   {
     path: "/admin",
+    meta: {
+      title: "Spin DJ Software",
+    },
     components: {
       main: AdminView,
     },
@@ -234,12 +238,13 @@ const routes = [
         },
       },
       {
-        path: "events/:eventId",
+        path: "events/:tenantId/:eventId",
         name: "clientEventView",
         meta: { requiresClientAuth: true },
         components: {
           content: ClientEventView,
         },
+
       },
     ],
   },
@@ -268,7 +273,7 @@ const routes = [
         },
       },
       {
-        path: "events/:eventId",
+        path: "events/:tenantId/:eventId",
         name: "employeeEventView",
         meta: { requiresEmployeeAuth: true },
         components: {
@@ -302,7 +307,7 @@ const routes = [
         },
       },
       {
-        path: "events/:eventId",
+        path: "events/:tenantId/:eventId",
         name: "organizerEventView",
         meta: { requiresOrganizerAuth: true },
         components: {
@@ -336,7 +341,7 @@ const routes = [
         },
       },
       {
-        path: "events/:eventId",
+        path: "events/:tenantId/:eventId",
         name: "vendorEventView",
         meta: { requiresVendorAuth: true },
         components: {
@@ -394,6 +399,13 @@ const routes = [
       main: AdminViewUpdateSubscription,
     },
   },
+  {
+    path: "/:catchAll(.*)",
+    name: "Not Found",
+    components: {
+      main: NotFound
+    }
+  }
 ];
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),

@@ -165,7 +165,10 @@ export default {
       let payload = {
         variable: "availabilityRules",
         value: this.availabilityRules,
-        clientId: this.employee.userId,
+        contactKey: {
+          tenantId: this.employee.tenantId,
+          userId: this.employee.userId,
+        },
       };
       this.$store.dispatch("editContact", payload);
       this.closePopup();

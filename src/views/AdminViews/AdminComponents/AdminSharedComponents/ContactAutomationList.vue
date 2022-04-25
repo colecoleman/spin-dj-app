@@ -56,7 +56,7 @@ export default {
   },
   computed: {
     contactTypeAutomations() {
-      let automations = this.$store.state.businessSettings.automations;
+      let automations = this.$store.getters.automations;
       return automations.filter((x) => {
         return x.contactType == this.contact.role;
       });

@@ -17,7 +17,12 @@
           @close="close"
         />
       </div>
-      <div class="page">
+      <div class="pages-scroll-wrapper" v-if="documents">
+        <div class="page" v-for="(document, index) in documents" :key="index">
+          <slot name="document" v-bind:document="document"></slot>
+        </div>
+      </div>
+      <div class="page" v-else>
         <slot name="document"></slot>
       </div>
     </div>
@@ -67,7 +72,13 @@ export default {
     "saveButtonClicked",
     "rightArrowClicked",
   ],
-  props: ["icons", "addOnItems", "includedItems", "addOnItemTitle"],
+  props: [
+    "icons",
+    "addOnItems",
+    "includedItems",
+    "addOnItemTitle",
+    "documents",
+  ],
 };
 </script>
 <style scoped>
@@ -97,6 +108,7 @@ export default {
     position: -webkit-sticky; /* Safari */
     position: sticky;
     top: 0;
+    z-index: 10;
   }
   .page {
     background-color: white;
@@ -105,7 +117,7 @@ export default {
     height: fit-content;
     padding: 50px;
     /* aspect-ratio: 8.5/11; */
-    margin-bottom: 80px;
+    margin-bottom: 50px;
   }
 
   @media (min-width: 800px) {

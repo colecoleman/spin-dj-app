@@ -115,16 +115,15 @@ export function formatPrice(n) {
     currency: store.getters.currencyCode,
   });
 }
-export function finalPaymentDueDate(data, businessSettings) {
+export function finalPaymentDueDate(data, finalPaymentSettings) {
   let date = new Date(data.date);
-  let dueDateItem = businessSettings.payments.finalPayment;
-  if (dueDateItem.type === "weeks") {
-    return new Date(date.setDate(date.getDate() - dueDateItem.increment * 7));
-  } else if (dueDateItem.type === "months") {
-    return new Date(date.setMonth(date.getMonth() - dueDateItem.increment));
-  } else if (dueDateItem.type === "days") {
+  if (finalPaymentSettings.type === "weeks") {
+    return new Date(date.setDate(date.getDate() - finalPaymentSettings.increment * 7));
+  } else if (finalPaymentSettings.type === "months") {
+    return new Date(date.setMonth(date.getMonth() - finalPaymentSettings.increment));
+  } else if (finalPaymentSettings.type === "days") {
     return new Date(
-      date.setDate(date.setDate(date.getDate() - dueDateItem.increment))
+      date.setDate(date.setDate(date.getDate() - finalPaymentSettings.increment))
     );
   } else {
     return data.date;
@@ -255,16 +254,15 @@ export default class Helpers {
     return `${"$" + price.toLocaleString()}`;
   }
 
-  static finalPaymentDueDate(data, businessSettings) {
+  static finalPaymentDueDate(data, finalPaymentSettings) {
     let date = new Date(data.date);
-    let dueDateItem = businessSettings.payments.finalPayment;
-    if (dueDateItem.type === "weeks") {
-      return new Date(date.setDate(date.getDate() - dueDateItem.increment * 7));
-    } else if (dueDateItem.type === "months") {
-      return new Date(date.setMonth(date.getMonth() - dueDateItem.increment));
-    } else if (dueDateItem.type === "days") {
+    if (finalPaymentSettings.type === "weeks") {
+      return new Date(date.setDate(date.getDate() - finalPaymentSettings.increment * 7));
+    } else if (finalPaymentSettings.type === "months") {
+      return new Date(date.setMonth(date.getMonth() - finalPaymentSettings.increment));
+    } else if (finalPaymentSettings.type === "days") {
       return new Date(
-        date.setDate(date.setDate(date.getDate() - dueDateItem.increment))
+        date.setDate(date.setDate(date.getDate() - finalPaymentSettings.increment))
       );
     } else {
       return data.date;

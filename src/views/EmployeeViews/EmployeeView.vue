@@ -17,7 +17,8 @@ export default {
     if (!this.$store.state.user) {
       await this.$store.dispatch("setUser");
     }
-    await this.$store.dispatch("getPublicSettings");
+    await this.$store.dispatch("getTenants");
+    // await this.$store.dispatch("getPublicSettings");
     this.loaded = true;
   },
 };

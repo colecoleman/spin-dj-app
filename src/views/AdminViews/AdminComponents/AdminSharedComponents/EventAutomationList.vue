@@ -62,7 +62,7 @@ export default {
   },
   methods: {
     contactTypeAutomations(type) {
-      let automations = this.$store.state.businessSettings.automations;
+      let automations = this.$store.getters.automations;
       if (type) {
         return automations.filter((x) => {
           return x.contactType == type;
@@ -150,7 +150,7 @@ export default {
   max-height: 100%;
   max-width: 100%;
   overflow-y: scroll;
-  overflow-x: hidden;
+  overflow-x: visible;
 }
 
 .automations-section h5,

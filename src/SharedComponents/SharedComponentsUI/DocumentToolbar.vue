@@ -35,6 +35,7 @@
         <vue-svg
           svg="signature-admin"
           :customStyle="svgStyling"
+          customClass="pulsing"
           @clicked="toggleAdminESign"
         />
         <transition name="slide">
@@ -54,10 +55,11 @@
           </div>
         </transition>
       </div>
-      <div v-if="checkForIcon('signature')" class="e-sign-grouping">
+      <div class="e-sign-grouping" v-if="checkForIcon('signature')">
         <vue-svg
           svg="signature"
           :customStyle="svgStyling"
+          customClass="pulsing"
           @clicked="toggleESign"
         />
         <transition name="slide">

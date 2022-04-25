@@ -1,16 +1,25 @@
 <template>
   <div class="site-header">
+    <div class="left buttons">
+      <dashboard-button />
+      <admin-contacts-button />
+      <admin-config-button />
+    </div>
     <img :src="businessLogo" alt="" />
-    <tab-switcher />
-    <search-bar />
-    <!-- <notification-button></notification-button> -->
-    <add-button />
-    <logout-button />
+
+    <div class="right buttons">
+      <search-bar />
+      <!-- <notification-button></notification-button> -->
+      <add-button />
+      <logout-button />
+    </div>
   </div>
 </template>
 
 <script>
-import TabSwitcher from "./TabSwitcher.vue";
+import AdminConfigButton from "./AdminConfigButton.vue";
+import AdminContactsButton from "./AdminContactsButton.vue";
+import DashboardButton from "./DashboardButton.vue";
 import SearchBar from "./SearchBar.vue";
 import AddButton from "./AddButton.vue";
 import LogoutButton from "./LogoutButton.vue";
@@ -24,17 +33,15 @@ export default {
   },
   computed: {
     businessLogo() {
-      if (this.$store.state.businessSettings) {
-        return this.$store.state.businessSettings.identity.businessLogo;
-      } else {
-        return "../../spin-beta-logo.png";
-      }
+      return this.$store.getters.businessLogo;
     },
   },
 
   components: {
-    TabSwitcher,
     SearchBar,
+    AdminConfigButton,
+    AdminContactsButton,
+    DashboardButton,
     // NotificationButton,
     AddButton,
     LogoutButton,
@@ -46,13 +53,28 @@ export default {
 @media screen and (min-width: 320px) {
   .site-header {
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
     height: 30px;
   }
+  .buttons {
+    width: 40%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+  }
+
+  .right {
+    justify-content: right;
+  }
+
+  .left {
+    justify-content: left;
+  }
 
   .site-header img {
-    max-height: 25px;
+    height: 80%;
+    max-height: 80%;
     margin: 10px;
   }
 }
@@ -60,18 +82,10 @@ export default {
   .site-header {
     height: 40px;
   }
-
-  .site-header img {
-    max-height: 40px;
-  }
 }
 @media screen and (min-width: 1200px) {
   .site-header {
     height: 60px;
-  }
-
-  .site-header img {
-    height: 40px;
   }
 }
 </style>

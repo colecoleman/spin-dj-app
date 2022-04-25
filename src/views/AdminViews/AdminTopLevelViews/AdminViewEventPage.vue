@@ -1,9 +1,5 @@
 <template>
   <div v-if="event" id="div-wrapper">
-    <!-- <backdrop
-      v-if="invoiceOpen || formsOpen || contractOpen"
-      @click="closePopup()"
-    ></backdrop> -->
     <Transition name="rise">
       <invoice
         :invoice="event.invoice"
@@ -14,12 +10,13 @@
       />
     </Transition>
     <Transition name="rise">
-      <forms-popup
+      <forms
         v-if="popupOpen === 'forms'"
-        @close-popup="togglePopup"
+        @close="togglePopup"
         @add-form-to-event="addFormToEvent"
         @delete-form="deleteForm"
         :forms="event.forms"
+        :event="event"
         :eventId="event.userId"
         :eventTitle="event.title"
       />
@@ -83,6 +80,7 @@
           :eventId="event.userId"
           :event="event"
           @apply-manual-payment="applyManualPayment"
+          @close-popup="togglePopup"
         />
       </template>
     </popup-modal>
@@ -115,7 +113,7 @@
         />
       </div>
       <div id="location-scroller">
-        <specific-event-page-location-scroller :event="event" />
+        <location-gallery :event="event" />
       </div>
       <div id="button-bar">
         <four-button-bar-with-drop-down
@@ -136,10 +134,7 @@
         />
       </div>
       <div id="contact-carousel">
-        <event-page-contact-carousel
-          :contacts="event.contacts"
-          :event="event"
-        />
+        <contact-list :contacts="event.contacts" :event="event" />
       </div>
       <div id="to-do">
         <to-do-list
@@ -160,11 +155,10 @@
 import ToDoList from "../../../SharedComponents/SharedComponentsToDoList/ToDoList.vue";
 import RecentMessages from "../../../SharedComponents/SharedComponentsMessaging/RecentMessages.vue";
 import EventPageContactCard from "../../../SharedComponents/SharedComponentsEvents/EventPageContactCard.vue";
-import EventPageContactCarousel from "../../../SharedComponents/SharedComponentsEvents/eventPageContactCarousel/EventPageContactCarousel.vue";
-import SpecificEventPageLocationScroller from "../../../SharedComponents/SharedComponentsEvents/specificEventPageLocationScroller/SpecificEventPageLocationScroller.vue";
+import ContactList from "../../../SharedComponents/SharedComponentsEvents/EventPageContactList/EventPageContactList.vue";
+import LocationGallery from "../../../SharedComponents/SharedComponentsEvents/EventPageLocationGallery/LocationGallery.vue";
 import EventAutomationList from "../AdminComponents/AdminSharedComponents/EventAutomationList.vue";
-// import Backdrop from "../../../SharedComponents/SharedComponentsUI/Backdrop.vue";
-import FormsPopup from "../../../SharedComponents/SharedComponentsEvents/FormsPopup.vue";
+import Forms from "../../../SharedComponents/SharedComponentsEvents/Forms.vue";
 import Invoice from "../../../SharedComponents/SharedComponentsEvents/Invoice.vue";
 import EventInformation from "../AdminComponents/AdminEventPageComponents/EventInformation.vue";
 import EventMakePayment from "../../../SharedComponents/SharedComponentsEvents/EventMakePayment/EventMakePayment.vue";
@@ -181,10 +175,6 @@ export default {
   data() {
     return {
       svgStyling: "height: 14px; margin: 10px;",
-      event: undefined,
-      // contacts: [],
-      // locations: [],
-      // clients: [],
       automations: [],
       buttons: [
         {
@@ -238,6 +228,9 @@ export default {
     currentUser() {
       return this.$store.state.user;
     },
+    event() {
+      return this.$store.state.event;
+    },
   },
   methods: {
     togglePopup(popup) {
@@ -265,7 +258,7 @@ export default {
       let payload = {
         variable: "invoice",
         value: this.event.invoice,
-        eventId: this.event.userId,
+        eventKey: { userId: this.event.userId, tenantId: this.event.tenantId },
       };
       this.$store.dispatch("editEvent", payload);
       this.togglePopup();
@@ -274,10 +267,18 @@ export default {
       let contacts = [...this.event.contacts];
       contacts.forEach((contact) => {
         if (contact) {
-          this.$store.dispatch("removeEventFromContact", {
-            event: this.event.userId,
-            contact: contact,
-          });
+          let contactKey = {
+            key: { userId: contact.userId, tenantId: contact.tenantId },
+          };
+          let eventKey = {
+            key: { userId: this.event.userId, tenantId: this.event.tenantId },
+          };
+          let contactParameters = {
+            contactKey: contactKey.key,
+            variable: "associatedEvents",
+            value: eventKey,
+          };
+          this.$store.dispatch("removeEventFromContact", contactParameters);
         }
       });
       await this.$store.dispatch("deleteEvent", this.event.userId);
@@ -289,7 +290,7 @@ export default {
       let payload = {
         variable: "forms",
         value: this.event.forms,
-        eventId: this.event.userId,
+        eventKey: { userId: this.event.userId, tenantId: this.event.tenantId },
       };
       this.$store.dispatch("editEvent", payload);
     },
@@ -298,7 +299,7 @@ export default {
       let payload = {
         variable: "forms",
         value: this.event.forms,
-        eventId: this.event.userId,
+        eventKey: { userId: this.event.userId, tenantId: this.event.tenantId },
       };
       this.$store.dispatch("editEvent", payload);
     },
@@ -307,7 +308,7 @@ export default {
       let payload = {
         variable: "invoice",
         value: this.event.invoice,
-        eventId: this.event.userId,
+        eventKey: { userId: this.event.userId, tenantId: this.event.tenantId },
       };
       this.$store.dispatch("editEvent", payload);
     },
@@ -316,7 +317,7 @@ export default {
       let payload = {
         variable: "invoice",
         value: this.event.invoice,
-        eventId: this.event.userId,
+        eventKey: { userId: this.event.userId, tenantId: this.event.tenantId },
       };
       this.$store.dispatch("editEvent", payload);
     },
@@ -324,19 +325,19 @@ export default {
       let payload = {
         variable: "invoice",
         value: this.event.invoice,
-        eventId: this.event.userId,
+        eventKey: { userId: this.event.userId, tenantId: this.event.tenantId },
       };
       this.$store.dispatch("editEvent", payload);
     },
-    editEvent(payload) {
-      this.event = payload;
-    },
+    // editEvent(payload) {
+    // this.event = payload;
+    // },
     applyManualPayment(payment) {
       this.event.invoice.payments.push(payment);
       let payload = {
         variable: "invoice",
         value: this.event.invoice,
-        eventId: this.event.userId,
+        eventKey: { userId: this.event.userId, tenantId: this.event.tenantId },
       };
       this.$store.dispatch("editEvent", payload);
       this.togglePopup();
@@ -344,11 +345,12 @@ export default {
   },
 
   async created() {
-    this.event = await this.$store.dispatch(
-      "adminGetEvent",
-      this.$route.params.id
-    );
-    console.log(JSON.stringify(this.event));
+    let key = {
+      tenantId: this.$store.state.user.tenantId,
+      userId: this.$route.params.id,
+    };
+    let event = await this.$store.dispatch("adminGetEvent", key);
+    await this.$store.commit("setEvent", event);
     await this.$store.dispatch("getEventContacts", this.event);
     await this.$store.dispatch("getEventLocations", this.event);
   },
@@ -356,14 +358,14 @@ export default {
     ToDoList,
     RecentMessages,
     EventPageContactCard,
-    EventPageContactCarousel,
-    SpecificEventPageLocationScroller,
+    ContactList,
+    LocationGallery,
     EventAutomationList,
     EventMakePayment,
     Invoice,
     PopupModal,
     EventInformation,
-    FormsPopup,
+    Forms,
     Contracts,
     FourButtonBarWithDropDown,
     TwoButtonDialogModal,
@@ -394,7 +396,7 @@ section {
   height: 100%;
   display: grid;
   grid-template-columns: 100%;
-  grid-template-rows: 75px 150px repeat(4, 1fr);
+  grid-template-rows: 75px 150px 250px 150px repeat(3, 250px);
   gap: 10px;
 }
 
@@ -433,7 +435,7 @@ section {
 @media screen and (min-width: 700px) {
   section {
     grid-template-columns: repeat(4, 1fr);
-    grid-template-rows: 75px 75px 150px repeat(2, 1fr);
+    grid-template-rows: 75px 75px 150px repeat(2, 250px);
   }
 
   #contact-card {

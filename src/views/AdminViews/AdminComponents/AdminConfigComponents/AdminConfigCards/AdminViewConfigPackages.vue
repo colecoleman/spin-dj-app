@@ -25,7 +25,7 @@
           <p>Services Included:</p>
           <div class="bubble-wrapper">
             <input-with-binary-selection
-              v-for="service in businessSettings.product.services"
+              v-for="service in services"
               :key="service.name"
               :item="service.name"
               :checked="
@@ -110,14 +110,9 @@
           </div>
         </div>
         <div class="package-section">
-          <h5 v-if="!businessSettings.product.packages">
-            No packages have been added yet! Add some!
-          </h5>
-          <div
-            class="package-conditional-wrapper"
-            v-if="businessSettings.product.packages"
-          >
-            <h5 v-if="!businessSettings.product.packages.length">
+          <h5 v-if="!packages">No packages have been added yet! Add some!</h5>
+          <div class="package-conditional-wrapper" v-if="packages">
+            <h5 v-if="!packages.length">
               No packages have been added yet! Add some!
             </h5>
             <div
@@ -194,6 +189,7 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 import VueSvg from "../../../../../assets/VueSvg.vue";
 import InputWithBinarySelection from "../../../../../SharedComponents/SharedComponentsUI/ElementLibrary/InputWithBinarySelection.vue";
 import { formatPrice } from "../../../../../helpers.js";
@@ -228,12 +224,7 @@ export default {
     };
   },
   computed: {
-    packages() {
-      return this.businessSettings.product.packages;
-    },
-    forms() {
-      return this.businessSettings.product.forms.forms;
-    },
+    ...mapGetters(["packages", "services", "forms", "contracts"]),
   },
   methods: {
     formatPrice,
@@ -270,9 +261,7 @@ export default {
       }
     },
     findForm(form, packag) {
-      let item = this.businessSettings.product.forms.forms.find(
-        (x) => x.id == form
-      );
+      let item = this.$store.getters.forms.find((x) => x.id == form);
       if (!item) {
         this.toggleItemFromPackage(packag.forms, form);
       } else {
@@ -280,7 +269,7 @@ export default {
       }
     },
     findContract(contract, packag) {
-      let item = this.businessSettings.contracts.find((x) => x.id === contract);
+      let item = this.contracts.find((x) => x.id === contract);
       if (!item) {
         this.toggleItemFromPackage(packag.contracts, contract);
         return;
@@ -302,7 +291,6 @@ export default {
       }
 
       if (this.editIndex != undefined) {
-        // this.businessSettings.products.packages[this.editIndex] = item;
         let payload = {
           index: this.editIndex,
           package: item,

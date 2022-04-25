@@ -1,5 +1,6 @@
 <template>
   <svg
+    :class="customClass"
     @click="clicked"
     :style="customStyle ? customStyle : ''"
     xmlns="http://www.w3.org/2000/svg"
@@ -65,6 +66,7 @@
     </g>
   </svg>
   <svg
+    :class="customClass"
     @click="clicked"
     :style="customStyle ? customStyle : ''"
     v-if="svg === 'add-person'"
@@ -82,6 +84,7 @@
     />
   </svg>
   <svg
+    :class="customClass"
     @click="clicked"
     :style="customStyle ? customStyle : ''"
     xmlns="http://www.w3.org/2000/svg"
@@ -106,6 +109,7 @@
     />
   </svg>
   <svg
+    :class="customClass"
     @click="clicked"
     :style="customStyle ? customStyle : ''"
     v-if="svg === 'automation'"
@@ -124,6 +128,7 @@
   </svg>
 
   <svg
+    :class="customClass"
     @click="clicked"
     :style="customStyle ? customStyle : ''"
     v-if="svg === 'calendar'"
@@ -180,6 +185,7 @@
     </g>
   </svg>
   <svg
+    :class="customClass"
     @click="clicked"
     :style="customStyle ? customStyle : ''"
     v-if="svg === 'circle-arrow-up'"
@@ -198,6 +204,7 @@
     />
   </svg>
   <svg
+    :class="customClass"
     @click="clicked"
     :style="customStyle ? customStyle : ''"
     v-if="svg === 'circle-checkmark'"
@@ -215,6 +222,7 @@
     />
   </svg>
   <svg
+    :class="customClass"
     @click="clicked"
     :style="customStyle ? customStyle : ''"
     v-if="svg === 'clipboard'"
@@ -231,6 +239,7 @@
     />
   </svg>
   <svg
+    :class="customClass"
     @click="clicked"
     :style="customStyle ? customStyle : ''"
     v-if="svg === 'credit-card'"
@@ -267,6 +276,7 @@
     </g>
   </svg>
   <svg
+    :class="customClass"
     xmlns="http://www.w3.org/2000/svg"
     width="211"
     height="211"
@@ -298,6 +308,7 @@
   </svg>
 
   <svg
+    :class="customClass"
     @click="clicked"
     :style="customStyle ? customStyle : ''"
     v-if="svg === 'disc'"
@@ -315,6 +326,7 @@
     />
   </svg>
   <svg
+    :class="customClass"
     @click="clicked"
     :style="customStyle ? customStyle : ''"
     v-if="svg === 'down-arrow'"
@@ -332,6 +344,7 @@
     />
   </svg>
   <svg
+    :class="customClass"
     @click="clicked"
     :style="customStyle ? customStyle : ''"
     v-if="svg === 'dropdown-arrow'"
@@ -349,6 +362,7 @@
     />
   </svg>
   <svg
+    :class="customClass"
     @click="clicked"
     :style="customStyle ? customStyle : ''"
     v-if="svg === 'edit-pen'"
@@ -366,6 +380,7 @@
     />
   </svg>
   <svg
+    :class="customClass"
     @click="clicked"
     :style="customStyle ? customStyle : ''"
     v-if="svg === 'email'"
@@ -383,6 +398,7 @@
     />
   </svg>
   <svg
+    :class="customClass"
     @click="clicked"
     :style="customStyle ? customStyle : ''"
     v-if="svg === 'exclamation-mark'"
@@ -400,6 +416,7 @@
     />
   </svg>
   <svg
+    :class="customClass"
     @click="clicked"
     :style="customStyle ? customStyle : ''"
     v-if="svg === 'exit-door'"
@@ -417,6 +434,7 @@
     />
   </svg>
   <svg
+    :class="customClass"
     @click="clicked"
     :style="customStyle ? customStyle : ''"
     v-if="svg === 'eye'"
@@ -453,6 +471,7 @@
     </g>
   </svg>
   <svg
+    :class="customClass"
     @click="clicked"
     :style="customStyle ? customStyle : ''"
     v-if="svg === 'file-open'"
@@ -470,6 +489,7 @@
     />
   </svg>
   <svg
+    :class="customClass"
     @click="clicked"
     :style="customStyle ? customStyle : ''"
     v-if="svg === 'fillable-circle'"
@@ -485,6 +505,7 @@
     />
   </svg>
   <svg
+    :class="customClass"
     @click="clicked"
     :style="customStyle ? customStyle : ''"
     v-if="svg === 'fire'"
@@ -502,6 +523,7 @@
     />
   </svg>
   <svg
+    :class="customClass"
     @click="clicked"
     :style="customStyle ? customStyle : ''"
     v-if="svg === 'green-checkmark'"
@@ -519,6 +541,7 @@
     />
   </svg>
   <svg
+    :class="customClass"
     @click="clicked"
     :style="customStyle ? customStyle : ''"
     v-if="svg === 'group-people'"
@@ -536,6 +559,7 @@
     />
   </svg>
   <svg
+    :class="customClass"
     @click="clicked"
     :style="customStyle ? customStyle : ''"
     v-if="svg === 'health-icon'"
@@ -553,6 +577,7 @@
     />
   </svg>
   <svg
+    :class="customClass"
     @click="clicked"
     :style="customStyle ? customStyle : ''"
     v-if="svg === 'home'"
@@ -569,6 +594,7 @@
     />
   </svg>
   <svg
+    :class="customClass"
     @click="clicked"
     :style="customStyle ? customStyle : ''"
     v-if="svg === 'info'"
@@ -586,6 +612,7 @@
     />
   </svg>
   <svg
+    :class="customClass"
     @click="clicked"
     :style="customStyle ? customStyle : ''"
     v-if="svg === 'key'"
@@ -603,6 +630,7 @@
     />
   </svg>
   <svg
+    :class="customClass"
     @click="clicked"
     :style="customStyle ? customStyle : ''"
     v-if="svg === 'left-arrow'"
@@ -620,6 +648,7 @@
     />
   </svg>
   <svg
+    :class="customClass"
     @click="clicked"
     :style="customStyle ? customStyle : ''"
     v-if="svg === 'location-add'"
@@ -654,6 +683,7 @@
     </g>
   </svg>
   <svg
+    :class="customClass"
     @click="clicked"
     :style="customStyle ? customStyle : ''"
     v-if="svg === 'location-circle'"
@@ -682,6 +712,7 @@
     />
   </svg>
   <svg
+    :class="customClass"
     @click="clicked"
     :style="customStyle ? customStyle : ''"
     v-if="svg === 'location-marker'"
@@ -699,6 +730,7 @@
     />
   </svg>
   <svg
+    :class="customClass"
     @click="clicked"
     :style="customStyle ? customStyle : ''"
     v-if="svg === 'message-bubble'"
@@ -717,6 +749,7 @@
   </svg>
 
   <svg
+    :class="customClass"
     @click="clicked"
     :style="customStyle ? customStyle : ''"
     v-if="svg === 'metric-chart'"
@@ -734,6 +767,7 @@
     />
   </svg>
   <svg
+    :class="customClass"
     @click="clicked"
     :style="customStyle ? customStyle : ''"
     v-if="svg === 'neutral'"
@@ -774,6 +808,7 @@
     </g>
   </svg>
   <svg
+    :class="customClass"
     @click="clicked"
     :style="customStyle ? customStyle : ''"
     v-if="svg === 'notification-bell'"
@@ -791,6 +826,7 @@
     />
   </svg>
   <svg
+    :class="customClass"
     @click="clicked"
     :style="customStyle ? customStyle : ''"
     v-if="svg === 'passing-time'"
@@ -820,6 +856,7 @@
   </svg>
 
   <svg
+    :class="customClass"
     @click="clicked"
     :style="customStyle ? customStyle : ''"
     v-if="svg === 'person'"
@@ -838,6 +875,7 @@
   </svg>
 
   <svg
+    :class="customClass"
     @click="clicked"
     :style="customStyle ? customStyle : ''"
     v-if="svg === 'plus-sign'"
@@ -872,6 +910,7 @@
     </g>
   </svg>
   <svg
+    :class="customClass"
     xmlns="http://www.w3.org/2000/svg"
     @click="clicked"
     :style="customStyle ? customStyle : ''"
@@ -919,6 +958,7 @@
   </svg>
 
   <svg
+    :class="customClass"
     @click="clicked"
     :style="customStyle ? customStyle : ''"
     v-if="svg === 'red-x-circle'"
@@ -937,6 +977,7 @@
   </svg>
 
   <svg
+    :class="customClass"
     @click="clicked"
     :style="customStyle ? customStyle : ''"
     v-if="svg === 'refer-circle'"
@@ -971,6 +1012,7 @@
     </g>
   </svg>
   <svg
+    :class="customClass"
     @click="clicked"
     :style="customStyle ? customStyle : ''"
     v-if="svg === 'right-arrow'"
@@ -988,6 +1030,7 @@
     />
   </svg>
   <svg
+    :class="customClass"
     @click="clicked"
     :style="customStyle ? customStyle : ''"
     v-if="svg === 'save'"
@@ -1034,6 +1077,24 @@
     </g>
   </svg>
   <svg
+    :class="customClass"
+    @click="clicked"
+    :style="customStyle ? customStyle : ''"
+    v-if="svg === 'search'"
+    xmlns="http://www.w3.org/2000/svg"
+    width="35.997"
+    height="36.003"
+    viewBox="0 0 35.997 36.003"
+  >
+    <path
+      id="Icon_awesome-search"
+      data-name="Icon awesome-search"
+      d="M35.508,31.127l-7.01-7.01a1.686,1.686,0,0,0-1.2-.492H26.156a14.618,14.618,0,1,0-2.531,2.531V27.3a1.686,1.686,0,0,0,.492,1.2l7.01,7.01a1.681,1.681,0,0,0,2.384,0l1.99-1.99a1.7,1.7,0,0,0,.007-2.391Zm-20.883-7.5a9,9,0,1,1,9-9A8.995,8.995,0,0,1,14.625,23.625Z"
+    />
+  </svg>
+
+  <svg
+    :class="customClass"
     xmlns="http://www.w3.org/2000/svg"
     width="33.324"
     height="27.001"
@@ -1050,6 +1111,7 @@
     />
   </svg>
   <svg
+    :class="customClass"
     xmlns="http://www.w3.org/2000/svg"
     width="34.377"
     height="30.832"
@@ -1085,6 +1147,7 @@
     />
   </svg>
   <svg
+    :class="customClass"
     xmlns="http://www.w3.org/2000/svg"
     width="42.783"
     height="35.872"
@@ -1113,6 +1176,7 @@
   </svg>
 
   <svg
+    :class="customClass"
     @click="clicked"
     :style="customStyle ? customStyle : ''"
     v-if="svg === 'smartphone'"
@@ -1150,6 +1214,7 @@
   </svg>
 
   <svg
+    :class="customClass"
     @click="clicked"
     :style="customStyle ? customStyle : ''"
     v-if="svg === 'snowflake'"
@@ -1168,6 +1233,7 @@
   </svg>
 
   <svg
+    :class="customClass"
     @click="clicked"
     :style="customStyle ? customStyle : ''"
     v-if="svg === 'sort-alpha'"
@@ -1186,6 +1252,7 @@
   </svg>
 
   <svg
+    :class="customClass"
     @click="clicked"
     :style="customStyle ? customStyle : ''"
     v-if="svg === 'toolbox'"
@@ -1203,6 +1270,7 @@
     />
   </svg>
   <svg
+    :class="customClass"
     @click="clicked"
     :style="customStyle ? customStyle : ''"
     v-if="svg === 'trash-can'"
@@ -1260,6 +1328,7 @@
   </svg>
 
   <svg
+    :class="customClass"
     @click="clicked"
     :style="customStyle ? customStyle : ''"
     v-if="svg === 'wrench-gear'"
@@ -1296,6 +1365,7 @@
     </g>
   </svg>
   <svg
+    :class="customClass"
     @click="clicked"
     :style="customStyle ? customStyle : ''"
     v-if="svg === 'x-icon'"
@@ -1332,7 +1402,7 @@ export default {
   created() {},
   components: {},
   emits: ["clicked"],
-  props: ["svg", "customStyle"],
+  props: ["svg", "customStyle", "customClass"],
 };
 </script>
 <style scoped>
@@ -1341,5 +1411,19 @@ svg {
   width: 14px;
   margin: 5px;
   cursor: pointer;
+}
+
+.pulsing {
+  opacity: 1;
+  animation: pulse 0.75s alternate infinite;
+}
+
+@keyframes pulse {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0.5;
+  }
 }
 </style>

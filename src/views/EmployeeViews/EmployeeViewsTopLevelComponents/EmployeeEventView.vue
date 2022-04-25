@@ -1,9 +1,10 @@
 <template>
   <div v-if="event" id="div-wrapper">
-    <forms-popup
+    <forms
       v-if="popupOpen === 'forms'"
-      @close-popup="togglePopup()"
+      @close="togglePopup"
       :forms="event.forms"
+      :event="event"
       :eventId="event.userId"
     />
 
@@ -21,14 +22,11 @@
         />
       </div>
       <div id="location-scroller">
-        <specific-event-page-location-scroller
-          :event="event"
-          :locations="event.locations"
-        />
+        <location-gallery :event="event" :locations="event.locations" />
       </div>
 
       <div id="contact-carousel">
-        <event-page-contact-carousel :contacts="event.contacts" />
+        <contact-list :contacts="event.contacts" />
       </div>
       <div id="to-do">
         <to-do-list
@@ -49,9 +47,9 @@ import ToDoList from "../../../SharedComponents/SharedComponentsToDoList/ToDoLis
 // import RecentMessagesEvent from "../../../SharedComponents/SharedComponentsMessaging/RecentMessagesEvent.vue";
 import RecentMessages from "../../../SharedComponents/SharedComponentsMessaging/RecentMessages.vue";
 import EventPageContactCard from "../../../SharedComponents/SharedComponentsEvents/EventPageContactCard.vue";
-import EventPageContactCarousel from "../../../SharedComponents/SharedComponentsEvents/eventPageContactCarousel/EventPageContactCarousel.vue";
-import SpecificEventPageLocationScroller from "../../../SharedComponents/SharedComponentsEvents/specificEventPageLocationScroller/SpecificEventPageLocationScroller.vue";
-import FormsPopup from "../../../SharedComponents/SharedComponentsEvents/FormsPopup.vue";
+import ContactList from "../../../SharedComponents/SharedComponentsEvents/EventPageContactList/EventPageContactList.vue";
+import LocationGallery from "../../../SharedComponents/SharedComponentsEvents/EventPageLocationGallery/LocationGallery.vue";
+import Forms from "../../../SharedComponents/SharedComponentsEvents/Forms.vue";
 import FourButtonBarWithDropDown from "../../../SharedComponents/SharedComponentsUI/FourButtonBarWithDropDown.vue";
 import EventPageAlerts from "../../../SharedComponents/SharedComponentsEvents/EventPageAlerts.vue";
 
@@ -62,7 +60,6 @@ export default {
       contacts: [],
       locations: [],
       eventConversations: [],
-      automations: undefined,
       buttons: [
         {
           title: "View Forms",
@@ -100,7 +97,12 @@ export default {
     if (!this.$store.state.user) {
       await this.$store.dispatch("setUser");
     }
-    this.event = await this.$store.dispatch("getEvent", id);
+    console.log(this.$route.params);
+    let key = {
+      userId: id,
+      tenantId: this.$route.params.tenantId,
+    };
+    this.event = await this.$store.dispatch("getEvent", key);
     await this.$store.dispatch("getEventContacts", this.event);
     await this.$store.dispatch("getEventLocations", this.event);
   },
@@ -109,10 +111,10 @@ export default {
     // RecentMessagesEvent,
     RecentMessages,
     EventPageContactCard,
-    EventPageContactCarousel,
-    SpecificEventPageLocationScroller,
+    ContactList,
+    LocationGallery,
     EventPageAlerts,
-    FormsPopup,
+    Forms,
     FourButtonBarWithDropDown,
     // TwoButtonDialogModal,
   },

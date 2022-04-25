@@ -1,5 +1,5 @@
 <template>
-  <div id="item-wrapper">
+  <list-item-style-wrapper>
     <div class="left-div">
       <p class="bold">{{ automation.title }}</p>
       <p class="bold" v-if="automation.contact">
@@ -11,17 +11,18 @@
       <p>{{ formatDate(automation.triggerDate) }}</p>
       <p></p>
     </div>
-    <div class="right-div">
-      <button-standard-with-icon
-        svg="circle-checkmark"
-        @click="approveAutomation"
-        v-if="!automation.approved"
-      />
-    </div>
-  </div>
+
+    <round-icon-button
+      svg="circle-checkmark"
+      @click="approveAutomation"
+      v-if="!automation.approved"
+    />
+  </list-item-style-wrapper>
 </template>
 
 <script>
+import RoundIconButton from "../../../../SharedComponents/SharedComponentsUI/RoundIconButton.vue";
+import ListItemStyleWrapper from "../../../../SharedComponents/SharedComponentsUI/ListItemStyleWrapper.vue";
 import { formatDate } from "../../../../helpers.js";
 
 export default {
@@ -45,34 +46,16 @@ export default {
   },
   emits: ["automationApproved"],
   props: ["automation"],
+  components: {
+    RoundIconButton,
+    ListItemStyleWrapper,
+  },
 };
 </script>
 
 <style scoped>
-#item-wrapper {
-  width: 100%;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 10px;
-  border-bottom: 1px solid var(--textColor);
-}
-
 .left-div {
   text-align: left;
-}
-.right-div {
-  max-width: 30%;
-  display: flex;
-  flex-direction: row;
-  justify-content: right;
-}
-
-.right-div > * {
-  margin-left: 10px;
 }
 
 p {

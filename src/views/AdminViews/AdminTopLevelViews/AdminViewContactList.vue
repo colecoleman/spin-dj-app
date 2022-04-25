@@ -12,11 +12,11 @@
         class="contacts-container"
         v-for="(type, index) in contactTypes"
         :key="index"
-        :id="`${type + 's' + `-card`}`"
+        :id="`${type + `-card`}`"
       >
         <base-card
           svg="person"
-          :title="type + 's'"
+          :title="type"
           actionIcon="sort-alpha"
           actionText="Sort:"
           @action-one-clicked="toggleSortMenuOpened(type)"
@@ -32,7 +32,7 @@
           <template v-slot:content>
             <div class="personal-contact-list">
               <div
-                v-for="contact in $store.getters[type + 's']"
+                v-for="contact in $store.getters[type]"
                 :key="contact.userId"
                 :category="type"
                 class="contact-list-item"
@@ -87,7 +87,13 @@ export default {
           },
         },
       ],
-      contactTypes: ["client", "employee", "location", "organizer", "vendor"],
+      contactTypes: [
+        "clients",
+        "employees",
+        "locations",
+        "organizers",
+        "vendors",
+      ],
     };
   },
 

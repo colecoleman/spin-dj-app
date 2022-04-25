@@ -5,11 +5,11 @@
     @select-button-two="toggleRemoveLocation"
     @close-modal="toggleRemoveLocation"
   />
+  <!-- :subtitle="addLocationOpen ? 'Add New Location' : venueName" -->
   <base-card
     svg="location-marker"
     title="Locations"
-    :subtitle="addLocationOpen ? 'Add New Location' : venueName"
-    actionIcon="plus-sign"
+    :actionIcon="userRole === 'admin' ? 'plus-sign' : undefined"
     @actionOneClicked="toggleAddLocation()"
   >
     <template v-slot:content>
@@ -17,21 +17,27 @@
         id="specific-event-page-location-scroller-wrapper"
         v-if="!addLocationOpen"
       >
-        <vue-svg
-          svg="left-arrow"
+        <round-icon-button
+          id="left-arrow"
+          class="arrow-container"
           v-if="locations.length > 1"
-          @clicked="decrementCounter()"
+          @click="decrementCounter()"
+          svg="left-arrow"
         />
-        <specific-event-page-location-scroller-item
+
+        <location-gallery-item
           :location="location"
           v-if="locations.length > 0"
           @initiateDeleteLocation="toggleRemoveLocation"
-        ></specific-event-page-location-scroller-item>
-        <vue-svg
+        />
+        <round-icon-button
+          id="right-arrow"
+          class="arrow-container"
           svg="right-arrow"
           v-if="locations.length > 1"
-          @clicked="incrementCounter()"
+          @click="incrementCounter()"
         />
+        <!-- </div> -->
       </div>
       <div class="add-location" v-if="addLocationOpen">
         <div class="form-input">
@@ -51,16 +57,16 @@
 </template>
 
 <script>
-import VueSvg from "../../../assets/VueSvg.vue";
-import InputWithTitleWithDropdown from "../../../SharedComponents/SharedComponentsUI/ElementLibrary/InputWithTitleWithDropdown.vue";
-import SpecificEventPageLocationScrollerItem from "./SpecificEventPageLocationScrollerItem.vue";
-import TwoButtonDialogModal from "../../../SharedComponents/SharedComponentsUI/TwoButtonDialogModal.vue";
+import RoundIconButton from "../../SharedComponentsUI/RoundIconButton.vue";
+import InputWithTitleWithDropdown from "../../SharedComponentsUI/ElementLibrary/InputWithTitleWithDropdown.vue";
+import LocationGalleryItem from "./LocationGalleryItem.vue";
+import TwoButtonDialogModal from "../../SharedComponentsUI/TwoButtonDialogModal.vue";
 
 export default {
   data() {
     return {
       counter: 0,
-      locations: [],
+      // locations: [],
       addLocationOpen: false,
       searchLocationName: undefined,
       removeLocationOpen: false,
@@ -76,24 +82,32 @@ export default {
     async confirmRemoveLocation() {
       let index = this.counter;
       let payload = {
-        eventId: this.event.userId,
+        eventKey: { userId: this.event.userId, tenantId: this.event.tenantId },
         operation: "removeFromList",
         variable: "locations",
         value: index,
       };
       await this.$store.dispatch("editEvent", payload);
 
-      if (this.locations[this.counter].associatedEvents) {
-        let payload = {
-          contact: this.locations[this.counter],
-          event: this.event.userId,
-        };
-        let index = await this.$store.dispatch(
-          "removeEventFromContact",
-          payload
-        );
-        this.locations.splice(index, 1);
-      }
+      // if (this.locations[this.counter].associatedEvents) {
+      //   let userId = this.locations[this.counter].key
+      //     ? this.locations[this.counter].key.userId
+      //     : this.locations[this.counter];
+      //   let eventKey = {
+      //     userId: this.event.userId,
+      //     tenantId: this.event.tenantId,
+      //   };
+      //   let contactParameters = {
+      //     contactKey: { userId: userId, tenantId: this.event.tenantId },
+      //     variable: "associatedEvents",
+      //     value: eventKey,
+      //   };
+      //   let index = await this.$store.dispatch(
+      //     "removeEventFromContact",
+      //     contactParameters
+      //   );
+      //   this.locations.splice(index, 1);
+      // }
       this.counter = 0;
       this.toggleRemoveLocation();
     },
@@ -114,7 +128,7 @@ export default {
         },
       };
       let eventEditPayload = {
-        eventId: this.event.userId,
+        eventKey: { userId: this.event.userId, tenantId: this.event.tenantId },
         operation: "addToList",
         variable: "locations",
         value: locationKey,
@@ -127,7 +141,7 @@ export default {
       };
       await this.$store.dispatch("editEvent", eventEditPayload);
       await this.$store.dispatch("editLocation", locationPayload);
-      this.locations.push(location);
+      // this.locations.push(location);
       this.toggleAddLocation();
     },
     decrementCounter() {
@@ -146,8 +160,14 @@ export default {
     },
   },
   computed: {
+    userRole() {
+      return this.$store.getters.userRole;
+    },
     location() {
       return this.locations[this.counter] ? this.locations[this.counter] : {};
+    },
+    locations() {
+      return this.event.locations;
     },
     venueName() {
       return this.locations[this.counter]
@@ -161,38 +181,51 @@ export default {
         }
         let locations = this.$store.getters.locations;
         let term = this.searchLocationName.toLowerCase();
-        return locations.filter((x) => x.name.toLowerCase().includes(term));
+        return locations.filter((x) => {
+          if (x.name) {
+            return x.name.toLowerCase().includes(term);
+          }
+        });
       }
       return [];
     },
   },
   props: ["event"],
-  async created() {
-    await this.event.locations.forEach((location) => {
-      let id = location.key ? location.key.userId : location;
-      this.$store.dispatch("getLocation", id).then((res) => {
-        this.locations.push(res);
-      });
-    });
-  },
   components: {
-    SpecificEventPageLocationScrollerItem,
+    LocationGalleryItem,
     TwoButtonDialogModal,
-    VueSvg,
     InputWithTitleWithDropdown,
+    RoundIconButton,
   },
 };
 </script>
 
 <style scoped>
 #specific-event-page-location-scroller-wrapper {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  position: relative;
-  align-items: center;
   width: 100%;
   height: 100%;
+  min-height: 200px;
+  position: relative;
+}
+.arrow-container {
+  position: absolute;
+  top: 20%;
+  z-index: 2;
+  background-color: var(--foregroundColor);
+  border: 1px solid var(--cardOutline);
+  border-radius: 20px;
+  height: 35px;
+  width: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#left-arrow {
+  left: 0;
+}
+#right-arrow {
+  right: 0;
 }
 
 .form-input {

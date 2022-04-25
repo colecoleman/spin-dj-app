@@ -3,10 +3,7 @@
     <template v-slot:document>
       <div id="heading">
         <h5 class="event-title" v-if="event.title">{{ event.title }}</h5>
-        <img
-          :src="$store.state.businessSettings.identity.businessLogo"
-          alt="Logo"
-        />
+        <img :src="businessLogo" alt="Logo" />
         <div id="heading-copy">
           <h4>{{ businessInfo.businessName }}</h4>
           <p>{{ businessInfo.businessAddress.streetAddress1 }}</p>
@@ -67,7 +64,7 @@
                 formatDate(
                   finalPaymentDueDate(
                     event.data,
-                    this.$store.state.businessSettings
+                    this.$store.getters.finalPaymentSettings
                   )
                 )
               }}</span>
@@ -167,7 +164,10 @@ import DocumentViewWithToolbar from "../SharedComponentsUI/DocumentViewWithToolb
 export default {
   computed: {
     businessInfo() {
-      return this.$store.state.businessSettings.identity;
+      return this.$store.getters.identity;
+    },
+    businessLogo() {
+      return this.$store.getters.identity.businessLogo;
     },
     bookDate() {
       let ms = this.event.userId.replace("event", "");

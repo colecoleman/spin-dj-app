@@ -6,14 +6,15 @@
         :event="event"
         :client="client"
         v-if="popupOpen === 'invoice'"
-        @close="togglePopup()"
+        @close="togglePopup"
       />
     </Transition>
 
-    <forms-popup
+    <forms
       v-if="popupOpen === 'forms'"
-      @close-popup="togglePopup()"
+      @close="togglePopup"
       :forms="event.forms"
+      :event="event"
       :eventId="event.userId"
     />
 
@@ -40,13 +41,13 @@
         />
       </div>
       <div id="location-scroller">
-        <specific-event-page-location-scroller :event="event" />
+        <location-gallery :event="event" />
       </div>
       <div id="make-payment">
         <event-make-payment-card :event="event" :eventId="event.userId" />
       </div>
       <div id="contact-carousel">
-        <event-page-contact-carousel :contacts="event.contacts" />
+        <contact-list :contacts="event.contacts" />
       </div>
       <div id="to-do">
         <to-do-list
@@ -67,11 +68,11 @@ import ToDoList from "../../../SharedComponents/SharedComponentsToDoList/ToDoLis
 // import RecentMessagesEvent from "../../../SharedComponents/SharedComponentsMessaging/RecentMessagesEvent.vue";
 import RecentMessages from "../../../SharedComponents/SharedComponentsMessaging/RecentMessages.vue";
 import EventPageContactCard from "../../../SharedComponents/SharedComponentsEvents/EventPageContactCard.vue";
-import EventPageContactCarousel from "../../../SharedComponents/SharedComponentsEvents/eventPageContactCarousel/EventPageContactCarousel.vue";
-import SpecificEventPageLocationScroller from "../../../SharedComponents/SharedComponentsEvents/specificEventPageLocationScroller/SpecificEventPageLocationScroller.vue";
-
+// import EventPageContactCarousel from "../../../SharedComponents/SharedComponentsEvents/eventPageContactCarousel/EventPageContactCarousel.vue";
+import ContactList from "../../../SharedComponents/SharedComponentsEvents/EventPageContactList/EventPageContactList.vue";
+import LocationGallery from "../../../SharedComponents/SharedComponentsEvents/EventPageLocationGallery/LocationGallery.vue";
 import EventMakePaymentCard from "../../../SharedComponents/SharedComponentsEvents/EventMakePayment/EventMakePaymentCard.vue";
-import FormsPopup from "../../../SharedComponents/SharedComponentsEvents/FormsPopup.vue";
+import Forms from "../../../SharedComponents/SharedComponentsEvents/Forms.vue";
 import Invoice from "../../../SharedComponents/SharedComponentsEvents/Invoice.vue";
 import Contracts from "../../../SharedComponents/SharedComponentsEvents/Contracts.vue";
 import FourButtonBarWithDropDown from "../../../SharedComponents/SharedComponentsUI/FourButtonBarWithDropDown.vue";
@@ -85,7 +86,7 @@ import {
 export default {
   data() {
     return {
-      event: undefined,
+      // event: undefined,
       contacts: [],
       locations: [],
       clients: [],
@@ -110,38 +111,31 @@ export default {
   computed: {
     client() {
       let clients = this.event.contacts.filter((x) => {
-        return x.role === "client";
+        if (x.role) {
+          return x.role === "client";
+        }
       });
       return clients[0];
+    },
+    event() {
+      return this.$store.state.event;
     },
     businessSettings() {
       return this.$store.state.businessSettings;
     },
     depositAmount() {
-      if (this.businessSettings.payments.deposit) {
-        if (this.businessSettings.payments.deposit.type === "percentage") {
-          return (
-            this.businessSettings.payments.deposit.amount *
-            0.01 *
-            this.total(this.event.invoice, this.event.data)
-          );
-        } else {
-          return this.businessSettings.payments.deposit.amount;
-        }
+      if (this.$store.getters.depositType === "percentage") {
+        return (
+          this.$store.getters.depositAmount *
+          0.01 *
+          this.total(this.event.invoice, this.event.data)
+        );
       } else {
-        return this.businessSettings.payments.depositAmount;
+        return this.$store.getters.depositAmount;
       }
     },
     depositTerminology() {
-      if (this.businessSettings.payments.deposit) {
-        if (this.businessSettings.payments.deposit.terminology) {
-          return this.businessSettings.payments.deposit.terminology;
-        } else {
-          return "deposit";
-        }
-      } else {
-        return "deposit";
-      }
+      return this.$store.getters.depositTerminology;
     },
     eventAlerts() {
       let alerts = [];
@@ -154,7 +148,11 @@ export default {
         }
         let today = new Date();
         if (
-          today > finalPaymentDueDate(this.event.data, this.businessSettings) &&
+          today >
+            finalPaymentDueDate(
+              this.event.data,
+              this.$store.getters.finalPaymentSettings
+            ) &&
           balanceOutstanding(this.event.invoice, this.event.data) > 0
         ) {
           alerts.push({
@@ -194,25 +192,28 @@ export default {
     if (!this.$store.state.user) {
       await this.$store.dispatch("setUser");
     }
-    this.event = await this.$store.dispatch("getEvent", id);
+    console.log(this.$route.params);
+    let key = {
+      userId: id,
+      tenantId: this.$route.params.tenantId,
+    };
+    let event = await this.$store.dispatch("getEvent", key);
+    this.$store.commit("setEvent", event);
     await this.$store.dispatch("getEventContacts", this.event);
     await this.$store.dispatch("getEventLocations", this.event);
   },
   components: {
     ToDoList,
-    // RecentMessagesEvent,
     RecentMessages,
     EventPageContactCard,
-    EventPageContactCarousel,
-    SpecificEventPageLocationScroller,
+    ContactList,
+    LocationGallery,
     EventPageAlerts,
     EventMakePaymentCard,
-
     Invoice,
-    FormsPopup,
+    Forms,
     Contracts,
     FourButtonBarWithDropDown,
-    // TwoButtonDialogModal,
   },
 };
 </script>

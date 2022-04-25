@@ -21,105 +21,64 @@
       @cancel-send-email="togglePopup"
       @close-window="togglePopup"
     />
-    <div class="contact-wrapper" v-if="category !== 'location'">
-      <div class="name-and-photo">
-        <profile-picture
-          contact="person"
-          :profilePicture="contact.profilePicture"
-          :customStyle="svgStyling"
-        />
-        <div class="name" @click="viewContact()">
-          <h5 v-if="contact.businessName" class="business-name">
-            <span>{{ contact.businessName }}</span>
-          </h5>
-          <h5 id="client-name">
-            {{ contact.given_name }} <br />
-            <span> {{ contact.family_name }}</span>
-          </h5>
-        </div>
-      </div>
-      <div class="email-and-phone">
-        <p>{{ formatPhoneNumber(contact.phoneNumber) }}</p>
-        <p>{{ contact.email }}</p>
-      </div>
+    <list-item-style-wrapper hoverable="true">
+      <contact
+        class="contact-section"
+        :contact="contact"
+        @click="viewContact"
+        v-if="category !== 'locations'"
+      />
+      <phone-and-email
+        class="contact-section"
+        :contact="contact"
+        @click="viewContact"
+        v-if="category !== 'locations'"
+      />
+      <location
+        class="contact-section"
+        :location="contact"
+        @click="viewContact"
+        v-if="category === 'locations'"
+      />
+      <location-address
+        class="contact-section"
+        :location="contact"
+        @click="viewContact"
+        v-if="category === 'locations'"
+      />
       <div class="button-wrapper">
-        <button-with-drop-down-selections
-          text="Actions"
-          :actions="actions"
-          :clicked="actionsClicked"
-          @button-clicked="togglePopup"
+        <round-icon-button
+          svg="email"
+          @click="emailContact()"
+          v-if="category !== 'locations'"
         />
+        <round-icon-button svg="trash-can" @click="initiateDeleteContact()" />
       </div>
-    </div>
-    <div class="contact-wrapper" v-if="category === 'location'">
-      <div class="name-and-photo">
-        <profile-picture contact="location" :customStyle="svgStyling" />
-        <div class="name" @click="viewContact()">
-          <h5 id="client-name">
-            <span> {{ contact.name }}</span>
-          </h5>
-        </div>
-      </div>
-      <div class="location-address">
-        <p>{{ contact.address.streetAddress1 }}</p>
-        <p>{{ contact.address.cityStateZip }}</p>
-      </div>
-      <div class="button-wrapper">
-        <button-with-drop-down-selections
-          text="Actions"
-          :actions="actions"
-          :clicked="actionsClicked"
-          @button-clicked="togglePopup"
-        />
-      </div>
-    </div>
+    </list-item-style-wrapper>
   </div>
 </template>
 
 <script>
-import ProfilePicture from "../../../../assets/ProfilePicture.vue";
-import ButtonWithDropDownSelections from "../../../../SharedComponents/SharedComponentsUI/ButtonWithDropDownSelections.vue";
+import ListItemStyleWrapper from "../../../../SharedComponents/SharedComponentsUI/ListItemStyleWrapper.vue";
+import Contact from "../../../../SharedComponents/SharedComponentsUI/ListComponents/ContactProfilePictureAndName.vue";
+import Location from "../../../../SharedComponents/SharedComponentsUI/ListComponents/LocationProfilePictureAndName.vue";
+import LocationAddress from "../../../../SharedComponents/SharedComponentsUI/ListComponents/LocationAddress.vue";
+import PhoneAndEmail from "../../../../SharedComponents/SharedComponentsUI/ListComponents/ContactEmailAndPhoneNumber.vue";
+import RoundIconButton from "../../../../SharedComponents/SharedComponentsUI/RoundIconButton.vue";
 import TwoButtonDialogModal from "../../../../SharedComponents/SharedComponentsUI/TwoButtonDialogModal.vue";
 import PopupEmailComposition from "../../../../SharedComponents/SharedComponentsPopupUtilities/PopupEmailComposition.vue";
-import { formatPhoneNumber } from "../../../../helpers.js";
 
 export default {
   data() {
     return {
-      svgStyling: "width: 31px; height: 30px; padding: 10px;",
       actionsClicked: false,
       popupOpen: null,
-      actions: [
-        {
-          title: "View",
-          danger: false,
-          action: this.viewContact,
-          icon: "eye",
-        },
-        {
-          title: "email",
-          danger: false,
-          parameter: "email",
-          icon: "email",
-        },
-
-        // {
-        //   title: "delete",
-        //   danger: true,
-        //   parameter: "delete",
-        //   icon: "trash-can",
-        // },
-      ],
     };
   },
-  computed: {},
   methods: {
     viewContact() {
-      this.$router.push(
-        "contacts/" + this.category + "s/" + this.contact.userId
-      );
+      this.$router.push(`contacts/${this.category}/${this.contact.userId}`);
     },
-    formatPhoneNumber,
     togglePopup(str) {
       if (this.popupOpen !== null) {
         this.popupOpen = null;
@@ -127,31 +86,19 @@ export default {
         this.popupOpen = str;
       }
     },
+    emailContact() {
+      this.togglePopup("email");
+    },
+    initiateDeleteContact() {
+      this.togglePopup("delete");
+    },
     async confirmDeleteContact() {
-      if (this.contact.associatedEvents) {
-        this.contact.associatedEvents.forEach((event) => {
-          let eventObject;
-          this.$store.dispatch("adminGetEvent", event).then(
-            (res) => {
-              eventObject = res;
-              let index = eventObject.contacts.indexOf(this.contact.userId);
-              let payload = {
-                eventId: eventObject.userId,
-                variable: "contacts",
-                value: index,
-                operation: "removeFromList",
-              };
-              this.$store.dispatch("editEvent", payload);
-            },
-            (error) => {
-              console.log(error);
-            }
-          );
-        });
-      }
       let deletePayload = {
-        category: this.category,
-        id: this.contact.userId,
+        userKey: {
+          userId: this.contact.userId,
+          tenantId: this.contact.tenantId,
+        },
+        tenantId: this.$store.state.user.tenantId,
       };
       this.$store.dispatch("deleteUser", deletePayload);
       this.popupOpen = null;
@@ -160,36 +107,21 @@ export default {
 
   props: ["contact", "category"],
   components: {
-    ButtonWithDropDownSelections,
+    Contact,
+    Location,
+    LocationAddress,
     PopupEmailComposition,
+    RoundIconButton,
     TwoButtonDialogModal,
-    ProfilePicture,
+    ListItemStyleWrapper,
+    PhoneAndEmail,
   },
 };
 </script>
 
 <style scoped>
 @media screen {
-  .contact-wrapper {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    align-content: center;
-    width: 99%;
-    cursor: pointer;
-    /* max-height: 100px; */
-  }
-
-  .name {
-    display: flex;
-    flex-direction: column;
-    overflow-x: hidden;
-    /* width: calc(100% - 60px); */
-  }
-
-  .name-and-photo,
-  .email-and-phone {
+  .contact-section {
     width: 30%;
     min-width: 30%;
     max-width: 30%;
@@ -197,59 +129,16 @@ export default {
     overflow: hidden;
   }
   .button-wrapper {
-    width: 30%;
-    position: relative;
+    width: auto;
     display: flex;
-    /* justify-content: center; */
-    /* min-height: 50px; */
-    height: 45px;
-    /* align-items: center; */
-    box-sizing: border-box;
-    /* margin-top: 20px; */
-  }
-
-  .name-and-photo {
-    display: flex;
-    flex-direction: row;
     align-items: center;
-  }
-  .name-and-photo h5 {
-    font-size: 0.75em;
-    font-weight: normal;
-    text-transform: uppercase;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-  }
-
-  h5 {
-    margin: 1px;
-  }
-
-  span {
-    font-weight: bold;
-  }
-  .email-and-phone p {
-    /* margin: 3px; */
-    font-size: 0.6em;
-    font-weight: normal;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    margin: 5px;
+    justify-content: flex-end;
+    height: 45px;
   }
 
   @media (min-width: 700px) {
     .button-wrapper {
       width: 25%;
-      position: relative;
-    }
-
-    .name-and-photo {
-      text-align: left;
-    }
-
-    h5 {
-      margin: 2px;
     }
   }
 }

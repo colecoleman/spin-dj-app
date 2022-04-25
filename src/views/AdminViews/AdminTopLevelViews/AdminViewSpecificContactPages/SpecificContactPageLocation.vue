@@ -70,6 +70,7 @@ export default {
       location: undefined,
       contact: undefined,
       popupOpen: null,
+      automations: [],
       events: [],
       buttons: [
         {
@@ -105,15 +106,6 @@ export default {
     for (let x = 0; x < this.events.length; x++) {
       this.$store.dispatch("getEventContacts", this.events[x]);
       this.$store.dispatch("getEventLocations", this.events[x]);
-    }
-    if (this.location.contacts) {
-      if (this.location.contacts.length > 0) {
-        await this.$store
-          .dispatch("getUser", this.location.contacts[0])
-          .then((res) => {
-            this.contact = res.data.Item;
-          });
-      }
     }
   },
   methods: {

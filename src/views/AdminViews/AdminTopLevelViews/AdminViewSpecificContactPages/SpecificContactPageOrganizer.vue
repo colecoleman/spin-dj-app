@@ -119,12 +119,12 @@ export default {
             parameter: "reset-password",
             icon: "key",
           },
-          // {
-          //   title: "delete",
-          //   danger: true,
-          //   parameter: "delete",
-          //   icon: "trash-can",
-          // },
+          {
+            title: "delete",
+            danger: true,
+            parameter: "delete",
+            icon: "trash-can",
+          },
         ],
       },
     };
@@ -145,8 +145,8 @@ export default {
     async toggleEventAssignment() {
       this.eventAssignmentOpen = !this.eventAssignmentOpen;
       await this.$store.dispatch("getAdminEvents");
-      this.$store.dispatch("getAdminEventsContacts");
-      this.$store.dispatch("getAdminEventsLocations");
+      this.$store.dispatch("getEventsContacts");
+      this.$store.dispatch("getEventsLocations");
     },
   },
   async created() {

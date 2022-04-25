@@ -78,15 +78,17 @@ export default {
     },
     icons() {
       let array = ["print"];
+      console.log(this.role);
       if (this.role == "admin") {
         if (this.contract) {
+          console.log(this.contract);
           if (this.contract.admin) {
             if (this.contract.admin.status !== "signed") {
               array.push("admin-signature");
             }
-            if (this.contract.status !== "signed") {
-              array.push("checked-signature");
-            }
+          }
+          if (this.contract.status !== "signed") {
+            array.push("checked-signature");
           }
         }
         if (this.businessSettings.contracts.length > 1) {
@@ -113,17 +115,13 @@ export default {
       return array;
     },
     role() {
-      if (this.primaryContact.tenantId === this.primaryContact.userId) {
-        return "admin";
-      } else {
-        return this.primaryContact.role;
-      }
+      return this.$store.getters.userRole;
     },
     businessSettings() {
       return this.$store.state.businessSettings;
     },
     businessName() {
-      return this.businessSettings.identity.businessName;
+      return this.$store.getters.businessName;
     },
     primaryContact() {
       return this.$store.state.user;
@@ -140,6 +138,9 @@ export default {
     eventEndTime() {
       return formatTime(this.event.data.endTime);
     },
+    eventTitle() {
+      return this.event.title;
+    },
     invoiceTotal() {
       return formatPrice(total(this.event.invoice, this.event.data));
     },
@@ -151,30 +152,32 @@ export default {
     },
     invoiceFinalPaymentDue() {
       return formatDate(
-        finalPaymentDueDate(this.event.data, this.$store.state.businessSettings)
+        finalPaymentDueDate(
+          this.event.data,
+          this.$store.getters.finalPaymentSettings
+        )
       );
     },
     invoiceDepositAmount() {
       if (this.businessSettings.payments.deposit) {
-        if (this.businessSettings.payments.deposit.type === "percentage") {
+        if (this.$store.getters.depositType === "percentage") {
           return formatPrice(
-            this.businessSettings.payments.deposit.amount *
+            this.$store.getters.depositAmount *
               0.01 *
               total(this.event.invoice, this.event.data)
           );
         } else {
-          return formatPrice(
-            this.businessSettings.payments.deposit.amount * 100
-          );
+          return formatPrice(this.$store.getters.depositAmount * 100);
         }
       } else {
-        return formatPrice(this.businessSettings.payments.depositAmount * 100);
+        return formatPrice(this.$store.getters.depositAmount * 100);
       }
     },
     contactStrings() {
       let string = "";
       let contactsArr = [];
       if (this.contacts) {
+        console.log(this.contacts);
         if (this.contacts.length > 0) {
           contactsArr = [...this.contacts].filter((x) => {
             return x.role === "client";
@@ -220,7 +223,7 @@ export default {
       });
       this.contracts[index] = item;
       let payload = {
-        eventId: this.event.userId,
+        eventKey: { userId: this.event.userId, tenantId: this.event.tenantId },
         variable: "contracts",
         value: this.contracts,
       };
@@ -235,7 +238,7 @@ export default {
       });
       this.contracts[index] = item;
       let payload = {
-        eventId: this.event.userId,
+        eventKey: { userId: this.event.userId, tenantId: this.event.tenantId },
         variable: "contracts",
         value: this.contracts,
       };
@@ -253,7 +256,7 @@ export default {
         contracts.push(item);
       }
       let payload = {
-        eventId: this.event.userId,
+        eventKey: { userId: this.event.userId, tenantId: this.event.tenantId },
         variable: "contracts",
         value: contracts,
       };
@@ -282,7 +285,8 @@ export default {
         .replace(/{event-start-time}/g, this.eventStartTime)
         .replace(/{event-end-time}/g, this.eventEndTime)
         .replace(/{event-length}/g, this.eventLength + " hours")
-        .replace(/{event-date}/g, this.eventDate);
+        .replace(/{event-date}/g, this.eventDate)
+        .replace(/{event-title}/g, this.eventTitle);
     },
     replaceInvoiceItems(string) {
       return string

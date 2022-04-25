@@ -23,14 +23,17 @@
 <script>
 import { formatDate, formatTime, subtotal } from "../../helpers.js";
 import EventInformationEdit from "./EventInformationEdit.vue";
-import { Auth } from "aws-amplify";
 
 export default {
   data() {
     return {
       editCardOpen: false,
-      userRole: undefined,
     };
+  },
+  computed: {
+    userRole() {
+      return this.$store.getters.userRole;
+    },
   },
   methods: {
     formatDate,
@@ -44,10 +47,6 @@ export default {
     },
   },
   props: ["client", "event"],
-  async created() {
-    let user = await Auth.currentAuthenticatedUser();
-    this.userRole = user.attributes["custom:role"];
-  },
   components: { EventInformationEdit },
 };
 </script>

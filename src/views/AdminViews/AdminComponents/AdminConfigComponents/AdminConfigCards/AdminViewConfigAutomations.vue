@@ -103,9 +103,7 @@
                 <input-with-title
                   title="From:"
                   type="select"
-                  :options="
-                    this.$store.state.businessSettings.identity.emailAddresses
-                  "
+                  :options="this.$store.getters.identity.emailAddresses"
                   :inputValue="automation.action.email.from"
                   @input="fieldInput(automation.action.email, 'from', $event)"
                 />
@@ -358,12 +356,10 @@ export default {
   },
   computed: {
     hasAutomations() {
-      if ("automations" in this.$store.state.businessSettings) {
-        if (this.$store.state.businessSettings.automations.length > 0) {
-          return true;
-        }
-      }
-      return false;
+      return this.automations.length > 0;
+    },
+    automations() {
+      return this.$store.getters.automations;
     },
   },
   components: {
