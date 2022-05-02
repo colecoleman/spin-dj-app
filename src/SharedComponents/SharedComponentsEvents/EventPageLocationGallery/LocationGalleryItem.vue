@@ -141,4 +141,11 @@ p {
 input {
   z-index: 2;
 }
+
+@media screen and (min-width: 800px) and (max-width: 1050px) {
+  .button-wrapper {
+    flex-direction: column;
+    margin: 0;
+  }
+}
 </style>

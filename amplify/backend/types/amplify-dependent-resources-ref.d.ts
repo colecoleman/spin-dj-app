@@ -24,11 +24,5 @@ export type AmplifyDependentResourcesAttributes = {
             "LambdaExecutionRole": "string",
             "Region": "string"
         }
-    },
-    "storage": {
-        "s3spindjappstorage": {
-            "BucketName": "string",
-            "Region": "string"
-        }
     }
 }

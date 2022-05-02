@@ -1,14 +1,13 @@
 <template>
   <list-item-style-wrapper @click="eventClicked" hoverable="true">
-    <div class="client-event-identifier">
-      <contact :contact="client" />
-    </div>
-    <div class="event-location-identifier">
-      <location :location="location" v-if="this.event.locations.length > 0" />
-    </div>
-    <div class="event-metadata-identifier">
-      <event-data :event="event" />
-    </div>
+    <contact class="client-event-identifier" :contact="client" />
+    <location
+      class="event-location-identifier"
+      :location="location"
+      v-if="this.event.locations.length > 0"
+    />
+
+    <event-data class="event-metadata-identifier" :event="event" />
   </list-item-style-wrapper>
 </template>
 

@@ -1,21 +1,14 @@
 <template>
   <div class="event-date-time-balance">
-    <div class="date-and-time-identifier">
-      <p>{{ formatDate(event.data.date) }}</p>
-      <p>
-        {{ formatTime(event.data.startTime) }} -
-        {{ formatTime(event.data.endTime) }}
-      </p>
-    </div>
-    <div
-      class="event-invoice-metadata"
-      v-if="userRole === 'admin' || userRole === 'client'"
-    >
-      <p>
-        {{ outstandingBalance }}
-        Outstanding
-      </p>
-    </div>
+    <p>{{ formatDate(event.data.date) }}</p>
+    <p>
+      {{ formatTime(event.data.startTime) }} -
+      {{ formatTime(event.data.endTime) }}
+    </p>
+    <p v-if="userRole === 'admin' || userRole === 'client'">
+      {{ outstandingBalance }}
+      Outstanding
+    </p>
   </div>
 </template>
 <script>
@@ -51,4 +44,38 @@ export default {
 };
 </script>
 <style scoped>
+p {
+  font-size: 8px;
+  margin: 7px;
+}
+
+.event-date-time-balance {
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@media screen and (min-width: 475px) {
+  p {
+    font-size: 9px;
+    margin: 5px;
+  }
+}
+@media screen and (min-width: 550px) {
+  p {
+    font-size: 10px;
+  }
+}
+@media screen and (min-width: 650px) {
+  p {
+    font-size: 10px;
+  }
+}
+@media screen and (min-width: 1200px) {
+  p {
+    /* font-size: 13px; */
+    margin: 5px;
+  }
+}
 </style>

@@ -16,10 +16,12 @@ export default {
 <style scoped>
 .location-address {
   overflow: hidden;
+  max-width: 100%;
 }
 p {
   /* margin: 3px; */
-  font-size: 7pt;
+  font-size: 8px;
+  max-width: 100%;
   font-weight: normal;
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -27,6 +29,29 @@ p {
 }
 
 .skeleton {
-  width: 80px;
+  width: 50%;
+}
+
+@media screen and (min-width: 411px) {
+}
+@media screen and (min-width: 475px) {
+  p {
+    font-size: 9px;
+  }
+}
+@media screen and (min-width: 550px) {
+  p {
+    font-size: 10px;
+  }
+}
+@media screen and (min-width: 650px) {
+  p {
+    font-size: 10px;
+  }
+}
+@media screen and (min-width: 1200px) {
+  /* p {
+    font-size: 13px;
+  } */
 }
 </style>
