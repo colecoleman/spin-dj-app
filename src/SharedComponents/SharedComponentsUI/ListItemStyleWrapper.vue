@@ -34,6 +34,7 @@ export default {
 }
 .list-item-title span {
   background-color: var(--foregroundColor);
+  border-radius: 5px;
   padding: 2px 5px;
 }
 .hoverable {
