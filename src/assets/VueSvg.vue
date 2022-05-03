@@ -126,6 +126,23 @@
       fill="currentColor"
     />
   </svg>
+  <svg
+    :class="customClass"
+    @click="clicked"
+    :style="customStyle ? customStyle : ''"
+    v-if="svg === 'back-arrow'"
+    xmlns="http://www.w3.org/2000/svg"
+    width="26.238"
+    height="24.75"
+    viewBox="0 0 26.238 24.75"
+  >
+    <path
+      id="Icon_ionic-md-arrow-round-back"
+      data-name="Icon ionic-md-arrow-round-back"
+      d="M29.589,16.319H13.633l6.188-5.92a2.466,2.466,0,0,0,0-3.37,2.2,2.2,0,0,0-3.221,0L6.3,17.02a2.271,2.271,0,0,0-.671,1.67v.03A2.271,2.271,0,0,0,6.3,20.39l10.3,9.991a2.2,2.2,0,0,0,3.221,0,2.466,2.466,0,0,0,0-3.37l-6.188-5.92H29.581A2.334,2.334,0,0,0,31.863,18.7,2.309,2.309,0,0,0,29.589,16.319Z"
+      transform="translate(-5.625 -6.33)"
+    />
+  </svg>
 
   <svg
     :class="customClass"
@@ -593,6 +610,32 @@
       transform="translate(-3 -4.5)"
     />
   </svg>
+  <svg
+    :class="customClass"
+    @click="clicked"
+    :style="customStyle ? customStyle : ''"
+    v-if="svg === 'import-playlist'"
+    id="Group_1000"
+    data-name="Group 1000"
+    xmlns="http://www.w3.org/2000/svg"
+    width="42.123"
+    height="27.952"
+    viewBox="0 0 42.123 27.952"
+  >
+    <path
+      id="Icon_open-arrow-thick-bottom"
+      data-name="Icon open-arrow-thick-bottom"
+      d="M4.985,0V12.462H0l7.552,7.477,7.4-7.477H9.97V0Z"
+      transform="translate(27.168 8.012)"
+    />
+    <path
+      id="Icon_material-playlist-play"
+      data-name="Icon material-playlist-play"
+      d="M32.611,16.191H3v4.345H32.611ZM39.937,7.5H3v4.345H39.937ZM3,29.227H28.167V24.882H3Z"
+      transform="translate(-3 -7.5)"
+    />
+  </svg>
+
   <svg
     :class="customClass"
     @click="clicked"
