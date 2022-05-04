@@ -62,7 +62,9 @@
             <button-standard-with-icon
               v-if="formItem.duplicable"
               text="Duplicate"
-              @click="duplicateField(form, formItem, formItemIndex)"
+              @click="
+                duplicateField(document.document, formItem, formItemIndex)
+              "
             />
           </div>
         </div>
@@ -125,6 +127,7 @@ export default {
       this.$store.dispatch("editEvent", payload);
     },
     duplicateField(form, fieldItem, formItemIndex) {
+      console.log(form, fieldItem, formItemIndex);
       form.fields.splice(formItemIndex, 0, _.cloneDeep(fieldItem));
       form.fields[formItemIndex].duplicable = false;
     },
