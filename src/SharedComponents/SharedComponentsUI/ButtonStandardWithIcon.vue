@@ -1,11 +1,5 @@
 <template>
-  <div
-    :class="
-      loading
-        ? 'button-standard-with-icon loading'
-        : 'button-standard-with-icon'
-    "
-  >
+  <div class="button-standard-with-icon">
     <h5 v-if="!loading && text">{{ text }}</h5>
     <h5 v-if="loading">Loading</h5>
     <vue-svg
