@@ -9,8 +9,12 @@
   <base-card
     svg="location-marker"
     title="Locations"
-    :actionIcon="userRole === 'admin' ? 'plus-sign' : undefined"
-    @actionOneClicked="toggleAddLocation()"
+    :searchIcon="userRole === 'admin'"
+    :searchResults="searchLocations"
+    :inputValue="searchLocationName"
+    :searchResultFormat="['name']"
+    @search-input="searchForLocation"
+    @select-search-result="selectLocation"
   >
     <template v-slot:content>
       <div
@@ -39,26 +43,12 @@
         />
         <!-- </div> -->
       </div>
-      <div class="add-location" v-if="addLocationOpen">
-        <div class="form-input">
-          <input-with-title-with-dropdown
-            title="Location Name:"
-            placeholder="Start Typing..."
-            :inputValue="searchLocationName"
-            @input="searchForLocation($event)"
-            @dropdown-selected="selectLocation($event)"
-            :dropdownSelections="searchLocations"
-            :dropdownDisplay="['name']"
-          />
-        </div>
-      </div>
     </template>
   </base-card>
 </template>
 
 <script>
 import RoundIconButton from "../../SharedComponentsUI/RoundIconButton.vue";
-import InputWithTitleWithDropdown from "../../SharedComponentsUI/ElementLibrary/InputWithTitleWithDropdown.vue";
 import LocationGalleryItem from "./LocationGalleryItem.vue";
 import TwoButtonDialogModal from "../../SharedComponentsUI/TwoButtonDialogModal.vue";
 
@@ -66,7 +56,6 @@ export default {
   data() {
     return {
       counter: 0,
-      // locations: [],
       addLocationOpen: false,
       searchLocationName: undefined,
       removeLocationOpen: false,
@@ -194,7 +183,6 @@ export default {
   components: {
     LocationGalleryItem,
     TwoButtonDialogModal,
-    InputWithTitleWithDropdown,
     RoundIconButton,
   },
 };

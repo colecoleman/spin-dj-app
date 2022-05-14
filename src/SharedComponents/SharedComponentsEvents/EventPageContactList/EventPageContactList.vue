@@ -7,9 +7,13 @@
   />
   <base-card
     svg="group-people"
-    title="Event Contacts"
-    :actionIcon="userRole === 'admin' ? 'plus-sign' : ''"
-    @actionOneClicked="toggleAddContactOpen"
+    title="Contacts"
+    :searchIcon="userRole === 'admin'"
+    :searchResults="contactSearchResults"
+    :inputValue="contactSearchField"
+    :searchResultFormat="['given_name', 'family_name']"
+    @search-input="searchForContact($event)"
+    @select-search-result="selectContact"
   >
     <template v-slot:content>
       <div id="contact-carousel-top-wrapper" v-if="!addContactOpen">
@@ -22,26 +26,12 @@
           />
         </div>
       </div>
-      <div class="add-contact-wrapper" v-if="addContactOpen">
-        <div class="form-input">
-          <input-with-title-with-dropdown
-            title="Search"
-            placeholder="Start typing..."
-            :dropdownSelections="contactSearchResults"
-            :dropdownDisplay="['given_name', 'family_name']"
-            :inputValue="clientSearchField"
-            @input="searchForClient($event)"
-            @dropdown-selected="selectContact($event)"
-          />
-        </div>
-      </div>
     </template>
   </base-card>
 </template>
 
 <script>
 import ContactListItem from "./EventPageContactListItem.vue";
-import InputWithTitleWithDropdown from "../../SharedComponentsUI/ElementLibrary/InputWithTitleWithDropdown.vue";
 import TwoButtonDialogModal from "../../SharedComponentsUI/TwoButtonDialogModal.vue";
 
 export default {
@@ -49,7 +39,7 @@ export default {
     return {
       addContactOpen: false,
       clientDropdownOpen: false,
-      clientSearchField: undefined,
+      contactSearchField: undefined,
       selectedClient: undefined,
       removeContactOpen: false,
       contactRemoveIndex: undefined,
@@ -61,11 +51,12 @@ export default {
       return this.$store.getters.userRole;
     },
     contactSearchResults() {
-      if (this.clientSearchField) {
+      if (this.contactSearchField) {
         if (this.$store.state.contacts.length < 5) {
           this.$store.dispatch("getAdminUsers");
         }
-        let term = this.clientSearchField;
+        console.log(this.contactSearchField);
+        let term = this.contactSearchField;
         let contacts = this.$store.state.contacts.filter((x) => {
           return x.role !== "location";
         });
@@ -86,8 +77,8 @@ export default {
     toggleAddContactOpen() {
       this.addContactOpen = !this.addContactOpen;
     },
-    searchForClient(val) {
-      this.clientSearchField = val;
+    searchForContact(val) {
+      this.contactSearchField = val;
     },
     toggleRemoveContact() {
       this.removeContactOpen = !this.removeContactOpen;
@@ -151,7 +142,6 @@ export default {
   components: {
     ContactListItem,
     TwoButtonDialogModal,
-    InputWithTitleWithDropdown,
   },
 };
 </script>

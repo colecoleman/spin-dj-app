@@ -20,11 +20,28 @@
         <div class="dropdown-container">
           <slot name="dropdownContainer"></slot>
         </div>
-        <vue-svg
+        <search-icon
+          class="search-icon right-icon"
+          svg="search"
+          v-if="searchIcon"
+          :searchResults="searchResults"
+          :searchResultFormat="searchResultFormat"
+          :inputValue="inputValue"
+          @input="searchInput"
+          @search-blurred="searchBlurred"
+          @select-search-result="selectSearchResult"
+        />
+        <round-icon-button
+          class="right-icon"
+          v-if="actionIcon"
+          @click="actionOneClicked"
+          :svg="actionIcon"
+        />
+        <!-- <vue-svg
           v-if="actionIcon"
           :svg="actionIcon"
           @clicked="actionOneClicked"
-        />
+        /> -->
       </div>
     </div>
 
@@ -35,6 +52,8 @@
 </template>
 
 <script>
+import RoundIconButton from "./RoundIconButton.vue";
+import SearchIcon from "./SearchIconWithExpandingField.vue";
 import VueSvg from "../../assets/VueSvg.vue";
 export default {
   props: [
@@ -45,14 +64,27 @@ export default {
     "title",
     "subtitle",
     "soloHeading",
+    "searchIcon",
+    "searchResults",
+    "searchResultFormat",
+    "inputValue",
   ],
   methods: {
     actionOneClicked() {
       this.$emit("actionOneClicked");
     },
+    searchInput(value) {
+      this.$emit("search-input", value);
+    },
+    searchBlurred() {
+      this.$emit("search-blurred");
+    },
+    selectSearchResult(value) {
+      this.$emit("select-search-result", value);
+    },
   },
-  emits: ["actionOneClicked"],
-  components: { VueSvg },
+  emits: ["actionOneClicked", "search-input", "search-blurred"],
+  components: { VueSvg, RoundIconButton, SearchIcon },
 };
 </script>
 
@@ -128,6 +160,15 @@ h4 {
   font-size: 11pt;
   margin: 0 0 0 10px;
   text-align: left;
+}
+
+.right-icon {
+  /* height: 30px;
+  width: 30px; */
+  /* position: absolute; */
+  right: -10px;
+  top: -18px;
+  margin: 0 -10px 0 20px;
 }
 
 h5 {
