@@ -1,87 +1,117 @@
 <template>
-  <document-view-with-toolbar
-    @close="close"
-    @toggle-add-on-item-from-included="toggleFormFromIncluded"
-    @save-button-clicked="saveForms"
-    :icons="icons"
-    :addOnItems="businessForms"
-    :includedItems="forms"
-    :documents="forms"
-    addOnItemTitle="name"
-  >
-    <template v-slot:document="document">
-      <div class="form-wrapper" :id="document.document.id">
-        <img :src="logo" alt="Business Logo" />
-        <h2 class="form-title">{{ document.document.name }}</h2>
-        <div
-          class="form-field"
-          v-for="(formItem, formItemIndex) in document.document.fields"
-          :key="formItemIndex"
-        >
-          <h4
-            v-if="
-              firstDuplicatedForm(document.document, formItem) === formItemIndex
-            "
+  <div id="forms-wrapper">
+    <music-library-song-picker
+      @emit-track="addTrackToField"
+      @close-song-picker="closeSongPicker"
+      v-if="libraryActiveField"
+    />
+    <document-view-with-toolbar
+      @close="close"
+      @toggle-add-on-item-from-included="toggleFormFromIncluded"
+      @save-button-clicked="saveForms"
+      :icons="icons"
+      :addOnItems="businessForms"
+      :includedItems="forms"
+      :documents="forms"
+      addOnItemTitle="name"
+    >
+      <template v-slot:document="document">
+        <div class="form-wrapper" :id="document.document.id">
+          <img :src="logo" alt="Business Logo" />
+          <h2 class="form-title">{{ document.document.name }}</h2>
+          <p v-if="document.document.description">
+            {{ document.document.description }}
+          </p>
+          <div
+            class="library-enable-disclaimer no-print"
+            v-if="hasLibraryFields(document.document)"
           >
-            {{ formItem.name }}
-          </h4>
-          <div class="field-container">
-            <div
-              class="field-item"
-              v-for="(input, index) in formItem.fields"
-              :key="index"
-            >
-              <input-with-title
-                v-if="
-                  input.inputType === 'text' ||
-                  input.inputType === 'tel' ||
-                  input.inputType === 'textarea' ||
-                  input.inputType === 'email' ||
-                  input.inputType === 'select'
-                "
-                :title="input.inputTitle"
-                :type="input.inputType"
-                :inputValue="input.value"
-                optionDisplay="optionValue"
-                :options="input.options ? input.options : []"
-                @input="fieldInput(input, 'value', $event)"
-              />
-              <div class="radio-container" v-if="input.inputType === 'radio'">
-                <input
-                  v-for="(option, index) in input.options"
-                  :key="index"
-                  :type="input.inputType"
-                  :name="input.name"
-                  v-model="input.value"
-                />
-                <p>{{ option }}</p>
-              </div>
-            </div>
-          </div>
-          <div class="duplicate-button-wrapper no-print">
-            <button-standard-with-icon
-              v-if="formItem.duplicable"
-              text="Duplicate"
-              @click="
-                duplicateField(document.document, formItem, formItemIndex)
-              "
+            <p>Look for the music icon to search our library!</p>
+            <round-icon-button
+              svg="music"
+              class="library-enable-disclaimer-icon"
             />
           </div>
+          <div
+            class="form-field"
+            v-for="(formItem, formItemIndex) in document.document.fields"
+            :key="formItemIndex"
+          >
+            <h4
+              v-if="
+                firstDuplicatedForm(document.document, formItem) ===
+                formItemIndex
+              "
+            >
+              {{ formItem.name }}
+            </h4>
+            <div class="field-container">
+              <round-icon-button
+                svg="music"
+                class="library-icon"
+                v-if="formItem.libraryEnabled"
+                @click="changeLibraryActiveField(formItem)"
+              />
+              <div
+                class="field-item"
+                v-for="(input, index) in formItem.fields"
+                :key="index"
+              >
+                <input-with-title
+                  v-if="
+                    input.inputType === 'text' ||
+                    input.inputType === 'tel' ||
+                    input.inputType === 'textarea' ||
+                    input.inputType === 'email' ||
+                    input.inputType === 'select'
+                  "
+                  :title="input.inputTitle"
+                  :type="input.inputType"
+                  :inputValue="input.value"
+                  optionDisplay="optionValue"
+                  :options="input.options ? input.options : []"
+                  @input="fieldInput(input, 'value', $event)"
+                />
+                <div class="radio-container" v-if="input.inputType === 'radio'">
+                  <input
+                    v-for="(option, index) in input.options"
+                    :key="index"
+                    :type="input.inputType"
+                    :name="input.name"
+                    v-model="input.value"
+                  />
+                  <p>{{ option }}</p>
+                </div>
+              </div>
+            </div>
+            <div class="duplicate-button-wrapper no-print">
+              <button-standard-with-icon
+                v-if="formItem.duplicable"
+                text="Duplicate"
+                @click="
+                  duplicateField(document.document, formItem, formItemIndex)
+                "
+              />
+            </div>
+          </div>
+          <h2 class="event-title">{{ event.title }}</h2>
         </div>
-        <h2 class="event-title">{{ event.title }}</h2>
-      </div>
-    </template>
-  </document-view-with-toolbar>
+      </template>
+    </document-view-with-toolbar>
+  </div>
 </template>
 <script>
 import DocumentViewWithToolbar from "../SharedComponentsUI/DocumentViewWithToolbar.vue";
 import InputWithTitle from "../SharedComponentsUI/ElementLibrary/InputWithTitle.vue";
+import RoundIconButton from "../SharedComponentsUI/RoundIconButton.vue";
+import MusicLibrarySongPicker from "../SharedComponentsLibrary/MusicLibrarySongPicker.vue";
 import _ from "lodash";
 export default {
   data() {
     return {
       deleteFormOpen: false,
       formDeleteIndex: undefined,
+      libraryActiveField: undefined,
     };
   },
   computed: {
@@ -98,7 +128,7 @@ export default {
         array.push("save", "plus-sign");
       }
       if (this.role === "organizer" || this.role === "client") {
-        array.push("plus-sign");
+        array.push("save");
       }
       return array;
     },
@@ -107,6 +137,15 @@ export default {
     },
   },
   methods: {
+    hasLibraryFields(form) {
+      if (
+        form.fields.find((x) => {
+          return x.libraryEnabled === true;
+        })
+      ) {
+        return true;
+      }
+    },
     close() {
       this.saveForms();
       this.$emit("close");
@@ -133,7 +172,6 @@ export default {
     },
     async toggleFormFromIncluded(form) {
       let forms = this.event.forms;
-      console.log(forms);
       let index = this.event.forms.findIndex((x) => {
         return x.id === form.id;
       });
@@ -147,8 +185,16 @@ export default {
         variable: "forms",
         value: forms,
       };
-      console.log(editPayload);
       await this.$store.dispatch("editEvent", editPayload);
+    },
+    changeLibraryActiveField(field) {
+      this.libraryActiveField = field;
+    },
+    addTrackToField(track) {
+      this.libraryActiveField.libraryMatch = track;
+      this.libraryActiveField.fields[0].value = track["Name"];
+      this.libraryActiveField.fields[1].value = track["Artist"];
+      this.changeLibraryActiveField(undefined);
     },
     addFormToEvent(form) {
       this.$emit("addFormToEvent", form);
@@ -167,11 +213,16 @@ export default {
     firstDuplicatedForm(form, field) {
       return form.fields.findIndex((x) => x.name == field.name);
     },
+    closeSongPicker() {
+      this.libraryActiveField = undefined;
+    },
   },
   created() {},
   components: {
     DocumentViewWithToolbar,
     InputWithTitle,
+    RoundIconButton,
+    MusicLibrarySongPicker,
   },
   emits: ["close"],
   props: ["forms", "event"],
@@ -186,6 +237,10 @@ h4 {
   font-size: 12px;
 }
 
+#forms-wrapper {
+  z-index: 10;
+}
+
 .form-field {
   text-align: left;
 }
@@ -193,6 +248,8 @@ h4 {
 .field-container {
   display: flex;
   width: 100%;
+  position: relative;
+  flex-wrap: wrap;
 }
 
 .field-item {
@@ -200,6 +257,24 @@ h4 {
   flex-direction: column;
   text-align: left;
 }
+
+.library-icon {
+  position: absolute;
+  left: -30px;
+}
+
+.library-enable-disclaimer {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  right: -20px;
+  top: -60px;
+}
+
+.form-wrapper {
+  position: relative;
+}
+
 @media screen {
   img,
   .event-title {
@@ -224,7 +299,7 @@ h4 {
 
   .field-item {
     max-width: 200px;
-    margin: 0 20px;
+    margin: 0 10px;
   }
 
   @media screen and (min-width: 800px) {
