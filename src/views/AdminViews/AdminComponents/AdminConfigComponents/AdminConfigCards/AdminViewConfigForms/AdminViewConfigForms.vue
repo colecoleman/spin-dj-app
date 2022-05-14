@@ -26,29 +26,44 @@
               :key="index"
             >
               <div class="row-flex">
-                <p class="bold">{{ field.name }}</p>
-                <vue-svg
-                  svg="x-icon"
-                  :customStyle="svgStyling"
-                  @clicked="deleteField(form, index)"
-                />
-                <vue-svg
-                  svg="edit-pen"
-                  :customStyle="svgStyling"
-                  @clicked="editField(field, index)"
-                />
-                <vue-svg
-                  svg="down-arrow"
-                  @clicked="moveField(index - 1, index, form.fields)"
-                  :customStyle="svgStyling + ' transform: rotate(180deg)'"
-                  v-if="index != 0"
-                />
-                <vue-svg
-                  svg="down-arrow"
-                  @clicked="moveField(index + 1, index, form.fields)"
-                  :customStyle="svgStyling"
-                  v-if="index != form.fields.length - 1"
-                />
+                <div class="field-title">
+                  <round-icon-button
+                    class="round-icon-button"
+                    svg="music"
+                    v-if="field.libraryEnabled"
+                    hoverable="false"
+                  />
+                  <p class="bold">{{ field.name }}</p>
+                </div>
+                <div class="action-buttons">
+                  <round-icon-button
+                    class="round-icon-button"
+                    svg="x-icon"
+                    @click="deleteField(form, index)"
+                    hoverable="true"
+                  />
+                  <round-icon-button
+                    class="round-icon-button"
+                    svg="edit-pen"
+                    @click="editField(field, index)"
+                    hoverable="true"
+                  />
+                  <round-icon-button
+                    class="round-icon-button"
+                    svg="down-arrow"
+                    hoverable="true"
+                    @click="moveField(index + 1, index, form.fields)"
+                    v-if="index != form.fields.length - 1"
+                  />
+                  <round-icon-button
+                    class="round-icon-button"
+                    svg="down-arrow"
+                    @click="moveField(index - 1, index, form.fields)"
+                    hoverable="true"
+                    style="transform: rotate(180deg)"
+                    v-if="index != 0"
+                  />
+                </div>
               </div>
               <div class="form-item row-flex">
                 <div
@@ -73,14 +88,12 @@
                       :key="index"
                       class="radio"
                     >
-                      <!-- <div class="form-item"> -->
                       <input
                         type="radio"
                         :name="input.inputTitle"
                         :value="option.optionValue"
                       />
                       <p>{{ option.optionValue }}</p>
-                      <!-- </div> -->
                     </div>
                   </div>
                   <div v-if="input.inputType === 'select'">
@@ -94,188 +107,61 @@
                   </div>
                 </div>
               </div>
-            </div>
-          </div>
-
-          <div class="form-item">
-            <p>New Field:</p>
-            <div class="form-item input-creation">
-              <div class="form-item">
-                <input-with-title
-                  title="Input Title:"
-                  type="text"
-                  :inputValue="newField.name"
-                  @input="fieldInput(newField, 'name', $event)"
-                />
-              </div>
-              <div class="form-item">
-                <input-with-binary-selection
-                  :item="
-                    newField.duplicable
-                      ? 'User may duplicate field'
-                      : 'User may not duplicate field'
-                  "
-                  :checked="newField.duplicable"
-                  @clicked="
-                    fieldInput(newField, 'duplicable', !newField.duplicable)
-                  "
-                />
-              </div>
-              <div class="form-item">
-                <input-with-title
-                  title="Field Templates:"
-                  type="select"
-                  :options="fieldTemplates"
-                  optionDisplay="title"
-                  @input="assignFieldTemplate($event)"
-                />
-              </div>
-              <div class="form-item">
-                <input-with-title
-                  title="Number Of Inputs:"
-                  type="select"
-                  :options="[1, 2, 3]"
-                  :inputValue="newField.inputQuantity"
-                  @input="
-                    newInputQuantity($event, { 1: 'newField', 2: 'fields' })
-                  "
-                />
-              </div>
-              <div
-                class="form-item field-creator"
-                v-for="(input, index) in newField.fields"
-                :key="newField.fields[index]"
-              >
-                <p>Input {{ index + 1 }}:</p>
-                <div class="form-item">
-                  <input-with-title
-                    title="Input Title"
-                    type="text"
-                    :inputValue="newField.fields[index].inputTitle"
-                    @input="
-                      fieldInput(newField.fields[index], 'inputTitle', $event)
-                    "
-                  />
-                </div>
-                <div class="form-item">
-                  <input-with-title
-                    title="Input Type:"
-                    type="select"
-                    :options="inputTypes"
-                    :inputValue="newField.fields[index].inputType"
-                    @input="
-                      fieldInput(newField.fields[index], 'inputType', $event)
-                    "
-                  />
-                </div>
-                <div
-                  class="form-item"
-                  v-if="
-                    newField.fields[index].inputType === 'text' ||
-                    newField.fields[index].inputType === 'tel' ||
-                    newField.fields[index].inputType === 'textarea' ||
-                    newField.fields[index].inputType === 'email'
-                  "
-                >
-                  <input-with-title
-                    title="Placeholder"
-                    type="text"
-                    :inputValue="newField.fields[index].placeholder"
-                    @input="
-                      fieldInput(newField.fields[index], 'placeholder', $event)
-                    "
-                  />
-                </div>
-                <div class="button-wrapper">
-                  <div
-                    class="form-item"
-                    v-if="
-                      newField.fields[index].inputType === 'radio' ||
-                      newField.fields[index].inputType === 'select'
-                    "
-                  >
-                    <div class="form-item">
-                      <input-with-title
-                        title="Number of Options:"
-                        type="select"
-                        :options="[1, 2, 3, 4, 5]"
-                        :inputValue="newField.fields[index].optionQuantity"
-                        @input="setOptionQuantity($event, index)"
-                      />
-
-                      <div
-                        class="form-item"
-                        v-for="(options, optionsIndex) in newField.fields[index]
-                          .options"
-                        :key="optionsIndex"
-                      >
-                        <input-with-title
-                          type="text"
-                          :title="`Option ${optionsIndex + 1}`"
-                          :inputValue="
-                            newField.fields[index].options[optionsIndex]
-                              .optionValue
-                          "
-                          @input="
-                            fieldInput(
-                              newField.fields[index].options[optionsIndex],
-                              'optionValue',
-                              $event
-                            )
-                          "
-                        />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="form-item">
-                <input-with-title
-                  type="text"
-                  title="Template Name:"
-                  placeholder="Template Name"
-                  :inputValue="fieldTemplateTitle"
-                  @input="fieldInput(undefined, 'fieldTemplateTitle', $event)"
-                />
-              </div>
-              <button-standard-with-icon
-                style="margin: 30px; margin-top: 20px"
-                @click="
-                  fieldTemplateTitle
-                    ? saveAsFieldTemplate()
-                    : initiateSaveAsFieldTemplate()
-                "
-                text="Save As Field Template"
-              />
-              <button-standard-with-icon
-                text="Add Field"
-                @click="saveField()"
-                style="margin: 30px; margin-top: 20px; width: 100px"
+              <form-field-creation
+                @new-input-quantity="newInputQuantity"
+                @set-option-quantity="setOptionQuantity"
+                @toggle-library-enabled="toggleLibraryEnabled"
+                v-if="fieldEditIndex === index"
+                :newField="newField"
+                :fieldEditIndex="index"
+                @save-field="saveField"
               />
             </div>
           </div>
+          <form-field-creation
+            @new-input-quantity="newInputQuantity"
+            @set-option-quantity="setOptionQuantity"
+            @toggle-library-enabled="toggleLibraryEnabled"
+            v-if="newFieldOpen"
+            :newField="newField"
+            :fieldEditIndex="index"
+            @save-field="saveField"
+          />
+          <button-standard-with-icon
+            text="Add Field"
+            v-if="!newFieldOpen && !fieldEditIndex"
+            @click="openNewField"
+            class="button-styling"
+          />
           <button-standard-with-icon
             :text="'Save Form'"
             @click="saveForm()"
-            style="margin: 30px; margin-top: 20px; width: 100px"
+            class="button-styling"
           />
         </div>
         <div class="quarter-width, .three-quarter-width">
           <h5 v-if="!hasForms">No forms added yet! Add One!</h5>
           <div v-if="hasForms" class="form-list">
-            <h5 v-for="(form, index) in forms" :key="index">
-              {{ form.name }}
-              <vue-svg
-                svg="x-icon"
-                :customStyle="svgStyling"
-                @clicked="deleteForm(index)"
-              />
-              <vue-svg
-                svg="edit-pen"
-                :customStyle="svgStyling"
-                @clicked="editForm(form, index)"
-              />
-            </h5>
+            <list-item-style-wrapper
+              v-for="(form, index) in forms"
+              :key="index"
+            >
+              <h5>
+                {{ form.name }}
+              </h5>
+              <div class="action-buttons">
+                <round-icon-button
+                  svg="x-icon"
+                  class="round-icon-button"
+                  @click="deleteForm(index)"
+                />
+                <round-icon-button
+                  svg="edit-pen"
+                  class="round-icon-button"
+                  @click="editForm(form, index)"
+                />
+              </div>
+            </list-item-style-wrapper>
           </div>
         </div>
       </div>
@@ -284,31 +170,25 @@
 </template>
 
 <script>
-import VueSvg from "../../../../../assets/VueSvg.vue";
-import InputWithBinarySelection from "../../../../../SharedComponents/SharedComponentsUI/ElementLibrary/InputWithBinarySelection.vue";
-import InputWithTitle from "../../../../../SharedComponents/SharedComponentsUI/ElementLibrary/InputWithTitle.vue";
-import ButtonStandardWithIcon from "../../../../../SharedComponents/SharedComponentsUI/ButtonStandardWithIcon.vue";
+import ListItemStyleWrapper from "../../../../../../SharedComponents/SharedComponentsUI/ListItemStyleWrapper.vue";
+import RoundIconButton from "../../../../../../SharedComponents/SharedComponentsUI/RoundIconButton.vue";
+import FormFieldCreation from "./AdminViewConfigFormsComponents/FormFieldCreation.vue";
+import InputWithTitle from "../../../../../../SharedComponents/SharedComponentsUI/ElementLibrary/InputWithTitle.vue";
+import ButtonStandardWithIcon from "../../../../../../SharedComponents/SharedComponentsUI/ButtonStandardWithIcon.vue";
 
 export default {
   components: {
+    ListItemStyleWrapper,
     ButtonStandardWithIcon,
     InputWithTitle,
-    InputWithBinarySelection,
-    VueSvg,
+    RoundIconButton,
+    FormFieldCreation,
   },
   data() {
     return {
       svgStyling:
         "height: 10px; width: 10px; margin: 0px 5px; cursor: pointer;",
-      inputTypes: [
-        "text",
-        "tel",
-        "email",
-        "color",
-        "radio",
-        "select",
-        "textarea",
-      ],
+      newFieldOpen: true,
       form: {
         id: "form" + new Date().getTime(),
         name: undefined,
@@ -330,10 +210,11 @@ export default {
   },
   methods: {
     fieldInput(object, property, value) {
+      let string = value.replaceAll(":", "");
       if (object) {
-        object[property] = value;
+        object[property] = string;
       } else {
-        this[property] = value;
+        this[property] = string;
       }
     },
     newInputQuantity(e) {
@@ -370,16 +251,14 @@ export default {
         fields: [],
         duplicable: false,
       };
+      this.fieldEditIndex = undefined;
     },
     initiateSaveAsFieldTemplate() {
       this.fieldTemplateTitleFieldOpen = true;
     },
     saveAsFieldTemplate() {
-      this.newField.fields.forEach((x) => {
-        this.stripColonsFromFields(x);
-      });
       let template = {
-        title: this.fieldTemplateTitle.replace(/:/g, ""),
+        title: this.fieldTemplateTitle,
         fields: [...this.newField.fields],
       };
       this.fieldTemplates.push(Object.assign({}, template));
@@ -392,6 +271,31 @@ export default {
     },
     assignFieldTemplate(template) {
       this.newField.fields = JSON.parse(JSON.stringify(template.fields));
+    },
+    toggleLibraryEnabled(value) {
+      if (value === true) {
+        this.newField.fields = [
+          {
+            inputTitle: "Song Name",
+            inputType: "text",
+            placeholder: "Song Name",
+          },
+          {
+            inputTitle: "Song Artist",
+            inputType: "text",
+            placeholder: "Song Artist",
+          },
+          {
+            inputTitle: "Notes",
+            inputType: "text",
+            placeholder: "Notes",
+          },
+        ];
+        this.newField.libraryEnabled = true;
+      } else {
+        this.newField.libraryEnabled = false;
+        this.newField.fields = [];
+      }
     },
     saveForm() {
       if (this.editIndex != undefined) {
@@ -416,11 +320,11 @@ export default {
         duplicable: false,
       };
     },
+    openNewField() {
+      this.newFieldOpen = true;
+    },
     deleteForm(index) {
       this.$store.commit("adminConfigDeleteForm", index);
-    },
-    stripColonsFromFields(field) {
-      return field.inputTitle.replace(/:/g, "");
     },
     editForm(form, index) {
       this.form = { ...this.form, ...form };
@@ -477,23 +381,34 @@ export default {
   }
 
   .form-item {
-    /* display: flex; */
-    /* width: 90%; */
-    /* flex-direction: column; */
-    /* justify-content: left; */
-    /* margin-left: 15px; */
     max-width: 100%;
+  }
+
+  .indented {
+    margin-left: 20px;
+    padding-left: 10px;
+    border-left: 1px solid var(--cardOutline);
   }
 
   .row-flex {
     display: flex;
     flex-direction: row;
-    /* justify-content: space-evenly; */
+    justify-content: space-between;
     align-items: center;
   }
 
   .row-flex div {
-    flex: 1;
+    /* flex: 1; */
+  }
+
+  .round-icon-button {
+    width: 28px;
+    height: 28px;
+  }
+
+  .field-title {
+    display: flex;
+    align-items: center;
   }
 
   .input-view {
@@ -512,7 +427,8 @@ export default {
   }
 
   .form-item > p,
-  .form-section > h5 {
+  .form-section > h5,
+  .form-list {
     text-align: left;
   }
   .form-item > input,
@@ -528,8 +444,8 @@ export default {
     margin-top: 5px;
   }
 
-  .form-list {
-    text-align: right;
+  .action-buttons {
+    display: flex;
   }
   @media (min-width: 850px) {
     p {
@@ -544,6 +460,12 @@ export default {
 
     .quarter-width {
       width: 25%;
+    }
+
+    .button-styling {
+      margin: 30px;
+      margin-top: 20px;
+      max-width: 150px;
     }
 
     .three-quarter-width {
@@ -564,7 +486,7 @@ export default {
     }
 
     .row-flex div {
-      flex: 1;
+      /* flex: 1; */
     }
 
     .input-view {
@@ -597,10 +519,6 @@ export default {
 
     .field-creator {
       margin-top: 5px;
-    }
-
-    .form-list {
-      text-align: right;
     }
   }
 }
