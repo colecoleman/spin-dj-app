@@ -155,18 +155,12 @@ export default {
         payload.value = this.fields[this.fieldToEdit].value;
       }
 
-      this.$store.dispatch("editEvent", payload).then((res) => {
-        this.$emit("editEvent", res.data.Attributes);
-        this.$store.commit("addStatus", {
-          type: "success",
-          note: "Event Successfully Edited",
-        });
+      this.$store.dispatch("editEvent", payload).then(() => {
         this.closeEditCard();
       });
     },
   },
   components: { InputWithTitle },
-  emits: ["editEvent"],
   props: ["event"],
 };
 </script>

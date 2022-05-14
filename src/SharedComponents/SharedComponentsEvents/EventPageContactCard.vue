@@ -13,7 +13,6 @@
       <event-information-edit
         v-if="editCardOpen"
         :event="event"
-        @edit-event="editEvent"
         @close-edit-card="toggleEditCard"
       />
     </template>
@@ -41,9 +40,6 @@ export default {
     subtotal,
     toggleEditCard() {
       this.editCardOpen = !this.editCardOpen;
-    },
-    editEvent(payload) {
-      this.$emit("editEvent", payload);
     },
   },
   props: ["client", "event"],
