@@ -293,6 +293,20 @@
     </g>
   </svg>
   <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="36"
+    height="36"
+    viewBox="0 0 36 36"
+    v-if="svg === 'dashboard'"
+  >
+    <path
+      id="Icon_open-dashboard"
+      data-name="Icon open-dashboard"
+      d="M18,0A18,18,0,1,0,36,18,18.053,18.053,0,0,0,18,0Zm0,4.5A13.5,13.5,0,1,1,4.5,18,13.482,13.482,0,0,1,18,4.5ZM18,9a2.25,2.25,0,1,0,2.25,2.25A2.228,2.228,0,0,0,18,9Zm-7.47,4.5a2.25,2.25,0,0,0-.855,3.78l4.095,4.095A4.569,4.569,0,0,0,13.5,22.5,4.5,4.5,0,1,0,18,18a4.569,4.569,0,0,0-1.125.27L12.78,14.175a2.25,2.25,0,0,0-1.98-.72,2.25,2.25,0,0,0-.27,0Zm14.22,0A2.25,2.25,0,1,0,27,15.75,2.228,2.228,0,0,0,24.75,13.5Z"
+    />
+  </svg>
+
+  <svg
     :class="customClass"
     xmlns="http://www.w3.org/2000/svg"
     width="211"
@@ -809,6 +823,24 @@
       fill="currentColor"
     />
   </svg>
+  <svg
+    :class="customClass"
+    @click="clicked"
+    :style="customStyle ? customStyle : ''"
+    v-if="svg === 'music'"
+    xmlns="http://www.w3.org/2000/svg"
+    width="36"
+    height="36"
+    viewBox="0 0 36 36"
+  >
+    <path
+      id="Icon_awesome-music"
+      data-name="Icon awesome-music"
+      d="M36,2.251A2.248,2.248,0,0,0,33.074.105L10.575,6.75A2.249,2.249,0,0,0,9,8.895V27.276A9.727,9.727,0,0,0,6.75,27C3.022,27,0,29.014,0,31.5S3.022,36,6.75,36s6.75-2.014,6.75-4.5V15.069l18-5.275V22.776a9.727,9.727,0,0,0-2.25-.276c-3.728,0-6.75,2.014-6.75,4.5s3.022,4.5,6.75,4.5S36,29.486,36,27V2.251Z"
+      transform="translate(0 0)"
+    />
+  </svg>
+
   <svg
     :class="customClass"
     @click="clicked"
