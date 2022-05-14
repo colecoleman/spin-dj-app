@@ -106,11 +106,7 @@
     />
     <section>
       <div id="contact-card">
-        <event-page-contact-card
-          v-if="event"
-          :event="event"
-          @edit-event="editEvent"
-        />
+        <event-page-contact-card v-if="event" :event="event" />
       </div>
       <div id="location-scroller">
         <location-gallery :event="event" />
@@ -329,9 +325,6 @@ export default {
       };
       this.$store.dispatch("editEvent", payload);
     },
-    // editEvent(payload) {
-    // this.event = payload;
-    // },
     applyManualPayment(payment) {
       this.event.invoice.payments.push(payment);
       let payload = {

@@ -17,6 +17,11 @@ const store = createStore({
       contacts: [],
       equipment: [],
       events: [],
+      library: {
+        tracks: [],
+        playlists: [],
+        meta: {},
+      },
     };
   },
   actions: {
@@ -1150,6 +1155,106 @@ const store = createStore({
           );
       });
     },
+    async uploadLibrary(context, payload) {
+      let library = payload;
+      console.log(library);
+      return await Storage.put(
+        `${context.state.user.tenantId}/library`,
+        payload
+      )
+        .then((res) => {
+          console.log(res);
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+    },
+    async retrieveLibrary(context) {
+      if (context.state.library.tracks.length === 0) {
+        return new Promise((resolve, reject) => {
+          Storage.get(`${context.state.user.tenantId}/library`, {
+            download: true,
+          })
+            .then(async (res) => {
+              // console.log(res);
+              // let size = res.Body.size;
+              // let chunkQuantity = Math.ceil(size / (1024 * 1024));
+              // let chunkSize = 1024 * 1024;
+              // let currentlyProcessedChunk = 0;
+              // async function processChunk() {
+              //   // let reader = new FileReader();
+              //   let chunk = res.Body.slice(currentlyProcessedChunk, chunkSize, { type: 'application/json' });
+              //   console.log(await chunk.text());
+              //   let body = await chunk.text();
+              //   console.log(body.lastIndexOf('},{'))
+              //   let incompleteItem = body.slice(body.lastIndexOf('},{'));
+              //   console.log(incompleteItem);
+
+              // }
+              // processChunk();
+              let body = await res.Body.text();
+              let bodyObject = JSON.parse(body);
+              console.log(bodyObject);
+              context.commit("setTracks", bodyObject.tracks);
+              context.commit("setLibrary", bodyObject);
+            })
+            .catch((e) => {
+              reject({
+                message: "No Library Found",
+                error: e,
+              });
+            });
+        });
+      }
+    },
+    searchTracks(context, payload) {
+      return new Promise((resolve) => {
+        let tracks = [...context.state.library.tracks];
+        let array = [];
+        let searchTerm = payload.toLowerCase().replace(/[^a-z0-9]/gi, "");
+        if (payload.length > 0) {
+          let name;
+          let artist;
+          array = tracks.filter((x) => {
+            if (x["Name"]) {
+              name = x["Name"].toLowerCase().replace(/[^a-z0-9]/gi, "");
+            }
+            if (x["Artist"]) {
+              artist = x["Artist"].toLowerCase().replace(/[^a-z0-9]/gi, "");
+            }
+            if (name.includes(searchTerm) || artist.includes(searchTerm)) {
+              return true;
+            } else if (
+              searchTerm.includes(name) ||
+              searchTerm.includes(artist)
+            ) {
+              return true;
+            }
+          });
+        }
+        let exactMatch = array.find((x) => {
+          let name;
+          let artist;
+          if (x["Name"]) {
+            name = x["Name"].toLowerCase().replace(/[^a-z0-9]/gi, "");
+          }
+          if (x["Artist"]) {
+            artist = x["Artist"].toLowerCase().replace(/[^a-z0-9]/gi, "");
+          }
+          if (searchTerm.includes(name) && searchTerm.includes(artist)) {
+            return true;
+          } else {
+            return false;
+          }
+        });
+
+        if (exactMatch) {
+          resolve([exactMatch]);
+        } else {
+          resolve(array);
+        }
+      });
+    },
   },
   mutations: {
     // public mutations ///////////////////////////////
@@ -1459,8 +1564,8 @@ const store = createStore({
             ? -1
             : new Date(a.data.startTime).getTime() >
               new Date(b.data.startTime).getTime()
-            ? 1
-            : 0;
+              ? 1
+              : 0;
         });
       } else {
         state.events.sort(logic);
@@ -1469,10 +1574,20 @@ const store = createStore({
     addToDo(state, payload) {
       state.toDos.unshift(payload);
     },
+    setTracks(state, payload) {
+          state.library.tracks = [...payload];
+    },
+    setLibrary(state, payload) {
+      state.library.playlists.push(...payload.playlists);
+      state.library.meta = { ...state.library.meta, ...payload.meta };
+    },
 
     //prospect-specific mutations /////////////////////
   },
   getters: {
+    events(state) {
+      return state.events;
+    },
     user(state) {
       return state.user;
     },
@@ -1723,6 +1838,15 @@ const store = createStore({
           x.role !== "vendor"
         );
       });
+    },
+    libraryTracks: (state) => (start, end) => {
+      return state.library.tracks.slice(start, end);
+    },
+    libraryPlaylists(state) {
+      return state.library.playlists;
+    },
+    libraryMeta(state) {
+      return state.library.meta;
     },
   },
   plugins: [

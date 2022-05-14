@@ -1,41 +1,35 @@
 <template>
-  <ul>
-    <li>
-      <router-link to="/admin/dashboard">Dashboard</router-link>
-    </li>
-    <li>...Coming Soon</li>
-    <!-- <li>
-      <router-link to="/admin/sales">Sales</router-link>
-    </li> -->
-  </ul>
+  <div>
+    <round-icon-button class="icon" svg="dashboard" @click="clicked('Home')" />
+    <round-icon-button class="icon" svg="music" @click="clicked('Library')" />
+  </div>
 </template>
-
+<script>
+import RoundIconButton from "../../../../SharedComponents/SharedComponentsUI/RoundIconButton.vue";
+export default {
+  methods: {
+    clicked(icon) {
+      this.$emit("navigate", icon);
+    },
+  },
+  emits: ["navigate"],
+  props: ["active"],
+  components: {
+    RoundIconButton,
+  },
+};
+</script>
 <style scoped>
-ul {
-  /* color: white; */
-  text-align: right;
-  height: 90%;
-  padding: 0;
+.icon {
+  height: 55px;
+  width: 55px;
+  border-radius: 30px;
+  margin: 5px;
 }
 
-li {
-  line-height: 3.25;
+div {
+  display: flex;
   width: 100%;
-  text-transform: uppercase;
-  font-size: 12pt;
-  list-style: none;
-  cursor: pointer;
-  font-weight: 600;
-  color: var(--secondaryTextColor);
-}
-
-a {
-  text-decoration: none;
-  /* color: white; */
-  font-weight: 700;
-}
-
-.active-link {
-  color: var(--highlightColor);
+  justify-content: center;
 }
 </style>
