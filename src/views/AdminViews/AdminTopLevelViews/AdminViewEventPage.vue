@@ -46,11 +46,7 @@
           :key="index"
           class="row-flex"
         >
-          <vue-svg
-            svg="x-icon"
-            :customStyle="svgStyling"
-            @clicked="removeAdjustment(index)"
-          />
+          <vue-svg svg="x-icon" class="svg" @click="removeAdjustment(index)" />
           <p>{{ adjustment.name }}: {{ adjustmentDisplay(adjustment) }}</p>
         </div>
         <h4>Add Adjustments:</h4>
@@ -62,8 +58,8 @@
         >
           <vue-svg
             svg="plus-sign"
-            @clicked="addAdjustment(adjustment)"
-            :customStyle="svgStyling"
+            @click="addAdjustment(adjustment)"
+            class="svg"
           />
           <p>{{ adjustment.name }}: {{ adjustmentDisplay(adjustment) }}</p>
         </div>
@@ -383,7 +379,10 @@ export default {
   display: flex;
   align-items: center;
 }
-
+.svg {
+  height: 14px;
+  margin: 10px;
+}
 section {
   width: 100%;
   height: 100%;
@@ -469,7 +468,7 @@ section {
 }
 @media screen and (min-width: 800px) {
   section {
-    grid-template-columns: repeat(10, 1fr);
+    grid-template-columns: repeat(10, minmax(0, 1fr));
     grid-template-rows: 75px 240px minmax(300px, 1fr);
   }
 

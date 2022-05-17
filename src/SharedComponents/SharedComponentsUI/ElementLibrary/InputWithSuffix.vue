@@ -13,15 +13,12 @@
         <p>{{ suffix }}</p>
       </div>
     </div>
-    <vue-svg v-if="svg" :svg="svg" @clicked="iconClicked" />
+    <vue-svg v-if="svg" class="svg" :svg="svg" @clicked="iconClicked" />
   </div>
 </template>
 <script>
 import VueSvg from "../../../assets/VueSvg.vue";
 export default {
-  data() {
-    return {};
-  },
   computed: {
     value: {
       get() {
@@ -71,6 +68,12 @@ export default {
 }
 .error {
   border: 1px solid red;
+}
+
+.svg {
+  height: 14px;
+  width: 14px;
+  margin: 10px;
 }
 
 input {

@@ -26,7 +26,7 @@
             @click="monthChange(`backward`)"
             @mousedown.prevent=""
           >
-            <vue-svg svg="left-arrow" />
+            <vue-svg class="svg" svg="left-arrow" />
           </div>
           <div id="main-calendar-content">
             <div id="days">
@@ -52,7 +52,7 @@
             @click="monthChange(`forward`)"
             @mousedown.prevent=""
           >
-            <vue-svg svg="right-arrow" />
+            <vue-svg class="svg" svg="right-arrow" />
           </div>
         </div>
       </div>
@@ -390,5 +390,10 @@ export default {
 
 .today > * {
   filter: invert(100%);
+}
+
+.svg {
+  height: 14px;
+  margin: auto;
 }
 </style>

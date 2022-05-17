@@ -2,25 +2,13 @@
   <div class="button-standard-with-icon">
     <h5 v-if="!loading && text">{{ text }}</h5>
     <h5 v-if="loading">Loading</h5>
-    <vue-svg
-      v-if="svg"
-      :svg="svg"
-      :customStyle="text ? companionIcon : soleIcon"
-    />
+    <vue-svg v-if="svg" :svg="svg" class="svg" />
   </div>
 </template>
 
 <script>
 import VueSvg from "../../assets/VueSvg.vue";
 export default {
-  data() {
-    return {
-      companionIcon:
-        "max-height: 13px; min-height: 13px; width: 13px; margin: 0px 10px;",
-      soleIcon:
-        "max-height: 13px; min-height: 13px; width: 13px; margin: 0px 10px;",
-    };
-  },
   props: ["text", "svg", "loading"],
   components: { VueSvg },
 };
@@ -28,6 +16,12 @@ export default {
 
 <style scoped>
 @media screen {
+  .svg {
+    max-height: 13px;
+    min-height: 13px;
+    width: 13px;
+    margin: 0px 10px;
+  }
   .button-standard-with-icon {
     display: flex;
     max-height: 35px;

@@ -66,8 +66,8 @@
               </p>
               <vue-svg
                 svg="x-icon"
-                :customStyle="svgStyling"
-                @clicked="removeDateRange(index)"
+                class="svg"
+                @click="removeDateRange(index)"
               />
             </div>
             <div class="date-range-input">
@@ -76,8 +76,8 @@
               <input type="date" v-model="dateRangeInput.end" />
               <vue-svg
                 svg="circle-checkmark"
-                :customStyle="svgStyling"
-                @clicked="submitNewDateRange()"
+                class="svg"
+                @click="submitNewDateRange()"
               />
             </div>
             <p v-if="dateErrorMessage" class="danger">
@@ -222,6 +222,12 @@ export default {
 .date-range {
   display: flex;
   align-items: center;
+}
+
+.svg {
+  height: 8px;
+  width: 8px;
+  margin: 5px;
 }
 
 .input-item {

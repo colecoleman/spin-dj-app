@@ -12,7 +12,7 @@
       <h5>{{ text }}</h5>
       <vue-svg
         svg="dropdown-arrow"
-        :customStyle="actionsActive ? downArrow : upArrow"
+        :class="actionsActive ? 'down-arrow svg' : 'svg'"
       />
     </div>
     <div v-if="actionsActive" class="dropdown">
@@ -26,7 +26,7 @@
             : buttonClicked(action.parameter)
         "
       >
-        <vue-svg v-if="action.icon" :svg="action.icon" />
+        <vue-svg v-if="action.icon" :svg="action.icon" class="svg" />
         <h5 :class="action.danger ? 'danger' : ''">
           {{ action.title }}
         </h5>
@@ -62,6 +62,15 @@ export default {
 
 <style scoped>
 @media screen {
+  .svg {
+    height: 15px;
+    width: 15px;
+    margin: 0 5px;
+  }
+
+  .down-arrow {
+    transform: rotate(180deg);
+  }
   .button-standard-with-icon {
     position: absolute;
     width: 100%;
@@ -97,6 +106,7 @@ export default {
 
   .heading-container {
     height: 100%;
+    /* margin: auto; */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -116,7 +126,7 @@ export default {
   }
 
   h5 {
-    margin: 0px;
+    margin: 10px 0px;
     font-size: 0.75em;
   }
 

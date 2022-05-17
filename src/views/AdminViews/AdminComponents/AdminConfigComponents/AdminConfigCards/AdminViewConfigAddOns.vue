@@ -85,15 +85,11 @@
               <h4>
                 {{ addOn.name }}
 
-                <vue-svg
-                  svg="x-icon"
-                  @clicked="deleteAddOn(index)"
-                  customStyle="height: 10px; width: 10px; margin: 0px 5px; cursor: pointer;"
-                />
+                <vue-svg svg="x-icon" @click="deleteAddOn(index)" class="svg" />
                 <vue-svg
                   svg="edit-pen"
-                  @clicked="editAddOn(addOn, index)"
-                  customStyle="height: 10px; width: 10px; margin: 0px 5px; cursor: pointer;"
+                  @click="editAddOn(addOn, index)"
+                  class="svg"
                 />
               </h4>
               <div class="add-on-display-section">
@@ -223,7 +219,12 @@ export default {
   p {
     font-size: 9pt;
   }
-
+  .svg {
+    height: 10px;
+    width: 10px;
+    margin: 10px;
+    cursor: pointer;
+  }
   .conditional-add-on-wrapper {
     max-height: 300px;
     height: fit-content;

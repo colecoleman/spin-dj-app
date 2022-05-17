@@ -10,15 +10,17 @@
         <div class="product-title" @click="toggleActiveProduct(product.id)">
           <vue-svg
             svg="down-arrow"
-            :customStyle="
-              product.id === activeEventProduct ? '' : inactiveArrow
+            :class="
+              product.id === activeEventProduct
+                ? 'arrow'
+                : ' arrow inactive-arrow'
             "
           />
           <vue-svg
             svg="x-icon"
             v-if="activeEventProduct === product.id"
-            :customStyle="productTitleSvgStyling"
-            @clicked="removeProductFromEvent(index)"
+            class="product-title-svg"
+            @click="removeProductFromEvent(index)"
           />
 
           <h4>{{ product.name }}</h4>
@@ -64,8 +66,8 @@
                 <vue-svg
                   svg="edit-pen"
                   v-if="addOnQuantityEditIndex !== index"
-                  @clicked="editQuantityOfAddOnUnits(index)"
-                  :customStyle="editPenStyling"
+                  @click="editQuantityOfAddOnUnits(index)"
+                  style="edit-pen-svg"
                 />
                 <input
                   type="number"
@@ -93,16 +95,18 @@
         >
           <vue-svg
             svg="down-arrow"
-            :customStyle="
-              product.id === activeStoreProduct ? '' : inactiveArrow
+            :class="
+              product.id === activeEventProduct
+                ? 'arrow'
+                : ' arrow inactive-arrow'
             "
           />
 
           <vue-svg
             svg="plus-sign"
-            :customStyle="productTitleSvgStyling"
+            class="product-title-svg"
             v-if="activeStoreProduct === product.id"
-            @clicked="addProductToEvent(product)"
+            @click="addProductToEvent(product)"
           />
           <h4>{{ product.name }}</h4>
         </div>
@@ -161,9 +165,6 @@ export default {
       activeEventProduct: undefined,
       activeStoreProduct: undefined,
       addOnQuantityEditIndex: undefined,
-      inactiveArrow: "rotate: 270deg;",
-      productTitleSvgStyling: "height: 10px; width: 10px; margin-right: 15px;",
-      editPenStyling: "height: 10px; margin-left: 5px;",
     };
   },
   methods: {
@@ -241,6 +242,24 @@ export default {
 <style scoped>
 #edit-product-wrapper {
   height: 100%;
+}
+.arrow {
+  width: 18px;
+  height: 18px;
+}
+.inactive-arrow {
+  rotate: 270deg;
+}
+
+.product-title-svg {
+  height: 12px;
+  width: 12px;
+  margin: 15px;
+}
+
+.edit-pen-svg {
+  height: 10px;
+  margin-left: 5px;
 }
 
 .products {

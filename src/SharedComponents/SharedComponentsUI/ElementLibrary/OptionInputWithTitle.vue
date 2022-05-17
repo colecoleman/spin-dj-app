@@ -6,7 +6,7 @@
         {{ dropdownItemDisplay(value) }}
       </p>
       <div class="skeleton" v-if="!optionsLoaded"></div>
-      <vue-svg svg="down-arrow" />
+      <vue-svg svg="down-arrow" class="svg" />
     </div>
     <div class="dropdown" v-if="dropdownSelections.length > 0 && dropdownOpen">
       <div
@@ -96,6 +96,12 @@ export default {
   padding-top: 10px;
   max-height: 300px;
   overflow-y: scroll;
+}
+
+.svg {
+  width: 14px;
+  height: 14px;
+  margin: 5px;
 }
 
 .item-name {

@@ -13,17 +13,12 @@
   >
     <p class="title" v-if="title">{{ title }}</p>
     <p class="item">{{ item }}</p>
-    <vue-svg v-if="checked == true" svg="x-icon" :customStyle="style" />
+    <vue-svg v-if="checked == true" svg="x-icon" class="svg" />
   </div>
 </template>
 <script>
 import VueSvg from "../../../assets/VueSvg.vue";
 export default {
-  data() {
-    return {
-      style: "width: 10px; margin: 0 0px 0 10px;",
-    };
-  },
   methods: {
     click() {
       if (!this.disabled) {
@@ -69,6 +64,11 @@ export default {
   background-color: var(--textColor);
   border: 2px solid var(--highlightColor);
   color: var(--foregroundColor);
+}
+
+.svg {
+  width: 10px;
+  margin: 0 0px 0 10px;
 }
 
 .item {

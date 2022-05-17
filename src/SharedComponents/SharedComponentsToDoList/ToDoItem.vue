@@ -3,7 +3,7 @@
     <vue-svg
       svg="fillable-circle"
       @clicked="clickToDo(toDo)"
-      :customStyle="toDo.completed ? completedSvg : uncompletedSvg"
+      :class="toDo.completed ? 'completed svg' : 'uncompleted svg'"
     />
     <h4 :class="toDo.completed ? `strike` : ``">{{ toDo.title }}</h4>
     <div class="people-wrapper">
@@ -24,7 +24,7 @@
     <vue-svg
       svg="down-arrow"
       @clicked="toggleExpansion"
-      :customStyle="expansionActive ? 'transform: rotate(180deg);' : ''"
+      :class="exansionActive ? 'up-arrow svg' : 'down-arrow svg'"
     />
   </div>
   <div class="expanded-to-do" v-if="expansionActive">
@@ -46,9 +46,6 @@ export default {
   data() {
     return {
       expansionActive: false,
-      completedSvg:
-        "width: 14px; height: 14px; fill: currentColor: stroke: currentColor",
-      uncompletedSvg: "fill: none; stroke: currentColor",
       contacts: [],
     };
   },
@@ -104,7 +101,21 @@ h4 {
 .expanded-to-do {
   margin-bottom: 25px;
 }
-
+.svg {
+  width: 14px;
+  height: 14px;
+}
+.up-arrow {
+  transform: rotate(180deg);
+}
+.completed {
+  fill: currentColor;
+  stroke: currentColor;
+}
+.uncompleted {
+  fill: none;
+  stroke: currentColor;
+}
 @keyframes strike {
   0% {
     width: 0;

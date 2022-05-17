@@ -5,36 +5,42 @@
         svg="left-arrow"
         v-if="checkForIcon('left-arrow')"
         :customStyle="svgStyling"
+        class="svg-styling"
         @clicked="leftArrowClicked"
       />
       <vue-svg
         v-if="checkForIcon('print')"
         svg="print"
         :customStyle="svgStyling"
+        class="svg-styling"
         @clicked="print"
       />
       <vue-svg
         v-if="checkForIcon('save')"
         svg="save"
         :customStyle="svgStyling"
+        class="svg-styling"
         @clicked="saveButtonClicked"
       />
       <vue-svg
         v-if="checkForIcon('plus-sign')"
         svg="plus-sign"
         :customStyle="svgStyling"
+        class="svg-styling"
         @clicked="toggleAddMenuOpened"
       />
       <vue-svg
         v-if="checkForIcon('checked-signature')"
         svg="checked-signature"
         :customStyle="svgStyling"
+        class="svg-styling"
         @clicked="markAsSigned"
       />
       <div v-if="checkForIcon('admin-signature')" class="e-sign-grouping">
         <vue-svg
           svg="signature-admin"
           :customStyle="svgStyling"
+          class="svg-styling"
           customClass="pulsing"
           @clicked="toggleAdminESign"
         />
@@ -50,6 +56,7 @@
             <vue-svg
               svg="circle-checkmark"
               :customStyle="svgStyling"
+              class="svg-styling"
               @clicked="submitAdminESign"
             />
           </div>
@@ -59,6 +66,7 @@
         <vue-svg
           svg="signature"
           :customStyle="svgStyling"
+          class="svg-styling"
           customClass="pulsing"
           @clicked="toggleESign"
         />
@@ -73,16 +81,23 @@
             <vue-svg
               svg="circle-checkmark"
               :customStyle="svgStyling"
+              class="svg-styling"
               @clicked="submitESign"
             />
           </div>
         </transition>
       </div>
-      <vue-svg svg="x-icon" :customStyle="svgStyling" @clicked="close" />
+      <vue-svg
+        svg="x-icon"
+        :customStyle="svgStyling"
+        class="svg-styling"
+        @clicked="close"
+      />
       <vue-svg
         v-if="checkForIcon('right-arrow')"
         svg="right-arrow"
         :customStyle="svgStyling"
+        class="svg-styling"
         @clicked="rightArrowClicked"
       />
     </div>
@@ -238,7 +253,12 @@ export default {
   padding: 20px;
   box-sizing: border-box;
 }
-
+.svg-styling {
+  width: 18px;
+  height: 18px;
+  color: var(--textColor);
+  margin: 3px;
+}
 .e-sign-grouping,
 .e-sign-field {
   display: flex;

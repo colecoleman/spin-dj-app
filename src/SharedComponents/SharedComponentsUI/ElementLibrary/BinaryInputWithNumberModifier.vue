@@ -9,7 +9,7 @@
   >
     <p class="title" v-if="title">{{ title }}</p>
     <p class="item">{{ item }}</p>
-    <vue-svg v-if="checked == true" svg="x-icon" :customStyle="style" />
+    <vue-svg v-if="checked == true" svg="x-icon" class="svg" />
   </div>
   <div
     v-if="checked"
@@ -27,7 +27,6 @@ import VueSvg from "../../../assets/VueSvg.vue";
 export default {
   data() {
     return {
-      style: "width: 10px; margin: 0 0px 0 10px;",
       modifier: 10,
     };
   },
@@ -87,6 +86,11 @@ export default {
   font-weight: 600;
   margin: 0;
   padding: 0;
+}
+
+.svg {
+  width: 10px;
+  margin: 0 0px 0 10px;
 }
 
 input {
