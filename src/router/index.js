@@ -124,6 +124,14 @@ const routes = [
         },
       },
       {
+        path: "library",
+        name: "library",
+        meta: { requiresAdminAuth: true },
+        components: {
+          content: AdminViewDashboard
+        }
+      },
+      {
         path: "contacts",
         name: "contacts",
         meta: { requiresAdminAuth: true },
