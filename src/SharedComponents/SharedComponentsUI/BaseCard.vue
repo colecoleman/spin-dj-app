@@ -17,9 +17,6 @@
         <h3 @click="actionOneClicked()" v-if="actionText">
           {{ actionText }}
         </h3>
-        <div class="dropdown-container">
-          <slot name="dropdownContainer"></slot>
-        </div>
         <div class="search-container right-icon" v-if="searchIcon">
           <search-icon
             svg="search"
@@ -38,6 +35,9 @@
           @click="actionOneClicked"
           :svg="actionIcon"
         />
+        <div class="dropdown-container">
+          <slot name="dropdownContainer"></slot>
+        </div>
       </div>
     </div>
 
@@ -201,7 +201,7 @@ h5 {
 }
 .dropdown-container {
   position: absolute;
-  right: 100%;
+  left: 100%;
   top: 100%;
 }
 </style>
