@@ -15,6 +15,7 @@
         <div class="match-item" v-for="(track, index) in matches" :key="index">
           <track-item :track="track" class="match-track" />
           <round-icon-button
+            v-if="matchingField"
             svg="circle-checkmark"
             @click="appendToPlaylist(track)"
           />
@@ -119,7 +120,10 @@ export default {
 }
 
 .match-track {
-  width: 90%;
+  /* min-width: 90%;
+  max-width: 100%;
+  width: 100%; */
+  width: 100%;
 }
 
 h5 {
