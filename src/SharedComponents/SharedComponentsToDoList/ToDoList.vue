@@ -2,7 +2,7 @@
   <base-card
     title="To-Do"
     svg="clipboard"
-    actionIcon="plus-sign"
+    :actionIcon="newToDoOpened ? 'x-icon' : 'plus-sign'"
     @action-one-clicked="toggleNewToDo"
   >
     <template v-slot:content>
