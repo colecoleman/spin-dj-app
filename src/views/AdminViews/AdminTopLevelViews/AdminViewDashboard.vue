@@ -1,10 +1,5 @@
 <template>
   <section>
-    <admin-dashboard-navigation
-      id="navigation"
-      :active="activeComponent"
-      @navigate="navigate"
-    />
     <component :is="activeComponent" />
   </section>
 </template>
@@ -13,23 +8,15 @@
 import Home from "./AdminDashboardGroups/AdminDashboardHome.vue";
 import Library from "./AdminDashboardGroups/AdminDashboardPlaylists.vue";
 
-import AdminDashboardNavigation from "../AdminComponents/AdminDashboardComponents/AdminDashboardNavigation.vue";
-
 export default {
-  data() {
-    return {
-      activeComponent: "Home",
-    };
-  },
-  methods: {
-    navigate(component) {
-      this.activeComponent = component;
+  computed: {
+    activeComponent() {
+      return this.$router.currentRoute.value.name;
     },
   },
   components: {
-    Home,
-    Library,
-    AdminDashboardNavigation,
+    dashboard: Home,
+    library: Library,
   },
 };
 </script>
@@ -41,24 +28,16 @@ export default {
     /* height: 100%; */
     display: grid;
     grid-template-columns: 100%;
-    grid-template-rows: 60px repeat(4, 360px);
+    grid-template-rows: repeat(4, 360px);
     gap: 10px;
     padding-bottom: 70px;
-  }
-
-  #navigation {
-    /* width: 100%; */
-    grid-row: 1/2;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
   }
 }
 @media screen and (min-width: 800px) {
   section {
     padding: 0;
     grid-template-columns: repeat(2, 50%);
-    grid-template-rows: 60px minmax(250px, 500px) 350px 350px;
+    grid-template-rows: minmax(250px, 500px) 350px 350px;
     margin-bottom: 10px;
   }
   #navigation {
