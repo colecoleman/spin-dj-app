@@ -170,7 +170,7 @@ export default {
   position: absolute;
   right: -50px;
   top: -100%;
-  z-index: 3;
+  z-index: 10;
   width: 300px;
 }
 
