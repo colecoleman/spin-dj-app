@@ -3,7 +3,7 @@
     :title="matchingField ? matchingField.name : 'Tracks'"
     svg="disc"
     :searchIcon="error ? false : true"
-    actionIcon="import-playlist"
+    :actionIcon="libraryUploading ? 'loading' : 'import-playlist'"
     @action-one-clicked="importPlaylist"
     @search-input="updateSearchTerm"
     @search-blurred="searchForTrack"
@@ -103,6 +103,7 @@ export default {
     "topIndex",
     "bottomIndex",
     "error",
+    "libraryUploading",
   ],
 };
 </script>

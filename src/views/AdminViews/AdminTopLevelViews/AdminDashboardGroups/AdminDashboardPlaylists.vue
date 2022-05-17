@@ -7,6 +7,7 @@
     :error="error"
     :topIndex="topIndex"
     :bottomIndex="bottomIndex"
+    :libraryUploading="libraryUploading"
     @append-to-playlist="appendToPlaylist"
     @search-for-track="searchForTrack"
     @turn-library-page="turnLibraryPage"
@@ -49,6 +50,7 @@ export default {
       searchOpen: false,
       chosenForm: undefined,
       matchingField: undefined,
+      libraryUploading: false,
       matches: [],
       error: undefined,
       topIndex: 0,
@@ -127,6 +129,7 @@ export default {
     },
     async callDb() {
       await this.$store.dispatch("uploadLibrary", this.library);
+      this.libraryUploading = false;
     },
     createDOMElement(readXML) {
       var parser = new DOMParser();
@@ -202,6 +205,7 @@ export default {
       this.library.meta[key] = value;
     },
     async readFile(e) {
+      this.libraryUploading = true;
       let file = e.target.files[0];
       var reader = new FileReader();
       reader.onload = (e) => {

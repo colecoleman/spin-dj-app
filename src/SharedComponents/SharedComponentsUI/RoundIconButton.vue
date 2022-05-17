@@ -1,8 +1,8 @@
 <template>
   <div class="round-button-wrapper">
     <vue-svg
-      :svg="loading ? 'spinner' : svg"
-      :class="loading ? 'spinning svg' : 'svg'"
+      :svg="svg === 'loading' ? 'spinner' : svg"
+      :class="svg === 'loading' ? 'spinning svg' : 'svg'"
     />
   </div>
 </template>
