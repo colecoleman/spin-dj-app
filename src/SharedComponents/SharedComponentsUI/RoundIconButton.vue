@@ -44,13 +44,4 @@ export default {
   min-width: 14px;
   min-height: 14px;
 }
-
-@media screen and (min-width: 800px) {
-  .round-button-wrapper {
-    width: 35px;
-    height: 35px;
-    min-width: 35px;
-    min-height: 35px;
-  }
-}
 </style>
