@@ -37,12 +37,10 @@
   </base-card>
 </template>
 <script>
-// import VirtualList from "vue-virtual-scroll-list";
 import LibrarySongItem from "./LibrarySongItem.vue";
 export default {
   data() {
     return {
-      // tracks: [],
       topIndex: 0,
       timer: null,
       bottomIndex: 100,
@@ -76,19 +74,13 @@ export default {
         this.timer = setTimeout(async () => {
           this.matches = [];
           let array = await this.$store.dispatch("searchTracks", field);
-          this.matches.push(...array);
+          this.matches.push(...array.splice(0, 100));
         }, 1500);
       } else {
         this.matches = [];
       }
     },
-    // async searchTracks() {
-    //   if (this.searchTerm.length > 3) {
-    //     this.matches = [];
-    //     let array = await this.$store.dispatch("searchTracks", this.searchTerm);
-    //     this.matches.push(...array);
-    //   }
-    // },
+
     checkForReload() {
       let scrollBottom =
         this.listWrapper.scrollTop + this.listWrapper.offsetHeight;
@@ -102,7 +94,6 @@ export default {
         } else if (this.topIndex <= 100) {
           this.bottomIndex -= this.topIndex;
           this.topIndex = 0;
-          // scrollTop = 5;
           scrollTop =
             this.listWrapper.scrollHeight - this.listWrapper.offsetHeight;
         }
@@ -125,8 +116,6 @@ export default {
         }
       });
     }
-    // this.tracks = this.$store.getters.libraryTracks;
-    // this.tracks.push(this.$store.getters.libraryTracks);
   },
   components: { LibrarySongItem },
   props: [],
