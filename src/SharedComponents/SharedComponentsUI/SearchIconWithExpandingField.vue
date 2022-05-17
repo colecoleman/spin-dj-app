@@ -1,38 +1,41 @@
 <template>
-  <div class="round-button-wrapper">
+  <div class="search-button-wrapper">
     <div class="search-components">
       <input
         type="text"
-        v-if="searchActive"
+        v-if="searchFieldOpen"
         placeholder="Start typing to search..."
         id="search-input"
         v-model="value"
         @blur="blur"
         @keydown="keydown()"
       />
-      <vue-svg :svg="svg" @clicked="toggleSearchActive" />
-    </div>
-    <div class="search-results" v-if="searchActive">
-      <list-item-style-wrapper
-        class="search-result-item"
-        v-for="(item, index) in searchResults"
-        :key="index"
-        @click="selectSearchResult(item)"
-      >
-        <p>{{ dropdownItemDisplay(item) }}</p>
-      </list-item-style-wrapper>
+      <round-icon-button
+        class="search-icon"
+        svg="search"
+        @click="toggleSearchField"
+      />
+      <div class="search-results" v-if="searchActive">
+        <list-item-style-wrapper
+          class="search-result-item"
+          v-for="(item, index) in searchResults"
+          :key="index"
+          @click="selectSearchResult(item)"
+        >
+          <p>{{ dropdownItemDisplay(item) }}</p>
+        </list-item-style-wrapper>
+      </div>
     </div>
   </div>
 </template>
 <script>
-import VueSvg from "../../assets/VueSvg.vue";
+import RoundIconButton from "./RoundIconButton.vue";
 import ListItemStyleWrapper from "./ListItemStyleWrapper.vue";
 export default {
   data() {
     return {
-      searchActive: false,
+      searchFieldOpen: false,
       dropdownOpen: true,
-      //   inputValue: undefined,
     };
   },
   computed: {
@@ -44,6 +47,17 @@ export default {
         return this.$emit("input", val);
       },
     },
+    searchActive() {
+      if (this.searchResults) {
+        if (this.searchResults.length > 0) {
+          return true;
+        } else {
+          return false;
+        }
+      } else {
+        return false;
+      }
+    },
   },
   methods: {
     keydown() {
@@ -53,7 +67,8 @@ export default {
       setTimeout(() => {
         this.dropdownOpen = false;
       }, 300);
-      this.toggleSearchActive();
+      this.toggleSearchField();
+      this.dropdownOpen = false;
       this.$emit("search-blurred");
     },
     selectSearchResult(item) {
@@ -70,12 +85,12 @@ export default {
       });
       return str;
     },
-    toggleSearchActive() {
-      this.searchActive = !this.searchActive;
+    toggleSearchField() {
+      this.searchFieldOpen = !this.searchFieldOpen;
     },
   },
   components: {
-    VueSvg,
+    RoundIconButton,
     ListItemStyleWrapper,
   },
   emits: ["input", "search-blurred", "select-search-result"],
@@ -83,45 +98,45 @@ export default {
 };
 </script>
 <style scoped>
-.round-button-wrapper {
+.search-button-wrapper {
   width: auto;
   height: auto;
   min-height: 25px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: flex-start;
   cursor: pointer;
-  padding: 3px;
-  border-radius: 20px;
   box-sizing: border-box;
-  background-color: var(--foregroundColor);
   filter: drop-shadow(0px 1px 1px var(--cardOutline));
-  /* border: 1px solid var(--cardOutline); */
-  margin: 10px;
-  z-index: 5;
+  margin: 0;
+  z-index: 11;
 }
-
-input {
-  outline: none;
-  border: none;
-  margin-left: 10px;
-  padding-bottom: 3px;
-  box-sizing: border-box;
+.backdrop {
+  z-index: 10;
 }
-
-input:focus {
-  outline: none;
-}
-
 .search-components {
-  height: auto;
   width: 100%;
+  border-radius: 20px;
   display: flex;
+  align-items: center;
+  justify-content: space-around;
+  margin: auto;
+  position: relative;
 }
 .search-results {
-  width: calc(100% - 20px);
+  width: 100%;
+  max-height: 200px;
+  overflow: scroll;
+  padding: 10px;
+  margin-top: 5px;
   box-sizing: border-box;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 50;
+  border-radius: 15px;
+  background-color: var(--foregroundColor);
 }
 .search-result-item {
   width: 100%;
@@ -130,16 +145,32 @@ input:focus {
   margin-right: 0;
 }
 
-.round-button-wrapper:hover {
+input {
+  outline: none;
+  padding-left: 10px;
+  border-radius: 20px;
+  background-color: var(--foregroundColor);
+  padding: 10px;
+  height: 100%;
+  border: none;
+  margin-left: 10px;
+  box-sizing: border-box;
+}
+
+input:focus {
+  outline: none;
+}
+
+.search-button-wrapper:hover {
   filter: drop-shadow(0px 2px 2px var(--cardOutline));
 }
 
 @media screen and (min-width: 800px) {
-  .round-button-wrapper {
+  .search-button-wrapper {
     /* width: auto; */
     min-height: 35px;
     height: auto;
-    padding: 5px;
+    /* padding: 5px; */
   }
 }
 </style>

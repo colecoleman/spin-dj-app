@@ -4,7 +4,7 @@
       :class="soloHeading ? 'solo-heading' : 'heading'"
       v-if="svg || title || subtitle || actionIcon"
     >
-      <vue-svg :svg="svg" v-if="svg" />
+      <vue-svg :svg="svg" v-if="svg" class="svg" />
       <div class="title">
         <h3 v-if="title">
           {{ title }}
@@ -20,29 +20,31 @@
         <div class="dropdown-container">
           <slot name="dropdownContainer"></slot>
         </div>
-        <search-icon
-          class="search-icon right-icon"
-          svg="search"
-          v-if="searchIcon"
-          :searchResults="searchResults"
-          :searchResultFormat="searchResultFormat"
-          :inputValue="inputValue"
-          @input="searchInput"
-          @search-blurred="searchBlurred"
-          @select-search-result="selectSearchResult"
-        />
+        <div class="search-container right-icon" v-if="searchIcon">
+          <!-- class="search-icon" -->
+          <search-icon
+            svg="search"
+            v-if="searchIcon"
+            :searchResults="searchResults"
+            :searchResultFormat="searchResultFormat"
+            :inputValue="inputValue"
+            @input="searchInput"
+            @search-blurred="searchBlurred"
+            @select-search-result="selectSearchResult"
+          />
+        </div>
         <round-icon-button
           class="right-icon"
           v-if="actionIcon"
           @click="actionOneClicked"
           :svg="actionIcon"
         />
-        <!-- <vue-svg
+      </div>
+      <!-- <vue-svg
           v-if="actionIcon"
           :svg="actionIcon"
           @clicked="actionOneClicked"
         /> -->
-      </div>
     </div>
 
     <div v-if="!soloHeading" :class="title ? 'content' : 'sole-content'">
@@ -144,6 +146,11 @@ export default {
 .solo-heading {
   padding: 0 20px 0 20px;
   height: 44px;
+  width: calc(100% - 40px);
+  /* position: relative; */
+  display: grid;
+  grid-template-rows: 100%;
+  grid-template-columns: 20px minmax(0, 1fr) 25px 25px;
 }
 
 .solo-heading {
@@ -151,24 +158,23 @@ export default {
 }
 .title {
   flex-direction: column;
+  grid-column: 2/3;
+  left: 30px;
+  word-wrap: normal;
   text-align: left;
   align-items: flex-start;
 }
-
+.svg {
+  width: 14px;
+  height: 14px;
+  margin: auto;
+  grid-column: 1/2;
+}
 h3,
 h4 {
   font-size: 11pt;
   margin: 0 0 0 10px;
   text-align: left;
-}
-
-.right-icon {
-  /* height: 30px;
-  width: 30px; */
-  /* position: absolute; */
-  right: -10px;
-  top: -18px;
-  margin: 0 -10px 0 20px;
 }
 
 h5 {
@@ -180,13 +186,29 @@ h5 {
 }
 
 .right-top {
-  margin-left: auto;
+  grid-column: 3/5;
+  display: flex;
+  width: 100%;
+  justify-content: flex-end;
   position: relative;
+  height: 100%;
   cursor: pointer;
+}
+
+.search-container {
+  position: relative;
+  z-index: 9;
+}
+
+.search-icon {
+  position: absolute;
+  margin-top: 0;
+  top: 0;
+  right: 0;
 }
 .dropdown-container {
   position: absolute;
-  right: 0;
+  right: 100%;
   top: 100%;
 }
 </style>
