@@ -1164,6 +1164,11 @@ const store = createStore({
       )
         .then((res) => {
           console.log(res);
+          context.commit("addStatus", {
+            type: "success",
+            note: "Library Uploaded!",
+          });
+          context.dispatch("retrieveLibrary");
         })
         .catch((e) => {
           console.log(e);
@@ -1176,25 +1181,8 @@ const store = createStore({
             download: true,
           })
             .then(async (res) => {
-              // console.log(res);
-              // let size = res.Body.size;
-              // let chunkQuantity = Math.ceil(size / (1024 * 1024));
-              // let chunkSize = 1024 * 1024;
-              // let currentlyProcessedChunk = 0;
-              // async function processChunk() {
-              //   // let reader = new FileReader();
-              //   let chunk = res.Body.slice(currentlyProcessedChunk, chunkSize, { type: 'application/json' });
-              //   console.log(await chunk.text());
-              //   let body = await chunk.text();
-              //   console.log(body.lastIndexOf('},{'))
-              //   let incompleteItem = body.slice(body.lastIndexOf('},{'));
-              //   console.log(incompleteItem);
-
-              // }
-              // processChunk();
               let body = await res.Body.text();
               let bodyObject = JSON.parse(body);
-              console.log(bodyObject);
               context.commit("setTracks", bodyObject.tracks);
               context.commit("setLibrary", bodyObject);
             })
@@ -1575,7 +1563,7 @@ const store = createStore({
       state.toDos.unshift(payload);
     },
     setTracks(state, payload) {
-          state.library.tracks = [...payload];
+      state.library.tracks = [...payload];
     },
     setLibrary(state, payload) {
       state.library.playlists.push(...payload.playlists);
