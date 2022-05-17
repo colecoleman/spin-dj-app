@@ -4,7 +4,7 @@
       <div class="scroll-container">
         <div v-for="(alert, index) in alerts" :key="index" class="alert-item">
           <h4 :class="alert.urgency + '-alert-icon'">
-            <vue-svg svg="exclamation-mark" />
+            <vue-svg svg="exclamation-mark" class="svg" />
           </h4>
           <h4>
             {{ alert.text }}
@@ -28,6 +28,11 @@ export default {
 };
 </script>
 <style scoped>
+.svg {
+  width: 14px;
+  height: 14px;
+  margin: 5px;
+}
 .scroll-container {
   overflow: scroll;
   height: 100%;
