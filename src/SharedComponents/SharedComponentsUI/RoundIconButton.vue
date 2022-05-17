@@ -1,6 +1,9 @@
 <template>
   <div class="round-button-wrapper">
-    <vue-svg :svg="svg" class="svg" />
+    <vue-svg
+      :svg="loading ? 'spinner' : svg"
+      :class="loading ? 'spinning svg' : 'svg'"
+    />
   </div>
 </template>
 <script>
@@ -14,7 +17,7 @@ export default {
   components: {
     VueSvg,
   },
-  props: ["svg"],
+  props: ["svg", "loading"],
 };
 </script>
 <style scoped>
@@ -43,5 +46,21 @@ export default {
   max-height: 60%;
   min-width: 14px;
   min-height: 14px;
+}
+
+.spinning {
+  animation-name: spin;
+  animation-duration: 1s;
+  animation-direction: normal;
+  animation-iteration-count: infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 </style>
