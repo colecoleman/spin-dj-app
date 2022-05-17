@@ -15,6 +15,7 @@
     :searchResultFormat="['name']"
     @search-input="searchForLocation"
     @select-search-result="selectLocation"
+    @search-blurred="searchBlurred"
   >
     <template v-slot:content>
       <div
@@ -130,7 +131,6 @@ export default {
       };
       await this.$store.dispatch("editEvent", eventEditPayload);
       await this.$store.dispatch("editLocation", locationPayload);
-      // this.locations.push(location);
       this.toggleAddLocation();
     },
     decrementCounter() {
@@ -146,6 +146,9 @@ export default {
       } else {
         this.counter++;
       }
+    },
+    searchBlurred() {
+      this.searchLocationName = undefined;
     },
   },
   computed: {

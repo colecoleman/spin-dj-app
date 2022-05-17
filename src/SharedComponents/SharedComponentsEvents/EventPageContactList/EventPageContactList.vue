@@ -14,6 +14,7 @@
     :searchResultFormat="['given_name', 'family_name']"
     @search-input="searchForContact($event)"
     @select-search-result="selectContact"
+    @search-blurred="searchBlurred"
   >
     <template v-slot:content>
       <div id="contact-carousel-top-wrapper" v-if="!addContactOpen">
@@ -136,6 +137,9 @@ export default {
       };
       await this.$store.dispatch("removeEventFromContact", contactParameters);
       await this.$store.dispatch("editEvent", eventParameters);
+    },
+    searchBlurred() {
+      this.contactSearchField = undefined;
     },
   },
   props: ["contacts", "event"],
