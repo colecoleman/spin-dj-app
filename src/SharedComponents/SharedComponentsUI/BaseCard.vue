@@ -107,11 +107,10 @@ export default {
 }
 
 .card {
-  border: 1px solid var(--cardOutline);
   border-radius: 25px;
   background-color: var(--foregroundColor);
   box-sizing: border-box;
-  /* overflow: hidden; */
+  filter: drop-shadow(0px 2px 2px var(--cardOutline));
   width: 100%;
   height: 100%;
 }
