@@ -43,8 +43,10 @@ export default {
   }
   .header-wrapper {
     padding-bottom: 20px;
+    z-index: 10;
   }
   .content-wrapper {
+    z-index: 9;
     height: calc(100% - 80px);
   }
 }
