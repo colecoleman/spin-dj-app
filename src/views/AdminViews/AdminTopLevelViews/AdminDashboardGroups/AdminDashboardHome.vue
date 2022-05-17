@@ -1,6 +1,6 @@
 <template>
   <div id="upcoming-events">
-    <upcoming-events :events="events" :loaded="loaded" />
+    <upcoming-events :events="events" />
   </div>
   <div id="metrics-chart">
     <metrics-chart :events="events" />
@@ -52,19 +52,18 @@ export default {
 <style scoped>
 @media screen and (min-width: 320px) {
   #upcoming-events {
-    grid-row: 2 / 3;
+    grid-row: 1 / 2;
   }
 
   #metrics-chart {
-    grid-row: 3 / 4;
+    grid-row: 2 / 3;
   }
   #calendar {
-    grid-row: 4/ 5;
+    grid-row: 3/ 4;
   }
 
   #messaging {
-    /* display: none; */
-    grid-row: 5/ 6;
+    grid-row: 4/ 5;
   }
 }
 
@@ -76,35 +75,26 @@ export default {
 
   #metrics-chart {
     grid-column: 1 / 3;
-
-    /* grid-column: 1 / 2; */
   }
   #calendar {
     grid-column: 1 / 2;
     grid-row: 4/5;
-    /* grid-column: 2 / 3; */
-    /* padding-bottom: 0px; */
-    /* grid-row: 2/ 3; */
   }
 
   #messaging {
     grid-column: 2 / 3;
     grid-row: 4/5;
-
-    /* display: unset; */
-    /* grid-column: 2/ 3; */
-    /* grid-row: 1/ 2; */
   }
 }
 @media screen and (min-width: 1000px) {
   #upcoming-events {
-    grid-column: 2 / 3;
+    grid-column: 1 / 3;
     grid-row: 1/2;
   }
 
   #metrics-chart {
     grid-row: 2/3;
-    grid-column: 2 / 3;
+    grid-column: 1 / 3;
   }
   #calendar {
     grid-column: 3 / 4;
