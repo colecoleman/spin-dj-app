@@ -6,7 +6,7 @@
         type="text"
         @input="fieldInput(toDo, 'title', $event)"
       />
-      <vue-svg svg="circle-checkmark" @clicked="submitToDo" />
+      <round-icon-button svg="circle-checkmark" @click="submitToDo" />
     </div>
     <div v-if="listType === 'event'">
       <h5>Assign Contacts:</h5>
@@ -23,7 +23,7 @@
   </div>
 </template>
 <script>
-import VueSvg from "../../assets/VueSvg.vue";
+import RoundIconButton from "../SharedComponentsUI/RoundIconButton.vue";
 import InputWithTitle from "../SharedComponentsUI/ElementLibrary/InputWithTitle.vue";
 import InputWithBinarySelection from "../SharedComponentsUI/ElementLibrary/InputWithBinarySelection.vue";
 
@@ -63,10 +63,9 @@ export default {
       this.$emit("addToDo", this.toDo);
     },
   },
-  created() {},
   components: {
-    VueSvg,
     InputWithTitle,
+    RoundIconButton,
     InputWithBinarySelection,
   },
   emits: ["addToDo"],
