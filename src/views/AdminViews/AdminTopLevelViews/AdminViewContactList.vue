@@ -18,7 +18,7 @@
           svg="person"
           :title="type"
           actionIcon="sort-alpha"
-          actionText="Sort:"
+
           @action-one-clicked="toggleSortMenuOpened(type)"
         >
           <template v-slot:dropdownContainer>
