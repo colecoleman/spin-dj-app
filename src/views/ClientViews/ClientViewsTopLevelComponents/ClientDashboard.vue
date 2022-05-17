@@ -47,11 +47,7 @@ export default {
       return this.$store.state.user;
     },
     events() {
-      return this.$store.state.events.filter((x) => {
-        let date = new Date().getTime();
-        let eventDate = new Date(x.data.endTime).getTime();
-        return eventDate > date;
-      });
+      return this.$store.getters.events;
     },
     pastEvents() {
       return this.$store.state.events.filter((x) => {
