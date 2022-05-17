@@ -3,7 +3,6 @@
     svg="disc"
     title="Events"
     actionIcon="sort-alpha"
-    actionText="Sort:"
     @action-one-clicked="toggleSortMenuOpened"
   >
     <template v-slot:dropdownContainer>
