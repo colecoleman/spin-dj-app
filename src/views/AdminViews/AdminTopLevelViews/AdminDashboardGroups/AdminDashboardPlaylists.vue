@@ -78,7 +78,7 @@ export default {
         this.timer = setTimeout(async () => {
           this.matches = [];
           let array = await this.$store.dispatch("searchTracks", field);
-          this.matches.push(...array);
+          this.matches.push(...array.slice(0, 100));
         }, 1500);
       } else {
         this.matches = [];
@@ -119,6 +119,8 @@ export default {
     },
     navigateBackwards() {
       this.activeEvent = false;
+      this.matchingField = undefined;
+      this.matches = [];
     },
     importPlaylist() {
       document.getElementById("import-input").click();
@@ -275,14 +277,13 @@ export default {
 };
 </script>
 <style scoped>
-.track-list {
-  grid-row: 3/6;
-  grid-column: 1 / 2;
-}
-
 .sidebar-wrapper {
-  grid-row: 2/3;
+  grid-row: 1/2;
   grid-column: 1/2;
+}
+.track-list {
+  grid-row: 2/5;
+  grid-column: 1 / 2;
 }
 
 .events-list,
@@ -295,14 +296,13 @@ export default {
   max-height: 100%;
 }
 @media screen and (min-width: 800px) {
-  .track-list {
-    grid-row: 3/5;
-    grid-column: 1 / 3;
-  }
-
   .sidebar-wrapper {
-    grid-row: 2/3;
+    grid-row: 1/2;
     grid-column: 1/3;
+  }
+  .track-list {
+    grid-row: 2/4;
+    grid-column: 1 / 3;
   }
 
   .playlist-builder {
@@ -314,7 +314,7 @@ export default {
 @media screen and (min-width: 1000px) {
   .track-list {
     grid-row: 1 /3;
-    grid-column: 2 / 3;
+    grid-column: 1 / 3;
   }
 
   .sidebar-wrapper {
