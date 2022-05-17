@@ -11,14 +11,20 @@
     </div>
     <img :src="logo" alt="" />
     <div class="button-wrapper">
-      <dashboard-button />
-      <logout-button />
+      <router-link to="/">
+        <round-icon-button class="round-button" svg="home" />
+      </router-link>
+      <round-icon-button
+        class="round-button"
+        svg="exit-door"
+        @click="logout()"
+      />
     </div>
   </div>
 </template>
 <script>
-import LogoutButton from "./LogoutButton.vue";
-import DashboardButton from "./DashboardButton.vue";
+import RoundIconButton from "../SharedComponentsUI/RoundIconButton.vue";
+import { Auth } from "aws-amplify";
 import OptionInputWithTitle from "../SharedComponentsUI/ElementLibrary/OptionInputWithTitle.vue";
 
 export default {
@@ -31,6 +37,17 @@ export default {
     tenantChosen(tenant) {
       this.$store.dispatch("newTenantChosen", tenant);
       this.chosenTenant = tenant;
+    },
+    async logout() {
+      try {
+        await Auth.signOut();
+        this.$router.push("/login");
+      } catch (e) {
+        this.$store.dispatch("addStatus", {
+          type: "error",
+          note: `Something went wrong: ${e}`,
+        });
+      }
     },
   },
   computed: {
@@ -47,8 +64,7 @@ export default {
   },
   created() {},
   components: {
-    DashboardButton,
-    LogoutButton,
+    RoundIconButton,
     OptionInputWithTitle,
   },
   props: [],
@@ -75,7 +91,12 @@ export default {
     max-width: 300px;
     z-index: 5;
   }
-
+  .round-button {
+    margin: 5px;
+    min-width: 30px;
+    height: 30px;
+    border-radius: 30px;
+  }
   .site-header img {
     position: absolute;
     left: 50%;
@@ -88,7 +109,15 @@ export default {
     .site-header {
       height: 60px;
     }
-
+    .round-button {
+      width: 60px;
+      min-width: 60px;
+      height: 60px;
+      border-radius: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
     .site-header img {
       /* max-height: 45px; */
     }
