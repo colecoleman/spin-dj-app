@@ -2,7 +2,9 @@
   <base-card
     :title="matchingField ? matchingField.name : 'Tracks'"
     svg="disc"
+    :inputValue="searchTerm"
     :searchIcon="error ? false : true"
+    :searchProcessing="searchProcessing"
     :actionIcon="libraryUploading ? 'loading' : 'import-playlist'"
     @action-one-clicked="importPlaylist"
     @search-input="updateSearchTerm"
@@ -53,11 +55,10 @@ export default {
     },
     updateSearchTerm(value) {
       this.searchTerm = value;
-      this.searchForTrack();
+      // this.searchForTrack();
+      this.$emit("searchForTrack", value);
     },
-    searchForTrack() {
-      this.$emit("searchForTrack", this.searchTerm);
-    },
+    // searchForTrack() {},
     importPlaylist() {
       this.$emit("importPlaylist");
     },
@@ -99,6 +100,7 @@ export default {
     "tracks",
     "matches",
     "matchingField",
+    "searchProcessing",
     "searchOpen",
     "topIndex",
     "bottomIndex",

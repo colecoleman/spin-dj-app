@@ -8,6 +8,7 @@
     :topIndex="topIndex"
     :bottomIndex="bottomIndex"
     :libraryUploading="libraryUploading"
+    :searchProcessing="searchProcessing"
     @append-to-playlist="appendToPlaylist"
     @search-for-track="searchForTrack"
     @turn-library-page="turnLibraryPage"
@@ -51,6 +52,7 @@ export default {
       chosenForm: undefined,
       matchingField: undefined,
       libraryUploading: false,
+      searchProcessing: false,
       matches: [],
       error: undefined,
       topIndex: 0,
@@ -77,10 +79,12 @@ export default {
           clearTimeout(this.timeout);
           this.timer = null;
         }
+        this.searchProcessing = true;
         this.timer = setTimeout(async () => {
           this.matches = [];
           let array = await this.$store.dispatch("searchTracks", field);
           this.matches.push(...array.slice(0, 100));
+          this.searchProcessing = false;
         }, 1500);
       } else {
         this.matches = [];
