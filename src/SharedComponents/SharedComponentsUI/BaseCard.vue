@@ -21,7 +21,6 @@
           <slot name="dropdownContainer"></slot>
         </div>
         <div class="search-container right-icon" v-if="searchIcon">
-          <!-- class="search-icon" -->
           <search-icon
             svg="search"
             v-if="searchIcon"
@@ -40,11 +39,6 @@
           :svg="actionIcon"
         />
       </div>
-      <!-- <vue-svg
-          v-if="actionIcon"
-          :svg="actionIcon"
-          @clicked="actionOneClicked"
-        /> -->
     </div>
 
     <div v-if="!soloHeading" :class="title ? 'content' : 'sole-content'">
