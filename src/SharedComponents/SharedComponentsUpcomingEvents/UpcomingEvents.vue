@@ -2,8 +2,7 @@
   <base-card
     svg="disc"
     actionIcon="sort-alpha"
-    actionText="Sort:"
-    @action-one-clicked="sortMenuOpened = !sortMenuOpened"
+    @action-one-clicked="toggleSortMenuOpened"
     :title="`Events (${events.length})`"
   >
     <template v-slot:dropdownContainer>
@@ -29,7 +28,6 @@
             v-for="event in events"
             :key="event.userId"
             :event="event"
-            :loaded="loaded"
             @clicked="navigateToEventPage(event)"
           />
 
@@ -37,7 +35,6 @@
             v-for="event in pastEventsCopy"
             :key="event.userId"
             :event="event"
-            :loaded="loaded"
             @clicked="navigateToEventPage(event)"
             class="past-event"
           />
@@ -60,7 +57,7 @@
             class="past-event"
           />
         </div>
-        <h5 v-if="events.length <= 0 && pastEventsCopy.length <= 0 && loaded">
+        <h5 v-if="events.length <= 0 && pastEventsCopy.length <= 0">
           No events to display! Add some!
         </h5>
       </div>
@@ -119,7 +116,7 @@ export default {
   },
   computed: {
     skeletonQuantity() {
-      if (this.loaded) {
+      if (undefined) {
         return 0;
       } else if (this.events.length >= 5) {
         return 0;
@@ -163,8 +160,7 @@ export default {
       }
     },
   },
-  emits: [""],
-  props: ["events", "pastEvents", "loaded"],
+  props: ["events", "pastEvents"],
   components: {
     UpcomingEventsListItem,
     // SkeletonCard,
