@@ -2,9 +2,6 @@
   <div class="site-header">
     <div class="left buttons">
       <admin-header-dashboard-icons class="round-" />
-      <!-- <router-link to="/">
-        <round-icon-button class="round-button" svg="home" />
-      </router-link> -->
       <router-link to="/admin/contacts">
         <round-icon-button class="round-button" svg="group-people" />
       </router-link>
@@ -15,7 +12,6 @@
     <img :src="businessLogo" alt="" />
 
     <div class="right buttons">
-      <!-- <search-icon-with-expanding-field svg="search" class="search" /> -->
       <router-link to="/admin/createnewevent">
         <round-icon-button class="round-button" svg="plus-sign" />
       </router-link>
@@ -32,7 +28,6 @@
 import { Auth } from "aws-amplify";
 import AdminHeaderDashboardIcons from "./AdminHeaderDashboardIcons.vue";
 import RoundIconButton from "../SharedComponentsUI/RoundIconButton.vue";
-// import SearchIconWithExpandingField from "../SharedComponentsUI/SearchIconWithExpandingField.vue";
 
 export default {
   data() {
@@ -63,9 +58,6 @@ export default {
     AdminHeaderDashboardIcons,
     RoundIconButton,
   },
-  created() {
-    
-  }
 };
 </script>
 
