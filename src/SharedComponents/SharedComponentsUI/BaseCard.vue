@@ -19,7 +19,7 @@
         </h3>
         <div class="search-container right-icon" v-if="searchIcon">
           <search-icon
-            svg="search"
+            :svg="searchProcessing ? 'loading' : 'search'"
             v-if="searchIcon"
             :searchResults="searchResults"
             :searchResultFormat="searchResultFormat"
@@ -61,6 +61,7 @@ export default {
     "subtitle",
     "soloHeading",
     "searchIcon",
+    "searchProcessing",
     "searchResults",
     "searchResultFormat",
     "inputValue",
@@ -71,6 +72,7 @@ export default {
     },
     searchInput(value) {
       this.$emit("search-input", value);
+      console.log(value);
     },
     searchBlurred() {
       this.$emit("search-blurred");

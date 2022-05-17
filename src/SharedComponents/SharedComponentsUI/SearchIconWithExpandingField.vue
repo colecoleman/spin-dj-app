@@ -8,11 +8,11 @@
         id="search-input"
         v-model="value"
         @blur="blur"
-        @keydown="keydown()"
+        @keydown="keydown"
       />
       <round-icon-button
         class="search-icon"
-        svg="search"
+        :svg="svg ? svg : 'search'"
         @click="toggleSearchField"
       />
       <div class="search-results" v-if="searchActive">
@@ -44,6 +44,7 @@ export default {
         return this.inputValue;
       },
       set(val) {
+        console.log(val);
         return this.$emit("input", val);
       },
     },
@@ -94,7 +95,13 @@ export default {
     ListItemStyleWrapper,
   },
   emits: ["input", "search-blurred", "select-search-result"],
-  props: ["svg", "searchResults", "searchResultFormat", "inputValue"],
+  props: [
+    "svg",
+    "searchResults",
+    "searchResultFormat",
+    "searchProcessing",
+    "inputValue",
+  ],
 };
 </script>
 <style scoped>
