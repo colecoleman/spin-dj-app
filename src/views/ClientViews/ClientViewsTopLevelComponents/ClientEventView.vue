@@ -273,7 +273,7 @@ section {
 @media screen and (min-width: 775px) {
   section {
     grid-template-columns: repeat(10, 1fr);
-    grid-template-rows: 75px 240px 1fr;
+    grid-template-rows: 75px 240px minmax(0, 1fr);
   }
 
   #contact-card {
