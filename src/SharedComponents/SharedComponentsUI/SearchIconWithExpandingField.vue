@@ -67,19 +67,19 @@ export default {
     blur() {
       setTimeout(() => {
         this.dropdownOpen = false;
+        this.toggleSearchField();
+        this.dropdownOpen = false;
+        this.$emit("search-blurred");
       }, 300);
-      this.toggleSearchField();
-      this.dropdownOpen = false;
-      this.$emit("search-blurred");
     },
     selectSearchResult(item) {
+      console.log(item);
       this.$emit("select-search-result", item);
     },
     dropdownSelected(item) {
       this.$emit("dropdownSelected", item);
     },
     dropdownItemDisplay(item) {
-      console.log(item);
       let str = "";
       this.searchResultFormat.forEach((element) => {
         str = str + " " + item[element];
