@@ -5,6 +5,7 @@
     actionIcon="x-icon"
     svg="disc"
     :searchIcon="error ? false : true"
+    :searchProcessing="searchProcessing"
     @action-one-clicked="closeSongPicker"
     @search-input="searchTracks"
   >
@@ -47,6 +48,7 @@ export default {
       matches: [],
       error: undefined,
       searchTerm: undefined,
+      searchProcessing: false,
     };
   },
   computed: {
@@ -71,10 +73,12 @@ export default {
           clearTimeout(this.timeout);
           this.timer = null;
         }
+        this.searchProcessing = true;
         this.timer = setTimeout(async () => {
           this.matches = [];
           let array = await this.$store.dispatch("searchTracks", field);
           this.matches.push(...array.splice(0, 100));
+          this.searchProcessing = false;
         }, 1500);
       } else {
         this.matches = [];
