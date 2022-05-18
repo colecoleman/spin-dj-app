@@ -17,7 +17,7 @@
     @search-blurred="searchBlurred"
   >
     <template v-slot:content>
-      <div id="contact-carousel-top-wrapper" v-if="!addContactOpen">
+      <div id="contact-carousel-top-wrapper">
         <div id="contact-carousel-wrapper">
           <contact-list-item
             v-for="(contact, index) in contacts"
@@ -38,7 +38,6 @@ import TwoButtonDialogModal from "../../SharedComponentsUI/TwoButtonDialogModal.
 export default {
   data() {
     return {
-      addContactOpen: false,
       clientDropdownOpen: false,
       contactSearchField: undefined,
       selectedClient: undefined,
@@ -74,9 +73,6 @@ export default {
   methods: {
     toggleClientDropdown() {
       this.clientDropdownOpen = !this.clientDropdownOpen;
-    },
-    toggleAddContactOpen() {
-      this.addContactOpen = !this.addContactOpen;
     },
     searchForContact(val) {
       this.contactSearchField = val;

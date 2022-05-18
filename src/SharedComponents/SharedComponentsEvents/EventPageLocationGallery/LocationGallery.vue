@@ -5,7 +5,6 @@
     @select-button-two="toggleRemoveLocation"
     @close-modal="toggleRemoveLocation"
   />
-  <!-- :subtitle="addLocationOpen ? 'Add New Location' : venueName" -->
   <base-card
     svg="location-marker"
     title="Locations"
@@ -18,10 +17,7 @@
     @search-blurred="searchBlurred"
   >
     <template v-slot:content>
-      <div
-        id="specific-event-page-location-scroller-wrapper"
-        v-if="!addLocationOpen"
-      >
+      <div id="specific-event-page-location-scroller-wrapper">
         <round-icon-button
           id="left-arrow"
           class="arrow-container"
@@ -32,7 +28,6 @@
 
         <location-gallery-item
           :location="location"
-          v-if="locations.length > 0"
           @initiateDeleteLocation="toggleRemoveLocation"
         />
         <round-icon-button
@@ -42,7 +37,6 @@
           v-if="locations.length > 1"
           @click="incrementCounter()"
         />
-        <!-- </div> -->
       </div>
     </template>
   </base-card>
@@ -57,15 +51,11 @@ export default {
   data() {
     return {
       counter: 0,
-      addLocationOpen: false,
       searchLocationName: undefined,
       removeLocationOpen: false,
     };
   },
   methods: {
-    toggleAddLocation() {
-      this.addLocationOpen = !this.addLocationOpen;
-    },
     toggleRemoveLocation() {
       this.removeLocationOpen = !this.removeLocationOpen;
     },
@@ -78,26 +68,6 @@ export default {
         value: index,
       };
       await this.$store.dispatch("editEvent", payload);
-
-      // if (this.locations[this.counter].associatedEvents) {
-      //   let userId = this.locations[this.counter].key
-      //     ? this.locations[this.counter].key.userId
-      //     : this.locations[this.counter];
-      //   let eventKey = {
-      //     userId: this.event.userId,
-      //     tenantId: this.event.tenantId,
-      //   };
-      //   let contactParameters = {
-      //     contactKey: { userId: userId, tenantId: this.event.tenantId },
-      //     variable: "associatedEvents",
-      //     value: eventKey,
-      //   };
-      //   let index = await this.$store.dispatch(
-      //     "removeEventFromContact",
-      //     contactParameters
-      //   );
-      //   this.locations.splice(index, 1);
-      // }
       this.counter = 0;
       this.toggleRemoveLocation();
     },
@@ -131,7 +101,7 @@ export default {
       };
       await this.$store.dispatch("editEvent", eventEditPayload);
       await this.$store.dispatch("editLocation", locationPayload);
-      this.toggleAddLocation();
+      this.counter = 0;
     },
     decrementCounter() {
       if (this.counter === 0) {
@@ -156,7 +126,7 @@ export default {
       return this.$store.getters.userRole;
     },
     location() {
-      return this.locations[this.counter] ? this.locations[this.counter] : {};
+      return this.locations[this.counter];
     },
     locations() {
       return this.event.locations;
@@ -202,14 +172,7 @@ export default {
   position: absolute;
   top: 20%;
   z-index: 2;
-  background-color: var(--foregroundColor);
-  border: 1px solid var(--cardOutline);
-  border-radius: 20px;
-  height: 35px;
-  width: 35px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  padding: 5px;
 }
 
 #left-arrow {
@@ -217,16 +180,5 @@ export default {
 }
 #right-arrow {
   right: 0;
-}
-
-.form-input {
-  display: flex;
-  justify-content: center;
-  position: relative;
-}
-
-.form-input .input-with-dropdown-selection-parent {
-  width: 90%;
-  margin-right: 0;
 }
 </style>
