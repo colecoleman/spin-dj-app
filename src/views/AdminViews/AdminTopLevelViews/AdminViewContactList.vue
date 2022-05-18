@@ -1,59 +1,51 @@
 <template>
   <section id="contact-section">
-    <div id="navigation">
-      <base-card>
-        <template v-slot:content>
-          <contact-navigation />
-        </template>
-      </base-card>
-    </div>
-    <div id="scroll-container">
-      <div
-        class="contacts-container"
-        v-for="(type, index) in contactTypes"
-        :key="index"
-        :id="`${type + `-card`}`"
-      >
-        <base-card
-          svg="person"
-          :title="type"
-          actionIcon="sort-alpha"
+    <base-card id="navigation">
+      <template v-slot:content>
+        <contact-navigation />
+      </template>
+    </base-card>
 
-          @action-one-clicked="toggleSortMenuOpened(type)"
-        >
-          <template v-slot:dropdownContainer>
-            <floating-menu-with-list-items
-              v-if="sortMenuOpened === type"
-              :actions="sortItems"
-              :identifier="type"
-              @actionClicked="selectSort"
-            />
-          </template>
-          <template v-slot:content>
-            <div class="personal-contact-list">
-              <div
-                v-for="contact in $store.getters[type]"
-                :key="contact.userId"
-                :category="type"
-                class="contact-list-item"
-              >
-                <contact-list-item :contact="contact" :category="type" />
-              </div>
-            </div>
-            <h4 v-if="type.length <= 0" class="placeholder-text">
-              No {{ type }} to view! Add some
-            </h4>
-          </template>
-        </base-card>
-      </div>
-    </div>
-    <div id="add-contact">
-      <base-card svg="add-person" title="Add New">
+    <div id="scroll-container">
+      <base-card
+        class="contacts-container"
+        v-for="(items, key, index) in contactTypes"
+        :key="index"
+        :id="`${key + `-card`}`"
+        svg="person"
+        :title="key"
+        actionIcon="sort-alpha"
+        @action-one-clicked="toggleSortMenuOpened(key)"
+      >
+        <template v-slot:dropdownContainer>
+          <floating-menu-with-list-items
+            v-if="sortMenuOpened === key"
+            :actions="sortItems"
+            :identifier="key"
+            @actionClicked="selectSort"
+          />
+        </template>
         <template v-slot:content>
-          <add-contact-module />
+          <div class="personal-contact-list">
+            <contact-list-item
+              v-for="contact in items()"
+              :key="contact.userId"
+              class="contact-list-item"
+              :contact="contact"
+              :category="key"
+            />
+          </div>
+          <h4 v-if="items().length <= 0" class="placeholder-text">
+            No {{ key }} to view! Add some
+          </h4>
         </template>
       </base-card>
     </div>
+    <base-card id="add-contact" svg="add-person" title="Add New">
+      <template v-slot:content>
+        <add-contact-module />
+      </template>
+    </base-card>
   </section>
 </template>
 
@@ -72,8 +64,15 @@ export default {
           title: "Alpha Descending",
           icon: undefined,
           logic: function (a, b) {
-            let textA = a.family_name.toUpperCase();
-            let textB = b.family_name.toUpperCase();
+            let textA;
+            let textB;
+            if (a.family_name && b.family_name) {
+              textA = a.family_name.toUpperCase();
+              textB = b.family_name.toUpperCase();
+            } else if (a.name && b.name) {
+              textA = a.name.toUpperCase();
+              textB = b.name.toUpperCase();
+            }
             return textA > textB ? -1 : textA < textB ? 1 : 0;
           },
         },
@@ -81,40 +80,67 @@ export default {
           title: "Alpha Ascending",
           icon: undefined,
           logic: function (a, b) {
-            let textA = a.family_name.toUpperCase();
-            let textB = b.family_name.toUpperCase();
+            let textA;
+            let textB;
+            if (a.family_name && b.family_name) {
+              textA = a.family_name.toUpperCase();
+              textB = b.family_name.toUpperCase();
+            } else if (a.name && b.name) {
+              textA = a.name.toUpperCase();
+              textB = b.name.toUpperCase();
+            }
             return textA < textB ? -1 : textA > textB ? 1 : 0;
           },
         },
       ],
-      contactTypes: [
-        "clients",
-        "employees",
-        "locations",
-        "organizers",
-        "vendors",
-      ],
+      activeSort: {
+        clients: undefined,
+        employees: undefined,
+        locations: undefined,
+        organizers: undefined,
+        vendors: undefined,
+      },
     };
   },
+  computed: {
+    contactTypes() {
+      let store = this.$store;
+      let sort = this.activeSort;
 
+      return {
+        clients() {
+          return store.getters.clients(sort["clients"]);
+        },
+        employees() {
+          return store.getters.employees(sort["employees"]);
+        },
+        locations() {
+          return store.getters.locations(sort["locations"]);
+        },
+        organizers() {
+          return store.getters.organizers(sort["organizers"]);
+        },
+        vendors() {
+          return store.getters.vendors(sort["vendors"]);
+        },
+      };
+    },
+  },
   methods: {
     toggleSortMenuOpened(cat) {
-      if (this.sortMenuOpened !== cat) {
-        this.sortMenuOpened = cat;
-        return;
-      } else {
+      if (this.sortMenuOpened === cat) {
         this.sortMenuOpened = undefined;
-        return;
+      } else {
+        this.sortMenuOpened = cat;
       }
     },
     selectSort(action, cat) {
       if (cat === this.sortMenuOpened) {
-        this.contacts[cat].sort(action);
-        this.toggleSortMenuOpened();
+        this.activeSort[cat] = action;
+        this.toggleSortMenuOpened(undefined);
       }
     },
   },
-
   mounted() {
     this.$store.dispatch("getAdminUsers");
   },
@@ -129,8 +155,7 @@ export default {
 
 <style scoped>
 #contact-section {
-  width: 100%;
-  height: 100%;
+  max-height: 100%;
   display: grid;
   gap: 10px;
   grid-template-columns: 100%;
@@ -157,7 +182,6 @@ export default {
   width: 100%;
   margin-bottom: 10px;
   overflow: scroll;
-  display: flex;
 }
 
 .personal-contact-list {
@@ -190,6 +214,7 @@ export default {
 }
 @media screen and (min-width: 1200px) {
   #contact-section {
+    overflow: hidden;
     grid-template-columns: 20% 1fr 25%;
     grid-template-rows: 50% 1fr;
   }
@@ -204,10 +229,6 @@ export default {
     grid-column: 2 / 3;
     grid-row: 1 / 4;
   }
-
-  /* #scroll-container .contacts-container:last-child {
-    padding-bottom: 12px;
-  } */
 
   #add-contact {
     grid-column: 3/4;
