@@ -7,6 +7,8 @@
     @left-arrow-clicked="previousContract"
     @right-arrow-clicked="nextContract"
     :icons="icons"
+    :normalESignProcessing="normalESignProcessing"
+    :adminESignProcessing="adminESignProcessing"
     :addOnItems="businessSettings.contracts"
     :includedItems="contracts"
     addOnItemTitle="contractName"
@@ -34,6 +36,10 @@
           <p>{{ contract.admin.signerUUID }}</p>
         </div>
       </div>
+      <p v-if="contract.status !== 'signed'" class="disclaimer">
+        Click on the <round-icon-button svg="signature" /> icon on the top of
+        the page to sign the contract!
+      </p>
       <h4>Thank you for choosing {{ businessName }}!</h4>
     </template>
   </document-view-with-toolbar>
@@ -49,11 +55,14 @@ import {
   subtotal,
   calculateEventTime,
 } from "../../helpers.js";
+import RoundIconButton from "../SharedComponentsUI/RoundIconButton.vue";
 import DocumentViewWithToolbar from "../SharedComponentsUI/DocumentViewWithToolbar.vue";
 export default {
   data() {
     return {
       contractNumber: 0,
+      normalESignProcessing: false,
+      adminESignProcessing: false,
     };
   },
   computed: {
@@ -216,6 +225,7 @@ export default {
       this.$emit("close");
     },
     async submitESignature(signature) {
+      this.normalESignProcessing = true;
       let item = { ...this.contract };
       item = { ...item, ...signature };
       let index = this.contracts.findIndex((x) => {
@@ -228,9 +238,11 @@ export default {
         value: this.contracts,
       };
       await this.$store.dispatch("editEvent", payload);
+      this.normalESignProcessing = false;
       this.close();
     },
     async submitAdminESignature(signature) {
+      this.adminESignProcessing = true;
       let item = { ...this.contract };
       item.admin = { ...signature };
       let index = this.contracts.findIndex((x) => {
@@ -243,6 +255,7 @@ export default {
         value: this.contracts,
       };
       await this.$store.dispatch("editEvent", payload);
+      this.adminESignProcessing = false;
       this.close();
     },
     async toggleContractFromIncluded(item) {
@@ -321,7 +334,7 @@ export default {
       }
     },
   },
-  components: { DocumentViewWithToolbar },
+  components: { DocumentViewWithToolbar, RoundIconButton },
   emits: ["close"],
   props: ["contacts", "event", "locations"],
   watch: {
@@ -353,10 +366,11 @@ p {
   color: black;
 }
 
-/* #contract-copy {
-  height: fit-content;
-} */
-
+.disclaimer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 .signatures {
   display: flex;
   justify-content: space-evenly;

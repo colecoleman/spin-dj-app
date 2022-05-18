@@ -8,6 +8,9 @@
           :addOnItems="addOnItems"
           :includedItems="includedItems"
           :addOnItemTitle="addOnItemTitle"
+          :adminESignatureProcessing="adminESignatureProcessing"
+          :normalESignatureProcessing="normalESignatureProcessing"
+          :saveProcessing="saveProcessing"
           @toggle-add-on-item-from-included="toggleAddOnItemFromIncluded"
           @submit-admin-e-signature="submitAdminESignature"
           @submit-e-signature="submitESignature"
@@ -75,6 +78,9 @@ export default {
   props: [
     "icons",
     "addOnItems",
+    "saveProcessing",
+    "normalESignatureProcessing",
+    "adminESignatureProcessing",
     "includedItems",
     "addOnItemTitle",
     "documents",

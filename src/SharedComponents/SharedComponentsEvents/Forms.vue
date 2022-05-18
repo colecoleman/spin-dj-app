@@ -10,6 +10,7 @@
       @toggle-add-on-item-from-included="toggleFormFromIncluded"
       @save-button-clicked="saveForms"
       :icons="icons"
+      :saveProcessing="saveProcessing"
       :addOnItems="businessForms"
       :includedItems="forms"
       :documents="forms"
@@ -112,6 +113,7 @@ export default {
       deleteFormOpen: false,
       formDeleteIndex: undefined,
       libraryActiveField: undefined,
+      saveProcessing: false,
     };
   },
   computed: {
@@ -157,13 +159,15 @@ export default {
         this[property] = value;
       }
     },
-    saveForms() {
+    async saveForms() {
+      this.saveProcessing = true;
       let payload = {
         variable: "forms",
         value: this.forms,
         eventKey: { userId: this.event.userId, tenantId: this.event.tenantId },
       };
-      this.$store.dispatch("editEvent", payload);
+      await this.$store.dispatch("editEvent", payload);
+      this.saveProcessing = false;
     },
     duplicateField(form, fieldItem, formItemIndex) {
       console.log(form, fieldItem, formItemIndex);

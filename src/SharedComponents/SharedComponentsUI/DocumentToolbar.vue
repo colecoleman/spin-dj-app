@@ -1,48 +1,41 @@
 <template>
   <div id="toolbar" class="no-print">
     <div id="icons">
-      <vue-svg
+      <round-icon-button
         svg="left-arrow"
         v-if="checkForIcon('left-arrow')"
-        :customStyle="svgStyling"
         class="svg-styling"
-        @clicked="leftArrowClicked"
+        @click="leftArrowClicked"
       />
-      <vue-svg
+      <round-icon-button
         v-if="checkForIcon('print')"
         svg="print"
-        :customStyle="svgStyling"
         class="svg-styling"
-        @clicked="print"
+        @click="print"
       />
-      <vue-svg
+      <round-icon-button
         v-if="checkForIcon('save')"
-        svg="save"
-        :customStyle="svgStyling"
+        :svg="saveProcessing ? 'loading' : 'save'"
         class="svg-styling"
-        @clicked="saveButtonClicked"
+        @click="saveButtonClicked"
       />
-      <vue-svg
+      <round-icon-button
         v-if="checkForIcon('plus-sign')"
         svg="plus-sign"
-        :customStyle="svgStyling"
         class="svg-styling"
-        @clicked="toggleAddMenuOpened"
+        @click="toggleAddMenuOpened"
       />
-      <vue-svg
+      <round-icon-button
         v-if="checkForIcon('checked-signature')"
-        svg="checked-signature"
-        :customStyle="svgStyling"
+        :svg="normalESignatureProcessing ? 'loading' : 'checked-signature'"
         class="svg-styling"
-        @clicked="markAsSigned"
+        @click="markAsSigned"
       />
       <div v-if="checkForIcon('admin-signature')" class="e-sign-grouping">
-        <vue-svg
+        <round-icon-button
           svg="signature-admin"
-          :customStyle="svgStyling"
           class="svg-styling"
-          customClass="pulsing"
-          @clicked="toggleAdminESign"
+          @click="toggleAdminESign"
         />
         <transition name="slide">
           <div class="e-sign-field" v-if="adminESignOpen">
@@ -53,22 +46,19 @@
               :error="eSignFieldNotFilled"
               @input="setESignField($event)"
             />
-            <vue-svg
-              svg="circle-checkmark"
-              :customStyle="svgStyling"
+            <round-icon-button
+              :svg="adminESignatureProcessing ? 'loading' : 'circle-checkmark'"
               class="svg-styling"
-              @clicked="submitAdminESign"
+              @click="submitAdminESign"
             />
           </div>
         </transition>
       </div>
       <div class="e-sign-grouping" v-if="checkForIcon('signature')">
-        <vue-svg
+        <round-icon-button
           svg="signature"
-          :customStyle="svgStyling"
           class="svg-styling"
-          customClass="pulsing"
-          @clicked="toggleESign"
+          @click="toggleESign"
         />
         <transition name="slide">
           <div class="e-sign-field" v-if="eSignOpen">
@@ -78,28 +68,21 @@
               :inputValue="eSignField"
               @input="setESignField($event)"
             />
-            <vue-svg
-              svg="circle-checkmark"
-              :customStyle="svgStyling"
+            <round-icon-button
+              :svg="normalESignatureProcessing ? 'loading' : 'circle-checkmark'"
               class="svg-styling"
-              @clicked="submitESign"
+              @click="submitESign"
             />
           </div>
         </transition>
       </div>
-      <vue-svg
-        svg="x-icon"
-        :customStyle="svgStyling"
-        class="svg-styling"
-        @clicked="close"
-      />
-      <vue-svg
+      <round-icon-button
         v-if="checkForIcon('right-arrow')"
         svg="right-arrow"
-        :customStyle="svgStyling"
         class="svg-styling"
-        @clicked="rightArrowClicked"
+        @click="rightArrowClicked"
       />
+      <round-icon-button svg="x-icon" class="svg-styling" @click="close" />
     </div>
     <Transition name="grow">
       <div id="e-sign-disclaimer" v-if="eSignOpen">
@@ -126,7 +109,8 @@
 <script>
 import InputWithTitle from "../../SharedComponents/SharedComponentsUI/ElementLibrary/InputWithTitle.vue";
 import InputWithBinarySelection from "../../SharedComponents/SharedComponentsUI/ElementLibrary/InputWithBinarySelection.vue";
-import VueSvg from "../../assets/VueSvg.vue";
+import RoundIconButton from "../../SharedComponents/SharedComponentsUI/RoundIconButton.vue";
+// import VueSvg from "../../assets/VueSvg.vue";
 export default {
   data() {
     return {
@@ -226,17 +210,31 @@ export default {
     },
   },
   created() {},
-  components: { VueSvg, InputWithTitle, InputWithBinarySelection },
+  components: {
+    // VueSvg,
+    InputWithTitle,
+    InputWithBinarySelection,
+    RoundIconButton,
+  },
   emits: [
     "submitESignature",
     "submitAdminESignature",
     "toggleAddOnItemFromIncluded",
+    "normalESignatureProcessing",
+    "adminESignatureProcessing",
+
     "leftArrowClicked",
     "saveButtonClicked",
     "rightArrowClicked",
     "close",
   ],
-  props: ["icons", "addOnItems", "includedItems", "addOnItemTitle"],
+  props: [
+    "icons",
+    "addOnItems",
+    "saveProcessing",
+    "includedItems",
+    "addOnItemTitle",
+  ],
 };
 </script>
 <style scoped>
