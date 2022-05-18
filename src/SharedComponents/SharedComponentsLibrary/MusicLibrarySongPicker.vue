@@ -6,6 +6,7 @@
     svg="disc"
     :searchIcon="error ? false : true"
     :searchProcessing="searchProcessing"
+    :inputValue="searchTerm"
     @action-one-clicked="closeSongPicker"
     @search-input="searchTracks"
   >
@@ -68,6 +69,7 @@ export default {
       this.$emit("close-song-picker");
     },
     async searchTracks(field) {
+      this.searchTerm = field;
       if (field) {
         if (this.timer) {
           clearTimeout(this.timeout);
