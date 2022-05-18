@@ -24,7 +24,7 @@
     <vue-svg
       svg="down-arrow"
       @clicked="toggleExpansion"
-      :class="exansionActive ? 'up-arrow svg' : 'down-arrow svg'"
+      :class="expansionActive ? 'up-arrow svg' : 'down-arrow svg'"
     />
   </div>
   <div class="expanded-to-do" v-if="expansionActive">
