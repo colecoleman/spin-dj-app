@@ -107,16 +107,17 @@ export default {
               "Track Number",
               "Track Count",
               "Year",
+              "Normalization",
               "Bit Rate",
               "Sample Rate",
               "Artwork Count",
               "File Folder Count",
-              "Library Count",
+              "Library Folder Count",
             ].includes(key)
           ) {
             trackString =
               trackString + `<key>${key}</key><integer>${value}</integer>`;
-          } else if (value === "true") {
+          } else if (value === "true" || value === "false") {
             trackString = trackString + `<key>${key}</key></true>`;
           } else if (
             [
@@ -124,18 +125,24 @@ export default {
               "Artist",
               "Album Artist",
               "Album",
+              "Composer",
               "Genre",
               "Kind",
               "Sort Album",
               "Sort Artist",
               "Sort Name",
               "Persistent ID",
+              "Purchased",
               "Track Type",
               "Location",
             ].includes(key)
           ) {
             trackString =
-              trackString + `<key>${key}</key><string>${value}</string>`;
+              trackString +
+              `<key>${key}</key><string>${value.replaceAll(
+                "&",
+                "&#38;"
+              )}</string>`;
           } else if (
             ["Date Modified", "Date Added", "Release Date"].includes(key)
           ) {
@@ -174,7 +181,7 @@ export default {
       });
       let libraryMeta = this.$store.getters.libraryMeta;
       let iTunesPlaylistXML = `<?xml version="1.0" encoding="UTF-8"?>
-        <!DOCTYPE plist>
+        <!DOCTYPE plist  PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
         <plist version="1.0">
         <dict>
           <key>Major Version</key><integer>${
