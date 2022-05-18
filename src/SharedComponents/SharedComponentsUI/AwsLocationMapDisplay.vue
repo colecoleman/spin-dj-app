@@ -100,7 +100,6 @@ export default {
     address(oldAddress, newAddress) {
       if (oldAddress !== newAddress) {
         this.mapInstance = null;
-        this.place = "";
         this.search();
       }
     },
