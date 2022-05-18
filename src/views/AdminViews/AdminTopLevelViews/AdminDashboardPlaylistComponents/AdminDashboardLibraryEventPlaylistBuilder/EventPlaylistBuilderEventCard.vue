@@ -221,7 +221,10 @@ export default {
         </plist>
         `;
       console.log(iTunesPlaylistXML);
-      let fileName = this.event.title + this.activeForm.name + ".xml";
+      let fileName =
+        this.event.title.replaceAll(/[^\w\s]/gi, "") +
+        this.activeForm.name.replaceAll(/[^\w\s]/gi, "") +
+        ".xml";
       var pom = document.createElement("a");
       var bb = new Blob([iTunesPlaylistXML], { type: "text/plain" });
 
