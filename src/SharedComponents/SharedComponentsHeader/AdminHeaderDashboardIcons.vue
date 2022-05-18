@@ -14,7 +14,7 @@
           ? calculateExpandedMargin(index) + index
           : calculateStackedMargin(index)
       }`"
-      @click="navigateToIconDashboard(icon)"
+      @click="menuActive ? navigateToIconDashboard(icon) : menuSelected()"
     />
   </div>
 </template>
