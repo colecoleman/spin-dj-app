@@ -1801,32 +1801,52 @@ const store = createStore({
 
     // contact getters
 
-    clients(state) {
-      return state.contacts.filter((x) => x.role == "client");
+    clients: (state) => (sortFunction) => {
+      let clients = state.contacts.filter((x) => x.role === "client");
+      if (sortFunction) {
+        clients = clients.sort(sortFunction);
+      }
+      return clients;
     },
-    employees(state) {
-      return state.contacts.filter((x) => x.role == "employee");
+    employees: (state) => (sortFunction) => {
+      let employees = state.contacts.filter((x) => x.role === "employee");
+      if (sortFunction) {
+        employees = employees.sort(sortFunction);
+      }
+      return employees;
     },
-    organizers(state) {
-      return state.contacts.filter((x) => x.role == "organizer");
+    organizers: (state) => (sortFunction) => {
+      let organizers = state.contacts.filter((x) => x.role === "organizer");
+      if (sortFunction) {
+        organizers = organizers.sort(sortFunction);
+      }
+      return organizers;
     },
-    vendors(state) {
-      return state.contacts.filter((x) => x.role == "vendor");
+    vendors: (state) => (sortFunction) => {
+      let vendors = state.contacts.filter((x) => x.role === "vendor");
+      if (sortFunction) {
+        vendors = vendors.sort(sortFunction);
+      }
+      return vendors;
     },
-    locations(state) {
-      return state.contacts.filter((x) => x.role == "location");
+    locations: (state) => (sortFunction) => {
+      let locations = state.contacts.filter((x) => x.role === "location");
+      if (sortFunction) {
+        locations = locations.sort(sortFunction);
+      }
+      return locations;
     },
     uncategorized(state) {
-      return state.contacts.filter((x) => {
-        return (
+      return state.contacts.filter(
+        (x) =>
           x.role !== "client" &&
           x.role !== "employee" &&
           x.role !== "location" &&
           x.role !== "organizer" &&
           x.role !== "vendor"
-        );
-      });
+      );
     },
+
     libraryTracks: (state) => (start, end) => {
       return state.library.tracks.slice(start, end);
     },
