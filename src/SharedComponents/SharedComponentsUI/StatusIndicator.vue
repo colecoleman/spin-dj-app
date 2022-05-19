@@ -8,11 +8,7 @@
       <p>
         {{ status.note }}
       </p>
-      <vue-svg
-        svg="x-icon"
-        :customStyle="svgStyling"
-        @clicked="clearStatus(index)"
-      />
+      <vue-svg svg="x-icon" class="svg" @click="clearStatus(index)" />
     </div>
   </div>
 </template>
@@ -21,11 +17,6 @@
 import VueSvg from "../../assets/VueSvg.vue";
 
 export default {
-  data() {
-    return {
-      svgStyling: "height: 10px; width: 10px; margin-left: 10px;",
-    };
-  },
   computed: {
     statuses() {
       return this.$store.state.statuses;
@@ -81,5 +72,11 @@ export default {
 p {
   text-transform: capitalize;
   font-size: 10pt;
+}
+
+.svg {
+  height: 10px;
+  width: 10px;
+  margin-left: 10px;
 }
 </style>
