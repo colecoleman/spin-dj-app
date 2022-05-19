@@ -1,14 +1,14 @@
 df
 <template>
-  <two-button-dialog-modal
-    v-if="dialogModal"
-    :modalBody="dialogModalData[dialogModal].body"
-    @select-button-one="dialogModalData[dialogModal].confirmButton"
-    @select-button-two="dialogModalData[dialogModal].cancelButton"
-    @close-modal="closeDialogModal"
-  />
   <base-card title="Identity">
     <template v-slot:content>
+      <two-button-dialog-modal
+        v-if="dialogModal"
+        :modalBody="dialogModalData[dialogModal].body"
+        @select-button-one="dialogModalData[dialogModal].confirmButton"
+        @select-button-two="dialogModalData[dialogModal].cancelButton"
+        @close-modal="closeDialogModal"
+      />
       <div id="wrapper">
         <div class="flex-wrap">
           <input-with-title

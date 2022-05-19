@@ -1,21 +1,20 @@
 <template>
   <section>
-    <div id="navigation">
-      <base-card>
-        <template v-slot:content>
-          <admin-view-config-navigation-items :items="navigationItems" />
-        </template>
-      </base-card>
-    </div>
+    <base-card id="navigation">
+      <template v-slot:content>
+        <admin-view-config-navigation-items :items="navigationItems" />
+      </template>
+    </base-card>
+
     <div id="scroll-container">
-      <div
+      <component
         class="config-section"
         :id="key"
         v-for="(config, key, index) in configCategories"
         :key="index"
-      >
-        <component :is="config.component" @logo="newLogoSelected"></component>
-      </div>
+        :is="config.component"
+        @logo="newLogoSelected"
+      />
     </div>
     <button-standard-with-icon
       :text="saving ? 'Saving...' : 'Save Changes'"
@@ -185,8 +184,8 @@ export default {
     }
 
     .config-section {
-      margin-bottom: 10px;
-      height: auto;
+      /* margin-bottom: 40px; */
+      height: fit-content;
     }
 
     .button-wrapper {

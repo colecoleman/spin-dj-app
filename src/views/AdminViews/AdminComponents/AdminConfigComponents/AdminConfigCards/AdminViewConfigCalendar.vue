@@ -1,12 +1,5 @@
-df
+
 <template>
-  <two-button-dialog-modal
-    v-if="dialogModal"
-    :modalBody="dialogModalData[dialogModal].body"
-    @select-button-one="dialogModalData[dialogModal].confirmButton"
-    @select-button-two="dialogModalData[dialogModal].cancelButton"
-    @close-modal="closeDialogModal"
-  />
   <base-card title="Calendar">
     <template v-slot:content>
       <div id="wrapper">
@@ -35,8 +28,6 @@ df
 </template>
 
 <script>
-import TwoButtonDialogModal from "../../../../../SharedComponents/SharedComponentsUI/TwoButtonDialogModal.vue";
-
 export default {
   data() {
     return {
@@ -57,7 +48,6 @@ export default {
       this.copied = true;
     },
   },
-  components: { TwoButtonDialogModal },
 };
 </script>
 
