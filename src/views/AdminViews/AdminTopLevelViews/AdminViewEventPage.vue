@@ -405,6 +405,7 @@ section {
 
 #button-bar {
   grid-row: 4/ 5;
+  z-index: 10;
 }
 
 #contact-carousel {

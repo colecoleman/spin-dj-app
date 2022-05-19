@@ -157,6 +157,7 @@ export default {
   }
   #button-bar {
     grid-row: 4/ 5;
+    z-index: 10;
   }
   #to-do {
     grid-row: 5 / 6;

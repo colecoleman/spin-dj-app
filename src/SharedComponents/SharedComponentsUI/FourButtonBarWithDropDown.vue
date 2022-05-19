@@ -58,6 +58,7 @@ export default {
     height: fit-content;
     overflow: visible;
     padding: 10px;
+    z-index: 100;
   }
   .button-div {
     width: 45%;
@@ -65,6 +66,7 @@ export default {
     padding: 10px 0;
     position: relative;
     overflow: visible;
+    z-index: 100;
     /* box-sizing: border-box; */
   }
   @media (min-width: 700px) {

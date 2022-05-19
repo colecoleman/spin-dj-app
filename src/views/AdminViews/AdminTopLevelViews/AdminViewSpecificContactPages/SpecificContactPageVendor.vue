@@ -211,6 +211,7 @@ export default {
 
   #button-bar {
     grid-row: 4/ 5;
+    z-index: 10;
   }
 
   #upcoming-events {

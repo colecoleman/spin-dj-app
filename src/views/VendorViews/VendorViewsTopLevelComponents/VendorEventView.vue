@@ -152,6 +152,7 @@ export default {
   }
   #button-bar {
     grid-row: 3/ 4;
+    z-index: 10;
   }
 
   #location-scroller {
