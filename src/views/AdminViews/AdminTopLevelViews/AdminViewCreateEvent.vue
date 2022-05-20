@@ -802,7 +802,7 @@ export default {
       );
     },
     clientSearchResults() {
-      let clients = this.$store.getters.clients;
+      let clients = this.$store.getters.clients();
       if (
         clients.find((x) => {
           return (

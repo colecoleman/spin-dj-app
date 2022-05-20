@@ -59,7 +59,7 @@ export default {
   },
   computed: {
     clients() {
-      let clients = this.$store.getters.clients;
+      let clients = this.$store.getters.clients();
       if (this.searchTerm) {
         clients = clients.filter(
           (x) =>

@@ -30,7 +30,7 @@ export default {
       return this.$store.state.user;
     },
     clients() {
-      return this.$store.getters.clients;
+      return this.$store.getters.clients();
     },
   },
 };
