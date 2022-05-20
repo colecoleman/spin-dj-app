@@ -138,7 +138,7 @@ export default {
     },
     searchLocations() {
       if (this.searchLocationName) {
-        if (this.$store.getters.locations.length < 3) {
+        if (this.$store.getters.locations().length < 3) {
           this.$store.dispatch("getLocations");
         }
         let locations = this.$store.getters.locations();
