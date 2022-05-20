@@ -1,10 +1,4 @@
 <template>
-  <two-button-dialog-modal
-    v-if="removeLocationOpen"
-    @select-button-one="confirmRemoveLocation"
-    @select-button-two="toggleRemoveLocation"
-    @close-modal="toggleRemoveLocation"
-  />
   <base-card
     svg="location-marker"
     title="Locations"
@@ -17,6 +11,12 @@
     @search-blurred="searchBlurred"
   >
     <template v-slot:content>
+      <two-button-dialog-modal
+        v-if="removeLocationOpen"
+        @select-button-one="confirmRemoveLocation"
+        @select-button-two="toggleRemoveLocation"
+        @close-modal="toggleRemoveLocation"
+      />
       <div id="specific-event-page-location-scroller-wrapper">
         <round-icon-button
           id="left-arrow"

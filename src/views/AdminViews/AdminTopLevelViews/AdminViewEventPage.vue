@@ -101,44 +101,38 @@
       @close-modal="togglePopup"
     />
     <section>
-      <div id="contact-card">
-        <event-page-contact-card v-if="event" :event="event" />
-      </div>
-      <div id="location-scroller">
-        <location-gallery :event="event" />
-      </div>
-      <div id="button-bar">
-        <four-button-bar-with-drop-down
-          :buttons="buttons"
-          :dropdown="dropdown"
-          @button-clicked="togglePopup"
-          @dropdown-button-clicked="togglePopup"
-        />
-      </div>
-      <div id="event-information">
-        <event-information :event="event" :eventId="event.userId" />
-      </div>
-      <div id="automation">
-        <event-automation-list
-          :automations="automations"
-          :contacts="event.contacts"
-          :event="event"
-        />
-      </div>
-      <div id="contact-carousel">
-        <contact-list :contacts="event.contacts" :event="event" />
-      </div>
-      <div id="to-do">
-        <to-do-list
-          :event="event"
-          :eventContacts="event.contacts"
-          listType="event"
-        />
-      </div>
-      <div id="recent-messages">
-        <recent-messages />
-        <!-- :conversationList="eventConversations" -->
-      </div>
+      <event-page-contact-card id="contact-card" v-if="event" :event="event" />
+      <location-gallery id="location-scroller" :event="event" />
+      <four-button-bar-with-drop-down
+        id="button-bar"
+        :buttons="buttons"
+        :dropdown="dropdown"
+        @button-clicked="togglePopup"
+        @dropdown-button-clicked="togglePopup"
+      />
+      <event-information
+        id="event-information"
+        :event="event"
+        :eventId="event.userId"
+      />
+      <event-automation-list
+        id="automation"
+        :automations="automations"
+        :contacts="event.contacts"
+        :event="event"
+      />
+      <contact-list
+        id="contact-carousel"
+        :contacts="event.contacts"
+        :event="event"
+      />
+      <to-do-list
+        id="to-do"
+        :event="event"
+        :eventContacts="event.contacts"
+        listType="event"
+      />
+      <recent-messages id="recent-messages" />
     </section>
   </div>
 </template>

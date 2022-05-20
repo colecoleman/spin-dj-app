@@ -1,10 +1,4 @@
 <template>
-  <two-button-dialog-modal
-    v-if="removeContactOpen"
-    @select-button-one="removeContact"
-    @select-button-two="toggleRemoveContact"
-    @close-modal="toggleRemoveContact"
-  />
   <base-card
     svg="group-people"
     title="Contacts"
@@ -17,6 +11,12 @@
     @search-blurred="searchBlurred"
   >
     <template v-slot:content>
+      <two-button-dialog-modal
+        v-if="removeContactOpen"
+        @select-button-one="removeContact"
+        @select-button-two="toggleRemoveContact"
+        @close-modal="toggleRemoveContact"
+      />
       <div id="contact-carousel-top-wrapper">
         <div id="contact-carousel-wrapper">
           <contact-list-item
