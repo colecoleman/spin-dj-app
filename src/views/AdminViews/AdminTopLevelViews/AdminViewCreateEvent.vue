@@ -896,7 +896,7 @@ export default {
     },
     searchLocations() {
       if (this.fields.location.name) {
-        let locations = this.$store.getters.locations;
+        let locations = this.$store.getters.locations();
         let term = this.fields.location.name.toLowerCase();
         return locations.filter(
           (x) =>
