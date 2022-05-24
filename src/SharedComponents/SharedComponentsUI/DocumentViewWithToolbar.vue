@@ -1,6 +1,5 @@
 <template>
-  <div id="document-wrapper">
-    <!-- <backdrop @click="close" /> -->
+  <div id="document-wrapper" @click.self="close">
     <div class="document">
       <div class="toolbar-wrapper">
         <toolbar
@@ -32,7 +31,6 @@
   </div>
 </template>
 <script>
-// import Backdrop from "./Backdrop.vue";
 import Toolbar from "./DocumentToolbar.vue";
 export default {
   data() {
@@ -64,7 +62,6 @@ export default {
   created() {},
   components: {
     Toolbar,
-    // Backdrop,
   },
   emits: [
     "close",
@@ -96,7 +93,7 @@ export default {
     left: 0;
     position: fixed;
     overflow: scroll;
-    z-index: 10;
+    z-index: 11;
   }
   .document {
     position: absolute;
@@ -127,19 +124,7 @@ export default {
   }
 
   @media (min-width: 800px) {
-    #document-wrapper {
-      height: 100%;
-      width: 100%;
-      top: 0;
-      left: 0;
-      position: fixed;
-      overflow: scroll;
-      z-index: 10;
-    }
     .document {
-      /* background-color: white; */
-      position: absolute;
-      z-index: 10;
       width: 60%;
       margin: 100px 20% 15% 20%;
     }
@@ -153,7 +138,7 @@ export default {
     /* top: 0; */
     /* left: 0; */
     /* position: fixed; */
-    z-index: 10;
+    z-index: 11;
   }
   .document {
     background-color: white;
