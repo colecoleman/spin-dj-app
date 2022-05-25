@@ -235,6 +235,7 @@ section {
   grid-template-columns: 100%;
   grid-template-rows: 75px 240px 1fr repeat(4, 275px);
   gap: 10px;
+  z-index: 5;
 }
 
 #contact-card {
