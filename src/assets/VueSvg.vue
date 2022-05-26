@@ -144,6 +144,94 @@
         transform="translate(-5.625 -6.33)"
       />
     </svg>
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="26.25"
+      height="12.609"
+      viewBox="0 0 26.25 12.609"
+      v-if="svg === 'back-to-list'"
+    >
+      <g id="Group_1028" data-name="Group 1028" transform="translate(0 1.5)">
+        <g
+          id="Icon_feather-list"
+          data-name="Icon feather-list"
+          transform="translate(7.965)"
+        >
+          <path
+            id="Path_212"
+            data-name="Path 212"
+            d="M12,9H22.41"
+            transform="translate(-7.996 -9)"
+            fill="none"
+            stroke="#000"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="3"
+          />
+          <path
+            id="Path_213"
+            data-name="Path 213"
+            d="M12,18h4.4"
+            transform="translate(0.389 -13.196)"
+            fill="none"
+            stroke="#000"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="3"
+          />
+          <path
+            id="Path_214"
+            data-name="Path 214"
+            d="M12,27H22.41"
+            transform="translate(-7.996 -17.391)"
+            fill="none"
+            stroke="#000"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="3"
+          />
+          <path
+            id="Path_215"
+            data-name="Path 215"
+            d="M4.5,9h0"
+            transform="translate(-4.5 -9)"
+            fill="none"
+            stroke="#000"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="3"
+          />
+          <path
+            id="Path_216"
+            data-name="Path 216"
+            d="M4.5,18h0"
+            transform="translate(-4.5 -13.196)"
+            fill="none"
+            stroke="#000"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="3"
+          />
+          <path
+            id="Path_217"
+            data-name="Path 217"
+            d="M4.5,27h0"
+            transform="translate(-4.5 -17.391)"
+            fill="none"
+            stroke="#000"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="3"
+          />
+        </g>
+        <path
+          id="Icon_awesome-long-arrow-alt-left"
+          data-name="Icon awesome-long-arrow-alt-left"
+          d="M5.074,16.257H15.5a1.513,1.513,0,0,0,1.454-1.48v-.238A1.484,1.484,0,0,0,15.5,13.06H5.074V11.219a.9.9,0,0,0-1.551-.678L.266,13.98a1,1,0,0,0,0,1.356l3.257,3.439A.9.9,0,0,0,5.074,18.1Z"
+          transform="translate(0 -9.81)"
+        />
+      </g>
+    </svg>
 
     <svg
       :class="customClass"
