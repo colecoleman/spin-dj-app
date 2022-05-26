@@ -18,12 +18,12 @@
       <event-calendar :events="events" />
     </div>
     <div id="messaging">
-      <recent-messages :conversationList="userConversations" />
+      <messaging :conversationList="userConversations" />
     </div>
   </div>
 </template>
 <script>
-import RecentMessages from "../../../SharedComponents/SharedComponentsMessaging/RecentMessages.vue";
+import Messaging from "../../../SharedComponents/SharedComponentsMessaging/Messaging.vue";
 import ToDoList from "../../../SharedComponents/SharedComponentsToDoList/ToDoList.vue";
 import EventCalendar from "../../../SharedComponents/SharedComponentsCalendar/EventCalendar.vue";
 import UpcomingEvents from "../../../SharedComponents/SharedComponentsUpcomingEvents/UpcomingEvents.vue";
@@ -71,7 +71,7 @@ export default {
   components: {
     ContactCardPerson,
     UpcomingEvents,
-    RecentMessages,
+    Messaging,
     ToDoList,
     EventCalendar,
   },

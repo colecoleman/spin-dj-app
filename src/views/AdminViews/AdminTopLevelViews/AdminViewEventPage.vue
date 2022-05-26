@@ -132,14 +132,14 @@
         :eventContacts="event.contacts"
         listType="event"
       />
-      <recent-messages id="recent-messages" />
+      <messaging id="messaging" />
     </section>
   </div>
 </template>
 
 <script>
 import ToDoList from "../../../SharedComponents/SharedComponentsToDoList/ToDoList.vue";
-import RecentMessages from "../../../SharedComponents/SharedComponentsMessaging/RecentMessages.vue";
+import Messaging from "../../../SharedComponents/SharedComponentsMessaging/Messaging.vue";
 import EventPageContactCard from "../../../SharedComponents/SharedComponentsEvents/EventPageContactCard.vue";
 import ContactList from "../../../SharedComponents/SharedComponentsEvents/EventPageContactList/EventPageContactList.vue";
 import LocationGallery from "../../../SharedComponents/SharedComponentsEvents/EventPageLocationGallery/LocationGallery.vue";
@@ -339,7 +339,7 @@ export default {
   },
   components: {
     ToDoList,
-    RecentMessages,
+    Messaging,
     EventPageContactCard,
     ContactList,
     LocationGallery,
@@ -416,7 +416,7 @@ section {
   padding-bottom: 20px;
 }
 
-#recent-messages {
+#messaging {
   display: none;
 }
 
@@ -505,7 +505,7 @@ section {
     max-height: 100%;
   }
 
-  #recent-messages {
+  #messaging {
     grid-column: 8 / 11;
     grid-row: 3 / 4;
     display: flex;

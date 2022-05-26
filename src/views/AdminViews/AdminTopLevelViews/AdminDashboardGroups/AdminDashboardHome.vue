@@ -9,14 +9,14 @@
     <event-calendar :events="events" />
   </div>
   <div id="messaging">
-    <recent-messages :conversationList="userConversations" />
+    <messaging :conversationList="userConversations" />
   </div>
 </template>
 <script>
 import UpcomingEvents from "../../../../SharedComponents/SharedComponentsUpcomingEvents/UpcomingEvents.vue";
 import MetricsChart from "../../AdminComponents/AdminDashboardComponents/AdminDashboardComponents/MetricsCharts/MetricsChart.vue";
 import EventCalendar from "../../../../SharedComponents/SharedComponentsCalendar/EventCalendar.vue";
-import RecentMessages from "../../../../SharedComponents/SharedComponentsMessaging/RecentMessages.vue";
+import Messaging from "../../../../SharedComponents/SharedComponentsMessaging/Messaging.vue";
 export default {
   data() {
     return {};
@@ -44,7 +44,7 @@ export default {
     UpcomingEvents,
     MetricsChart,
     EventCalendar,
-    RecentMessages,
+    Messaging,
   },
   props: [],
 };

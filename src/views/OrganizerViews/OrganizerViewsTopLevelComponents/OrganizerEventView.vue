@@ -58,11 +58,8 @@
         />
       </div>
       <div id="messages">
-        <!-- <recent-messages-event v-if="contacts"></recent-messages-event> -->
-        <recent-messages
-          v-if="contacts"
-          :conversationList="eventConversations"
-        />
+        <!-- <messaging-event v-if="contacts"></messaging-event> -->
+        <messaging v-if="contacts" :conversationList="eventConversations" />
       </div>
     </section>
   </div>
@@ -70,8 +67,8 @@
 
 <script>
 import ToDoList from "../../../SharedComponents/SharedComponentsToDoList/ToDoList.vue";
-// import RecentMessagesEvent from "../../../SharedComponents/SharedComponentsMessaging/RecentMessagesEvent.vue";
-import RecentMessages from "../../../SharedComponents/SharedComponentsMessaging/RecentMessages.vue";
+// import MessagingEvent from "../../../SharedComponents/SharedComponentsMessaging/MessagingEvent.vue";
+import Messaging from "../../../SharedComponents/SharedComponentsMessaging/Messaging.vue";
 import EventPageContactCard from "../../../SharedComponents/SharedComponentsEvents/EventPageContactCard.vue";
 
 import EventMakePaymentCard from "../../../SharedComponents/SharedComponentsEvents/EventMakePayment/EventMakePaymentCard.vue";
@@ -198,8 +195,8 @@ export default {
   },
   components: {
     ToDoList,
-    // RecentMessagesEvent,
-    RecentMessages,
+    // MessagingEvent,
+    Messaging,
     EventPageContactCard,
     ContactList,
     LocationGallery,
