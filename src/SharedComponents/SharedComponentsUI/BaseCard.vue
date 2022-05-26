@@ -72,7 +72,6 @@ export default {
     },
     searchInput(value) {
       this.$emit("search-input", value);
-      console.log(value);
     },
     searchBlurred() {
       this.$emit("search-blurred");
