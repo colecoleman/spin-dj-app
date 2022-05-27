@@ -87,7 +87,7 @@ export default {
       return str;
     },
     toggleSearchField() {
-      this.emit("search-icon-clicked");
+      this.$emit("search-icon-clicked");
       this.searchFieldOpen = !this.searchFieldOpen;
     },
   },
