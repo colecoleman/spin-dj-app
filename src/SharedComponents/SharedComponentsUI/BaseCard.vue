@@ -25,6 +25,7 @@
             :searchResultFormat="searchResultFormat"
             :inputValue="inputValue"
             @input="searchInput"
+            @search-icon-clicked="searchIconClicked"
             @search-blurred="searchBlurred"
             @select-search-result="selectSearchResult"
           />
@@ -79,8 +80,16 @@ export default {
     selectSearchResult(value) {
       this.$emit("select-search-result", value);
     },
+    searchIconClicked() {
+      this.$emit("search-icon-clicked");
+    },
   },
-  emits: ["actionOneClicked", "search-input", "search-blurred"],
+  emits: [
+    "actionOneClicked",
+    "search-input",
+    "search-blurred",
+    "search-icon-clicked",
+  ],
   components: { VueSvg, RoundIconButton, SearchIcon },
 };
 </script>

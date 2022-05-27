@@ -87,6 +87,7 @@ export default {
       return str;
     },
     toggleSearchField() {
+      this.emit("search-icon-clicked");
       this.searchFieldOpen = !this.searchFieldOpen;
     },
   },
@@ -94,7 +95,12 @@ export default {
     RoundIconButton,
     ListItemStyleWrapper,
   },
-  emits: ["input", "search-blurred", "select-search-result"],
+  emits: [
+    "input",
+    "search-blurred",
+    "select-search-result",
+    "search-icon-clicked",
+  ],
   props: [
     "svg",
     "searchResults",
