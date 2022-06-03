@@ -1,6 +1,6 @@
 <template>
   <div class="client-skeleton-card">
-    <profile-picture contact="person" :customStyle="profilePictureStyling" />
+    <profile-picture contact="person" />
     <div class="client-name">
       <h5 class="skeleton"></h5>
       <h5 class="skeleton"></h5>
@@ -10,19 +10,7 @@
 <script>
 import ProfilePicture from "../../../assets/ProfilePicture.vue";
 export default {
-  computed: {
-    profilePictureStyling() {
-      if (window.innerWidth < 800) {
-        return "height: 20px; min-height: 20px; min-width: 20px; width: 20px; margin: 0;";
-      } else {
-        return "height: 30px; min-height: 30px; min-width: 30px; width: 30px; margin: 5px 5px 5px 0;";
-      }
-    },
-  },
-  methods: {},
-  created() {},
   components: { ProfilePicture },
-  props: [],
 };
 </script>
 <style scoped>
@@ -51,10 +39,25 @@ export default {
   justify-content: center;
   height: 100%;
 }
+
+.profile-picture {
+  height: 20px;
+  min-height: 20px;
+  min-width: 20px;
+  width: 20px;
+  margin: 0;
+}
+
 @media screen and (min-width: 800px) {
   .client-name > .skeleton {
     width: 70px;
     height: 9pt;
+  }
+  .profile-picture {
+    height: 30px;
+    min-height: 30px;
+    min-width: 30px;
+    width: 30px;
   }
 }
 </style>

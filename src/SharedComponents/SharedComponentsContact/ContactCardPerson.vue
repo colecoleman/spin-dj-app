@@ -17,8 +17,8 @@
     <template v-slot:content v-if="contact">
       <div id="wrapper" v-if="!loading">
         <profile-picture
+          class="profile-picture"
           contact="person"
-          :customStyle="profilePictureStyling"
           :profilePicture="contact.profilePicture"
         />
         <div id="contact-information">
@@ -42,8 +42,7 @@ import { formatPhoneNumber } from "../../helpers.js";
 export default {
   data() {
     return {
-      profilePictureStyling:
-        "min-width: 40px; height: 40px; margin-right: 10px;",
+      profilePictureStyling: "",
       editCardOpen: false,
     };
   },
@@ -95,5 +94,11 @@ img {
   flex-direction: column;
   justify-content: center;
   align-content: center;
+}
+
+.profile-picture {
+  min-width: 40px;
+  height: 40px;
+  margin-right: 10px;
 }
 </style>

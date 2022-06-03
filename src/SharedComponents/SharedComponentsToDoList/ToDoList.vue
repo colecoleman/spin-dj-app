@@ -99,17 +99,16 @@ export default {
 <style scoped>
 #wrapper {
   width: 100%;
-  max-height: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
   overflow: scroll;
 }
 
 #to-do-scroll-container {
-  /* height: 100%;
-  max-height: 100%; */
   width: 100%;
-  /* height: 100%; */
+  min-height: 100%;
+  height: 100%;
   overflow-y: scroll;
 }
 </style>

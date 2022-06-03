@@ -4,8 +4,8 @@
     <profile-picture
       v-if="contact"
       contact="person"
+      class="profile-picture"
       :profilePicture="contact.profilePicture"
-      :customStyle="profilePictureStyling"
     />
     <div class="contact-name" v-if="contact">
       <h5 v-if="contact.given_name">
@@ -21,23 +21,22 @@
 </template>
 <script>
 import SkeletonProfilePictureName from "../SkeletonCards/SkeletonProfilePictureName.vue";
+
 import Skeleton from "../SkeletonCards/SkeletonText.vue";
 import ProfilePicture from "../../../assets/ProfilePicture.vue";
 export default {
-  computed: {
-    profilePictureStyling() {
-      if (window.innerWidth < 800) {
-        return "height: 20px; min-height: 20px; min-width: 20px; width: 20px; margin: 0;";
-      } else {
-        return "height: 30px; min-height: 30px; min-width: 30px; width: 30px; margin: 5px 5px 5px 0;";
-      }
-    },
-  },
   components: { ProfilePicture, SkeletonProfilePictureName, Skeleton },
   props: ["contact"],
 };
 </script>
 <style scoped>
+.profile-picture {
+  height: 20px;
+  min-height: 20px;
+  min-width: 20px;
+  width: 20px;
+  margin: 5px 5px 5px 0;
+}
 .contact-wrapper {
   display: flex;
   flex-direction: row;
@@ -60,6 +59,15 @@ h5 {
   font-size: 8pt;
   margin: 0;
   text-transform: uppercase;
+}
+
+@media screen and (min-width: 800px) {
+  .profile-picture {
+    height: 30px;
+    min-height: 30px;
+    min-width: 30px;
+    width: 30px;
+  }
 }
 @media screen and (min-width: 1200px) {
   h5 {

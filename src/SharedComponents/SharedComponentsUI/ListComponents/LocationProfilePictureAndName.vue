@@ -1,6 +1,10 @@
 <template>
   <div class="name-and-photo">
-    <profile-picture contact="location" :customStyle="svgStyling" />
+    <profile-picture
+      contact="location"
+      :customStyle="svgStyling"
+      class="profile-picture"
+    />
     <h5>
       {{ location.name }}
     </h5>
@@ -9,12 +13,6 @@
 <script>
 import ProfilePicture from "../../../assets/ProfilePicture.vue";
 export default {
-  data() {
-    return {
-      svgStyling:
-        "width: 30px; min-width: 30px; height: 30px; min-height: 30px; margin: 5px 5px 5px 0;",
-    };
-  },
   components: { ProfilePicture },
   props: ["location"],
 };
@@ -25,6 +23,14 @@ export default {
   flex-direction: row;
   align-items: center;
 }
+
+.profile-picture {
+  width: 20px;
+  min-width: 20px;
+  height: 20px;
+  min-height: 20px;
+  margin: 5px 5px 5px 0;
+}
 .name-and-photo h5 {
   margin: 1px;
   font-size: 10pt;
@@ -33,4 +39,12 @@ export default {
   white-space: nowrap;
   text-overflow: ellipsis;
 }
+  @media screen and (min-width: 800px) {
+    .profile-picture {
+      height: 30px;
+      min-height: 30px;
+      min-width: 30px;
+      width: 30px;
+    }
+  }
 </style>

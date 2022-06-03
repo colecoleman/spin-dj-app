@@ -9,7 +9,7 @@
             : undefined
           : undefined
       "
-      :customStyle="'width: 25px; height: 25px; margin-left: 10px; padding: 5px;'"
+      class="profile-picture"
     />
     <h5 v-if="contact">
       {{ contact.given_name + " " + contact.family_name }}
@@ -34,6 +34,13 @@ export default {
 .to-do-contact-item {
   display: flex;
   align-items: center;
+}
+
+.profile-picture {
+  width: 25px;
+  height: 25px;
+  margin-left: 10px;
+  padding: 5px;
 }
 
 h5 {

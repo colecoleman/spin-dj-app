@@ -10,6 +10,7 @@
       <profile-picture
         v-for="(contact, index) in contacts"
         :key="index"
+        class="profile-picture"
         contact="person"
         :profilePicture="
           contact
@@ -87,6 +88,7 @@ export default {
   height: 30px;
   display: flex;
   align-items: center;
+  overflow: visible;
 }
 
 h4 {
@@ -95,7 +97,20 @@ h4 {
 }
 
 .people-wrapper {
-  margin: 0 10px 0 0;
+  margin: 0 10px;
+  width: fit-content;
+  overflow: visible;
+  display: flex;
+}
+
+.profile-picture {
+  width: 25px;
+  height: 25px;
+  margin: 0px 0px 0px -10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  fill: var(--foregroundColor);
 }
 
 .expanded-to-do {
