@@ -861,33 +861,40 @@ const store = createStore({
       });
     },
     getConversations(context, keys) {
-      let conversations;
-      if (!keys) {
-        conversations = context.state.user.conversations;
-      } else {
-        conversations = keys;
+      let conversations = [];
+      if (!keys && context.state.user.conversations) {
+        conversations = [...context.state.user.conversations];
+      } else if (keys) {
+        conversations = [...keys];
       }
-      return new Promise((resolve, reject) => {
-        axios
-          .post(
-            `https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/chat/getConversations`, conversations
-          )
-          .then(
-            (result) => {
-              if (result.data && !keys) {
-                context.state.conversations = [...result.data];
+      if (conversations.length > 0) {
+
+        return new Promise((resolve, reject) => {
+          axios
+            .post(
+              `https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/chat/getConversations`, conversations
+            )
+            .then(
+              (result) => {
+                if (result.data && !keys) {
+                  context.state.conversations = [...result.data];
+                } else {
+                  context.state.conversations = [];
+                }
+                resolve(result.data);
+              },
+              (error) => {
+                context.commit("addStatus", {
+                  type: "error",
+                  note: error,
+                });
+                reject(error);
               }
-              resolve(result.data);
-            },
-            (error) => {
-              context.commit("addStatus", {
-                type: "error",
-                note: error,
-              });
-              reject(error);
-            }
-          );
-      });
+            );
+        });
+      } else {
+        return [];
+      }
     },
 
     async getMessageThread(context, thread) {
