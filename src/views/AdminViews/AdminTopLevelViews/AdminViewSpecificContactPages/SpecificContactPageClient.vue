@@ -162,7 +162,7 @@ export default {
     height: 100%;
     display: grid;
     grid-template-columns: 1fr;
-    grid-template-rows: 150px 300px 75px repeat(4, 300px);
+    grid-template-rows: 150px 300px 75px repeat(3, 300px) 360px;
     gap: 10px;
   }
 
@@ -177,7 +177,8 @@ export default {
     grid-row: 5 / 6;
   }
   #messages {
-    grid-row: 6/7;
+    grid-row: 7/8;
+    padding-bottom: 60px;
   }
 
   #button-bar {
@@ -191,7 +192,6 @@ export default {
 
   #automation {
     grid-row: 6/ 7;
-    padding-bottom: 100px;
   }
   @media (min-width: 850px) {
     section {
@@ -215,7 +215,7 @@ export default {
     #messages {
       grid-column: 7/10;
       grid-row: 6/ 10;
-      display: unset;
+      padding: 0;
     }
 
     #button-bar {
