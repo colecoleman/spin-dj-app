@@ -1,7 +1,7 @@
 <template>
   <div id="conversation-list-wrapper">
     <conversation-preview
-      v-if="!conversations.length > 0"
+      v-if="!conversations || (conversations && !conversations.length > 0)"
       :key="defaultConversation.id"
       :conversation="defaultConversation"
     />
