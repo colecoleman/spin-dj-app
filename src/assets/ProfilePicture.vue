@@ -91,6 +91,9 @@ export default {
     height: 40px;
     padding: 10px;
     object-fit: cover; */
+    display: flex;
+    align-items: center;
+    justify-content: center;
     height: 100%;
     width: 100%;
   }
