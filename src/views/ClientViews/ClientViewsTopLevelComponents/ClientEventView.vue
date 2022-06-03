@@ -218,7 +218,7 @@ section {
   height: 100%;
   display: grid;
   grid-template-columns: 100%;
-  grid-template-rows: 75px 240px 1fr repeat(4, 275px);
+  grid-template-rows: 75px 240px 1fr repeat(4, 275px) 335px;
   gap: 10px;
   z-index: 5;
 }
@@ -249,13 +249,12 @@ section {
 }
 
 #to-do {
-  grid-row: 7 / 8;
-  padding-bottom: 60px;
+  grid-row: 8 / 9;
 }
 
 #messages {
-  display: none;
-  /* grid-row: 3 / 4; */
+  grid-row: 7 / 8;
+  margin-bottom: 60px;
 }
 @media screen and (min-width: 775px) {
   section {
