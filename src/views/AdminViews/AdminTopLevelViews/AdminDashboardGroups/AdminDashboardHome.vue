@@ -9,7 +9,7 @@
     <event-calendar :events="events" />
   </div>
   <div id="messaging">
-    <messaging :conversationList="userConversations" />
+    <messaging />
   </div>
 </template>
 <script>
@@ -27,9 +27,6 @@ export default {
     },
     events() {
       return this.$store.state.events;
-    },
-    userConversations() {
-      return [...new Set(this.currentUser.conversations)];
     },
   },
   methods: {},

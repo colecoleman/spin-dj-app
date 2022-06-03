@@ -28,37 +28,27 @@
       />
     </Transition>
     <section v-if="event">
-      <div id="contact-card">
-        <event-page-contact-card :event="event" />
-      </div>
-      <div id="alerts">
-        <event-page-alerts :alerts="eventAlerts" />
-      </div>
-      <div id="button-bar">
-        <four-button-bar-with-drop-down
-          :buttons="buttons"
-          @button-clicked="togglePopup"
-        />
-      </div>
-      <div id="location-scroller">
-        <location-gallery :event="event" />
-      </div>
-      <div id="make-payment">
-        <event-make-payment-card :event="event" :eventId="event.userId" />
-      </div>
-      <div id="contact-carousel">
-        <contact-list :contacts="event.contacts" />
-      </div>
-      <div id="to-do">
-        <to-do-list
-          listType="event"
-          :event="event"
-          :eventContacts="event.contacts"
-        />
-      </div>
-      <div id="messages">
-        <messaging :conversationList="eventConversations" />
-      </div>
+      <event-page-contact-card id="contact-card" :event="event" />
+      <event-page-alerts id="alerts" :alerts="eventAlerts" />
+      <four-button-bar-with-drop-down
+        id="button-bar"
+        :buttons="buttons"
+        @button-clicked="togglePopup"
+      />
+      <location-gallery id="location-scroller" :event="event" />
+      <event-make-payment-card
+        id="make-payment"
+        :event="event"
+        :eventId="event.userId"
+      />
+      <contact-list id="contact-carousel" :contacts="event.contacts" />
+      <to-do-list
+        id="to-do"
+        listType="event"
+        :event="event"
+        :eventContacts="event.contacts"
+      />
+      <messaging id="messages" display="event" :contacts="event.contacts" />
     </section>
   </div>
 </template>
@@ -86,11 +76,6 @@ import {
 export default {
   data() {
     return {
-      // event: undefined,
-      contacts: [],
-      locations: [],
-      clients: [],
-      eventConversations: [],
       buttons: [
         {
           title: "View Forms",

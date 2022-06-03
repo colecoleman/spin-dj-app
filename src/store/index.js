@@ -10,6 +10,7 @@ const store = createStore({
       event: undefined,
       tenants: [],
       statuses: [],
+      conversations: [],
       notifications: [],
       toDos: [],
       automations: {},
@@ -139,6 +140,7 @@ const store = createStore({
             ...settings,
             businessName: settings.identity.businessName,
             tenantId: typeof x === "string" ? x : x.tenantId,
+            userId: typeof x === "string" ? x : x.userId,
           };
         })
       );
@@ -224,7 +226,6 @@ const store = createStore({
       });
     },
     async getEventLocations(context, event) {
-      console.log("getting locations");
       let locations = event.locations.map((x) => {
         let userId = x.key ? x.key.userId : x;
         let tenantId = x.key ? x.key.tenantId : event.tenantId;
@@ -815,21 +816,80 @@ const store = createStore({
       });
     },
     async sendMessage(context, payload) {
+      // let { body, id } = payload;
+
+      console.log(payload);
+
       return new Promise((resolve, reject) => {
-        axios.put(`https://api.spindj.io/messaging/message`, payload).then(
-          (result) => {
-            resolve(result);
-          },
-          (error) => {
-            context.commit("addStatus", {
-              type: "error",
-              note: error,
-            });
-            reject(error);
-          }
-        );
+        axios
+          .put(
+            "https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/chat/sendMessage",
+            payload
+          )
+          .then(
+            (result) => {
+              resolve(result);
+              context.commit('sendMessage', payload);
+              console.log(result);
+            },
+            (error) => {
+              context.commit("addStatus", {
+                type: "error",
+                note: error,
+              });
+              reject(error);
+            }
+          );
       });
     },
+    async createNewConversation(context, payload) {
+      console.log(payload);
+      return new Promise((resolve, reject) => {
+        axios
+          .put(
+            "https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/chat/createConversation",
+            payload
+          )
+          .then((res) => {
+            console.log(res);
+            resolve(res);
+            context.commit("createNewConversation", payload);
+          })
+          .catch((e) => {
+            reject(e);
+          });
+      });
+    },
+    getConversations(context, keys) {
+      let conversations;
+      if (!keys) {
+        conversations = context.state.user.conversations;
+      } else {
+        conversations = keys;
+      }
+      return new Promise((resolve, reject) => {
+        axios
+          .post(
+            `https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/chat/getConversations`, conversations
+          )
+          .then(
+            (result) => {
+              if (result.data && !keys) {
+                context.state.conversations = [...result.data];
+              }
+              resolve(result.data);
+            },
+            (error) => {
+              context.commit("addStatus", {
+                type: "error",
+                note: error,
+              });
+              reject(error);
+            }
+          );
+      });
+    },
+
     async getMessageThread(context, thread) {
       return new Promise((resolve, reject) => {
         axios
@@ -1570,7 +1630,20 @@ const store = createStore({
       state.library.meta = { ...state.library.meta, ...payload.meta };
     },
 
-    //prospect-specific mutations /////////////////////
+    // message specific mutations
+
+    sendMessage(state, payload) {
+      let { body, conversationKey } = payload;
+      let { id } = conversationKey;
+      let activeConversation = state.conversations.find((x) => {
+        return x.id === id;
+      });
+      activeConversation.messages[body.id] = body;
+      console.log(activeConversation.messages);
+    },
+    createNewConversation(state, payload) {
+      state.conversations.push(payload);
+    },
   },
   getters: {
     events(state) {
@@ -1846,7 +1919,6 @@ const store = createStore({
           x.role !== "vendor"
       );
     },
-
     libraryTracks: (state) => (start, end) => {
       return state.library.tracks.slice(start, end);
     },
@@ -1855,6 +1927,14 @@ const store = createStore({
     },
     libraryMeta(state) {
       return state.library.meta;
+    },
+
+    // messaging getters
+
+    getConversation: (state) => (id) => {
+      return state.conversations.find((x) => {
+        return x.id === id;
+      });
     },
   },
   plugins: [

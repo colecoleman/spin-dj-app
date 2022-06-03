@@ -36,7 +36,7 @@
         />
       </div>
       <div id="messages">
-        <messaging :conversationList="eventConversations" />
+        <messaging display="event" :contacts="event.contacts" />
       </div>
     </section>
   </div>
@@ -57,9 +57,6 @@ export default {
   data() {
     return {
       event: undefined,
-      contacts: [],
-      locations: [],
-      eventConversations: [],
       buttons: [
         {
           title: "View Forms",
@@ -133,7 +130,7 @@ export default {
     height: 100%;
     display: grid;
     grid-template-columns: 100%;
-    grid-template-rows: 75px 240px 1fr repeat(4, 275px);
+    grid-template-rows: 75px 240px 1fr repeat(4, 275px) 360px;
     gap: 10px;
     z-index: 5;
   }
@@ -161,17 +158,19 @@ export default {
 
   #to-do {
     grid-row: 6 / 7;
-    padding-bottom: 60px;
   }
 
   #messages {
-    display: none;
+    grid-row: 7/8;
+    padding-bottom: 60px;
+
+    /* display: none; */
     /* grid-row: 3 / 4; */
   }
   @media (min-width: 775px) {
     section {
       grid-template-columns: repeat(10, 1fr);
-      grid-template-rows: 75px 240px 1fr;
+      grid-template-rows: 75px 240px minmax(0, 1fr);
     }
 
     #contact-card {
@@ -207,7 +206,7 @@ export default {
     #messages {
       grid-column: 8 / 11;
       grid-row: 3 / 4;
-      display: unset;
+      padding: 0;
     }
   }
 }

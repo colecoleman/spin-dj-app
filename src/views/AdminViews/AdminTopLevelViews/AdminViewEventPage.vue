@@ -132,7 +132,8 @@
         :eventContacts="event.contacts"
         listType="event"
       />
-      <messaging id="messaging" />
+      <messaging id="messaging" display="event" :contacts="event.contacts" />
+      <div id="mobile-scroll-padding"></div>
     </section>
   </div>
 </template>
@@ -382,7 +383,7 @@ section {
   height: 100%;
   display: grid;
   grid-template-columns: 100%;
-  grid-template-rows: 75px 150px 250px 150px repeat(3, 250px);
+  grid-template-rows: 75px 150px 250px 150px repeat(4, 250px) 60px;
   gap: 10px;
   z-index: 5;
 }
@@ -417,7 +418,8 @@ section {
 }
 
 #messaging {
-  display: none;
+  grid-row: 8/9;
+  margin-bottom: 60px;
 }
 
 @media screen and (min-width: 700px) {
@@ -432,7 +434,7 @@ section {
   }
 
   #location-scroller {
-    grid-column: 1/ 5;
+    grid-column: 1/ 3;
     grid-row: 4/ 5;
   }
 
@@ -447,12 +449,12 @@ section {
   }
 
   #to-do {
-    grid-column: 1/ 3;
+    grid-column: 3/ 5;
     grid-row: 5/ 6;
   }
   #automation {
     grid-column: 3 / 5;
-    grid-row: 5/ 6;
+    grid-row: 4/ 5;
     padding: 0;
   }
 
@@ -460,6 +462,15 @@ section {
     width: 100%;
     grid-column: 3 / 5;
     grid-row: 2 / 4;
+  }
+
+  #messaging {
+    grid-column: 1/3;
+    grid-row: 5/6;
+  }
+
+  #mobile-scroll-padding {
+    display: none;
   }
 }
 @media screen and (min-width: 800px) {
@@ -508,7 +519,6 @@ section {
   #messaging {
     grid-column: 8 / 11;
     grid-row: 3 / 4;
-    display: flex;
   }
 }
 

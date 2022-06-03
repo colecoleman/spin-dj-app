@@ -61,12 +61,7 @@
       />
     </div>
     <div id="messages">
-      <base-card
-        svg="message-bubble"
-        :loading="contact ? false : true"
-        title="Coming Soon"
-      >
-      </base-card>
+      <messaging display="contact" :contact="contact" />
     </div>
   </section>
 </template>
@@ -78,6 +73,7 @@ import ContactCardClient from "../../../../SharedComponents/SharedComponentsCont
 import PopupEmailComposition from "../../../../SharedComponents/SharedComponentsPopupUtilities/PopupEmailComposition.vue";
 import ContactPageDeleteContact from "../../AdminComponents/AdminContactPageComponents/AdminContactPageSharedComponents/ContactPageDeleteContact.vue";
 // import MessagingSingleComponent from "../../../../SharedComponents/SharedComponentsMessaging/MessagingSingleComponent.vue";
+import Messaging from "../../../../SharedComponents/SharedComponentsMessaging/Messaging.vue";
 import FourButtonBarWithDropDown from "../../../../SharedComponents/SharedComponentsUI/FourButtonBarWithDropDown.vue";
 import ClientPageUpcomingEvents from "../../AdminComponents/AdminContactPageComponents/ClientPageComponents/ClientPageUpcomingEvents.vue";
 import ContactPageResetPassword from "../../AdminComponents/AdminContactPageComponents/AdminContactPageSharedComponents/ContactPageResetPassword.vue";
@@ -154,6 +150,7 @@ export default {
     AutomationList,
     ContactPageNotes,
     FourButtonBarWithDropDown,
+    Messaging,
   },
 };
 </script>
@@ -165,7 +162,7 @@ export default {
     height: 100%;
     display: grid;
     grid-template-columns: 1fr;
-    grid-template-rows: 150px 300px 75px repeat(3, 300px);
+    grid-template-rows: 150px 300px 75px repeat(4, 300px);
     gap: 10px;
   }
 
@@ -180,7 +177,7 @@ export default {
     grid-row: 5 / 6;
   }
   #messages {
-    display: none;
+    grid-row: 6/7;
   }
 
   #button-bar {
@@ -199,7 +196,7 @@ export default {
   @media (min-width: 850px) {
     section {
       grid-template-columns: minmax(100px, 250px) repeat(8, 1fr);
-      grid-template-rows: 75px minmax(30px, 50px) repeat(7, 1fr);
+      grid-template-rows: 75px minmax(30px, 50px) repeat(7, minmax(0, 1fr));
     }
 
     #contact-card {

@@ -35,7 +35,7 @@
         />
       </div>
       <div id="messages">
-        <messaging v-if="contacts" :conversationList="eventConversations" />
+        <messaging display="event" :contacts="event.contacts" />
       </div>
     </section>
   </div>
@@ -136,7 +136,7 @@ export default {
     height: 100%;
     display: grid;
     grid-template-columns: 100%;
-    grid-template-rows: 75px 240px 1fr repeat(3, 260px);
+    grid-template-rows: 75px 240px 1fr repeat(3, 260px) 330px;
     gap: 10px;
     z-index: 5;
   }
@@ -163,12 +163,13 @@ export default {
 
   #to-do {
     grid-row: 6 / 7;
-    padding-bottom: 60px;
   }
 
   #messages {
+    grid-row: 7/8;
+    padding-bottom: 60px;
     /* grid-row: 3 / 4; */
-    display: none;
+    /* display: none; */
   }
   @media (min-width: 800px) {
     #div-wrapper {
@@ -222,9 +223,9 @@ export default {
     }
 
     #messages {
-      display: unset;
       grid-column: 5 / 8;
       grid-row: 3 / 4;
+      padding: 0;
     }
   }
 }

@@ -82,7 +82,7 @@ export default {
     display: grid;
     gap: 10px;
     grid-template-columns: 1fr;
-    grid-template-rows: 130px repeat(3, 360px);
+    grid-template-rows: 130px repeat(3, 360px) 420px;
   }
 
   #contact-card {
@@ -98,11 +98,11 @@ export default {
   }
   #to-do {
     grid-row: 4/5;
-    padding-bottom: 60px;
   }
 
   #messaging {
-    display: none;
+    grid-row: 5/6;
+    padding-bottom: 60px;
   }
   @media (min-width: 800px) {
     #wrapper {
@@ -136,7 +136,7 @@ export default {
     }
 
     #messaging {
-      display: unset;
+      padding-bottom: 0;
       grid-column: 3/4;
       grid-row: 6/11;
     }

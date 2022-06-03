@@ -90,7 +90,7 @@ export default {
     display: grid;
     gap: 10px;
     grid-template-columns: 1fr;
-    grid-template-rows: 130px repeat(3, 360px);
+    grid-template-rows: 130px repeat(4, 360px);
   }
 
   #contact-card {
@@ -106,17 +106,18 @@ export default {
   }
   #to-do {
     grid-row: 4/5;
-    padding-bottom: 60px;
   }
 
   #messaging {
-    display: none;
+    grid-row: 5/6;
+    padding-bottom: 60px;
+    /* display: none; */
   }
 
   @media (min-width: 800px) {
     section {
       grid-template-columns: 25% 1fr 30%;
-      grid-template-rows: 130px 200px 1fr;
+      grid-template-rows: 130px 200px minmax(0, 1fr);
     }
 
     #contact-card {
@@ -143,6 +144,7 @@ export default {
     #messaging {
       grid-row: 3/4;
       grid-column: 3/4;
+      padding-bottom: 0;
       display: unset;
     }
   }

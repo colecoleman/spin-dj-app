@@ -63,7 +63,7 @@ export default {
 @media screen and (min-width: 1200px) {
   section {
     /* grid-template-columns: minmax(0, 100px) minmax(0, 1fr) 30%; */
-    grid-template-rows: 50% 1fr;
+    grid-template-rows: 50% minmax(0, 1fr);
   }
 }
 </style>

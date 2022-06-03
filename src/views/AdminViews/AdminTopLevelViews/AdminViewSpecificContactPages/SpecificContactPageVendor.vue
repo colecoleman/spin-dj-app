@@ -23,21 +23,7 @@
       <contact-card-company :contact="contact" v-if="contact" svg="person" />
     </div>
     <div id="messages">
-      <base-card
-        svg="message-bubble"
-        title="Coming Soon"
-        v-if="contact"
-        :subtitle="`${contact.given_name}`"
-      >
-        <template v-slot:content v-if="contact">
-          <!-- <messaging-single-component
-            v-if="contact"
-            :defaultUser="contact"
-            :conversation="conversation"
-            :id="contact.userId"
-          ></messaging-single-component> -->
-        </template>
-      </base-card>
+      <messaging :contact="contact" display="contact" />
     </div>
 
     <div id="button-bar">
@@ -84,6 +70,7 @@ import PopupEmailComposition from "../../../../SharedComponents/SharedComponents
 import ContactCardPerson from "../../../../SharedComponents/SharedComponentsContact/ContactCardPerson.vue";
 import ContactPageResetPassword from "../../AdminComponents/AdminContactPageComponents/AdminContactPageSharedComponents/ContactPageResetPassword.vue";
 import ContactPageDeleteContact from "../../AdminComponents/AdminContactPageComponents/AdminContactPageSharedComponents/ContactPageDeleteContact.vue";
+import Messaging from "../../../../SharedComponents/SharedComponentsMessaging/Messaging.vue";
 
 // import MessagingSingleComponent from "../../../../SharedComponents/SharedComponentsMessaging/MessagingSingleComponent.vue";
 import FourButtonBarWithDropDown from "../../../../SharedComponents/SharedComponentsUI/FourButtonBarWithDropDown.vue";
@@ -176,6 +163,7 @@ export default {
     UpcomingEvents,
     ToDoList,
     ContactPageEventsAssignment,
+    Messaging,
     AutomationList,
     ContactPageNotes,
     ContactPageDeleteContact,
@@ -192,7 +180,7 @@ export default {
     height: 100%;
     display: grid;
     grid-template-columns: 1fr;
-    grid-template-rows: 150px 70px 300px 1fr repeat(3, 300px);
+    grid-template-rows: 150px 70px 300px 1fr repeat(3, 300px) 360px;
     gap: 10px;
   }
 
@@ -205,8 +193,8 @@ export default {
   }
 
   #messages {
-    /* grid-row: 4/ 10; */
-    display: none;
+    grid-row: 8/9;
+    padding-bottom: 60px;
   }
 
   #button-bar {
@@ -224,7 +212,6 @@ export default {
 
   #automation {
     grid-row: 7/ 8;
-    padding-bottom: 100px;
   }
 
   #notes {
@@ -253,7 +240,7 @@ export default {
     #messages {
       grid-column: 1/ 3;
       grid-row: 4/ 10;
-      display: unset;
+      padding: 0;
     }
 
     #button-bar {

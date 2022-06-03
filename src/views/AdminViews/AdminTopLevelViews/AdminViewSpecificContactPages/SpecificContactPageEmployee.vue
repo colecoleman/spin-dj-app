@@ -63,16 +63,7 @@
       />
     </div>
     <div id="messages">
-      <base-card svg="message-bubble" title="Coming Soon">
-        <template v-slot:content>
-          <!-- <messaging-single-component
-            v-if="contact"
-            :defaultUser="contact"
-            :conversation="conversation"
-            :id="contact.userId"
-          ></messaging-single-component> -->
-        </template>
-      </base-card>
+      <messaging display="contact" :contact="contact" />
     </div>
   </section>
 </template>
@@ -87,7 +78,7 @@ import ContactCardPerson from "../../../../SharedComponents/SharedComponentsCont
 import EmployeePageAvailabilityManager from "../../AdminComponents/AdminContactPageComponents/EmployeePageComponents/EmployeePageAvailabilityManager/EmployeePageAvailabilityManager.vue";
 import PopupEmailComposition from "../../../../SharedComponents/SharedComponentsPopupUtilities/PopupEmailComposition.vue";
 import ContactPageResetPassword from "../../AdminComponents/AdminContactPageComponents/AdminContactPageSharedComponents/ContactPageResetPassword.vue";
-// import MessagingSingleComponent from "../../../../SharedComponents/SharedComponentsMessaging/MessagingSingleComponent.vue";
+import Messaging from "../../../../SharedComponents/SharedComponentsMessaging/Messaging.vue";
 import FourButtonBarWithDropDown from "../../../../SharedComponents/SharedComponentsUI/FourButtonBarWithDropDown.vue";
 import ContactPageDeleteContact from "../../AdminComponents/AdminContactPageComponents/AdminContactPageSharedComponents/ContactPageDeleteContact.vue";
 
@@ -172,6 +163,7 @@ export default {
     PopupEmailComposition,
     EmployeePageAvailabilityManager,
     ContactPageEventsAssignment,
+    Messaging,
     ContactCardPerson,
     ToDoList,
     UpcomingEvents,
@@ -192,7 +184,7 @@ export default {
     height: 100%;
     display: grid;
     grid-template-columns: 1fr;
-    grid-template-rows: 150px 300px 1fr repeat(3, 300px);
+    grid-template-rows: 150px 300px 1fr repeat(3, 300px) 360px;
     gap: 10px;
   }
 
@@ -208,7 +200,9 @@ export default {
   }
   #messages {
     /* grid-row: 6/ 10; */
-    display: none;
+    /* display: none; */
+    grid-row: 7/8;
+    padding-bottom: 60px;
   }
 
   #button-bar {
@@ -222,14 +216,13 @@ export default {
 
   #automation {
     grid-row: 6/ 7;
-    padding-bottom: 100px;
   }
   @media (min-width: 850px) {
     section {
       width: 100%;
       height: 100%;
       display: grid;
-      grid-template-columns: minmax(100px, 250px) repeat(8, 1fr);
+      grid-template-columns: minmax(0, 1fr) repeat(8, minmax(0, 1fr));
       grid-template-rows: 75px minmax(30px, 50px) repeat(7, 1fr);
       gap: 10px;
     }
@@ -250,7 +243,7 @@ export default {
     #messages {
       grid-column: 7/10;
       grid-row: 6/ 10;
-      display: unset;
+      padding-bottom: 0;
     }
 
     #button-bar {

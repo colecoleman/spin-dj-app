@@ -1,6 +1,7 @@
 <template>
   <list-item-style-wrapper
     class="message-preview-list-item"
+    hoverable="true"
     :title="contactFullName"
   >
     <profile-picture
@@ -30,14 +31,27 @@ export default {
         return "";
       }
     },
-    textPreview() {
-      let recentMessage =
-        this.conversation.messages[this.conversation.messages.length - 1].body;
-      if (recentMessage.length > 90) {
-        return recentMessage;
-        // .slice(0, 90) + "...";
+    messages() {
+      if (this.conversation) {
+        if (this.conversation.messages) {
+          return Object.values(this.conversation.messages);
+        } else {
+          return [];
+        }
       } else {
-        return recentMessage;
+        return [];
+      }
+    },
+    textPreview() {
+      if (this.messages.length > 0) {
+        let recentMessage = this.messages[this.messages.length - 1].body;
+        if (recentMessage.length > 90) {
+          return recentMessage;
+        } else {
+          return recentMessage;
+        }
+      } else {
+        return "No messages in this thread.";
       }
     },
   },
@@ -46,12 +60,19 @@ export default {
       let participants = this.conversation.participantKeys.filter((x) => {
         return x.userId !== this.$store.state.user.userId;
       });
-      this.contact = await this.$store.dispatch(
-        "getContactListItem",
-        participants[0]
-      );
-      //   console.log(contact);
-      //   this.contact = contact;
+      if (participants[0].userId !== "system") {
+        this.contact = await this.$store.dispatch(
+          "getContactListItem",
+          participants[0]
+        );
+      } else {
+        this.contact = {
+          given_name: "Spin",
+          family_name: "|| Cole",
+          profilePicture:
+            "https://spindjappstorage140016-prod.s3.amazonaws.com/public/f48f259e-37d9-4003-be97-7181858b98aa1649263424983",
+        };
+      }
     },
   },
   created() {
