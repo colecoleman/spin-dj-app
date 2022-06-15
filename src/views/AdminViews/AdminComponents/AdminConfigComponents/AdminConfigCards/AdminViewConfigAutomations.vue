@@ -206,7 +206,7 @@
                   </p>
                   <p>
                     <b>Approval Required:</b>
-                    {{ automation.approved }}
+                    {{ !automation.approved }}
                   </p>
                   <p>
                     <b>Automation Type:</b>
@@ -264,7 +264,7 @@ export default {
       timeframes: ["days", "weeks", "months"],
       directions: ["before", "after"],
       triggers: ["book-date", "event-date"],
-      contactTypes: ["client", "employee", "organizer", "vendor", "venue"],
+      contactTypes: ["client", "employee", "organizer", "vendor", "location"],
 
       automation: {
         applyToExistingEvents: false,
