@@ -34,9 +34,11 @@
         :eventAssignmentOpen="eventAssignmentOpen"
       />
     </div>
-    <div id="contact-card">
-      <contact-card-person :contact="contact" />
-    </div>
+    <contact-list
+      id="contact-card"
+      :contacts="location.contacts"
+      :location="location"
+    />
     <div id="automation">
       <automation-list
         :automations="automations"
@@ -59,7 +61,7 @@ import ContactPageNotes from "../../AdminComponents/AdminContactPageComponents/A
 import LocationPageUpcomingEvents from "../../AdminComponents/AdminContactPageComponents/LocationPageComponents/LocationUpcomingEvents.vue";
 // import LocationPreferredInformation from "../ContactPageComponents/LocationPageComponents/LocationPreferredInformation.vue";
 import ContactCardLocation from "../../AdminComponents/AdminContactPageComponents/LocationPageComponents/ContactCardLocation.vue";
-import ContactCardPerson from "../../../../SharedComponents/SharedComponentsContact/ContactCardPerson.vue";
+import ContactList from "../../../../SharedComponents/ContactList/LocationContactList.vue";
 import PopupEmailComposition from "../../../../SharedComponents/SharedComponentsPopupUtilities/PopupEmailComposition.vue";
 import FourButtonBarWithDropDown from "../../../../SharedComponents/SharedComponentsUI/FourButtonBarWithDropDown.vue";
 
@@ -99,6 +101,10 @@ export default {
       "getUser",
       this.$route.params.id
     );
+    if (!this.location.contacts) {
+      this.location.contacts = [];
+    }
+    await this.$store.dispatch("getLocationContacts", this.location);
     this.events = await this.$store.dispatch(
       "getLocationEvents",
       this.location
@@ -107,6 +113,7 @@ export default {
       this.$store.dispatch("getEventContacts", this.events[x]);
       this.$store.dispatch("getEventLocations", this.events[x]);
     }
+    console.log(this.location);
   },
   methods: {
     togglePopup(popup) {
@@ -123,7 +130,7 @@ export default {
 
   components: {
     PopupEmailComposition,
-    ContactCardPerson,
+    ContactList,
     ToDoList,
     LocationPageUpcomingEvents,
     ContactPageNotes,

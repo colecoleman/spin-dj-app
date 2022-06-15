@@ -119,6 +119,7 @@
         id="automation"
         :automations="automations"
         :contacts="event.contacts"
+        :locations="event.locations"
         :event="event"
       />
       <contact-list
@@ -142,7 +143,7 @@
 import ToDoList from "../../../SharedComponents/SharedComponentsToDoList/ToDoList.vue";
 import Messaging from "../../../SharedComponents/SharedComponentsMessaging/Messaging.vue";
 import EventPageContactCard from "../../../SharedComponents/SharedComponentsEvents/EventPageContactCard.vue";
-import ContactList from "../../../SharedComponents/SharedComponentsEvents/EventPageContactList/EventPageContactList.vue";
+import ContactList from "../../../SharedComponents/ContactList/EventContactList.vue";
 import LocationGallery from "../../../SharedComponents/SharedComponentsEvents/EventPageLocationGallery/LocationGallery.vue";
 import EventAutomationList from "../AdminComponents/AdminSharedComponents/EventAutomationList.vue";
 import Forms from "../../../SharedComponents/SharedComponentsEvents/Forms.vue";
@@ -390,6 +391,7 @@ section {
 
 #contact-card {
   grid-row: 1 / 2;
+  z-index: 11;
 }
 #event-information {
   grid-row: 2/3;

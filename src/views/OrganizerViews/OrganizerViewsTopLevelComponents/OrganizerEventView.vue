@@ -82,7 +82,7 @@ import {
   balanceOutstanding,
   total,
 } from "../../../helpers.js";
-import ContactList from "../../../SharedComponents/SharedComponentsEvents/EventPageContactList/EventPageContactList.vue";
+import ContactList from "../../../SharedComponents/ContactList/EventContactList.vue";
 import LocationGallery from "../../../SharedComponents/SharedComponentsEvents/EventPageLocationGallery/LocationGallery.vue";
 
 export default {
@@ -229,6 +229,7 @@ export default {
   }
 
   #contact-card {
+    z-index: 11;
     grid-row: 1 / 2;
   }
 

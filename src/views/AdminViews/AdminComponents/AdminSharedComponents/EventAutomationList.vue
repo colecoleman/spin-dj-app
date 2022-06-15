@@ -24,6 +24,23 @@
             />
           </div>
         </div>
+        <div
+          class="automations-section"
+          v-for="location in locations"
+          :key="location.userId"
+        >
+          <h5>{{ location.name }}</h5>
+          <p>location</p>
+          <div class="bubble-wrapper">
+            <input-with-binary-selection
+              v-for="automation in contactTypeAutomations('location')"
+              :key="automation.id"
+              :item="automation.title"
+              :checked="checkForAutomation(automation, location)"
+              @clicked="toggleAutomationIncluded(automation, location)"
+            />
+          </div>
+        </div>
       </div>
       <div id="list-wrapper" v-if="!addAutomationsOpen">
         <automation-list-item
@@ -140,7 +157,7 @@ export default {
       });
   },
 
-  props: ["contacts", "event"],
+  props: ["contacts", "event", "locations"],
 };
 </script>
 

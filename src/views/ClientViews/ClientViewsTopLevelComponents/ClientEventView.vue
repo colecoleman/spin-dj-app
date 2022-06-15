@@ -59,7 +59,7 @@ import ToDoList from "../../../SharedComponents/SharedComponentsToDoList/ToDoLis
 import Messaging from "../../../SharedComponents/SharedComponentsMessaging/Messaging.vue";
 import EventPageContactCard from "../../../SharedComponents/SharedComponentsEvents/EventPageContactCard.vue";
 // import EventPageContactCarousel from "../../../SharedComponents/SharedComponentsEvents/eventPageContactCarousel/EventPageContactCarousel.vue";
-import ContactList from "../../../SharedComponents/SharedComponentsEvents/EventPageContactList/EventPageContactList.vue";
+import ContactList from "../../../SharedComponents/ContactList/EventContactList.vue";
 import LocationGallery from "../../../SharedComponents/SharedComponentsEvents/EventPageLocationGallery/LocationGallery.vue";
 import EventMakePaymentCard from "../../../SharedComponents/SharedComponentsEvents/EventMakePayment/EventMakePaymentCard.vue";
 import Forms from "../../../SharedComponents/SharedComponentsEvents/Forms.vue";
@@ -224,6 +224,7 @@ section {
 }
 
 #contact-card {
+  z-index: 11;
   grid-row: 1 / 2;
 }
 
