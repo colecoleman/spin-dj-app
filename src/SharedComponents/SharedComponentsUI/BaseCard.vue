@@ -17,19 +17,20 @@
         <h3 @click="actionOneClicked()" v-if="actionText">
           {{ actionText }}
         </h3>
-        <div class="search-container right-icon" v-if="searchIcon">
-          <search-icon
-            :svg="searchProcessing ? 'loading' : 'search'"
-            v-if="searchIcon"
-            :searchResults="searchResults"
-            :searchResultFormat="searchResultFormat"
-            :inputValue="inputValue"
-            @input="searchInput"
-            @search-icon-clicked="searchIconClicked"
-            @search-blurred="searchBlurred"
-            @select-search-result="selectSearchResult"
-          />
-        </div>
+
+        <search-icon
+          class="search-container right-icon"
+          :svg="searchProcessing ? 'loading' : 'search'"
+          v-if="searchIcon"
+          :searchResults="searchResults"
+          :searchResultFormat="searchResultFormat"
+          :inputValue="inputValue"
+          @input="searchInput"
+          @search-icon-clicked="searchIconClicked"
+          @search-blurred="searchBlurred"
+          @select-search-result="selectSearchResult"
+        />
+
         <round-icon-button
           class="right-icon"
           v-if="actionIcon"
@@ -41,7 +42,6 @@
         </div>
       </div>
     </div>
-
     <div v-if="!soloHeading" :class="title ? 'content' : 'sole-content'">
       <slot name="content"></slot>
     </div>
@@ -121,7 +121,6 @@ export default {
 
 .content {
   padding: 0 20px 0 20px;
-  /* padding: 20px; */
   max-height: calc(100% - 44px);
   height: calc(100% - 44px);
   display: inherit;
@@ -130,7 +129,6 @@ export default {
 
 .sole-content {
   padding: 0 20px 0 20px;
-  /* padding: 20px; */
   height: 100%;
   display: inherit;
 }
@@ -150,7 +148,6 @@ export default {
   padding: 0 20px 0 20px;
   height: 44px;
   width: calc(100% - 40px);
-  /* position: relative; */
   display: grid;
   grid-template-rows: 100%;
   grid-template-columns: 20px minmax(0, 1fr) 25px 25px;
