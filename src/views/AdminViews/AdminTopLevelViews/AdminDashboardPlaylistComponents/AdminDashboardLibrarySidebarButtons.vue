@@ -9,7 +9,7 @@
   </div>
 </template>
 <script>
-import RoundIconButton from "../../../../SharedComponents/SharedComponentsUI/RoundIconButton.vue";
+import RoundIconButton from "../../../../Components/SharedComponentsUI/RoundIconButton.vue";
 export default {
   data() {
     return {};

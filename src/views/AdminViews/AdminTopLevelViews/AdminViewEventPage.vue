@@ -140,21 +140,21 @@
 </template>
 
 <script>
-import ToDoList from "../../../SharedComponents/SharedComponentsToDoList/ToDoList.vue";
-import Messaging from "../../../SharedComponents/SharedComponentsMessaging/Messaging.vue";
-import EventPageContactCard from "../../../SharedComponents/SharedComponentsEvents/EventPageContactCard.vue";
-import ContactList from "../../../SharedComponents/ContactList/EventContactList.vue";
-import LocationGallery from "../../../SharedComponents/SharedComponentsEvents/EventPageLocationGallery/LocationGallery.vue";
-import EventAutomationList from "../AdminComponents/AdminSharedComponents/EventAutomationList.vue";
-import Forms from "../../../SharedComponents/SharedComponentsEvents/Forms.vue";
-import Invoice from "../../../SharedComponents/SharedComponentsEvents/Invoice.vue";
-import EventInformation from "../AdminComponents/AdminEventPageComponents/EventInformation.vue";
-import EventMakePayment from "../../../SharedComponents/SharedComponentsEvents/EventMakePayment/EventMakePayment.vue";
-import PopupModal from "../../../SharedComponents/SharedComponentsUI/PopupModal.vue";
-import Contracts from "../../../SharedComponents/SharedComponentsEvents/Contracts.vue";
-import FourButtonBarWithDropDown from "../../../SharedComponents/SharedComponentsUI/FourButtonBarWithDropDown.vue";
-import TwoButtonDialogModal from "../../../SharedComponents/SharedComponentsUI/TwoButtonDialogModal.vue";
-import EventEditProducts from "../AdminComponents/AdminEventPageComponents/EventEditProducts.vue";
+import ToDoList from "../../../Components/SharedComponentsToDoList/ToDoList.vue";
+import Messaging from "../../../Components/SharedComponentsMessaging/Messaging.vue";
+import EventPageContactCard from "../../../Components/SharedComponentsEvents/EventPageContactCard.vue";
+import ContactList from "../../../Components/ContactList/EventContactList.vue";
+import LocationGallery from "../../../Components/SharedComponentsEvents/EventPageLocationGallery/LocationGallery.vue";
+import EventAutomationList from "../../../Components/AdminComponents/AdminSharedComponents/EventAutomationList.vue";
+import Forms from "../../../Components/SharedComponentsEvents/Forms.vue";
+import Invoice from "../../../Components/SharedComponentsEvents/Invoice.vue";
+import EventInformation from "../../../Components/AdminComponents/AdminEventPageComponents/EventInformation.vue";
+import EventMakePayment from "../../../Components/SharedComponentsEvents/EventMakePayment/EventMakePayment.vue";
+import PopupModal from "../../../Components/SharedComponentsUI/PopupModal.vue";
+import Contracts from "../../../Components/SharedComponentsEvents/Contracts.vue";
+import FourButtonBarWithDropDown from "../../../Components/SharedComponentsUI/FourButtonBarWithDropDown.vue";
+import TwoButtonDialogModal from "../../../Components/SharedComponentsUI/TwoButtonDialogModal.vue";
+import EventEditProducts from "../../../Components/AdminComponents/AdminEventPageComponents/EventEditProducts.vue";
 import _ from "lodash";
 
 import VueSvg from "../../../assets/VueSvg.vue";

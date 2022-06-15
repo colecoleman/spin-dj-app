@@ -50,10 +50,10 @@
 </template>
 
 <script>
-import ContactListItem from "../AdminComponents/AdminContactListComponents/ContactListItem.vue";
-import AddContactModule from "../AdminComponents/AdminContactListComponents/AdminAddContactModules/AddContactModule.vue";
-import ContactNavigation from "../AdminComponents/AdminContactListComponents/AdminViewContactListNavigation.vue";
-import FloatingMenuWithListItems from "../../../SharedComponents/SharedComponentsUI/FloatingMenuWithListItems.vue";
+import ContactListItem from "../../../Components/AdminComponents/AdminContactListComponents/ContactListItem.vue";
+import AddContactModule from "../../../Components/AdminComponents/AdminContactListComponents/AdminAddContactModules/AddContactModule.vue";
+import ContactNavigation from "../../../Components/AdminComponents/AdminContactListComponents/AdminViewContactListNavigation.vue";
+import FloatingMenuWithListItems from "../../../Components/SharedComponentsUI/FloatingMenuWithListItems.vue";
 
 export default {
   data() {

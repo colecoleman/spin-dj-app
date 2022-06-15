@@ -451,10 +451,10 @@
 </template>
 
 <script>
-import InputWithTitle from "../../../SharedComponents/SharedComponentsUI/ElementLibrary/InputWithTitle.vue";
-import InputWithBinarySelections from "../../../SharedComponents/SharedComponentsUI/ElementLibrary/InputWithBinarySelection.vue";
-import InputWithTitleWithDropdown from "../../../SharedComponents/SharedComponentsUI/ElementLibrary/InputWithTitleWithDropdown.vue";
-import BinaryInputWithNumberModifier from "../../../SharedComponents/SharedComponentsUI/ElementLibrary/BinaryInputWithNumberModifier.vue";
+import InputWithTitle from "../../../Components/SharedComponentsUI/ElementLibrary/InputWithTitle.vue";
+import InputWithBinarySelections from "../../../Components/SharedComponentsUI/ElementLibrary/InputWithBinarySelection.vue";
+import InputWithTitleWithDropdown from "../../../Components/SharedComponentsUI/ElementLibrary/InputWithTitleWithDropdown.vue";
+import BinaryInputWithNumberModifier from "../../../Components/SharedComponentsUI/ElementLibrary/BinaryInputWithNumberModifier.vue";
 import {
   formatTime,
   formatPrice,

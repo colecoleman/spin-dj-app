@@ -36,8 +36,8 @@
   </base-card>
 </template>
 <script>
-import RoundIconButton from "../../../../SharedComponents/SharedComponentsUI/RoundIconButton.vue";
-import TrackItem from "../../../../SharedComponents/SharedComponentsLibrary/LibrarySongItem.vue";
+import RoundIconButton from "../../../../Components/SharedComponentsUI/RoundIconButton.vue";
+import TrackItem from "../../../../Components/SharedComponentsLibrary/LibrarySongItem.vue";
 export default {
   data() {
     return {

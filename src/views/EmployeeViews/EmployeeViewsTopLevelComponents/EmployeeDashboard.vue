@@ -23,11 +23,11 @@
   </div>
 </template>
 <script>
-import Messaging from "../../../SharedComponents/SharedComponentsMessaging/Messaging.vue";
-import ToDoList from "../../../SharedComponents/SharedComponentsToDoList/ToDoList.vue";
-import EventCalendar from "../../../SharedComponents/SharedComponentsCalendar/EventCalendar.vue";
-import UpcomingEvents from "../../../SharedComponents/SharedComponentsUpcomingEvents/UpcomingEvents.vue";
-import ContactCardPerson from "../../../SharedComponents/SharedComponentsContact/ContactCardPerson.vue";
+import Messaging from "../../../Components/SharedComponentsMessaging/Messaging.vue";
+import ToDoList from "../../../Components/SharedComponentsToDoList/ToDoList.vue";
+import EventCalendar from "../../../Components/SharedComponentsCalendar/EventCalendar.vue";
+import UpcomingEvents from "../../../Components/SharedComponentsUpcomingEvents/UpcomingEvents.vue";
+import ContactCardPerson from "../../../Components/SharedComponentsContact/ContactCardPerson.vue";
 export default {
   data() {
     return {

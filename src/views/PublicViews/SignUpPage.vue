@@ -128,7 +128,7 @@
 
 <script>
 import SpinLogoWithText from "../../assets/spin-logo-with-text.svg";
-import ButtonStandardWithIcon from "../../SharedComponents/SharedComponentsUI/ButtonStandardWithIcon.vue";
+import ButtonStandardWithIcon from "../../Components/SharedComponentsUI/ButtonStandardWithIcon.vue";
 
 import { Auth } from "aws-amplify";
 

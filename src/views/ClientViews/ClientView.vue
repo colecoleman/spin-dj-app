@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import NonAdminHeader from "../../SharedComponents/SharedComponentsHeader/NonAdminHeader.vue";
+import NonAdminHeader from "../../Components/SharedComponentsHeader/NonAdminHeader.vue";
 export default {
   data() {
     return {

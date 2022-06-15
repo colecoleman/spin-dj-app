@@ -55,18 +55,18 @@
 </template>
 
 <script>
-import ToDoList from "../../../../SharedComponents/SharedComponentsToDoList/ToDoList.vue";
-import AutomationList from "../../AdminComponents/AdminSharedComponents/ContactAutomationList.vue";
-import ContactCardClient from "../../../../SharedComponents/SharedComponentsContact/ContactCardPerson.vue";
-import PopupEmailComposition from "../../../../SharedComponents/SharedComponentsPopupUtilities/PopupEmailComposition.vue";
-import ContactPageDeleteContact from "../../AdminComponents/AdminContactPageComponents/AdminContactPageSharedComponents/ContactPageDeleteContact.vue";
-// import MessagingSingleComponent from "../../../../SharedComponents/SharedComponentsMessaging/MessagingSingleComponent.vue";
-import Messaging from "../../../../SharedComponents/SharedComponentsMessaging/Messaging.vue";
-import FourButtonBarWithDropDown from "../../../../SharedComponents/SharedComponentsUI/FourButtonBarWithDropDown.vue";
-import ClientPageUpcomingEvents from "../../AdminComponents/AdminContactPageComponents/ClientPageComponents/ClientPageUpcomingEvents.vue";
-import ContactPageResetPassword from "../../AdminComponents/AdminContactPageComponents/AdminContactPageSharedComponents/ContactPageResetPassword.vue";
-import ContactPageNotes from "../../AdminComponents/AdminContactPageComponents/AdminContactPageSharedComponents/ContactPageNotes/ContactPageNotes.vue";
-// import TwoButtonDialogModal from "../../../../SharedComponents/SharedComponentsUI/TwoButtonDialogModal.vue";
+import ToDoList from "../../../../Components/SharedComponentsToDoList/ToDoList.vue";
+import AutomationList from "../../../../Components/AdminComponents/AdminSharedComponents/ContactAutomationList.vue";
+import ContactCardClient from "../../../../Components/SharedComponentsContact/ContactCardPerson.vue";
+import PopupEmailComposition from "../../../../Components/SharedComponentsPopupUtilities/PopupEmailComposition.vue";
+import ContactPageDeleteContact from "../../../../Components/AdminComponents/AdminContactPageComponents/AdminContactPageSharedComponents/ContactPageDeleteContact.vue";
+// import MessagingSingleComponent from "../../../../Components/SharedComponentsMessaging/MessagingSingleComponent.vue";
+import Messaging from "../../../../Components/SharedComponentsMessaging/Messaging.vue";
+import FourButtonBarWithDropDown from "../../../../Components/SharedComponentsUI/FourButtonBarWithDropDown.vue";
+import ClientPageUpcomingEvents from "../../../../Components/AdminComponents/AdminContactPageComponents/ClientPageComponents/ClientPageUpcomingEvents.vue";
+import ContactPageResetPassword from "../../../../Components/AdminComponents/AdminContactPageComponents/AdminContactPageSharedComponents/ContactPageResetPassword.vue";
+import ContactPageNotes from "../../../../Components/AdminComponents/AdminContactPageComponents/AdminContactPageSharedComponents/ContactPageNotes/ContactPageNotes.vue";
+// import TwoButtonDialogModal from "../../../../Components/SharedComponentsUI/TwoButtonDialogModal.vue";
 
 export default {
   data() {

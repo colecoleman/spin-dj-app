@@ -17,7 +17,7 @@
   </div>
 </template>
 <script>
-import ButtonStandardWithIcon from "../../SharedComponents/SharedComponentsUI/ButtonStandardWithIcon.vue";
+import ButtonStandardWithIcon from "../../Components/SharedComponentsUI/ButtonStandardWithIcon.vue";
 import { Auth } from "aws-amplify";
 export default {
   data() {

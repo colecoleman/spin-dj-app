@@ -7,7 +7,7 @@
 </template>
 <script>
 import { formatDate } from "../../../../helpers.js";
-import ListItemStyleWrapper from "../../../../SharedComponents/SharedComponentsUI/ListItemStyleWrapper.vue";
+import ListItemStyleWrapper from "../../../../Components/SharedComponentsUI/ListItemStyleWrapper.vue";
 export default {
   data() {
     return {};

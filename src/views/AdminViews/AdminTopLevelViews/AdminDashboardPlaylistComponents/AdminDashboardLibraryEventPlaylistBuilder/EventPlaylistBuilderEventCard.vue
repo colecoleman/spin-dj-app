@@ -64,11 +64,11 @@
   </base-card>
 </template>
 <script>
-// import ListItemStyleWrapper from "../../../../../SharedComponents/SharedComponentsUI/ListItemStyleWrapper.vue";
-import LibraryItem from "../../../../../SharedComponents/SharedComponentsLibrary/LibrarySongItem.vue";
-import ListItemStyleWrapper from "../../../../../SharedComponents/SharedComponentsUI/ListItemStyleWrapper.vue";
-import RoundIconButton from "../../../../../SharedComponents/SharedComponentsUI/RoundIconButton.vue";
-import ButtonWithDropdown from "../../../../../SharedComponents/SharedComponentsUI/ButtonWithDropDownSelections.vue";
+// import ListItemStyleWrapper from "../../../../../Components/SharedComponentsUI/ListItemStyleWrapper.vue";
+import LibraryItem from "../../../../../Components/SharedComponentsLibrary/LibrarySongItem.vue";
+import ListItemStyleWrapper from "../../../../../Components/SharedComponentsUI/ListItemStyleWrapper.vue";
+import RoundIconButton from "../../../../../Components/SharedComponentsUI/RoundIconButton.vue";
+import ButtonWithDropdown from "../../../../../Components/SharedComponentsUI/ButtonWithDropDownSelections.vue";
 import { formatDate } from "../../../../../helpers.js";
 export default {
   data() {

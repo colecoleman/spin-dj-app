@@ -66,24 +66,24 @@
 </template>
 
 <script>
-import ToDoList from "../../../SharedComponents/SharedComponentsToDoList/ToDoList.vue";
-// import MessagingEvent from "../../../SharedComponents/SharedComponentsMessaging/MessagingEvent.vue";
-import Messaging from "../../../SharedComponents/SharedComponentsMessaging/Messaging.vue";
-import EventPageContactCard from "../../../SharedComponents/SharedComponentsEvents/EventPageContactCard.vue";
+import ToDoList from "../../../Components/SharedComponentsToDoList/ToDoList.vue";
+// import MessagingEvent from "../../../Components/SharedComponentsMessaging/MessagingEvent.vue";
+import Messaging from "../../../Components/SharedComponentsMessaging/Messaging.vue";
+import EventPageContactCard from "../../../Components/SharedComponentsEvents/EventPageContactCard.vue";
 
-import EventMakePaymentCard from "../../../SharedComponents/SharedComponentsEvents/EventMakePayment/EventMakePaymentCard.vue";
-import Forms from "../../../SharedComponents/SharedComponentsEvents/Forms.vue";
-import Invoice from "../../../SharedComponents/SharedComponentsEvents/Invoice.vue";
-import Contracts from "../../../SharedComponents/SharedComponentsEvents/Contracts.vue";
-import FourButtonBarWithDropDown from "../../../SharedComponents/SharedComponentsUI/FourButtonBarWithDropDown.vue";
-import EventPageAlerts from "../../../SharedComponents/SharedComponentsEvents/EventPageAlerts.vue";
+import EventMakePaymentCard from "../../../Components/SharedComponentsEvents/EventMakePayment/EventMakePaymentCard.vue";
+import Forms from "../../../Components/SharedComponentsEvents/Forms.vue";
+import Invoice from "../../../Components/SharedComponentsEvents/Invoice.vue";
+import Contracts from "../../../Components/SharedComponentsEvents/Contracts.vue";
+import FourButtonBarWithDropDown from "../../../Components/SharedComponentsUI/FourButtonBarWithDropDown.vue";
+import EventPageAlerts from "../../../Components/SharedComponentsEvents/EventPageAlerts.vue";
 import {
   finalPaymentDueDate,
   balanceOutstanding,
   total,
 } from "../../../helpers.js";
-import ContactList from "../../../SharedComponents/ContactList/EventContactList.vue";
-import LocationGallery from "../../../SharedComponents/SharedComponentsEvents/EventPageLocationGallery/LocationGallery.vue";
+import ContactList from "../../../Components/ContactList/EventContactList.vue";
+import LocationGallery from "../../../Components/SharedComponentsEvents/EventPageLocationGallery/LocationGallery.vue";
 
 export default {
   data() {

@@ -45,16 +45,16 @@
 </template>
 
 <script>
-import ToDoList from "../../../../SharedComponents/SharedComponentsToDoList/ToDoList.vue";
+import ToDoList from "../../../../Components/SharedComponentsToDoList/ToDoList.vue";
 
-import AutomationList from "../../AdminComponents/AdminSharedComponents/ContactAutomationList.vue";
-import ContactPageNotes from "../../AdminComponents/AdminContactPageComponents/AdminContactPageSharedComponents/ContactPageNotes/ContactPageNotes.vue";
-import LocationPageUpcomingEvents from "../../AdminComponents/AdminContactPageComponents/LocationPageComponents/LocationUpcomingEvents.vue";
+import AutomationList from "../../../../Components/AdminComponents/AdminSharedComponents/ContactAutomationList.vue";
+import ContactPageNotes from "../../../../Components/AdminComponents/AdminContactPageComponents/AdminContactPageSharedComponents/ContactPageNotes/ContactPageNotes.vue";
+import LocationPageUpcomingEvents from "../../../../Components/AdminComponents/AdminContactPageComponents/LocationPageComponents/LocationUpcomingEvents.vue";
 // import LocationPreferredInformation from "../ContactPageComponents/LocationPageComponents/LocationPreferredInformation.vue";
-import ContactCardLocation from "../../AdminComponents/AdminContactPageComponents/LocationPageComponents/ContactCardLocation.vue";
-import ContactList from "../../../../SharedComponents/ContactList/LocationContactList.vue";
-import PopupEmailComposition from "../../../../SharedComponents/SharedComponentsPopupUtilities/PopupEmailComposition.vue";
-import FourButtonBarWithDropDown from "../../../../SharedComponents/SharedComponentsUI/FourButtonBarWithDropDown.vue";
+import ContactCardLocation from "../../../../Components/AdminComponents/AdminContactPageComponents/LocationPageComponents/ContactCardLocation.vue";
+import ContactList from "../../../../Components/ContactList/LocationContactList.vue";
+import PopupEmailComposition from "../../../../Components/SharedComponentsPopupUtilities/PopupEmailComposition.vue";
+import FourButtonBarWithDropDown from "../../../../Components/SharedComponentsUI/FourButtonBarWithDropDown.vue";
 
 export default {
   data() {

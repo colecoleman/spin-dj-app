@@ -12,8 +12,8 @@
 /* eslint-disable */
 import { Auth } from "aws-amplify";
 import axios from "axios";
-import StatusIndicator from "./SharedComponents/SharedComponentsUI/StatusIndicator.vue";
-import ButtonStandardWithIcon from "./SharedComponents/SharedComponentsUI/ButtonStandardWithIcon.vue";
+import StatusIndicator from "./Components/SharedComponentsUI/StatusIndicator.vue";
+import ButtonStandardWithIcon from "./Components/SharedComponentsUI/ButtonStandardWithIcon.vue";
 
 export default {
   data() {

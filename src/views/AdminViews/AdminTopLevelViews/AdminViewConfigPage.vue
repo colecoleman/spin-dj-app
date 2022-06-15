@@ -25,17 +25,17 @@
 </template>
 
 <script>
-import AdminViewConfigIdentity from "../AdminComponents//AdminConfigComponents/AdminConfigCards/AdminViewConfigIdentity.vue";
-import AdminViewConfigNavigationItems from "../AdminComponents/AdminConfigComponents/AdminViewConfigNavigationItems.vue";
-import AdminViewConfigPackages from "../AdminComponents/AdminConfigComponents/AdminConfigCards/AdminViewConfigPackages.vue";
-import AdminViewConfigServices from "../AdminComponents/AdminConfigComponents/AdminConfigCards/AdminViewConfigServices.vue";
-import AdminViewConfigForms from "../AdminComponents/AdminConfigComponents/AdminConfigCards/AdminViewConfigForms/AdminViewConfigForms.vue";
-import AdminViewConfigAddOns from "../AdminComponents/AdminConfigComponents/AdminConfigCards/AdminViewConfigAddOns.vue";
-import AdminViewConfigAutomations from "../AdminComponents/AdminConfigComponents/AdminConfigCards/AdminViewConfigAutomations.vue";
-import AdminViewConfigContracts from "../AdminComponents/AdminConfigComponents/AdminConfigCards/AdminViewConfigContracts.vue";
-import AdminViewConfigDiscounts from "../AdminComponents/AdminConfigComponents/AdminConfigCards/AdminViewConfigDiscounts.vue";
-import AdminViewConfigPayments from "../AdminComponents/AdminConfigComponents/AdminConfigCards/AdminViewConfigPayments.vue";
-import AdminViewConfigCalendar from "../AdminComponents/AdminConfigComponents/AdminConfigCards/AdminViewConfigCalendar.vue";
+import AdminViewConfigIdentity from "../../../Components/AdminComponents//AdminConfigComponents/AdminConfigCards/AdminViewConfigIdentity.vue";
+import AdminViewConfigNavigationItems from "../../../Components/AdminComponents/AdminConfigComponents/AdminViewConfigNavigationItems.vue";
+import AdminViewConfigPackages from "../../../Components/AdminComponents/AdminConfigComponents/AdminConfigCards/AdminViewConfigPackages.vue";
+import AdminViewConfigServices from "../../../Components/AdminComponents/AdminConfigComponents/AdminConfigCards/AdminViewConfigServices.vue";
+import AdminViewConfigForms from "../../../Components/AdminComponents/AdminConfigComponents/AdminConfigCards/AdminViewConfigForms/AdminViewConfigForms.vue";
+import AdminViewConfigAddOns from "../../../Components/AdminComponents/AdminConfigComponents/AdminConfigCards/AdminViewConfigAddOns.vue";
+import AdminViewConfigAutomations from "../../../Components/AdminComponents/AdminConfigComponents/AdminConfigCards/AdminViewConfigAutomations.vue";
+import AdminViewConfigContracts from "../../../Components/AdminComponents/AdminConfigComponents/AdminConfigCards/AdminViewConfigContracts.vue";
+import AdminViewConfigDiscounts from "../../../Components/AdminComponents/AdminConfigComponents/AdminConfigCards/AdminViewConfigDiscounts.vue";
+import AdminViewConfigPayments from "../../../Components/AdminComponents/AdminConfigComponents/AdminConfigCards/AdminViewConfigPayments.vue";
+import AdminViewConfigCalendar from "../../../Components/AdminComponents/AdminConfigComponents/AdminConfigCards/AdminViewConfigCalendar.vue";
 
 export default {
   data() {

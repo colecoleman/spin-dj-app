@@ -14,7 +14,6 @@ import AdminViewDashboard from "../views/AdminViews/AdminTopLevelViews/AdminView
 import ContactsList from "../views/AdminViews/AdminTopLevelViews/AdminViewContactList.vue";
 import AdminConfigurationPage from "../views/AdminViews/AdminTopLevelViews/AdminViewConfigPage.vue";
 import SpecificContactPageClient from "../views/AdminViews/AdminTopLevelViews/AdminViewSpecificContactPages/SpecificContactPageClient.vue";
-import SpecificContactPageProspect from "../views/AdminViews/AdminTopLevelViews/AdminViewSpecificContactPages/SpecificContactPageProspect.vue";
 import SpecificContactPageEmployee from "../views/AdminViews/AdminTopLevelViews/AdminViewSpecificContactPages/SpecificContactPageEmployee.vue";
 import SpecificContactPageVendor from "../views/AdminViews/AdminTopLevelViews/AdminViewSpecificContactPages/SpecificContactPageVendor.vue";
 import SpecificContactPageLocation from "../views/AdminViews/AdminTopLevelViews/AdminViewSpecificContactPages/SpecificContactPageLocation.vue";
@@ -145,14 +144,6 @@ const routes = [
         meta: { requiresAdminAuth: true },
         components: {
           content: SpecificContactPageClient,
-        },
-      },
-      {
-        path: "contacts/prospects/:id",
-        name: "specificContactPageProspect",
-        meta: { requiresAdminAuth: true },
-        components: {
-          content: SpecificContactPageProspect,
         },
       },
       {

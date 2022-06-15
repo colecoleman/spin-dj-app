@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import AdminHeader from "../../SharedComponents/SharedComponentsHeader/AdminHeader.vue";
+import AdminHeader from "../../Components/SharedComponentsHeader/AdminHeader.vue";
 
 export default {
   data() {

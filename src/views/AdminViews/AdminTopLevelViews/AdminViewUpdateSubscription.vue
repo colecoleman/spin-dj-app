@@ -9,7 +9,7 @@
   </section>
 </template>
 <script>
-import ButtonStandardWithIcon from "../../../SharedComponents/SharedComponentsUI/ButtonStandardWithIcon.vue";
+import ButtonStandardWithIcon from "../../../Components/SharedComponentsUI/ButtonStandardWithIcon.vue";
 export default {
   data() {
     return {};
