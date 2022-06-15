@@ -266,6 +266,15 @@ const store = createStore({
         })
       ));
     },
+    async getLocationContacts(context, location) {
+      location.contacts = await Promise.all(
+        location.contacts.map(async (contact) => {
+          let { userId, tenantId } = contact;
+          let key = { userId, tenantId };
+          return await context.dispatch('getContactListItem', key);
+        })
+      );
+    },
     async getLocationEvents(context, location) {
       location.associatedEvents = await Promise.all(
         location.associatedEvents.map(async (ae, index) => {
@@ -948,7 +957,8 @@ const store = createStore({
       return new Promise((resolve, reject) => {
         axios
           .put(
-            `https://api.spindj.io/admin/${context.state.user.tenantId}/createEvent`,
+            // `https://api.spindj.io/admin/${context.state.user.tenantId}/createEvent`,
+            `https://mty0zf0p2m.execute-api.us-east-1.amazonaws.com/createEvent`,
             event
           )
           .then(
