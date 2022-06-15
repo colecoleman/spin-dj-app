@@ -134,7 +134,7 @@ export default {
       });
   },
 
-  props: ["automationType", "id", "events", "contact"],
+  props: ["automationType", "events", "contact"],
 };
 </script>
 
