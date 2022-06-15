@@ -168,9 +168,10 @@ export default {
 <style scoped>
 .edit-card-wrapper {
   position: absolute;
+  position: fixed;
   right: -50px;
   top: -100%;
-  z-index: 10;
+  z-index: 100;
   width: 300px;
 }
 
