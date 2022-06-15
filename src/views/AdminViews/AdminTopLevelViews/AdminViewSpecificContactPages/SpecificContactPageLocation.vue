@@ -6,50 +6,41 @@
   />
 
   <section v-if="location">
-    <div id="location-card">
-      <contact-card-location
-        v-if="location"
-        svg="location-marker"
-        :location="location"
-      />
-    </div>
-    <div id="to-do">
-      <to-do-list listType="contact" :contact="location" />
-    </div>
-    <div id="button-bar">
-      <four-button-bar-with-drop-down
-        :buttons="buttons"
-        :dropdown="dropdown"
-        @button-clicked="togglePopup"
-        @dropdown-button-clicked="togglePopup"
-      />
-    </div>
-    <div id="upcoming-events">
-      <location-page-upcoming-events
-        v-if="location"
-        :location="location"
-        :events="events"
-        svg="calendar"
-        @event-assignment-toggle="toggleEventAssignment()"
-        :eventAssignmentOpen="eventAssignmentOpen"
-      />
-    </div>
+    <contact-card-location
+      id="location-card"
+      v-if="location"
+      svg="location-marker"
+      :location="location"
+    />
+    <to-do-list id="to-do" listType="contact" :contact="location" />
+    <four-button-bar-with-drop-down
+      id="button-bar"
+      :buttons="buttons"
+      :dropdown="dropdown"
+      @button-clicked="togglePopup"
+      @dropdown-button-clicked="togglePopup"
+    />
+    <location-page-upcoming-events
+      id="upcoming-events"
+      v-if="location"
+      :location="location"
+      :events="events"
+      svg="calendar"
+      @event-assignment-toggle="toggleEventAssignment()"
+      :eventAssignmentOpen="eventAssignmentOpen"
+    />
     <contact-list
       id="contact-card"
       :contacts="location.contacts"
       :location="location"
     />
-    <div id="automation">
-      <automation-list
-        :automations="automations"
-        automationType="Contact"
-        :contacts="[contact]"
-        :id="$route.params.id"
-      />
-    </div>
-    <div id="notes">
-      <contact-page-notes :contact="location" />
-    </div>
+    <automation-list
+      id="automation"
+      :automations="automations"
+      automationType="Contact"
+      :contacts="[contact]"
+    />
+    <contact-page-notes id="notes" :contact="location" />
   </section>
 </template>
 

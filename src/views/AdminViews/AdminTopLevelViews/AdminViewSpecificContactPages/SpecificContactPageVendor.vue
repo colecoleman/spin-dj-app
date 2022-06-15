@@ -16,52 +16,38 @@
   />
 
   <section v-if="contact">
-    <div id="contact-card">
-      <contact-card-person :contact="contact" />
-    </div>
-    <div id="company-card">
-      <contact-card-company :contact="contact" v-if="contact" svg="person" />
-    </div>
-    <div id="messages">
-      <messaging :contact="contact" display="contact" />
-    </div>
-
-    <div id="button-bar">
-      <four-button-bar-with-drop-down
-        :buttons="buttons"
-        :dropdown="dropdown"
-        @button-clicked="togglePopup"
-        @dropdown-button-clicked="togglePopup"
-      />
-    </div>
-
-    <div id="upcoming-events">
-      <upcoming-events :contact="contact" :events="events" />
-      <contact-page-events-assignment
-        v-if="eventAssignmentOpen"
-        :events="events"
-        :contact="contact"
-        svg="calendar"
-        @event-assignment-toggle="toggleEventAssignment()"
-      />
-    </div>
-    <div id="to-do">
-      <to-do-list :contact="contact" listType="contact" />
-    </div>
-    <div id="automation">
-      <!-- :automations="automations" -->
-      <automation-list
-        :events="events"
-        :contact="contact"
-        automationType="Contact"
-        :id="$route.params.id"
-      />
-      <!-- @automation-deleted="deleteAutomation"
-        @automation-approved="approveAutomation" -->
-    </div>
-    <div id="notes">
-      <contact-page-notes :contact="contact" />
-    </div>
+    <contact-card-person id="contact-card" :contact="contact" />
+    <contact-card-company
+      id="company-card"
+      :contact="contact"
+      v-if="contact"
+      svg="person"
+    />
+    <messaging id="messages" :contact="contact" display="contact" />
+    <four-button-bar-with-drop-down
+      id="button-bar"
+      :buttons="buttons"
+      :dropdown="dropdown"
+      @button-clicked="togglePopup"
+      @dropdown-button-clicked="togglePopup"
+    />
+    <upcoming-events id="upcoming-events" :contact="contact" :events="events" />
+    <contact-page-events-assignment
+      id="upcoming-events"
+      v-if="eventAssignmentOpen"
+      :events="events"
+      :contact="contact"
+      svg="calendar"
+      @event-assignment-toggle="toggleEventAssignment()"
+    />
+    <to-do-list id="to-do" :contact="contact" listType="contact" />
+    <automation-list
+      id="automation"
+      :events="events"
+      :contact="contact"
+      automationType="Contact"
+    />
+    <contact-page-notes id="notes" :contact="contact" />
   </section>
 </template>
 

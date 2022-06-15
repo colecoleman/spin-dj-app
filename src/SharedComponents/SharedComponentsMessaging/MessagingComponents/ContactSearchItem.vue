@@ -9,12 +9,6 @@ import ContactProfilePictureAndName from "../../SharedComponentsUI/ListComponent
 import ListItemStyleWrapper from "../../SharedComponentsUI/ListItemStyleWrapper.vue";
 
 export default {
-  data() {
-    return {};
-  },
-  computed: {},
-  methods: {},
-  created() {},
   components: {
     ListItemStyleWrapper,
     ContactProfilePictureAndName,

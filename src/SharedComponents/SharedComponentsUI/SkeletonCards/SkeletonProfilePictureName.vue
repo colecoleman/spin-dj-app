@@ -1,6 +1,6 @@
 <template>
   <div class="client-skeleton-card">
-    <profile-picture contact="person" />
+    <profile-picture contact="person" class="profile-picture" />
     <div class="client-name">
       <h5 class="skeleton"></h5>
       <h5 class="skeleton"></h5>
@@ -30,7 +30,7 @@ export default {
 .client-name > .skeleton {
   width: 40px;
   height: 7pt;
-  margin: 2px 0px;
+  margin: 2px;
 }
 
 .client-name {

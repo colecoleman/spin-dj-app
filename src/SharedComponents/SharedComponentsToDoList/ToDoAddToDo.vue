@@ -30,7 +30,6 @@ import InputWithBinarySelection from "../SharedComponentsUI/ElementLibrary/Input
 export default {
   data() {
     return {
-      contactSearchTerm: undefined,
       toDo: {
         id: "todo" + new Date().getTime(),
         associatedContacts: this.contactId ? [this.contactId] : [],

@@ -17,9 +17,9 @@
     </div>
     <div v-if="actionsActive" class="dropdown">
       <div
-        class="actions-item"
         v-for="action in actions"
         :key="action.title"
+        class="actions-item"
         @click="
           action.action
             ? action.action(action.title)

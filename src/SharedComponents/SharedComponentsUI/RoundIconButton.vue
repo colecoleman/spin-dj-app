@@ -1,5 +1,5 @@
 <template>
-  <div class="round-button-wrapper">
+  <div class="round-button-wrapper" @mousedown.prevent="">
     <vue-svg
       :svg="svg === 'loading' ? 'spinner' : svg"
       :class="svg === 'loading' ? 'spinning svg' : 'svg'"

@@ -1,7 +1,7 @@
 <template>
   <div class="site-header">
     <div class="left buttons">
-      <admin-header-dashboard-icons class="round-" />
+      <admin-header-dashboard-icons />
       <router-link to="/admin/contacts">
         <round-icon-button class="round-button" svg="group-people" />
       </router-link>
@@ -30,11 +30,6 @@ import AdminHeaderDashboardIcons from "./AdminHeaderDashboardIcons.vue";
 import RoundIconButton from "../SharedComponentsUI/RoundIconButton.vue";
 
 export default {
-  data() {
-    return {
-      addButtonClicked: false,
-    };
-  },
   computed: {
     businessLogo() {
       return this.$store.getters.businessLogo;
@@ -117,7 +112,6 @@ export default {
     border-radius: 40px;
   }
   .dashboard-button {
-    margin: 5px;
     min-width: 40px;
   }
   .search {
@@ -145,16 +139,12 @@ export default {
     justify-content: center;
   }
   .dashboard-button {
-    margin: 5px;
     min-width: 60px;
   }
   .search {
     min-width: 60px;
     height: 60px;
     border-radius: 60px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
   }
 }
 </style>

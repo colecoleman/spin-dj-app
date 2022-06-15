@@ -16,53 +16,41 @@
   />
 
   <section v-if="contact">
-    <div id="contact-card">
-      <contact-card-client
-        :contact="contact"
-        svg="person"
-        @email-contact="togglePopup('send-email')"
-      />
-    </div>
-    <div id="to-do">
-      <to-do-list :contact="contact" listType="contact" />
-    </div>
-    <div id="notes">
-      <contact-page-notes
-        :contact="contact"
-        :notesPrivate="contact.notesPrivate"
-        :notesPublic="contact.notesPublic"
-        v-if="contact"
-      />
-    </div>
+    <contact-card-client
+      id="contact-card"
+      :contact="contact"
+      svg="person"
+      @email-contact="togglePopup('send-email')"
+    />
+    <to-do-list id="to-do" :contact="contact" listType="contact" />
+    <contact-page-notes
+      id="notes"
+      :contact="contact"
+      :notesPrivate="contact.notesPrivate"
+      :notesPublic="contact.notesPublic"
+      v-if="contact"
+    />
+    <four-button-bar-with-drop-down
+      id="button-bar"
+      :buttons="buttons"
+      :dropdown="dropdown"
+      @button-clicked="togglePopup"
+      @dropdown-button-clicked="togglePopup"
+    />
+    <client-page-upcoming-events
+      id="upcoming-events"
+      :contact="contact"
+      :events="events"
+      svg="calendar"
+    />
+    <automation-list
+      id="automation"
+      :events="events"
+      :contact="contact"
+      automationType="Contact"
+    />
 
-    <div id="button-bar">
-      <four-button-bar-with-drop-down
-        :buttons="buttons"
-        :dropdown="dropdown"
-        @button-clicked="togglePopup"
-        @dropdown-button-clicked="togglePopup"
-      />
-    </div>
-
-    <div id="upcoming-events">
-      <client-page-upcoming-events
-        :contact="contact"
-        :events="events"
-        svg="calendar"
-      />
-    </div>
-
-    <div id="automation">
-      <automation-list
-        :events="events"
-        :contact="contact"
-        automationType="Contact"
-        :id="$route.params.id"
-      />
-    </div>
-    <div id="messages">
-      <messaging display="contact" :contact="contact" />
-    </div>
+    <messaging id="messages" display="contact" :contact="contact" />
   </section>
 </template>
 

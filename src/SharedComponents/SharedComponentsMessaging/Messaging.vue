@@ -46,7 +46,7 @@
 </template>
 <script>
 import ActiveConversation from "./MessagingViews/ActiveConversation.vue";
-import ConversationInformation from "./MessagingViews/ConversationInformation.vue";
+
 import ConversationsList from "./MessagingViews/ConversationsList.vue";
 import ContactSearch from "./MessagingViews/MessagingContactSearch.vue";
 export default {
@@ -234,7 +234,6 @@ export default {
   },
   components: {
     ActiveConversation,
-    ConversationInformation,
     ConversationsList,
     ContactSearch,
   },
