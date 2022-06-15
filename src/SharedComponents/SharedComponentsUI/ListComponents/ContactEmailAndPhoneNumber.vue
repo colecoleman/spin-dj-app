@@ -7,16 +7,11 @@
 <script>
 import { formatPhoneNumber } from "../../../helpers.js";
 export default {
-  data() {
-    return {};
-  },
   computed: {
     phoneNumber() {
       return formatPhoneNumber(this.contact.phoneNumber);
     },
   },
-  created() {},
-  components: {},
   props: ["contact"],
 };
 </script>

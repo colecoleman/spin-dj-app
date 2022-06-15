@@ -17,17 +17,11 @@
 </template>
 <script>
 export default {
-  data() {
-    return {};
-  },
-  computed: {},
   methods: {
     sentByUser() {
       return this.message.senderKey.userId === this.$store.state.user.userId;
     },
   },
-  created() {},
-  components: {},
   props: ["message"],
 };
 </script>
@@ -57,7 +51,6 @@ export default {
 }
 
 .read-note {
-  /* width: fit-content; */
   text-align: right;
   margin: 0;
   font-size: 8px;

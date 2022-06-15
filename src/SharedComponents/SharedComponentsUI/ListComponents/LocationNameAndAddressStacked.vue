@@ -12,11 +12,6 @@ import Skeleton from "../SkeletonCards/SkeletonText.vue";
 
 import LocationAddress from "./LocationAddress.vue";
 export default {
-  data() {
-    return {};
-  },
-  methods: {},
-  created() {},
   components: { LocationAddress, Skeleton },
   props: ["location"],
 };
@@ -24,7 +19,6 @@ export default {
 <style scoped>
 @media screen and (min-width: 320px) {
   .location-identifier {
-    /* font-size: 10pt; */
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -33,7 +27,6 @@ export default {
   }
 
   .venue-name {
-    /* min-width: 100px; */
     white-space: nowrap;
     max-width: 100%;
     font-size: 8pt;
@@ -48,12 +41,6 @@ export default {
     font-size: 8pt;
   }
 }
-
-/* @media screen and (min-width: 650px) {
-  .venue-name {
-    font-size: 1em;
-  }
-} */
 
 @media screen and (min-width: 1200px) {
   .venue-name {

@@ -19,7 +19,6 @@
               : undefined
             : undefined
         "
-        :customStyle="'width: 25px; height: 25px; margin: -13px; fill: var(--foregroundColor);'"
       />
     </div>
     <vue-svg

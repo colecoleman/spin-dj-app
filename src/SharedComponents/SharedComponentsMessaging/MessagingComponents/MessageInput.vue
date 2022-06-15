@@ -28,7 +28,6 @@ export default {
       }
     },
   },
-  created() {},
   components: {
     RoundIconButton,
   },
@@ -46,7 +45,6 @@ export default {
 }
 
 .message-input {
-  /* height: 100%; */
   width: 100%;
   max-height: 100%;
   outline: none;
@@ -54,7 +52,6 @@ export default {
   filter: drop-shadow(0px 1px 1px var(--cardOutline));
   padding-left: 10px;
   resize: none;
-
   font-size: 12px;
 }
 

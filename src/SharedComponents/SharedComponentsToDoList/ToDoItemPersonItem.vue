@@ -2,6 +2,7 @@
   <div class="to-do-contact-item">
     <profile-picture
       contact="person"
+      class="profile-picture"
       :profilePicture="
         contact
           ? contact.profilePicture
@@ -9,7 +10,6 @@
             : undefined
           : undefined
       "
-      class="profile-picture"
     />
     <h5 v-if="contact">
       {{ contact.given_name + " " + contact.family_name }}
@@ -19,11 +19,6 @@
 <script>
 import ProfilePicture from "../../assets/ProfilePicture.vue";
 export default {
-  data() {
-    return {};
-  },
-  methods: {},
-
   components: {
     ProfilePicture,
   },

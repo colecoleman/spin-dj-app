@@ -87,8 +87,6 @@ export default {
 </script>
 <style scoped>
 .message-preview-list-item {
-  /* padding-left: 5px; */
-  /* padding-right: 5px; */
   height: 60px;
   display: flex;
   align-items: center;

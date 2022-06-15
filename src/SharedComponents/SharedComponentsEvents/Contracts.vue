@@ -375,15 +375,4 @@ p {
   display: flex;
   justify-content: space-evenly;
 }
-
-/* .contract-data {
-  width: 50%;
-} */
-@media screen {
-  @media (min-width: 320px) {
-    #contract-copy {
-      /* margin: 10px 20px; */
-    }
-  }
-}
 </style>
