@@ -451,10 +451,10 @@
 </template>
 
 <script>
-import InputWithTitle from "../../../Components/SharedComponentsUI/ElementLibrary/InputWithTitle.vue";
-import InputWithBinarySelections from "../../../Components/SharedComponentsUI/ElementLibrary/InputWithBinarySelection.vue";
-import InputWithTitleWithDropdown from "../../../Components/SharedComponentsUI/ElementLibrary/InputWithTitleWithDropdown.vue";
-import BinaryInputWithNumberModifier from "../../../Components/SharedComponentsUI/ElementLibrary/BinaryInputWithNumberModifier.vue";
+import InputWithTitle from "../../Components/SharedComponentsUI/ElementLibrary/InputWithTitle.vue";
+import InputWithBinarySelections from "../../Components/SharedComponentsUI/ElementLibrary/InputWithBinarySelection.vue";
+import InputWithTitleWithDropdown from "../../Components/SharedComponentsUI/ElementLibrary/InputWithTitleWithDropdown.vue";
+import BinaryInputWithNumberModifier from "../../Components/SharedComponentsUI/ElementLibrary/BinaryInputWithNumberModifier.vue";
 import {
   formatTime,
   formatPrice,
@@ -465,7 +465,7 @@ import {
   total,
   balanceOutstanding,
   calculateEventTime,
-} from "../../../helpers.js";
+} from "../../helpers.js";
 
 export default {
   data() {

@@ -13,10 +13,10 @@
   </div>
 </template>
 <script>
-import UpcomingEvents from "../../../../Components/SharedComponentsUpcomingEvents/UpcomingEvents.vue";
-import MetricsChart from "../../../../Components/AdminComponents/AdminDashboardComponents/AdminDashboardComponents/MetricsCharts/MetricsChart.vue";
-import EventCalendar from "../../../../Components/SharedComponentsCalendar/EventCalendar.vue";
-import Messaging from "../../../../Components/SharedComponentsMessaging/Messaging.vue";
+import UpcomingEvents from "../../../Components/SharedComponentsUpcomingEvents/UpcomingEvents.vue";
+import MetricsChart from "../../../Components/AdminComponents/AdminDashboardComponents/AdminDashboardComponents/MetricsCharts/MetricsChart.vue";
+import EventCalendar from "../../../Components/SharedComponentsCalendar/EventCalendar.vue";
+import Messaging from "../../../Components/SharedComponentsMessaging/Messaging.vue";
 export default {
   data() {
     return {};

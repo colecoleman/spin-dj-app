@@ -4,7 +4,7 @@
       <div class="hero-left hero-half">
         <div class="image-container">
           <img
-            src="../../../assets/spin-logo-with-text.svg"
+            src="../../assets/spin-logo-with-text.svg"
             alt="Spin DJ Software Logo"
           />
         </div>
@@ -110,7 +110,7 @@
 </template>
 
 <script>
-import SpinLogoWithText from "../../../assets/spin-logo-with-text.svg";
+import SpinLogoWithText from "../../assets/spin-logo-with-text.svg";
 
 export default {
   data() {

@@ -2,11 +2,11 @@
   <popup-email-composition
     v-if="popupOpen === 'send-email'"
     :contact="contact"
-    @close-window="togglePopup"
+    @closeWindow="togglePopup"
   />
   <contact-page-reset-password
     :contact="contact"
-    @toggle-popup="togglePopup"
+    @togglePopup="togglePopup"
     v-if="popupOpen === 'reset-password'"
   />
   <contact-page-delete-contact
@@ -14,22 +14,15 @@
     @toggle-popup="togglePopup"
     v-if="popupOpen === 'delete'"
   />
-
   <section v-if="contact">
-    <contact-card-client
+    <contact-card-person
       id="contact-card"
+      v-if="contact"
       :contact="contact"
       svg="person"
-      @email-contact="togglePopup('send-email')"
     />
-    <to-do-list id="to-do" :contact="contact" listType="contact" />
-    <contact-page-notes
-      id="notes"
-      :contact="contact"
-      :notesPrivate="contact.notesPrivate"
-      :notesPublic="contact.notesPublic"
-      v-if="contact"
-    />
+    <contact-page-notes id="notes" v-if="contact" :contact="contact" />
+    <to-do-list id="to-do" listType="contact" :contact="contact" />
     <four-button-bar-with-drop-down
       id="button-bar"
       :buttons="buttons"
@@ -37,11 +30,18 @@
       @button-clicked="togglePopup"
       @dropdown-button-clicked="togglePopup"
     />
-    <client-page-upcoming-events
+    <upcoming-events
       id="upcoming-events"
-      :contact="contact"
       :events="events"
+      :pastEvents="pastEvents"
+      v-if="!eventAssignmentOpen"
+    />
+    <contact-page-events-assignment
+      v-if="eventAssignmentOpen"
+      :events="events"
+      :contact="contact"
       svg="calendar"
+      @event-assignment-toggle="toggleEventAssignment()"
     />
     <automation-list
       id="automation"
@@ -49,38 +49,44 @@
       :contact="contact"
       automationType="Contact"
     />
-
     <messaging id="messages" display="contact" :contact="contact" />
   </section>
 </template>
 
 <script>
-import ToDoList from "../../../../Components/SharedComponentsToDoList/ToDoList.vue";
-import AutomationList from "../../../../Components/AdminComponents/AdminSharedComponents/ContactAutomationList.vue";
-import ContactCardClient from "../../../../Components/SharedComponentsContact/ContactCardPerson.vue";
-import PopupEmailComposition from "../../../../Components/SharedComponentsPopupUtilities/PopupEmailComposition.vue";
-import ContactPageDeleteContact from "../../../../Components/AdminComponents/AdminContactPageComponents/AdminContactPageSharedComponents/ContactPageDeleteContact.vue";
-// import MessagingSingleComponent from "../../../../Components/SharedComponentsMessaging/MessagingSingleComponent.vue";
-import Messaging from "../../../../Components/SharedComponentsMessaging/Messaging.vue";
-import FourButtonBarWithDropDown from "../../../../Components/SharedComponentsUI/FourButtonBarWithDropDown.vue";
-import ClientPageUpcomingEvents from "../../../../Components/AdminComponents/AdminContactPageComponents/ClientPageComponents/ClientPageUpcomingEvents.vue";
-import ContactPageResetPassword from "../../../../Components/AdminComponents/AdminContactPageComponents/AdminContactPageSharedComponents/ContactPageResetPassword.vue";
-import ContactPageNotes from "../../../../Components/AdminComponents/AdminContactPageComponents/AdminContactPageSharedComponents/ContactPageNotes/ContactPageNotes.vue";
-// import TwoButtonDialogModal from "../../../../Components/SharedComponentsUI/TwoButtonDialogModal.vue";
+import ToDoList from "../../../Components/SharedComponentsToDoList/ToDoList.vue";
+import AutomationList from "../../../Components/AdminComponents/AdminSharedComponents/ContactAutomationList.vue";
+import UpcomingEvents from "../../../Components/SharedComponentsUpcomingEvents/UpcomingEvents.vue";
+import ContactPageNotes from "../../../Components/AdminComponents/AdminContactPageComponents/AdminContactPageSharedComponents/ContactPageNotes/ContactPageNotes.vue";
+import ContactCardPerson from "../../../Components/SharedComponentsContact/ContactCardPerson.vue";
+import PopupEmailComposition from "../../../Components/SharedComponentsPopupUtilities/PopupEmailComposition.vue";
+import ContactPageEventsAssignment from "../../../Components/AdminComponents/AdminContactPageComponents/AdminContactPageSharedComponents/ContactPageEventsAssignment.vue";
+import ContactPageResetPassword from "../../../Components/AdminComponents/AdminContactPageComponents/AdminContactPageSharedComponents/ContactPageResetPassword.vue";
+import ContactPageDeleteContact from "../../../Components/AdminComponents/AdminContactPageComponents/AdminContactPageSharedComponents/ContactPageDeleteContact.vue";
+import Messaging from "../../../Components/SharedComponentsMessaging/Messaging.vue";
+// import MessagingSingleComponent from "../../../Components/SharedComponentsMessaging/MessagingSingleComponent.vue";
+import FourButtonBarWithDropDown from "../../../Components/SharedComponentsUI/FourButtonBarWithDropDown.vue";
 
 export default {
   data() {
     return {
       contact: undefined,
-      thread: undefined,
-      conversation: undefined,
+      eventAssignmentOpen: false,
       events: [],
+      pastEvents: [],
+      eventsLoaded: false,
+      conversation: undefined,
       eventConversation: [],
       popupOpen: null,
       buttons: [
         {
           title: "Send Email",
           parameter: "send-email",
+        },
+
+        {
+          title: "Assign Event",
+          action: this.toggleEventAssignment,
         },
       ],
       dropdown: {
@@ -119,6 +125,12 @@ export default {
         this.popupOpen = popup;
       }
     },
+    async toggleEventAssignment() {
+      this.eventAssignmentOpen = !this.eventAssignmentOpen;
+      await this.$store.dispatch("getAdminEvents");
+      this.$store.dispatch("getEventsContacts");
+      this.$store.dispatch("getEventsLocations");
+    },
   },
   async created() {
     this.contact = await this.$store.dispatch("getUser", this.$route.params.id);
@@ -130,15 +142,17 @@ export default {
   },
   components: {
     PopupEmailComposition,
-    ContactCardClient,
-    ToDoList,
-    ClientPageUpcomingEvents,
-    ContactPageResetPassword,
-    ContactPageDeleteContact,
-    AutomationList,
+    ContactCardPerson,
     ContactPageNotes,
-    FourButtonBarWithDropDown,
+    ToDoList,
+    UpcomingEvents,
+    ContactPageEventsAssignment,
+    ContactPageDeleteContact,
+    // MessagingSingleComponent,
     Messaging,
+    ContactPageResetPassword,
+    FourButtonBarWithDropDown,
+    AutomationList,
   },
 };
 </script>
@@ -150,12 +164,20 @@ export default {
     height: 100%;
     display: grid;
     grid-template-columns: 1fr;
-    grid-template-rows: 150px 300px 75px repeat(3, 300px) 360px;
+    grid-template-rows: 150px 300px 125px repeat(3, 300px) 360px;
     gap: 10px;
   }
 
   #contact-card {
     grid-row: 1 / 2;
+  }
+
+  #upcoming-events {
+    grid-row: 2/3;
+  }
+  #button-bar {
+    grid-row: 3/ 4;
+    z-index: 10;
   }
   #to-do {
     grid-row: 4 / 5;
@@ -165,17 +187,8 @@ export default {
     grid-row: 5 / 6;
   }
   #messages {
-    grid-row: 7/8;
+    grid-row: 7/ 8;
     padding-bottom: 60px;
-  }
-
-  #button-bar {
-    grid-row: 3/4;
-    z-index: 10;
-  }
-
-  #upcoming-events {
-    grid-row: 2/3;
   }
 
   #automation {
@@ -184,7 +197,7 @@ export default {
   @media (min-width: 850px) {
     section {
       grid-template-columns: minmax(100px, 250px) repeat(8, 1fr);
-      grid-template-rows: 75px minmax(30px, 50px) repeat(7, minmax(0, 1fr));
+      grid-template-rows: 75px minmax(30px, 50px) repeat(7, 1fr);
     }
 
     #contact-card {

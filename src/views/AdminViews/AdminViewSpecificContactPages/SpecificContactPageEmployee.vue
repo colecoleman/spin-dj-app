@@ -2,27 +2,27 @@
   <popup-email-composition
     v-if="popupOpen === 'send-email'"
     :contact="contact"
-    @closeWindow="togglePopup"
-  />
-  <contact-page-reset-password
-    :contact="contact"
-    @togglePopup="togglePopup"
-    v-if="popupOpen === 'reset-password'"
+    @close-window="togglePopup"
   />
   <contact-page-delete-contact
     :contact="contact"
     @toggle-popup="togglePopup"
     v-if="popupOpen === 'delete'"
   />
+  <employee-page-availability-manager
+    v-if="popupOpen === 'availability-manager'"
+    :employee="contact"
+    @close-popup="togglePopup"
+  />
+  <contact-page-reset-password
+    :contact="contact"
+    @togglePopup="togglePopup"
+    v-if="popupOpen === 'reset-password'"
+  />
   <section v-if="contact">
-    <contact-card-person
-      id="contact-card"
-      v-if="contact"
-      :contact="contact"
-      svg="person"
-    />
-    <contact-page-notes id="notes" v-if="contact" :contact="contact" />
+    <contact-card-person id="contact-card" :contact="contact" svg="person" />
     <to-do-list id="to-do" listType="contact" :contact="contact" />
+    <contact-page-notes id="notes" :contact="contact" />
     <four-button-bar-with-drop-down
       id="button-bar"
       :buttons="buttons"
@@ -37,14 +37,16 @@
       v-if="!eventAssignmentOpen"
     />
     <contact-page-events-assignment
+      id="upcoming-events"
       v-if="eventAssignmentOpen"
-      :events="events"
+      :events="this.$store.state.events"
       :contact="contact"
       svg="calendar"
       @event-assignment-toggle="toggleEventAssignment()"
     />
     <automation-list
       id="automation"
+      :automations="automations"
       :events="events"
       :contact="contact"
       automationType="Contact"
@@ -54,27 +56,26 @@
 </template>
 
 <script>
-import ToDoList from "../../../../Components/SharedComponentsToDoList/ToDoList.vue";
-import AutomationList from "../../../../Components/AdminComponents/AdminSharedComponents/ContactAutomationList.vue";
-import UpcomingEvents from "../../../../Components/SharedComponentsUpcomingEvents/UpcomingEvents.vue";
-import ContactPageNotes from "../../../../Components/AdminComponents/AdminContactPageComponents/AdminContactPageSharedComponents/ContactPageNotes/ContactPageNotes.vue";
-import ContactCardPerson from "../../../../Components/SharedComponentsContact/ContactCardPerson.vue";
-import PopupEmailComposition from "../../../../Components/SharedComponentsPopupUtilities/PopupEmailComposition.vue";
-import ContactPageEventsAssignment from "../../../../Components/AdminComponents/AdminContactPageComponents/AdminContactPageSharedComponents/ContactPageEventsAssignment.vue";
-import ContactPageResetPassword from "../../../../Components/AdminComponents/AdminContactPageComponents/AdminContactPageSharedComponents/ContactPageResetPassword.vue";
-import ContactPageDeleteContact from "../../../../Components/AdminComponents/AdminContactPageComponents/AdminContactPageSharedComponents/ContactPageDeleteContact.vue";
-import Messaging from "../../../../Components/SharedComponentsMessaging/Messaging.vue";
-// import MessagingSingleComponent from "../../../../Components/SharedComponentsMessaging/MessagingSingleComponent.vue";
-import FourButtonBarWithDropDown from "../../../../Components/SharedComponentsUI/FourButtonBarWithDropDown.vue";
+import UpcomingEvents from "../../../Components/SharedComponentsUpcomingEvents/UpcomingEvents.vue";
+import ContactPageEventsAssignment from "../../../Components/AdminComponents/AdminContactPageComponents/AdminContactPageSharedComponents/ContactPageEventsAssignment.vue";
+import ToDoList from "../../../Components/SharedComponentsToDoList/ToDoList.vue";
+import AutomationList from "../../../Components/AdminComponents/AdminSharedComponents/ContactAutomationList.vue";
+import ContactPageNotes from "../../../Components/AdminComponents/AdminContactPageComponents/AdminContactPageSharedComponents/ContactPageNotes/ContactPageNotes.vue";
+import ContactCardPerson from "../../../Components/SharedComponentsContact/ContactCardPerson.vue";
+import EmployeePageAvailabilityManager from "../../../Components/AdminComponents/AdminContactPageComponents/EmployeePageComponents/EmployeePageAvailabilityManager/EmployeePageAvailabilityManager.vue";
+import PopupEmailComposition from "../../../Components/SharedComponentsPopupUtilities/PopupEmailComposition.vue";
+import ContactPageResetPassword from "../../../Components/AdminComponents/AdminContactPageComponents/AdminContactPageSharedComponents/ContactPageResetPassword.vue";
+import Messaging from "../../../Components/SharedComponentsMessaging/Messaging.vue";
+import FourButtonBarWithDropDown from "../../../Components/SharedComponentsUI/FourButtonBarWithDropDown.vue";
+import ContactPageDeleteContact from "../../../Components/AdminComponents/AdminContactPageComponents/AdminContactPageSharedComponents/ContactPageDeleteContact.vue";
 
 export default {
   data() {
     return {
       contact: undefined,
-      eventAssignmentOpen: false,
       events: [],
       pastEvents: [],
-      eventsLoaded: false,
+      eventAssignmentOpen: false,
       conversation: undefined,
       eventConversation: [],
       popupOpen: null,
@@ -83,10 +84,13 @@ export default {
           title: "Send Email",
           parameter: "send-email",
         },
-
         {
-          title: "Assign Event",
+          title: "Assign Events",
           action: this.toggleEventAssignment,
+        },
+        {
+          title: "Availability",
+          parameter: "availability-manager",
         },
       ],
       dropdown: {
@@ -106,10 +110,11 @@ export default {
             title: "delete",
             danger: true,
             parameter: "delete",
-            icon: "trash-can",
+            icon: "delete",
           },
         ],
       },
+      availabilityManagerOpen: false,
     };
   },
   computed: {
@@ -125,6 +130,7 @@ export default {
         this.popupOpen = popup;
       }
     },
+
     async toggleEventAssignment() {
       this.eventAssignmentOpen = !this.eventAssignmentOpen;
       await this.$store.dispatch("getAdminEvents");
@@ -142,17 +148,18 @@ export default {
   },
   components: {
     PopupEmailComposition,
+    EmployeePageAvailabilityManager,
+    ContactPageEventsAssignment,
+    Messaging,
     ContactCardPerson,
-    ContactPageNotes,
     ToDoList,
     UpcomingEvents,
-    ContactPageEventsAssignment,
+    AutomationList,
+    ContactPageNotes,
+    ContactPageResetPassword,
     ContactPageDeleteContact,
     // MessagingSingleComponent,
-    Messaging,
-    ContactPageResetPassword,
     FourButtonBarWithDropDown,
-    AutomationList,
   },
 };
 </script>
@@ -164,20 +171,12 @@ export default {
     height: 100%;
     display: grid;
     grid-template-columns: 1fr;
-    grid-template-rows: 150px 300px 125px repeat(3, 300px) 360px;
+    grid-template-rows: 150px 300px 1fr repeat(3, 300px) 360px;
     gap: 10px;
   }
 
   #contact-card {
     grid-row: 1 / 2;
-  }
-
-  #upcoming-events {
-    grid-row: 2/3;
-  }
-  #button-bar {
-    grid-row: 3/ 4;
-    z-index: 10;
   }
   #to-do {
     grid-row: 4 / 5;
@@ -187,8 +186,19 @@ export default {
     grid-row: 5 / 6;
   }
   #messages {
-    grid-row: 7/ 8;
+    /* grid-row: 6/ 10; */
+    /* display: none; */
+    grid-row: 7/8;
     padding-bottom: 60px;
+  }
+
+  #button-bar {
+    grid-row: 3/ 4;
+    z-index: 10;
+  }
+
+  #upcoming-events {
+    grid-row: 2/3;
   }
 
   #automation {
@@ -196,8 +206,12 @@ export default {
   }
   @media (min-width: 850px) {
     section {
-      grid-template-columns: minmax(100px, 250px) repeat(8, 1fr);
+      width: 100%;
+      height: 100%;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) repeat(8, minmax(0, 1fr));
       grid-template-rows: 75px minmax(30px, 50px) repeat(7, 1fr);
+      gap: 10px;
     }
 
     #contact-card {
@@ -216,7 +230,7 @@ export default {
     #messages {
       grid-column: 7/10;
       grid-row: 6/ 10;
-      padding: 0;
+      padding-bottom: 0;
     }
 
     #button-bar {

@@ -6,8 +6,8 @@
   </list-item-style-wrapper>
 </template>
 <script>
-import { formatDate } from "../../../../helpers.js";
-import ListItemStyleWrapper from "../../../../Components/SharedComponentsUI/ListItemStyleWrapper.vue";
+import { formatDate } from "../../../helpers.js";
+import ListItemStyleWrapper from "../../../Components/SharedComponentsUI/ListItemStyleWrapper.vue";
 export default {
   data() {
     return {};

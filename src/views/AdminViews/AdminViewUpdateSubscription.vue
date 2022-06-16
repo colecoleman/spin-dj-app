@@ -1,6 +1,6 @@
 <template>
   <section>
-    <img src="../../../assets/spin-beta-logo.png" alt="" />
+    <img src="../../assets/spin-beta-logo.png" alt="" />
     <h1>There seems to be an issue with your subscription.</h1>
     <button-standard-with-icon
       text="Manage Subscription In Stripe"
@@ -9,7 +9,7 @@
   </section>
 </template>
 <script>
-import ButtonStandardWithIcon from "../../../Components/SharedComponentsUI/ButtonStandardWithIcon.vue";
+import ButtonStandardWithIcon from "../../Components/SharedComponentsUI/ButtonStandardWithIcon.vue";
 export default {
   data() {
     return {};
