@@ -1,5 +1,5 @@
 <template>
-  <div id="forms-wrapper">
+  <backdrop id="forms-wrapper" @click.self="close">
     <music-library-song-picker
       @emit-track="addTrackToField"
       @close-song-picker="closeSongPicker"
@@ -99,9 +99,10 @@
         </div>
       </template>
     </document-view-with-toolbar>
-  </div>
+  </backdrop>
 </template>
 <script>
+import Backdrop from "../SharedComponentsUI/Backdrop.vue";
 import DocumentViewWithToolbar from "../SharedComponentsUI/DocumentViewWithToolbar.vue";
 import InputWithTitle from "../SharedComponentsUI/ElementLibrary/InputWithTitle.vue";
 import RoundIconButton from "../SharedComponentsUI/RoundIconButton.vue";
@@ -223,6 +224,7 @@ export default {
   },
   created() {},
   components: {
+    Backdrop,
     DocumentViewWithToolbar,
     InputWithTitle,
     RoundIconButton,
@@ -242,7 +244,8 @@ h4 {
 }
 
 #forms-wrapper {
-  z-index: 10;
+  z-index: 100;
+  backdrop-filter: blur(3px);
 }
 
 .form-field {

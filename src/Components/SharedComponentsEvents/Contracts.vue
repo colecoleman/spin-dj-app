@@ -1,48 +1,55 @@
 <template>
-  <document-view-with-toolbar
-    @close="close"
-    @submit-e-signature="submitESignature"
-    @submit-admin-e-signature="submitAdminESignature"
-    @toggle-add-on-item-from-included="toggleContractFromIncluded"
-    @left-arrow-clicked="previousContract"
-    @right-arrow-clicked="nextContract"
-    :icons="icons"
-    :normalESignProcessing="normalESignProcessing"
-    :adminESignProcessing="adminESignProcessing"
-    :addOnItems="businessSettings.contracts"
-    :includedItems="contracts"
-    addOnItemTitle="contractName"
-  >
-    <template v-slot:document>
-      <h4>{{ contract.contractName ? contract.contractName : "Contract" }}</h4>
-      <div id="contract-copy">
-        <p v-if="contract" v-html="mergeTagReplace(contract.contractBody)"></p>
-      </div>
-      <div class="signatures" v-if="contract">
-        <div class="contract-data">
-          <h5>Signer Name:</h5>
-          <p>{{ contract.signerName }}</p>
-          <h5>Date Signed:</h5>
-          <p>{{ contract.signerDate }}</p>
-          <h5>Unique User ID:</h5>
-          <p>{{ contract.signerUUID }}</p>
+  <backdrop id="contracts-wrapper" @click.self="close">
+    <document-view-with-toolbar
+      @close="close"
+      @submit-e-signature="submitESignature"
+      @submit-admin-e-signature="submitAdminESignature"
+      @toggle-add-on-item-from-included="toggleContractFromIncluded"
+      @left-arrow-clicked="previousContract"
+      @right-arrow-clicked="nextContract"
+      :icons="icons"
+      :normalESignProcessing="normalESignProcessing"
+      :adminESignProcessing="adminESignProcessing"
+      :addOnItems="businessSettings.contracts"
+      :includedItems="contracts"
+      addOnItemTitle="contractName"
+    >
+      <template v-slot:document>
+        <h4>
+          {{ contract.contractName ? contract.contractName : "Contract" }}
+        </h4>
+        <div id="contract-copy">
+          <p
+            v-if="contract"
+            v-html="mergeTagReplace(contract.contractBody)"
+          ></p>
         </div>
-        <div class="contract-data" v-if="contract.admin">
-          <h5>Admin Signer Name:</h5>
-          <p>{{ contract.admin.signerName }}</p>
-          <h5>Admin Date Signed:</h5>
-          <p>{{ contract.admin.signerDate }}</p>
-          <h5>Admin Unique User ID:</h5>
-          <p>{{ contract.admin.signerUUID }}</p>
+        <div class="signatures" v-if="contract">
+          <div class="contract-data">
+            <h5>Signer Name:</h5>
+            <p>{{ contract.signerName }}</p>
+            <h5>Date Signed:</h5>
+            <p>{{ contract.signerDate }}</p>
+            <h5>Unique User ID:</h5>
+            <p>{{ contract.signerUUID }}</p>
+          </div>
+          <div class="contract-data" v-if="contract.admin">
+            <h5>Admin Signer Name:</h5>
+            <p>{{ contract.admin.signerName }}</p>
+            <h5>Admin Date Signed:</h5>
+            <p>{{ contract.admin.signerDate }}</p>
+            <h5>Admin Unique User ID:</h5>
+            <p>{{ contract.admin.signerUUID }}</p>
+          </div>
         </div>
-      </div>
-      <p v-if="contract.status !== 'signed'" class="disclaimer">
-        Click on the <round-icon-button svg="signature" /> icon on the top of
-        the page to sign the contract!
-      </p>
-      <h4>Thank you for choosing {{ businessName }}!</h4>
-    </template>
-  </document-view-with-toolbar>
+        <p v-if="contract.status !== 'signed'" class="disclaimer">
+          Click on the <round-icon-button svg="signature" /> icon on the top of
+          the page to sign the contract!
+        </p>
+        <h4>Thank you for choosing {{ businessName }}!</h4>
+      </template>
+    </document-view-with-toolbar>
+  </backdrop>
 </template>
 
 <script>
@@ -57,6 +64,7 @@ import {
 } from "../../helpers.js";
 import RoundIconButton from "../SharedComponentsUI/RoundIconButton.vue";
 import DocumentViewWithToolbar from "../SharedComponentsUI/DocumentViewWithToolbar.vue";
+import Backdrop from "../SharedComponentsUI/Backdrop.vue";
 export default {
   data() {
     return {
@@ -334,7 +342,7 @@ export default {
       }
     },
   },
-  components: { DocumentViewWithToolbar, RoundIconButton },
+  components: { DocumentViewWithToolbar, RoundIconButton, Backdrop },
   emits: ["close"],
   props: ["contacts", "event", "locations"],
   watch: {
@@ -357,6 +365,11 @@ export default {
 </script>
 
 <style scoped>
+#contracts-wrapper {
+  z-index: 100;
+  backdrop-filter: blur(3px);
+}
+
 h1,
 h2,
 h3,
