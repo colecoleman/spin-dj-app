@@ -46,6 +46,7 @@
           day,
           isNotCurrentMonth: !day.isCurrentMonth,
           today: day.isCurrentDay,
+          chosenDate: day.chosenDate,
           hasEvents: day.hasEvents,
         }"
         @click="dateChosen(day)"
@@ -56,6 +57,7 @@
     <button-standard-with-icon
       class="cancel-button"
       text="Cancel"
+      :processing="processing"
       @click="closeDatePicker()"
     />
   </div>
@@ -94,10 +96,25 @@ export default {
     viewedMonth() {
       return new Date(this.year, this.month);
     },
+    currentMonthDays() {
+      return currentMonthDays(this.viewedMonth).map((x) => {
+        let date = new Date(this.chosenDate);
+        return {
+          ...x,
+          get chosenDate() {
+            return (
+              x.date.getMonth() === date.getMonth() &&
+              x.date.getDate() === date.getDate() &&
+              x.date.getFullYear() === date.getFullYear()
+            );
+          },
+        };
+      });
+    },
     days() {
       return [
         ...previousMonthDays(this.viewedMonth),
-        ...currentMonthDays(this.viewedMonth),
+        ...this.currentMonthDays,
         ...nextMonthDays(this.viewedMonth),
       ];
     },
@@ -135,7 +152,7 @@ export default {
   },
   components: { RoundIconButton },
   emits: ["date-chosen", "close"],
-  props: ["chosenDate"],
+  props: ["chosenDate", "processing"],
 };
 </script>
 <style scoped>
@@ -198,12 +215,26 @@ export default {
 
 .day,
 .weekday {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   margin: 0;
   height: 40px;
+  padding: auto;
 }
 
 .day:hover {
   font-weight: 600;
+  cursor: pointer;
+}
+.chosenDate {
+  background: radial-gradient(
+    circle at center,
+    var(--textColor) 0%,
+    var(--textColor) 43%,
+    rgba(0, 0, 0, 0) 44%
+  );
+  color: var(--foregroundColor);
 }
 
 .isNotCurrentMonth {

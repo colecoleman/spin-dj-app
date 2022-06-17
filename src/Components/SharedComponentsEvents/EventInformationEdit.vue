@@ -24,6 +24,7 @@
             <component
               :is="item.component"
               v-bind="item.componentParameters"
+              :processing="processing"
               @date-chosen="dateChosen"
               @save-time="timeChosen"
               @input="textInput"
@@ -52,6 +53,7 @@ export default {
       fieldToEdit: undefined,
       titleInput: undefined,
       activeEditField: undefined,
+      processing: false,
     };
   },
   computed: {
@@ -66,7 +68,10 @@ export default {
           data: title,
           display: title,
           component: InputWithActionableIcon,
-          componentParameters: { placeholder: title, svg: "circle-checkmark" },
+          componentParameters: {
+            placeholder: title,
+            svg: this.processing ? "loading" : "circle-checkmark",
+          },
         },
         "Start Time": {
           data: startTime,
@@ -99,7 +104,7 @@ export default {
   },
   methods: {
     async dateChosen(date) {
-      console.log(this.event.data);
+      this.processing = true;
       let payload = {
         eventKey: { userId: this.event.userId, tenantId: this.event.tenantId },
         variable: undefined,
@@ -123,11 +128,11 @@ export default {
       payload.value = data;
       payload.variable = "data";
       await this.$store.dispatch("editEvent", payload);
+      this.processing = false;
       this.toggleEditField("Event Date");
     },
     async timeChosen(time) {
-      console.log(this.event.data);
-      console.log(time);
+      this.processing = true;
       let payload = {
         eventKey: { userId: this.event.userId, tenantId: this.event.tenantId },
         variable: undefined,
@@ -156,12 +161,14 @@ export default {
         payload.variable = "data";
         await this.$store.dispatch("editEvent", payload);
       }
+      this.processing = false;
       this.closeEditCard();
     },
     textInput(val) {
       this.titleInput = val;
     },
     async actionableIconClicked() {
+      this.processing = true;
       let payload = {
         eventKey: { userId: this.event.userId, tenantId: this.event.tenantId },
         variable: undefined,
@@ -170,6 +177,7 @@ export default {
       payload.variable = "title";
       payload.value = this.titleInput;
       await this.$store.dispatch("editEvent", payload);
+      this.processing = false;
       this.closeEditCard();
     },
     closeEditCard() {

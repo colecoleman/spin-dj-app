@@ -41,10 +41,12 @@
         class="cancel-button button"
         text="Cancel"
         @click="close"
+        :processing="processing"
       />
       <button-standard-with-icon
         class="save-button button"
         text="Save"
+        :processing="processing"
         @click="save"
       />
     </div>
@@ -121,7 +123,7 @@ export default {
     }, 500);
   },
   components: {},
-  props: ["date", "time"],
+  props: ["date", "time", "processing"],
   emits: ["close", "save-time"],
 };
 </script>
