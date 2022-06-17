@@ -43,7 +43,8 @@ export default {
 
 .svg {
   width: 60%;
-  max-height: 60%;
+  max-height: 50%;
+  max-width: 50%;
   min-width: 14px;
   min-height: 14px;
 }
