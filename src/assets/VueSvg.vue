@@ -493,6 +493,48 @@
       />
     </svg>
     <svg
+      v-if="svg === 'double-left-arrow'"
+      xmlns="http://www.w3.org/2000/svg"
+      width="22.503"
+      height="23.619"
+      viewBox="0 0 22.503 23.619"
+    >
+      <path
+        id="Icon_ionic-ios-arrow-back"
+        data-name="Icon ionic-ios-arrow-back"
+        d="M15.321,18l8.937-8.93a1.688,1.688,0,0,0-2.391-2.384L11.742,16.8a1.685,1.685,0,0,0-.049,2.327L21.86,29.32a1.688,1.688,0,0,0,2.391-2.384Z"
+        transform="translate(-11.251 -6.193)"
+      />
+      <path
+        id="Icon_ionic-ios-arrow-back-2"
+        data-name="Icon ionic-ios-arrow-back"
+        d="M15.321,18l8.937-8.93a1.688,1.688,0,0,0-2.391-2.384L11.742,16.8a1.685,1.685,0,0,0-.049,2.327L21.86,29.32a1.688,1.688,0,0,0,2.391-2.384Z"
+        transform="translate(-2.251 -6.193)"
+      />
+    </svg>
+    <svg
+      v-if="svg === 'double-right-arrow'"
+      xmlns="http://www.w3.org/2000/svg"
+      width="22.503"
+      height="23.619"
+      viewBox="0 0 22.503 23.619"
+      transform="rotate(180)"
+    >
+      <path
+        id="Icon_ionic-ios-arrow-back"
+        data-name="Icon ionic-ios-arrow-back"
+        d="M15.321,18l8.937-8.93a1.688,1.688,0,0,0-2.391-2.384L11.742,16.8a1.685,1.685,0,0,0-.049,2.327L21.86,29.32a1.688,1.688,0,0,0,2.391-2.384Z"
+        transform="translate(-11.251 -6.193)"
+      />
+      <path
+        id="Icon_ionic-ios-arrow-back-2"
+        data-name="Icon ionic-ios-arrow-back"
+        d="M15.321,18l8.937-8.93a1.688,1.688,0,0,0-2.391-2.384L11.742,16.8a1.685,1.685,0,0,0-.049,2.327L21.86,29.32a1.688,1.688,0,0,0,2.391-2.384Z"
+        transform="translate(-2.251 -6.193)"
+      />
+    </svg>
+
+    <svg
       :class="customClass"
       @click="clicked"
       :style="customStyle ? customStyle : ''"
@@ -805,23 +847,23 @@
       />
     </svg>
     <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="13.503"
+      height="23.619"
+      viewBox="0 0 13.503 23.619"
       :class="customClass"
       @click="clicked"
       :style="customStyle ? customStyle : ''"
       v-if="svg === 'left-arrow'"
-      xmlns="http://www.w3.org/2000/svg"
-      width="11.69"
-      height="16.616"
-      viewBox="0 0 11.69 23.616"
     >
       <path
-        id="Icon_ionic-ios-arrow-down"
-        data-name="Icon ionic-ios-arrow-down"
-        d="M11.812,8.166,20.742.429a1.869,1.869,0,0,1,2.384,0,1.337,1.337,0,0,1,0,2.07L13.008,11.265a1.878,1.878,0,0,1-2.327.043L.492,2.5A1.367,1.367,0,0,1,0,1.47,1.367,1.367,0,0,1,.492.435a1.869,1.869,0,0,1,2.384,0Z"
-        transform="translate(11.69) rotate(90)"
-        fill="currentColor"
+        id="Icon_ionic-ios-arrow-back"
+        data-name="Icon ionic-ios-arrow-back"
+        d="M15.321,18l8.937-8.93a1.688,1.688,0,0,0-2.391-2.384L11.742,16.8a1.685,1.685,0,0,0-.049,2.327L21.86,29.32a1.688,1.688,0,0,0,2.391-2.384Z"
+        transform="translate(-11.251 -6.193)"
       />
     </svg>
+
     <svg
       :class="customClass"
       @click="clicked"
@@ -1205,23 +1247,24 @@
       </g>
     </svg>
     <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="13.503"
+      height="23.619"
+      viewBox="0 0 13.503 23.619"
+      transform="rotate(180)"
       :class="customClass"
       @click="clicked"
       :style="customStyle ? customStyle : ''"
       v-if="svg === 'right-arrow'"
-      xmlns="http://www.w3.org/2000/svg"
-      width="11.69"
-      height="16.616"
-      viewBox="0 0 11.69 23.616"
     >
       <path
-        id="Icon_ionic-ios-arrow-down"
-        data-name="Icon ionic-ios-arrow-down"
-        d="M11.812,8.166,20.742.429a1.869,1.869,0,0,1,2.384,0,1.337,1.337,0,0,1,0,2.07L13.008,11.265a1.878,1.878,0,0,1-2.327.043L.492,2.5A1.367,1.367,0,0,1,0,1.47,1.367,1.367,0,0,1,.492.435a1.869,1.869,0,0,1,2.384,0Z"
-        transform="translate(0 23.616) rotate(-90)"
-        fill="currentColor"
+        id="Icon_ionic-ios-arrow-back"
+        data-name="Icon ionic-ios-arrow-back"
+        d="M15.321,18l8.937-8.93a1.688,1.688,0,0,0-2.391-2.384L11.742,16.8a1.685,1.685,0,0,0-.049,2.327L21.86,29.32a1.688,1.688,0,0,0,2.391-2.384Z"
+        transform="translate(-11.251 -6.193)"
       />
     </svg>
+
     <svg
       :class="customClass"
       @click="clicked"
