@@ -9,26 +9,13 @@
     )}`"
     @action-one-clicked="toggleEditCard"
   >
-    <template v-slot:dropdownContainer>
-      <event-information-edit
-        v-if="editCardOpen"
-        :event="event"
-        @close-edit-card="toggleEditCard"
-      />
-    </template>
   </base-card>
 </template>
 
 <script>
 import { formatDate, formatTime, subtotal } from "../../helpers.js";
-import EventInformationEdit from "./EventInformationEdit.vue";
 
 export default {
-  data() {
-    return {
-      editCardOpen: false,
-    };
-  },
   computed: {
     userRole() {
       return this.$store.getters.userRole;
@@ -39,10 +26,10 @@ export default {
     formatTime,
     subtotal,
     toggleEditCard() {
-      this.editCardOpen = !this.editCardOpen;
+      this.$emit("edit-card-clicked");
     },
   },
+  emits: ["edit-card-clicked"],
   props: ["client", "event"],
-  components: { EventInformationEdit },
 };
 </script>

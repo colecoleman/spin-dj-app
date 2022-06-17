@@ -1,6 +1,13 @@
 <template>
   <div v-if="event" id="div-wrapper">
     <Transition name="rise">
+      <event-information-edit
+        v-if="popupOpen === 'edit-card'"
+        :event="event"
+        @close-edit-card="togglePopup"
+      />
+    </Transition>
+    <Transition name="rise">
       <invoice
         :invoice="event.invoice"
         :event="event"
@@ -101,7 +108,12 @@
       @close-modal="togglePopup"
     />
     <section>
-      <event-page-contact-card id="contact-card" v-if="event" :event="event" />
+      <event-page-contact-card
+        id="contact-card"
+        v-if="event"
+        :event="event"
+        @edit-card-clicked="togglePopup('edit-card')"
+      />
       <location-gallery id="location-scroller" :event="event" />
       <four-button-bar-with-drop-down
         id="button-bar"
@@ -155,6 +167,7 @@ import Contracts from "../../Components/SharedComponentsEvents/Contracts.vue";
 import FourButtonBarWithDropDown from "../../Components/SharedComponentsUI/FourButtonBarWithDropDown.vue";
 import TwoButtonDialogModal from "../../Components/SharedComponentsUI/TwoButtonDialogModal.vue";
 import EventEditProducts from "../../Components/AdminComponents/AdminEventPageComponents/EventEditProducts.vue";
+import EventInformationEdit from "../../Components/SharedComponentsEvents/EventInformationEdit.vue";
 import _ from "lodash";
 
 import VueSvg from "../../assets/VueSvg.vue";
@@ -340,21 +353,22 @@ export default {
     await this.$store.dispatch("getEventLocations", this.event);
   },
   components: {
-    ToDoList,
-    Messaging,
-    EventPageContactCard,
     ContactList,
-    LocationGallery,
-    EventAutomationList,
-    EventMakePayment,
-    Invoice,
-    PopupModal,
-    EventInformation,
-    Forms,
     Contracts,
-    FourButtonBarWithDropDown,
-    TwoButtonDialogModal,
+    EventAutomationList,
     EventEditProducts,
+    EventInformation,
+    EventInformationEdit,
+    EventMakePayment,
+    EventPageContactCard,
+    Forms,
+    FourButtonBarWithDropDown,
+    Invoice,
+    LocationGallery,
+    Messaging,
+    PopupModal,
+    ToDoList,
+    TwoButtonDialogModal,
     VueSvg,
   },
 };
