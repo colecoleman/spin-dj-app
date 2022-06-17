@@ -1,5 +1,7 @@
 <template>
-  <div class="backdrop"></div>
+  <div class="backdrop">
+    <slot></slot>
+  </div>
 </template>
 
 <script>
@@ -13,8 +15,8 @@ export default {};
   height: 100vh;
   top: 0;
   left: 0;
-  z-index: 5;
-  background-color: rgba(0, 0, 0, 0.25);
+  /* z-index: 5; */
+  background-color: rgba(255, 255, 255, 0.25);
 
   filter: blur(0px);
 }
