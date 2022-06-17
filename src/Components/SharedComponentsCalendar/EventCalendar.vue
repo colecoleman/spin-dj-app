@@ -2,15 +2,17 @@
   <base-card
     svg="calendar"
     actionIcon="day"
-    :title="`${monthArray[month]}, ${year}`"
+    :title="`${
+      monthArray[viewedMonth.getMonth()]
+    }, ${viewedMonth.getFullYear()}`"
     @action-one-clicked="toggleFloatingMenu"
   >
     <template v-slot:dropdownContainer>
       <dual-side-floating-menu-with-list-items
         class="right-title-parent"
         :actions="floatingIconActions"
-        :currentLeftSelection="masterYear"
-        :currentRightSelection="masterMonth"
+        :currentLeftSelection="year"
+        :currentRightSelection="month"
         v-if="floatingMenuOpen"
         @actionsClicked="newTimeframeSelected"
       />
@@ -52,6 +54,11 @@
 <script>
 import RoundIconButton from "../SharedComponentsUI/RoundIconButton.vue";
 import DualSideFloatingMenuWithListItems from "../SharedComponentsUI/DualSideFloatingMenuWithListItems.vue";
+import {
+  nextMonthDays,
+  previousMonthDays,
+  currentMonthDays,
+} from "../../calendarFunctions.js";
 
 export default {
   data() {
@@ -71,12 +78,8 @@ export default {
         "November",
         "December",
       ],
-      monthChangeCount: 0,
-      yearChangeCount: 0,
       floatingMenuOpen: false,
       singleDayChosen: undefined,
-      masterMonth: undefined,
-      masterYear: undefined,
       month: new Date().getMonth(),
       year: new Date().getFullYear(),
     };
@@ -85,15 +88,6 @@ export default {
   methods: {
     toggleFloatingMenu() {
       this.floatingMenuOpen = !this.floatingMenuOpen;
-    },
-
-    getNumberOfDaysInMonth() {
-      let time = this.viewedMonth;
-      let date = new Date(time.getFullYear(), time.getMonth() + 1, 0);
-      return date.getDate();
-    },
-    getWeekday(date) {
-      return date.getDay();
     },
     monthChange(direction) {
       if (direction == `forward`) {
@@ -137,18 +131,11 @@ export default {
     daysWithEvents() {
       return this.events.map((a) => new Date(a.data.date));
     },
-    // used to establish the dates shown on calendar
     currentMonthDays() {
-      let daysInMonth = this.getNumberOfDaysInMonth();
       let eventDays = this.daysWithEvents;
-      return [...Array(daysInMonth)].map((day, index) => {
+      return currentMonthDays(this.viewedMonth).map((x) => {
         return {
-          date: new Date(this.year, this.month, index + 1),
-          dayOfMonth: index + 1,
-          isCurrentMonth: true,
-          get isCurrentDay() {
-            return this.date.toDateString().includes(new Date().toDateString());
-          },
+          ...x,
           get hasEvents() {
             return eventDays.some((x) => {
               return x.toDateString() == this.date.toDateString();
@@ -157,46 +144,11 @@ export default {
         };
       });
     },
-    previousMonthDays() {
-      let firstDayOfTheMonthWeekday = this.getWeekday(
-        this.currentMonthDays[0].date
-      );
-      const visibleNumberOfDaysFromPreviousMonth = firstDayOfTheMonthWeekday
-        ? firstDayOfTheMonthWeekday
-        : 6;
-      const previousMonthLastSundayOfTheMonth = new Date(
-        this.year,
-        this.month,
-        `${1 - visibleNumberOfDaysFromPreviousMonth}`
-      ).getDate();
-      return [...Array(visibleNumberOfDaysFromPreviousMonth)].map(
-        (_, index) => {
-          return {
-            dayOfMonth: previousMonthLastSundayOfTheMonth + index,
-            isCurrentMonth: false,
-          };
-        }
-      );
-    },
-    nextMonthDays() {
-      const lastDayOfTheMonthWeekday = this.getWeekday(
-        this.currentMonthDays[this.currentMonthDays.length - 1].date
-      );
-      const visibleNumberOfDaysFromNextMonth = lastDayOfTheMonthWeekday
-        ? 6 - lastDayOfTheMonthWeekday
-        : 6;
-      return [...Array(visibleNumberOfDaysFromNextMonth)].map((_, index) => {
-        return {
-          dayOfMonth: index + 1,
-          isCurrentMonth: false,
-        };
-      });
-    },
     days() {
       return [
-        ...this.previousMonthDays,
+        ...previousMonthDays(this.viewedMonth),
         ...this.currentMonthDays,
-        ...this.nextMonthDays,
+        ...nextMonthDays(this.viewedMonth),
       ];
     },
   },
