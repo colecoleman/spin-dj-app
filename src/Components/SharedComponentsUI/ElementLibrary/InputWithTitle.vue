@@ -87,12 +87,12 @@ export default {
 <style scoped>
 .input-wrapper {
   /* width: auto; */
-  min-width: 125px;
+  /* min-width: 125px; */
   max-width: 300px;
   height: fit-content;
-  border: 1px solid var(--textColor);
+  border: 1px solid var(--cardOutline);
   background-color: var(--foregroundColor);
-  border-radius: 4px;
+  border-radius: 5px;
   position: relative;
   padding: 10px;
   margin: 10px 10px 10px 10px;
