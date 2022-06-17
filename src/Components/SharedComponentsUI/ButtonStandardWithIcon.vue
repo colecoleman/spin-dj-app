@@ -1,7 +1,7 @@
 <template>
   <div class="button-standard-with-icon">
-    <h5 v-if="!loading && text">{{ text }}</h5>
-    <h5 v-if="loading">Loading</h5>
+    <h5 v-if="!processing && text">{{ text }}</h5>
+    <vue-svg v-if="processing" class="svg spinning" svg="spinner" />
     <vue-svg v-if="svg" :svg="svg" class="svg" />
   </div>
 </template>
@@ -9,7 +9,7 @@
 <script>
 import VueSvg from "../../assets/VueSvg.vue";
 export default {
-  props: ["text", "svg", "loading"],
+  props: ["text", "svg", "processing"],
   components: { VueSvg },
 };
 </script>
@@ -50,6 +50,22 @@ export default {
     padding: 5px;
     color: inherit;
     font-size: 0.75em;
+  }
+
+  .spinning {
+    animation-name: spin;
+    animation-duration: 1s;
+    animation-direction: normal;
+    animation-iteration-count: infinite;
+  }
+
+  @keyframes spin {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
   }
 
   @media (min-width: 850px) {
