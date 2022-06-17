@@ -10,9 +10,6 @@ export function currentMonthDays(date) {
     let month = date.getMonth();
     let year = date.getFullYear();
     let daysInMonth = getNumberOfDaysInMonth(date);
-    console.log(date);
-    console.log(month);
-    console.log(year);
     return [...Array(daysInMonth)].map((day, index) => {
         return {
             date: new Date(year, month, index + 1),
@@ -49,7 +46,6 @@ export function nextMonthDays(date) {
     const lastDayOfTheMonthWeekday = getWeekday(
         currentMonthDays(date)[currentMonthDays(date).length - 1].date
     );
-    console.log(lastDayOfTheMonthWeekday);
     const visibleNumberOfDaysFromNextMonth = lastDayOfTheMonthWeekday
         ? 6 - lastDayOfTheMonthWeekday
         : 6;
