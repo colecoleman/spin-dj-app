@@ -49,7 +49,7 @@
             <div class="field-container">
               <round-icon-button
                 svg="music"
-                class="library-icon"
+                class="library-icon no-print"
                 v-if="formItem.libraryEnabled"
                 @click="changeLibraryActiveField(formItem)"
               />
@@ -66,6 +66,7 @@
                     input.inputType === 'email' ||
                     input.inputType === 'select'
                   "
+                  class="no-print"
                   :title="input.inputTitle"
                   :type="input.inputType"
                   :inputValue="input.value"
@@ -73,6 +74,19 @@
                   :options="input.options ? input.options : []"
                   @input="fieldInput(input, 'value', $event)"
                 />
+                <h5 class="no-screen">{{ input.inputTitle }}:</h5>
+                <p
+                  v-if="
+                    input.inputType === 'text' ||
+                    input.inputType === 'tel' ||
+                    input.inputType === 'textarea' ||
+                    input.inputType === 'email' ||
+                    input.inputType === 'select'
+                  "
+                  class="no-screen print-text"
+                >
+                  {{ input.value }}
+                </p>
                 <div class="radio-container" v-if="input.inputType === 'radio'">
                   <input
                     v-for="(option, index) in input.options"
@@ -283,6 +297,10 @@ h4 {
 }
 
 @media screen {
+  .no-screen {
+    display: none;
+  }
+
   img,
   .event-title {
     display: none;
@@ -320,6 +338,12 @@ h4 {
     margin: auto auto 0 auto;
   }
 
+  #forms-wrapper {
+    backdrop-filter: unset;
+    z-index: unset;
+    display: unset;
+  }
+
   .form-title {
     text-align: center;
     border-bottom: 1px solid black;
@@ -336,6 +360,7 @@ h4 {
 
   .form-wrapper {
     width: 100%;
+
     max-height: 90%;
     page-break-after: always;
   }
@@ -364,6 +389,11 @@ h4 {
 
   .no-print {
     display: none;
+  }
+
+  .print-text {
+    font-weight: 600;
+    margin: 10px;
   }
 }
 </style>
