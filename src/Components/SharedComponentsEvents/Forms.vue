@@ -342,6 +342,8 @@ h4 {
     backdrop-filter: unset;
     z-index: unset;
     display: unset;
+    overflow: visible;
+    position: unset;
   }
 
   .form-title {

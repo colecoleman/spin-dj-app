@@ -23,7 +23,14 @@ export default {};
 
 @media print {
   .backdrop {
-    display: none;
+    position: unset;
+    width: unset;
+    height: unset;
+    top: unset;
+    left: unset;
+    background-color: white;
+    filter: unset;
+    /* display: none; */
   }
 }
 </style>
