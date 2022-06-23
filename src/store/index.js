@@ -954,12 +954,13 @@ const store = createStore({
     },
     // event actions
     async addEvent(context, event) {
+      let dbEvent = { ...event, tenantId: context.state.user.tenantId }
       return new Promise((resolve, reject) => {
         axios
           .put(
             // `https://api.spindj.io/admin/${context.state.user.tenantId}/createEvent`,
             `https://mty0zf0p2m.execute-api.us-east-1.amazonaws.com/createEvent`,
-            event
+            dbEvent
           )
           .then(
             (result) => {
