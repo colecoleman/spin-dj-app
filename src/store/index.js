@@ -958,8 +958,7 @@ const store = createStore({
       return new Promise((resolve, reject) => {
         axios
           .put(
-            // `https://api.spindj.io/admin/${context.state.user.tenantId}/createEvent`,
-            `https://mty0zf0p2m.execute-api.us-east-1.amazonaws.com/createEvent`,
+            `https://api.spindj.io/admin/${context.state.user.tenantId}/createEvent`,
             dbEvent
           )
           .then(
