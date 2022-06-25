@@ -197,13 +197,6 @@ export default {
         this.activeEditField = undefined;
       }
     },
-    fieldInput(object, property, value) {
-      if (object) {
-        object[property] = value;
-      } else {
-        this[property] = value;
-      }
-    },
   },
   components: {
     Backdrop,
