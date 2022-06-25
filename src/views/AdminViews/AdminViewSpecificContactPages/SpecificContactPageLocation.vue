@@ -4,6 +4,11 @@
     :contact="contact"
     @closeWindow="togglePopup"
   />
+  <location-information-edit
+    v-if="popupOpen === 'edit-card'"
+    @close-edit-card="togglePopup"
+    :location="location"
+  />
 
   <section v-if="location">
     <contact-card-location
@@ -11,6 +16,8 @@
       v-if="location"
       svg="location-marker"
       :location="location"
+      @edit-card-clicked="togglePopup('edit-card')"
+      @edit-location="editLocation"
     />
     <to-do-list id="to-do" listType="contact" :contact="location" />
     <four-button-bar-with-drop-down
@@ -55,6 +62,7 @@ import ContactCardLocation from "../../../Components/AdminComponents/AdminContac
 import ContactList from "../../../Components/ContactList/LocationContactList.vue";
 import PopupEmailComposition from "../../../Components/SharedComponentsPopupUtilities/PopupEmailComposition.vue";
 import FourButtonBarWithDropDown from "../../../Components/SharedComponentsUI/FourButtonBarWithDropDown.vue";
+import LocationInformationEdit from "../../../Components/AdminComponents/AdminContactPageComponents/LocationPageComponents/LocationInformationEdit.vue";
 
 export default {
   data() {
@@ -114,6 +122,9 @@ export default {
         this.popupOpen = popup;
       }
     },
+    editLocation(payload) {
+      this.location[payload.variable] = payload.value;
+    },
     toggleEventAssignment() {
       this.eventAssignmentOpen = !this.eventAssignmentOpen;
     },
@@ -128,6 +139,7 @@ export default {
     AutomationList,
     ContactCardLocation,
     FourButtonBarWithDropDown,
+    LocationInformationEdit,
   },
 };
 </script>

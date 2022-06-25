@@ -5,12 +5,6 @@
     @action-one-clicked="toggleEditCard()"
     title="Location"
   >
-    <template v-slot:dropdownContainer>
-      <location-information-edit
-        v-if="editCardOpen"
-        :location="location"
-        @close-edit-card="toggleEditCard()"
-    /></template>
     <template v-slot:content v-if="location">
       <div class="address-container">
         <h4>{{ location.name }}</h4>
@@ -22,22 +16,14 @@
 </template>
 
 <script>
-import LocationInformationEdit from "./LocationInformationEdit.vue";
 export default {
-  data() {
-    return {
-      editCardOpen: false,
-    };
-  },
   methods: {
     toggleEditCard() {
-      this.editCardOpen = !this.editCardOpen;
+      this.$emit("edit-card-clicked");
     },
   },
   props: ["icon", "location"],
-  components: {
-    LocationInformationEdit,
-  },
+  emits: ["edit-card-clicked"],
 };
 </script>
 
