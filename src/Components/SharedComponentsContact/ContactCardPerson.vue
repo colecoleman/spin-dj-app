@@ -8,12 +8,6 @@
     :loading="loading"
     @action-one-clicked="toggleEditCard"
   >
-    <template v-slot:dropdownContainer>
-      <contact-information-edit
-        v-if="editCardOpen"
-        :contact="contact"
-        @close-edit-card="toggleEditCard"
-    /></template>
     <template v-slot:content v-if="contact">
       <div id="wrapper" v-if="!loading">
         <profile-picture
@@ -35,29 +29,27 @@
 </template>
 
 <script>
-import ContactInformationEdit from "../SharedComponentsContact/ContactInformationEdit.vue";
 import ProfilePicture from "../../assets/ProfilePicture.vue";
 import { formatPhoneNumber } from "../../helpers.js";
 
 export default {
   data() {
     return {
-      profilePictureStyling: "",
       editCardOpen: false,
     };
   },
   methods: {
     formatPhoneNumber,
     toggleEditCard() {
-      this.editCardOpen = !this.editCardOpen;
+      this.$emit("open-edit-card");
     },
     emailContact() {
       this.$emit("email-contact");
     },
   },
-  emits: ["email-contact"],
+  emits: ["email-contact", "open-edit-card"],
   props: ["contact", "icon", "loading"],
-  components: { ContactInformationEdit, ProfilePicture },
+  components: { ProfilePicture },
 };
 </script>
 
@@ -69,14 +61,6 @@ export default {
   overflow: hidden;
   justify-content: left;
   align-items: center;
-}
-
-img {
-  width: 55px;
-  height: 55px;
-  border-radius: 50%;
-  margin-right: 10px;
-  object-fit: cover;
 }
 
 .contact-contact-information {
@@ -98,6 +82,7 @@ img {
 
 .profile-picture {
   min-width: 40px;
+  max-width: 40px;
   height: 40px;
   margin-right: 10px;
 }
