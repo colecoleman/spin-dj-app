@@ -8,32 +8,19 @@
           :key="index"
         >
           <p>{{ item.display }}:</p>
-          <div
-            class="information-and-pen"
-            v-if="
-              !checkIfEditArrayContainsField(key) &&
-              item.display !== 'Profile Picture'
-            "
-          >
+          <div class="information-and-pen" v-if="!checkIfActiveField(key)">
             <p>
               <span>{{ item.data }}</span>
             </p>
             <round-icon-button svg="edit-pen" @click="toggleEditField(key)" />
           </div>
-          <div
-            class="information-and-pen"
-            v-if="
-              checkIfEditArrayContainsField(key) ||
-              item.display === 'Profile Picture'
-            "
-          >
+          <div class="information-and-pen" v-if="checkIfActiveField(key)">
             <component
               :is="item.component"
               v-bind="item.componentParameters"
               :processing="processing"
               @input="textInput"
               @actionable-icon-clicked="actionableIconClicked"
-              @update-profile-picture="updateProfilePicture"
               @close="toggleEditField(key)"
             />
           </div>
@@ -54,12 +41,6 @@ export default {
       activeEditField: undefined,
       activeEditValue: undefined,
       processing: false,
-      // fields: {
-      //   name: undefined,
-      //   streetAddress1: undefined,
-      //   streetAddress2: undefined,
-      //   cityStateZip: undefined,
-      // },
     };
   },
   computed: {
@@ -122,7 +103,7 @@ export default {
         this.activeEditField = undefined;
       }
     },
-    checkIfEditArrayContainsField(field) {
+    checkIfActiveField(field) {
       if (field === this.activeEditField) {
         return true;
       } else {
@@ -131,9 +112,11 @@ export default {
     },
     async actionableIconClicked() {
       this.procesing = true;
-  
+
       let payload = {
         locationId: this.location.userId,
+        variable: undefined,
+        value: undefined,
       };
       if (this.activeEditField === "name") {
         payload.variable = this.activeEditField;
@@ -142,7 +125,7 @@ export default {
         let address = this.location.address;
         address[this.activeEditField] = this.activeEditValue;
         payload.value = address;
-        payload.variable = 'address'
+        payload.variable = "address";
       }
       await this.$store.dispatch("editLocation", payload);
       this.$emit("edit-location", payload);
