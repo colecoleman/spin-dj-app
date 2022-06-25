@@ -14,9 +14,19 @@
     @toggle-popup="togglePopup"
     v-if="popupOpen === 'delete'"
   />
-
+  <contact-edit-card
+    v-if="popupOpen === 'edit-card'"
+    :contact="contact"
+    @close-edit-card="togglePopup"
+    @edit-contact="editContact"
+  />
   <section v-if="contact">
-    <contact-card-person id="contact-card" :contact="contact" />
+    <contact-card-person
+      id="contact-card"
+      :contact="contact"
+      @email-contact="togglePopup('send-email')"
+      @open-edit-card="togglePopup('edit-card')"
+    />
     <contact-card-company
       id="company-card"
       :contact="contact"
@@ -65,6 +75,7 @@ import ContactPageEventsAssignment from "../../../Components/AdminComponents/Adm
 import ContactCardCompany from "../../../Components/AdminComponents/AdminContactPageComponents/AdminContactPageSharedComponents/ContactCardCompany.vue";
 import ToDoList from "../../../Components/SharedComponentsToDoList/ToDoList.vue";
 import AutomationList from "../../../Components/AdminComponents/AdminSharedComponents/ContactAutomationList.vue";
+import ContactEditCard from "../../../Components/SharedComponentsContact/ContactInformationEdit.vue";
 // import VendorPageReferralPopup from "../../../Components/AdminComponents/AdminContactPageComponents/VendorPageComponents/VendorPageReferralPopup.vue";
 import ContactPageNotes from "../../../Components/AdminComponents/AdminContactPageComponents/AdminContactPageSharedComponents/ContactPageNotes/ContactPageNotes.vue";
 
@@ -132,6 +143,9 @@ export default {
         this.popupOpen = popup;
       }
     },
+    editContact(payload) {
+      this.contact[payload.variable] = payload.value;
+    },
   },
 
   async created() {
@@ -145,6 +159,7 @@ export default {
   components: {
     PopupEmailComposition,
     ContactCardCompany,
+    ContactEditCard,
     ContactCardPerson,
     UpcomingEvents,
     ToDoList,

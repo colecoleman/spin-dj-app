@@ -14,6 +14,12 @@
     @toggle-popup="togglePopup"
     v-if="popupOpen === 'delete'"
   />
+  <contact-edit-card
+    v-if="popupOpen === 'edit-card'"
+    :contact="contact"
+    @close-edit-card="togglePopup"
+    @edit-contact="editContact"
+  />
 
   <section v-if="contact">
     <contact-card-client
@@ -21,6 +27,7 @@
       :contact="contact"
       svg="person"
       @email-contact="togglePopup('send-email')"
+      @open-edit-card="togglePopup('edit-card')"
     />
     <to-do-list id="to-do" :contact="contact" listType="contact" />
     <contact-page-notes
@@ -66,6 +73,7 @@ import FourButtonBarWithDropDown from "../../../Components/SharedComponentsUI/Fo
 import ClientPageUpcomingEvents from "../../../Components/AdminComponents/AdminContactPageComponents/ClientPageComponents/ClientPageUpcomingEvents.vue";
 import ContactPageResetPassword from "../../../Components/AdminComponents/AdminContactPageComponents/AdminContactPageSharedComponents/ContactPageResetPassword.vue";
 import ContactPageNotes from "../../../Components/AdminComponents/AdminContactPageComponents/AdminContactPageSharedComponents/ContactPageNotes/ContactPageNotes.vue";
+import ContactEditCard from "../../../Components/SharedComponentsContact/ContactInformationEdit.vue";
 // import TwoButtonDialogModal from "../../../Components/SharedComponentsUI/TwoButtonDialogModal.vue";
 
 export default {
@@ -119,6 +127,9 @@ export default {
         this.popupOpen = popup;
       }
     },
+    editContact(payload) {
+      this.contact[payload.variable] = payload.value;
+    },
   },
   async created() {
     this.contact = await this.$store.dispatch("getUser", this.$route.params.id);
@@ -139,6 +150,7 @@ export default {
     ContactPageNotes,
     FourButtonBarWithDropDown,
     Messaging,
+    ContactEditCard,
   },
 };
 </script>

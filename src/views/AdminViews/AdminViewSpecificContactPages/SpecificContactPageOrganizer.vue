@@ -9,10 +9,17 @@
     @togglePopup="togglePopup"
     v-if="popupOpen === 'reset-password'"
   />
+
   <contact-page-delete-contact
     :contact="contact"
     @toggle-popup="togglePopup"
     v-if="popupOpen === 'delete'"
+  />
+  <contact-edit-card
+    v-if="popupOpen === 'edit-card'"
+    :contact="contact"
+    @close-edit-card="togglePopup"
+    @edit-contact="editContact"
   />
   <section v-if="contact">
     <contact-card-person
@@ -20,6 +27,7 @@
       v-if="contact"
       :contact="contact"
       svg="person"
+      @open-edit-card="togglePopup('edit-card')"
     />
     <contact-page-notes id="notes" v-if="contact" :contact="contact" />
     <to-do-list id="to-do" listType="contact" :contact="contact" />
@@ -64,6 +72,7 @@ import ContactPageEventsAssignment from "../../../Components/AdminComponents/Adm
 import ContactPageResetPassword from "../../../Components/AdminComponents/AdminContactPageComponents/AdminContactPageSharedComponents/ContactPageResetPassword.vue";
 import ContactPageDeleteContact from "../../../Components/AdminComponents/AdminContactPageComponents/AdminContactPageSharedComponents/ContactPageDeleteContact.vue";
 import Messaging from "../../../Components/SharedComponentsMessaging/Messaging.vue";
+import ContactEditCard from "../../../Components/SharedComponentsContact/ContactInformationEdit.vue";
 // import MessagingSingleComponent from "../../../Components/SharedComponentsMessaging/MessagingSingleComponent.vue";
 import FourButtonBarWithDropDown from "../../../Components/SharedComponentsUI/FourButtonBarWithDropDown.vue";
 
@@ -131,6 +140,9 @@ export default {
       this.$store.dispatch("getEventsContacts");
       this.$store.dispatch("getEventsLocations");
     },
+    editContact(payload) {
+      this.contact[payload.variable] = payload.value;
+    },
   },
   async created() {
     this.contact = await this.$store.dispatch("getUser", this.$route.params.id);
@@ -144,6 +156,7 @@ export default {
     PopupEmailComposition,
     ContactCardPerson,
     ContactPageNotes,
+    ContactEditCard,
     ToDoList,
     UpcomingEvents,
     ContactPageEventsAssignment,

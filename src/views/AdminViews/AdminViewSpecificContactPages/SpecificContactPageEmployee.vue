@@ -19,8 +19,19 @@
     @togglePopup="togglePopup"
     v-if="popupOpen === 'reset-password'"
   />
+  <contact-information-edit
+    v-if="popupOpen === 'edit-card'"
+    :contact="contact"
+    @close-edit-card="togglePopup"
+    @edit-contact="editContact"
+  />
   <section v-if="contact">
-    <contact-card-person id="contact-card" :contact="contact" svg="person" />
+    <contact-card-person
+      id="contact-card"
+      :contact="contact"
+      svg="person"
+      @open-edit-card="togglePopup('edit-card')"
+    />
     <to-do-list id="to-do" listType="contact" :contact="contact" />
     <contact-page-notes id="notes" :contact="contact" />
     <four-button-bar-with-drop-down
@@ -68,6 +79,7 @@ import ContactPageResetPassword from "../../../Components/AdminComponents/AdminC
 import Messaging from "../../../Components/SharedComponentsMessaging/Messaging.vue";
 import FourButtonBarWithDropDown from "../../../Components/SharedComponentsUI/FourButtonBarWithDropDown.vue";
 import ContactPageDeleteContact from "../../../Components/AdminComponents/AdminContactPageComponents/AdminContactPageSharedComponents/ContactPageDeleteContact.vue";
+import ContactInformationEdit from "../../../Components/SharedComponentsContact/ContactInformationEdit.vue";
 
 export default {
   data() {
@@ -130,6 +142,9 @@ export default {
         this.popupOpen = popup;
       }
     },
+    editContact(payload) {
+      this.contact[payload.variable] = payload.value;
+    },
 
     async toggleEventAssignment() {
       this.eventAssignmentOpen = !this.eventAssignmentOpen;
@@ -158,6 +173,7 @@ export default {
     ContactPageNotes,
     ContactPageResetPassword,
     ContactPageDeleteContact,
+    ContactInformationEdit,
     // MessagingSingleComponent,
     FourButtonBarWithDropDown,
   },
