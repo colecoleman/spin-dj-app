@@ -72,11 +72,11 @@ export default {
   }
 
   .right {
-    justify-content: right;
+    justify-content: flex-end;
   }
 
   .left {
-    justify-content: left;
+    justify-content: flex-start;
   }
 
   .dashboard-button {
