@@ -214,7 +214,7 @@ export default {
           },
         ],
       },
-      popupOpen: "payment",
+      popupOpen: undefined,
     };
   },
   computed: {
