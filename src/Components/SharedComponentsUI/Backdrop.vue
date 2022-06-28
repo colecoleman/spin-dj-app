@@ -15,10 +15,10 @@ export default {};
   height: 100vh;
   top: 0;
   left: 0;
-  /* z-index: 5; */
   background-color: rgba(255, 255, 255, 0.25);
-
   filter: blur(0px);
+  z-index: 100;
+  backdrop-filter: blur(3px);
 }
 
 @media print {
