@@ -194,11 +194,11 @@ export default {
     balanceOutstanding,
     finalPaymentDueDate,
     closePopup() {
-      this.$emit("closePopup");
+      this.$emit("close");
     },
   },
   props: ["event", "client", "invoice"],
-  emits: ["closePopup"],
+  emits: ["close"],
   components: { DocumentViewWithToolbar, Backdrop },
 };
 </script>
