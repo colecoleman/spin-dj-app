@@ -1,15 +1,28 @@
 <template>
   <div id="stripe-card-details-wrapper">
+    <h4>Pay {{ formatPrice(paymentIntent.amount) }}</h4>
     <form id="payment-form">
       <div id="card-element"></div>
       <div id="card-errors" role="alert"></div>
-      <button-standard-with-icon text="Pay" @click="submitCardPayment" />
+      <div class="button-container">
+        <round-icon-button
+          class="back-arrow"
+          :svg="submitting ? 'loading' : 'back-arrow'"
+          @click="navigateBackward"
+        />
+        <round-icon-button
+          class="back-arrow"
+          :svg="submitting ? 'loading' : 'circle-checkmark'"
+          @click="submitCardPayment"
+        />
+      </div>
     </form>
   </div>
 </template>
 <script>
-import ButtonStandardWithIcon from "../../../SharedComponentsUI/ButtonStandardWithIcon.vue";
+import { formatPrice } from "../../../../helpers.js";
 import { loadStripe } from "@stripe/stripe-js";
+import RoundIconButton from "../../../SharedComponentsUI/RoundIconButton.vue";
 
 export default {
   data() {
@@ -18,15 +31,21 @@ export default {
       elements: null,
       style: null,
       card: null,
+      submitting: false,
     };
   },
   methods: {
+    formatPrice,
     submitCardPayment() {
+      this.submitting = true;
+      let elements = this.elements;
       this.stripe
-        .confirmCardPayment(this.paymentIntent.client_secret, {
-          payment_method: {
-            card: this.card,
+        .confirmPayment({
+          elements,
+          confirmParams: {
+            return_url: "https://spindj.io/",
           },
+          redirect: "if_required",
         })
         .then((res) => {
           if (res.paymentIntent.status === "succeeded") {
@@ -35,11 +54,14 @@ export default {
               note: "Payment Successful",
             });
           }
-          this.$emit("closeCard");
+          this.$emit("successful-payment", res.paymentIntent);
         })
         .catch((e) => {
           console.log(e);
         });
+    },
+    navigateBackward() {
+      this.$emit("navigate-backwards", "chooseDigitalPaymentAmount");
     },
   },
   computed: {
@@ -52,45 +74,39 @@ export default {
     this.stripe = await loadStripe(this.stripePk, {
       stripeAccount: this.payeeAccount.id,
     });
-    this.elements = this.stripe.elements();
-    this.style = {
-      base: {
-        iconColor: this.branding.textColor,
-        color: this.branding.textColor,
-        // backgroundColor: this.branding.backgroundColor,
-        fontWeight: "500",
-        outline: "1px solid black",
-        fontFamily: "Roboto, Open Sans, Segoe UI, sans-serif",
-        fontSize: "16px",
-        fontSmoothing: "antialiased",
-        ":-webkit-autofill": {
-          color: this.branding.textColor,
-        },
-        "::placeholder": {
-          color: this.branding.textColor,
-        },
-      },
-    };
+    this.elements = this.stripe.elements({
+      clientSecret: this.paymentIntent.client_secret,
+    });
 
-    this.card = this.elements.create("card", { style: this.style });
+    this.card = this.elements.create("payment");
     this.card.mount("#card-element");
   },
 
-  components: { ButtonStandardWithIcon },
-  emits: ["closeCard"],
+  components: { RoundIconButton },
+  emits: ["closeCard", "successful-payment", "navigate-backwards"],
   props: ["paymentIntent", "stripePk"],
 };
 </script>
 <style scoped>
 #stripe-card-details-wrapper {
-  width: 400px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
 }
 
 #card-element {
-  /* background-color: var(--backgroundColor); */
   border-radius: 8px;
-  border: 1px solid var(--textColor);
-  padding: 10px;
-  margin-bottom: 10px;
+  width: 100%;
+}
+.button-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+.back-arrow {
+  height: 30px;
+  width: 30px;
+  margin: 20px;
 }
 </style>
