@@ -111,7 +111,7 @@ export default {
 }
 
 .card {
-  border-radius: 25px;
+  border-radius: 12px;
   background-color: var(--foregroundColor);
   box-sizing: border-box;
   filter: drop-shadow(0px 2px 2px var(--cardOutline));
