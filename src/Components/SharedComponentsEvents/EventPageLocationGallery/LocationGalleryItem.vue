@@ -41,7 +41,6 @@ export default {
       return this.$store.getters.userRole;
     },
     address() {
-      console.log(this.location);
       if (this.location.address) {
         return this.location.address;
       } else {
@@ -70,7 +69,8 @@ export default {
 
 <style scoped>
 #specific-event-page-location-scroll-item-wrapper {
-  height: 100%;
+  height: calc(100% - 4px);
+  box-sizing: border-box;
   /* width: 100%; */
   width: calc(100% + 40px);
   background-color: var(--cardOutline);
@@ -80,7 +80,7 @@ export default {
   position: relative;
   align-items: center;
   justify-content: center;
-  border-radius: 0 0 25px 25px;
+  border-radius: 0 0 12px 12px;
 }
 
 #map-container {
@@ -89,8 +89,8 @@ export default {
   width: 100%;
   height: 100%;
   min-height: 50%;
-  border-radius: 0 0 25px 25px;
-  outline: 1px solid var(--cardOutline);
+  border-radius: 0 0 12px 12px;
+  /* outline: 1px solid var(--cardOutline); */
 }
 
 .button-wrapper {
@@ -108,13 +108,13 @@ export default {
   bottom: 0;
   display: flex;
   align-items: flex-end;
-  border-radius: 0 0 25px 25px;
+  border-radius: 0 0 12px 12px;
 }
 
 .address {
   text-align: left;
   padding: 20px 20px;
-  border-radius: 0px 15px 0 25px;
+  border-radius: 0px 15px 0 12px;
   background-color: var(--foregroundColor);
   box-sizing: border-box;
   z-index: 4;

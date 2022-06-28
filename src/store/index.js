@@ -1157,8 +1157,9 @@ const store = createStore({
     async stripeCreatePaymentIntent(context, payload) {
       return new Promise((resolve, reject) => {
         axios
-          .put(
+        .put(
             `https://api.spindj.io/admin/${context.state.user.tenantId}/stripe/pay/${payload.eventId}`,
+            // `https://mty0zf0p2m.execute-api.us-east-1.amazonaws.com/admin/${context.state.user.tenantId}/stripe/pay/${payload.eventId}`,
             payload
           )
           .then((res) => {
@@ -1614,6 +1615,9 @@ const store = createStore({
     },
     editEvent(state, payload) {
       state.event[payload.variable] = payload.data[payload.variable];
+    },
+    addPaymentToEvent(state, payload) {
+      state.event.invoice.payments.push(payload);
     },
     setEvent(state, payload) {
       state.event = payload;

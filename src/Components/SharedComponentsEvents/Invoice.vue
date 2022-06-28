@@ -198,7 +198,7 @@ export default {
     },
   },
   props: ["event", "client", "invoice"],
-  emits: ["closePopup"],
+  emits: ["close"],
   components: { DocumentViewWithToolbar, Backdrop },
 };
 </script>
