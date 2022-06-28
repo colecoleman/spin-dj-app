@@ -9,15 +9,22 @@
         @close="togglePopup()"
       />
     </Transition>
-
-    <forms
-      v-if="popupOpen === 'forms'"
-      @close="togglePopup()"
-      :forms="event.forms"
-      :event="event"
-      :eventId="event.userId"
-    />
-
+    <Transition name="rise">
+      <forms
+        v-if="popupOpen === 'forms'"
+        @close="togglePopup()"
+        :forms="event.forms"
+        :event="event"
+        :eventId="event.userId"
+      />
+    </Transition>
+    <Transition name="rise">
+      <event-make-payment
+        v-if="popupOpen === 'make-payment'"
+        :event="event"
+        @close-popup="togglePopup"
+      />
+    </Transition>
     <Transition name="rise">
       <contracts
         v-if="popupOpen === 'contract'"
@@ -33,7 +40,7 @@
         <event-page-contact-card :event="event" />
       </div>
       <div id="alerts">
-        <event-page-alerts :alerts="eventAlerts" />
+        <event-information :event="event" />
       </div>
       <div id="button-bar">
         <four-button-bar-with-drop-down
@@ -45,7 +52,8 @@
         <location-gallery :event="event" />
       </div>
       <div id="make-payment">
-        <event-make-payment-card :event="event" :eventId="event.userId" />
+        <event-page-alerts :alerts="eventAlerts" />
+        <!-- <event-make-payment-card :event="event" :eventId="event.userId" /> -->
       </div>
       <div id="contact-carousel">
         <contact-list :contacts="event.contacts" />
@@ -70,8 +78,9 @@ import ToDoList from "../../../Components/SharedComponentsToDoList/ToDoList.vue"
 // import MessagingEvent from "../../../Components/SharedComponentsMessaging/MessagingEvent.vue";
 import Messaging from "../../../Components/SharedComponentsMessaging/Messaging.vue";
 import EventPageContactCard from "../../../Components/SharedComponentsEvents/EventPageContactCard.vue";
-
-import EventMakePaymentCard from "../../../Components/SharedComponentsEvents/EventMakePayment/EventMakePaymentCard.vue";
+import EventMakePayment from "../../../Components/SharedComponentsEvents/EventMakePayment/EventMakePayment.vue";
+import EventInformation from "../../../Components/AdminComponents/AdminEventPageComponents/EventInformation.vue";
+// import EventMakePaymentCard from "../../../Components/SharedComponentsEvents/EventMakePayment/EventMakePaymentCard.vue";
 import Forms from "../../../Components/SharedComponentsEvents/Forms.vue";
 import Invoice from "../../../Components/SharedComponentsEvents/Invoice.vue";
 import Contracts from "../../../Components/SharedComponentsEvents/Contracts.vue";
@@ -105,6 +114,10 @@ export default {
         {
           title: "View Contract",
           parameter: "contract",
+        },
+        {
+          title: "Make Payment",
+          parameter: "make-payment",
         },
       ],
       popupOpen: null,
@@ -201,7 +214,8 @@ export default {
     ContactList,
     LocationGallery,
     EventPageAlerts,
-    EventMakePaymentCard,
+    EventInformation,
+    EventMakePayment,
     Invoice,
     Forms,
     Contracts,

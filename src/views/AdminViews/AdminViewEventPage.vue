@@ -13,7 +13,7 @@
         :event="event"
         :client="client"
         v-if="popupOpen === 'invoice'"
-        @close-popup="togglePopup"
+        @close="togglePopup"
       />
     </Transition>
     <Transition name="rise">
@@ -35,6 +35,15 @@
         :contacts="event.contacts"
         :event="event"
         :locations="event.locations"
+      />
+    </Transition>
+    <Transition name="rise">
+      <event-make-payment
+        v-if="popupOpen === 'payment'"
+        @close-popup="togglePopup"
+        :eventId="event.userId"
+        :event="event"
+        @apply-manual-payment="applyManualPayment"
       />
     </Transition>
     <popup-modal
@@ -73,20 +82,7 @@
         <button-standard-with-icon text="Save Event" @click="saveAdjustments" />
       </template>
     </popup-modal>
-    <popup-modal
-      title="Make Payment"
-      v-if="popupOpen === 'payment'"
-      @close-popup="togglePopup"
-    >
-      <template v-slot:window>
-        <event-make-payment
-          :eventId="event.userId"
-          :event="event"
-          @apply-manual-payment="applyManualPayment"
-          @close-popup="togglePopup"
-        />
-      </template>
-    </popup-modal>
+
     <popup-modal
       title="Edit Products"
       v-if="popupOpen === 'edit-products'"
@@ -218,7 +214,7 @@ export default {
           },
         ],
       },
-      popupOpen: undefined,
+      popupOpen: "payment",
     };
   },
   computed: {
