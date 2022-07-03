@@ -62,7 +62,7 @@ export default {
 .input-container {
   min-width: 125px;
   max-width: 300px;
-  border: 1px solid var(--textColor);
+  border: 1px solid var(--cardOutline);
   border-radius: 4px;
   display: flex;
 }
