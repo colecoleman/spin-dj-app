@@ -1,193 +1,170 @@
 <template>
-  <base-card title="Forms">
-    <template v-slot:content>
-      <div class="split-view">
-        <div class="three-quarter-width">
-          <div class="form-item">
-            <input-with-title
-              title="Form Name:"
-              type="text"
-              :inputValue="form.name"
-              @input="fieldInput(form, 'name', $event)"
-            />
-          </div>
-          <div class="form-item">
-            <input-with-title
-              title="Form Description:"
-              type="textarea"
-              :inputValue="form.description"
-              @input="fieldInput(form, 'description', $event)"
-            />
-          </div>
-          <div class="form-item" v-if="form.fields.length > 0">
-            <div
-              class="form-item"
-              v-for="(field, index) in form.fields"
-              :key="index"
-            >
-              <div class="row-flex">
-                <div class="field-title">
-                  <round-icon-button
-                    class="round-icon-button"
-                    svg="music"
-                    v-if="field.libraryEnabled"
-                    hoverable="false"
-                  />
-                  <p class="bold">{{ field.name }}</p>
-                </div>
-                <div class="action-buttons">
-                  <round-icon-button
-                    class="round-icon-button"
-                    svg="x-icon"
-                    @click="deleteField(form, index)"
-                    hoverable="true"
-                  />
-                  <round-icon-button
-                    class="round-icon-button"
-                    svg="edit-pen"
-                    @click="editField(field, index)"
-                    hoverable="true"
-                  />
-                  <round-icon-button
-                    class="round-icon-button"
-                    svg="down-arrow"
-                    hoverable="true"
-                    @click="moveField(index + 1, index, form.fields)"
-                    v-if="index != form.fields.length - 1"
-                  />
-                  <round-icon-button
-                    class="round-icon-button"
-                    svg="down-arrow"
-                    @click="moveField(index - 1, index, form.fields)"
-                    hoverable="true"
-                    style="transform: rotate(180deg)"
-                    v-if="index != 0"
-                  />
-                </div>
-              </div>
-              <div class="form-item row-flex">
-                <div
-                  class="form-item input-view"
-                  v-for="(input, inputIndex) in field.fields"
-                  :key="inputIndex"
-                >
-                  <input-with-title
-                    v-if="
-                      input.inputType === 'text' ||
-                      input.inputType === 'tel' ||
-                      input.inputType === 'textarea' ||
-                      input.inputType === 'email'
-                    "
-                    :title="input.inputTitle"
-                    :type="input.inputType"
-                    :placeholder="input.placeholder"
-                  />
-                  <div v-if="input.inputType === 'radio'">
-                    <div
-                      v-for="(option, index) in input.options"
-                      :key="index"
-                      class="radio"
-                    >
-                      <input
-                        type="radio"
-                        :name="input.inputTitle"
-                        :value="option.optionValue"
-                      />
-                      <p>{{ option.optionValue }}</p>
-                    </div>
-                  </div>
-                  <div v-if="input.inputType === 'select'">
-                    <input-with-title
-                      :options="input.options"
-                      type="select"
-                      optionDisplay="optionValue"
-                      :inputValue="input.options[0]"
-                      :title="input.inputTitle"
-                    />
-                  </div>
-                </div>
-              </div>
-              <form-field-creation
-                @new-input-quantity="newInputQuantity"
-                @set-option-quantity="setOptionQuantity"
-                @toggle-library-enabled="toggleLibraryEnabled"
-                v-if="fieldEditIndex === index"
-                :newField="newField"
-                :fieldEditIndex="index"
-                @save-field="saveField"
-              />
-            </div>
-          </div>
-          <form-field-creation
-            @new-input-quantity="newInputQuantity"
-            @set-option-quantity="setOptionQuantity"
-            @toggle-library-enabled="toggleLibraryEnabled"
-            v-if="newFieldOpen"
-            :newField="newField"
-            :fieldEditIndex="index"
-            @save-field="saveField"
-          />
-          <button-standard-with-icon
-            text="Add Field"
-            v-if="!newFieldOpen && !fieldEditIndex"
-            @click="openNewField"
-            class="button-styling"
-          />
-          <button-standard-with-icon
-            :text="'Save Form'"
-            @click="saveForm()"
-            class="button-styling"
+  <layout
+    :addButtonText="addButtonText"
+    :processing="processing"
+    productNameProperty="name"
+    :products="forms"
+    :saveButtonEnabled="true"
+    @clear-form="resetFields"
+    @close="close"
+    @delete-button-clicked="deleteForm"
+    @edit-button-clicked="editForm"
+    @save-button-clicked="saveForm"
+  >
+    <template v-slot:form>
+      <div class="forms-section">
+        <div class="form-item">
+          <input-with-title
+            title="Form Name:"
+            type="text"
+            :inputValue="form.name"
+            @input="fieldInput(form, 'name', $event)"
           />
         </div>
-        <div class="quarter-width, .three-quarter-width">
-          <h5 v-if="!hasForms">No forms added yet! Add One!</h5>
-          <div v-if="hasForms" class="form-list">
-            <list-item-style-wrapper
-              v-for="(form, index) in forms"
-              :key="index"
-            >
-              <h5>
-                {{ form.name }}
-              </h5>
+        <div class="form-item">
+          <input-with-title
+            title="Form Description:"
+            type="textarea"
+            :inputValue="form.description"
+            @input="fieldInput(form, 'description', $event)"
+          />
+        </div>
+        <div class="form-item" v-if="form.fields.length > 0">
+          <div
+            class="form-item"
+            v-for="(field, index) in form.fields"
+            :key="index"
+          >
+            <div class="row-flex">
+              <div class="field-title">
+                <round-icon-button
+                  class="round-icon-button"
+                  svg="music"
+                  v-if="field.libraryEnabled"
+                  hoverable="false"
+                />
+                <p class="bold">{{ field.name }}</p>
+              </div>
               <div class="action-buttons">
                 <round-icon-button
-                  svg="x-icon"
                   class="round-icon-button"
-                  @click="deleteForm(index)"
+                  svg="x-icon"
+                  @click="deleteField(form, index)"
+                  hoverable="true"
                 />
                 <round-icon-button
-                  svg="edit-pen"
                   class="round-icon-button"
-                  @click="editForm(form, index)"
+                  svg="edit-pen"
+                  @click="editField(field, index)"
+                  hoverable="true"
+                />
+                <round-icon-button
+                  class="round-icon-button"
+                  svg="down-arrow"
+                  hoverable="true"
+                  @click="moveField(index + 1, index, form.fields)"
+                  v-if="index != form.fields.length - 1"
+                />
+                <round-icon-button
+                  class="round-icon-button"
+                  svg="down-arrow"
+                  @click="moveField(index - 1, index, form.fields)"
+                  hoverable="true"
+                  style="transform: rotate(180deg)"
+                  v-if="index != 0"
                 />
               </div>
-            </list-item-style-wrapper>
+            </div>
+            <div class="form-item row-flex">
+              <div
+                class="form-item input-view"
+                v-for="(input, inputIndex) in field.fields"
+                :key="inputIndex"
+              >
+                <input-with-title
+                  v-if="
+                    input.inputType === 'text' ||
+                    input.inputType === 'tel' ||
+                    input.inputType === 'textarea' ||
+                    input.inputType === 'email'
+                  "
+                  :title="input.inputTitle"
+                  :type="input.inputType"
+                  :placeholder="input.placeholder"
+                />
+                <div v-if="input.inputType === 'radio'">
+                  <div
+                    v-for="(option, index) in input.options"
+                    :key="index"
+                    class="radio"
+                  >
+                    <input
+                      type="radio"
+                      :name="input.inputTitle"
+                      :value="option.optionValue"
+                    />
+                    <p>{{ option.optionValue }}</p>
+                  </div>
+                </div>
+                <div v-if="input.inputType === 'select'">
+                  <input-with-title
+                    :options="input.options"
+                    type="select"
+                    optionDisplay="optionValue"
+                    :inputValue="input.options[0]"
+                    :title="input.inputTitle"
+                  />
+                </div>
+              </div>
+            </div>
+            <form-field-creation
+              @new-input-quantity="newInputQuantity"
+              @set-option-quantity="setOptionQuantity"
+              @toggle-library-enabled="toggleLibraryEnabled"
+              v-if="fieldEditIndex === index"
+              :newField="newField"
+              :fieldEditIndex="index"
+              @save-field="saveField"
+            />
           </div>
         </div>
+        <form-field-creation
+          @new-input-quantity="newInputQuantity"
+          @set-option-quantity="setOptionQuantity"
+          @toggle-library-enabled="toggleLibraryEnabled"
+          v-if="newFieldOpen"
+          :newField="newField"
+          :fieldEditIndex="index"
+          @save-field="saveField"
+        />
+        <button-standard-with-icon
+          text="Add Field"
+          v-if="!newFieldOpen && !fieldEditIndex"
+          @click="openNewField"
+          class="button-styling"
+        />
+        <!-- <button-standard-with-icon
+          :text="'Save Form'"
+          @click="saveForm()"
+          class="button-styling"
+        /> -->
       </div>
     </template>
-  </base-card>
+  </layout>
 </template>
 
 <script>
-import ListItemStyleWrapper from "../../../../SharedComponentsUI/ListItemStyleWrapper.vue";
 import RoundIconButton from "../../../../SharedComponentsUI/RoundIconButton.vue";
 import FormFieldCreation from "./AdminViewConfigFormsComponents/FormFieldCreation.vue";
 import InputWithTitle from "../../../../SharedComponentsUI/ElementLibrary/InputWithTitle.vue";
 import ButtonStandardWithIcon from "../../../../SharedComponentsUI/ButtonStandardWithIcon.vue";
+import Layout from "../../AdminConfigUIComponents/AdminConfigLayoutTileAndForm.vue";
 
 export default {
-  components: {
-    ListItemStyleWrapper,
-    ButtonStandardWithIcon,
-    InputWithTitle,
-    RoundIconButton,
-    FormFieldCreation,
-  },
   data() {
     return {
-      svgStyling:
-        "height: 10px; width: 10px; margin: 0px 5px; cursor: pointer;",
+      activeView: "forms-list",
+      addButtonText: "Add New Form",
       newFieldOpen: true,
       form: {
         id: "form" + new Date().getTime(),
@@ -200,15 +177,52 @@ export default {
         inputQuantity: undefined,
         fields: [],
         duplicable: false,
+        libraryEnabled: false,
       },
       editIndex: undefined,
       fieldEditIndex: undefined,
       fieldTemplateTitleFieldOpen: false,
       fieldTemplateTitle: undefined,
       // fieldTemplates: [],
+      processing: false,
     };
   },
+  computed: {
+    forms() {
+      return this.$store.getters.forms;
+    },
+    fieldTemplates() {
+      return this.$store.getters.formTemplates;
+    },
+    hasForms() {
+      if (this.forms.length > 0) {
+        return true;
+      } else {
+        return false;
+      }
+    },
+  },
   methods: {
+    close() {
+      this.$emit("close");
+    },
+
+    resetFields() {
+      this.editIndex = undefined;
+      this.form = {
+        id: "form" + new Date().getTime(),
+        name: undefined,
+        description: undefined,
+        fields: [],
+      };
+      this.newField = {
+        name: undefined,
+        inputQuantity: undefined,
+        fields: [],
+        duplicable: false,
+        libraryEnabled: false,
+      };
+    },
     fieldInput(object, property, value) {
       let string = value.replaceAll(":", "");
       if (object) {
@@ -297,34 +311,26 @@ export default {
         this.newField.fields = [];
       }
     },
-    saveForm() {
+    async saveForm() {
+      this.processing = true;
       if (this.editIndex != undefined) {
         let payload = {
           index: this.editIndex,
           form: this.form,
         };
-        this.$store.commit("adminConfigEditForm", payload);
+        await this.$store.commit("adminConfigEditForm", payload);
       } else {
-        this.$store.commit("adminConfigAddForm", this.form);
+        await this.$store.commit("adminConfigAddForm", this.form);
       }
-      this.form = {
-        id: "form" + new Date().getTime(),
-        name: undefined,
-        description: undefined,
-        fields: [],
-      };
-      this.newField = {
-        name: undefined,
-        inputQuantity: undefined,
-        fields: [],
-        duplicable: false,
-      };
+      await this.$store.dispatch("updateBusinessSettings");
+      this.processing = false;
     },
     openNewField() {
       this.newFieldOpen = true;
     },
-    deleteForm(index) {
-      this.$store.commit("adminConfigDeleteForm", index);
+    async deleteForm(index) {
+      await this.$store.commit("adminConfigDeleteForm", index);
+      await this.$store.dispatch("updateBusinessSettings");
     },
     editForm(form, index) {
       this.form = { ...this.form, ...form };
@@ -343,51 +349,39 @@ export default {
       array.splice(direction, 0, ...item);
     },
   },
-  computed: {
-    forms() {
-      return this.$store.getters.forms;
-    },
-    fieldTemplates() {
-      return this.$store.getters.formTemplates;
-    },
-    hasForms() {
-      if (this.forms.length > 0) {
-        return true;
-      } else {
-        return false;
-      }
-    },
+  components: {
+    ButtonStandardWithIcon,
+    InputWithTitle,
+    RoundIconButton,
+    FormFieldCreation,
+    Layout,
   },
+  emits: ["close"],
 };
 </script>
 
 <style scoped>
 @media screen {
-  p {
-    font-size: 9pt;
-  }
-  .split-view {
-    padding: 10px;
-  }
-  .split-view,
-  .input-creation {
+  .forms-section {
+    width: calc(100% - 20px);
     display: flex;
-    flex-direction: column-reverse;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    /* padding: 5px; */
   }
 
-  .quarter-width,
-  .three-quarter-width {
+  .forms-form-section {
     width: 100%;
+    height: fit-content;
+  }
+
+  p {
+    text-align: left;
   }
 
   .form-item {
     max-width: 100%;
-  }
-
-  .indented {
-    margin-left: 20px;
-    padding-left: 10px;
-    border-left: 1px solid var(--cardOutline);
+    width: 100%;
   }
 
   .row-flex {
@@ -395,10 +389,6 @@ export default {
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-  }
-
-  .row-flex div {
-    /* flex: 1; */
   }
 
   .round-icon-button {
@@ -412,7 +402,6 @@ export default {
   }
 
   .input-view {
-    /* max-width: 100px; */
     align-items: flex-start;
   }
 
@@ -440,10 +429,6 @@ export default {
     justify-self: left;
   }
 
-  .field-creator {
-    margin-top: 5px;
-  }
-
   .action-buttons {
     display: flex;
   }
@@ -452,14 +437,9 @@ export default {
       font-size: 9pt;
     }
 
-    .split-view,
     .input-creation {
       display: flex;
       flex-direction: row;
-    }
-
-    .quarter-width {
-      width: 25%;
     }
 
     .button-styling {
@@ -468,9 +448,6 @@ export default {
       max-width: 150px;
     }
 
-    .three-quarter-width {
-      width: 75%;
-    }
     .form-item {
       display: flex;
       flex-direction: column;
@@ -483,10 +460,6 @@ export default {
       flex-direction: row;
       /* justify-content: space-evenly; */
       align-items: center;
-    }
-
-    .row-flex div {
-      /* flex: 1; */
     }
 
     .input-view {
@@ -515,10 +488,6 @@ export default {
       width: 40%;
       align-self: left;
       justify-self: left;
-    }
-
-    .field-creator {
-      margin-top: 5px;
     }
   }
 }

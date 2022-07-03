@@ -1,45 +1,37 @@
 <template>
-  <base-card title="Add-Ons">
-    <template v-slot:content>
-      <div class="add-on-wrapper">
-        <div class="add-on-section">
-          <h5 class="bold">Add New Add-On:</h5>
-          <div class="add-on-item">
-            <!-- <p>Add-On Name:</p>
-            <input type="text" v-model.trim="addOn.name" /> -->
-            <input-with-title
-              type="text"
-              title="Add-On Name:"
-              :inputValue="addOn.name"
-              @input="fieldInput(addOn, 'name', $event)"
-            />
-          </div>
-          <div class="add-on-item">
-            <p>Photo:</p>
-            <input
-              type="file"
-              id="add-on-hidden-file-button"
-              @change="onFileChange"
-              style="display: none"
-            />
-            <button-standard-with-icon
-              text="Choose File"
-              @click="chooseFile()"
-              class="form-button"
-            />
-          </div>
-          <div class="add-on-item"></div>
-
-          <div class="add-on-item">
-            <input-with-title
-              title="Price Option:"
-              type="select"
-              :options="['Unit', 'Flat']"
-              :inputValue="addOn.priceOption"
-              @input="fieldInput(addOn, 'priceOption', $event)"
-            />
-          </div>
-          <div class="add-on-item" v-if="addOn.priceOption === 'Unit'">
+  <layout
+    :addButtonText="addButtonText"
+    :figureDetails="buildDetails"
+    :processing="processing"
+    productNameProperty="name"
+    productPhotoProperty="photo"
+    :products="addOns"
+    :saveButtonEnabled="addOnReadyToBeSubmitted"
+    @clear-form="clearForm"
+    @close="close"
+    @delete-button-clicked="deleteAddOn"
+    @edit-button-clicked="editAddOn"
+    @save-button-clicked="addAddOn"
+  >
+    <template v-slot:form>
+      <div class="add-on-section">
+        <photo-and-title
+          placeholder="Add-On Name"
+          :image="addOn.photo"
+          :title="addOn.name"
+          @input="titleInput"
+          @photo-chosen="photoChosen"
+        />
+        <div class="add-on-form-section">
+          <p>Add-On Details:</p>
+          <input-with-title
+            title="Price Option:"
+            type="select"
+            :options="['Unit', 'Flat']"
+            :inputValue="addOn.priceOption"
+            @input="fieldInput(addOn, 'priceOption', $event)"
+          />
+          <div v-if="addOn.priceOption === 'Unit'">
             <input-with-title
               title="Minimum # Units:"
               type="number"
@@ -52,82 +44,32 @@
               :inputValue="addOn.pricing.unitRate"
               @input="fieldInput(addOn.pricing, 'unitRate', $event)"
             />
-            <button-standard-with-icon
-              text="Add Add-On"
-              @click="addAddOn()"
-              class="form-button"
-            />
           </div>
-          <div class="add-on-item" v-if="addOn.priceOption == 'Flat'">
+          <div v-if="addOn.priceOption == 'Flat'">
             <input-with-title
               title="Flat Rate:"
               type="number"
               :inputValue="addOn.pricing.unitRate"
               @input="fieldInput(addOn.pricing, 'unitRate', $event)"
             />
-
-            <button-standard-with-icon
-              text="Add Add-On"
-              @click="addAddOn()"
-              class="form-button"
-            />
-          </div>
-        </div>
-        <div class="add-on-section">
-          <h5 v-if="!hasAddOns">You don't have any add-ons yet. Add One!</h5>
-          <div v-if="hasAddOns" class="conditional-add-on-wrapper">
-            <div
-              class="add-on-item"
-              style="border-bottom: 1px solid gray; margin-bottom: 10px"
-              v-for="(addOn, index) in addOns"
-              :key="addOn.name"
-            >
-              <h4>
-                {{ addOn.name }}
-
-                <vue-svg svg="x-icon" @click="deleteAddOn(index)" class="svg" />
-                <vue-svg
-                  svg="edit-pen"
-                  @click="editAddOn(addOn, index)"
-                  class="svg"
-                />
-              </h4>
-              <div class="add-on-display-section">
-                <div class="add-on-item" v-if="addOn.photo">
-                  <p>Photo: {{ addOn.photo.name }}</p>
-                </div>
-              </div>
-
-              <div class="add-on-display-section">
-                <div class="add-on-item" v-if="addOn.priceOption === 'Flat'">
-                  <p>
-                    <b>Flat Rate:</b>
-                    {{ formatPrice(addOn.pricing.unitRate) }}
-                  </p>
-                </div>
-                <div class="add-on-item" v-if="addOn.priceOption === 'Unit'">
-                  <p>
-                    <b>Unit Rate: </b>{{ formatPrice(addOn.pricing.unitRate) }}
-                  </p>
-                  <p><b>Minimum # Units: </b>{{ addOn.pricing.minUnits }}</p>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
       </div>
     </template>
-  </base-card>
+  </layout>
 </template>
 
 <script>
-import VueSvg from "../../../../assets/VueSvg.vue";
+import Layout from "../AdminConfigUIComponents/AdminConfigLayoutTileAndForm.vue";
 import InputWithTitle from "../../../SharedComponentsUI/ElementLibrary/InputWithTitle.vue";
+import PhotoAndTitle from "../AdminConfigUIComponents/AdminConfigProductPhotoAndTitle.vue";
 import { formatPrice } from "../../../../helpers";
 
 export default {
   data() {
     return {
+      processing: false,
+      addButtonText: "Add New Add-On",
       editIndex: undefined,
       addOn: {
         id: "addOn" + Date.now(),
@@ -144,7 +86,44 @@ export default {
   },
 
   methods: {
-    formatPrice,
+    titleInput(val) {
+      this.addOn.name = val;
+    },
+    close() {
+      this.$emit("close");
+    },
+    clearForm() {
+      this.addOn = {
+        name: undefined,
+        priceOption: undefined,
+        pricing: {
+          unitRate: undefined,
+          minUnits: undefined,
+        },
+        photo: undefined,
+        equipmentNeeded: undefined,
+      };
+      this.editIndex = undefined;
+    },
+    photoChosen(photo) {
+      this.photoFile = photo;
+      let reader = new FileReader();
+      reader.onload = (event) => {
+        this.addOn.photo = event.target.result;
+      };
+      reader.readAsDataURL(photo);
+    },
+    buildDetails(item) {
+      if (item.priceOption === "Flat") {
+        return [`Flat: ${formatPrice(item.pricing.unitRate)}`];
+      }
+      if (item.priceOption === "Unit") {
+        return [
+          `${formatPrice(item.pricing.unitRate)} / ea`,
+          `${item.pricing.minUnits} min`,
+        ];
+      }
+    },
     fieldInput(object, property, value) {
       if (object) {
         object[property] = value;
@@ -156,7 +135,7 @@ export default {
       this.addOn.pricing.unitRate *= 100;
       if (this.photoFile) {
         await this.$store.dispatch("addPhoto", this.photoFile).then((res) => {
-          this.input.photo = res;
+          this.addOn.photo = res;
         });
       }
       if (this.editIndex != undefined) {
@@ -168,7 +147,15 @@ export default {
       } else {
         this.$store.commit("adminConfigAddAddOn", this.addOn);
       }
-      this.addOn = {
+      await this.$store.dispatch("updateBusinessSettings");
+    },
+    async deleteAddOn(index) {
+      await this.$store.commit("adminConfigDeleteAddOn", index);
+      await this.$store.dispatch("updateBusinessSettings");
+    },
+
+    editAddOn(addOn, index) {
+      let addOnTemplate = {
         name: undefined,
         priceOption: undefined,
         pricing: {
@@ -178,20 +165,8 @@ export default {
         photo: undefined,
         equipmentNeeded: undefined,
       };
-    },
-    deleteAddOn(index) {
-      this.$store.commit("adminConfigDeleteAddOn", index);
-    },
-    chooseFile() {
-      document.getElementById("add-on-hidden-file-button").click();
-    },
-    onFileChange(e) {
-      var files = e.target.files || e.dataTransfer.files;
-      if (!files.length) return;
-      this.photoFile = files[0];
-    },
-    editAddOn(addOn, index) {
-      this.addOn = { ...this.addOn, ...addOn };
+      this.photoFile = undefined;
+      this.addOn = { ...addOnTemplate, ...addOn };
       this.editIndex = index;
       this.addOn.pricing = {
         minUnits: this.addOn.pricing.minUnits,
@@ -200,114 +175,51 @@ export default {
     },
   },
   computed: {
-    hasAddOns() {
-      return this.addOns.length > 0;
+    addOnReadyToBeSubmitted() {
+      if (this.addOn.name) {
+        if (this.addOn.priceOption === "Unit") {
+          return this.addOn.pricing.unitRate && this.addOn.pricing.minUnits;
+        } else if (this.addOn.priceOption === "Flat") {
+          return this.addOn.pricing.unitRate;
+        } else {
+          return false;
+        }
+      } else {
+        return false;
+      }
     },
     addOns() {
       return this.$store.getters.addOns;
     },
   },
+  emits: ["close"],
   components: {
-    VueSvg,
     InputWithTitle,
+    Layout,
+    PhotoAndTitle,
   },
 };
 </script>
 
 <style scoped>
 @media screen {
-  p {
-    font-size: 9pt;
-  }
-  .svg {
-    height: 10px;
-    width: 10px;
-    margin: 10px;
-    cursor: pointer;
-  }
-  .conditional-add-on-wrapper {
-    max-height: 300px;
-    height: fit-content;
+  .add-on-section {
+    width: 100%;
+    height: auto;
     overflow: scroll;
   }
-  .add-on-wrapper {
-    display: flex;
-    flex-direction: column-reverse;
-    flex-wrap: wrap;
-    max-height: 100%;
-    overflow-y: scroll;
-    padding: 10px;
-  }
-  .add-on-section {
+
+  .add-on-form-section {
     width: 100%;
   }
 
-  .add-on-item {
+  .bubble-wrapper {
     display: flex;
-    flex-direction: column;
-    justify-content: left;
-    margin-left: 10px;
+    flex-wrap: wrap;
   }
 
-  .add-on-item > p,
-  .add-on-section > h5 {
+  p {
     text-align: left;
-  }
-
-  .add-on-item > select,
-  .add-on-item > label,
-  .add-on-item > input,
-  .form-button {
-    width: 90%;
-    align-self: left;
-    justify-self: left;
-  }
-
-  .button-standard-with-icon {
-    margin-top: 10px;
-  }
-
-  @media (min-width: 850px) {
-    p {
-      font-size: 9pt;
-    }
-
-    .add-on-wrapper {
-      display: flex;
-      flex-direction: row;
-      flex-wrap: wrap;
-      max-height: 100%;
-      overflow-y: scroll;
-      margin-top: 10px;
-    }
-    .add-on-section {
-      width: 50%;
-    }
-
-    .add-on-item {
-      display: flex;
-      flex-direction: column;
-      justify-content: left;
-      margin-left: 10px;
-    }
-
-    .add-on-item > p,
-    .add-on-section > h5 {
-      text-align: left;
-    }
-
-    .add-on-item > select,
-    .add-on-item > label,
-    .add-on-item > input,
-    .form-button {
-      width: 50%;
-      align-self: left;
-      justify-self: left;
-    }
-
-    .button-standard-with-icon {
-      margin-top: 10px;
-    }
   }
 }
 </style>
