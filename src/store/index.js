@@ -1401,16 +1401,16 @@ const store = createStore({
     adminConfigEditAddOn(state, payload) {
       state.businessSettings.product.addOns[payload.index] = payload.addOn;
     },
-    adminConfigAddDiscount(state, payload) {
+    adminConfigAddAdjustment(state, payload) {
       if (!state.businessSettings.product.discounts) {
         state.businessSettings.product.discounts = [];
       }
       state.businessSettings.product.discounts.push(payload);
     },
-    adminConfigDeleteDiscount(state, payload) {
+    adminConfigDeleteAdjustment(state, payload) {
       state.businessSettings.product.discounts.splice(payload, 1);
     },
-    adminConfigEditDiscount(state, payload) {
+    adminConfigEditAdjustment(state, payload) {
       state.businessSettings.product.discounts[payload.index] =
         payload.discount;
     },
