@@ -1,5 +1,6 @@
 <template>
-  <backdrop @click="closePopup"></backdrop>
+  <backdrop @click.self="closePopup">
+
   <div class="window">
     <base-card
       actionIcon="x-icon"
@@ -9,6 +10,7 @@
       <template v-slot:content><slot name="window"></slot></template>
     </base-card>
   </div>
+  </backdrop>
 </template>
 
 <script>

@@ -1,33 +1,22 @@
 
 <template>
-  <base-card title="Calendar">
-    <template v-slot:content>
-      <div id="wrapper">
-        <div class="business-information-wrapper">
-          <div class="business-information-section">
-            <div class="business-information-item">
-              <p class="bold">To Subscribe To Your Company Calendar:</p>
-              <p class="bold calendar" id="calendar-link" @click="copy()">
-                {{ apiCalendarLink }}
-              </p>
-              <p class="context" v-if="!copied">Click to copy!</p>
-              <p class="context" v-if="copied">Copied!</p>
-              <p class="error" v-if="copyError">
-                Failed to copy. Manually copy and paste!
-              </p>
-              <p class="context">
-                Copy and paste the above link into the url field of your
-                calendar provider's "Add Subscribed Calendar".
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </template>
-  </base-card>
+  <large-floating-card @close="close">
+    <div id="wrapper">
+      <p class="bold">To Subscribe To Your Company Calendar:</p>
+      <p class="bold calendar" id="calendar-link" @click="copy">
+        {{ apiCalendarLink }}
+      </p>
+
+      <p class="context">
+        Copy and paste the above link into the url field of your calendar
+        provider's "Add Subscribed Calendar".
+      </p>
+    </div></large-floating-card
+  >
 </template>
 
 <script>
+import LargeFloatingCard from "../../../SharedComponentsUI/FloatingCards/LargeFloatingCard.vue";
 export default {
   data() {
     return {
@@ -41,13 +30,18 @@ export default {
     },
   },
   methods: {
-    async copy() {
+    close() {
+      this.$emit("close");
+    },
+    copy() {
       this.copied = false;
       this.copyError = false;
-      await navigator.clipboard.writeText(this.apiCalendarLink);
+      navigator.clipboard.writeText(this.apiCalendarLink);
       this.copied = true;
     },
   },
+  emits: ["close"],
+  components: { LargeFloatingCard },
 };
 </script>
 
@@ -55,13 +49,18 @@ export default {
 @media screen {
   p {
     font-size: 9pt;
+    max-width: 300px;
+    text-align: center;
   }
 
-  .business-information-wrapper {
+  #wrapper {
     display: flex;
-    flex-direction: column-reverse;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     flex-wrap: wrap;
     max-height: 100%;
+    height: 100%;
     overflow-y: scroll;
     padding: 10px;
   }
@@ -79,12 +78,6 @@ export default {
 
   .business-information-item > p {
     text-align: left;
-  }
-
-  .context {
-    margin: 2px;
-    text-align: right;
-    font-style: italic;
   }
 
   .row-flex {

@@ -23,7 +23,7 @@
           v-for="(contact, index) in contacts"
           :key="index"
           :contact="contact"
-          @initiate-remove-contact="initiateRemoveContact(contact, index)"
+          @initiate-remove-contact="removeContact(contact, index)"
         />
       </div>
     </template>
@@ -86,6 +86,10 @@ export default {
         key: { userId: contact.userId, tenantId: contact.tenantId },
         role: contact.role,
       };
+      let eventKey = {
+        key: { userId: this.event.userId, tenantId: this.event.tenantId },
+        role: contact.role,
+      };
       let contactParameters = {
         contactKey: contactKey.key,
         variable: "associatedEvents",
@@ -94,10 +98,6 @@ export default {
       };
       await this.$store.dispatch("editContact", contactParameters);
 
-      let eventKey = {
-        key: { userId: this.event.userId, tenantId: this.event.tenantId },
-        role: contact.role,
-      };
       let eventParameters = {
         eventKey: {
           userId: this.event.userId,
@@ -110,8 +110,8 @@ export default {
       await this.$store.dispatch("editEvent", eventParameters);
       this.toggleAddContactOpen();
     },
-    async removeContact() {
-      let contact = this.contactToBeRemoved;
+    async removeContact(contact, index) {
+      // let contact = this.contactToBeRemoved;
       let contactKey = {
         key: { userId: contact.userId, tenantId: contact.tenantId },
         role: contact.role,
@@ -124,7 +124,7 @@ export default {
         eventKey: { userId: this.event.userId, tenantId: this.event.tenantId },
         operation: "removeFromList",
         variable: "contacts",
-        value: this.contactRemoveIndex,
+        value: index,
       };
       let contactParameters = {
         contactKey: contactKey.key,

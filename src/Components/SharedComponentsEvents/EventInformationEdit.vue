@@ -211,19 +211,13 @@ export default {
 </script>
 
 <style scoped>
-#edit-card-wrapper {
-  z-index: 100;
-  backdrop-filter: blur(3px);
-}
 #edit-card {
+  position: fixed;
+  width: 80%;
+  height: 60%;
+  top: 20%;
+  left: 10%;
   background-color: var(--foregroundColor);
-  position: absolute;
-  right: 30%;
-  left: calc(50% - 150px);
-  top: 32.5%;
-  width: 40%;
-  min-width: 300px;
-  height: fit-content;
   border-radius: 10px;
   filter: drop-shadow(0px 4px 3px var(--cardOutline));
 }
@@ -271,64 +265,17 @@ p > span {
   cursor: pointer;
 }
 @media screen and (min-width: 800px) {
-  #edit-card-wrapper {
-    z-index: 100;
-    backdrop-filter: blur(3px);
-  }
   #edit-card {
-    background-color: var(--foregroundColor);
-    position: absolute;
-    right: 30%;
     left: 30%;
     top: 32.5%;
     width: 40%;
     height: 35%;
-    border-radius: 10px;
-    filter: drop-shadow(0px 4px 3px var(--cardOutline));
   }
 
-  #information-edit-section {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    align-content: center;
-    flex-wrap: wrap;
-    height: 100%;
-    box-sizing: border-box;
-    padding: 10%;
-  }
   .information-item {
     flex: 1 1 50px;
-    display: flex;
-    flex-direction: column;
     max-width: 50%;
     padding-bottom: unset;
-  }
-
-  .information-and-pen {
-    display: flex;
-    align-items: center;
-    /* position: relative; */
-  }
-
-  .input-with-title {
-    height: 10px;
-    width: 60px;
-    padding: 0;
-    margin: 0;
-    border-color: var(--cardOutline);
-    height: fit-content;
-  }
-
-  p {
-    text-align: left;
-    margin: 0px;
-  }
-
-  p > span {
-    font-weight: 600;
-    cursor: pointer;
   }
 }
 </style>

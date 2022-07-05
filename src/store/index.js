@@ -313,17 +313,20 @@ const store = createStore({
         let id = x.key ? x.key.userId : x;
         return id === payload.value.key.userId;
       });
-      let contactRemoveParameters = {
-        contactKey: {
-          tenantId: contact.tenantId,
-          userId: contact.userId,
-        },
-        operation: "removeFromList",
-        variable: "associatedEvents",
-        value: eventIndex,
-      };
-      await context.dispatch("editContact", contactRemoveParameters);
-      return eventIndex;
+      if (eventIndex > -1) {
+
+        let contactRemoveParameters = {
+          contactKey: {
+            tenantId: contact.tenantId,
+            userId: contact.userId,
+          },
+          operation: "removeFromList",
+          variable: "associatedEvents",
+          value: eventIndex,
+        };
+        await context.dispatch("editContact", contactRemoveParameters);
+        return eventIndex;
+      }
     },
     async setBusinessSettings(context) {
       await axios
@@ -1157,7 +1160,7 @@ const store = createStore({
     async stripeCreatePaymentIntent(context, payload) {
       return new Promise((resolve, reject) => {
         axios
-        .put(
+          .put(
             `https://api.spindj.io/admin/${context.state.user.tenantId}/stripe/pay/${payload.eventId}`,
             // `https://mty0zf0p2m.execute-api.us-east-1.amazonaws.com/admin/${context.state.user.tenantId}/stripe/pay/${payload.eventId}`,
             payload
@@ -1398,16 +1401,16 @@ const store = createStore({
     adminConfigEditAddOn(state, payload) {
       state.businessSettings.product.addOns[payload.index] = payload.addOn;
     },
-    adminConfigAddDiscount(state, payload) {
+    adminConfigAddAdjustment(state, payload) {
       if (!state.businessSettings.product.discounts) {
         state.businessSettings.product.discounts = [];
       }
       state.businessSettings.product.discounts.push(payload);
     },
-    adminConfigDeleteDiscount(state, payload) {
+    adminConfigDeleteAdjustment(state, payload) {
       state.businessSettings.product.discounts.splice(payload, 1);
     },
-    adminConfigEditDiscount(state, payload) {
+    adminConfigEditAdjustment(state, payload) {
       state.businessSettings.product.discounts[payload.index] =
         payload.discount;
     },

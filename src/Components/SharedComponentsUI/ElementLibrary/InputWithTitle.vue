@@ -1,5 +1,9 @@
 <template>
-  <div :class="error ? 'error ' + type : type" class="input-wrapper">
+  <div
+    :class="error ? 'error ' + type : type"
+    class="input-wrapper"
+    :style="type === 'color' ? `background-color: ${value}` : ''"
+  >
     <!-- <p>{{ title }}</p> -->
     <div v-if="title" class="title">
       <div :class="title.length < 25 ? 'hidden' : 'tooltip'">
@@ -46,6 +50,14 @@
         </p>
       </option>
     </select>
+    <div v-else-if="type === 'color'">
+      <input
+        class="color"
+        type="color"
+        v-model="value"
+        :placeholder="placeholder"
+      />
+    </div>
     <input
       :type="type"
       v-else
@@ -100,6 +112,11 @@ export default {
 
 .error {
   border: 1px solid red;
+}
+
+.color {
+  outline: none;
+  height: 100%;
 }
 
 input,

@@ -1,204 +1,118 @@
 <template>
-  <base-card title="Services">
-    <template v-slot:content>
-      <div class="service-wrapper">
-        <div class="service-section">
-          <h5 class="bold">Add New Service:</h5>
-          <div class="service-item">
-            <input-with-title
-              type="text"
-              title="Service Name"
-              :inputValue="input.name"
-              @input="fieldInput(input, 'name', $event)"
+  <layout
+    :addButtonText="addButtonText"
+    :figureDetails="buildDetails"
+    :processing="processing"
+    productNameProperty="name"
+    productPhotoProperty="photo"
+    :products="services"
+    :saveButtonEnabled="serviceReadyToBeSubmitted"
+    @clear-form="clearForm"
+    @close="close"
+    @delete-button-clicked="deleteService"
+    @edit-button-clicked="editService"
+    @save-button-clicked="addService"
+  >
+    <template v-slot:form>
+      <div class="service-section">
+        <photo-and-title
+          placeholder="Service Name"
+          :title="input.name"
+          :image="input.photo"
+          @input="titleInput"
+          @photo-chosen="photoChosen"
+        />
+        <div class="service-form-section">
+          <p>Standard Forms Included:</p>
+          <div class="bubble-wrapper">
+            <input-with-binary-selection
+              v-for="form in forms"
+              :key="form.id"
+              :item="form.name"
+              :checked="checkForServicePresence(input.forms, form.id)"
+              @clicked="toggleItemFromService(input.forms, form.id)"
             />
-          </div>
-          <div class="service-item">
-            <p>Photo:</p>
-            <input
-              type="file"
-              id="hidden-file-button-service"
-              @change="onFileChange"
-              style="display: none"
-            />
-            <button-standard-with-icon
-              :text="photoFile ? photoFile.name : 'Choose File'"
-              @click="chooseFile()"
-              class="form-button"
-            />
-          </div>
-          <div class="service-item">
-            <p>Standard Forms Included:</p>
-            <div class="bubble-wrapper">
-              <input-with-binary-selection
-                v-for="form in forms"
-                :key="form.id"
-                :item="form.name"
-                :checked="checkForServicePresence(input.forms, form.id)"
-                @clicked="toggleItemFromService(input.forms, form.id)"
-              />
-            </div>
-          </div>
-          <div class="service-item">
-            <p>Standard Contract Included:</p>
-            <div class="bubble-wrapper">
-              <input-with-binary-selection
-                v-for="contract in contracts"
-                :key="contract.id"
-                :item="contract.contractName"
-                :checked="checkForServicePresence(input.contracts, contract.id)"
-                @clicked="toggleItemFromService(input.contracts, contract.id)"
-              />
-            </div>
-          </div>
-          <div class="service-item">
-            <p>Service Details:</p>
-            <input-with-title
-              type="number"
-              title="Employees Required:"
-              :inputValue="input.employeesRequired"
-              @input="fieldInput(input, 'employeesRequired', $event)"
-            />
-          </div>
-
-          <div class="service-item">
-            <input-with-title
-              title="Price Option:"
-              type="select"
-              :options="priceOptions"
-              :inputValue="input.priceOption"
-              @input="fieldInput(input, 'priceOption', $event)"
-            />
-          </div>
-          <div class="service-item" v-if="input.priceOption === 'Hourly'">
-            <div class="service-item">
-              <input-with-title
-                type="number"
-                title="Minimum # Hours:"
-                :inputValue="input.pricing.baseTime"
-                @input="fieldInput(input.pricing, 'baseTime', $event)"
-              />
-            </div>
-            <div class="service-item">
-              <input-with-title
-                type="number"
-                :title="`Base Rate (${input.pricing.baseTime}
-                Hours)`"
-                :inputValue="input.pricing.baseRate"
-                @input="fieldInput(input.pricing, 'baseRate', $event)"
-              />
-            </div>
-            <div class="service-item">
-              <input-with-title
-                type="number"
-                title="Additional Hourly:"
-                :inputValue="input.pricing.addHourly"
-                @input="fieldInput(input.pricing, 'addHourly', $event)"
-              />
-            </div>
-            <button-standard-with-icon
-              text="Add Service"
-              @click="addService()"
-              class="form-button"
-            />
-          </div>
-          <div class="service-item" v-if="input.priceOption == 'Flat'">
-            <div class="service-item">
-              <input-with-title
-                type="number"
-                title="Flat Rate:"
-                :inputValue="input.pricing.baseRate"
-                @input="fieldInput(input.pricing, 'baseRate', $event)"
-              />
-            </div>
-            <div class="service-item">
-              <button-standard-with-icon
-                text="Add Service"
-                @click="addService()"
-                class="form-button"
-              />
-            </div>
           </div>
         </div>
-        <div class="service-section">
-          <h5 v-if="!services">No services have been added yet! Add some!</h5>
-          <div class="service-conditional-wrapper" v-if="services">
-            <h5 v-if="!services.length">
-              No services have been added yet! Add some!
-            </h5>
-            <div
-              class="service-item"
-              style="border-bottom: 1px solid gray; margin-bottom: 10px"
-              v-for="(service, index) in services"
-              :key="service.id"
-            >
-              <h4>
-                {{ service.name }}
+        <div class="service-form-section">
+          <p>Standard Contract(s) Included:</p>
+          <div class="bubble-wrapper">
+            <input-with-binary-selection
+              v-for="contract in contracts"
+              :key="contract.id"
+              :item="contract.contractName"
+              :checked="checkForServicePresence(input.contracts, contract.id)"
+              @clicked="toggleItemFromService(input.contracts, contract.id)"
+            />
+          </div>
+        </div>
+        <div class="service-form-section">
+          <p>Service Details:</p>
+          <input-with-title
+            type="number"
+            title="Employees Required:"
+            :inputValue="input.employeesRequired"
+            @input="fieldInput(input, 'employeesRequired', $event)"
+          />
+        </div>
 
-                <vue-svg
-                  svg="x-icon"
-                  :customStyle="svgStyling"
-                  @clicked="deleteService(index)"
-                />
-                <vue-svg
-                  svg="edit-pen"
-                  :customStyle="svgStyling"
-                  @clicked="editService(service, index)"
-                />
-              </h4>
-              <div class="service-display-section">
-                <div class="service-item" v-if="service.photo">
-                  <p>Photo: {{ service.photo.name }}</p>
-                </div>
-              </div>
-
-              <div class="service-display-section">
-                <div class="service-item" v-if="service.priceOption === 'Flat'">
-                  <p>
-                    <b>Flat Rate:</b>
-                    {{ formatPrice(service.pricing.baseRate) }}
-                  </p>
-                </div>
-                <div
-                  class="service-item"
-                  v-if="service.priceOption === 'Hourly'"
-                >
-                  <p><b>Base Time: </b>{{ service.pricing.baseTime }}</p>
-                  <p>
-                    <b>Base Rate: </b
-                    >{{ formatPrice(service.pricing.baseRate) }}
-                  </p>
-                  <p>
-                    <b>Additional Hourly: </b
-                    >{{ formatPrice(service.pricing.addHourly) }}
-                  </p>
-                </div>
-              </div>
-            </div>
+        <div class="service-form-section">
+          <input-with-title
+            title="Price Option:"
+            type="select"
+            :options="priceOptions"
+            :inputValue="input.priceOption"
+            @input="fieldInput(input, 'priceOption', $event)"
+          />
+          <div v-if="input.priceOption === 'Hourly'">
+            <input-with-title
+              type="number"
+              title="Minimum # Hours:"
+              :inputValue="input.pricing.baseTime"
+              @input="fieldInput(input.pricing, 'baseTime', $event)"
+            />
+            <input-with-title
+              type="number"
+              :title="`Base Rate (${input.pricing.baseTime}
+                Hours)`"
+              :inputValue="input.pricing.baseRate"
+              @input="fieldInput(input.pricing, 'baseRate', $event)"
+            />
+            <input-with-title
+              type="number"
+              title="Additional Hourly:"
+              :inputValue="input.pricing.addHourly"
+              @input="fieldInput(input.pricing, 'addHourly', $event)"
+            />
+          </div>
+          <div v-if="input.priceOption == 'Flat'">
+            <input-with-title
+              type="number"
+              title="Flat Rate:"
+              :inputValue="input.pricing.baseRate"
+              @input="fieldInput(input.pricing, 'baseRate', $event)"
+            />
           </div>
         </div>
       </div>
     </template>
-  </base-card>
+  </layout>
 </template>
 
 <script>
 import { mapGetters } from "vuex";
-import VueSvg from "../../../../assets/VueSvg.vue";
-import InputWithBinarySelection from "../../../../Components/SharedComponentsUI/ElementLibrary/InputWithBinarySelection.vue";
 import { formatPrice } from "../../../../helpers.js";
 import _cloneDeep from "lodash/cloneDeep";
+import InputWithBinarySelection from "../../../../Components/SharedComponentsUI/ElementLibrary/InputWithBinarySelection.vue";
 import InputWithTitle from "../../../../Components/SharedComponentsUI/ElementLibrary/InputWithTitle.vue";
-
-// import { Storage } from "aws-amplify";
+import PhotoAndTitle from "../AdminConfigUIComponents/AdminConfigProductPhotoAndTitle.vue";
+import Layout from "../AdminConfigUIComponents/AdminConfigLayoutTileAndForm.vue";
 
 export default {
   data() {
     return {
-      // services: [],
-      editIndex: undefined,
-      photoFile: undefined,
-      svgStyling:
-        "height: 10px; width: 10px; margin: 0px 5px; cursor: pointer;",
+      addButtonText: "Add New Service",
+      processing: false,
       priceOptions: ["Hourly", "Flat"],
       input: {
         id: "service" + new Date().getTime(),
@@ -215,13 +129,76 @@ export default {
         equipmentNeeded: [],
         employeesRequired: undefined,
       },
+      editIndex: undefined,
+      photoFile: undefined,
     };
   },
   computed: {
     ...mapGetters(["services", "forms", "contracts"]),
+    serviceReadyToBeSubmitted() {
+      if (this.input.name) {
+        if (this.input.priceOption === "Hourly") {
+          return (
+            this.input.pricing.baseTime &&
+            this.input.pricing.baseRate &&
+            this.input.pricing.addHourly
+          );
+        } else if (this.input.priceOption === "Flat") {
+          return this.input.pricing.baseRate;
+        } else {
+          return false;
+        }
+      } else {
+        return false;
+      }
+    },
   },
   methods: {
-    formatPrice,
+    close() {
+      this.$emit("close");
+    },
+    clearForm() {
+      this.input = {
+        id: "service" + new Date().getTime(),
+        name: undefined,
+        pricing: {
+          baseTime: undefined,
+          baseRate: undefined,
+          addHourly: undefined,
+        },
+        forms: [],
+        contracts: [],
+        priceOption: undefined,
+        photo: undefined,
+        equipmentNeeded: [],
+        employeesRequired: undefined,
+      };
+      this.editIndex = undefined;
+    },
+    titleInput(val) {
+      this.input.name = val;
+    },
+    photoChosen(file) {
+      this.photoFile = file;
+      let reader = new FileReader();
+      reader.onload = (event) => {
+        this.input.photo = event.target.result;
+      };
+      reader.readAsDataURL(file);
+    },
+    buildDetails(item) {
+      if (item.priceOption === "Flat") {
+        return [`Flat: ${formatPrice(item.pricing.baseRate)}`];
+      }
+      if (item.priceOption === "Hourly") {
+        return [
+          `${item.pricing.baseTime} hours: ${formatPrice(
+            item.pricing.baseRate
+          )}`,
+          `+ hours: ${formatPrice(item.pricing.addHourly)}`,
+        ];
+      }
+    },
     fieldInput(object, property, value) {
       if (object) {
         object[property] = value;
@@ -230,6 +207,7 @@ export default {
       }
     },
     async addService() {
+      this.processing = true;
       let service = _cloneDeep(this.input);
       if (this.photoFile) {
         await this.$store.dispatch("addPhoto", this.photoFile).then((res) => {
@@ -248,21 +226,9 @@ export default {
       } else {
         this.$store.commit("adminConfigAddService", service);
       }
-      this.input = {
-        id: "service" + new Date().getTime(),
-        name: undefined,
-        pricing: {
-          baseTime: undefined,
-          baseRate: undefined,
-          addHourly: undefined,
-        },
-        forms: [],
-        contracts: [],
-        priceOption: undefined,
-        photo: undefined,
-        equipmentNeeded: [],
-        employeesRequired: undefined,
-      };
+      await this.$store.dispatch("updateBusinessSettings");
+      this.photoFile = undefined;
+      this.processing = false;
     },
     checkForServicePresence(arr, item) {
       let index = arr.indexOf(item);
@@ -280,41 +246,27 @@ export default {
         array.push(item);
       }
     },
-    toggleFormFromService(form, serviceIndex) {
-      let services = this.services;
-      let array;
-      if (serviceIndex) {
-        array = services[serviceIndex].forms;
-      } else {
-        array = this.input.forms;
-      }
-      let index = array.indexOf(form);
-      if (index > -1) {
-        array.splice(index, 1);
-      } else {
-        array.push(form);
-      }
-    },
-    toggleContractFromService(contract, serviceIndex) {
-      let services = this.services;
-      let array;
-      if (serviceIndex) {
-        array = services[serviceIndex].contracts;
-      } else {
-        array = this.input.contracts;
-      }
-      let index = array.indexOf(contract);
-      if (index > -1) {
-        array.splice(index, 1);
-      } else {
-        array.push(contract);
-      }
-    },
-    deleteService(index) {
-      this.$store.commit("adminConfigDeleteService", index);
+    async deleteService(index) {
+      await this.$store.commit("adminConfigDeleteService", index);
+      await this.$store.dispatch("updateBusinessSettings");
     },
     editService(service, index) {
-      this.input = { ...this.input, ...service };
+      let inputTemplate = {
+        id: "service" + new Date().getTime(),
+        name: undefined,
+        pricing: {
+          baseTime: undefined,
+          baseRate: undefined,
+          addHourly: undefined,
+        },
+        forms: [],
+        contracts: [],
+        priceOption: undefined,
+        photo: undefined,
+        equipmentNeeded: [],
+        employeesRequired: undefined,
+      };
+      this.input = { ...inputTemplate, ...service };
       this.editIndex = index;
       this.input.pricing = {
         baseTime: this.input.pricing.baseTime,
@@ -322,92 +274,41 @@ export default {
         addHourly: this.input.pricing.addHourly / 100,
       };
     },
-    chooseFile() {
-      document.getElementById("hidden-file-button-service").click();
-    },
-    async onFileChange(e) {
-      var files = e.target.files || e.dataTransfer.files;
-      if (!files.length) return;
-      this.photoFile = files[0];
-    },
   },
-  components: { InputWithTitle, InputWithBinarySelection, VueSvg },
+  emits: ["close"],
+  components: {
+    InputWithBinarySelection,
+    InputWithTitle,
+    Layout,
+    PhotoAndTitle,
+  },
 };
 </script>
 
 <style scoped>
 @media screen {
+  #service-config-wrapper {
+    height: 100%;
+  }
+
+  .service-form-section {
+    width: 100%;
+  }
   p {
-    font-size: 9pt;
-  }
-
-  .service-wrapper {
-    display: flex;
-    flex-direction: column-reverse;
-    flex-wrap: wrap;
-    max-height: 100%;
-    overflow-y: scroll;
-    padding: 10px;
-  }
-
-  .service-conditional-wrapper {
-    max-height: 300px;
-    height: fit-content;
-    overflow: scroll;
+    text-align: left;
   }
 
   .service-section {
-    width: 100%;
-  }
-
-  .service-item {
+    width: calc(100% - 10px);
+    height: 100%;
     display: flex;
-    flex-direction: column;
-    justify-content: left;
-    margin-left: 10px;
+    flex-wrap: wrap;
+    padding: 5px;
+    overflow: scroll;
   }
-
-  .service-item > p,
-  .service-section > h5 {
-    text-align: left;
-  }
-  .service-item > input,
-  .service-item > select,
-  .service-item > label,
-  .button-standard-with-icon {
-    width: 90%;
-    align-self: left;
-    justify-self: left;
-  }
-
   .bubble-wrapper {
     display: flex;
     flex-wrap: wrap;
-  }
-
-  .button-standard-with-icon {
-    margin-top: 10px;
-  }
-
-  @media (min-width: 850px) {
-    .service-wrapper {
-      flex-direction: row;
-    }
-    .service-conditional-wrapper {
-      max-height: 100%;
-      height: fit-content;
-      overflow: scroll;
-    }
-    .service-section {
-      width: 50%;
-    }
-
-    .service-item > input,
-    .service-item > select,
-    .service-item > label,
-    .button-standard-with-icon {
-      width: 50%;
-    }
   }
 }
 </style>

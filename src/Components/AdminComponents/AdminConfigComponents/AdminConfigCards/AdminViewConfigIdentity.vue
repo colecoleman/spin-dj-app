@@ -1,7 +1,14 @@
-df
+
 <template>
-  <base-card title="Identity">
-    <template v-slot:content>
+  <large-floating-card @close="close">
+    <div class="button-container">
+      <round-icon-button
+        class="round-button-icon"
+        svg="save"
+        @click="saveChanges"
+      />
+    </div>
+    <div id="admin-config-identity-wrapper">
       <two-button-dialog-modal
         v-if="dialogModal"
         :modalBody="dialogModalData[dialogModal].body"
@@ -10,54 +17,14 @@ df
         @close-modal="closeDialogModal"
       />
       <div id="wrapper">
-        <div class="flex-wrap">
+        <div class="color-inputs">
           <input-with-title
-            :title="`
-              Background:
-              ${backgroundColor}`"
+            v-for="(color, key, index) in colors"
+            :key="index"
+            :title="key"
             type="color"
-            :inputValue="backgroundColor"
-            @input="fieldInput(undefined, 'backgroundColor', $event)"
-          />
-          <input-with-title
-            :title="`
-              Foreground:
-              ${foregroundColor}`"
-            type="color"
-            :inputValue="foregroundColor"
-            @input="fieldInput(undefined, 'foregroundColor', $event)"
-          />
-          <input-with-title
-            :title="`
-              Card Outline:
-              ${cardOutline}`"
-            type="color"
-            :inputValue="cardOutline"
-            @input="fieldInput(undefined, 'cardOutline', $event)"
-          />
-          <input-with-title
-            :title="`
-              Highlight:
-              ${highlightColor}`"
-            type="color"
-            :inputValue="highlightColor"
-            @input="fieldInput(undefined, 'highlightColor', $event)"
-          />
-          <input-with-title
-            :title="`
-              Text:
-              ${textColor}`"
-            type="color"
-            :inputValue="textColor"
-            @input="fieldInput(undefined, 'textColor', $event)"
-          />
-          <input-with-title
-            :title="`
-              Secondary Text:
-              ${secondaryTextColor}`"
-            type="color"
-            :inputValue="secondaryTextColor"
-            @input="fieldInput(undefined, 'secondaryTextColor', $event)"
+            :inputValue="color.get()"
+            @input="color.set($event)"
           />
         </div>
         <div class="business-information-wrapper">
@@ -94,19 +61,7 @@ df
               </div>
             </div>
             <p>Business Logo:</p>
-            <input
-              type="file"
-              id="business-logo-hidden-file-button"
-              @change="onFileChange"
-              style="display: none"
-            />
-            <div class="button-wrapper">
-              <button-standard-with-icon
-                :text="photoFile ? photoFile.name : 'Choose File'"
-                @click="chooseFile()"
-                class="form-button"
-              />
-            </div>
+            <image-input :image="businessLogo" @photo-chosen="photoChosen" />
           </div>
           <div class="business-information-section">
             <input-with-title
@@ -179,25 +134,30 @@ df
           </div>
         </div>
       </div>
-    </template>
-  </base-card>
+    </div></large-floating-card
+  >
 </template>
 
 <script>
+import ImageInput from "../../../SharedComponentsUI/ElementLibrary/ImageInput.vue";
 import TwoButtonDialogModal from "../../../SharedComponentsUI/TwoButtonDialogModal.vue";
 import InputWithTitle from "../../../SharedComponentsUI/ElementLibrary/InputWithTitle.vue";
+import LargeFloatingCard from "../../../SharedComponentsUI/FloatingCards/LargeFloatingCard.vue";
 import InputWithSuffix from "../../../SharedComponentsUI/ElementLibrary/InputWithSuffix.vue";
 import ItemWithActionableIcon from "../../../SharedComponentsUI/ElementLibrary/ItemWithActionableIcon.vue";
+import RoundIconButton from "../../../SharedComponentsUI/RoundIconButton.vue";
 
 export default {
   data() {
     return {
       svgStyling:
         "height: 10px; width: 10px; margin: 0px 5px; cursor: pointer;",
+      activeComponent: undefined,
       dialogModal: null,
       newEmailField: null,
       emailDeleteIndex: undefined,
       photoFile: undefined,
+      logo: undefined,
       subdomainField: undefined,
       checkingSubdomain: false,
       subdomainAvailable: false,
@@ -227,70 +187,71 @@ export default {
         },
       };
     },
+    colors() {
+      let branding = this.$store.getters.branding;
+      let store = this.$store;
+      return {
+        Background: {
+          get() {
+            return branding.backgroundColor;
+          },
+          set(value) {
+            console.log(value);
+            return store.commit("adminConfigIdentitySetBackgroundColor", value);
+          },
+        },
+        Foreground: {
+          get() {
+            return branding.foregroundColor;
+          },
+          set(value) {
+            return store.commit("adminConfigIdentitySetForegroundColor", value);
+          },
+        },
+        "Card Outline": {
+          get() {
+            return branding.cardOutline;
+          },
+          set(value) {
+            return store.commit("adminConfigIdentitySetCardOutline", value);
+          },
+        },
+        Highlight: {
+          get() {
+            return branding.highlightColor;
+          },
+          set(value) {
+            return store.commit("adminConfigIdentitySetHighlightColor", value);
+          },
+        },
+        Text: {
+          get() {
+            return branding.textColor;
+          },
+          set(value) {
+            return store.commit("adminConfigIdentitySetTextColor", value);
+          },
+        },
+        "Secondary Text": {
+          get() {
+            return branding.secondaryTextColor;
+          },
+          set(value) {
+            return store.commit(
+              "adminConfigIdentitySetSecondaryTextColor",
+              value
+            );
+          },
+        },
+      };
+    },
+    businessLogo() {
+      return this.$store.getters.businessLogo;
+    },
     subdomain() {
       return this.$store.getters.identity.businessName
         .replaceAll(" ", "")
         .toLowerCase();
-    },
-    backgroundColor: {
-      get() {
-        return this.$store.getters.branding.backgroundColor;
-      },
-      set(value) {
-        return this.$store.commit(
-          "adminConfigIdentitySetBackgroundColor",
-          value
-        );
-      },
-    },
-    foregroundColor: {
-      get() {
-        return this.$store.getters.branding.foregroundColor;
-      },
-      set(value) {
-        return this.$store.commit(
-          "adminConfigIdentitySetForegroundColor",
-          value
-        );
-      },
-    },
-    cardOutline: {
-      get() {
-        return this.$store.getters.branding.cardOutline;
-      },
-      set(value) {
-        return this.$store.commit("adminConfigIdentitySetCardOutline", value);
-      },
-    },
-    highlightColor: {
-      get() {
-        return this.$store.getters.branding.highlightColor;
-      },
-      set(value) {
-        return this.$store.commit(
-          "adminConfigIdentitySetHighlightColor",
-          value
-        );
-      },
-    },
-    textColor: {
-      get() {
-        return this.$store.getters.branding.textColor;
-      },
-      set(value) {
-        return this.$store.commit("adminConfigIdentitySetTextColor", value);
-      },
-    },
-    secondaryTextColor: {
-      get() {
-        return this.$store.getters.branding.secondaryTextColor;
-      },
-      set(value) {
-        return this.$store.commit(
-          "adminConfigIdentitySetSecondaryTextColor",
-          value
-        );
-      },
     },
     businessName: {
       get() {
@@ -348,10 +309,10 @@ export default {
       return this.$store.getters.emailAddresses;
     },
   },
-  emits: ["logo"],
+
   methods: {
-    chooseFile() {
-      document.getElementById("business-logo-hidden-file-button").click();
+    close() {
+      this.$emit("close");
     },
     fieldInput(object, property, value) {
       if (object) {
@@ -360,13 +321,25 @@ export default {
         this[property] = value;
       }
     },
-    async onFileChange(e) {
-      var files = e.target.files || e.dataTransfer.files;
-      if (!files.length) return;
-      this.photoFile = files[0];
-      this.$emit("logo", this.photoFile);
+    async saveChanges() {
+      if (this.logo) {
+        await this.$store
+          .dispatch("addPhoto", this.logo)
+          .then((res) => {
+            this.$store.commit("adminConfigIdentitySetBusinessLogo", res);
+          })
+          .catch((e) => {
+            console.log(e);
+          });
+      }
+      await this.$store.dispatch("updateBusinessSettings").then(() => {
+        this.saving = false;
+      });
     },
-
+    photoChosen(file) {
+      this.logo = file;
+      this.$store.commit("adminConfigIdentitySetBusinessLogo", file);
+    },
     addEmail() {
       this.emailAddresses.push(
         `${this.newEmailField}@${this.subdomain}.spindj.io`
@@ -436,8 +409,12 @@ export default {
     TwoButtonDialogModal,
     InputWithTitle,
     InputWithSuffix,
+    ImageInput,
     ItemWithActionableIcon,
+    RoundIconButton,
+    LargeFloatingCard,
   },
+  emits: ["logo", "close-card"],
   watch: {
     subdomainField() {
       this.subdomainAvailable = false;
@@ -451,6 +428,14 @@ export default {
   * {
     color: var(--textColor);
   }
+  #admin-config-identity-wrapper {
+    position: relative;
+    height: calc(100% - 20px);
+    width: calc(100% - 20px);
+    padding: 10px;
+    overflow: scroll;
+  }
+
   p {
     font-size: 9pt;
     text-align: left;
@@ -464,8 +449,25 @@ export default {
     width: 100%;
   }
 
+  .color-inputs {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .color {
+    width: 100px;
+  }
+
   #wrapper {
     padding: 10px;
+  }
+
+  .button-container {
+    display: flex;
+    position: absolute;
+    top: 0;
+    right: 0;
   }
 
   .business-information-wrapper {
@@ -489,12 +491,67 @@ export default {
   .button-wrapper {
     width: 50%;
   }
-  @media (min-width: 850px) {
-    .business-information-wrapper {
+  @media screen and (min-width: 800px) {
+    * {
+      color: var(--textColor);
+    }
+    #admin-config-identity-wrapper {
+      position: relative;
+    }
+
+    p {
+      font-size: 9pt;
+      text-align: left;
+      font-weight: 600;
+    }
+
+    .flex-wrap {
+      display: flex;
       flex-direction: row;
+      flex-wrap: wrap;
+      width: 100%;
+    }
+
+    .color-inputs {
+      width: 100%;
+      display: flex;
+      flex-wrap: wrap;
+    }
+
+    .color {
+      width: 100px;
+    }
+
+    #wrapper {
+      padding: 10px;
+    }
+
+    .button-container {
+      display: flex;
+      position: absolute;
+      top: 0;
+      right: 0;
+    }
+
+    .business-information-wrapper {
+      display: flex;
+      flex-direction: column;
+      flex-wrap: wrap;
+      /* max-height: 100%; */
+      overflow-y: scroll;
+      margin-top: 10px;
     }
 
     .business-information-section {
+      width: 100%;
+    }
+
+    .context {
+      margin: 2px;
+      font-style: italic;
+    }
+
+    .button-wrapper {
       width: 50%;
     }
   }
