@@ -90,15 +90,10 @@ export default {
     async addContract() {
       this.processing = true;
       if (this.editIndex != undefined) {
-        let payload = {
-          index: this.editIndex,
-          contract: this.contract,
-        };
-        await this.$store.commit("adminConfigEditContract", payload);
+        await this.$store.dispatch("editContract", this.contract);
       } else {
-        await this.$store.commit("adminConfigAddContract", this.contract);
+        await this.$store.dispatch("addContract", this.contract);
       }
-      await this.$store.dispatch("updateBusinessSettings");
       this.processing = false;
     },
     editContract(contract, index) {
@@ -110,9 +105,8 @@ export default {
       };
       this.contract = { ...contractTemplate, ...contract };
     },
-    async deleteContract(index) {
-      await this.$store.commit("adminConfigDeleteContract", index);
-      await this.$store.dispatch("updateBusinessSettings");
+    async deleteContract(contract) {
+      await this.$store.dispatch("deleteContract", contract.id);
     },
   },
   emits: ["close"],

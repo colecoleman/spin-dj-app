@@ -258,19 +258,13 @@ export default {
       }
 
       if (this.editIndex != undefined) {
-        let payload = {
-          index: this.editIndex,
-          package: item,
-        };
-        await this.$store.commit("adminConfigEditPackage", payload);
+        await this.$store.dispatch("editPackage", item);
       } else {
-        await this.$store.commit("adminConfigAddPackage", item);
+        await this.$store.dispatch("addPackage", item);
       }
-      await this.$store.dispatch("updateBusinessSettings");
     },
-    async deletePackage(index) {
-      await this.$store.commit("adminConfigDeletePackage", index);
-      await this.$store.dispatch("updateBusinessSettings");
+    async deletePackage(product) {
+      await this.$store.dispatch("deletePackage", product.id);
     },
     editPackage(packag, index) {
       this.input = { ...this.input, ...packag };

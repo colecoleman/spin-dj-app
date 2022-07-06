@@ -314,23 +314,17 @@ export default {
     async saveForm() {
       this.processing = true;
       if (this.editIndex != undefined) {
-        let payload = {
-          index: this.editIndex,
-          form: this.form,
-        };
-        await this.$store.commit("adminConfigEditForm", payload);
+        await this.$store.dispatch("editForm", this.form);
       } else {
-        await this.$store.commit("adminConfigAddForm", this.form);
+        await this.$store.dispatch("addForm", this.form);
       }
-      await this.$store.dispatch("updateBusinessSettings");
       this.processing = false;
     },
     openNewField() {
       this.newFieldOpen = true;
     },
-    async deleteForm(index) {
-      await this.$store.commit("adminConfigDeleteForm", index);
-      await this.$store.dispatch("updateBusinessSettings");
+    async deleteForm(form) {
+      await this.$store.dispatch("deleteForm", form.id);
     },
     editForm(form, index) {
       this.form = { ...this.form, ...form };

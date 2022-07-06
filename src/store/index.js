@@ -271,7 +271,7 @@ const store = createStore({
         location.contacts.map(async (contact) => {
           let { userId, tenantId } = contact;
           let key = { userId, tenantId };
-          return await context.dispatch('getContactListItem', key);
+          return await context.dispatch("getContactListItem", key);
         })
       );
     },
@@ -314,7 +314,6 @@ const store = createStore({
         return id === payload.value.key.userId;
       });
       if (eventIndex > -1) {
-
         let contactRemoveParameters = {
           contactKey: {
             tenantId: contact.tenantId,
@@ -327,6 +326,537 @@ const store = createStore({
         await context.dispatch("editContact", contactRemoveParameters);
         return eventIndex;
       }
+    },
+    async updateBusinessIdentity(context) {
+      let payload = {
+        action: "updateIdentity",
+        payload: context.state.businessSettings.identity,
+        tenantId: context.state.user.userId,
+        // using userId to avoid accidental tampering by non-admin
+      };
+
+      await axios
+        .put(
+          `https://mty0zf0p2m.execute-api.us-east-1.amazonaws.com/updateBusinessSettings`,
+          payload
+        )
+        .then((response) => {
+          console.log(response);
+        })
+        .catch((e) =>
+          context.commit("addStatus", {
+            type: "error",
+            note: e,
+          })
+        );
+    },
+    async updatePaymentSettings(context) {
+      let payload = {
+        action: "updatePaymentSettings",
+        payload: context.state.businessSettings.payments,
+        tenantId: context.state.user.userId,
+        // using userId to avoid accidental tampering by non-admin
+      };
+
+      await axios
+        .put(
+          `https://mty0zf0p2m.execute-api.us-east-1.amazonaws.com/updateBusinessSettings`,
+          payload
+        )
+        .catch((e) =>
+          context.commit("addStatus", {
+            type: "error",
+            note: e,
+          })
+        );
+    },
+    async deletePackage(context, item) {
+      let payload = {
+        action: "deletePackage",
+        payload: item,
+        tenantId: context.state.user.userId,
+        // using userId to avoid accidental tampering by non-admin
+      };
+
+      await axios
+        .put(
+          `https://mty0zf0p2m.execute-api.us-east-1.amazonaws.com/updateBusinessSettings`,
+          payload
+        )
+        .then((response) => {
+          context.commit("adminConfigDeletePackage", response.data);
+        })
+        .catch((e) =>
+          context.commit("addStatus", {
+            type: "error",
+            note: e,
+          })
+        );
+    },
+    async addPackage(context, item) {
+      let payload = {
+        action: "addPackage",
+        payload: item,
+        tenantId: context.state.user.userId,
+        // using userId to avoid accidental tampering by non-admin
+      };
+
+      await axios
+        .put(
+          `https://mty0zf0p2m.execute-api.us-east-1.amazonaws.com/updateBusinessSettings`,
+          payload
+        )
+        .then(() => {
+          context.commit("adminConfigAddPackage", item);
+        })
+        .catch((e) =>
+          context.commit("addStatus", {
+            type: "error",
+            note: e,
+          })
+        );
+    },
+    async editPackage(context, item) {
+      let payload = {
+        action: "editPackage",
+        payload: item,
+        tenantId: context.state.user.userId,
+        // using userId to avoid accidental tampering by non-admin
+      };
+
+      await axios
+        .put(
+          `https://mty0zf0p2m.execute-api.us-east-1.amazonaws.com/updateBusinessSettings`,
+          payload
+        )
+        .then(() => {
+          context.commit("adminConfigEditPackage", item);
+        })
+        .catch((e) =>
+          context.commit("addStatus", {
+            type: "error",
+            note: e,
+          })
+        );
+    },
+    async deleteService(context, item) {
+      let payload = {
+        action: "deleteService",
+        payload: item,
+        tenantId: context.state.user.userId,
+        // using userId to avoid accidental tampering by non-admin
+      };
+
+      await axios
+        .put(
+          `https://mty0zf0p2m.execute-api.us-east-1.amazonaws.com/updateBusinessSettings`,
+          payload
+        )
+        .then((response) => {
+          context.commit("adminConfigDeleteService", response.data);
+        })
+        .catch((e) =>
+          context.commit("addStatus", {
+            type: "error",
+            note: e,
+          })
+        );
+    },
+    async addService(context, item) {
+      let payload = {
+        action: "addService",
+        payload: item,
+        tenantId: context.state.user.userId,
+        // using userId to avoid accidental tampering by non-admin
+      };
+
+      await axios
+        .put(
+          `https://mty0zf0p2m.execute-api.us-east-1.amazonaws.com/updateBusinessSettings`,
+          payload
+        )
+        .then(() => {
+          context.commit("adminConfigAddService", item);
+        })
+        .catch((e) =>
+          context.commit("addStatus", {
+            type: "error",
+            note: e,
+          })
+        );
+    },
+    async editService(context, item) {
+      let payload = {
+        action: "editService",
+        payload: item,
+        tenantId: context.state.user.userId,
+        // using userId to avoid accidental tampering by non-admin
+      };
+
+      await axios
+        .put(
+          `https://mty0zf0p2m.execute-api.us-east-1.amazonaws.com/updateBusinessSettings`,
+          payload
+        )
+        .then((response) => {
+          let mutationPayload = { index: response.data, item: item };
+          context.commit("adminConfigEditService", mutationPayload);
+        })
+        .catch((e) =>
+          context.commit("addStatus", {
+            type: "error",
+            note: e,
+          })
+        );
+    },
+    async deleteAddOn(context, item) {
+      let payload = {
+        action: "deleteAddOn",
+        payload: item,
+        tenantId: context.state.user.userId,
+        // using userId to avoid accidental tampering by non-admin
+      };
+
+      await axios
+        .put(
+          `https://mty0zf0p2m.execute-api.us-east-1.amazonaws.com/updateBusinessSettings`,
+          payload
+        )
+        .then((response) => {
+          context.commit("adminConfigDeleteAddOn", response.data);
+        })
+        .catch((e) =>
+          context.commit("addStatus", {
+            type: "error",
+            note: e,
+          })
+        );
+    },
+    async addAddOn(context, item) {
+      let payload = {
+        action: "addAddOn",
+        payload: item,
+        tenantId: context.state.user.userId,
+        // using userId to avoid accidental tampering by non-admin
+      };
+
+      await axios
+        .put(
+          `https://mty0zf0p2m.execute-api.us-east-1.amazonaws.com/updateBusinessSettings`,
+          payload
+        )
+        .then(() => {
+          context.commit("adminConfigAddAddOn", item);
+        })
+        .catch((e) =>
+          context.commit("addStatus", {
+            type: "error",
+            note: e,
+          })
+        );
+    },
+    async editAddOn(context, item) {
+      let payload = {
+        action: "editAddOn",
+        payload: item,
+        tenantId: context.state.user.userId,
+        // using userId to avoid accidental tampering by non-admin
+      };
+
+      await axios
+        .put(
+          `https://mty0zf0p2m.execute-api.us-east-1.amazonaws.com/updateBusinessSettings`,
+          payload
+        )
+        .then((response) => {
+          let mutationPayload = { index: response.data, item: item };
+          context.commit("adminConfigEditAddOn", mutationPayload);
+        })
+        .catch((e) =>
+          context.commit("addStatus", {
+            type: "error",
+            note: e,
+          })
+        );
+    },
+    async deleteAdjustment(context, item) {
+      let payload = {
+        action: "deleteAdjustment",
+        payload: item,
+        tenantId: context.state.user.userId,
+        // using userId to avoid accidental tampering by non-admin
+      };
+
+      await axios
+        .put(
+          `https://mty0zf0p2m.execute-api.us-east-1.amazonaws.com/updateBusinessSettings`,
+          payload
+        )
+        .then((response) => {
+          context.commit("adminConfigDeleteAdjustment", response.data);
+        })
+        .catch((e) =>
+          context.commit("addStatus", {
+            type: "error",
+            note: e,
+          })
+        );
+    },
+    async addAdjustment(context, item) {
+      let payload = {
+        action: "addAdjustment",
+        payload: item,
+        tenantId: context.state.user.userId,
+        // using userId to avoid accidental tampering by non-admin
+      };
+
+      await axios
+        .put(
+          `https://mty0zf0p2m.execute-api.us-east-1.amazonaws.com/updateBusinessSettings`,
+          payload
+        )
+        .then(() => {
+          context.commit("adminConfigAddAdjustment", item);
+        })
+        .catch((e) =>
+          context.commit("addStatus", {
+            type: "error",
+            note: e,
+          })
+        );
+    },
+    async editAdjustment(context, item) {
+      let payload = {
+        action: "editAdjustment",
+        payload: item,
+        tenantId: context.state.user.userId,
+        // using userId to avoid accidental tampering by non-admin
+      };
+
+      await axios
+        .put(
+          `https://mty0zf0p2m.execute-api.us-east-1.amazonaws.com/updateBusinessSettings`,
+          payload
+        )
+        .then((response) => {
+          let mutationPayload = { index: response.data, item: item };
+          context.commit("adminConfigEditAdjustment", mutationPayload);
+        })
+        .catch((e) =>
+          context.commit("addStatus", {
+            type: "error",
+            note: e,
+          })
+        );
+    },
+    async deleteForm(context, item) {
+      let payload = {
+        action: "deleteForm",
+        payload: item,
+        tenantId: context.state.user.userId,
+        // using userId to avoid accidental tampering by non-admin
+      };
+
+      await axios
+        .put(
+          `https://mty0zf0p2m.execute-api.us-east-1.amazonaws.com/updateBusinessSettings`,
+          payload
+        )
+        .then((response) => {
+          context.commit("adminConfigDeleteForm", response.data);
+        })
+        .catch((e) =>
+          context.commit("addStatus", {
+            type: "error",
+            note: e,
+          })
+        );
+    },
+    async addForm(context, item) {
+      let payload = {
+        action: "addForm",
+        payload: item,
+        tenantId: context.state.user.userId,
+        // using userId to avoid accidental tampering by non-admin
+      };
+
+      await axios
+        .put(
+          `https://mty0zf0p2m.execute-api.us-east-1.amazonaws.com/updateBusinessSettings`,
+          payload
+        )
+        .then(() => {
+          context.commit("adminConfigAddForm", item);
+        })
+        .catch((e) =>
+          context.commit("addStatus", {
+            type: "error",
+            note: e,
+          })
+        );
+    },
+    async editForm(context, item) {
+      let payload = {
+        action: "editForm",
+        payload: item,
+        tenantId: context.state.user.userId,
+        // using userId to avoid accidental tampering by non-admin
+      };
+
+      await axios
+        .put(
+          `https://mty0zf0p2m.execute-api.us-east-1.amazonaws.com/updateBusinessSettings`,
+          payload
+        )
+        .then((response) => {
+          let mutationPayload = { index: response.data, item: item };
+          context.commit("adminConfigEditForm", mutationPayload);
+        })
+        .catch((e) =>
+          context.commit("addStatus", {
+            type: "error",
+            note: e,
+          })
+        );
+    },
+    async deleteContract(context, item) {
+      let payload = {
+        action: "deleteContract",
+        payload: item,
+        tenantId: context.state.user.userId,
+        // using userId to avoid accidental tampering by non-admin
+      };
+
+      await axios
+        .put(
+          `https://mty0zf0p2m.execute-api.us-east-1.amazonaws.com/updateBusinessSettings`,
+          payload
+        )
+        .then((response) => {
+          context.commit("adminConfigDeleteContract", response.data);
+        })
+        .catch((e) =>
+          context.commit("addStatus", {
+            type: "error",
+            note: e,
+          })
+        );
+    },
+    async addContract(context, item) {
+      let payload = {
+        action: "addContract",
+        payload: item,
+        tenantId: context.state.user.userId,
+        // using userId to avoid accidental tampering by non-admin
+      };
+
+      await axios
+        .put(
+          `https://mty0zf0p2m.execute-api.us-east-1.amazonaws.com/updateBusinessSettings`,
+          payload
+        )
+        .then(() => {
+          context.commit("adminConfigAddContract", item);
+        })
+        .catch((e) =>
+          context.commit("addStatus", {
+            type: "error",
+            note: e,
+          })
+        );
+    },
+    async editContract(context, item) {
+      let payload = {
+        action: "editContract",
+        payload: item,
+        tenantId: context.state.user.userId,
+        // using userId to avoid accidental tampering by non-admin
+      };
+
+      await axios
+        .put(
+          `https://mty0zf0p2m.execute-api.us-east-1.amazonaws.com/updateBusinessSettings`,
+          payload
+        )
+        .then((response) => {
+          let mutationPayload = { index: response.data, item: item };
+          context.commit("adminConfigEditContract", mutationPayload);
+        })
+        .catch((e) =>
+          context.commit("addStatus", {
+            type: "error",
+            note: e,
+          })
+        );
+    },
+    async deleteAutomation(context, item) {
+      let payload = {
+        action: "deleteAutomation",
+        payload: item,
+        tenantId: context.state.user.userId,
+        // using userId to avoid accidental tampering by non-admin
+      };
+
+      await axios
+        .put(
+          `https://mty0zf0p2m.execute-api.us-east-1.amazonaws.com/updateBusinessSettings`,
+          payload
+        )
+        .then((response) => {
+          context.commit("adminConfigDeleteAutomation", response.data);
+        })
+        .catch((e) =>
+          context.commit("addStatus", {
+            type: "error",
+            note: e,
+          })
+        );
+    },
+    async addAutomation(context, item) {
+      let payload = {
+        action: "addAutomation",
+        payload: item,
+        tenantId: context.state.user.userId,
+        // using userId to avoid accidental tampering by non-admin
+      };
+
+      await axios
+        .put(
+          `https://mty0zf0p2m.execute-api.us-east-1.amazonaws.com/updateBusinessSettings`,
+          payload
+        )
+        .then(() => {
+          context.commit("adminConfigAddAutomation", item);
+        })
+        .catch((e) =>
+          context.commit("addStatus", {
+            type: "error",
+            note: e,
+          })
+        );
+    },
+    async editAutomation(context, item) {
+      let payload = {
+        action: "editAutomation",
+        payload: item,
+        tenantId: context.state.user.userId,
+        // using userId to avoid accidental tampering by non-admin
+      };
+      await axios
+        .put(
+          `https://mty0zf0p2m.execute-api.us-east-1.amazonaws.com/updateBusinessSettings`,
+          payload
+        )
+        .then((response) => {
+          let mutationPayload = { index: response.data, item: item }
+          context.commit("adminConfigEditAutomation", mutationPayload);
+        })
+        .catch((e) =>
+          context.commit("addStatus", {
+            type: "error",
+            note: e,
+          })
+        );
     },
     async setBusinessSettings(context) {
       await axios
@@ -415,33 +945,7 @@ const store = createStore({
           );
       });
     },
-    async updateBusinessSettings({ commit, state }) {
-      let payload = {
-        variable: "businessSettings",
-        value: state.businessSettings,
-      };
-      // if (Array.isArray(payload.value.product.forms)) {
-      //   payload.value.product.forms = {
-      //     forms: [...payload.value.product.forms],
-      //     fieldTemplates: [],
-      //   };
-      // }
-      return new Promise((resolve, reject) => {
-        axios
-          .put(
-            `https://api.spindj.io/admin/${state.user.tenantId}/users/${state.user.userId}`,
-            payload
-          )
-          .then(() => {
-            commit("setBusinessSettings", payload.value);
-            resolve();
-          })
-          .catch((e) => {
-            reject(e);
-            console.log(e);
-          });
-      });
-    },
+
     async checkSubdomain(context, payload) {
       return new Promise((resolve, reject) => {
         axios
@@ -841,7 +1345,7 @@ const store = createStore({
           .then(
             (result) => {
               resolve(result);
-              context.commit('sendMessage', payload);
+              context.commit("sendMessage", payload);
               console.log(result);
             },
             (error) => {
@@ -880,11 +1384,11 @@ const store = createStore({
         conversations = [...keys];
       }
       if (conversations.length > 0) {
-
         return new Promise((resolve, reject) => {
           axios
             .post(
-              `https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/chat/getConversations`, conversations
+              `https://9q6nkwso78.execute-api.us-east-1.amazonaws.com/Beta/chat/getConversations`,
+              conversations
             )
             .then(
               (result) => {
@@ -957,7 +1461,7 @@ const store = createStore({
     },
     // event actions
     async addEvent(context, event) {
-      let dbEvent = { ...event, tenantId: context.state.user.tenantId }
+      let dbEvent = { ...event, tenantId: context.state.user.tenantId };
       return new Promise((resolve, reject) => {
         axios
           .put(
@@ -1374,11 +1878,15 @@ const store = createStore({
       state.statuses.splice(index, 1);
     },
     // admin mutations ////////////////////////////////
+    updateBusinessIdentity(state, payload) {
+      state.businessSettings.identity = payload;
+    },
     adminConfigAddService(state, payload) {
       state.businessSettings.product.services.push(payload);
     },
     adminConfigEditService(state, payload) {
-      state.businessSettings.product.services[payload.index] = payload.service;
+      let { index, item } = payload;
+      state.businessSettings.product.services[index] = item;
     },
     adminConfigDeleteService(state, payload) {
       state.businessSettings.product.services.splice(payload, 1);
@@ -1387,7 +1895,10 @@ const store = createStore({
       state.businessSettings.product.packages.push(payload);
     },
     adminConfigEditPackage(state, payload) {
-      state.businessSettings.product.packages[payload.index] = payload.package;
+      let index = state.businessSettings.product.packages.findIndex((x) => {
+        return x.id === payload.id;
+      });
+      state.businessSettings.product.packages[index] = payload;
     },
     adminConfigDeletePackage(state, payload) {
       state.businessSettings.product.packages.splice(payload, 1);
@@ -1399,7 +1910,8 @@ const store = createStore({
       state.businessSettings.product.addOns.splice(payload, 1);
     },
     adminConfigEditAddOn(state, payload) {
-      state.businessSettings.product.addOns[payload.index] = payload.addOn;
+      let { index, item } = payload;
+      state.businessSettings.product.addOns[index] = item;
     },
     adminConfigAddAdjustment(state, payload) {
       if (!state.businessSettings.product.discounts) {
@@ -1411,8 +1923,8 @@ const store = createStore({
       state.businessSettings.product.discounts.splice(payload, 1);
     },
     adminConfigEditAdjustment(state, payload) {
-      state.businessSettings.product.discounts[payload.index] =
-        payload.discount;
+      let { index, item } = payload;
+      state.businessSettings.product.discounts[index] = item;
     },
     adminConfigAddContract(state, payload) {
       if (!state.businessSettings.contracts) {
@@ -1424,7 +1936,8 @@ const store = createStore({
       state.businessSettings.contracts.splice(payload, 1);
     },
     adminConfigEditContract(state, payload) {
-      state.businessSettings.contracts[payload.index] = payload.contract;
+      let { index, item } = payload;
+      state.businessSettings.contracts[index] = item;
     },
     adminConfigAddForm(state, payload) {
       state.businessSettings.product.forms.forms.push(payload);
@@ -1433,7 +1946,8 @@ const store = createStore({
       state.businessSettings.product.forms.forms.splice(payload, 1);
     },
     adminConfigEditForm(state, payload) {
-      state.businessSettings.product.forms.forms[payload.index] = payload.form;
+      let { index, item } = payload
+      state.businessSettings.product.forms.forms[index] = item;
     },
     adminConfigIdentitySetBusinessName(state, payload) {
       if ("identity" in state.businessSettings) {
@@ -1560,7 +2074,8 @@ const store = createStore({
       state.businessSettings.automations.push(payload);
     },
     adminConfigEditAutomation(state, payload) {
-      state.businessSettings.automations[payload.index] = payload.automation;
+      let { index, item } = payload;
+      state.businessSettings.automations[index] = item;
     },
     adminConfigDeleteAutomation(state, payload) {
       state.businessSettings.automations.splice(payload, 1);

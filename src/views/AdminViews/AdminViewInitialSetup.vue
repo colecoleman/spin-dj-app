@@ -235,7 +235,7 @@ export default {
       if (this.logo) {
         let photo = await this.$store.dispatch("addPhoto", this.logo);
         await this.$store.commit("adminConfigIdentitySetBusinessLogo", photo);
-        await this.$store.dispatch("updateBusinessSettings");
+        await this.$store.dispatch("updateBusinessIdentity");
       }
       this.loading = false;
       this.navigateToDashboard();

@@ -463,7 +463,7 @@ export default {
     },
     async saveSettings() {
       this.processing = true;
-      await this.$store.dispatch("updateBusinessSettings");
+      await this.$store.dispatch("updatePaymentSettings");
       this.processing = false;
     },
     async checkStripeAccountStatus() {
@@ -486,7 +486,7 @@ export default {
           this.paymentSettings.creditCard.Stripe = {
             id: res.data.id.id,
           };
-          this.$store.dispatch("updateBusinessSettings").then(() => {
+          this.$store.dispatch("updatePaymentSettings").then(() => {
             window.location.href = res.data.url;
           });
         });

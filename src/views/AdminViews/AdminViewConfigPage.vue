@@ -108,22 +108,6 @@ export default {
     closeComponent() {
       this.activeComponent = undefined;
     },
-    async saveChanges() {
-      this.saving = true;
-      if (this.logo) {
-        await this.$store
-          .dispatch("addPhoto", this.logo)
-          .then((res) => {
-            this.$store.commit("adminConfigIdentitySetBusinessLogo", res);
-          })
-          .catch((e) => {
-            console.log(e);
-          });
-      }
-      await this.$store.dispatch("updateBusinessSettings").then(() => {
-        this.saving = false;
-      });
-    },
   },
   created() {
     console.log(this.$store.state.businessSettings);

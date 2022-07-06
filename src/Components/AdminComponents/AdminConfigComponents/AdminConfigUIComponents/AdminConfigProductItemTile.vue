@@ -12,7 +12,11 @@
       {{ title }}
     </p>
     <div class="package-buttons">
-      <round-icon-button class="button" svg="x-icon" @click="xClicked" />
+      <round-icon-button
+        class="button"
+        :svg="deleteProcessing ? 'loading' : 'x-icon'"
+        @click="xClicked"
+      />
       <round-icon-button class="button" svg="edit-pen" @click="editClicked" />
     </div>
   </item-tile>
@@ -22,11 +26,14 @@ import ItemTile from "../../../SharedComponentsUI/ItemTile.vue";
 import RoundIconButton from "../../../SharedComponentsUI/RoundIconButton.vue";
 export default {
   data() {
-    return {};
+    return {
+      deleteProcessing: false,
+    };
   },
   computed: {},
   methods: {
     xClicked() {
+      this.deleteProcessing = true;
       this.$emit("delete");
     },
     editClicked() {

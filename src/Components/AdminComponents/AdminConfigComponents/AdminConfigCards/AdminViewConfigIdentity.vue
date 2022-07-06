@@ -150,8 +150,6 @@ import RoundIconButton from "../../../SharedComponentsUI/RoundIconButton.vue";
 export default {
   data() {
     return {
-      svgStyling:
-        "height: 10px; width: 10px; margin: 0px 5px; cursor: pointer;",
       activeComponent: undefined,
       dialogModal: null,
       newEmailField: null,
@@ -332,7 +330,7 @@ export default {
             console.log(e);
           });
       }
-      await this.$store.dispatch("updateBusinessSettings").then(() => {
+      await this.$store.dispatch("updateBusinessIdentity").then(() => {
         this.saving = false;
       });
     },

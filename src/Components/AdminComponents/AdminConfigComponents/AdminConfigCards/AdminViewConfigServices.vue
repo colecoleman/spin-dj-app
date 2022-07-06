@@ -218,15 +218,10 @@ export default {
       service.pricing.baseRate *= 100;
       service.pricing.addHourly *= 100;
       if (this.editIndex != undefined) {
-        let payload = {
-          index: this.editIndex,
-          service: service,
-        };
-        this.$store.commit("adminConfigEditService", payload);
+        this.$store.dispatch("editService", service);
       } else {
-        this.$store.commit("adminConfigAddService", service);
+        this.$store.dispatch("addService", service);
       }
-      await this.$store.dispatch("updateBusinessSettings");
       this.photoFile = undefined;
       this.processing = false;
     },
@@ -246,27 +241,12 @@ export default {
         array.push(item);
       }
     },
-    async deleteService(index) {
-      await this.$store.commit("adminConfigDeleteService", index);
-      await this.$store.dispatch("updateBusinessSettings");
+    async deleteService(service) {
+      await this.$store.dispatch("deleteService", service.id);
     },
     editService(service, index) {
-      let inputTemplate = {
-        id: "service" + new Date().getTime(),
-        name: undefined,
-        pricing: {
-          baseTime: undefined,
-          baseRate: undefined,
-          addHourly: undefined,
-        },
-        forms: [],
-        contracts: [],
-        priceOption: undefined,
-        photo: undefined,
-        equipmentNeeded: [],
-        employeesRequired: undefined,
-      };
-      this.input = { ...inputTemplate, ...service };
+      this.clearForm();
+      this.input = { ...this.input, ...service };
       this.editIndex = index;
       this.input.pricing = {
         baseTime: this.input.pricing.baseTime,

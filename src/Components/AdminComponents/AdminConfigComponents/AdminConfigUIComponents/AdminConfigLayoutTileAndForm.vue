@@ -27,7 +27,7 @@
           productPhotoProperty ? product[productPhotoProperty] : undefined
         "
         :details="figureDetails ? figureDetails(product) : []"
-        @delete="deleteClicked(index)"
+        @delete="deleteClicked(product)"
         @edit="editClicked(product, index)"
       />
     </div>
@@ -57,8 +57,8 @@ export default {
       this.$emit("save-button-clicked");
       this.toggleView("list");
     },
-    deleteClicked(index) {
-      this.$emit("delete-button-clicked", index);
+    deleteClicked(product) {
+      this.$emit("delete-button-clicked", product);
     },
     editClicked(product, index) {
       this.$emit("edit-button-clicked", product, index);
@@ -156,7 +156,6 @@ export default {
   }
 
   .section {
-    width: calc(100% - 10px);
     display: grid;
     grid-template-columns: repeat(auto-fit, 135px);
     flex-wrap: wrap;

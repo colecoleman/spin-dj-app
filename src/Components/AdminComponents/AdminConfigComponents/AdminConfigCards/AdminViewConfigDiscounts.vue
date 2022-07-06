@@ -73,6 +73,7 @@ export default {
       discountOrCharge: ["discount", "charge"],
       percentageOrAmount: ["percentage", "dollar"],
       adjustment: {
+        id: "adj" + Date.now(),
         direction: undefined,
         name: undefined,
         type: undefined,
@@ -120,20 +121,17 @@ export default {
         this.adjustment.amount *= -1;
       }
       if (this.editIndex != undefined) {
-        let payload = {
-          index: this.editIndex,
-          discount: this.adjustment,
-        };
-        await this.$store.commit("adminConfigEditAdjustment", payload);
+        await this.$store.dispatch("editAdjustment", this.adjustment);
       } else {
-        await this.$store.commit("adminConfigAddAdjustment", this.adjustment);
+        await this.$store.dispatch("addAdjustment", this.adjustment);
       }
-      await this.$store.dispatch("updateBusinessSettings");
       this.processing = false;
     },
-    async deleteAdjustment(index) {
-      await this.$store.commit("adminConfigDeleteAdjustment", index);
-      await await this.$store.dispatch("updateBusinessSettings");
+    async deleteAdjustment(adj) {
+      // creating id to match on back end for backwards compatibility,
+      // in case adj doesn't have id (for legacy users)
+      let id = adj.id ? adj.id : adj.name + adj.amount;
+      await this.$store.dispatch("deleteAdjustment", id);
     },
     editAdjustment(adjustment, index) {
       this.adjustment = { ...this.adjustment, ...adjustment };

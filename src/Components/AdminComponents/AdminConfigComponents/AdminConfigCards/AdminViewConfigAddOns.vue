@@ -139,19 +139,13 @@ export default {
         });
       }
       if (this.editIndex != undefined) {
-        let payload = {
-          index: this.editIndex,
-          addOn: this.addOn,
-        };
-        this.$store.commit("adminConfigEditAddOn", payload);
+        this.$store.dispatch("editAddOn", this.addOn);
       } else {
-        this.$store.commit("adminConfigAddAddOn", this.addOn);
+        this.$store.dispatch("addAddOn", this.addOn);
       }
-      await this.$store.dispatch("updateBusinessSettings");
     },
-    async deleteAddOn(index) {
-      await this.$store.commit("adminConfigDeleteAddOn", index);
-      await this.$store.dispatch("updateBusinessSettings");
+    async deleteAddOn(addOn) {
+      await this.$store.dispatch("deleteAddOn", addOn.id);
     },
 
     editAddOn(addOn, index) {

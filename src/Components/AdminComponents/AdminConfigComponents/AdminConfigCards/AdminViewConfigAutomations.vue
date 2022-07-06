@@ -169,7 +169,7 @@ export default {
       automation: {
         applyToExistingEvents: false,
         title: undefined,
-        id: undefined,
+        id: "automation" + Date.now(),
         contactType: undefined,
         approved: true,
         trigger: {
@@ -223,7 +223,6 @@ export default {
           direction: undefined,
           immediate: false,
         },
-        // work within aws to determine allowable triggers
         action: {
           type: undefined,
           email: {
@@ -256,28 +255,21 @@ export default {
     async addAutomation() {
       this.processing = true;
       if (this.editIndex != undefined) {
-        let payload = {
-          index: this.editIndex,
-          automation: this.automation,
-        };
-        await this.$store.commit("adminConfigEditAutomation", payload);
+        await this.$store.dispatch("editAutomation", this.automation);
       } else {
         if (this.automation.action.type === "email") {
           this.automation.action.email.replyTo === this.$store.state.user.email;
-          this.automation.id = "automation" + Date.now();
         }
-        await this.$store.commit("adminConfigAddAutomation", this.automation);
+        await this.$store.dispatch("addAutomation", this.automation);
       }
-      await this.$store.dispatch("updateBusinessSettings");
       this.processing = false;
     },
     editAutomation(automation, index) {
       this.automation = { ...this.automation, ...automation };
       this.editIndex = index;
     },
-    async deleteAutomation(index) {
-      await this.$store.commit("adminConfigDeleteAutomation", index);
-      await this.$store.dispatch("updateBusinessSettings");
+    async deleteAutomation(automation) {
+      await this.$store.dispatch("deleteAutomation", automation.id);
     },
   },
   computed: {
