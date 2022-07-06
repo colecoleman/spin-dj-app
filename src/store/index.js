@@ -336,10 +336,7 @@ const store = createStore({
       };
 
       await axios
-        .put(
-          `https://mty0zf0p2m.execute-api.us-east-1.amazonaws.com/updateBusinessSettings`,
-          payload
-        )
+        .put(`https://api.spindj.io/updateBusinessSettings`, payload)
         .then((response) => {
           console.log(response);
         })
@@ -359,10 +356,7 @@ const store = createStore({
       };
 
       await axios
-        .put(
-          `https://mty0zf0p2m.execute-api.us-east-1.amazonaws.com/updateBusinessSettings`,
-          payload
-        )
+        .put(`https://api.spindj.io/updateBusinessSettings`, payload)
         .catch((e) =>
           context.commit("addStatus", {
             type: "error",
@@ -379,10 +373,7 @@ const store = createStore({
       };
 
       await axios
-        .put(
-          `https://mty0zf0p2m.execute-api.us-east-1.amazonaws.com/updateBusinessSettings`,
-          payload
-        )
+        .put(`https://api.spindj.io/updateBusinessSettings`, payload)
         .then((response) => {
           context.commit("adminConfigDeletePackage", response.data);
         })
@@ -402,10 +393,7 @@ const store = createStore({
       };
 
       await axios
-        .put(
-          `https://mty0zf0p2m.execute-api.us-east-1.amazonaws.com/updateBusinessSettings`,
-          payload
-        )
+        .put(`https://api.spindj.io/updateBusinessSettings`, payload)
         .then(() => {
           context.commit("adminConfigAddPackage", item);
         })
@@ -425,10 +413,7 @@ const store = createStore({
       };
 
       await axios
-        .put(
-          `https://mty0zf0p2m.execute-api.us-east-1.amazonaws.com/updateBusinessSettings`,
-          payload
-        )
+        .put(`https://api.spindj.io/updateBusinessSettings`, payload)
         .then(() => {
           context.commit("adminConfigEditPackage", item);
         })
@@ -448,10 +433,7 @@ const store = createStore({
       };
 
       await axios
-        .put(
-          `https://mty0zf0p2m.execute-api.us-east-1.amazonaws.com/updateBusinessSettings`,
-          payload
-        )
+        .put(`https://api.spindj.io/updateBusinessSettings`, payload)
         .then((response) => {
           context.commit("adminConfigDeleteService", response.data);
         })
@@ -471,10 +453,7 @@ const store = createStore({
       };
 
       await axios
-        .put(
-          `https://mty0zf0p2m.execute-api.us-east-1.amazonaws.com/updateBusinessSettings`,
-          payload
-        )
+        .put(`https://api.spindj.io/updateBusinessSettings`, payload)
         .then(() => {
           context.commit("adminConfigAddService", item);
         })
@@ -494,10 +473,7 @@ const store = createStore({
       };
 
       await axios
-        .put(
-          `https://mty0zf0p2m.execute-api.us-east-1.amazonaws.com/updateBusinessSettings`,
-          payload
-        )
+        .put(`https://api.spindj.io/updateBusinessSettings`, payload)
         .then((response) => {
           let mutationPayload = { index: response.data, item: item };
           context.commit("adminConfigEditService", mutationPayload);
@@ -518,10 +494,7 @@ const store = createStore({
       };
 
       await axios
-        .put(
-          `https://mty0zf0p2m.execute-api.us-east-1.amazonaws.com/updateBusinessSettings`,
-          payload
-        )
+        .put(`https://api.spindj.io/updateBusinessSettings`, payload)
         .then((response) => {
           context.commit("adminConfigDeleteAddOn", response.data);
         })
@@ -541,10 +514,7 @@ const store = createStore({
       };
 
       await axios
-        .put(
-          `https://mty0zf0p2m.execute-api.us-east-1.amazonaws.com/updateBusinessSettings`,
-          payload
-        )
+        .put(`https://api.spindj.io/updateBusinessSettings`, payload)
         .then(() => {
           context.commit("adminConfigAddAddOn", item);
         })
@@ -564,10 +534,7 @@ const store = createStore({
       };
 
       await axios
-        .put(
-          `https://mty0zf0p2m.execute-api.us-east-1.amazonaws.com/updateBusinessSettings`,
-          payload
-        )
+        .put(`https://api.spindj.io/updateBusinessSettings`, payload)
         .then((response) => {
           let mutationPayload = { index: response.data, item: item };
           context.commit("adminConfigEditAddOn", mutationPayload);
@@ -588,10 +555,7 @@ const store = createStore({
       };
 
       await axios
-        .put(
-          `https://mty0zf0p2m.execute-api.us-east-1.amazonaws.com/updateBusinessSettings`,
-          payload
-        )
+        .put(`https://api.spindj.io/updateBusinessSettings`, payload)
         .then((response) => {
           context.commit("adminConfigDeleteAdjustment", response.data);
         })
@@ -611,10 +575,7 @@ const store = createStore({
       };
 
       await axios
-        .put(
-          `https://mty0zf0p2m.execute-api.us-east-1.amazonaws.com/updateBusinessSettings`,
-          payload
-        )
+        .put(`https://api.spindj.io/updateBusinessSettings`, payload)
         .then(() => {
           context.commit("adminConfigAddAdjustment", item);
         })
@@ -634,10 +595,7 @@ const store = createStore({
       };
 
       await axios
-        .put(
-          `https://mty0zf0p2m.execute-api.us-east-1.amazonaws.com/updateBusinessSettings`,
-          payload
-        )
+        .put(`https://api.spindj.io/updateBusinessSettings`, payload)
         .then((response) => {
           let mutationPayload = { index: response.data, item: item };
           context.commit("adminConfigEditAdjustment", mutationPayload);
@@ -658,10 +616,7 @@ const store = createStore({
       };
 
       await axios
-        .put(
-          `https://mty0zf0p2m.execute-api.us-east-1.amazonaws.com/updateBusinessSettings`,
-          payload
-        )
+        .put(`https://api.spindj.io/updateBusinessSettings`, payload)
         .then((response) => {
           context.commit("adminConfigDeleteForm", response.data);
         })
@@ -681,10 +636,7 @@ const store = createStore({
       };
 
       await axios
-        .put(
-          `https://mty0zf0p2m.execute-api.us-east-1.amazonaws.com/updateBusinessSettings`,
-          payload
-        )
+        .put(`https://api.spindj.io/updateBusinessSettings`, payload)
         .then(() => {
           context.commit("adminConfigAddForm", item);
         })
@@ -704,10 +656,7 @@ const store = createStore({
       };
 
       await axios
-        .put(
-          `https://mty0zf0p2m.execute-api.us-east-1.amazonaws.com/updateBusinessSettings`,
-          payload
-        )
+        .put(`https://api.spindj.io/updateBusinessSettings`, payload)
         .then((response) => {
           let mutationPayload = { index: response.data, item: item };
           context.commit("adminConfigEditForm", mutationPayload);
@@ -728,10 +677,7 @@ const store = createStore({
       };
 
       await axios
-        .put(
-          `https://mty0zf0p2m.execute-api.us-east-1.amazonaws.com/updateBusinessSettings`,
-          payload
-        )
+        .put(`https://api.spindj.io/updateBusinessSettings`, payload)
         .then((response) => {
           context.commit("adminConfigDeleteContract", response.data);
         })
@@ -751,10 +697,7 @@ const store = createStore({
       };
 
       await axios
-        .put(
-          `https://mty0zf0p2m.execute-api.us-east-1.amazonaws.com/updateBusinessSettings`,
-          payload
-        )
+        .put(`https://api.spindj.io/updateBusinessSettings`, payload)
         .then(() => {
           context.commit("adminConfigAddContract", item);
         })
@@ -774,10 +717,7 @@ const store = createStore({
       };
 
       await axios
-        .put(
-          `https://mty0zf0p2m.execute-api.us-east-1.amazonaws.com/updateBusinessSettings`,
-          payload
-        )
+        .put(`https://api.spindj.io/updateBusinessSettings`, payload)
         .then((response) => {
           let mutationPayload = { index: response.data, item: item };
           context.commit("adminConfigEditContract", mutationPayload);
@@ -798,10 +738,7 @@ const store = createStore({
       };
 
       await axios
-        .put(
-          `https://mty0zf0p2m.execute-api.us-east-1.amazonaws.com/updateBusinessSettings`,
-          payload
-        )
+        .put(`https://api.spindj.io/updateBusinessSettings`, payload)
         .then((response) => {
           context.commit("adminConfigDeleteAutomation", response.data);
         })
@@ -821,10 +758,7 @@ const store = createStore({
       };
 
       await axios
-        .put(
-          `https://mty0zf0p2m.execute-api.us-east-1.amazonaws.com/updateBusinessSettings`,
-          payload
-        )
+        .put(`https://api.spindj.io/updateBusinessSettings`, payload)
         .then(() => {
           context.commit("adminConfigAddAutomation", item);
         })
@@ -843,12 +777,9 @@ const store = createStore({
         // using userId to avoid accidental tampering by non-admin
       };
       await axios
-        .put(
-          `https://mty0zf0p2m.execute-api.us-east-1.amazonaws.com/updateBusinessSettings`,
-          payload
-        )
+        .put(`https://api.spindj.io/updateBusinessSettings`, payload)
         .then((response) => {
-          let mutationPayload = { index: response.data, item: item }
+          let mutationPayload = { index: response.data, item: item };
           context.commit("adminConfigEditAutomation", mutationPayload);
         })
         .catch((e) =>
@@ -1666,7 +1597,7 @@ const store = createStore({
         axios
           .put(
             `https://api.spindj.io/admin/${context.state.user.tenantId}/stripe/pay/${payload.eventId}`,
-            // `https://mty0zf0p2m.execute-api.us-east-1.amazonaws.com/admin/${context.state.user.tenantId}/stripe/pay/${payload.eventId}`,
+            // `https://api.spindj.io/admin/${context.state.user.tenantId}/stripe/pay/${payload.eventId}`,
             payload
           )
           .then((res) => {
@@ -1946,7 +1877,7 @@ const store = createStore({
       state.businessSettings.product.forms.forms.splice(payload, 1);
     },
     adminConfigEditForm(state, payload) {
-      let { index, item } = payload
+      let { index, item } = payload;
       state.businessSettings.product.forms.forms[index] = item;
     },
     adminConfigIdentitySetBusinessName(state, payload) {

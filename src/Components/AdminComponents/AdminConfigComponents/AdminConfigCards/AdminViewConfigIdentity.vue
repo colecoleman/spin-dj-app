@@ -333,6 +333,7 @@ export default {
       await this.$store.dispatch("updateBusinessIdentity").then(() => {
         this.saving = false;
       });
+      this.close();
     },
     photoChosen(file) {
       this.logo = file;
@@ -412,7 +413,7 @@ export default {
     RoundIconButton,
     LargeFloatingCard,
   },
-  emits: ["logo", "close-card"],
+  emits: ["logo", "close"],
   watch: {
     subdomainField() {
       this.subdomainAvailable = false;
