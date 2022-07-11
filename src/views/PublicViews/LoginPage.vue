@@ -15,10 +15,10 @@
       <div id="authenticator-container">
         <Authenticator> </Authenticator>
       </div>
-      <h5>
+      <!-- <h5>
         DJs: looking to create an account?
         <a href="https://spindj.io/signup"> Sign up!</a>
-      </h5>
+      </h5> -->
     </div>
   </div>
 </template>
