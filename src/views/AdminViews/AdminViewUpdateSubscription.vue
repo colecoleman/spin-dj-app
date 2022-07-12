@@ -11,9 +11,6 @@
 <script>
 import ButtonStandardWithIcon from "../../Components/SharedComponentsUI/ButtonStandardWithIcon.vue";
 export default {
-  data() {
-    return {};
-  },
   methods: {
     createPortal() {
       this.$store.dispatch("stripeCreatePortal").then((res) => {
@@ -21,9 +18,7 @@ export default {
       });
     },
   },
-  created() {},
   components: { ButtonStandardWithIcon },
-  props: [],
 };
 </script>
 <style scoped>

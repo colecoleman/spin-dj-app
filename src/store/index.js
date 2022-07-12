@@ -156,7 +156,6 @@ const store = createStore({
     },
 
     // admin actions
-
     async getAdminEvents(context) {
       return new Promise((resolve, reject) => {
         axios
@@ -1264,7 +1263,6 @@ const store = createStore({
     },
     async sendMessage(context, payload) {
       // let { body, id } = payload;
-
       console.log(payload);
 
       return new Promise((resolve, reject) => {
@@ -1616,6 +1614,7 @@ const store = createStore({
             payload
           )
           .then((res) => {
+            window.location.href = res.data.url;
             resolve(res);
           })
           .catch((e) => {
@@ -1625,17 +1624,33 @@ const store = createStore({
     },
     async stripeCreatePortal(context) {
       return new Promise((resolve, reject) => {
-        axios
-          .put(
-            `https://api.spindj.io/stripe/portal/${context.state.user.stripeId}`
-          )
-          .then((res) => {
-            resolve(res);
-          })
-          .catch((e) => {
-            reject(e);
-          });
+        if (context.state.user.stripeId) {
+          axios
+            .put(
+              `https://api.spindj.io/stripe/portal/${context.state.user.stripeId}`
+            )
+            .then((res) => {
+              window.location.href = res.data.url;
+            })
+            .catch((e) => {
+              reject(e);
+            });
+        } else {
+          context.dispatch("stripeCreateSubscription");
+        }
       });
+    },
+    async stripeCheckSubscription(context) {
+      let stripeCustomerId = context.state.user.stripeId
+        ? context.state.user.stripeId
+        : undefined;
+      return await axios
+        .put("https://api.spindj.io/stripeCheckSubscription", {
+          id: stripeCustomerId,
+        })
+        .then((res) => {
+          return res.data;
+        });
     },
     // utlity actions
     async addPhoto(context, payload) {
