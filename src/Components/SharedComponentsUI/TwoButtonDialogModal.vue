@@ -1,34 +1,29 @@
 <template>
-  <div class="wrapper">
-    <backdrop @click="closeModal()" />
-    <div class="modal">
-      <base-card
-        actionIcon="x-icon"
-        title="Are you sure?"
-        @action-one-clicked="closeModal()"
-      >
-        <template v-slot:content>
-          <h5>
-            {{ modalBody }}
-          </h5>
-          <div class="button-container">
-            <button-standard-with-icon text="Yes" @click="selectButtonOne()" />
-            <button-standard-with-icon text="No" @click="selectButtonTwo()" />
-          </div>
-        </template>
-      </base-card>
-    </div>
+  <backdrop @click="closeModal()" />
+  <div class="modal">
+    <base-card
+      actionIcon="x-icon"
+      title="Are you sure?"
+      @action-one-clicked="closeModal()"
+    >
+      <template v-slot:content>
+        <h5>
+          {{ modalBody }}
+        </h5>
+        <div class="button-container">
+          <button-standard-with-icon text="Yes" @click="selectButtonOne()" />
+          <button-standard-with-icon text="No" @click="selectButtonTwo()" />
+        </div>
+      </template>
+    </base-card>
   </div>
 </template>
 
 <script>
-
 import Backdrop from "./Backdrop.vue";
 export default {
   data() {
-    return {
-
-    };
+    return {};
   },
   methods: {
     selectButtonOne() {
@@ -49,14 +44,8 @@ export default {
 
 <style scoped>
 @media screen and (min-width: 320px) {
-  .wrapper {
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    z-index: 6;
-  }
   .modal {
-    z-index: 10;
+    z-index: 100;
     position: fixed;
     /* top: 35%; */
     /* left: 10%; */
