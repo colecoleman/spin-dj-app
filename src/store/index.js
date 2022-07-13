@@ -1329,10 +1329,6 @@ const store = createStore({
                 resolve(result.data);
               },
               (error) => {
-                context.commit("addStatus", {
-                  type: "error",
-                  note: error,
-                });
                 reject(error);
               }
             );
@@ -1644,13 +1640,20 @@ const store = createStore({
       let stripeCustomerId = context.state.user.stripeId
         ? context.state.user.stripeId
         : undefined;
-      return await axios
-        .put("https://api.spindj.io/stripeCheckSubscription", {
-          id: stripeCustomerId,
-        })
-        .then((res) => {
-          return res.data;
-        });
+      if (stripeCustomerId) {
+        return await axios
+          .put("https://api.spindj.io/stripeCheckSubscription", {
+            id: stripeCustomerId,
+          })
+          .then((res) => {
+            return res.data;
+          })
+          .catch((e) => {
+            console.log(e);
+          });
+      } else {
+        return "non_existent";
+      }
     },
     // utlity actions
     async addPhoto(context, payload) {
