@@ -1020,7 +1020,9 @@ const store = createStore({
           `https://api.spindj.io/admin/${context.state.user.tenantId}/users/getUsers`
         )
         .then((res) => {
-          return res.data;
+          return res.data.filter((x) => {
+            return x.userId !== x.tenantId;
+          });
         });
       let uncategorizedRoleMap = contacts.map((x) => {
         if (!x.role) {
