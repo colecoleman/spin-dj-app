@@ -26,7 +26,7 @@
           />
         </template>
         <template v-slot:content>
-          <div class="personal-contact-list">
+          <div class="personal-contact-list" v-if="items().length > 0">
             <contact-list-item
               v-for="contact in items()"
               :key="contact.userId"
@@ -156,6 +156,7 @@ export default {
 <style scoped>
 #contact-section {
   max-height: 100%;
+  height: 100%;
   display: grid;
   gap: 10px;
   grid-template-columns: 100%;
